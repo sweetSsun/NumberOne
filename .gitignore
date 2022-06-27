@@ -7,6 +7,7 @@ log4j.xml
 lecture
 target
 pom.properties
+Servers/
 .classpath
 MANIFEST.MF
 
