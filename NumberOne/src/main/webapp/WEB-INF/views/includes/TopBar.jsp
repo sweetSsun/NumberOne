@@ -76,7 +76,7 @@
 			</div>
 			<div class="row">
 				<div class="col-6 offset-sm-6">
-					<!-- Home, 커뮤니티, 중고거래 -->
+					<!-- Home, 커뮤니티, 중고거래 목록 -->
 					<ul class="list-unstyled " >
 						<li class="nav-item active">
 							<a href="#">HOME</a>
