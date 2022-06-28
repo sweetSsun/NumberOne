@@ -12,12 +12,12 @@ public class MemberController {
 	private ModelAndView mav;
 	
 	@Autowired
-	private MemberService mscv;
+	private MemberService msvc;
 	
 	@RequestMapping(value="/test")
 	public ModelAndView test() {
 		System.out.println("DB 연결 테스트");
-		String test1 = mscv.test1();
+		String test1 = msvc.test1();
 		mav.addObject("test1", test1);
 		mav.setViewName("DBtest");
 		return mav;
