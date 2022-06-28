@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@ include file="/WEB-INF/views/resources/css/BarCss.jsp" %>
+<%@ include file="/resources/css/BarCss.jsp" %>
 </head>
 <body>
 	<footer class="text-center">하단바</footer>

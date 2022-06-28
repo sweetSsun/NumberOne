@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@ include file="/WEB-INF/views/resources/css/BarCss.jsp" %>
+<%@ include file="/resources/css/BarCss.jsp" %>
 </head>
 <body>
 	<!-- 사이드바 : 마이페이지 -->
