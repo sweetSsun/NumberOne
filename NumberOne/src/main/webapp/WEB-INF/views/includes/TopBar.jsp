@@ -57,7 +57,7 @@
 		<div class="row">	
 			<div class="col-2">
 			<!-- 로고이미지 -->
-				<a href=""><img style="height:100px;"src="${pageContext.request.contextPath }/resources/logo.jpg"></a>
+				<a href=""><img style="height:100px;"src="${pageContext.request.contextPath }/resources/img/logo.jpg"></a>
 			</div>
 			<div class="col-6 offset-sm-4">
 			<div class="row">
