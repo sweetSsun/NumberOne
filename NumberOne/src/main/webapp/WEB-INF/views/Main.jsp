@@ -23,11 +23,11 @@
 		<!-- 본문 -->
 			<div class="container">
 				<h1 class="text-center">본문</h1>
-				<p>Hello, Wolrd!</p>
-				<p>Hello, Wolrd!</p>
-				<p>Hello, Wolrd!</p>
-				<p>Hello, Wolrd!</p>
-				<p>Hello, Wolrd!</p>
+				<p>Hello, World!</p>
+				<p>Hello, World!</p>
+				<p>Hello, World!</p>
+				<p>Hello, World!</p>
+				<p>Hello, World!</p>
 			</div>
 		</section>
 	</main>

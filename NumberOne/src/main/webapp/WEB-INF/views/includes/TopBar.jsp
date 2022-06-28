@@ -66,7 +66,7 @@
 					<!-- 찜 -->
 					<li ><a href="#"><i class="fa-solid fa-heart"></i></i>찜</a> |</li>
 					<!-- 채팅 -->
-					<li ><a href="#"><i class="fa-solid fa-comment-dots"></i>채팅</a> |</li>
+					<li ><a href="#" onclick="popupChat()"><i class="fa-solid fa-comment-dots"></i>채팅</a> |</li>
 					<!-- 마이페이지 -->
 					<li ><a href="#"><i class="fa-solid fa-circle-user"></i>마이페이지</a> |</li>
 					<li ><a href="#">로그인</a> |</li>
@@ -94,4 +94,16 @@
 		</div>	
 	</header>
 </body>
+<script type="text/javascript">
+console.log("스크립트 확인!");
+
+function popupChat(){
+	console.log("popupChat 호출");
+	let popOption = "width = 650px, height=550px, top=300px, left=500px, scrollbars=yes";
+	let openUrl = 'chatPage';
+	window.open(openUrl, 'pop', popOption);
+};
+</script>
+
+
 </html>
