@@ -16,12 +16,18 @@
 							<hr>
                         </div>
                         <div class="sidebar-item">
-                            <h4><a href="#">회원</a></h4>
+                            <h4><a href="selectMemberList">회원</a></h4>
                         </div>
                         <div class="sidebar-item" >
                             <h4><a href="#">공지</a></h4>
                         </div>
                        	<div class="sidebar-item">
+                       	
+                       	
+                       	
+                       	
+                       	
+                       	
                             <h4><a href="#">중고거래</a></h4>
                         </div>
                         <div class="sidebar-item">
