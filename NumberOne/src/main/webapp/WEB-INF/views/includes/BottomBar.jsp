@@ -4,10 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<%@ include file="/resources/css/BarCss.jsp" %>
 </head>
 <body>
-	for branch test Duri
-	
+	<footer class="text-center">하단바</footer>
 </body>
 </html>

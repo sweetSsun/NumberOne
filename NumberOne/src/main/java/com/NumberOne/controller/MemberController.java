@@ -22,5 +22,5 @@ public class MemberController {
 		mav.setViewName("DBtest");
 		return mav;
 	}
-	
+
 }
