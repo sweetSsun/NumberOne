@@ -22,12 +22,5 @@ public class MemberController {
 		mav.setViewName("DBtest");
 		return mav;
 	}
-	
-	@RequestMapping(value="/chatPage")
-	public ModelAndView chatPage() {
-		System.out.println("채팅 페이지 요청");
-		mav = new ModelAndView();
-		mav.setViewName("ChatPage");
-		return mav;
-	}
+
 }
