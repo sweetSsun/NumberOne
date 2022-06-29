@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>1:1채팅</title>
 
 <style>
 	.speech-bubble {
@@ -99,4 +99,75 @@
 		console.log("functionCh() 호출")
 	};
 </script>
+
+<!-- mav로 메세지에 "상대를 배려하는 어쩌고 " 넣을까용 -->
+<script type="text/javascript">
+	var checkMsg = '${msg}';
+	console.log(checkMsg, length);
+	if(checkMsg.length > 0){
+		alert(checkMsg);
+	}
+	</script>
+
+
+<!-- 웹소캣 sockjs -->
+	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+
+	<script type="text/javascript">
+		var chatUrl = '${pageContext.request.contextPath }/chatWskMessage';
+		var chatWebSocket = new SockJS(chatUrl);
+		
+		// 연결시 실행
+		webSocket.onopen = function() {
+		    console.log('open');
+		    sock.send('test');
+		};
+		
+		// 서버로부터 메세지/데이터를 받으면 수행할 작업
+		webSocket.onmessage = function(e) {
+		    console.log('message', e.data);
+		    //var output = "<p>"+e.data+"</p>";
+	   		var receiveData = JSON.parse(e.data);
+		    console.log("Id "+receiveData.msgUserId);
+		    console.log("Comment "+receiveData.msgComment);
+		    
+		    var output = "<div class=\"card-body\" style=\"text-align: left;\"><span>"+receiveData.msgUserId+"</span></div>";
+		    output = "<div class=\"card-body\" style=\"text-align: left;\"><span class=\"bg-gradient-primary\">"+receiveData.msgComment+"</span></div>";
+		    
+		   
+		    $("#chatList").append(output);
+			// sock.close();
+	    };
+	    
+        // 연결이 끊어지면 실행되는 부분
+	    webSocket.onclose = function(e) {
+	    	console.log("onclose e.data : " + e.data);
+		};
+		
+	</script>
+
+<!-- 
+	<script type="text/javascript">
+		function messageSend(){
+			var userId = '${sessionScope.loginId}';
+			var textMsg = $("#inputMsg").val();
+			
+			if( textMsg.trim().length >0 ){
+
+				var msgData = {
+					msgUserId : userId,
+					msgComment : textMsg
+				};
+				webSocket.send(JSON.stringify(msgData));
+			
+				var sendMsg = "<div class=\"my-2 p-2 font-weight-bold text-right\">";
+				sendMsg += "<span class=\"bg-warning msgSty p-2 text-lg\">"+textMsg+"</span></div>";
+				
+				$("#chatList").append(sendMsg);
+				$("#chatList").scrollTop( $("#chatList")[0].scrollHeight );
+				console.log("msgData"+JSON.stringify(msgData));
+			}
+			$("#inputMsg").val(""); // 입력창 초기화
+		}
+	</script> -->
 </html>

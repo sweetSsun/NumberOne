@@ -36,7 +36,7 @@
 	}
 	aside, section{
 		flex-grow: 1;
-		height:1200px;
+		height:100%;
 	}
 	.sidebar{
 		position: sticky;
