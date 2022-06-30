@@ -57,7 +57,7 @@
 		<div class="row">	
 			<div class="col-2">
 			<!-- 로고이미지 -->
-				<a href=""><img style="height:100px;"src="${pageContext.request.contextPath }/resources/img/logo.jpg"></a>
+				<a href="${pageContext.request.contextPath }/"><img style="height:100px;"src="${pageContext.request.contextPath }/resources/img/logo.jpg"></a>
 			</div>
 			<div class="col-6 offset-sm-4">
 			<div class="row">
@@ -79,13 +79,16 @@
 					<!-- Home, 커뮤니티, 중고거래 목록 -->
 					<ul class="list-unstyled " >
 						<li class="nav-item active">
-							<a href="#">HOME</a>
+							<a href="${pageContext.request.contextPath }/">HOME</a>
 						</li>
 						<li class="nav-item ">
 							<a href="#">커뮤니티</a>
 						</li>
 						<li class="nav-item ">
 							<a href="#">중고거래</a>
+						</li>
+						<li class="nav-item ">
+							<a href="loadToAdminMainPage">관리자</a>
 						</li>
 					</ul>
 				</div>
