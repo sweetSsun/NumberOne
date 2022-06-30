@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.NumberOne.dao.AdminDao">
+
+	<select id="selectmemberList" resultType="com.NumberOne.dto.MemberDto">
+		SELECT MID, MPW, MNAME, MNICKNAME, MPHONE, MEMAIL, MADDR, MPROFILE, MMESSAGE, MSTATE, MJOINDATE, NVL(WM.MWARNING, 0) MWARNING
+		FROM MEMBERS MB
+		    LEFT OUTER JOIN (SELECT WMEDMID, COUNT(WMEDMID) MWARNING FROM WARNINGMEMBERS GROUP BY WMEDMID) WM
+		    ON MB.MID = WM.WMEDMID
+		<if test="searchVal == 'active'">
+			WHERE MSTATE=1 AND MWARNING IS NULL
+		</if>
+		<if test="searchVal == 'warning'">
+			WHERE WM.MWARNING > 0
+		</if>
+		<if test="searchVal == 'inactive'">
+			WHERE MSTATE=0
+		</if>
+		ORDER BY MJOINDATE
+	</select>
+
+</mapper>

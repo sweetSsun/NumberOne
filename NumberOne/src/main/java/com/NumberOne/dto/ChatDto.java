@@ -10,4 +10,6 @@ public class ChatDto {
 	private String chtomid;		//받은사람	
 	private String chcontents;	//내용
 	private String chdate;		//작성시간
+
+
 }
