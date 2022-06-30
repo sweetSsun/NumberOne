@@ -38,4 +38,12 @@ public class AdminController {
 		String memberList = asvc.selectMemberList_ajax(searchVal);
 		return memberList;
 	}
+	
+	@RequestMapping (value= "/updateMstate_ajax")
+	public @ResponseBody String updateMstate_ajax(String mid, String mstate) {
+		System.out.println("회원상태 변경 요청");
+		String memberState_json = asvc.updateMstate_ajax(mid, mstate);
+		return memberState_json;
+	}
+		
 }

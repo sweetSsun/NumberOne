@@ -5,7 +5,7 @@
   
 <mapper namespace="com.NumberOne.dao.AdminDao">
 
-	<select id="selectmemberList" resultType="com.NumberOne.dto.MemberDto">
+	<select id="selectMemberList" resultType="com.NumberOne.dto.MemberDto">
 		SELECT MID, MPW, MNAME, MNICKNAME, MPHONE, MEMAIL, MADDR, MPROFILE, MMESSAGE, MSTATE, MJOINDATE, NVL(WM.MWARNING, 0) MWARNING
 		FROM MEMBERS MB
 		    LEFT OUTER JOIN (SELECT WMEDMID, COUNT(WMEDMID) MWARNING FROM WARNINGMEMBERS GROUP BY WMEDMID) WM
@@ -22,4 +22,18 @@
 		ORDER BY MJOINDATE
 	</select>
 
+	<update id="updateMstate_ajax">
+		UPDATE MEMBERS SET MSTATE=${mstate}
+		WHERE MID=#{mid}
+	</update>
+	
+	<select id="selectMemberMstate" resultType="com.NumberOne.dto.MemberDto">
+		SELECT MID, MSTATE, WM.MWARNING
+		FROM MEMBERS MB
+		    LEFT OUTER JOIN (SELECT WMEDMID, COUNT(WMEDMID) MWARNING FROM WARNINGMEMBERS GROUP BY WMEDMID) WM
+		    ON MB.MID = WM.WMEDMID
+		 WHERE MID=#{mid}
+	</select>
+	
+	
 </mapper>
