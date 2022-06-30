@@ -23,6 +23,8 @@
 		<!-- 본문 -->
 			<div class="container">
 				<h1 class="text-center">본문</h1>
+				<h3>로그인 아이디 : ${sessionScope.loginId}</h3>
+                <h3>로그인 프로필 : ${sessionScope.loginProfile}</h3>
 				<p>Hello, World!</p>
 				<p>Hello, World!</p>
 				<p>Hello, World!</p>
@@ -35,5 +37,14 @@
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+	<script type="text/javascript">
+		var checkMsg = '${msg}';
+		console.log(checkMsg.length);
+		if( checkMsg.length > 0 ){
+			alert(checkMsg);
+		}
+	</script>
+
 </body>
 </html>
