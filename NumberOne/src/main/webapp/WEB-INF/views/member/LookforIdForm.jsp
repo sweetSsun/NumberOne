@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 로그인페이지</title>
+<title>1인자 - 아이디찾기페이지</title>
 
 <%@ include file="/resources/css/BarCss.jsp"%>
 <!-- 부트스트랩 -->
@@ -72,58 +72,58 @@
         <div class="container">
 
             <div class="checkout__form">
-                <h4>로그인</h4>
+                <h4>아이디 찾기</h4>
                 <br>
-                <form class="user" action="memberLogin" method="post">
+                <form class="user" action="lookforId" method="post">
                     <div class="row">
                         <div class="col-lg-12 col-md-6">
-                        <!-- ID , 이름 -->
+                        <!-- 이름 -->
                             <div class="row">
                             	<div class="col-lg-12 col-md-6">
                                 	<div class="checkout__input" style="margin-left: 28%;">
-                                 		<span>아이디</span>
+                                 		<span>이름</span>
                                 	</div>
                               	</div>
                              </div>
                              <div class="row">
                              	<div class="col-lg-12 col-md-6">
                              		<div class="checkout__input" style="text-align: center;">
-                                 		<input type="text" id="userMid" name="mid" style="text-align: center; width: 400px;"> 
+                                 		<input type="text" id="userMname" name="mname" style="text-align: center; width: 400px;"> 
                              		</div>
                              	</div>
                             </div>
-                        <!-- 비번 , 비번확인 -->
+                        <!-- 메일주소 -->
                             <div class="row">
                             	<div class="col-lg-12 col-md-6">
                                 	<div class="checkout__input" style="margin-left: 28%;">
-                                 		<span>비밀번호</span>
+                                 		<span>메일주소</span>
                                 	</div>
                               	</div>
                              </div>
                              <div class="row">
                              	<div class="col-lg-12 col-md-6">
                              		<div class="checkout__input" style="text-align: center;">
-                                 		<input type="text" id="userMpw" name="mpw" style="text-align: center; width: 400px;"> 
+                                 		<input type="text" id="userMemail" name="memail" style="text-align: center; width: 400px;"> 
                              		</div>
                              	</div>
                             </div>
                             
-                        <!-- 로그인 버튼 -->    
-                        <center><button type="submit" class="site-btn" style="border-radius: 4px;">로그인</button></center>
+                        <!-- 찾기버튼 -->    
+                        <center><button type="submit" class="site-btn" style="border-radius: 4px;">찾기</button></center>
                         <br>
                         <!-- 아이디찾기 , 비밀번호찾기 -->
-                            <div class="row">
+<!--                             <div class="row">
                             	<div class="col-lg-6 col-md-1">
                                 	<div class="checkout__input" style="text-align: right;">
-                                 		<a class="small" href="loadToLookforId">아이디 찾기</a>
+                                 		<a class="small" href="password.html">아이디 찾기</a>
                                 	</div>
                               	</div>                             	
                              	<div class="col-lg-6 col-md-1">
                              		<div class="checkout__input" style="text-align: left;">
-                                 		<a class="small" href="#">비밀번호 찾기</a>
+                                 		<a class="small" href="password.html">비밀번호 찾기</a>
                              		</div>
                              	</div>
-                            </div>                        							
+                            </div> -->                        							
    							
                          </div>                            
   					</div> 

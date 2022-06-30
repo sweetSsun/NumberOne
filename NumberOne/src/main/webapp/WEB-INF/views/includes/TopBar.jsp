@@ -70,6 +70,7 @@
 					<!-- 마이페이지 -->
 					<li ><a href="#"><i class="fa-solid fa-circle-user"></i>마이페이지</a> |</li>
 					<li ><a href="loadToLogin">로그인</a> |</li>
+					<li ><a href="memberLogout">로그아웃</a> |</li>					
 					<li ><a href="loadToRegister">회원가입</a> |</li>
 					<li ><a href="#">고객센터</a></li>
 				</ul>
@@ -78,6 +79,12 @@
 				<div class="col-6 offset-sm-6">
 					<!-- Home, 커뮤니티, 중고거래 목록 -->
 					<ul class="list-unstyled " >
+						<li class="nav-item ">
+							<h5>로그인 아이디 : ${sessionScope.loginId}<h5>
+						</li>					
+						<li class="nav-item active">
+							<h5>로그인 프로필 : ${sessionScope.loginProfile}<h5>
+						</li>					
 						<li class="nav-item active">
 							<a href="#">HOME</a>
 						</li>
@@ -93,6 +100,7 @@
 			</div>
 		</div>	
 	</header>
+
 </body>
 <script type="text/javascript">
 console.log("스크립트 확인!");

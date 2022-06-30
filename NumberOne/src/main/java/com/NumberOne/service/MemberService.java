@@ -138,6 +138,35 @@ public class MemberService {
 		return mav;
 	}
 
+
+	//로그아웃 기능
+	public ModelAndView memberLogout(RedirectAttributes ra) {
+		System.out.println("MemberService.memberLogout() 호출");
+		session.invalidate();
+		ra.addFlashAttribute("msg", "로그아웃 되었습니다.");
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("redirect:/");
+		return mav;
+	}
+
+	//아이디 찾기 요청
+	public ModelAndView lookforId(String mname, String memail) {
+		System.out.println("MemberService.lookforId() 호출");
+		System.out.println("입력한 이름 : " + mname);
+		System.out.println("입력한 메일 : " + memail);
+		
+		ModelAndView mav = new ModelAndView();
+		
+		/*
+		 * MemberDto checkId = mdao.selectLookforId(mname, memail);
+		 * System.out.println(loginMember);
+		 */
+		
+		
+		return null;
+	}
+
+
 	
 	
 	

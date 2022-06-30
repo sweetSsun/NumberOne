@@ -67,6 +67,36 @@ public class MemberController {
 		  return mav;
 	  }
 	  
+	  //로그아웃
+		@RequestMapping(value = "/memberLogout")
+		public ModelAndView memberLogout(RedirectAttributes ra) {
+			System.out.println("로그아웃 요청");
+			
+			mav = msvc.memberLogout(ra);
+			return mav;
+		}  
+		
+		//아이디 찾기 페이지 이동
+		@RequestMapping(value="/loadToLookforId")
+		public ModelAndView loadToLookforId() {
+			System.out.println("아이디 찾기 페이지 요청");
+			mav = new ModelAndView();
+			mav.setViewName("member/LookforIdForm");
+			return mav;
+		}		
+		
+		//아이디 찾기 요청
+		  @RequestMapping("/lookforId")
+		  public @ResponseBody String lookforId(String mname , String memail) {
+			  System.out.println("아이디 찾기 요청");
+			  mav = msvc.lookforId(mname, memail);
+			  
+			  return null;
+		  }	  
+
+		
+		
+		
 }
 
 
