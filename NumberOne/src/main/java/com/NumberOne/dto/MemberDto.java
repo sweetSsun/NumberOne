@@ -14,6 +14,8 @@ public class MemberDto {
 	private String mphone;			//전화번호
 	private String memail;			//이메일
 	private String maddr;			//주소
+
+
 	private String mprofile;		//프로필
 	private String mmessage;		//상태메세지
 	private int mstate; 			//상태
@@ -31,6 +33,5 @@ public class MemberDto {
 	
 	private String memailId; //이메일아이디 
 	private String memailDomain;  //이메일도메인
-	
 	
 }
