@@ -34,37 +34,35 @@
 			<div class="container">
 				<div class="row" style="margin:auto;">
 					<h1 class="text-center">게시판 글목록 페이지 : BoardListPage.jsp</h1>
-					<div class="col-4 ">
-						<select id="searchVal" onclick="bdSearchTypeSel(this.value)">
-							<option value="bdTitle">제목</option>
-							<option value="bdContents">내용</option>
-							<option value="bdTitleContents">제목+내용</option>
-							<option value="bdNickname">작성자</option>
-						</select>
-					</div>
-					<div class="col-6">
-						<!-- 검색기능 -->
-						<form action="searchBoard" method="get">
-						<div class="input-group">
-						  <input type="text" class="form-control" name="searchText" placeholder="검색 키워드를 입력하세요!">
-						  <span class="input-group-btn">
-						    <button class="btn btn-secondary">찾기</button>
-						  </span>
-						</div>
-						</form>
-					</div>
-					<div class="col-2">
-						<!-- 글쓰기 버튼 -->
-						<button class="btn btn-primary btm-sm">글쓰기</button>
-					</div>
-					
 				</div>
+				<form action="selectBoardSearchList" method="get">
+				<div class="row">
+					<!-- 검색기능 -->
+						<div class="col-5">
+								<select name="searchType">
+									<option value="bdtitle">제목</option>
+									<option value="bdcontents">내용</option>
+									<option value="bdtitlecontents">제목+내용</option>
+									<option value="bdnickname">작성자</option>
+								</select>
+						</div>
+						<div class="col-5 input-group">
+							  <input type="text" style="width:100px;" class="form-control" name="searchText" placeholder="검색 키워드를 입력하세요!">
+							  <span class="input-group-btn">
+							    <button class="btn btn-secondary">찾기</button>
+							  </span>
+						</div>
+						<div class="col-2 mb-5">
+							<!-- 글쓰기 버튼 -->
+							<button class="btn btn-primary btm-sm">글쓰기</button>
+						</div>
+				</div>
+				</form>
 				<div class="row" style="margin-top: 20px;">
 					<div class="col">
 						<!-- 말머리 정렬 -->
 						<select id="bdCategory" onchange="bdCategorySel(this.value)">
 							<option value="">카테고리 선택</option>
-							<option value="자랑">자랑</option>
 							<option value="자유">자유</option>
 							<option value="질문">질문</option>
 							<option value="정보">정보</option>
@@ -89,11 +87,11 @@
 						</tr>
 						<c:forEach items="${noticeList }" var="notice">
 							<!-- 공지게시판 -->
-							<tr class="fw-bold" style="border-bottom: solid gray 1px;">
+							<tr class="fw-bold" style="border-bottom: solid #E0E0E0 1px;">
 								<td>${notice.nbcode}</td>
 								<td></td>
 								<td>
-									<a href="#">${notice.nbtitle}</a>
+									<a href="selectNoticeBoardView?nbcode=${notice.nbcode }">${notice.nbtitle}</a>
 								</td>
 								<td>${notice.nbmid}</td>
 								<td>${notice.nbdate}</td>
@@ -103,15 +101,16 @@
 						</c:forEach>
 					</thead>
 					
-					<tbody id="bdCategoryList01">
+					<tbody id="bdCategoryList">
 					<!-- 일반게시판 목록 -->
 					
 					<c:forEach items="${boardList }" var="board">
-						<tr style="border-bottom: solid gray 1px;">
+						<c:if test="${board.bdcategory != '자랑' }">
+						<tr style="border-bottom: solid #E0E0E0 1px;">
 							<td>${board.bdcode}</td>
 							<td>${board.bdcategory}</td>
 							<td>
-							 	<a href="#">${board.bdtitle}</a>
+							 	<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a>
 							 </td>
 							<td>
 								<a>${board.bdnickname}</a>
@@ -120,6 +119,7 @@
 							<td>조회수</td>
 							<td>추천수</td>
 						</tr>
+						</c:if>
 					</c:forEach>
 					
 					</tbody>
@@ -163,27 +163,9 @@
 			}
 		});
 		console.log(output);
-		$("#bdCategoryList01").html(output);
+		$("#bdCategoryList").html(output);
 	}
 	
-	/* 게시판 글검색  */
-	function bdSearchTypeSel(searchTypeSel){
-		console.log("searchTypeSel : " + searchTypeSel);
-		
-		$.ajax({
-			type : "get",
-			url : "getSearchBoardList",
-			data : { "bdcategory" : searchTypeSel },
-			dataType : "json",
-			async : false,
-			success : function(searchList){
-				
-				
-			}
-			
-		});
-		
-	}
 	
 </script>
 

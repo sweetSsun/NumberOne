@@ -131,8 +131,8 @@ public class BoardService {
 	}
 
 	   //게시판(커뮤니티) 메인페이지 이동 
-	   public ModelAndView boardMainPage() {
-	      System.out.println("BoardService.BoardMainPage() 호출");
+	   public ModelAndView loadToBoardMainPage() {
+	      System.out.println("BoardService.loadToBoardMainPage() 호출");
 	      ModelAndView mav = new ModelAndView();
 	      
 	      //일반게시판 글목록 조회 
@@ -145,7 +145,7 @@ public class BoardService {
 	      
 	      mav.addObject("boardList", boardList);
 	      mav.addObject("noticeList", noticeList);
-	      mav.setViewName("board/Board_Main");
+	      mav.setViewName("board/BoardMain");
 	      
 	      return mav;
 	   }
@@ -165,17 +165,17 @@ public class BoardService {
 	      
 	      mav.addObject("noticeList", noticeList);
 	      mav.addObject("boardList", boardList);
-	      mav.setViewName("board/Board_List");
+	      mav.setViewName("board/BoardListPage");
 	      
 	      return mav;
 	   }
 	   
 	   //카테고리별 글목록 조회 (ajax)
-	   public String boardCategoryList(String bdcategory) {
+	   public String boardCategoryList_ajax(String bdcategory) {
 	      System.out.println("BoardService.boardCategoryList() 호출");
 	      System.out.println(bdcategory);
 	      
-	      ArrayList<BoardDto> boardList = bdao.selectBoardCategoryList(bdcategory);
+	      ArrayList<BoardDto> boardList = bdao.selectBoardCategoryList_ajax(bdcategory);
 	      System.out.println(boardList);
 	      
 	      Gson gson = new Gson();
@@ -186,14 +186,53 @@ public class BoardService {
 	   }
 	   
 	   //글검색 목록 
-	   public ModelAndView searchBoard(String searchText) {
-	      System.out.println("BoardService.searchBoard() 호출");
+	   public ModelAndView selectBoardSearchList(String searchType, String searchText) {
+	      System.out.println("BoardService.selectBoardSearchList() 호출");
 	      ModelAndView mav = new ModelAndView();
 	      
-	      //글검색 목록 조회 
-	      //ArrayList<BoardDto> searchBdList = bdao.selectSearchBdList(searchText);
+	      System.out.println("검색타입: " + searchType);
+	      System.out.println("검색어: " + searchText);
 	      
-	      return null;
+	      //글검색 목록 조회 
+	      ArrayList<BoardDto> searchBdList = bdao.selectBoardSearchList(searchType, searchText);
+	      System.out.println(searchBdList);
+	      
+	      mav.addObject("searchBdList", searchBdList);
+	      mav.setViewName("board/BoardSearchListPage");
+	      
+	      return mav;
 	   }
 
+	//공지글상세 페이지 이동 
+	public ModelAndView selectNoticeBoardView(String nbcode) {
+		System.out.println("BoardService.selectNoticeBoardView() 호출");
+		ModelAndView mav = new ModelAndView();
+		 
+		System.out.println("nbcode:" +  nbcode);
+		
+		NoticeDto noticeBoard = bdao.selectNoticeBoardView(nbcode);
+		System.out.println(noticeBoard);
+		mav.addObject("noticeBoard", noticeBoard);
+		mav.setViewName("board/NoticeBoardView");
+		
+		return mav;
+	}
+
+	//일반게시판 - 글상세페이지 이동 
+	public ModelAndView selectBoardView(String bdcode) {
+		System.out.println("BoardService.selectBoardView() 호출");
+		ModelAndView mav = new ModelAndView();
+		
+		System.out.println("bdcode : " + bdcode);
+		
+		BoardDto board = bdao.selectBoardView(bdcode);
+		
+		mav.addObject("board", board);
+		mav.setViewName("board/BoardView");
+		
+		return mav;
+	}
+	
+	
+	
 }
