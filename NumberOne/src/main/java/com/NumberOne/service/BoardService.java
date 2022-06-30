@@ -3,6 +3,7 @@ package com.NumberOne.service;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -34,12 +35,12 @@ public class BoardService {
 	private HttpSession session;
 	
 	//사용할 때 자기 폴더 경로로 바꾸어야 함
-	private String roomSavePath = "D:\\numberOne\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\room";
+	private String roomSavePath = "D:\\numberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\room";
 	
 	//자취방자랑 글 등록
-	public ModelAndView writeRoom(BoardDto room, RedirectAttributes ra) throws IllegalStateException, IOException {
+	public ModelAndView insertRoomWrite(BoardDto room, RedirectAttributes ra) throws IllegalStateException, IOException {
 		ModelAndView mav = new ModelAndView();
-		System.out.println("BoardService.writeRoom()");
+		System.out.println("BoardService.insertRoomWrite() 호출");
 		
 		//글번호 생성
 		String bdcode = bdao.selectMaxBdcode();
@@ -111,12 +112,12 @@ public class BoardService {
 		
 		//System.out.println(room);
 		//자취방자랑 글 등록 (dao  - insert문)
-		int insertResult = bdao.writeRoom(room);
+		int insertResult = bdao.insertRoomWrite(room);
 		
 		if(insertResult>0) {
 			System.out.println("등록 성공!");
 			ra.addFlashAttribute("msg", "자취방 자랑글이 등록되었습니다.");
-			//메인페이지로 돌아가기		
+			//메인페이지로 돌아가기	>> 자랑글 메인으로 수정 해야 함	
 			mav.setViewName("redirect:/");
 		} else {
 			System.out.println("등록 실패!");
@@ -203,6 +204,26 @@ public class BoardService {
 	      return mav;
 	   }
 
+
+	//자취방 메인 페이지(목록)   
+	public ModelAndView selectRoomList() {
+		System.out.println("BoardService.selectRoomList() 호출");
+		ModelAndView mav = new ModelAndView();
+	    ArrayList<BoardDto> roomList = bdao.selectRoomList("자랑");	
+	    System.out.println("자취방 자랑글 개수: "+roomList.size());
+	    
+	    mav.addObject("roomList", roomList);
+	    
+	    //확인용 출력
+	    for(int i=0; i<roomList.size(); i++) {
+	    	System.out.println(roomList.get(i));
+	    }
+	    
+	    mav.setViewName("board/RoomListPage");
+		return mav;
+	}
+
+
 	//공지글상세 페이지 이동 
 	public ModelAndView selectNoticeBoardView(String nbcode) {
 		System.out.println("BoardService.selectNoticeBoardView() 호출");
@@ -233,6 +254,5 @@ public class BoardService {
 		return mav;
 	}
 	
-	
-	
+
 }
