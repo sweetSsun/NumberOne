@@ -13,7 +13,7 @@
 		<div class="row">	
 			<div class="col-2">
 			<!-- 로고이미지 -->
-				<a href=""><img style="height:100px;"src="${pageContext.request.contextPath }/resources/img/logo.jpg"></a>
+				<a href="${pageContext.request.contextPath }/"><img style="height:100px;"src="${pageContext.request.contextPath }/resources/img/logo.jpg"></a>
 			</div>
 			<div class="col-6 offset-sm-4">
 			<div class="row">
@@ -38,7 +38,7 @@
 							<a href="#">HOME</a>
 						</li>
 						<li class="nav-item ">
-							<a href="boardMainPage">커뮤니티</a>
+							<a href="loadToBoardMainPage">커뮤니티</a>
 						</li>
 						<li class="nav-item ">
 							<a href="#">중고거래</a>
