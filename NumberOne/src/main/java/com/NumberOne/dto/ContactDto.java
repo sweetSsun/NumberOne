@@ -12,4 +12,5 @@ public class ContactDto {
 	private String ctdate;		//작성일
 	private String ctans;		//답변
 	private String ctansdate;	//답변일
+
 }

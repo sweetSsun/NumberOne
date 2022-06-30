@@ -48,16 +48,15 @@ public class BoardController {
 	
 	
 	//게시판 메인 페이지 이동 
-	@RequestMapping( value="/boardMainPage")
-	public ModelAndView communityMainPage() {
+	@RequestMapping( value="/loadToBoardMainPage")
+	public ModelAndView loadToBoardMainPage() {
 	    System.out.println("게시판(커뮤니티) 메인 페이지 이동");
-	    ModelAndView mav = bsvc.boardMainPage();
+	    ModelAndView mav = bsvc.loadToBoardMainPage();
 	    return mav;
 	}
 	
-	
 	//게시판 글목록 페이지 
-	@RequestMapping ( value = "/boardListPage")
+	@RequestMapping ( value = "/selectBoardList")
 	public ModelAndView boardListPage() {
 	    System.out.println("게시판 글목록 페이지 요청");
 	    ModelAndView mav = bsvc.boardListPage();
@@ -66,23 +65,43 @@ public class BoardController {
 	   
 	//카테고리별 글목록 조회 ( ajax )
 	@RequestMapping ( value = "/getBoardCategoryList")
-	@ResponseBody public String boardCategoryList( String bdcategory) {
-		System.out.println("카테고리별 글목록 요청 - ajax");
+	@ResponseBody public String boardCategoryList_ajax( String bdcategory) {
+		System.out.println("카테고리별 글목록 요청_ajax");
 	      
-	    String boardCateList_json = bsvc.boardCategoryList(bdcategory);
+	    String boardCateList_json = bsvc.boardCategoryList_ajax(bdcategory);
 	      
 	    return boardCateList_json;
 	      
 	}
 	   
 	 //글검색 
-	 @RequestMapping ( value = "/searchBoard")
-	 public ModelAndView searchBoard( String searchText) {
+	 @RequestMapping ( value = "/selectBoardSearchList")
+	 public ModelAndView selectBoardSearchList( String searchType, String searchText) {
 	     System.out.println("글검색 목록 요청");
 	      
-	     ModelAndView mav = bsvc.searchBoard(searchText);
+	     ModelAndView mav = bsvc.selectBoardSearchList(searchType, searchText);
 	      
-	     return null;
-	      
+	     return mav;
+	 }
+	 
+	 //공지글 상세페이지 이동 
+	 @RequestMapping ( value = "/selectNoticeBoardView" )
+	 public ModelAndView selectNoticeBoardView(String nbcode) {
+		 System.out.println("공지글 상세페이지 이동 요청");
+		 
+		 ModelAndView mav = bsvc.selectNoticeBoardView(nbcode);
+		 
+		 return mav;
+	 }
+	 
+	 //일반게시판 - 글상세페이지 이동
+	 @RequestMapping ( value = "/selectBoardView")
+	 public ModelAndView selectBoardView(String bdcode) {
+		 System.out.println("글상세페이지 이동 요청");
+		 
+		 ModelAndView mav = bsvc.selectBoardView(bdcode);
+		 
+		 return mav;
+		 
 	 }
 }

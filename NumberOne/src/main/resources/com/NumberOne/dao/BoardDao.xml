@@ -63,6 +63,23 @@
 		on b.bdmid = m.mid
 		where b.bdcategory='자랑'
 		and b.bdstate='1'
+	 </select>
+ 	 
+ 	 <select id="selectNoticeBoardView" resultType="com.NumberOne.dto.NoticeDto">	
+	 	 <!-- 공지글 상세 -->
+	 	 SELECT NBCODE,NBMID,NBTITLE,NBCONTENTS,TO_CHAR(NBDATE,'YY-MM-DD HH24:MI') AS NBDATE,
+ 			   NBIMG,NBSTATE,NBHITS  
+	 	 FROM NOTICEBOARDS
+	 	 WHERE NBCODE = #{nbcode}
+ 	 </select>
+ 	 
+ 	 <select id="selectBoardView" resultType="com.NumberOne.dto.BoardDto">
+ 	 	<!-- 일반글 상세 -->
+ 	 	SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, TO_CHAR(BDDATE,'YY-MM-DD HH24:MI') AS BDDATE, 
+	    BDIMG, BDDETAILIMG, BDSTATE, BDHITS, MB.MNICKNAME AS BDNICKNAME
+		FROM BOARDS BD, MEMBERS MB
+		WHERE BD.BDMID = MB.MID
+		AND BD.BDCODE = #{bdcode}
  	 </select>
  	 
  	 
