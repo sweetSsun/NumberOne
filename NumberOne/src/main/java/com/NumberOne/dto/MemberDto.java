@@ -15,6 +15,7 @@ public class MemberDto {
 	private String memail;			//이메일
 	private String maddr;			//주소
 
+
 	private String mprofile;		//프로필
 	private String mmessage;		//상태메세지
 	private int mstate; 			//상태
