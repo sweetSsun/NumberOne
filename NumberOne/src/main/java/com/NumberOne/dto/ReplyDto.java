@@ -5,10 +5,10 @@ import lombok.Data;
 @Data
 public class ReplyDto {
 	//댓긅-일반, 자랑 
-	String rpcode;      //댓글번호
-	String rpbdcode;	//글번호
-	String rpcontents;	//내용
-	String rpmid;		//작성자
-	String rpdate;		//작성일
-	int rpstate;		//상태
+	private String rpcode;      //댓글번호
+	private String rpbdcode;	//글번호
+	private String rpcontents;	//내용
+	private String rpmid;		//작성자
+	private String rpdate;		//작성일
+	private int rpstate;		//상태
 }

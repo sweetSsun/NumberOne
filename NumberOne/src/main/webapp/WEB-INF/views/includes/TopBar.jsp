@@ -100,7 +100,7 @@ console.log("스크립트 확인!");
 function popupChat(){
 	console.log("popupChat 호출");
 	let popOption = "width = 650px, height=550px, top=300px, left=500px, scrollbars=yes";
-	let openUrl = 'chatPage';
+	let openUrl = 'loadToChatPage';
 	window.open(openUrl, 'pop', popOption);
 };
 </script>
