@@ -2,16 +2,16 @@ package com.NumberOne.controller;
 
 import java.io.IOException;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import org.springframework.web.servlet.view.RedirectView;
-
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
 
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.service.MemberService;
@@ -96,7 +96,7 @@ public class MemberController {
 			System.out.println("아이디 찾기 요청");
 			System.out.println("입력한 이름 : " + checkMname);
 			System.out.println("입력한 메일 : " + checkMemail);
-			String idCheckResult = msvc.selectMemberId_ajax(checkMname , checkMemail);
+			String idCheckResult = msvc.selectLookforId_ajax(checkMname , checkMemail);
 			
 			return idCheckResult;  
 		}	
@@ -110,6 +110,18 @@ public class MemberController {
 			return mav;
 		}		
 		  
+		//비밀번호 찾기 기능 필요함...
+		
+		//회원정보 보기
+		@RequestMapping(value = "/selectMyInfoMemberView")
+		public ModelAndView selectMyInfoMemberView() {
+			System.out.println("회원정보 페이지 이동요청");
+			
+			mav = msvc.selectMyInfoMemberView();
+			
+			return mav;
+			
+		}
 }
 
 

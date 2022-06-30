@@ -2,9 +2,11 @@ package com.NumberOne.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -143,10 +145,10 @@ public class MemberService {
 
 	
 	//아이디 찾기 요청
-	public String selectMemberId_ajax(String checkMname, String checkMemail) {
-		System.out.println("MemberService.selectMemberId_ajax() 호출");
+	public String selectLookforId_ajax(String checkMname, String checkMemail) {
+		System.out.println("MemberService.selectLookforId_ajax() 호출");
 		
-		String idCheckResult = mdao.ajax_selectMid(checkMname, checkMemail);
+		String idCheckResult = mdao.selectLookforId_ajax(checkMname, checkMemail);
 		
 		System.out.println(idCheckResult);
 		
@@ -162,9 +164,42 @@ public class MemberService {
 		
 	}
 
+	//회원정보 보기
+	public ModelAndView selectMyInfoMemberView() {
+		ModelAndView mav = new ModelAndView();
+		System.out.println("MemberService.selectMyInfoMemberView 호출");
+		String loginId = (String) session.getAttribute("loginId");
+		System.out.println("로그인 된 아이디 : " + loginId);
+		
+		MemberDto memberInfo = mdao.selectMyInfoMemberView(loginId);
+		
+		//주소 분리 (우편번호, 주소, 상세주소, 참고주소)
+		String maddr = memberInfo.getMaddr();
+		
+		if( maddr != null) {
+			String[] maddr_arr = maddr.split("_");
+			System.out.println(maddr_arr.length);
+			if( maddr_arr.length >= 4 ) {
+				memberInfo.setMpostcode(maddr_arr[0]);
+				memberInfo.setMaddress(maddr_arr[1]);
+				memberInfo.setMdetailAddr(maddr_arr[2]);
+				memberInfo.setMextraAddr(maddr_arr[3]);
+			}
+		}
+		
+		mav.addObject("memberInfo", memberInfo);
+		mav.setViewName("member/MyInfoMemberPage");
+		
+		return mav;
+	}
 
 
-}
+		
+	}
+
+
+
+
 
 
 

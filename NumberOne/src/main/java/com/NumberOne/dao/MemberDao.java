@@ -26,6 +26,13 @@ public interface MemberDao {
 	MemberDto selectMemberLogin(@Param("mid") String mid, @Param("mpw") String mpw);
 	
 	//아이디 찾기 요청
-	@Select("SELECT MID FROM MEMBERS WHERE mname = #{mname} AND memail = #{memail}")
-	String ajax_selectMid(@Param("mname")String checkMname, @Param("memail")String checkMemail);
+	@Select("SELECT MID FROM MEMBERS WHERE MNAME = #{mname} AND MEMAIL = #{memail}")
+	String selectLookforId_ajax(@Param("mname")String checkMname, @Param("memail")String checkMemail);
+
+	//회원정보
+	@Select("SELECT MID, MPW, MNAME, MNICKNAME, MPHONE, MEMAIL, MADDR, MPROFILE, MMESSAGE FROM MEMBERS WHERE MID = #{loginId}")
+	MemberDto selectMyInfoMemberView(String loginId);
+
+
+	
 }

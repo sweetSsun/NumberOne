@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <%@ include file="/resources/css/BarCss.jsp" %>
@@ -24,11 +25,17 @@
 					<!-- 채팅 -->
 					<li ><a href="#" onclick="popupChat()"><i class="fa-solid fa-comment-dots"></i>채팅</a> |</li>
 					<!-- 마이페이지 -->
-					<li ><a href="#"><i class="fa-solid fa-circle-user"></i>마이페이지</a> |</li>
-					<li ><a href="loadToLogin">로그인</a> |</li>
-					<li ><a href="selectMemberLogout">로그아웃</a> |</li>					
-					<li ><a href="loadToRegister">회원가입</a> |</li>
-					<li ><a href="#">고객센터</a></li>
+					<c:choose>
+                    <c:when test="${sessionScope.loginId == null}">
+						<li ><a href="loadToLogin">로그인</a> |</li>
+						<li ><a href="loadToRegister">회원가입</a> |</li>
+                    </c:when>
+					<c:otherwise>
+						<li ><a href="selectMyInfoMemberView"><i class="fa-solid fa-circle-user"></i>마이페이지</a> |</li>
+						<li ><a href="selectMemberLogout">로그아웃</a> |</li>					
+					</c:otherwise>
+					</c:choose>
+						<li ><a href="#">고객센터</a></li>
 				</ul>
 			</div>
 			<div class="row">

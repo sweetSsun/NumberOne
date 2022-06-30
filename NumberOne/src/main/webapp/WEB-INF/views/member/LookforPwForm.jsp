@@ -118,7 +118,7 @@
                              <div class="row">
                              	<div class="col-lg-12 col-md-6">
                              		<div class="checkout__input" style="text-align: center;">
-                                 		<span id="resultLookforIdMsg" style="width: 400px;"></span> 
+                                 		<span id="resultLookforPwMsg" style="width: 400px;"></span> 
                              		</div>
                              	</div>
                             </div>                                            							
@@ -139,42 +139,10 @@
 	<script type="text/javascript">
 
 		
-	   
-		function searchId() {
-			console.log("아이디 찾기 함수 연결!")
-		
-			var checkMname=$("#checkMname").val()
-			var checkMemail=$("#checkMemail").val()
-			console.log(checkMname+checkMemail);
-			
-			if(checkMname.length == 0) {
-				$("#nameCheckMsg").text("이름을 입력 해주세요.").css("color" , "red");
-			}else if(checkMemail.length == 0) {
-				$("#emailCheckMsg").text("이메일을 입력 해주세요.").css("color" , "red");				
-			}else {
-			
-				$.ajax({
-					type : "get",
-					url : "selectLookforId_ajax",
-					data : {"checkMname" : checkMname , "checkMemail" : checkMemail },
-				
-					success : function(result){
-						if(result.length != 0) {
-						$("#resultLookforIdMsg").text("귀하의 아이디는 "+result+" 입니다.").css("color" , "green");    
-						
-						}else {
-						$("#resultLookforIdMsg").text("일치하는 회원정보가 없습니다.").css("color" , "red");  		
-						}
-				}
+	
+	}
 
-			});			
-				
-			}
-			
-			
-			
-			
-		}
+}
 	
 	</script>
 
