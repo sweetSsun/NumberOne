@@ -19,10 +19,10 @@ public class BoardDto {
 	private int bdstate;			//글상태
 	private int bdhits;				//조회수
 	
-	private int bdrecommend;        //추천수-자취방 자랑, 일반게시글 (recommend 테이블 조인)
-	private int bdwarning;			//신고수-자취방 자랑, 일반게시글 (warning 테이블 조인)
-	private int bdreply;			//댓글수-자취방 자랑, 일반게시글 (reply 테이블 조인)
-	private int bdscrap;            //스크랩수-자취방 자랑 (필요없으면 삭제)
+	private String bdrecommend;        	//추천수-자취방 자랑, 일반게시글 (recommend 테이블 조인)
+	private String bdwarning;			//신고수-자취방 자랑, 일반게시글 (warning 테이블 조인)
+	private String bdreply;				//댓글수-자취방 자랑, 일반게시글 (reply 테이블 조인)
+	private String bdscrap;            	//스크랩수-자취방 자랑 (필요없으면 삭제)
 	
 	//파일 처리를 위한 필드
 	private MultipartFile bdimgfile;			//프로필 파일
@@ -30,6 +30,5 @@ public class BoardDto {
 	
 	//검색할 때 필요한 필드
 	private String bdnickname;      //작성자 닉네임
-
-
+	
 }

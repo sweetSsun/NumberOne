@@ -17,7 +17,7 @@ public interface BoardDao {
 	//자랑글 등록
 	@Insert("insert into boards (BDCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, BDDATE, BDIMG, BDDETAILIMG) "
 			+ "values (#{bdcode}, #{bdcategory}, #{bdmid}, #{bdtitle}, #{bdcontents}, sysdate, #{bdimg}, #{bddetailimg})")
-	int writeRoom(BoardDto room);
+	int insertRoomWrite(BoardDto room);
 
 	   //일반게시판 글목록 조회 
 	   @Select("SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, "
@@ -28,7 +28,6 @@ public interface BoardDao {
 	   ArrayList<BoardDto> selectBoardList();
 	   
 	   //공지게시판 글목록 조회 
-	   @Select("SELECT NBCODE,NBMID,NBTITLE,NBCONTENTS,TO_CHAR(NBDATE,'YY-MM-DD') AS NBDATE,NBIMG,NBSTATE,NBHITS FROM NOTICEBOARDS")
 	   ArrayList<NoticeDto> selectNoticeList();
 	   
 	   //카테고리별 글목록 조회 
@@ -39,9 +38,6 @@ public interface BoardDao {
 	         + "AND BD.BDCATEGORY = #{bdcategory} ")
 	   ArrayList<BoardDto> selectBoardCategoryList(String bdcategory);
 	   
-	   /*
-	   //글검색 목록 조회 
-	   @Select("")
-	   ArrayList<BoardDto> selectSearchBdList(String searchText);	
-	   */
+	   //자취방 자랑 글목록 조회 
+	   ArrayList<BoardDto> selectRoomList(String bdcategory);
 }

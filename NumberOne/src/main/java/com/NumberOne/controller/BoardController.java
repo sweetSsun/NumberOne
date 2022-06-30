@@ -20,10 +20,12 @@ public class BoardController {
 
 	
 	//자취방 자랑 메인 페이지 이동
-	@RequestMapping(value="/roomListPage")
+	@RequestMapping(value="/selectRoomList")
 	public ModelAndView roomListPage() {
-		System.out.println("자쥐방 자랑 메인 요청");		
-		return null;
+		System.out.println("자쥐방 자랑 메인 요청(목록페이지)");	
+		ModelAndView mav = new ModelAndView();
+		mav=bsvc.selectRoomList();
+		return mav;
 	}
 
 	//자취방 자랑글 작성 페이지 이동
@@ -36,12 +38,12 @@ public class BoardController {
 	}
 
 	//자취방 자랑글 등록
-	@RequestMapping(value="/writeRoom")
+	@RequestMapping(value="/insertRoomWrite")
 	public ModelAndView writeRoom(BoardDto room, RedirectAttributes ra) throws IllegalStateException, IOException {
 		System.out.println("자쥐방 자랑글 등록 요청");
 		ModelAndView mav = new ModelAndView();
-		mav = bsvc.writeRoom(room, ra);
-		return null;
+		mav = bsvc.insertRoomWrite(room, ra);
+		return mav;
 	}
 	
 	
