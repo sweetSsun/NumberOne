@@ -12,7 +12,8 @@
 			<div class="row">
                 <div class="col">
                         <div class="sidebar-item">
-							<h3 class="text-center font-weight-bold">회원정보</h3>
+							<h3 class="text-center font-weight-bold">
+							<a href="selectMyInfoMemberView">회원정보</h3>
 							<hr>
                         </div>
                         <div class="sidebar-item">

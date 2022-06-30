@@ -5,9 +5,11 @@ import lombok.Data;
 @Data
 public class ChatDto {
 	//채팅
-	String chcode;      //채팅번호
-	String chfrmid;		//보낸사람	
-	String chtomid;		//받은사람	
-	String chcontents;	//내용
-	String chdate;		//작성시간
+	private int chcode;			//채팅번호
+	private String chfrmid;		//보낸사람	
+	private String chtomid;		//받은사람	
+	private String chcontents;	//내용
+	private String chdate;		//작성시간
+
+
 }

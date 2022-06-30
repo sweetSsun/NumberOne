@@ -6,4 +6,24 @@
 <mapper namespace="com.NumberOne.dao.MemberDao">
 
 
+<!-- 	<insert id="insertMemberRegister"  >
+		INSERT INTO MEMBERS(MID, MPW, MNAME, MNICKNAME, MPHONE, MEMAIL, MADDR, MPROFILE, MMESSAGE, MSTATE, MWARNING, MJOINDATE ) 
+		VALUES(#{mid}, #{mpw}, #{mname}, #{mnickname}, #{mphone}, #{memail}, #{maddr}, #{mprofile}, #{mmessage}, 1 ,#{mwarning}, SYSDATE )
+	</insert>
+
+	<select id="selectCheckMid"   resultType="com.NumberOne.dao.MemberDao">
+		SELECT MID FROM MEMBERS WHERE MID = #{inputId}
+	</select> -->
+	<!--
+	<select id="selectMemberId_ajax" resultType="com.NumberOne.dao.MemberDto">
+		select mid, mstate 
+		from members 
+		where mname = #{checkMname}
+		and memail = #{checkMemail}
+	</select>
+	-->
+	
+	
 </mapper>
+
+
