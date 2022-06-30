@@ -26,7 +26,7 @@
 					<!-- 마이페이지 -->
 					<li ><a href="#"><i class="fa-solid fa-circle-user"></i>마이페이지</a> |</li>
 					<li ><a href="loadToLogin">로그인</a> |</li>
-					<li ><a href="memberLogout">로그아웃</a> |</li>					
+					<li ><a href="selectMemberLogout">로그아웃</a> |</li>					
 					<li ><a href="loadToRegister">회원가입</a> |</li>
 					<li ><a href="#">고객센터</a></li>
 				</ul>

@@ -33,22 +33,22 @@ public class MemberController {
 	}	
 	
 	//회원가입 요청 
-	@RequestMapping(value="/memberRegister")
-	public ModelAndView memberRegister(RedirectAttributes ra, MemberDto member) throws IllegalStateException, IOException {
+	@RequestMapping(value="/insertRegisterWrite")
+	public ModelAndView insertRegisterWrite(RedirectAttributes ra, MemberDto member) throws IllegalStateException, IOException {
 		System.out.println("회원가입 요청");
 		System.out.println(member);
 	
-		mav = msvc.memberRegister(ra, member);
+		mav = msvc.insertRegisterWrite(ra, member);
 		
 		return mav;
 	}
 	
 	//아이디 중복 확인 요청
-	@RequestMapping(value = "/memberIdCheck")
-	public @ResponseBody String memberIdCheck(String inputId) {
+	@RequestMapping(value = "/selectMemberId_ajax")
+	public @ResponseBody String selectMemberId_ajax(String inputId) {
 		System.out.println("아이디 중복 확인 요청");
 		System.out.println("입력한 아이디 : " + inputId);
-		String idCheckResult = msvc.memberIdCheck(inputId);
+		String idCheckResult = msvc.selectMemberId_ajax(inputId);
 		return idCheckResult;  
 	}
 	
@@ -63,20 +63,20 @@ public class MemberController {
 	}	
 	
 	//로그인 요청
-	  @RequestMapping("/memberLogin")
-	  public ModelAndView memberLogin(String mid , String mpw, RedirectAttributes ra) {
+	  @RequestMapping("/selectMemberLogin")
+	  public ModelAndView selectMemberLogin(String mid , String mpw, RedirectAttributes ra) {
 		  System.out.println("로그인 요청");
-		  mav = msvc.memberLogin(mid ,mpw, ra);
+		  mav = msvc.selectMemberLogin(mid ,mpw, ra);
 		  
 		  return mav;
 	  }
 	  
 	  //로그아웃
-		@RequestMapping(value = "/memberLogout")
-		public ModelAndView memberLogout(RedirectAttributes ra) {
+		@RequestMapping(value = "/selectMemberLogout")
+		public ModelAndView selectMemberLogout(RedirectAttributes ra) {
 			System.out.println("로그아웃 요청");
 			
-			mav = msvc.memberLogout(ra);
+			mav = msvc.selectMemberLogout(ra);
 			return mav;
 		}  
 		
@@ -88,19 +88,28 @@ public class MemberController {
 			mav.setViewName("member/LookforIdForm");
 			return mav;
 		}		
-		
-		//아이디 찾기 요청
-		  @RequestMapping("/lookforId")
-		  public @ResponseBody String lookforId(String mname , String memail) {
-			  System.out.println("아이디 찾기 요청");
-			  mav = msvc.lookforId(mname, memail);
-			  
-			  return null;
-		  }	  
 
 		
+		//아이디 찾기 요청
+		@RequestMapping(value = "/selectLookforId_ajax")
+		public @ResponseBody String selectLookforId_ajax(String checkMname , String checkMemail) {
+			System.out.println("아이디 찾기 요청");
+			System.out.println("입력한 이름 : " + checkMname);
+			System.out.println("입력한 메일 : " + checkMemail);
+			String idCheckResult = msvc.selectMemberId_ajax(checkMname , checkMemail);
+			
+			return idCheckResult;  
+		}	
 		
-		
+		//비밀번호 찾기 페이지 이동
+		@RequestMapping(value="/loadToLookforPw")
+		public ModelAndView loadToLookforPw() {
+			System.out.println("비밀번호 찾기 페이지 요청");
+			mav = new ModelAndView();
+			mav.setViewName("member/LookforPwForm");
+			return mav;
+		}		
+		  
 }
 
 

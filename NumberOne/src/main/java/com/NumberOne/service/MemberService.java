@@ -31,19 +31,11 @@ public class MemberService {
 	
 	
 	
-	//저장경로 설정
+	//프로필 이미지 저장 경로 설정
 	private String savePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\mprofileUpLoad";
-
-	//연결test
-	public String test1() {
-		String Test1 = mdao.test1();
-		System.out.println("Test1 : " + Test1);
-		return Test1;
-	}
-	
 	
 	//회원가입
-	public ModelAndView memberRegister(RedirectAttributes ra, MemberDto member) throws IllegalStateException, IOException {
+	public ModelAndView insertRegisterWrite(RedirectAttributes ra, MemberDto member) throws IllegalStateException, IOException {
 	    System.out.println("MemberService 회원가입 호출");  
 		ModelAndView mav = new ModelAndView();   
 		System.out.println("MemberService.memberRegister()");
@@ -77,12 +69,12 @@ public class MemberService {
 	      // 이메일 처리
 	      member.setMemail(member.getMemailId()+"@"+member.getMemailDomain());
 	      
-	      int joinResult = mdao.insertMemberRegister(member);
+	      int joinResult = mdao.insertRegisterWrite(member);
 	      
 	      if(joinResult != 0) {
 				System.out.println("회원가입 가능");
 				ra.addFlashAttribute("msg", "회원가입 되었습니다.");
-				mav.setViewName("Main");
+				mav.setViewName("main");
 			}else {
 				System.out.println("회원가입 실패");
 				ra.addFlashAttribute("msg" , "회원가입에 실패하였습니다.");
@@ -96,9 +88,9 @@ public class MemberService {
 
 
 	//아이디 중복 확인 요청 
-	public String memberIdCheck(String inputId) {
-		System.out.println("MemberService.memberIdCheck() 호출");
-		String idCheckResult = mdao.selectCheckMid(inputId);
+	public String selectMemberId_ajax(String inputId) {
+		System.out.println("MemberService.selectMemberId_ajax() 호출");
+		String idCheckResult = mdao.selectMemberId_ajax(inputId);
 		System.out.println(idCheckResult);
 		if(idCheckResult == null) {
 			return "OK";
@@ -108,7 +100,7 @@ public class MemberService {
 	}
 
 	//로그인 요청
-	public ModelAndView memberLogin(String mid, String mpw, RedirectAttributes ra) {
+	public ModelAndView selectMemberLogin(String mid, String mpw, RedirectAttributes ra) {
 		System.out.println("MemberService.memberLogin() 호출");
 		System.out.println("입력한 아이디 : " + mid);
 		System.out.println("입력한 비밀번호 : " + mpw);
@@ -139,8 +131,8 @@ public class MemberService {
 	}
 
 
-	//로그아웃 기능
-	public ModelAndView memberLogout(RedirectAttributes ra) {
+	//로그아웃
+	public ModelAndView selectMemberLogout(RedirectAttributes ra) {
 		System.out.println("MemberService.memberLogout() 호출");
 		session.invalidate();
 		ra.addFlashAttribute("msg", "로그아웃 되었습니다.");
@@ -149,40 +141,30 @@ public class MemberService {
 		return mav;
 	}
 
+	
 	//아이디 찾기 요청
-	public ModelAndView lookforId(String mname, String memail) {
-		System.out.println("MemberService.lookforId() 호출");
-		System.out.println("입력한 이름 : " + mname);
-		System.out.println("입력한 메일 : " + memail);
+	public String selectMemberId_ajax(String checkMname, String checkMemail) {
+		System.out.println("MemberService.selectMemberId_ajax() 호출");
 		
-		ModelAndView mav = new ModelAndView();
+		String idCheckResult = mdao.ajax_selectMid(checkMname, checkMemail);
 		
-		/*
-		 * MemberDto checkId = mdao.selectLookforId(mname, memail);
-		 * System.out.println(loginMember);
-		 */
+		System.out.println(idCheckResult);
 		
+		if(idCheckResult != null) {
+			// id 끝에 세자리 *** 
+			int idlength = idCheckResult.length();
+			idCheckResult = idCheckResult.substring(0, idlength-3);
+			idCheckResult = idCheckResult+"***";
+			return idCheckResult;
+		}else {
+			return null;
+		}
 		
-		return null;
 	}
 
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-}
 
+}
 
 
 
