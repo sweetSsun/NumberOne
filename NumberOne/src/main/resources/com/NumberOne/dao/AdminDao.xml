@@ -5,7 +5,7 @@
   
 <mapper namespace="com.NumberOne.dao.AdminDao">
 
-	<select id="selectMemberList" resultType="com.NumberOne.dto.MemberDto">
+	<select id="admin_selectMemberList" resultType="com.NumberOne.dto.MemberDto">
 		SELECT MID, MPW, MNAME, MNICKNAME, MPHONE, MEMAIL, MADDR, MPROFILE, MMESSAGE, MSTATE, MJOINDATE, NVL(WM.MWARNING, 0) MWARNING
 		FROM MEMBERS MB
 		    LEFT OUTER JOIN (SELECT WMEDMID, COUNT(WMEDMID) MWARNING FROM WARNINGMEMBERS GROUP BY WMEDMID) WM
@@ -22,12 +22,12 @@
 		ORDER BY MJOINDATE
 	</select>
 
-	<update id="updateMstate_ajax">
+	<update id="admin_updateMstate_ajax">
 		UPDATE MEMBERS SET MSTATE=${mstate}
 		WHERE MID=#{mid}
 	</update>
 	
-	<select id="selectMemberInfo_ajax" resultType="com.NumberOne.dto.MemberDto">
+	<select id="admin_selectMemberInfo_ajax" resultType="com.NumberOne.dto.MemberDto">
 		SELECT MID, MPW, MNAME, MNICKNAME, MPHONE, MEMAIL, MADDR, MPROFILE, MMESSAGE, MSTATE, MJOINDATE, NVL(WM.MWARNING, 0) MWARNING
 		FROM MEMBERS MB
 		    LEFT OUTER JOIN (SELECT WMEDMID, COUNT(WMEDMID) MWARNING FROM WARNINGMEMBERS GROUP BY WMEDMID) WM
@@ -35,5 +35,16 @@
 		 WHERE MID=#{mid}
 	</select>
 	
+	<select id="admin_selectNoticeList" resultType="com.NumberOne.dto.NoticeDto">
+		SELECT NBCODE, NBMID, NBTITLE, NBCONTENTS, NBDATE, NBIMG, NBSTATE, NBHITS
+		FROM NOTICEBOARDS
+		<if test="searchVal == 'active'">
+			WHERE NBSTATE=1
+		</if>
+		<if test="searchVal == 'inactive'">
+			WHERE NBSTATE=0
+		</if>
+		ORDER BY NBDATE
+	</select>
 	
 </mapper>

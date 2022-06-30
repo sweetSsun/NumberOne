@@ -19,38 +19,61 @@ public class AdminController {
 	@Autowired
 	private AdminService asvc;
 	
-	@RequestMapping (value="/loadToAdminMainPage")
-	public String loadToAdminMainPage() {
+	@RequestMapping (value="/admin_loadToAdminMainPage")
+	public String admin_loadToAdminMainPage() {
 		System.out.println("관리자 메인페이지 이동 요청");
 		return "admin/Admin_Main";
 	}
 	
-	@RequestMapping (value="/selectMemberList")
-	public ModelAndView selectMemberList() {
+	/* 회원 관리 */
+	@RequestMapping (value="/admin_selectMemberList")
+	public ModelAndView admin_selectMemberList() {
 		System.out.println("회원 관리페이지 이동 요청");
-		mav = asvc.selectMemberList();
+		mav = asvc.admin_selectMemberList();
 		return mav;
 	}
 	
-	@RequestMapping (value="/selectMemberList_ajax")
-	public @ResponseBody String selectMemberList(String searchVal) {
-		System.out.println("회원 관리페이지 이동 요청");
-		String memberList = asvc.selectMemberList_ajax(searchVal);
-		return memberList;
+	@RequestMapping (value="/admin_selectMemberList_ajax")
+	public @ResponseBody String admin_selectMemberList_ajax(String searchVal) {
+		System.out.println("회원 관리페이지 정렬 요청");
+		String memberList_json = asvc.admin_selectMemberList_ajax(searchVal);
+		return memberList_json;
 	}
 	
-	@RequestMapping (value= "/updateMstate_ajax")
-	public @ResponseBody String updateMstate_ajax(String mid, String mstate) {
+	@RequestMapping (value= "/admin_updateMstate_ajax")
+	public @ResponseBody String admin_updateMstate_ajax(String mid, String mstate) {
 		System.out.println("회원상태 변경 요청");
-		String memberInfo_json = asvc.updateMstate_ajax(mid, mstate);
+		String memberInfo_json = asvc.admin_updateMstate_ajax(mid, mstate);
 		return memberInfo_json;
 	}
 	
-	@RequestMapping (value="/selectMemberInfo_ajax")
-	public @ResponseBody String selectMemberInfo_ajax(String mid) {
+	@RequestMapping (value="/admin_selectMemberInfo_ajax")
+	public @ResponseBody String admin_selectMemberInfo_ajax(String mid) {
 		System.out.println("회원 상세정보 조회 요청");
-		String memberInfo_json = asvc.selectMemberInfo_ajax(mid);
+		String memberInfo_json = asvc.admin_selectMemberInfo_ajax(mid);
 		return memberInfo_json;
+	}
+	
+	/* 공지 관리 */
+	@RequestMapping (value="admin_selectNoticeList")
+	public ModelAndView admin_selectNoticeList() {
+		System.out.println("공지 관리페이지 이동 요청");
+		mav = asvc.admin_selectNoticeList();
+		return mav;
+	}
+	
+	@RequestMapping (value="admin_selectNoticeList_ajax")
+	public @ResponseBody String admin_selectNoticeList_ajax(String searchVal) {
+		System.out.println("공지 관리페이지 정렬 요청");
+		String noticeList_json = asvc.admin_selectNoticeList_ajax(searchVal);
+		return noticeList_json;
+	}
+	
+	@RequestMapping (value="admin_updateNbstate_ajax")
+	public @ResponseBody int admin_updateNbstate_ajax(String nbcode, String nbstate) {
+		System.out.println("공지상태 변경 요청");
+		// 서비스에서 nbstate update 필요
+		return 1;
 	}
 		
 }

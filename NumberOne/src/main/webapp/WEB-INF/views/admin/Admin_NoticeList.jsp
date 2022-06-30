@@ -5,20 +5,19 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 회원관리</title>
+<title>1인자 - 공지관리</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <%@ include file="/resources/css/CommonCss.jsp" %>
 
 <style type="text/css">
-   #board_column{
-      border-bottom: solid gray 3px;
-   }
-   table{
-      margin: 20px;
-   }
-   
+    #board_column{
+       border-bottom: solid gray 3px;
+    }
+    table{
+       margin: 20px;
+    }
 </style>
 
 </head>
@@ -38,11 +37,15 @@
 		<!-- 본문 -->
 			<div class="container">
             <div class="row" style="margin:auto;">
-               <h1 class="text-center">회원 관리페이지 : Admin_Member.jsp</h1>
-               <div class="col-4 ">
-
-               </div>
-               <div class="col-8">
+                <h1 class="text-center">공지 관리페이지 : Admin_NoticeList.jsp</h1>
+				<div class="col-4 ">
+					<select onclick="nbSearchTypeSel(this.value)">
+						<option value="nbTitle">제목</option>
+						<option value="nbContents">내용</option>
+						<option value="nbTitleContents">제목+내용</option>
+					</select>
+				</div>
+               <div class="col-6">
                   <form action="#" method="get">
                   <div class="input-group">
                     <input type="text" class="form-control" name="keyword" placeholder="검색 키워드를 입력하세요!">
@@ -52,15 +55,18 @@
                   </div>
                   </form>
                </div>
+               	<div class="col-2">
+						<!-- 공지작성 버튼 -->
+					<button class="btn btn-primary btm-sm">글쓰기</button>
+				</div>
             </div>
             <div class="row" style="margin-top: 20px;">
                <div class="col">
-                  <!-- 말머리 정렬 -->
-                   <select id="searchVal" onchange="searchState()">
+                  <!-- 상태값 정렬 -->
+                   <select onchange="nbSearchState(this.value)">
                      <option value="all">전체</option>
-                     <option value="active">활동</option>
-                     <option value="warning">신고</option>
-                     <option value="inactive">정지</option>
+                     <option value="active">활성</option>
+                     <option value="inactive">비활성</option>
                   </select>
                </div>
             </div>
@@ -69,32 +75,31 @@
             <div class="row">
             <table >
                <thead >
-                  <tr class="text-center" id="board_column">
-                     <td>아이디</td>
-                     <td>이름</td>
-                     <td>닉네임</td>
-                     <td>가입일</td>
-                     <td>상태</td>
+                  <tr class="fw-bold" id="board_column">
+                     <td style="width:70px;">글번호</td>
+                     <td style="min-width:200px;">제목</td>
+                     <td>작성자</td>
+                     <td>작성일</td>
+                     <td style="width:50px;">조회</td>
+                     <td style="width:70px;">상태</td>
                   </tr>
                </thead>
-               <tbody id="mbListTbody">
-	               <c:forEach items="${memberList }" var="member">
+               <tbody id="nbListTbody">
+	               <c:forEach items="${noticeList }" var="notice">
 	                   <!-- 회원관리 목록 -->
-	                   <tr class="fw-bold" style="border-bottom: solid gray 1px;">
-	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;">${member.mid}</td>
-	                      <td>${member.mname}</td>
-	                      <td>${member.mnickname}</td>
-	                      <td>${member.mjoindate}</td>
+	                   <tr style="border-bottom: solid gray 1px;">
+	                      <td>${notice.nbcode}</td>
+	                      <td><a href="#('${notice.nbcode}')">${notice.nbtitle}</a></td>
+	                      <td>${notice.nbmid}</td>
+	                      <td>${notice.nbdate}</td>
+	                      <td>${notice.nbhits}</td>
 	                      <td>
 	                      	<c:choose>
-	                      		<c:when test="${member.mwarning > 0}">
-	                      			<button onclick="showMstateModal(this,'${member.mid }')">신고</button>
-	                      		</c:when>
-	                      		<c:when test="${member.mstate == 1}">
-	                      			<button onclick="showMstateModal(this,'${member.mid }')">활동</button>
+	                      		<c:when test="${notice.nbstate == 1}">
+	                      			<button class="btn btn-primary" onclick="showNbstateModal(this,'${notice.nbcode }')">활성</button>
 	                      		</c:when>
 	                      		<c:otherwise>
-	                      			<button onclick="showMstateModal(this, '${member.mid }')">정지</button>
+	                      			<button class="btn btn-secondary" onclick="showNbstateModal(this, '${notice.nbcode }')">비활성</button>
 	                      		</c:otherwise>
 	                      	</c:choose>
 	                      </td>
@@ -110,21 +115,21 @@
 	
 	
 	<!-- 회원상태 변경 모달 -->
-	<div class="modal fade" id="updateMstateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+	<div class="modal fade" id="updateNbstateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="updateMstateModalLabel"> 회원상태 변경 확인 </h5>
+                    <h5 class="modal-title" id="updateNbstateModalLabel"> 공지상태 변경 확인 </h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body" id="updateMstateModalBody"> </div>
+                <div class="modal-body" id="updateNbstateModalBody"> </div>
                 <div class="modal-footer">
-                	<input type="hidden" id="mid">
-                    <button class="" onclick="updateMstate()">네</a>
-                    <button class="close" type="button" data-dismiss="modal">아니오</button>
+                	<input type="hidden" id="nbcode">
+                    <button class="btn btn-primary" onclick="updateNbstate()">네</button>
+                    <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
             </div>
         </div>
@@ -201,7 +206,7 @@
                 
                 </div>
                 <div class="modal-footer">
-                    <button class="close" type="button" data-dismiss="modal">확인</button>
+                    <button class="close btn btn-primary" type="button" data-dismiss="modal">확인</button>
                 </div>
             </div>
         </div>
@@ -213,13 +218,27 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 	
 	<script type="text/javascript">
+		// 모달창 close 하는 스크립트..... 닫고 한번 더 클릭해야 정상작동되서 수정이 필요.. 부트스트랩 js가 필요한가
+ 		var modal = $(".modal");
+		var close = $(".close");
+		for (var i = 0; i < close.length; i++){
+			close[i].addEventListener("click", function(){
+				for (var j = 0; j < modal.length; j++){
+					modal[j].classList.remove('show');
+					$(".modal-backdrop").remove(); 
+				}
+			});
+		}
+	</script>
+	
+	<script type="text/javascript">
 		// 회원 상세정보 모달창 출력
 		function showMemberInfoModal(mid){
 			console.log("showMemberInfoModal() 실행");
 			$.ajax({
 				type: "post",
 				data: {"mid":mid},
-				url: "selectMemberInfo_ajax",
+				url: "admin_selectMemberInfo_ajax",
 				dataType: "json",
 				success: function(result){
 					console.log(result);
@@ -244,89 +263,87 @@
 	</script>
 	
 	<script type="text/javascript">
-		// 정렬 select하면 ajax로 회원목록 받고 출력을 바꿔주는 함수
-		function searchState(){
-			console.log("searchState() 실행");
-			var searchVal = $("#searchVal").val();
+		// 정렬 select하면 ajax로 공지목록 받고 출력을 바꿔주는 함수
+		function nbSearchState(searchVal){
+			console.log("nbSearchState() 실행");
 			console.log("정렬 선택 : " + searchVal);
 			$.ajax({
 				type: "get",
-				url: "selectMemberList_ajax",
 				data: {"searchVal":searchVal},
+				url: "admin_selectNoticeList_ajax",
 				dataType: "json",
 				success: function(result){
 					var output = "";
 					console.log(result);					
 					for (var i = 0; i < result.length; i++){
-						output += "<tr class='fw-bold' style='border-bottom: solid gray 1px;'>";
-						output += "<td>" + result[i].mid + "</td>";
-						output += "<td>" + result[i].mname + "</td>";
-						output += "<td><a href='#'>" + result[i].mnickname + "</a></td>";
-						output += "<td>" + result[i].mjoindate + "</td>";
+						output += "<tr style='border-bottom: solid gray 1px;'>";
+						output += "<td>" + result[i].nbcode + "</td>";
+						output += "<td>" + result[i].nbtitle + "</td>";
+						output += "<td><a href='#'>" + result[i].nbmid + "</a></td>";
+						output += "<td>" + result[i].nbdate + "</td>";
+						output += "<td>" + result[i].nbhits + "</td>";
 						output += "<td>"
-						if (result[i].mwarning > 0){
-							output += "<button onclick='showMstateModal(this, \""+result[i].mid+"\")'>신고</button>";
-						} else if (result[i].mstate == 1){
-							output += "<button onclick='showMstateModal(this, \""+result[i].mid+"\")'>활동</button>";
+						if (result[i].nbstate == 1){
+							output += "<button class='btn btn-primary' onclick='showNbstateModal(this, \""+result[i].nbcode+"\")'>활성</button>";
 						} else {
-							output += "<button onclick='showMstateModal(this,\""+result[i].mid+"\")'>정지</button>";
+							output += "<button class='btn btn-secondary' onclick='showNbstateModal(this,\""+result[i].nbcode+"\")'>비활성</button>";
 						}
 						output += "</td>";
 						output += "</tr>";
 					}
-					$("#mbListTbody").html(output);
+					$("#nbListTbody").html(output);
 				}
 			});
 		}	
 		
-		// 회원상태 변경 확인 모달창 출력
+		// 공지상태 변경 확인 모달창 출력
 		var btnObj;
-		function showMstateModal(obj, mid){
-			console.log("showMstateModal() 실행");
+		function showNbstateModal(obj, nbcode){
+			console.log("showNbstateModal() 실행");
 			btnObj = $(obj);
 			var btnObjText = btnObj.text();
 			console.log("btnObjText:"+btnObjText);
-			if (btnObjText == "활동" || btnObjText == "신고"){
-				$("#updateMstateModalBody").text(mid + " 회원을 정지 처리하시겠습니까?");
+			if (btnObjText == "활성"){
+				$("#updateNbstateModalBody").text(nbcode + "번 공지를 비활성화 처리하시겠습니까?");
 			} else {
-				$("#updateMstateModalBody").text(mid + " 회원을 활동 처리하시겠습니까?");
+				$("#updateNbstateModalBody").text(nbcode + "번 공지를 활성화 처리하시겠습니까?");
 			}
-			$("#mid").val(mid);
-			$("#updateMstateModal").modal("show");
+			$("#nbcode").val(nbcode);
+			$("#updateNbstateModal").modal("show");
 		}
 		
 		// 회원상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
-		function updateMstate(){
-			console.log("updateMstate() 실행");
-			var mid = $("#mid").val();
+		function updateNbstate(){
+			console.log("updateNbstate() 실행");
+			var nbcode = $("#nbcode").val();
 			console.log(btnObj.text());
-			if (btnObj.text() == "활동" || btnObj.text() == "신고" ){
-				var mstate = 0;				
+			if (btnObj.text() == "활성"){
+				var nbstate = 0;				
 			} else {
-				var mstate = 1;				
+				var nbstate = 1;				
 			}
 			$.ajax({
 				type: "get",
-				data: {"mid":mid, "mstate":mstate},
-				url: "updateMstate_ajax",
+				data: {"nbcode":nbcode, "nbstate":nbstate},
+				url: "admin_updateNbstate_ajax",
 				dataType: "json",
 				success: function(result){
-					console.log(result);
-						if (result.mstate == 0){
-							btnObj.text("정지");
-						} else if (result.mwarning > 0){
-							btnObj.text("신고");
+					if(result > 0){
+						if (nbstate == 0){
+							btnObj.text("비활성").addClass("btn-secondary").removeClass("btn-primary");
 						} else {
-							btnObj.text("활동");
+							btnObj.text("활성").addClass("btn-primary").removeClass("btn-secondary");
 						}
-					$("#updateMstateModal").modal("hide");
+					}
+					$("#updateNbstateModal").modal("hide");
 				},
 				error: function(){
-					$("#updateMstateModal").modal("hide");
-					alert("회원상태 변경에 실패했습니다.");
+					$("#updateNbstateModal").modal("hide");
+					alert("공지상태 변경에 실패했습니다.");
 				}
 			});
 		}
 	</script>
 </body>
+
 </html>

@@ -45,7 +45,7 @@
 						</li>
 
 						<li class="nav-item ">
-							<a href="loadToAdminMainPage">관리자</a>
+							<a href="admin_loadToAdminMainPage">관리자</a>
 						</li>
 
 					</ul>
