@@ -31,4 +31,5 @@ public class BoardDto {
 	//검색할 때 필요한 필드
 	private String bdnickname;      //작성자 닉네임
 
+
 }

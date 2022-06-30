@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>1인자 - 관리자 메인</title>
 
 <%@ include file="/resources/css/BarCss.jsp" %>
 <!-- 부트스트랩 -->
@@ -12,21 +12,17 @@
 </head>
 <body>
 	<!-- TobBar -->
-	<%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
+	<%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
 	<!-- End of TobBar -->
 	
 	<main>
 		<!-- 사이드바 -->
-		<%@ include file="/WEB-INF/views/includes/SideBar_Mypage.jsp" %>
+		<%@ include file="/WEB-INF/views/includes/SideBar_Admin.jsp" %>
 		
 		<section>
 		<!-- 본문 -->
 			<div class="container">
-				<h1 class="text-center">본문</h1>
-				<p>Hello, World!</p>
-				<p>Hello, World!</p>
-				<p>Hello, World!</p>
-				<p>Hello, World!</p>
+				<h1 class="text-center">관리자 메인</h1>
 				<p>Hello, World!</p>
 			</div>
 		</section>
