@@ -27,8 +27,8 @@
 		WHERE MID=#{mid}
 	</update>
 	
-	<select id="selectMemberMstate" resultType="com.NumberOne.dto.MemberDto">
-		SELECT MID, MSTATE, WM.MWARNING
+	<select id="selectMemberInfo_ajax" resultType="com.NumberOne.dto.MemberDto">
+		SELECT MID, MPW, MNAME, MNICKNAME, MPHONE, MEMAIL, MADDR, MPROFILE, MMESSAGE, MSTATE, MJOINDATE, NVL(WM.MWARNING, 0) MWARNING
 		FROM MEMBERS MB
 		    LEFT OUTER JOIN (SELECT WMEDMID, COUNT(WMEDMID) MWARNING FROM WARNINGMEMBERS GROUP BY WMEDMID) WM
 		    ON MB.MID = WM.WMEDMID

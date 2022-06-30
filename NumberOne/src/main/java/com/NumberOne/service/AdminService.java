@@ -45,20 +45,30 @@ public class AdminService {
 		return memberList_ajax;
 	}
 
+	// 회원상태 변경 ajax
 	public String updateMstate_ajax(String mid, String mstate) {
 		System.out.println("AdminService_updateMstate_ajax() 호출");
 		System.out.println("상태변경할 mid : " + mid);
 		System.out.println("상태변경할 mstate : " + mstate);
 		int updateResult = adao.updateMstate_ajax(mid, mstate);
-		String memberState_json = "";
+		String memberInfo_json = "";
 		if(updateResult > 0) {
 			// 버튼 css변경을 위해 회원상태 조회
-			MemberDto memberState = adao.selectMemberMstate(mid);
-			System.out.println(memberState);
-			gson = new Gson();
-			memberState_json = gson.toJson(memberState);
+			memberInfo_json = selectMemberInfo_ajax(mid);
 		}
-		return memberState_json;
+		return memberInfo_json;
+	}
+	
+	// 회원 상세정보 조회 ajax
+	public String selectMemberInfo_ajax(String mid) {
+		System.out.println("selectMemberInfo_ajax() 호출");
+		MemberDto memberInfo = adao.selectMemberInfo_ajax(mid);
+		System.out.println(memberInfo);
+		String maadr_replace = memberInfo.getMaddr().replace("_", " ");
+		memberInfo.setMaddr(maadr_replace);
+		gson = new Gson();
+		String memberInfo_json = gson.toJson(memberInfo);
+		return memberInfo_json;
 	}
 
 }

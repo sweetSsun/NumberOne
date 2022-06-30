@@ -81,11 +81,9 @@
 	               <c:forEach items="${memberList }" var="member">
 	                   <!-- 회원관리 목록 -->
 	                   <tr class="fw-bold" style="border-bottom: solid gray 1px;">
-	                      <td>${member.mid}</td>
+	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;">${member.mid}</td>
 	                      <td>${member.mname}</td>
-	                      <td>
-	                         <a href="#">${member.mnickname}</a>
-	                      </td>
+	                      <td>${member.mnickname}</td>
 	                      <td>${member.mjoindate}</td>
 	                      <td>
 	                      	<c:choose>
@@ -111,28 +109,20 @@
 	</main>
 	
 	
-	
-	
-	
-	
-	
-	
+	<!-- 회원상태 변경 모달 -->
 	<div class="modal fade" id="updateMstateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="ModalLabel"> 회원상태 변경 확인 </h5>
+                    <h5 class="modal-title" id="updateMstateModalLabel"> 회원상태 변경 확인 </h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body" id="modalBody"> </div>
+                <div class="modal-body" id="updateMstateModalBody"> </div>
                 <div class="modal-footer">
-                	<input readonly id="mid">
-                	
-                	<!-- input hidden 넣어서 id값 넣고 모달창 뜰 때 mid innerText 해주기 -->
-                	<!-- 네 버튼을 누르면 input의 id값 받아오면서 ajax로 mstate update 하고 버튼 css 바꿔주기 -->
+                	<input type="hidden" id="mid">
                     <button class="" onclick="updateMstate()">네</a>
                     <button class="close" type="button" data-dismiss="modal">아니오</button>
                 </div>
@@ -140,12 +130,119 @@
         </div>
     </div>
 	
-	
+	<!-- 회원 상세정보 모달 -->
+	<div class="modal fade" id="memberInfoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document" style="max-width:700px;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="memberInfoModalLabel"> </h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="memberInfoModalBody"> 
+                	<div class="row">
+	                		<div class="col-5">
+                                <div class="no-gutters align-items-center">
+                                    <div class="h6 mb-1 font-weight-bold text-gray-800" >
+                                 		<img class="img-fluid" alt="영화포스터" style="max-height:300px;" id="mI_mprofile" src="">
+                                 		프로필이미지
+                                    </div>
+                                    <div>
+                                    	<label class="small">상태메세지</label>
+		                                <p class="form-control" id="mI_mmessage" style="min-height:38px;"></p>
+                                    </div>
+                                </div>
+                            </div>
+                           	<div class="col-7">
+                                <div class="no-gutters align-items-center">
+                                    <div class="h6 font-weight-bold text-gray-800">
+                                    	<div>
+		                                  	<label class="small">아이디</label>
+		                                	<p class="form-control" id="mI_mid" style="min-height:38px;"></p>
+                                    	</div>
+                                    	<div class="row">
+	                                  		<div class="col-6">
+			                                  	<label class="small">이름</label>
+		                               			<p class="form-control" id="mI_mname" style="min-height:38px;"></p>
+	                                  		</div>
+	                                  		<div class="col-6">
+			                                  	<label class="small">닉네임</label>
+			                                  	<p class="form-control" id="mI_mnickname" style="min-height:38px;"></p>
+	                                  		</div>
+                                    	</div>
+	                                  	<div>                                	
+		                                  	<label class="small">연락처</label>
+		                                <p class="form-control" id="mI_mphone"  style="min-height:38px;"></p>
+	                                  	</div>
+	                                  	<div>                                	
+		                                  	<label class="small">이메일</label>
+		                              		<p class="form-control" id="mI_memail" style="min-height:38px;"></p>
+	                                  	</div>
+	                                  	<div>
+		                                  	<label class="small">주소</label>
+		                                	<p class="form-control" id="mI_maddr" style="min-height:38px;"></p>
+                                    	</div>
+	                                  	<div class="row">
+	                                  		<div class="col-9">
+			                                  	<label class="small">가입일</label>
+			                                	<p class="form-control" id="mI_mjoindate" style="min-height:38px;"></p>
+	                                  		</div>
+	                                  		<div class="col-3">
+			                                  	<label class="small">경고횟수</label>
+			                                	<p class="form-control" id="mI_mwarning" style="min-height:38px;"></p>
+		                                	</div>
+                                    	</div>
+	                                </div>
+                                </div>
+                            </div>
+                        </div>
+                
+                </div>
+                <div class="modal-footer">
+                    <button class="close" type="button" data-dismiss="modal">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
 	
 	
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+	
+	<script type="text/javascript">
+		// 회원 상세정보 모달창 출력
+		function showMemberInfoModal(mid){
+			console.log("showMemberInfoModal() 실행");
+			$.ajax({
+				type: "post",
+				data: {"mid":mid},
+				url: "selectMemberInfo_ajax",
+				dataType: "json",
+				success: function(result){
+					console.log(result);
+					$("#memberInfoModalLabel").text(mid + " 회원 상세정보");
+
+					// 저장경로 때문에 프로필이미지는 수정 필요
+					$("#mI_mprofile").attr("src", result.mprofile);
+					$("#mI_mmessage").text(result.mmessage);
+					$("#mI_mid").text(result.mid);
+					$("#mI_mname").text(result.mname);
+					$("#mI_mnickname").text(result.mnickname);
+					$("#mI_mphone").text(result.mphone);
+					$("#mI_memail").text(result.memail);
+					$("#mI_maddr").text(result.maddr);
+					$("#mI_mjoindate").text(result.mjoindate);
+					$("#mI_mwarning").text(result.mwarning);
+					
+					$("#memberInfoModal").modal("show");
+				}
+			});
+		}
+	</script>
+	
 	<script type="text/javascript">
 		// 정렬 select하면 ajax로 회원목록 받고 출력을 바꿔주는 함수
 		function searchState(){
@@ -190,9 +287,9 @@
 			var btnObjText = btnObj.text();
 			console.log("btnObjText:"+btnObjText);
 			if (btnObjText == "활동" || btnObjText == "신고"){
-				$("#modalBody").text(mid + " 회원을 정지 처리하시겠습니까?");
+				$("#updateMstateModalBody").text(mid + " 회원을 정지 처리하시겠습니까?");
 			} else {
-				$("#modalBody").text(mid + " 회원을 활동 처리하시겠습니까?");
+				$("#updateMstateModalBody").text(mid + " 회원을 활동 처리하시겠습니까?");
 			}
 			$("#mid").val(mid);
 			$("#updateMstateModal").modal("show");

@@ -42,8 +42,15 @@ public class AdminController {
 	@RequestMapping (value= "/updateMstate_ajax")
 	public @ResponseBody String updateMstate_ajax(String mid, String mstate) {
 		System.out.println("회원상태 변경 요청");
-		String memberState_json = asvc.updateMstate_ajax(mid, mstate);
-		return memberState_json;
+		String memberInfo_json = asvc.updateMstate_ajax(mid, mstate);
+		return memberInfo_json;
+	}
+	
+	@RequestMapping (value="/selectMemberInfo_ajax")
+	public @ResponseBody String selectMemberInfo_ajax(String mid) {
+		System.out.println("회원 상세정보 조회 요청");
+		String memberInfo_json = asvc.selectMemberInfo_ajax(mid);
+		return memberInfo_json;
 	}
 		
 }

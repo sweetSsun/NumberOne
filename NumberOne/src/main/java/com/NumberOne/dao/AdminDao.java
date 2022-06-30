@@ -12,5 +12,5 @@ public interface AdminDao {
 
 	int updateMstate_ajax(@Param("mid") String mid, @Param("mstate") String mstate);
 
-	MemberDto selectMemberMstate(String mid);
+	MemberDto selectMemberInfo_ajax(String mid);
 }
