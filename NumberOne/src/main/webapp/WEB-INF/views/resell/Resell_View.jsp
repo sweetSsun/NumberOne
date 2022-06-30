@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 중고거래 사구상세</title>
+<title>1인자 - 중고거래 상세페이지</title>
 
 <%@ include file="/resources/css/BarCss.jsp"%>
 <!-- 부트스트랩 -->
