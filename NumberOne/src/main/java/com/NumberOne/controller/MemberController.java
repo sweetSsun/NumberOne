@@ -19,23 +19,6 @@ public class MemberController {
 	@Autowired
 	private MemberService msvc;
 	
-	@RequestMapping(value="/test")
-	public ModelAndView test() {
-		System.out.println("DB 연결 테스트");
-		String test1 = msvc.test1();
-		mav.addObject("test1", test1);
-		mav.setViewName("DBtest");
-		return mav;
-	}
-	
-	@RequestMapping(value="/chatPage")
-	public ModelAndView chatPage() {
-		System.out.println("채팅 페이지 요청");
-		mav = new ModelAndView();
-		mav.setViewName("chat/ChatPage");
-		return mav;
-	}
-	
 	//회원가입 페이지 이동
 	@RequestMapping(value="/loadToRegister")
 	public ModelAndView loadToRegister() {
