@@ -82,5 +82,61 @@
 		AND BD.BDCODE = #{bdcode}
  	 </select>
  	 
+ 	 <select id="selectReplyMaxNumber" resultType="String">
+ 	 	<!-- 댓글 최대번호 조회 -->
+ 	 	SELECT MAX(RPCODE) 
+ 	 	FROM REPLY
+ 	 </select>
+ 	 
+ 	<insert id="insertBoardReply_ajax">
+ 		<!-- 댓글등록 -->
+ 		INSERT INTO REPLY(RPCODE, RPBDCODE, RPCONTENTS, RPMID, RPDATE)
+ 		VALUES ( #{rpcode}, #{rpbdcode}, #{rpcontents}, #{rpmid}, SYSDATE )
+ 	</insert>
+ 	
+ 	<select id="selectBoardReplyList" resultType="com.NumberOne.dto.ReplyDto">
+ 		<!-- 댓글목록 조회 -->
+ 		SELECT RP.*, MB.MNICKNAME AS RPNICKNAME
+		FROM REPLY RP, MEMBERS MB 
+		WHERE RP.RPMID = MB.MID
+		AND RPBDCODE = #{bdcode}
+		AND RPSTATE = 1 
+ 		ORDER BY RPCODE 
+ 	</select>
+ 	
+ 	<select id="selectReplyCount_ajax" resultType="int">
+ 		<!-- 댓글개수 조회 -->
+ 		SELECT COUNT(*)
+		FROM REPLY 
+		WHERE RPBDCODE = #{bdcode}
+		AND RPSTATE = 1
+ 	</select>
+ 	 
+ 	<update id="updateReplyState_ajax">
+ 		<!-- 댓글상태 변경 -->
+ 		UPDATE REPLY 
+ 		SET RPSTATE = 0
+ 		WHERE RPCODE = #{rpcode}
+ 	</update> 
+ 	 
+ 	<insert id="insertBoardRecommend_ajax">
+ 		<!-- 게시글 추천 -->
+ 		INSERT INTO RECOMMEND
+ 		VALUES ( #{loginId}, #{bdcode} )
+ 	</insert> 
+ 	
+ 	
+ 	<insert id="insertBoardWarning_ajax">
+ 		<!-- 게시글 신고 -->
+ 		INSERT INTO WARNINGBOARDS 
+ 		VALUES ( #{loginId}, #{bdcode} )
+ 	</insert>
+ 	 
+ 	<select id="selectBoardRecommendCount_ajax" resultType="int">
+ 		<!-- 게시글 추천수 조회 -->
+ 		SELECT COUNT(*)
+		FROM RECOMMEND
+		WHERE RCBDCODE = #{bdcode}
+ 	</select>
  	 
  </mapper>
