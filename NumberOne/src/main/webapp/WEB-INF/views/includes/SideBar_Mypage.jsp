@@ -12,7 +12,8 @@
 			<div class="row">
                 <div class="col">
                         <div class="sidebar-item">
-							<h3 class="text-center font-weight-bold">회원정보</h3>
+							<h3 class="text-center font-weight-bold">
+							<a href="selectMyInfoMemberView">회원정보</a></h3>
 							<hr>
                         </div>
                         <div class="sidebar-item">
@@ -25,7 +26,7 @@
                         <div class="sidebar-item" >
                             <h4><a href="#">중고거래</a></h4>
                             <ul class="list-unstyled">
-                                <li><a href="#">사구팔구</a></li>
+                                <li><a href="loadToResellMainPage">사구팔구</a></li>
                                 <li><a href="#">채팅</a></li>
                                 <li><a href="#">찜목록</a></li>
                             </ul>

@@ -48,7 +48,7 @@
 						<h1>자취방자랑</h1>
 					</div>
 					<div class="col-1">
-						<h5><a href="">더보기</a></h5>
+						<h5><a href="selectRoomList">더보기</a></h5>
 					</div>
 				</div>
 				<!-- 자취방자랑 Best 목록 -->

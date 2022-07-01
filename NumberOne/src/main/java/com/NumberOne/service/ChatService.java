@@ -15,28 +15,28 @@ public class ChatService {
 	@Autowired
 	private ChatDao chdao;
 	
-	private ChatDto ch;
+	private ChatDto chdto;
 	
 	
-	// 채팅 목록 설정
-	public ModelAndView chatList() {
-		System.out.println("ChatService.chatList() 호출");
-		ArrayList<ChatDto> chatList = chdao.selectChatList();
-		System.out.println("입력 전 chatList.size() : "+chatList.size());
-		ModelAndView mav = new ModelAndView();
-
+	public void insertChat() {
+		System.out.println("ChatService.insertChat() 호출");
+		
+		// 채팅 목록 확인 (select) : 번호생성조건으로 넣으려고 했는데 무조건 번호+1라서 pass
+		// ArrayList<ChatDto> chatList = chdao.selectChatList();
+		// System.out.println("입력 전 chatList.size() : "+chatList.size());
+		
+		
 		// 채팅 번호 생성 (select)
 		int maxChcode = chdao.selectMaxChcode();
-			System.out.println("채팅번호 : "+maxChcode);
-			maxChcode++;
-			
-			
-		// 채팅 입력
-		int insertChat = chdao.insertChat(ch);
-		System.out.println("입력 후 chatList.size() : "+chatList.size());
+			System.out.println("채팅MAX번호 : "+maxChcode);
+			int chcode = maxChcode++;
+			chdto.setChcode(chcode);
+			System.out.println("채팅번호 : "+chcode);
 
-		mav.setViewName("redirect:/chatPage");
-		return mav;
+		// 채팅 입력
+		System.out.println(chdto);
+		chdao.insertChat(chdto);
+		
 	}	
 	
 	

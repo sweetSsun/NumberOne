@@ -9,7 +9,7 @@ import com.NumberOne.dto.ChatDto;
 public interface ChatDao {
 
 	// 채팅 목록 조회
-	ArrayList<ChatDto> selectChatList();
+	// ArrayList<ChatDto> selectChatList();
 	
 	// 채팅번호 확인
 	int selectMaxChcode();
