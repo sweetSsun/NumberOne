@@ -39,14 +39,19 @@
 </head>
 <body>
 	<!-- TobBar -->
-	<!-- 관리자로 로그인 시 관리자 TopBar 추가 -->
-	<%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
+	<c:choose>
+		<c:when test="${sessionScope.loginId != 'admin'}">
+			<%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
+		</c:when>
+		<c:otherwise>
+			<%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
+		</c:otherwise>
+	</c:choose>
 	<!-- End of TobBar -->
 	
 	<main>
 	
 		<!-- 사이드바 -->
-		<!-- 관리자로 로그인 시 관리자 SdieBar 추가 -->
 		<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
 		
 		<section>
@@ -91,9 +96,10 @@
 					</div>
 					<div class="col-4 offset-md-6" >
 						<!-- 관리자계정으로만 로그인 시 보이도록 설정하기! -->
-						※관리자계정으로만 보이게 하기 
-						<input type="button" style="float:right;" class="btn btn-lg bg-success fw-bold text-white" value="삭제">
-						<input type="button" style="float:right; margin-right: 5px;" class="btn btn-lg bg-success fw-bold text-white" value="수정">
+						<c:if test="${sessionScope.loginId == 'admin'}">
+							<input type="button" style="float:right;" class="btn btn-lg bg-success fw-bold text-white" value="삭제">
+							<input type="button" style="float:right; margin-right: 5px;" class="btn btn-lg bg-success fw-bold text-white" value="수정">
+						</c:if>
 					</div>
 				</div>
 				
