@@ -36,6 +36,7 @@ public class ChatWebSocketMsg extends TextWebSocketHandler {
 		ChatDto chatdto = new ChatDto();
 		chatdto.setChfrmid(chfrmid); 		// from 메세지를 보내는 사람의 ID 
 		
+
 		
 		/* 실행하면서 나타날 말이 있으면 여기다 쓰면 좋겠다 싶어서 ... 입력도 안한 날짜가 들어갈까?.. 응안들어가
 		for(int i = 0; i < sessionList.size(); i++) {
@@ -45,7 +46,7 @@ public class ChatWebSocketMsg extends TextWebSocketHandler {
 		}
 		*/
 		
-		
+
 	}
 	
 	@Override

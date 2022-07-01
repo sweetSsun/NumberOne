@@ -155,7 +155,7 @@
                     </ul>
                 </div>
                 <div class="col-lg-1" style="margin-top: 50px;">
-                	<a href="#"><h5>더보기</h5></a>
+                	<h5><a href="#">더보기</a></h5>
                 </div>
             </div>
             

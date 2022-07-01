@@ -67,7 +67,7 @@
 			<br>
 				<h1 class="text-center">자취방 자랑 글작성 페이지</h1>
 				<div>
-				<form action="writeRoom" method="post" enctype="multipart/form-data">
+				<form action="insertRoomWrite" method="post" enctype="multipart/form-data">
 				<table>
 					<tr class="tableRow">
 						<th class="tableHead">작성자</th>
