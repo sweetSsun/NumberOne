@@ -10,13 +10,13 @@
     <meta name="keywords" content="Ogani, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>1인자 메인</title>
+    <title>1인자</title>
 
     <!-- Google Font -->
 
     <!-- Css Styles -->
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
-    <%@ include file="/resources/css/BarCss.jsp" %>
+    <%@ include file="/resources/css/CommonCss.jsp" %>
     
 	<!-- 배너 -->    
     <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
@@ -146,7 +146,7 @@
                     </ul>
                 </div>
                 <div class="col-lg-1" style="margin-top: 50px;">
-                	<a href="#"><h5>더보기</h5></a>
+                	<h5><a href="#">더보기</a></h5>
                 </div>
             </div>
             
@@ -329,6 +329,14 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
 </body>
+
+<script type="text/javascript">
+     var checkMsg = '${msg}';
+     console.log(checkMsg.length);
+     if( checkMsg.length > 0 ){
+        alert(checkMsg);
+     }
+</script>
 
 <script type="text/javascript">
 	$(function(){

@@ -33,9 +33,9 @@
 html,
 body {
 	height: 100%;
-	font-family: "Cairo", sans-serif;
+/* 	font-family: "Cairo", sans-serif; */
 	-webkit-font-smoothing: antialiased;
-	font-smoothing: antialiased;
+	/* font-smoothing: antialiased; */
 }
 
 h1,
@@ -47,7 +47,7 @@ h6 {
 	margin: 0;
 	color: #111111;
 	font-weight: 400;
-	font-family: "Cairo", sans-serif;
+	/* font-family: "Cairo", sans-serif; */
 }
 
 h1 {
@@ -76,7 +76,7 @@ h6 {
 
 p {
 	font-size: 16px;
-	font-family: "Cairo", sans-serif;
+	/* font-family: "Cairo", sans-serif; */
 	color: #6f6f6f;
 	font-weight: 400;
 	line-height: 26px;
@@ -610,7 +610,7 @@ ol {
 	right: 18px;
 	top: 9px;
 	content: "3";
-	font-family: "ElegantIcons";
+	/* font-family: "ElegantIcons"; */
 	font-size: 18px;
 	color: #ffffff;
 }
@@ -1192,7 +1192,7 @@ ol {
 	background: #D62D2D;
 }
 
-.sidebar__item__color.sidebar__item__color--black label:after {
+.sidebar__item__color.sidebar__item__color--#b2b2b2 label:after {
 	background: #252525;
 }
 
@@ -2124,7 +2124,7 @@ ol {
 	border: 1px solid #ebebeb;
 	padding-left: 20px;
 	font-size: 16px;
-	color: #b2b2b2;
+	color: #1c1c1c;
 	border-radius: 4px;
 }
 

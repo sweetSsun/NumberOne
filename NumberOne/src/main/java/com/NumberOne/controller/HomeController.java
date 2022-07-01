@@ -10,7 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 /**
  * Handles requests for the application home page.
@@ -33,18 +32,11 @@ public class HomeController {
 		String formattedDate = dateFormat.format(date);
 		
 		model.addAttribute("serverTime", formattedDate );
-		
-		return "Main";
+
+
+		return "main";
+
 	}
 	
-	
-	@RequestMapping(value="/chatPage")
-	public ModelAndView chatPage() {
-		System.out.println("채팅 페이지 요청");
-		ModelAndView mav = new ModelAndView();		
-		mav.setViewName("chat/ChatPage");
-		return mav;
-		
-	}
 	
 }
