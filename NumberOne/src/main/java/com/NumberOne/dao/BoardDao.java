@@ -2,9 +2,11 @@ package com.NumberOne.dao;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.NoticeDto;
@@ -21,7 +23,7 @@ public interface BoardDao {
 	int insertRoomWrite(BoardDto room);
 	   
 	   //자취방 자랑 글목록 조회 
-	   ArrayList<BoardDto> selectRoomList(String bdcategory);
+	   ArrayList<BoardDto> selectRoomList();
 
 	//공지게시판 글목록 조회 
 	ArrayList<NoticeDto> selectNoticeList();
@@ -56,6 +58,24 @@ public interface BoardDao {
 	//아이디로 닉네임 찾기
 	@Select("select mnickname from members where mid= #{mid}")
 	String selectRoomWriterMnickname(String mid);
+
+	//자취방 자랑글 상세 조회
+	BoardDto selectRoomList(String bdcode);
+
+	//자취방 자랑글 추천
+	@Insert("insert into recommend values (#{rcmid}, #{rcbdcode})")
+	int insertRecommend(@Param ("rcbdcode") String bdcode,@Param ("rcmid") String bdmid);
+	
+
+	//자취방 자랑글 추천 이력 조회
+	@Select("select count(*) from recommend where rcbdcode = #{rcbdcode} and rcmid=#{rcmid}")
+	int recommendCh(@Param ("rcbdcode") String bdcode,@Param ("rcmid") String bdmid);
+
+	//자취방 자랑글 추천 취소(recommend 테이블에서 튜플 삭제)
+	@Delete("delete from recommend where rcbdcode = #{rcbdcode} and rcmid=#{rcmid}")
+	int deleteRecommend(@Param ("rcbdcode") String bdcode,@Param ("rcmid") String bdmid);
+
+
 
 
 	

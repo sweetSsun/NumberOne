@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.NumberOne.dto.BoardDto;
 import com.NumberOne.service.BoardService;
+import com.google.gson.Gson;
 
 @Controller
 public class BoardController {
@@ -30,12 +31,10 @@ public class BoardController {
 
 	//자취방 자랑글 작성 페이지 이동
 	@RequestMapping(value="/loadTowriteRoom")
-	public ModelAndView loadTowriteRoom() {
+	public ModelAndView loadTowriteRoom(RedirectAttributes ra) {
 		System.out.println("자쥐방 자랑 Form 요청");
 		ModelAndView mav = new ModelAndView();
-		String mnickname = bsvc.selectRoomWriterMnickname();
-		mav.addObject(mnickname);
-		mav.setViewName("/board/WriteRoomForm");
+		mav = bsvc.selectRoomWriterMnickname(ra);
 		return mav;
 	}
 
@@ -105,5 +104,24 @@ public class BoardController {
 		 
 		 return mav;
 		 
+	 }
+	 
+	 //자취방 자랑글 상세 페이지 이동
+	 @RequestMapping ( value = "/selectRoomView")
+	 public @ResponseBody String selectRoomView(String bdcode) {
+		 System.out.println("자취방 자랑글 상세페이지 이동 요청");
+		 System.out.println(bdcode+"번글 상세보기 요청");
+		 String roomView_json = bsvc.selectRoomView(bdcode);
+		 
+		 return roomView_json;
+	 }
+	 
+	 //자취방 자랑글 추천
+	 @RequestMapping ( value = "/updateRbrecommend")
+	 public @ResponseBody String updateRbrecommend(String bdcode) {
+		 System.out.println(bdcode+"번글 추천 요청");
+		 int updateResult = bsvc.updateRbrecommend(bdcode);
+		 
+		 return null;
 	 }
 }
