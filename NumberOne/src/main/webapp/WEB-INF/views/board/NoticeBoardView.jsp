@@ -11,18 +11,42 @@
 <style type="text/css">
 	textarea{
 		border: none;
+		height: auto;
 	}
-	
-	
+	.idDateHits{
+		border-bottom: solid #E0E0E0 3px;
+	}
+	.boardDate{
+		color: gray;
+		font-size: 20px;
+		text-align: left;
+	}
+	.boardCategory{
+		color : #004804;
+		font-size: 25px;
+	}
+	.boardTitle{
+		font-size: 35px;
+	}
+	.boardContents{
+		border-bottom: solid #E0E0E0 3px;
+	}
+	.commentDate{
+		color: gray;
+		font-size: 20px;
+	}
 </style>
 </head>
 <body>
 	<!-- TobBar -->
+	<!-- 관리자로 로그인 시 관리자 TopBar 추가 -->
 	<%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
 	<!-- End of TobBar -->
 	
 	<main>
+	
 		<!-- 사이드바 -->
+		<!-- 관리자로 로그인 시 관리자 SdieBar 추가 -->
 		<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
 		
 		<section>
@@ -31,49 +55,45 @@
 				<h1 class="text-center">공지글 상세페이지 : NoticeBoardView.jsp</h1>
 				
 				<form action="">
-					<div class="row mt-5 mb-3" id="table">
-						<div class="col-6">
-							<span class="fw-bold">글번호</span> <span>${noticeBoard.nbcode}</span> 
-						</div>
-						<div class="col-6">
-							<span class="fw-bold">조회수</span> <span>예정</span>
-						</div>
-					</div>
-					<div class="row mb-3" id="table">
-						<div class="col-6">
-							<span class="fw-bold">게시판</span> <span>공지</span> 
-						</div>
-						<div class="col-6">
-							<span class="fw-bold">작성일</span> <span>${noticeBoard.nbdate }</span> 
-						</div>
-					</div>
-					<div class="row mb-3">
+					<div class="row">
 						<div class="col">
-							<span class="fw-bold">작성자</span> <span>${noticeBoard.nbmid }</span>
+							<a href="#"><span class="fw-bold boardCategory"> | 공지게시판</span></a> 
 						</div>
 					</div>
-					<div class="row mb-4" style="border-bottom: solid #E0E0E0 3px;">
+					<div class="row mb-2" >
 						<div class="col">
-							<span class="fw-bold">&nbsp;&nbsp;&nbsp;제목</span> <span>${noticeBoard.nbtitle }</span>
+							<span class="fw-bold boardTitle">${noticeBoard.nbtitle }</span>  
 						</div>
 					</div>
+					<div class="row idDateHits">
+						<div class="col-6">
+							<a href="#"><span class="">${noticeBoard.nbmid }</span></a> 
+						</div>
+						
+						<div class="col-3 offset-md-3">
+							<span class="boardDate">${noticeBoard.nbdate } | </span> 
+							<span class="commentDate" style="right:0;"><i class="fa-regular fa-eye"></i>15 </span> 
+						</div>
+					</div>
+					
 					<!-- 본문 글 내용-->
-					<div class="row mb-3" style="border-bottom: solid #E0E0E0 3px;">
+					<div class="row mt-3 mb-3 boardContents">
 						<div class="col">
 							<textarea rows="10%" cols="100%" readonly>${noticeBoard.nbcontents }</textarea>
 						</div>
 					</div>
 				</form>
 				
-				<!-- 공지는 댓글작성 없음 -->
+				<!-- 글목록, 글수정, 글삭제 버튼 -->
 				<div class="row">
 					<div class="col-2">
-						<a href="#"><input type="button" style="left:0;" class="btn btn-lg bg-success " value="글목록"></a> 
+						<a href="#"><input type="button" style="left:0;" class="middelBtn btn btn-lg bg-success fw-bold text-white" value="글목록"></a> 
 					</div>
 					<div class="col-4 offset-md-6" >
 						<!-- 관리자계정으로만 로그인 시 보이도록 설정하기! -->
-						<input type="button" style="float:right;" class="btn btn-lg bg-success " value="삭제">
-						<input type="button" style="float:right;" class="btn btn-lg bg-success " value="수정">
+						※관리자계정으로만 보이게 하기 
+						<input type="button" style="float:right;" class="btn btn-lg bg-success fw-bold text-white" value="삭제">
+						<input type="button" style="float:right; margin-right: 5px;" class="btn btn-lg bg-success fw-bold text-white" value="수정">
 					</div>
 				</div>
 				
