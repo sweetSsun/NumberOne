@@ -32,12 +32,10 @@ public class HomeController {
 		String formattedDate = dateFormat.format(date);
 		
 		model.addAttribute("serverTime", formattedDate );
-		
-<<<<<<< HEAD
-		return "MainOrigin";
-=======
+
+
 		return "main";
->>>>>>> 25fbb11d09bf04f4761224e889f7c74e9703ce4b
+
 	}
 	
 	

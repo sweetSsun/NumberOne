@@ -22,5 +22,18 @@ public class ResellController {
 	public String selectResellView() {
 		return "resell/Resell_View";
 	}
+	@RequestMapping (value="/loadToResellWriteForm")
+	public String loadToResellWriteForm() {
+		return "resell/Resell_WriteForm";
+	}	
+	@RequestMapping (value="/selectResellModify")
+	public String selectResellModify() {
+		return "resell/Resell_ModifyForm";
+	}
+	
+	@RequestMapping (value="/selectResellBuyList")
+	public String selectResellBuyList() {
+		return "resell/Resell_BuyList";
+	}
 	
 }

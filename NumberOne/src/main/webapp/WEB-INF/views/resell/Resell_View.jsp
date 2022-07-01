@@ -150,8 +150,6 @@ top 0;
 }
 
 
-
-
 .w3-badge {height:13px;width:13px;padding:0;}
 .position-left{
 position: absolute;
@@ -166,8 +164,21 @@ right: 10px;
 bottom: 50%;
 width: 70px;
 height: 70px;
+}
+
+.wrap-vertical{
+overflow-y: scroll;
+
+overflow: auto;
+white-space: nowrap;
+padding: 20px;
 
 }
+.wrap-vertical::-webkit-scrollbar{
+display: none;
+}
+
+
 </style>
 
 
@@ -273,7 +284,8 @@ height: 70px;
 				</div>
 
 
-				<div class="container-footer container-flex_1 container-card_w100">
+<!-- 판매자의 다른품목 리스트  -->
+				<div class="container-footer container-flex_1 container-card_w100 wrap-vertical">
 					<div class="col_2-m container-card_goods item-basis_6">
 						<div class="card_top">
 							<a href="#"><img alt=""
@@ -334,6 +346,70 @@ height: 70px;
 						<div class="card_footer font-s text-right padding-right">가격</div>
 
 					</div>
+
+<!-- 스크롤확인용 추가  -->
+
+					<div class="col_2-m container-card_goods item-basis_6">
+						<div class="card_top">
+							<a href="#"><img alt=""
+								src="${pageContext.request.contextPath }/resources/img/logo.jpg"
+								class="img_size"></a>
+							<!--찜 기본  -->
+							<i
+								class="fa-solid fa-heart-circle-plus zzim_size position_absolute"></i>
+							<!--찜하면 show  -->
+							<!-- <i class="fa-solid fa-heart-circle-check zzim_size position_absolute"></i> -->
+						</div>
+						<div class="card_body font-s text-right padding-right text-bold">제목</div>
+						<div class="card_footer font-s text-right padding-right">가격</div>
+
+					</div>
+					<div class="col_2-m container-card_goods item-basis_6">
+						<div class="card_top">
+							<a href="#"><img alt=""
+								src="${pageContext.request.contextPath }/resources/img/logo.jpg"
+								class="img_size"></a>
+							<!--찜 기본  -->
+							<i
+								class="fa-solid fa-heart-circle-plus zzim_size position_absolute"></i>
+							<!--찜하면 show  -->
+							<!-- <i class="fa-solid fa-heart-circle-check zzim_size position_absolute"></i> -->
+						</div>
+						<div class="card_body font-s text-right padding-right text-bold">제목</div>
+						<div class="card_footer font-s text-right padding-right">가격</div>
+
+					</div>
+					<div class="col_2-m container-card_goods item-basis_6">
+						<div class="card_top">
+							<a href="#"><img alt=""
+								src="${pageContext.request.contextPath }/resources/img/logo.jpg"
+								class="img_size"></a>
+							<!--찜 기본  -->
+							<i
+								class="fa-solid fa-heart-circle-plus zzim_size position_absolute"></i>
+							<!--찜하면 show  -->
+							<!-- <i class="fa-solid fa-heart-circle-check zzim_size position_absolute"></i> -->
+						</div>
+						<div class="card_body font-s text-right padding-right text-bold">제목</div>
+						<div class="card_footer font-s text-right padding-right">가격</div>
+
+					</div>
+					<div class="col_2-m container-card_goods item-basis_6">
+						<div class="card_top">
+							<a href="#"><img alt=""
+								src="${pageContext.request.contextPath }/resources/img/logo.jpg"
+								class="img_size"></a>
+							<!--찜 기본  -->
+							<i
+								class="fa-solid fa-heart-circle-plus zzim_size position_absolute"></i>
+							<!--찜하면 show  -->
+							<!-- <i class="fa-solid fa-heart-circle-check zzim_size position_absolute"></i> -->
+						</div>
+						<div class="card_body font-s text-right padding-right text-bold">제목</div>
+						<div class="card_footer font-s text-right padding-right">가격</div>
+
+					</div>
+
 
 				</div>
 
