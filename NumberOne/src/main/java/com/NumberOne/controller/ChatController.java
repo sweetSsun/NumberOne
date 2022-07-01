@@ -24,13 +24,6 @@ public class ChatController {
 	
 	
 	
-	@RequestMapping(value="/insertChat")
-	public void insertChat() {
-		System.out.println("채팅 DB 입력");
-		chsvc.insertChat();
-		
-	}
-	
 	
 	
 }
