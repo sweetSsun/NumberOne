@@ -30,9 +30,9 @@ public class ChatWebSocketMsg extends TextWebSocketHandler {
 		chatdto.setChfrmid(loginId); 		// from 메세지를 보내는 사람의 ID 
 		chatdto.setChcontents("connect");	// "connect" 에 담은 메세지
 		
-<<<<<<< HEAD
+/*<<<<<<< HEAD
 		// 채팅방 번호 생성 (select)
-		/*
+		
 		String mvcode = "MV001"; 
 		String chcode ="CH";
 		String maxChcode = mvdao.selectMaxMvcode();
@@ -66,10 +66,11 @@ public class ChatWebSocketMsg extends TextWebSocketHandler {
 		
 <<<<<<< HEAD
 		super.afterConnectionEstablished(session);
-		*/
+		
 =======
 		
 >>>>>>> 25fbb11d09bf04f4761224e889f7c74e9703ce4b
+*/
 	}
 	
 	@Override

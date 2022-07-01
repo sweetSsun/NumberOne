@@ -33,6 +33,8 @@ public class BoardController {
 	public ModelAndView loadTowriteRoom() {
 		System.out.println("자쥐방 자랑 Form 요청");
 		ModelAndView mav = new ModelAndView();
+		String mnickname = bsvc.selectRoomWriterMnickname();
+		mav.addObject(mnickname);
 		mav.setViewName("/board/WriteRoomForm");
 		return mav;
 	}
