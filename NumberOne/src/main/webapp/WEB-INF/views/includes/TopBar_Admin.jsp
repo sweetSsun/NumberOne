@@ -76,10 +76,10 @@
 							<a href="${pageContext.request.contextPath }/">HOME</a>
 						</li>
 						<li class="nav-item ">
-							<a href="#">커뮤니티</a>
+							<a href="loadToBoardMainPage">커뮤니티</a>
 						</li>
 						<li class="nav-item ">
-							<a href="#">중고거래</a>
+							<a href="loadToResellMainPage">중고거래</a>
 						</li>
 					</ul>
 				</div>
