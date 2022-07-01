@@ -173,11 +173,14 @@ display: none;
 				<div class="container-header">
 				<div class="container-flex_1 flex_between">
 				<div class="item_start">
+							<span id="selectSB_Value"> 작성게시판을 선택해주세요</span>
+							
 							<select class="position_change select-size" onchange="selectSB(this)">
+								<option value="" selected="selected" >선택</option>
 								<option value="S">팔구</option>
 								<option value="B">사구</option>
 							</select>
-							<span id="select_SB_Value"></span>
+							
 						</div>
 						
 				<div class="item_end">작성자 : 닉네임</div>
@@ -287,6 +290,8 @@ display: none;
 		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
 		crossorigin="anonymous"></script>
 </body>
+
+
 <script type="text/javascript">
 /* 추가버튼 변수 */
 var addBtn0 = document.getElementsByClassName("addBtn")[0];
@@ -304,16 +309,17 @@ var dsiplay_btn2 =document.getElementsByClassName("btn_d-none")[2];
 var dsiplay_btn3 =document.getElementsByClassName("btn_d-none")[3];
 
 /* 판매, 구매 메시지 출력함수 */
-function selectSB(selectVal){
+ /* 셀렉트옵션 선택하면 함수 에러 수정하기   셀렉티드옵션을 주고 페이지 이동하자마자 그거에 맞춰서 타이틀메세지 변경해볼까?*/
+/* function selectSB(selectVal){
 	
 	console.log("선택된 옵션의 value : " +selectVal.value);
 	console.log("선택된옵션의 text : " + selectVal.options[selectVal.selectedIndex].text);
 	let sellBuy_Msg = (selectVal.value =='B') ? '구매글 작성중입니다.':
 		'판매글 작성중입니다.';					
 	console.log(sellBuy_Msg);
-document.getEelementById("select_SB_Value").innerHTML = sellBuy_Msg;
-}
-
+document.getEelementById("selectSB_Value").innerText = sellBuy_Msg;
+} 
+ */
 
 addBtn0.onclick = function(){
 	console.log("addBtn0 호출");	
