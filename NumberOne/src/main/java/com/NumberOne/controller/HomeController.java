@@ -1,15 +1,23 @@
 package com.NumberOne.controller;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.NumberOne.dao.BoardDao;
+import com.NumberOne.dto.BoardDto;
+import com.NumberOne.dto.NoticeDto;
+import com.NumberOne.service.BoardService;
 
 /**
  * Handles requests for the application home page.
@@ -17,23 +25,61 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 public class HomeController {
 	
+	@Autowired
+	BoardService bsvc;
+	
+	@Autowired
+	BoardDao bdao;
+	
+	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	/**
 	 * Simply selects the home view to render by returning its name.
 	 */
+	
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
+	public ModelAndView home(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
-		
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
 		String formattedDate = dateFormat.format(date);
-		
 		model.addAttribute("serverTime", formattedDate );
 		
-		return "Main";
+		ModelAndView mav = new ModelAndView();
+		
+		// 자랑 게시판 불러오기 loadTowriteRoom :: 메인배너로 & 자랑글상세 링크 필요
+		
+		
+		// 전체 게시판 불러오기
+		ArrayList<BoardDto> boardList = bdao.selectBoardList();
+		System.out.println(boardList);
+		mav.addObject("boardList", boardList);
+		
+		
+		// 공지 게시판 불러오기
+		ArrayList<NoticeDto> noticeList = bdao.selectNoticeList();
+	    System.out.println(noticeList);
+	    mav.addObject("noticeList", noticeList);
+	    // 공지 상세 링크 /selectNoticeBoardView
+	    
+	    
+		// 중고거래 팔구 목록 불러오기 /selectResellSellList
+	    // ArrayList<UsedBoardDto> resellSellList = bdao.selectResellSellList();
+	    // System.out.println(resellSellList);
+	    // mav.addObject("resellSellList", resellSellList");
+	    
+		// 중고거래 사구 목록 불러오기 /selectResellBuyList
+	    // ArrayList<UsedBoardDto> resellBuyList = bdao.selectResellBuyList();
+	    // System.out.println(resellBuyList);
+	    // mav.addObject("resellBuyList", resellBuyList");
+	    
+		// 중고거래 상세 링크 /selectResellView
+		
+		
+		mav.setViewName("Main");
+		return mav;
 	}
 	
 	

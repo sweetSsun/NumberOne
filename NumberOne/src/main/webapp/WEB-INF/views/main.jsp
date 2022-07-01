@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 
 <!DOCTYPE html>
 <html lang="zxx">
@@ -41,6 +42,14 @@
 	
 	<!-- 부트스트랩 -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	
+	<style type="text/css">
+	.td, .th{
+		font-size: 2.5rem;
+	}
+	
+	</style>
+	
 	
 </head>
 
@@ -150,18 +159,22 @@
                 </div>
             </div>
             
+
             <div class="row featured__filter">
+	            <c:forEach items="${boardList }" var="boardList">
                 <div class="col-lg-3 col-md-4 col-sm-6 mix free">
                     <div class="featured__item">
                         <table>
                         	<tr>
-                        		<td>자유글제목</td>
-                        		<th>자유글날짜</th>
+                        		<td><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList.bdcode}">${boardList.bdtitle }</a>
+                        		</td>
+                        		<th>${boardList.bddate }</th>
                         	</tr>
                         	
                         </table>
                     </div>
                 </div>
+                </c:forEach>
                 <div class="col-lg-3 col-md-4 col-sm-6 mix question">
                     <div class="featured__item">
                         <table>
@@ -192,16 +205,20 @@
                         </table>
                     </div>
                 </div>
+                
+                <c:forEach items="${noticeList }" var="noticeList">
                 <div class="col-lg-3 col-md-4 col-sm-6 mix notice">
                     <div class="featured__item">
                         <table>
                         	<tr>
-                        		<td>공지글제목</td>
-                        		<th>공지글날짜</th>
+                        		<td><a href="${pageContext.request.contextPath }/selectNoticeBoardView?nbcode=${noticeList.nbcode}">${noticeList.nbtitle }</a>
+                        		</td>
+                        		<th>${noticeList.nbdate }</th>
                         	</tr>                        	
                         </table>
                     </div>
                 </div>
+                </c:forEach>
                 
             </div>
         </div>
@@ -230,6 +247,7 @@
                 
                 <div class="latest-product__slider owl-carousel">
                     <div class="row latest-prdouct__slider__item">
+	                    <c:forEach items="${resellBuyList }" var="noticeList">
 	                    <div class="col-lg-4">
 	                        <a href="#" class="latest-product__item">
 	                            <div class="latest-product__item__pic">
@@ -242,7 +260,8 @@
 	                            </div>
 	                        </a>
 	                    </div>
-	                        
+	                    </c:forEach>
+	                    
 	                    <div class="col-lg-4">
 	                        <a href="#" class="latest-product__item">
 	                            <div class="latest-product__item__pic">
