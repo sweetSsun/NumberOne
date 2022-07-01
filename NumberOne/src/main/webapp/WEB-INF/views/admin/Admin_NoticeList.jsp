@@ -81,7 +81,7 @@
                      <td>작성자</td>
                      <td>작성일</td>
                      <td style="width:50px;">조회</td>
-                     <td style="width:70px;">상태</td>
+                     <td style="width:80px;">상태</td>
                   </tr>
                </thead>
                <tbody id="nbListTbody">

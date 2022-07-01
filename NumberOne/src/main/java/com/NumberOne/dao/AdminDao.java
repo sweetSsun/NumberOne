@@ -16,4 +16,6 @@ public interface AdminDao {
 	MemberDto admin_selectMemberInfo_ajax(String mid);
 
 	ArrayList<NoticeDto> admin_selectNoticeList(String searchVal);
+
+	int admin_updateNbstate_ajax(@Param("nbcode") String nbcode, @Param("nbstate") String nbstate);
 }

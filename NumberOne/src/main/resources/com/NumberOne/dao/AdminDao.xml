@@ -47,4 +47,10 @@
 		ORDER BY NBDATE
 	</select>
 	
+	<update id="admin_updateNbstate_ajax">
+		UPDATE NOTICEBOARDS 
+		SET NBSTATE=${nbstate}
+		WHERE NBCODE=#{nbcode}
+	</update>
+	
 </mapper>

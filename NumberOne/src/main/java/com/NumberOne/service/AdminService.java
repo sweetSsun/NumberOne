@@ -96,4 +96,12 @@ public class AdminService {
 		return noticeList_json;
 	}
 
+	public int admin_updateNbstate_ajax(String nbcode, String nbstate) {
+		System.out.println("AdminService_admin_updateNbstate_ajax() 호출");
+		System.out.println("상태변경할 nbcode : " + nbcode);
+		System.out.println("상태변경할 nbstate : " + nbstate);
+		int updateResult = adao.admin_updateNbstate_ajax(nbcode, nbstate);
+		return updateResult;
+	}
+
 }

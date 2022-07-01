@@ -72,8 +72,9 @@ public class AdminController {
 	@RequestMapping (value="admin_updateNbstate_ajax")
 	public @ResponseBody int admin_updateNbstate_ajax(String nbcode, String nbstate) {
 		System.out.println("공지상태 변경 요청");
-		// 서비스에서 nbstate update 필요
-		return 1;
+		// 서비스에서 nbstate update 필요ik m,
+		int updateResult = asvc.admin_updateNbstate_ajax(nbcode, nbstate);
+		return updateResult;
 	}
 		
 }
