@@ -52,17 +52,16 @@ public class HomeController {
 		// 자랑 게시판 불러오기 loadTowriteRoom :: 메인배너로 & 자랑글상세 링크 필요
 		
 		
-		// 전체 게시판 불러오기
+		// 전체 게시판 불러오기 & 일반 상세 링크 /selectBoardView
 		ArrayList<BoardDto> boardList = bdao.selectBoardList();
 		System.out.println(boardList);
 		mav.addObject("boardList", boardList);
 		
 		
-		// 공지 게시판 불러오기
+		// 공지 게시판 불러오기 & 공지 상세 링크 /selectNoticeBoardView	    
 		ArrayList<NoticeDto> noticeList = bdao.selectNoticeList();
 	    System.out.println(noticeList);
 	    mav.addObject("noticeList", noticeList);
-	    // 공지 상세 링크 /selectNoticeBoardView
 	    
 	    
 		// 중고거래 팔구 목록 불러오기 /selectResellSellList

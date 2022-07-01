@@ -211,7 +211,7 @@
                     <div class="featured__item">
                         <table>
                         	<tr>
-                        		<td><a href="${pageContext.request.contextPath }/selectNoticeBoardView?nbcode=${noticeList.nbcode}">${noticeList.nbtitle }</a>
+                        		<td><a href="selectNoticeBoardView?nbcode=${noticeList.nbcode}">${noticeList.nbtitle }</a>
                         		</td>
                         		<th>${noticeList.nbdate }</th>
                         	</tr>                        	
@@ -251,7 +251,12 @@
 	                    <div class="col-lg-4">
 	                        <a href="#" class="latest-product__item">
 	                            <div class="latest-product__item__pic">
-	                                <img src="${pageContext.request.contextPath }/resources/img/latest-product/lp-1.jpg" alt="">
+	                                <a href="selectResellView?ubcode=${resellBuyList.ubcode } }"><img src="${pageContext.request.contextPath }/resources/img/latest-product/lp-1.jpg">
+	                                <span>${resellBuyList.ubtitle }</span>
+	                                <span>${resellBuyList.ubcontents }</span>
+	                                <span>${resellBuyList.ubdate }</span>
+	                                </a>
+	                                
 	                            </div>
 	                            <div class="latest-product__item__text">
 	                                <h6>2022.06.27</h6>
