@@ -26,40 +26,62 @@
 <body>
 
 	<!-- TobBar -->
-	<%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
+	<c:choose>
+		<c:when test="${sessionScope.loginId != 'admin'}">
+			<%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
+		</c:when>
+		<c:otherwise>
+			<%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
+		</c:otherwise>
+	</c:choose>
 	<!-- End of TobBar -->
 	
 	<main>
 		<!-- 사이드바 -->
-		<%@ include file="/WEB-INF/views/includes/SideBar_Admin.jsp" %>
+	<c:choose>
+		<c:when test="${sessionScope.loginId != 'admin'}">
+		<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
+		</c:when>
+		<c:otherwise>
+			<%@ include file= "/WEB-INF/views/includes/SideBar_Admin.jsp" %>
+		</c:otherwise>
+	</c:choose>
 		
 		<section>
 		<!-- 본문 -->
 			<div class="container">
-            <div class="row" style="margin:auto;">
-                <h1 class="text-center">공지 관리페이지 : Admin_NoticeList.jsp</h1>
-				<div class="col-4 ">
-					<select onclick="nbSearchTypeSel(this.value)">
-						<option value="nbTitle">제목</option>
-						<option value="nbContents">내용</option>
-						<option value="nbTitleContents">제목+내용</option>
-					</select>
-				</div>
-               <div class="col-6">
-                  <form action="#" method="get">
-                  <div class="input-group">
-                    <input type="text" class="form-control" name="keyword" placeholder="검색 키워드를 입력하세요!">
-                    <span class="input-group-btn">
-                      <button class="btn btn-secondary">찾기</button>
-                    </span>
-                  </div>
-                  </form>
-               </div>
-               	<div class="col-2">
+            	<form action="admin_selectNoticeList" method="get">
+	            <div class="row" style="margin:auto;">
+	                <h1 class="text-center">공지 관리페이지 : Admin_NoticeList.jsp</h1>
+					<div class="col-4 ">
+						<select name="searchType">
+							<option value="nbTitle">제목</option>
+							<option value="nbContents">내용</option>
+							<option value="nbTitleContents">제목+내용</option>
+						</select>
+					</div>
+	                <div class="col-6">
+	                	<div class="input-group">
+	                    	<input type="text" class="form-control" name="keyword" placeholder="검색 키워드를 입력하세요!">
+	                    	<span class="input-group-btn">
+	                      	<button class="btn btn-secondary">찾기</button>
+	                    	</span>
+	                	</div>
+	            	</div>
+		            <div class="col-2">
 						<!-- 공지작성 버튼 -->
-					<button class="btn btn-primary btm-sm">글쓰기</button>
+						<button class="btn btn-primary btm-sm">글쓰기</button>
+					</div>
+	            </div>
+	            </form>
+				
+			<c:if test="${searchText != null }">
+				<!-- 검색결과 안내  -->
+				<div class="row mb-5">
+					<h3 class="text-center">[ <span class="text-primary">${searchText}</span> ] 로 검색한 결과 입니다.</h3>  
 				</div>
-            </div>
+			</c:if>
+           
             <div class="row" style="margin-top: 20px;">
                <div class="col">
                   <!-- 상태값 정렬 -->
@@ -89,7 +111,7 @@
 	                   <!-- 회원관리 목록 -->
 	                   <tr style="border-bottom: solid gray 1px;">
 	                      <td>${notice.nbcode}</td>
-	                      <td><a href="#('${notice.nbcode}')">${notice.nbtitle}</a></td>
+	                      <td><a href="selectNoticeBoardView?nbcode=${notice.nbcode}">${notice.nbtitle}</a></td>
 	                      <td>${notice.nbmid}</td>
 	                      <td>${notice.nbdate}</td>
 	                      <td>${notice.nbhits}</td>
@@ -218,46 +240,13 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 	
 	<script type="text/javascript">
-		// 모달창 close 하는 스크립트..... 닫고 한번 더 클릭해야 정상작동되서 수정이 필요.. 부트스트랩 js가 필요한가
+		// 모달창 close 하는 스크립트
  		var modal = $(".modal");
 		var close = $(".close");
 		for (var i = 0; i < close.length; i++){
 			close[i].addEventListener("click", function(){
-				for (var j = 0; j < modal.length; j++){
-					modal[j].classList.remove('show');
-					$(".modal-backdrop").remove(); 
-				}
-			});
-		}
-	</script>
-	
-	<script type="text/javascript">
-		// 회원 상세정보 모달창 출력
-		function showMemberInfoModal(mid){
-			console.log("showMemberInfoModal() 실행");
-			$.ajax({
-				type: "post",
-				data: {"mid":mid},
-				url: "admin_selectMemberInfo_ajax",
-				dataType: "json",
-				success: function(result){
-					console.log(result);
-					$("#memberInfoModalLabel").text(mid + " 회원 상세정보");
+				$("#updateNbstateModal").modal("hide");
 
-					// 저장경로 때문에 프로필이미지는 수정 필요
-					$("#mI_mprofile").attr("src", result.mprofile);
-					$("#mI_mmessage").text(result.mmessage);
-					$("#mI_mid").text(result.mid);
-					$("#mI_mname").text(result.mname);
-					$("#mI_mnickname").text(result.mnickname);
-					$("#mI_mphone").text(result.mphone);
-					$("#mI_memail").text(result.memail);
-					$("#mI_maddr").text(result.maddr);
-					$("#mI_mjoindate").text(result.mjoindate);
-					$("#mI_mwarning").text(result.mwarning);
-					
-					$("#memberInfoModal").modal("show");
-				}
 			});
 		}
 	</script>
