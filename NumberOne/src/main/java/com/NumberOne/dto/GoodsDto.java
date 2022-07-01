@@ -10,4 +10,6 @@ public class GoodsDto {
 	private String gdname;		//싱픔명
 	private int gdprice;		//상품가격(천만)
 	private int gdstate;		//상품상태
+	
+	private String[] gd_names;  //작성된 품목들
 }

@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.NumberOne.dao.BoardDao;
 import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.NoticeDto;
+import com.NumberOne.dto.ReplyDto;
 import com.google.gson.Gson;
 
 
@@ -174,6 +175,9 @@ public class BoardService {
 	      ArrayList<BoardDto> boardList = bdao.selectBoardList();
 	      System.out.println(boardList);
 	      
+	      
+	      
+	      //일반게시판 댓글개수 조회 
 	      mav.addObject("noticeList", noticeList);
 	      mav.addObject("boardList", boardList);
 	      mav.setViewName("board/BoardListPage");
@@ -258,9 +262,17 @@ public class BoardService {
 		
 		System.out.println("bdcode : " + bdcode);
 		
+		//글상세정보 조회 
 		BoardDto board = bdao.selectBoardView(bdcode);
 		
+		/*
+		//댓글목록 조회 
+		ArrayList<ReplyDto> replyList = bdao.selectBoardReplyList(bdcode);
+		System.out.println(replyList);
+		*/
+		
 		mav.addObject("board", board);
+		/* mav.addObject("replyList", replyList); */
 		mav.setViewName("board/BoardView");
 		
 		return mav;
@@ -274,5 +286,113 @@ public class BoardService {
 		return mnickname;
 	}
 	
+	//게시글 댓글작성(ajax)
+	public int insertBoardReply_ajax(String bdcode, String rpcontents) {
+		System.out.println("BoardService.insertBoardComment_ajax() 호출");
+		
+		ReplyDto reply = new ReplyDto();
+		
+		String loginId = (String)session.getAttribute("loginId");
+		System.out.println("로그인 아이디 : " + loginId); 
+		System.out.println("댓글작성할 글번호 : " + bdcode); 
+		System.out.println("작성할 댓글 내용 : " + rpcontents);
+	
+		//댓글번호 생성 
+		String maxRpcode = bdao.selectReplyMaxNumber();
+		System.out.println("maxRpcode : " + maxRpcode);
+		String rpcode = "RP";
+		
+		if( maxRpcode == null) {
+			rpcode = rpcode + "00001";
+		}else {
+			String rpcode_stirng = maxRpcode.substring(4);
+			int rpcode_num = Integer.parseInt(rpcode_stirng)+1;
+			
+			if( rpcode_num < 10) {
+				rpcode = rpcode + "0000" + rpcode_num;
+			}else if( rpcode_num < 100 ) {
+				rpcode = rpcode + "000" + rpcode_num;
+			}else if( rpcode_num < 1000 ) {
+				rpcode = rpcode + "00" + rpcode_num;
+			}else if( rpcode_num < 10000 ) {
+				rpcode = rpcode + "0" + rpcode_num;
+			}else {
+				rpcode = rpcode + rpcode_num;
+			}
+		}
+		System.out.println(rpcode);
+		
+		//Reply 객체에 저장 
+		reply.setRpcode(rpcode);
+		reply.setRpbdcode(bdcode);
+		reply.setRpmid(loginId);
+		reply.setRpcontents(rpcontents);
+		
+		int insertResult = bdao.insertBoardReply_ajax(reply);
+		
+		return insertResult;
+	}
+	
+	//게시글 댓글목록 조회(ajax)
+	public String selectBoardReplyList_ajax(String bdcode) {
+		System.out.println("BoardService.selectBoardReplyList_ajax() 호출");
+		
+		ArrayList<ReplyDto> replyList = bdao.selectBoardReplyList(bdcode);
+		System.out.println(replyList);
+		
+		//댓글목록 JSON 타입으로 변환 
+		Gson gson = new Gson();
+		String replyList_json = gson.toJson(replyList);
+		System.out.println(replyList_json);
+		
+		return replyList_json;
+	}
+	
+	//게시글 댓글개수 조회(ajax)
+	public int selectReplyCount_ajax(String bdcode) {
+		System.out.println("BoardService.selectReplyCount_ajax() 호출");
+		
+		int replyCount = bdao.selectReplyCount_ajax(bdcode);
+		System.out.println("댓글개수 : " + replyCount);
+		
+		return replyCount;
+	}
+	
+	//게시글 댓글삭제[상태변경] (ajax)
+	public int updateReplyState_ajax(String rpcode) {
+		System.out.println("BoardService.updateReplyState_ajax() 호출");
+		
+		int updateResult = bdao.updateReplyState_ajax(rpcode);
+		
+		return updateResult;
+	}
 
+	//게시글 신고 (ajax)
+	public int insertBoardWarning_ajax(String loginId, String bdcode) {
+		System.out.println("BoardService.updateBoardWarningCount_ajax() 호출");
+		
+		int insertResult = bdao.insertBoardWarning_ajax(loginId, bdcode);
+		System.out.println("insertResult 신고결과 : " + insertResult );
+		return insertResult;
+	}
+	
+	//게시글 추천
+	public int insertBoardRecommend_ajax(String loginId, String bdcode) {
+		System.out.println("BoardService.insertBoardRecommend_ajax() 호출");
+		
+		int insertResult = bdao.insertBoardRecommend_ajax(loginId, bdcode);
+
+		return insertResult;
+	}
+	
+	//게시글 추천수 조회 
+	public int selectBoardRecommendCount_ajax(String bdcode) {
+		System.out.println("BoardService.selectBoardRecommendCount_ajax() 호출");
+		
+		int boardRecommendCount = bdao.selectBoardRecommendCount_ajax(bdcode);
+		System.out.println("게시글 추천수 : " + boardRecommendCount);
+		
+		return boardRecommendCount;
+	}
+	
 }

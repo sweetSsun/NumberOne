@@ -96,7 +96,7 @@
 								<td>${notice.nbmid}</td>
 								<td>${notice.nbdate}</td>
 								<td>조회수</td>
-								<td>추천수</td>
+								<td></td>
 							</tr>
 						</c:forEach>
 					</thead>
@@ -117,7 +117,7 @@
 							</td>
 							<td>${board.bddate}</td>
 							<td>조회수</td>
-							<td>추천수</td>
+							<td></td>
 						</tr>
 						</c:if>
 					</c:forEach>

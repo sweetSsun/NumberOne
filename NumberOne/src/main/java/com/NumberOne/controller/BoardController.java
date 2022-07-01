@@ -52,7 +52,7 @@ public class BoardController {
 	//게시판 메인 페이지 이동 
 	@RequestMapping( value="/loadToBoardMainPage")
 	public ModelAndView loadToBoardMainPage() {
-	    System.out.println("게시판(커뮤니티) 메인 페이지 이동");
+	    System.out.println("게시판(커뮤니티) 메인 페이지 이동 요청");
 	    ModelAndView mav = bsvc.loadToBoardMainPage();
 	    return mav;
 	}
@@ -96,7 +96,7 @@ public class BoardController {
 		 return mav;
 	 }
 	 
-	 //일반게시판 - 글상세페이지 이동
+	 //일반게시판 - 글상세페이지 이동 
 	 @RequestMapping ( value = "/selectBoardView")
 	 public ModelAndView selectBoardView(String bdcode) {
 		 System.out.println("글상세페이지 이동 요청");
@@ -104,6 +104,85 @@ public class BoardController {
 		 ModelAndView mav = bsvc.selectBoardView(bdcode);
 		 
 		 return mav;
+	 }
+	 
+	 //일반게시판 - 글상세페이지 : 댓글작성(ajax)
+	 @RequestMapping ( value = "/insertBoardReply_ajax")
+	 @ResponseBody
+	 public int insertBoardReply_ajax(String bdcode, String rpcontents) {
+		 System.out.println("글상세페이지 - 댓글등록 요청_ajax");
+		 
+		 int insertResult = bsvc.insertBoardReply_ajax(bdcode, rpcontents);
+		 
+		 return insertResult;
+	 }
+	 
+	 //일반게시판 - 글상세페이지 : 댓글목록 조회(ajax)
+	 @RequestMapping ( value = "/selectBoardReplyList_ajax")
+	 @ResponseBody
+	 public String selectBoardReplyList_ajax(String bdcode) {
+		 System.out.println("글상세페이지 - 댓글목록 요청_ajax");
+		 
+		 String replyList_ajax = bsvc.selectBoardReplyList_ajax(bdcode);
+		 
+		 return replyList_ajax;
+	 }
+	 
+	 //일반게시판 - 글상세페이지 : 댓글개수 조회(ajax)
+	 @RequestMapping ( value= "/selectReplyCount_ajax")
+	 @ResponseBody
+	 public int selectReplyCount_ajax(String bdcode) {
+		 System.out.println("글상세페이지 - 댓글개수 요청_ajax");
+		 
+		 int replyCount = bsvc.selectReplyCount_ajax(bdcode);
+		 
+		 return replyCount;
+	 }
+	 
+	 //일반게시판 - 글상세페이지 : 댓글삭제(상태변경) (ajax)
+	 @RequestMapping ( value = "/updateReplyState_ajax")
+	 @ResponseBody 
+	 public int updateReplyState_ajax(String rpcode) {
+		 System.out.println("글상세페이지 - 댓글삭제 요청_ajax");
+		 
+		 int updateResult = bsvc.updateReplyState_ajax(rpcode);
+		 
+		 return updateResult;
+	 }
+	 
+	 //일반게시판 - 글상세페이지 : 게시글 추천
+	 @RequestMapping ( value = "/insertBoardRecommend_ajax")
+	 @ResponseBody 
+	 public int insertBoardRecommend_ajax(String loginId, String bdcode) {
+		 System.out.println("글상세페이지 - 게시글 추천 요청_ajax");
+		 
+		 int insertResult = bsvc.insertBoardRecommend_ajax(loginId, bdcode);
+		 
+		 return insertResult;
+	 }
+	 
+	 //일반게시판 - 글상세페이지 : 게시글 신고 
+	 @RequestMapping ( value = "/insertBoardWarning_ajax")
+	 @ResponseBody
+	 public int insertBoardWarning_ajax(String loginId, String bdcode) {
+		 System.out.println("글상세페이지 - 게시글 신고 요청_ajax");
+		 
+		 int insertResult = bsvc.insertBoardWarning_ajax(loginId, bdcode);
+		 
+		 return insertResult;
+	 }
+	 
+	 //일반게시판 - 글상세페이지 : 게시글 추천수 조회 
+	 @RequestMapping ( value = "/selectBoardRecommendCount_ajax")
+	 @ResponseBody 
+	 public int selectBoardRecommendCount_ajax(String bdcode) {
+		 System.out.println("글상세페이지 - 게시글 추천수 조회 요청_ajax");
+		 
+		 int boardRecommendCount = bsvc.selectBoardRecommendCount_ajax(bdcode);
+		 
+		 return boardRecommendCount;
 		 
 	 }
+	 
+	 
 }
