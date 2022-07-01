@@ -3,7 +3,7 @@ package com.NumberOne.dto;
 import lombok.Data;
 
 @Data
-public class pageDto {
+public class PageDto {
 
 	private int page;
 	private int maxPage;
