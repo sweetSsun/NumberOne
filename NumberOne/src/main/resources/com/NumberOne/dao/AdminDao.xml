@@ -58,10 +58,10 @@
 	<select id="admin_selectNoticeList" resultType="com.NumberOne.dto.NoticeDto">
 		SELECT ROWNUM RN, NBCODE, NBMID, NBTITLE, NBCONTENTS, TO_CHAR(NBDATE, 'MM-DD') NBDATE, NBIMG, NBSTATE, NBHITS
 		FROM NOTICEBOARDS
-		<if test="searchType.length > 0 || searchVal != 'all'">
+		<if test="keyword.length > 0 || searchVal == 'active' || searchVal == 'inactive'">
 			WHERE
 			<!-- 검색한 키워드 정렬 -->
-			<if test="searchType.length > 0">
+			<if test="keyword.length > 0">
 				<choose>
 					<when test="searchType == 'nbTitleContents'">
 						NBTITLE LIKE '%'||#{keyword}||'%' OR NBCONTENTS LIKE '%'||#{keyword}||'%'
@@ -82,7 +82,7 @@
 		<if test="searchVal == 'inactive'">
 			NBSTATE=0
 		</if>
-		ORDER BY NBDATE
+		ORDER BY NBCODE
 	</select>
 	<!-- 페이징처리 후의 쿼리문 -->
 <!-- 	<select id="admin_selectNoticeList" resultType="com.NumberOne.dto.NoticeDto">

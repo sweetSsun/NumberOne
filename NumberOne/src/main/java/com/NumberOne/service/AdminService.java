@@ -9,7 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.NumberOne.dao.AdminDao;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.NoticeDto;
-import com.NumberOne.dto.pageDto;
+import com.NumberOne.dto.PageDto;
 import com.google.gson.Gson;
 
 @Service
@@ -41,7 +41,7 @@ public class AdminService {
 		System.out.println(memberList);
 		
 		// 페이지에서 출력할 페이지번호 생성
-		pageDto paging = new pageDto();
+		PageDto paging = new PageDto();
 		// 글 최대값에 따라 페이지 번호 최대값
 		int maxPage = (int) (Math.ceil( (double)memberTotalCount/viewCount ) );
 		// 출력될 페이지 번호 시작값
@@ -87,7 +87,7 @@ public class AdminService {
 		
 		int memberTotalCount = adao.selectMemberTotalCount(searchVal); // 전체 회원수 조회
 		// 페이지에서 출력할 페이지번호 생성
-		pageDto paging = new pageDto();
+		PageDto paging = new PageDto();
 		// 글 최대값에 따라 페이지 번호 최대값
 		int maxPage = (int) (Math.ceil( (double)memberTotalCount/viewCount ) );
 		// 출력될 페이지 번호 시작값

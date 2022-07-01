@@ -199,8 +199,8 @@
 					for (var i = 0; i < result.length; i++){
 						output += "<tr style='border-bottom: solid gray 1px;'>";
 						output += "<td>" + result[i].nbcode + "</td>";
-						output += "<td>" + result[i].nbtitle + "</td>";
-						output += "<td><a href='#'>" + result[i].nbmid + "</a></td>";
+						output += "<td><a href='selectNoticeBoardView?nbcode=" + result[i].nbcode + "'>" + result[i].nbtitle + "</a></td>";
+						output += "<td>" + result[i].nbmid + "</td>";
 						output += "<td>" + result[i].nbdate + "</td>";
 						output += "<td>" + result[i].nbhits + "</td>";
 						output += "<td>"

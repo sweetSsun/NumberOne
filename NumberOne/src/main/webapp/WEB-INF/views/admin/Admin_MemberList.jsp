@@ -110,7 +110,7 @@
             </table>
             
             <!-- 페이징 -->
-            <%-- <div class="block text-center" id="pageList">
+            <div class="block text-center" id="pageList">
                	<c:choose>
                		<c:when test="${paging.page <= 1 }">
                			[이전]
@@ -139,7 +139,7 @@
                			<span onclick="searchState(${paging.page +1 })">[다음]</span>
                		</c:otherwise>
                	</c:choose>
-            </div> --%>
+            </div>
                 
             </div>
             
