@@ -49,13 +49,17 @@
 							<h5>로그인 프로필 : ${sessionScope.loginProfile}<h5>
 						</li>					
 						<li class="nav-item active">
-							<a href="#">HOME</a>
+							<a href="${pageContext.request.contextPath }/">HOME</a>
 						</li>
 						<li class="nav-item ">
 							<a href="loadToBoardMainPage">커뮤니티</a>
 						</li>
 						<li class="nav-item ">
 							<a href="#">중고거래</a>
+						</li>
+
+						<li class="nav-item ">
+							<a href="admin_loadToAdminMainPage">관리자</a>
 						</li>
 
 					</ul>
