@@ -56,7 +56,7 @@
 	</select>
 	
 	<select id="admin_selectNoticeList" resultType="com.NumberOne.dto.NoticeDto">
-		SELECT NBCODE, NBMID, NBTITLE, NBCONTENTS, TO_CHAR(NBDATE, 'MM-DD') NBDATE, NBIMG, NBSTATE, NBHITS
+		SELECT ROWNUM RN, NBCODE, NBMID, NBTITLE, NBCONTENTS, TO_CHAR(NBDATE, 'MM-DD') NBDATE, NBIMG, NBSTATE, NBHITS
 		FROM NOTICEBOARDS
 		<if test="searchType.length > 0 || searchVal != 'all'">
 			WHERE
@@ -84,24 +84,41 @@
 		</if>
 		ORDER BY NBDATE
 	</select>
-	
-	<select id="admin_selectSearchNoticeList" resultType="com.NumberOne.dto.NoticeDto">
+	<!-- 페이징처리 후의 쿼리문 -->
+<!-- 	<select id="admin_selectNoticeList" resultType="com.NumberOne.dto.NoticeDto">
 		SELECT NBCODE, NBMID, NBTITLE, NBCONTENTS, TO_CHAR(NBDATE, 'MM-DD') NBDATE, NBIMG, NBSTATE, NBHITS
-		FROM NOTICEBOARDS
-		<!-- 검색한 키워드 정렬 -->
-		<choose>
-			<when test="searchType == 'nbTitleContents'">
-				WHERE NBTITLE LIKE '%'||#{keyword}||'%' OR NBCONTENTS LIKE '%'||#{keyword}||'%'
-			</when>
-			<otherwise>
-				WHERE ${searchType} LIKE '%'||#{keyword}||'%'
-			</otherwise>				
-		</choose>
-		ORDER BY NBDATE
+		FROM
+			(SELECT ROWNUM RN, NBCODE, NBMID, NBTITLE, NBCONTENTS, TO_CHAR(NBDATE, 'MM-DD') NBDATE, NBIMG, NBSTATE, NBHITS
+			FROM NOTICEBOARDS
+			<if test="searchType.length > 0 || searchVal != 'all'">
+				WHERE
+				검색한 키워드 정렬
+				<if test="searchType.length > 0">
+					<choose>
+						<when test="searchType == 'nbTitleContents'">
+							NBTITLE LIKE '%'||#{keyword}||'%' OR NBCONTENTS LIKE '%'||#{keyword}||'%'
+						</when>
+						<otherwise>
+							${searchType} LIKE '%'||#{keyword}||'%'
+						</otherwise>				
+					</choose>
+					<if test="searchVal == 'active' || searchVal == 'inactive'">
+							AND
+					</if>
+				</if>
+			</if>
+			상태값에 따른 정렬
+			<if test="searchVal == 'active'">
+				NBSTATE=1
+			</if>
+			<if test="searchVal == 'inactive'">
+				NBSTATE=0
+			</if>
+			ORDER BY NBDATE)
+		WHERE RN BETWEEN ${startRow} AND ${endRow}
+			
 	</select>
-	
-	
-	
+	 -->
 	<update id="admin_updateNbstate_ajax">
 		UPDATE NOTICEBOARDS 
 		SET NBSTATE=${nbstate}

@@ -17,8 +17,6 @@ public interface AdminDao {
 
 	ArrayList<NoticeDto> admin_selectNoticeList(@Param("searchVal") String searchVal, @Param("searchType") String searchType, @Param("keyword") String keyword);
 
-	//ArrayList<NoticeDto> admin_selectSearchNoticeList(@Param("searchType") String searchType, @Param("keyword") String keyword);
-
 	int admin_updateNbstate_ajax(@Param("nbcode") String nbcode, @Param("nbstate") String nbstate);
 
 	int selectMemberTotalCount(String searchVal);

@@ -75,7 +75,7 @@
 	            </div>
 	            </form>
 				
-			<c:if test="${searchText != null }">
+			<c:if test="${searchText.length() > 0 }">
 				<!-- 검색결과 안내  -->
 				<div class="row mb-1 mt-1">
 					<h3 class="text-center">[ <span class="text-primary">${searchText}</span> ] 로 검색한 결과 입니다.</h3>  
@@ -83,8 +83,8 @@
 			</c:if>
 			
 			<!-- 검색 후 상태값으로 정렬 시 함께 넘겨줄 데이터 -->
-			<input type="text" id="ParamSearchText" value="${searchText }">
-			<input type="text" id="ParamSearchType" value="${searchType }">
+			<input type="hidden" id="ParamSearchText" value="${searchText }">
+			<input type="hidden" id="ParamSearchType" value="${searchType }">
            
             <div class="row" style="margin-top: 20px;">
                <div class="col">
@@ -134,37 +134,7 @@
                 </tbody>
             </table>
             
-            <!-- 페이징 -->
-            <div class="block text-center" id="pageList">
-               	<c:choose>
-               		<c:when test="${paging.page <= 1 }">
-               			[이전]
-               		</c:when>
-               		<c:otherwise>
-               			<span onclick="searchState(${paging.page -1 })">[이전]</span>
-               		</c:otherwise>
-               	</c:choose>
-               	
-               	<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="num" step="1">
-                	<c:choose>
-                		<c:when test="${paging.page == num }">
-                			<span>${num }</span>
-                		</c:when>
-                		<c:otherwise>
-                			<span onclick="searchState(${num})">${num }</span>
-                		</c:otherwise>
-                	</c:choose>
-               	</c:forEach>
-
-               	<c:choose>
-               		<c:when test="${paging.page >= paging.maxPage }">
-               			[다음]
-               		</c:when>
-               		<c:otherwise>
-               			<span onclick="searchState(${paging.page +1 })">[다음]</span>
-               		</c:otherwise>
-               	</c:choose>
-            </div>
+  			<!-- 페이징 -->
             
             </div>
             
