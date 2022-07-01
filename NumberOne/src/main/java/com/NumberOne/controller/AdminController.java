@@ -70,9 +70,9 @@ public class AdminController {
 	}
 	
 	@RequestMapping (value="admin_selectNoticeList_ajax")
-	public @ResponseBody String admin_selectNoticeList_ajax(String searchVal) {
+	public @ResponseBody String admin_selectNoticeList_ajax(String searchVal, String searchType, String keyword) {
 		System.out.println("공지 관리페이지 정렬 요청");
-		String noticeList_json = asvc.admin_selectNoticeList_ajax(searchVal);
+		String noticeList_json = asvc.admin_selectNoticeList_ajax(searchVal, searchType, keyword);
 		return noticeList_json;
 	}
 	
@@ -83,12 +83,6 @@ public class AdminController {
 		return updateResult;
 	}
 	
-//	@RequestMapping (value="admin_selectSearchNoticeList")
-//	public ModelAndView admin_selectSearchNoticeList(String searchType, String keyword) {
-//		System.out.println("공지 관리페이지 검색 요청");
-//		mav = asvc.admin_selectSearchNoticeList(searchType, keyword);
-//		return mav;
-//	}
 	
 		
 }

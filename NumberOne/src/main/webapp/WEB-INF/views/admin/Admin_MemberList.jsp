@@ -108,6 +108,8 @@
 	                </c:forEach>                 
                 </tbody>
             </table>
+            
+            <!-- 페이징 -->
             <div class="block text-center" id="pageList">
                	<c:choose>
                		<c:when test="${paging.page <= 1 }">

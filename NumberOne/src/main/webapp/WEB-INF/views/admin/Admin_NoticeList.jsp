@@ -70,17 +70,21 @@
 	            	</div>
 		            <div class="col-2">
 						<!-- 공지작성 버튼 -->
-						<button class="btn btn-primary btm-sm">글쓰기</button>
+						<button type="button" class="btn btn-primary btm-sm">글쓰기</button>
 					</div>
 	            </div>
 	            </form>
 				
 			<c:if test="${searchText != null }">
 				<!-- 검색결과 안내  -->
-				<div class="row mb-5">
+				<div class="row mb-1 mt-1">
 					<h3 class="text-center">[ <span class="text-primary">${searchText}</span> ] 로 검색한 결과 입니다.</h3>  
 				</div>
 			</c:if>
+			
+			<!-- 검색 후 상태값으로 정렬 시 함께 넘겨줄 데이터 -->
+			<input type="text" id="ParamSearchText" value="${searchText }">
+			<input type="text" id="ParamSearchType" value="${searchType }">
            
             <div class="row" style="margin-top: 20px;">
                <div class="col">
@@ -129,6 +133,39 @@
 	                </c:forEach>                 
                 </tbody>
             </table>
+            
+            <!-- 페이징 -->
+            <div class="block text-center" id="pageList">
+               	<c:choose>
+               		<c:when test="${paging.page <= 1 }">
+               			[이전]
+               		</c:when>
+               		<c:otherwise>
+               			<span onclick="searchState(${paging.page -1 })">[이전]</span>
+               		</c:otherwise>
+               	</c:choose>
+               	
+               	<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="num" step="1">
+                	<c:choose>
+                		<c:when test="${paging.page == num }">
+                			<span>${num }</span>
+                		</c:when>
+                		<c:otherwise>
+                			<span onclick="searchState(${num})">${num }</span>
+                		</c:otherwise>
+                	</c:choose>
+               	</c:forEach>
+
+               	<c:choose>
+               		<c:when test="${paging.page >= paging.maxPage }">
+               			[다음]
+               		</c:when>
+               		<c:otherwise>
+               			<span onclick="searchState(${paging.page +1 })">[다음]</span>
+               		</c:otherwise>
+               	</c:choose>
+            </div>
+            
             </div>
             
 			</div>
@@ -136,7 +173,7 @@
 	</main>
 	
 	
-	<!-- 회원상태 변경 모달 -->
+	<!-- 공지상태 변경 모달 -->
 	<div class="modal fade" id="updateNbstateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -157,83 +194,7 @@
         </div>
     </div>
 	
-	<!-- 회원 상세정보 모달 -->
-	<div class="modal fade" id="memberInfoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document" style="max-width:700px;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="memberInfoModalLabel"> </h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body" id="memberInfoModalBody"> 
-                	<div class="row">
-	                		<div class="col-5">
-                                <div class="no-gutters align-items-center">
-                                    <div class="h6 mb-1 font-weight-bold text-gray-800" >
-                                 		<img class="img-fluid" alt="영화포스터" style="max-height:300px;" id="mI_mprofile" src="">
-                                 		프로필이미지
-                                    </div>
-                                    <div>
-                                    	<label class="small">상태메세지</label>
-		                                <p class="form-control" id="mI_mmessage" style="min-height:38px;"></p>
-                                    </div>
-                                </div>
-                            </div>
-                           	<div class="col-7">
-                                <div class="no-gutters align-items-center">
-                                    <div class="h6 font-weight-bold text-gray-800">
-                                    	<div>
-		                                  	<label class="small">아이디</label>
-		                                	<p class="form-control" id="mI_mid" style="min-height:38px;"></p>
-                                    	</div>
-                                    	<div class="row">
-	                                  		<div class="col-6">
-			                                  	<label class="small">이름</label>
-		                               			<p class="form-control" id="mI_mname" style="min-height:38px;"></p>
-	                                  		</div>
-	                                  		<div class="col-6">
-			                                  	<label class="small">닉네임</label>
-			                                  	<p class="form-control" id="mI_mnickname" style="min-height:38px;"></p>
-	                                  		</div>
-                                    	</div>
-	                                  	<div>                                	
-		                                  	<label class="small">연락처</label>
-		                                <p class="form-control" id="mI_mphone"  style="min-height:38px;"></p>
-	                                  	</div>
-	                                  	<div>                                	
-		                                  	<label class="small">이메일</label>
-		                              		<p class="form-control" id="mI_memail" style="min-height:38px;"></p>
-	                                  	</div>
-	                                  	<div>
-		                                  	<label class="small">주소</label>
-		                                	<p class="form-control" id="mI_maddr" style="min-height:38px;"></p>
-                                    	</div>
-	                                  	<div class="row">
-	                                  		<div class="col-9">
-			                                  	<label class="small">가입일</label>
-			                                	<p class="form-control" id="mI_mjoindate" style="min-height:38px;"></p>
-	                                  		</div>
-	                                  		<div class="col-3">
-			                                  	<label class="small">경고횟수</label>
-			                                	<p class="form-control" id="mI_mwarning" style="min-height:38px;"></p>
-		                                	</div>
-                                    	</div>
-	                                </div>
-                                </div>
-                            </div>
-                        </div>
-                
-                </div>
-                <div class="modal-footer">
-                    <button class="close btn btn-primary" type="button" data-dismiss="modal">확인</button>
-                </div>
-            </div>
-        </div>
-    </div>
-	
+
 	
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
 
@@ -246,7 +207,6 @@
 		for (var i = 0; i < close.length; i++){
 			close[i].addEventListener("click", function(){
 				$("#updateNbstateModal").modal("hide");
-
 			});
 		}
 	</script>
@@ -256,9 +216,11 @@
 		function nbSearchState(searchVal){
 			console.log("nbSearchState() 실행");
 			console.log("정렬 선택 : " + searchVal);
+			var searchType = $("#ParamSearchType").val();
+			var searchText = $("#ParamSearchText").val();
 			$.ajax({
 				type: "get",
-				data: {"searchVal":searchVal},
+				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText},
 				url: "admin_selectNoticeList_ajax",
 				dataType: "json",
 				success: function(result){
@@ -301,7 +263,7 @@
 			$("#updateNbstateModal").modal("show");
 		}
 		
-		// 회원상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
+		// 공지상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
 		function updateNbstate(){
 			console.log("updateNbstate() 실행");
 			var nbcode = $("#nbcode").val();

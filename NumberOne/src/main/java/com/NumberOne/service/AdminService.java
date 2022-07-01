@@ -145,15 +145,19 @@ public class AdminService {
 		ArrayList<NoticeDto> noticeList = adao.admin_selectNoticeList(searchVal, searchType, keyword);
 		System.out.println(noticeList);
 		mav.addObject("noticeList", noticeList);
-		mav.addObject("serarchText", keyword);
+		mav.addObject("searchText", keyword);
+		mav.addObject("searchType", searchType);
 		mav.setViewName("admin/Admin_NoticeList");
 		return mav;
 	}
 
 	// 선택한 상태값에 따른 공지목록 ajax
-	public String admin_selectNoticeList_ajax(String searchVal) {
+	public String admin_selectNoticeList_ajax(String searchVal, String searchType, String keyword) {
 		System.out.println("AdminService_admin_selectNoticeList_ajax() 호출");
-		ArrayList<NoticeDto> noticeList = adao.admin_selectNoticeList(searchVal, null, null);
+		System.out.println("정렬 val : " + searchVal);
+		System.out.println("검색 type : " + searchType);
+		System.out.println("검색 keyword : " + keyword);
+		ArrayList<NoticeDto> noticeList = adao.admin_selectNoticeList(searchVal, searchType, keyword);
 		System.out.println(noticeList);
 		gson = new Gson();
 		String noticeList_json = gson.toJson(noticeList);
@@ -169,17 +173,5 @@ public class AdminService {
 		return updateResult;
 	}
 
-	// 검색한 공지목록 조회
-//	public ModelAndView admin_selectSearchNoticeList(String searchType, String keyword) {
-//		System.out.println("AdminService_admin_selectSearchNoticeList() 호출");
-//		System.out.println("검색할 searchType : " + searchType);
-//		System.out.println("검색할 keyword : " + keyword);
-//		mav = new ModelAndView();
-//		ArrayList<NoticeDto> searchNoticeList = adao.admin_selectNoticeList(searchType, keyword);
-//		mav.addObject("noticeList", searchNoticeList);
-//		mav.addObject("serarchText", keyword);
-//		mav.setViewName("admin/Admin_NoticeList");
-//		return mav;
-//	}
 
 }
