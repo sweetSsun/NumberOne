@@ -14,8 +14,16 @@
 	<select id="selectCheckMid"   resultType="com.NumberOne.dao.MemberDao">
 		SELECT MID FROM MEMBERS WHERE MID = #{inputId}
 	</select> -->
-
-
+	<!--
+	<select id="selectMemberId_ajax" resultType="com.NumberOne.dao.MemberDto">
+		select mid, mstate 
+		from members 
+		where mname = #{checkMname}
+		and memail = #{checkMemail}
+	</select>
+	-->
+	
+	
 </mapper>
 
 

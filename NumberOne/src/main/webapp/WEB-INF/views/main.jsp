@@ -16,7 +16,7 @@
 
     <!-- Css Styles -->
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
-    <%@ include file="/resources/css/BarCss.jsp" %>
+    <%@ include file="/resources/css/CommonCss.jsp" %>
     
 	<!-- 배너 -->    
     <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
