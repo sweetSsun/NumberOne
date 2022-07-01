@@ -46,6 +46,7 @@ public class HomeController {
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
 		String formattedDate = dateFormat.format(date);
 		model.addAttribute("serverTime", formattedDate );
+
 		
 		ModelAndView mav = new ModelAndView();
 		
@@ -79,6 +80,7 @@ public class HomeController {
 		
 		mav.setViewName("Main");
 		return mav;
+
 	}
 	
 	

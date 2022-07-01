@@ -11,4 +11,58 @@ public class ReplyDto {
 	private String rpmid;		//작성자
 	private String rpdate;		//작성일
 	private int rpstate;		//상태
+	private String rpnickname;	//작성자 닉네임
+	
+	public String getRpcode() {
+		return rpcode;
+	}
+	public void setRpcode(String rpcode) {
+		this.rpcode = rpcode;
+	}
+	public String getRpbdcode() {
+		return rpbdcode;
+	}
+	public void setRpbdcode(String rpbdcode) {
+		this.rpbdcode = rpbdcode;
+	}
+	public String getRpcontents() {
+		return rpcontents;
+	}
+	public void setRpcontents(String rpcontents) {
+		this.rpcontents = rpcontents;
+	}
+	public String getRpmid() {
+		return rpmid;
+	}
+	public void setRpmid(String rpmid) {
+		this.rpmid = rpmid;
+	}
+	public String getRpdate() {
+		return rpdate;
+	}
+	public void setRpdate(String rpdate) {
+		this.rpdate = rpdate;
+	}
+	public int getRpstate() {
+		return rpstate;
+	}
+	public void setRpstate(int rpstate) {
+		this.rpstate = rpstate;
+	}
+	
+	public String getRpnickname() {
+		return rpnickname;
+	}
+	public void setRpnickname(String rpnickname) {
+		this.rpnickname = rpnickname;
+	}
+	@Override
+	public String toString() {
+		return "ReplyDto [rpcode=" + rpcode + ", rpbdcode=" + rpbdcode + ", rpcontents=" + rpcontents + ", rpmid="
+				+ rpmid + ", rpdate=" + rpdate + ", rpstate=" + rpstate + ", rpnickname=" + rpnickname + "]";
+	}
+	
+	
+	
+	
 }
