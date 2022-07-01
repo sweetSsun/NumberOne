@@ -116,7 +116,9 @@ public class MemberService {
 			if(loginMember .getMstate() == 0) {
 				ra.addFlashAttribute("msg", "이용 정지 된 계정 입니다.");
 				mav.setViewName("redirect:/loadToLogin");
-			}else {
+			} else if(loginMember.getMid().equals("admin")) {
+				mav.setViewName("redirect:/admin_loadToAdminMainPage");
+			} else {
 				//로그인 성공
 				session.setAttribute("loginId", loginMember.getMid());
 				session.setAttribute("loginProfile", loginMember.getMprofile());

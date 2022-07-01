@@ -141,7 +141,7 @@
 					</div>
 					<div class="col-2">
 						<!-- 글쓰기 버튼 -->
-						<button class="btn btn-primary btm-sm">글쓰기</button>
+						<button class="btn btn-primary btm-sm" onclick="location.href='${pageContext.request.contextPath }/loadTowriteRoom'">글쓰기</button>
 					</div>
 					
 				</div>
@@ -151,12 +151,12 @@
 					<ul>
 						<c:forEach items="${roomList}" var="room">
 							<li>
-								<a href="#" class="">
+								<a href="" class="">
 									<div class="screen">
 										<div class="top">${room.bdtitle}</div>
 										<div class="bottom">${room.bddate }</div>
 										<img class="roomMainImg" alt="" src="${pageContext.request.contextPath }/resources/img/room/${room.bdimg}"> 
-										<div class="info">${room.bdnickname }|<i class="fa-regular fa-user"></i> ${room.bdhits }|<i class="fa-regular fa-thumbs-up"></i> ${room.bdrecommend}|<i class="fa-regular fa-comment"></i> ${room.bdreply}|<i class="fa-regular fa-star"></i> ${room.bdscrap}</div>										
+										<div class="info">${room.bdnickname }| <i class="fa-regular fa-eye"></i> ${room.bdhits }| <i class="fa-regular fa-thumbs-up"></i> ${room.bdrecommend} | <i class="fa-regular fa-comment"></i> ${room.bdreply} | <i class="fa-regular fa-star"></i> ${room.bdscrap}</div>										
 									</div>
 								</a>
 							</li>						

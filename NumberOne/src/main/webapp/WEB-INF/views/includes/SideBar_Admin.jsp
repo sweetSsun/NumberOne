@@ -16,10 +16,10 @@
 							<hr>
                         </div>
                         <div class="sidebar-item">
-                            <h4><a href="admin_selectMemberList">회원 관리</a></h4>
+                            <h4><a href="admin_selectMemberList?page=1">회원 관리</a></h4>
                         </div>
                         <div class="sidebar-item" >
-                            <h4><a href="admin_selectNoticeList">공지 관리</a></h4>
+                            <h4><a href="admin_selectNoticeList?searchVal=all&searchType=&keyword=">공지 관리</a></h4>
                         </div>
                        	<div class="sidebar-item">
                             <h4><a href="#">중고거래 관리</a></h4>

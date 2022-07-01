@@ -77,5 +77,11 @@ public interface BoardDao {
 	          + "WHERE BD.BDMID = MB.MID "
 	          + "ORDER BY BDCODE DESC " )
 	   ArrayList<BoardDto> selectBoardList();
+
+	//아이디로 닉네임 찾기
+	@Select("select mnickname from members where mid= #{mid}")
+	String selectRoomWriterMnickname(String mid);
+
+
 	
 }

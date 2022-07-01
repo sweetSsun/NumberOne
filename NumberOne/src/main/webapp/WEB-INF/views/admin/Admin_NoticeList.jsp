@@ -26,40 +26,66 @@
 <body>
 
 	<!-- TobBar -->
-	<%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
+	<c:choose>
+		<c:when test="${sessionScope.loginId != 'admin'}">
+			<%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
+		</c:when>
+		<c:otherwise>
+			<%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
+		</c:otherwise>
+	</c:choose>
 	<!-- End of TobBar -->
 	
 	<main>
 		<!-- 사이드바 -->
-		<%@ include file="/WEB-INF/views/includes/SideBar_Admin.jsp" %>
+	<c:choose>
+		<c:when test="${sessionScope.loginId != 'admin'}">
+		<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
+		</c:when>
+		<c:otherwise>
+			<%@ include file= "/WEB-INF/views/includes/SideBar_Admin.jsp" %>
+		</c:otherwise>
+	</c:choose>
 		
 		<section>
 		<!-- 본문 -->
 			<div class="container">
-            <div class="row" style="margin:auto;">
-                <h1 class="text-center">공지 관리페이지 : Admin_NoticeList.jsp</h1>
-				<div class="col-4 ">
-					<select onclick="nbSearchTypeSel(this.value)">
-						<option value="nbTitle">제목</option>
-						<option value="nbContents">내용</option>
-						<option value="nbTitleContents">제목+내용</option>
-					</select>
-				</div>
-               <div class="col-6">
-                  <form action="#" method="get">
-                  <div class="input-group">
-                    <input type="text" class="form-control" name="keyword" placeholder="검색 키워드를 입력하세요!">
-                    <span class="input-group-btn">
-                      <button class="btn btn-secondary">찾기</button>
-                    </span>
-                  </div>
-                  </form>
-               </div>
-               	<div class="col-2">
+            	<form action="admin_selectNoticeList" method="get">
+	            <div class="row" style="margin:auto;">
+	                <h1 class="text-center">공지 관리페이지 : Admin_NoticeList.jsp</h1>
+					<div class="col-4 ">
+						<select name="searchType">
+							<option value="nbTitle">제목</option>
+							<option value="nbContents">내용</option>
+							<option value="nbTitleContents">제목+내용</option>
+						</select>
+					</div>
+	                <div class="col-6">
+	                	<div class="input-group">
+	                    	<input type="text" class="form-control" name="keyword" placeholder="검색 키워드를 입력하세요!">
+	                    	<span class="input-group-btn">
+	                      	<button class="btn btn-secondary">찾기</button>
+	                    	</span>
+	                	</div>
+	            	</div>
+		            <div class="col-2">
 						<!-- 공지작성 버튼 -->
-					<button class="btn btn-primary btm-sm">글쓰기</button>
+						<button type="button" class="btn btn-primary btm-sm">글쓰기</button>
+					</div>
+	            </div>
+	            </form>
+				
+			<c:if test="${searchText.length() > 0 }">
+				<!-- 검색결과 안내  -->
+				<div class="row mb-1 mt-1">
+					<h3 class="text-center">[ <span class="text-primary">${searchText}</span> ] 로 검색한 결과 입니다.</h3>  
 				</div>
-            </div>
+			</c:if>
+			
+			<!-- 검색 후 상태값으로 정렬 시 함께 넘겨줄 데이터 -->
+			<input type="hidden" id="ParamSearchText" value="${searchText }">
+			<input type="hidden" id="ParamSearchType" value="${searchType }">
+           
             <div class="row" style="margin-top: 20px;">
                <div class="col">
                   <!-- 상태값 정렬 -->
@@ -89,7 +115,7 @@
 	                   <!-- 회원관리 목록 -->
 	                   <tr style="border-bottom: solid gray 1px;">
 	                      <td>${notice.nbcode}</td>
-	                      <td><a href="#('${notice.nbcode}')">${notice.nbtitle}</a></td>
+	                      <td><a href="selectNoticeBoardView?nbcode=${notice.nbcode}">${notice.nbtitle}</a></td>
 	                      <td>${notice.nbmid}</td>
 	                      <td>${notice.nbdate}</td>
 	                      <td>${notice.nbhits}</td>
@@ -107,6 +133,9 @@
 	                </c:forEach>                 
                 </tbody>
             </table>
+            
+  			<!-- 페이징 -->
+            
             </div>
             
 			</div>
@@ -114,7 +143,7 @@
 	</main>
 	
 	
-	<!-- 회원상태 변경 모달 -->
+	<!-- 공지상태 변경 모달 -->
 	<div class="modal fade" id="updateNbstateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -135,129 +164,19 @@
         </div>
     </div>
 	
-	<!-- 회원 상세정보 모달 -->
-	<div class="modal fade" id="memberInfoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document" style="max-width:700px;">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="memberInfoModalLabel"> </h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body" id="memberInfoModalBody"> 
-                	<div class="row">
-	                		<div class="col-5">
-                                <div class="no-gutters align-items-center">
-                                    <div class="h6 mb-1 font-weight-bold text-gray-800" >
-                                 		<img class="img-fluid" alt="영화포스터" style="max-height:300px;" id="mI_mprofile" src="">
-                                 		프로필이미지
-                                    </div>
-                                    <div>
-                                    	<label class="small">상태메세지</label>
-		                                <p class="form-control" id="mI_mmessage" style="min-height:38px;"></p>
-                                    </div>
-                                </div>
-                            </div>
-                           	<div class="col-7">
-                                <div class="no-gutters align-items-center">
-                                    <div class="h6 font-weight-bold text-gray-800">
-                                    	<div>
-		                                  	<label class="small">아이디</label>
-		                                	<p class="form-control" id="mI_mid" style="min-height:38px;"></p>
-                                    	</div>
-                                    	<div class="row">
-	                                  		<div class="col-6">
-			                                  	<label class="small">이름</label>
-		                               			<p class="form-control" id="mI_mname" style="min-height:38px;"></p>
-	                                  		</div>
-	                                  		<div class="col-6">
-			                                  	<label class="small">닉네임</label>
-			                                  	<p class="form-control" id="mI_mnickname" style="min-height:38px;"></p>
-	                                  		</div>
-                                    	</div>
-	                                  	<div>                                	
-		                                  	<label class="small">연락처</label>
-		                                <p class="form-control" id="mI_mphone"  style="min-height:38px;"></p>
-	                                  	</div>
-	                                  	<div>                                	
-		                                  	<label class="small">이메일</label>
-		                              		<p class="form-control" id="mI_memail" style="min-height:38px;"></p>
-	                                  	</div>
-	                                  	<div>
-		                                  	<label class="small">주소</label>
-		                                	<p class="form-control" id="mI_maddr" style="min-height:38px;"></p>
-                                    	</div>
-	                                  	<div class="row">
-	                                  		<div class="col-9">
-			                                  	<label class="small">가입일</label>
-			                                	<p class="form-control" id="mI_mjoindate" style="min-height:38px;"></p>
-	                                  		</div>
-	                                  		<div class="col-3">
-			                                  	<label class="small">경고횟수</label>
-			                                	<p class="form-control" id="mI_mwarning" style="min-height:38px;"></p>
-		                                	</div>
-                                    	</div>
-	                                </div>
-                                </div>
-                            </div>
-                        </div>
-                
-                </div>
-                <div class="modal-footer">
-                    <button class="close btn btn-primary" type="button" data-dismiss="modal">확인</button>
-                </div>
-            </div>
-        </div>
-    </div>
-	
+
 	
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 	
 	<script type="text/javascript">
-		// 모달창 close 하는 스크립트..... 닫고 한번 더 클릭해야 정상작동되서 수정이 필요.. 부트스트랩 js가 필요한가
+		// 모달창 close 하는 스크립트
  		var modal = $(".modal");
 		var close = $(".close");
 		for (var i = 0; i < close.length; i++){
 			close[i].addEventListener("click", function(){
-				for (var j = 0; j < modal.length; j++){
-					modal[j].classList.remove('show');
-					$(".modal-backdrop").remove(); 
-				}
-			});
-		}
-	</script>
-	
-	<script type="text/javascript">
-		// 회원 상세정보 모달창 출력
-		function showMemberInfoModal(mid){
-			console.log("showMemberInfoModal() 실행");
-			$.ajax({
-				type: "post",
-				data: {"mid":mid},
-				url: "admin_selectMemberInfo_ajax",
-				dataType: "json",
-				success: function(result){
-					console.log(result);
-					$("#memberInfoModalLabel").text(mid + " 회원 상세정보");
-
-					// 저장경로 때문에 프로필이미지는 수정 필요
-					$("#mI_mprofile").attr("src", result.mprofile);
-					$("#mI_mmessage").text(result.mmessage);
-					$("#mI_mid").text(result.mid);
-					$("#mI_mname").text(result.mname);
-					$("#mI_mnickname").text(result.mnickname);
-					$("#mI_mphone").text(result.mphone);
-					$("#mI_memail").text(result.memail);
-					$("#mI_maddr").text(result.maddr);
-					$("#mI_mjoindate").text(result.mjoindate);
-					$("#mI_mwarning").text(result.mwarning);
-					
-					$("#memberInfoModal").modal("show");
-				}
+				$("#updateNbstateModal").modal("hide");
 			});
 		}
 	</script>
@@ -267,9 +186,11 @@
 		function nbSearchState(searchVal){
 			console.log("nbSearchState() 실행");
 			console.log("정렬 선택 : " + searchVal);
+			var searchType = $("#ParamSearchType").val();
+			var searchText = $("#ParamSearchText").val();
 			$.ajax({
 				type: "get",
-				data: {"searchVal":searchVal},
+				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText},
 				url: "admin_selectNoticeList_ajax",
 				dataType: "json",
 				success: function(result){
@@ -312,7 +233,7 @@
 			$("#updateNbstateModal").modal("show");
 		}
 		
-		// 회원상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
+		// 공지상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
 		function updateNbstate(){
 			console.log("updateNbstate() 실행");
 			var nbcode = $("#nbcode").val();

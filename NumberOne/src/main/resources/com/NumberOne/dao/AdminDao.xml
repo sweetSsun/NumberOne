@@ -5,12 +5,12 @@
   
 <mapper namespace="com.NumberOne.dao.AdminDao">
 
-	<select id="admin_selectMemberList" resultType="com.NumberOne.dto.MemberDto">
-		SELECT MID, MPW, MNAME, MNICKNAME, MPHONE, MEMAIL, MADDR, MPROFILE, MMESSAGE, MSTATE, MJOINDATE, NVL(WM.MWARNING, 0) MWARNING
+	<select id="selectMemberTotalCount" resultType="int">
+		SELECT COUNT(*)
 		FROM MEMBERS MB
 		    LEFT OUTER JOIN (SELECT WMEDMID, COUNT(WMEDMID) MWARNING FROM WARNINGMEMBERS GROUP BY WMEDMID) WM
 		    ON MB.MID = WM.WMEDMID
-		<if test="searchVal == 'active'">
+    	<if test="searchVal == 'active'">
 			WHERE MSTATE=1 AND MWARNING IS NULL
 		</if>
 		<if test="searchVal == 'warning'">
@@ -19,7 +19,27 @@
 		<if test="searchVal == 'inactive'">
 			WHERE MSTATE=0
 		</if>
-		ORDER BY MJOINDATE
+	</select>
+
+	<select id="admin_selectMemberList" resultType="com.NumberOne.dto.MemberDto">
+		SELECT MID, MPW, MNAME, MNICKNAME, MPHONE, MEMAIL, MADDR, MPROFILE, MMESSAGE, MSTATE, TO_CHAR(MJOINDATE,'YYYY-MM-DD') MJOINDATE, MWARNING
+		FROM
+			(SELECT ROWNUM RN, MID, MPW, MNAME, MNICKNAME, MPHONE, MEMAIL, MADDR, MPROFILE, MMESSAGE, MSTATE, MJOINDATE, NVL(WM.MWARNING, 0) MWARNING
+			FROM MEMBERS MB
+			    LEFT OUTER JOIN (SELECT WMEDMID, COUNT(WMEDMID) MWARNING FROM WARNINGMEMBERS GROUP BY WMEDMID) WM
+			    ON MB.MID = WM.WMEDMID
+			<if test="searchVal == 'active'">
+				WHERE MSTATE=1 AND MWARNING IS NULL
+			</if>
+			<if test="searchVal == 'warning'">
+				WHERE WM.MWARNING > 0
+			</if>
+			<if test="searchVal == 'inactive'">
+				WHERE MSTATE=0
+			</if>
+			ORDER BY MJOINDATE)
+		WHERE RN BETWEEN ${startRow} AND ${endRow}
+		
 	</select>
 
 	<update id="admin_updateMstate_ajax">
@@ -28,7 +48,7 @@
 	</update>
 	
 	<select id="admin_selectMemberInfo_ajax" resultType="com.NumberOne.dto.MemberDto">
-		SELECT MID, MPW, MNAME, MNICKNAME, MPHONE, MEMAIL, MADDR, MPROFILE, MMESSAGE, MSTATE, MJOINDATE, NVL(WM.MWARNING, 0) MWARNING
+		SELECT MID, MPW, MNAME, MNICKNAME, MPHONE, MEMAIL, MADDR, MPROFILE, MMESSAGE, MSTATE, TO_CHAR(MJOINDATE,'YYYY-MM-DD') MJOINDATE, NVL(WM.MWARNING, 0) MWARNING
 		FROM MEMBERS MB
 		    LEFT OUTER JOIN (SELECT WMEDMID, COUNT(WMEDMID) MWARNING FROM WARNINGMEMBERS GROUP BY WMEDMID) WM
 		    ON MB.MID = WM.WMEDMID
@@ -36,17 +56,69 @@
 	</select>
 	
 	<select id="admin_selectNoticeList" resultType="com.NumberOne.dto.NoticeDto">
-		SELECT NBCODE, NBMID, NBTITLE, NBCONTENTS, NBDATE, NBIMG, NBSTATE, NBHITS
+		SELECT ROWNUM RN, NBCODE, NBMID, NBTITLE, NBCONTENTS, TO_CHAR(NBDATE, 'MM-DD') NBDATE, NBIMG, NBSTATE, NBHITS
 		FROM NOTICEBOARDS
+		<if test="searchType.length > 0 || searchVal != 'all'">
+			WHERE
+			<!-- 검색한 키워드 정렬 -->
+			<if test="searchType.length > 0">
+				<choose>
+					<when test="searchType == 'nbTitleContents'">
+						NBTITLE LIKE '%'||#{keyword}||'%' OR NBCONTENTS LIKE '%'||#{keyword}||'%'
+					</when>
+					<otherwise>
+						${searchType} LIKE '%'||#{keyword}||'%'
+					</otherwise>				
+				</choose>
+				<if test="searchVal == 'active' || searchVal == 'inactive'">
+						AND
+				</if>
+			</if>
+		</if>
+		<!-- 상태값에 따른 정렬 -->
 		<if test="searchVal == 'active'">
-			WHERE NBSTATE=1
+			NBSTATE=1
 		</if>
 		<if test="searchVal == 'inactive'">
-			WHERE NBSTATE=0
+			NBSTATE=0
 		</if>
 		ORDER BY NBDATE
 	</select>
-	
+	<!-- 페이징처리 후의 쿼리문 -->
+<!-- 	<select id="admin_selectNoticeList" resultType="com.NumberOne.dto.NoticeDto">
+		SELECT NBCODE, NBMID, NBTITLE, NBCONTENTS, TO_CHAR(NBDATE, 'MM-DD') NBDATE, NBIMG, NBSTATE, NBHITS
+		FROM
+			(SELECT ROWNUM RN, NBCODE, NBMID, NBTITLE, NBCONTENTS, TO_CHAR(NBDATE, 'MM-DD') NBDATE, NBIMG, NBSTATE, NBHITS
+			FROM NOTICEBOARDS
+			<if test="searchType.length > 0 || searchVal != 'all'">
+				WHERE
+				검색한 키워드 정렬
+				<if test="searchType.length > 0">
+					<choose>
+						<when test="searchType == 'nbTitleContents'">
+							NBTITLE LIKE '%'||#{keyword}||'%' OR NBCONTENTS LIKE '%'||#{keyword}||'%'
+						</when>
+						<otherwise>
+							${searchType} LIKE '%'||#{keyword}||'%'
+						</otherwise>				
+					</choose>
+					<if test="searchVal == 'active' || searchVal == 'inactive'">
+							AND
+					</if>
+				</if>
+			</if>
+			상태값에 따른 정렬
+			<if test="searchVal == 'active'">
+				NBSTATE=1
+			</if>
+			<if test="searchVal == 'inactive'">
+				NBSTATE=0
+			</if>
+			ORDER BY NBDATE)
+		WHERE RN BETWEEN ${startRow} AND ${endRow}
+			
+	</select>
+	 -->
 	<update id="admin_updateNbstate_ajax">
 		UPDATE NOTICEBOARDS 
 		SET NBSTATE=${nbstate}
