@@ -115,16 +115,38 @@ public class MemberController {
 		//회원정보 보기
 		@RequestMapping(value = "/selectMyInfoMemberView")
 		public ModelAndView selectMyInfoMemberView() {
-			System.out.println("회원정보 페이지 이동요청");
+			System.out.println("마이페이지 회원정보 이동 요청");
 			
 			mav = msvc.selectMyInfoMemberView();
 			
 			return mav;
 			
 		}
+		
+		//마이페이지 커뮤니티 
+		@RequestMapping(value = "/selectMyInfoCommunityView")
+		public ModelAndView selectMyInfoCommunityView() {
+			System.out.println("마이페이지 커뮤니티");
+			
+			mav = msvc.selectMyInfoCommunityView();
+			
+			return mav;
+			
+		}		
+		
+		//마이페이지 중고거래
+		
+		@RequestMapping(value = "/selectMyInfoResellView")
+		public ModelAndView selectMyInfoResellView() {
+			System.out.println("마이페이지 중고거래");
+			
+			mav = msvc.selectMyInfoResellView();
+			
+			return mav;
+	
+		}
+
 }
-
-
 
 
 

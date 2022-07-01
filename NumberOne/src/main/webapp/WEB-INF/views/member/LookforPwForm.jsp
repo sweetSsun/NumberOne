@@ -81,7 +81,7 @@
                              <div class="row">
                              	<div class="col-lg-12 col-md-6">
                              		<div class="checkout__input"  style="text-align: center;">
-                                 		<input type="text" style="width: 420px; height:15px; border:1px;" value="아이디">
+                                 		<input type="text" style="width: 420px; height:15px; border:1px;" value="아이디"  readonly="readonly">
                              		</div>
                              	</div>
                             </div>
@@ -98,7 +98,7 @@
                              <div class="row">
                              	<div class="col-lg-12 col-md-6">
                              		<div class="checkout__input"  style="text-align: center;">
-                                 		<input type="text" style="width: 420px; height:15px; border:1px;" value="메일주소">
+                                 		<input type="text" style="width: 420px; height:15px; border:1px;" value="메일주소"  readonly="readonly">
                              		</div>
                              	</div>
                             </div>

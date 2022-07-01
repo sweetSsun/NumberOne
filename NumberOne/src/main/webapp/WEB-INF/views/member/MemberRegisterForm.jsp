@@ -161,7 +161,7 @@
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
                                         <p>닉네임<span>*</span></p>
-                                        <input type="text" placeholder="영문&숫자 2~10자로 입력해주세요." id="inputMnickname" name="mnickname">
+                                        <input type="text" placeholder="2~10자로 입력해주세요." id="inputMnickname" name="mnickname">
  									<span id="nicknameCheckMsg" class="msg"></span>                                   
                                     </div>
                                 </div>

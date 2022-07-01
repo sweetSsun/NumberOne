@@ -2,11 +2,10 @@ package com.NumberOne.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,9 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.NumberOne.dao.MemberDao;
+import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.MemberDto;
+import com.NumberOne.dto.ReplyDto;
 
 @Service
 public class MemberService {
@@ -120,6 +121,8 @@ public class MemberService {
 				//로그인 성공
 				session.setAttribute("loginId", loginMember.getMid());
 				session.setAttribute("loginProfile", loginMember.getMprofile());
+	
+				
 				mav.setViewName("redirect:/");				
 			}
 			
@@ -164,7 +167,7 @@ public class MemberService {
 		
 	}
 
-	//회원정보 보기
+	//마이페이지 회원정보
 	public ModelAndView selectMyInfoMemberView() {
 		ModelAndView mav = new ModelAndView();
 		System.out.println("MemberService.selectMyInfoMemberView 호출");
@@ -190,6 +193,41 @@ public class MemberService {
 		mav.addObject("memberInfo", memberInfo);
 		mav.setViewName("member/MyInfoMemberPage");
 		
+		return mav;
+	}
+
+	//마이페이지 커뮤니티
+	public ModelAndView selectMyInfoCommunityView() {
+		ModelAndView mav = new ModelAndView();
+		System.out.println("MemberService.selectMyInfoCommunityView 호출");
+		String loginId = (String) session.getAttribute("loginId");
+		System.out.println("로그인 된 아이디 : " + loginId);
+		
+		//작성글
+		ArrayList<BoardDto> board = mdao.selectMyInfoMemberView_Boards(loginId);
+		System.out.println(board);
+
+		//댓글작성한 글
+		ArrayList<ReplyDto> reply = mdao.selectMyInfoMemberView_Reply(loginId);
+		System.out.println(reply);	
+
+		mav.addObject("board", board);
+		mav.addObject("reply", reply);
+		mav.setViewName("member/MyInfoCommunityPage");
+		return mav;
+	}
+
+	//마이페이지 중고거래
+	public ModelAndView selectMyInfoResellView() {
+		
+		ModelAndView mav = new ModelAndView();
+		System.out.println("MemberService.selectMyInfoResellView 호출");
+		String loginId = (String) session.getAttribute("loginId");
+		System.out.println("로그인 된 아이디 : " + loginId);
+		
+		
+		
+		mav.setViewName("member/MyInfoResellPage");
 		return mav;
 	}
 

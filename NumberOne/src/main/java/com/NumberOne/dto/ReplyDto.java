@@ -11,4 +11,7 @@ public class ReplyDto {
 	private String rpmid;		//작성자
 	private String rpdate;		//작성일
 	private int rpstate;		//상태
+	
+	private String rpbdtitle;		//댓글원본 글 제목
+	
 }

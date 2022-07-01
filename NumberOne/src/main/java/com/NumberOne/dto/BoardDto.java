@@ -23,10 +23,10 @@ public class BoardDto {
 	private int bdstate;			//글상태
 	private int bdhits;				//조회수
 	
-	private int bdrecommend;        //추천수-자취방 자랑, 일반게시글 (recommend 테이블 조인)
-	private int bdwarning;			//신고수-자취방 자랑, 일반게시글 (warning 테이블 조인)
-	private int bdreply;			//댓글수-자취방 자랑, 일반게시글 (reply 테이블 조인)
-	private int bdscrap;            //스크랩수-자취방 자랑 (필요없으면 삭제)
+	private String bdrecommend;        //추천수-자취방 자랑, 일반게시글 (recommend 테이블 조인)
+	private String bdwarning;			//신고수-자취방 자랑, 일반게시글 (warning 테이블 조인)
+	private String bdreply;			//댓글수-자취방 자랑, 일반게시글 (reply 테이블 조인)
+	private String bdscrap;            //스크랩수-자취방 자랑 (필요없으면 삭제)
 
 	
 	//파일 처리를 위한 필드
@@ -124,35 +124,35 @@ public class BoardDto {
 		this.bdhits = bdhits;
 	}
 
-	public int getBdrecommend() {
+	public String getBdrecommend() {
 		return bdrecommend;
 	}
 
-	public void setBdrecommend(int bdrecommend) {
+	public void setBdrecommend1(String bdrecommend) {
 		this.bdrecommend = bdrecommend;
 	}
 
-	public int getBdwarning() {
+	public String getBdwarning() {
 		return bdwarning;
 	}
 
-	public void setBdwarning(int bdwarning) {
+	public void setBdwarning1(String bdwarning) {
 		this.bdwarning = bdwarning;
 	}
 
-	public int getBdreply() {
+	public String getBdreply() {
 		return bdreply;
 	}
 
-	public void setBdreply(int bdreply) {
+	public void setBdreply1(String bdreply) {
 		this.bdreply = bdreply;
 	}
 
-	public int getBdscrap() {
+	public String getBdscrap() {
 		return bdscrap;
 	}
 
-	public void setBdscrap(int bdscrap) {
+	public void setBdscrap1(String bdscrap) {
 		this.bdscrap = bdscrap;
 	}
 
@@ -188,6 +188,22 @@ public class BoardDto {
 				+ ", bdrecommend=" + bdrecommend + ", bdwarning=" + bdwarning + ", bdreply=" + bdreply + ", bdscrap="
 				+ bdscrap + ", bdimgfile=" + bdimgfile + ", bddetailimgfile=" + Arrays.toString(bddetailimgfile)
 				+ ", bdnickname=" + bdnickname + "]";
+	}
+
+	public void setBdrecommend(String bdrecommend) {
+		this.bdrecommend = bdrecommend;
+	}
+
+	public void setBdwarning(String bdwarning) {
+		this.bdwarning = bdwarning;
+	}
+
+	public void setBdreply(String bdreply) {
+		this.bdreply = bdreply;
+	}
+
+	public void setBdscrap(String bdscrap) {
+		this.bdscrap = bdscrap;
 	}
 
 	
