@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <title>1인자 - 로그인페이지</title>
 
-<%@ include file="/resources/css/BarCss.jsp"%>
+<%@ include file="/resources/css/CommonCss.jsp"%>
 <!-- 부트스트랩 -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
@@ -74,36 +74,36 @@
             <div class="checkout__form">
                 <h4>로그인</h4>
                 <br>
-                <form class="user" action="memberLogin" method="post">
+                <form class="user" action="selectMemberLogin" method="post">
                     <div class="row">
                         <div class="col-lg-12 col-md-6">
                         <!-- ID , 이름 -->
-                            <div class="row">
-                            	<div class="col-lg-12 col-md-6">
-                                	<div class="checkout__input" style="margin-left: 28%;">
-                                 		<span>아이디</span>
-                                	</div>
-                              	</div>
-                             </div>
+                             <div class="row">
+                             	<div class="col-lg-12 col-md-6">
+                             		<div class="checkout__input"  style="text-align: center;">
+                                 		<input type="text" style="width: 420px; height:15px; border:1px;" value="아이디">
+                             		</div>
+                             	</div>
+                            </div>
                              <div class="row">
                              	<div class="col-lg-12 col-md-6">
                              		<div class="checkout__input" style="text-align: center;">
-                                 		<input type="text" id="userMid" name="mid" style="text-align: center; width: 400px;"> 
+                                 		<input type="text" id="userMid" name="mid" style="width: 400px;"> 
                              		</div>
                              	</div>
                             </div>
                         <!-- 비번 , 비번확인 -->
-                            <div class="row">
-                            	<div class="col-lg-12 col-md-6">
-                                	<div class="checkout__input" style="margin-left: 28%;">
-                                 		<span>비밀번호</span>
-                                	</div>
-                              	</div>
-                             </div>
+                             <div class="row">
+                             	<div class="col-lg-12 col-md-6">
+                             		<div class="checkout__input"  style="text-align: center;">
+                                 		<input type="text" style="width: 420px; height:15px; border:1px;" value="비밀번호">
+                             		</div>
+                             	</div>
+                            </div>
                              <div class="row">
                              	<div class="col-lg-12 col-md-6">
                              		<div class="checkout__input" style="text-align: center;">
-                                 		<input type="text" id="userMpw" name="mpw" style="text-align: center; width: 400px;"> 
+                                 		<input type="text" id="userMpw" name="mpw" style="width: 400px;"> 
                              		</div>
                              	</div>
                             </div>
@@ -115,12 +115,12 @@
                             <div class="row">
                             	<div class="col-lg-6 col-md-1">
                                 	<div class="checkout__input" style="text-align: right;">
-                                 		<a class="small" href="password.html">아이디 찾기</a>
+                                 		<a class="small" href="loadToLookforId">아이디 찾기</a>
                                 	</div>
                               	</div>                             	
                              	<div class="col-lg-6 col-md-1">
                              		<div class="checkout__input" style="text-align: left;">
-                                 		<a class="small" href="password.html">비밀번호 찾기</a>
+                                 		<a class="small" href="loadToLookforPw">비밀번호 찾기</a>
                              		</div>
                              	</div>
                             </div>                        							

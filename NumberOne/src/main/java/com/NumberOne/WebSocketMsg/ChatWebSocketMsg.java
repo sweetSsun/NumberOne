@@ -30,13 +30,14 @@ public class ChatWebSocketMsg extends TextWebSocketHandler {
 		ChatDto chatdto = new ChatDto();
 		chatdto.setChfrmid(chfrmid); 		// from 메세지를 보내는 사람의 ID 
 		
+
 		
 		// 실행하면서 나타날 말이 있으면 여기다 쓰면 좋겠는데 오류가 난다...
 		// session.sendMessage(new TextMessage(gson.toJson(chatdto)));
 		
 	
 		
-		
+
 	}
 	
 	@Override
