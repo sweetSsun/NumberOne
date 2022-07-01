@@ -43,6 +43,29 @@
  	 </select>
  	 
  	 <select id="selectNoticeBoardView" resultType="com.NumberOne.dto.NoticeDto">
+	 	 <!-- 공지글 조회 -->
+	 	 SELECT * 
+	 	 FROM NOTICEBOARDS
+	 	 WHERE NBCODE = #{nbcode} 
+ 	 </select>
+ 	 
+ 	 <select id="selectRoomList" resultType="com.NumberOne.dto.BoardDto">
+ 	 	select bdcode, bdmid, bdtitle, bddate, bdimg, bdstate, bdhits,
+		bdscrap, bdrecommend, bdreply, mnickname as bdnickname   	
+		from boards b
+		left outer join (select scbdcode, count(*) as bdscrap from scrap group by scbdcode) sc
+		on b.bdcode = sc.scbdcode
+		left outer join (select rcbdcode, count(*) as bdrecommend from recommend group by rcbdcode) rc
+		on b.bdcode = rc.rcbdcode
+		left outer join (select rpbdcode, count(*) as bdreply from reply group by rpbdcode) rp
+		on b.bdcode = rp.rpbdcode
+		left outer join members m
+		on b.bdmid = m.mid
+		where b.bdcategory='자랑'
+		and b.bdstate='1'
+	 </select>
+ 	 
+ 	 <select id="selectNoticeBoardView" resultType="com.NumberOne.dto.NoticeDto">	
 	 	 <!-- 공지글 상세 -->
 	 	 SELECT NBCODE,NBMID,NBTITLE,NBCONTENTS,TO_CHAR(NBDATE,'YY-MM-DD HH24:MI') AS NBDATE,
  			   NBIMG,NBSTATE,NBHITS  

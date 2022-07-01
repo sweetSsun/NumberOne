@@ -18,17 +18,11 @@ public interface BoardDao {
 	//자랑글 등록
 	@Insert("insert into boards (BDCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, BDDATE, BDIMG, BDDETAILIMG) "
 			+ "values (#{bdcode}, #{bdcategory}, #{bdmid}, #{bdtitle}, #{bdcontents}, sysdate, #{bdimg}, #{bddetailimg})")
-	int writeRoom(BoardDto room);
-
-	//일반게시판 글목록 조회 
-	@Select("SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, "
-	       + "      TO_CHAR(BDDATE,'YY-MM-DD') AS BDDATE, "
-	       + "      BDIMG, BDDETAILIMG, BDSTATE, BDHITS, MB.MNICKNAME AS BDNICKNAME "
-	       + "FROM BOARDS BD, MEMBERS MB "
-	       + "WHERE BD.BDMID = MB.MID "
-	       + "ORDER BY BDCODE DESC " )
-	ArrayList<BoardDto> selectBoardList();
+	int insertRoomWrite(BoardDto room);
 	   
+	   //자취방 자랑 글목록 조회 
+	   ArrayList<BoardDto> selectRoomList(String bdcategory);
+
 	//공지게시판 글목록 조회 
 	ArrayList<NoticeDto> selectNoticeList();
 	 
@@ -49,5 +43,14 @@ public interface BoardDao {
 	
 	//게시판 글상세페이지
 	BoardDto selectBoardView(String bdcode);	
+	
+	   //일반게시판 글목록 조회 
+	   @Select("SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, "
+	          + "      TO_CHAR(BDDATE,'YY-MM-DD') AS BDDATE, "
+	          + "      BDIMG, BDDETAILIMG, BDSTATE, BDHITS, MB.MNICKNAME AS BDNICKNAME "
+	          + "FROM BOARDS BD, MEMBERS MB "
+	          + "WHERE BD.BDMID = MB.MID "
+	          + "ORDER BY BDCODE DESC " )
+	   ArrayList<BoardDto> selectBoardList();
 	
 }
