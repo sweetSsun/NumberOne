@@ -5,7 +5,7 @@
 <head>
 
 <meta charset="UTF-8">
-<title>1인자 - 중고거래 메인</title>
+<title>1인자 - 중고거래 사구게시판</title>
 
 <%@ include file="/resources/css/BarCss.jsp"%>
 <!-- 부트스트랩 -->
@@ -221,7 +221,7 @@ z-index: 1;
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h1 class="text-center">중고거래 메인 페이지</h1>
+				<h1 class="text-center">중고거래 사구게시판</h1>
 				<div class="d_top">
 					
 					<div class="flex_div flex-p0 flex_between">
@@ -257,7 +257,7 @@ z-index: 1;
 				
 				<div class="d_body">
 					<div class="text-left">
-						팔구게시판
+						사구게시판
 
 					</div>
 					

@@ -36,4 +36,10 @@ public class ResellController {
 		return "resell/Resell_BuyList";
 	}
 	
+	@RequestMapping (value="/selectResellSellList")
+	public String selectResellSellList() {
+		return "resell/Resell_SellList";
+	}
+	
+	
 }

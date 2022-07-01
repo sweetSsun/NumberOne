@@ -221,7 +221,7 @@ z-index: 1;
 			<div class="container">
 				<h1 class="text-center">중고거래 메인 페이지</h1>
 				<div class="d_top">
-					<div>** 지역입니다.</div>
+					<div id="my_region">** 지역입니다.</div>
 					<div class="flex_div flex_center flex-p0">
 
 						<div>
@@ -351,7 +351,7 @@ z-index: 1;
 				<div class="d_footer">
 					<div class="flex_div flex_between flex-p0">
 						<div class="item_start font-l">사구</div>
-						<div class="item_end font-m">더보기+</div>
+						<div class="item_end font-m"><a href="selectResellSellList">더보기+</a></div>
 
 					</div>
 					
@@ -460,4 +460,14 @@ z-index: 1;
 		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
 		crossorigin="anonymous"></script>
 </body>
+<script type="text/javascript">
+/*session에서 로그인한 회원의 지역정보 가져오기 */
+var getRegion = '${sessionScope.m_region}';
+console.log(getRegion);
+document.getElementById("my_region").innerText = getRegion;
+
+
+
+</script>
+
 </html>

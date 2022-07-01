@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -143,7 +144,9 @@ display: inline-block;
 	flex: 0 0 auto;
 	align-self: flex-end;
 }
-
+.d_none{
+display: none;
+}
 </style>
 
 
@@ -166,13 +169,15 @@ display: inline-block;
 				<h1 class="text-center">중고거래 글작성페이지</h1>
 
 
+<form action="insertResellWrite">
 				<div class="container-header">
 				<div class="container-flex_1 flex_between">
 				<div class="item_start">
-							<select class="position_change select-size">
-								<option>팔구</option>
-								<option>사구</option>
+							<select class="position_change select-size" onchange="selectSB(this)">
+								<option value="S">팔구</option>
+								<option value="B">사구</option>
 							</select>
+							<span id="select_SB_Value"></span>
 						</div>
 						
 				<div class="item_end">작성자 : 닉네임</div>
@@ -185,46 +190,57 @@ display: inline-block;
 <div class="container-card_goods">
 
 						<div class="container-card_goods_2">
-							<div class="item-basis_7 flex-shrink"><input type="text" size="60" placeholder="품목명"></div>
+							<div class="item-basis_7 flex-shrink"><input type="text" name="gd_names" size="60" placeholder="품목명"></div>
 							<div class="item-basis_3 flex-shrink"><input type="text" size="20" placeholder="가격"></div>
 							
 						</div>
 				<div class="container-flex_1 flex-end flex-shrink">		
-<div>+추가</div>
+<div class="addBtn">+추가</div>
 </div>
+
+<div class="d_none btn_d-none">
 						<div class="container-card_goods_2">
-						<div class="item-basis_7 flex-shrink"><input type="text" size="60" placeholder="품목명"></div>
+						<div class="item-basis_7 flex-shrink"><input type="text" name="gd_names" size="60" placeholder="품목명" ></div>
 							<div class="item-basis_3 flex-shrink"><input type="text" size="20" placeholder="가격"></div>
 							
 						</div>
 							<div class="container-flex_1 flex-end">	
-							<div>+추가</div><div>-제거</div>
+							<div class="addBtn">+추가</div><div class="removeBtn">제거</div>
 						</div>
+	</div>					
 						
+						<div class="d_none btn_d-none">
 						<div class="container-card_goods_2">
-						<div class="item-basis_7 flex-shrink"><input type="text" size="60" placeholder="품목명"></div>
+						<div class="item-basis_7 flex-shrink"><input type="text" name="gd_names" size="60" placeholder="품목명"></div>
 							<div class="item-basis_3 flex-shrink"><input type="text" size="20" placeholder="가격"></div>
 							
 						</div>
 	<div class="container-flex_1 flex-end flex-shrink" >	
-							<div>+추가</div><div>-제거</div>
+							<div class="addBtn">+추가</div><div class="removeBtn">제거</div>
+						</div>
 						</div>
 						
+						<div class="d_none btn_d-none">
+						
 							<div class="container-card_goods_2">
-						<div class="item-basis_7 flex-shrink"><input type="text" size="60" placeholder="품목명"></div>
+						<div class="item-basis_7 flex-shrink"><input type="text" name="gd_names" size="60" placeholder="품목명"></div>
 							<div class="item-basis_3 flex-shrink"><input type="text" size="20" placeholder="가격"></div>
 						</div>
 							<div class="container-flex_1 flex-end">	
-							<div>+추가</div><div>-제거</div>
+							<div class="addBtn">+추가</div><div class="removeBtn">제거</div>
 						</div>
+						</div>
+							
+						<div class="d_none btn_d-none">
+						
 						<div class="container-card_goods_2">
-					<div class="item-basis_7 flex-shrink"><input type="text" size="60" placeholder="품목명"></div>
+					<div class="item-basis_7 flex-shrink"><input type="text" name="gd_names" size="60" placeholder="품목명"></div>
 							<div class="item-basis_3 flex-shrink"><input type="text" size="20" placeholder="가격"></div>
 						</div>
 							<div class="container-flex_1 flex-end">	
-							<div>+추가</div><div>-제거</div>
+							<div class="removeBtn">제거</div>
 						</div>
-
+</div>
 					</div>
 				</div>
 
@@ -237,7 +253,7 @@ display: inline-block;
 
 <!-- 상품 설명  -->
 					<div class="container-flex_1">
-						<textarea rows="2" cols="80" style="resize: none" readonly>상품상세설명</textarea>
+						<textarea rows="4" cols="80" style="resize: none" readonly>상품상세설명</textarea>
 
 					</div>
 
@@ -257,7 +273,7 @@ display: inline-block;
 				<div>취소</div>
 				 <div>등록</div>
 					</div>
-
+</form>
 
 
 			</div>
@@ -271,6 +287,76 @@ display: inline-block;
 		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
 		crossorigin="anonymous"></script>
 </body>
+<script type="text/javascript">
+/* 추가버튼 변수 */
+var addBtn0 = document.getElementsByClassName("addBtn")[0];
+var addBtn1 = document.getElementsByClassName("addBtn")[1];
+var addBtn2 = document.getElementsByClassName("addBtn")[2];
+var addBtn3 = document.getElementsByClassName("addBtn")[3];
+var removeBtn0 = document.getElementsByClassName("removeBtn")[0];
+var removeBtn1 = document.getElementsByClassName("removeBtn")[1];
+var removeBtn2 = document.getElementsByClassName("removeBtn")[2];
+var removeBtn3 = document.getElementsByClassName("removeBtn")[3];
+var remove_btn =document.getElementsByClassName("removeBtn")[3];
+var dsiplay_btn0 =document.getElementsByClassName("btn_d-none")[0];
+var dsiplay_btn1 =document.getElementsByClassName("btn_d-none")[1];
+var dsiplay_btn2 =document.getElementsByClassName("btn_d-none")[2];
+var dsiplay_btn3 =document.getElementsByClassName("btn_d-none")[3];
+
+/* 판매, 구매 메시지 출력함수 */
+function selectSB(selectVal){
+	
+	console.log("선택된 옵션의 value : " +selectVal.value);
+	console.log("선택된옵션의 text : " + selectVal.options[selectVal.selectedIndex].text);
+	let sellBuy_Msg = (selectVal.value =='B') ? '구매글 작성중입니다.':
+		'판매글 작성중입니다.';					
+	console.log(sellBuy_Msg);
+document.getEelementById("select_SB_Value").innerHTML = sellBuy_Msg;
+}
+
+
+addBtn0.onclick = function(){
+	console.log("addBtn0 호출");	
+	dsiplay_btn0.classList.remove("d_none");
+	};
+	addBtn1.onclick = function(){
+		console.log("addBtn1 호출");
+		dsiplay_btn1.classList.remove("d_none");
+		};
+		addBtn2.onclick = function(){
+			console.log("addBtn2 호출");
+			dsiplay_btn2.classList.remove("d_none");
+			};
+			addBtn3.onclick = function(){
+				console.log("addBtn3 호출");
+				dsiplay_btn3.classList.remove("d_none");
+				};
+				/* display:none 속성 추가  */
+				removeBtn3.onclick= function(){
+					console.log("removeBtn3 호출");
+					dsiplay_btn3.classList.add("d_none");		
+				}
+				removeBtn2.onclick= function(){
+					console.log("removeBtn2 호출");
+					dsiplay_btn2.classList.add("d_none");	;					
+				}
+				removeBtn1.onclick= function(){
+					console.log("removeBtn1 호출");
+					dsiplay_btn1.classList.add("d_none");			
+				}
+				removeBtn0.onclick= function(){
+					console.log("removeBtn0 호출");
+					dsiplay_btn0.classList.add("d_none");				
+				}
+	
+	
+	
+	
+	
+	
+
+</script>
+
 
 
 </html>
