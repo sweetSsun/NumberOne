@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.MemberDto;
@@ -20,6 +23,10 @@ public interface MemberDao {
 	//아이디 중복 확인
 	@Select("SELECT MID FROM MEMBERS WHERE MID = #{inputId}")
 	String selectMemberId_ajax(String inputId);
+	
+	//닉네임 중복 확인
+	@Select("SELECT MNICKNAME FROM MEMBERS WHERE MNICKNAME = #{inputNickname}")	
+	String selectMemberNickname_ajax(String inputNickname);
 
 	//로그인 요청
 	@Select("SELECT MID, MPROFILE, MSTATE FROM MEMBERS WHERE MID = #{mid} AND MPW = #{mpw}")
@@ -33,6 +40,13 @@ public interface MemberDao {
 	@Select("SELECT MID, MPW, MNAME, MNICKNAME, MPHONE, MEMAIL, MADDR, MPROFILE, MMESSAGE FROM MEMBERS WHERE MID = #{loginId}")
 	MemberDto selectMyInfoMemberView(String loginId);
 
+	//회원정보수정
+	@Update("UPDATE MEMBERS SET MPW = #{mpw}, MNAME = #{mname}, MNICKNAME = #{mnickname}, MPHONE = #{mphone}, MEMAIL = #{memail}, MADDR = #{maddr}, "
+			+ "MPROFILE = #{mprofile}, MMESSAGE = #{mmessage} WHERE MID = #{mid}")
+	
+	int updateMyInfoMemberModify(MemberDto member);
+	
+	
 	//마이페이지 회원정보 _ 작성글
 	@Select("SELECT BD.BDCODE, BD.BDTITLE, RP.BDREPLY, BD.BDMID, BD.BDDATE "
 			+ "FROM BOARDS BD, (SELECT RPBDCODE, COUNT (RPBDCODE) AS BDREPLY FROM REPLY GROUP BY RPBDCODE) RP "
@@ -46,6 +60,10 @@ public interface MemberDao {
 			+ "WHERE BDCODE = RPBDCODE AND RPMID = #{loginId} "
 			+ "ORDER BY RP.RPCODE DESC")
 	ArrayList<ReplyDto> selectMyInfoMemberView_Reply(String loginId);
+
+
+
+
 
 	
 }

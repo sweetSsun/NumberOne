@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 마이페이지 커뮤니티</title>
+<title>1인자 - 마이페이지 중고거래</title>
 
 <%@ include file="/resources/css/CommonCss.jsp"%>
 <!-- 부트스트랩 -->
@@ -45,7 +45,7 @@
 		<!-- 본문 -->
 			<div class="container">
 				<br>
-				<div class="checkout__form"><h4>마이페이지 커뮤니티</h4></div>
+				<div class="checkout__form"><h4>마이페이지 중고거래</h4></div>
 				<br>
 				<!-- 작성글 목록 -->
                             <div class="row">

@@ -35,7 +35,7 @@
                        <div class="sidebar-item">
                             <h4>문의</h4>
                             <ul class="list-unstyled">
-                                <li><a href="#">1:1 문의</a></li>
+                                <li><a href="selectMyInfoQuestionListView">1:1 문의</a></li>
                             </ul>
                         </div>
                 </div>

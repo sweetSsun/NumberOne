@@ -299,7 +299,7 @@
     	console.log("스크립트 확인!");
     	
     	<!-- 아이디 중복 확인 -->
-    	$("#inputMid").focusout(function(){
+    	$("#inputMid").keyup(function(){
     		var inputId = $("#inputMid").val();
     		console.log("inputId : "+inputId);
     		
@@ -336,7 +336,7 @@
     });
     
     </script>
-    
+
 
     <!-- 비밀번호 길이 확인 -->
     <script type="text/javascript">
@@ -377,11 +377,7 @@
 			}
 		});
 		</script>		
-		
-		
-		
-		
-		
+	
     <!-- 이름 길이 확인 -->
     <script type="text/javascript">
 		$("#inputMname").keyup(function(){
@@ -414,16 +410,29 @@
 				$("#nicknameCheckMsg").text("닉네임은 2~10자리 입니다.").css("color", "red");
 				inputNicknameCheck = false;				
 			} else {
-				$("#nicknameCheckMsg").css("color","green").text("사용가능한 닉네임 입니다.");
-				inputNicknameCheck = true;
+				
+    			$.ajax({
+    				type : "get",
+    				url : "selectMemberNickname_ajax",
+    				data : {"inputNickname" : inputNickname },
+    				success : function(result){
+    					
+    					
+    					if(result=="OK") {
+    					$("#nicknameCheckMsg").text("사용가능한 닉네임 입니다.").css("color" , "green");    
+    					inputIdCheck =true;
+    					}else {
+    					$("#nicknameCheckMsg").text("이미 사용중인 닉네임 입니다.").css("color" , "red");  		
+    					inputIdCheck =false;
+    					}
+    				}
+	
+    			});
 				
 			}
 		});
 		</script>					
-		
-		
-		
-		
+	
 		
 
 <!-- 입력칸 유무 확인 -->
