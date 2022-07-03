@@ -36,9 +36,7 @@ public class ChatWebSocketMsg extends TextWebSocketHandler {
 		ChatDto chatdto = new ChatDto();
 		chatdto.setChfrmid(chfrmid); 		// from 메세지를 보내는 사람의 ID 
 		
-<<<<<<< HEAD
 
-=======
 /*<<<<<<< HEAD
 		// 채팅방 번호 생성 (select)
 		
@@ -54,19 +52,11 @@ public class ChatWebSocketMsg extends TextWebSocketHandler {
 	        }
 		}
 		*/
-		
-<<<<<<< HEAD
 
-=======
-		
-<<<<<<< HEAD
 		super.afterConnectionEstablished(session);
+
 		
-=======
-		
->>>>>>> 25fbb11d09bf04f4761224e889f7c74e9703ce4b
-*/
->>>>>>> 6122118f56a2a60894d9aafe4a5db8f777350c5c
+
 	}
 	
 	@Override
