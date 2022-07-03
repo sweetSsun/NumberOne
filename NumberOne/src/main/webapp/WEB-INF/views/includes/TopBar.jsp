@@ -49,15 +49,14 @@
 							<h5>로그인 프로필 : ${sessionScope.loginProfile}<h5>
 						</li>					
 						<li class="nav-item active">
-							<a href="#">HOME</a>
+							<a href="${pageContext.request.contextPath }/">HOME</a>
 						</li>
 						<li class="nav-item ">
 							<a href="loadToBoardMainPage">커뮤니티</a>
 						</li>
 						<li class="nav-item ">
-							<a href="#">중고거래</a>
+							<a href="loadToResellMainPage">중고거래</a>
 						</li>
-
 					</ul>
 				</div>
 			</div>
@@ -71,8 +70,8 @@ console.log("스크립트 확인!");
 
 function popupChat(){
 	console.log("popupChat 호출");
-	let popOption = "width = 650px, height=550px, top=300px, left=500px, scrollbars=yes";
-	let openUrl = 'loadToChatPage';
+	let popOption = "width = 450px, height=550px, top=300px, left=500px, scrollbars=no";
+	let openUrl = 'loadToChat';
 	window.open(openUrl, 'pop', popOption);
 };
 </script>

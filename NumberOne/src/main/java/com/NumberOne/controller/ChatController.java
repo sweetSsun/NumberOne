@@ -13,23 +13,16 @@ public class ChatController {
 	@Autowired
 	private ChatService chsvc;
 	
-	@RequestMapping(value="/loadToChatPage")
-	public ModelAndView chatPage() {
+	@RequestMapping(value="/loadToChat")
+	public ModelAndView loadToChat() {
 		System.out.println("채팅 페이지 요청");
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("chat/ChatPage");
+		mav.setViewName("chat/Chat");
 		return mav;
 		
 	}
 	
-	@RequestMapping(value="/chatList")
-	public ModelAndView chatList() {
-		System.out.println("채팅 목록 요청");
-		ModelAndView mav = chsvc.chatList();		
-		mav.setViewName("chat/ChatPage");
-		return mav;
-		
-	}
+	
 	
 	
 	
