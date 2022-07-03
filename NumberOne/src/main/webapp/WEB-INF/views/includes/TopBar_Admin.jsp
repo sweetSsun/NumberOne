@@ -64,8 +64,8 @@
 				<!-- 로그인, 회원가입, 고객센터 -->
 					<ul class="list-unstyled" >
 					<!-- 마이페이지 -->
-					<li ><a href="#"><i class="fa-solid fa-circle-user"></i>관리자모드</a> |</li>
-					<li ><a href="#">로그아웃</a> </li>
+					<li ><a href="admin_loadToAdminMainPage"><i class="fa-solid fa-circle-user"></i>관리자모드</a> |</li>
+					<li ><a href="selectMemberLogout">로그아웃</a> </li>
 				</ul>
 			</div>
 			<div class="row">
@@ -76,10 +76,10 @@
 							<a href="${pageContext.request.contextPath }/">HOME</a>
 						</li>
 						<li class="nav-item ">
-							<a href="#">커뮤니티</a>
+							<a href="loadToBoardMainPage">커뮤니티</a>
 						</li>
 						<li class="nav-item ">
-							<a href="#">중고거래</a>
+							<a href="loadToResellMainPage">중고거래</a>
 						</li>
 					</ul>
 				</div>

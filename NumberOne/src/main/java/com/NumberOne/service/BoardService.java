@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.UUID;
 
+import javax.print.DocFlavor.URL;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -38,6 +39,10 @@ public class BoardService {
 	//사용할 때 자기 폴더 경로로 바꾸어야 함
 	private String roomSavePath = "D:\\numberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\room";
 	
+	
+	
+    
+
 	//자취방자랑 글 등록
 	public ModelAndView insertRoomWrite(BoardDto room, RedirectAttributes ra) throws IllegalStateException, IOException {
 		ModelAndView mav = new ModelAndView();
@@ -70,6 +75,11 @@ public class BoardService {
 		if( ! bdimgfile.isEmpty() ) {
 			System.out.println("대표 이미지 있음");
 			UUID uuid = UUID.randomUUID();
+			
+			//파일 저장 경로
+			//String savePath = request.getSession().getServletContext().getRealPath("");
+			//savePath += "resources/img";
+			//System.out.println(savePath);
 			
 			//파일명 생성
 			bdimg = "M"+uuid.toString()+"_"+bdimgfile.getOriginalFilename();
@@ -106,7 +116,7 @@ public class BoardService {
 		} 
 
 		//로그인 기능 없어서 id는 nhd로 함
-		room.setBdmid("nhd");
+		room.setBdmid((String)session.getAttribute("loginId"));
 		
 		//카테고리 -- 자랑
 		room.setBdcategory("자랑");
@@ -118,7 +128,7 @@ public class BoardService {
 		if(insertResult>0) {
 			System.out.println("등록 성공!");
 			ra.addFlashAttribute("msg", "자취방 자랑글이 등록되었습니다.");
-			//메인페이지로 돌아가기	>> 자랑글 메인으로 수정 해야 함	
+			//메인페이지로 돌아가기	>> 등록한 글 상세보기 페이지로 이동으로 수정	
 			mav.setViewName("redirect:/");
 		} else {
 			System.out.println("등록 실패!");
@@ -217,11 +227,13 @@ public class BoardService {
 	    System.out.println("자취방 자랑글 개수: "+roomList.size());
 	    
 	    mav.addObject("roomList", roomList);
-	    
 	    //확인용 출력
+	    /*
 	    for(int i=0; i<roomList.size(); i++) {
 	    	System.out.println(roomList.get(i));
 	    }
+	    */
+
 	    
 	    mav.setViewName("board/RoomListPage");
 		return mav;
@@ -264,6 +276,14 @@ public class BoardService {
 		mav.setViewName("board/BoardView");
 		
 		return mav;
+	}
+
+	//아이디로 닉네임 찾기
+	public String selectRoomWriterMnickname() {
+		System.out.println("BoardService.selectRoomWriterMnickname() 호출");
+		String mid = (String) session.getAttribute("loginId");
+		String mnickname = bdao.selectRoomWriterMnickname(mid);
+		return mnickname;
 	}
 	
 	//게시글 댓글작성(ajax)

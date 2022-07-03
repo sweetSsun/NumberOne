@@ -18,6 +18,9 @@
     table{
        margin: 20px;
     }
+    .block span{
+    	cursor: pointer;
+    }
 </style>
 
 </head>
@@ -55,7 +58,7 @@
             <div class="row" style="margin-top: 20px;">
                <div class="col">
                   <!-- 상태값 정렬 -->
-                   <select id="searchVal" onchange="searchState()">
+                   <select id="searchVal" onchange="searchState(1)">
                      <option value="all">전체</option>
                      <option value="active">활동</option>
                      <option value="warning">경고</option>
@@ -72,6 +75,8 @@
                      <td style="width:150px;">아이디</td>
                      <td style="width:130px;">이름</td>
                      <td style="width:200px;">닉네임</td>
+                     <td>연락처</td>
+                     <td>이메일</td>
                      <td>가입일</td>
                      <td style="width:70px;">상태</td>
                   </tr>
@@ -83,6 +88,8 @@
 	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;">${member.mid}</td>
 	                      <td>${member.mname}</td>
 	                      <td>${member.mnickname}</td>
+	                      <td>${member.mphone}</td>
+	                      <td>${member.memail}</td>
 	                      <td>${member.mjoindate}</td>
 	                      <td>
 	                      	<c:choose>
@@ -101,6 +108,39 @@
 	                </c:forEach>                 
                 </tbody>
             </table>
+            
+            <!-- 페이징 -->
+            <div class="block text-center" id="pageList">
+               	<c:choose>
+               		<c:when test="${paging.page <= 1 }">
+               			[이전]
+               		</c:when>
+               		<c:otherwise>
+               			<span onclick="searchState(${paging.page -1 })">[이전]</span>
+               		</c:otherwise>
+               	</c:choose>
+               	
+               	<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="num" step="1">
+                	<c:choose>
+                		<c:when test="${paging.page == num }">
+                			<span>${num }</span>
+                		</c:when>
+                		<c:otherwise>
+                			<span onclick="searchState(${num})">${num }</span>
+                		</c:otherwise>
+                	</c:choose>
+               	</c:forEach>
+
+               	<c:choose>
+               		<c:when test="${paging.page >= paging.maxPage }">
+               			[다음]
+               		</c:when>
+               		<c:otherwise>
+               			<span onclick="searchState(${paging.page +1 })">[다음]</span>
+               		</c:otherwise>
+               	</c:choose>
+            </div>
+                
             </div>
             
 			</div>
@@ -212,15 +252,18 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 	
 	<script type="text/javascript">
-		// 모달창 close 하는 스크립트..... 닫고 한번 더 클릭해야 정상작동되서 수정이 필요.. 부트스트랩 js가 필요한가
+		// 모달창 close 하는 스크립트
  		var modal = $(".modal");
 		var close = $(".close");
 		for (var i = 0; i < close.length; i++){
 			close[i].addEventListener("click", function(){
+				$("#updateMstateModal").modal("hide");
+				$("#memberInfoModal").modal("hide");
+/*
 				for (var j = 0; j < modal.length; j++){
 					modal[j].classList.remove('show');
 					$(".modal-backdrop").remove(); 
-				}
+				}*/
 			});
 		}
 	</script>
@@ -258,13 +301,14 @@
 	
 	<script type="text/javascript">
 		// 정렬 select하면 ajax로 회원목록 받고 출력을 바꿔주는 함수
-		function searchState(){
+		function searchState(page){
 			console.log("searchState() 실행");
 			var searchVal = $("#searchVal").val();
 			console.log("정렬 선택 : " + searchVal);
+			console.log("요청 페이지 : " + page);
 			$.ajax({
 				type: "get",
-				data: {"searchVal":searchVal},
+				data: {"searchVal":searchVal, "page":page},
 				url: "admin_selectMemberList_ajax",
 				dataType: "json",
 				success: function(result){
@@ -272,9 +316,11 @@
 					console.log(result);					
 					for (var i = 0; i < result.length; i++){
 						output += "<tr style='border-bottom: solid gray 1px;'>";
-						output += "<td>" + result[i].mid + "</td>";
+						output += "<td onclick='showMemberInfoModal( \"" + result[i].mid + "\")' style='cursor: pointer;'>" + result[i].mid + "</td>";
 						output += "<td>" + result[i].mname + "</td>";
-						output += "<td><a href='#'>" + result[i].mnickname + "</a></td>";
+						output += "<td>" + result[i].mnickname + "</td>";
+						output += "<td>" + result[i].mphone + "</td>";
+						output += "<td>" + result[i].memail + "</td>";
 						output += "<td>" + result[i].mjoindate + "</td>";
 						output += "<td>"
 						if (result[i].mwarning > 0){
@@ -290,6 +336,39 @@
 					$("#mbListTbody").html(output);
 				}
 			});
+			// 페이지에서 출력할 페이지번호 받아오기
+			$.ajax({
+				type: "get",
+				data: {"searchVal":searchVal, "page":page},
+				url: "admin_selectMemberPagingNumber_ajax",
+				dataType: "json",
+				success: function(result){
+					console.log("페이징 : " + result);
+					$("#pageList").text("");
+					var output = "";
+    					if (result.page == 1) {
+    	    				output += "[이전]";
+        				} else {
+    	    				output += "<span onclick='searchState(" + (result.page - 1) + ")'> [이전] </span>";
+        				}
+        				for (var i = result.startPage; i <= result.endPage; i++){
+        					if (page == i){
+        	    				output += "<span>" + i + "</span>";
+        					} else {
+        	    				output += "<span onclick='searchState(" + i + ")'>" + i + "</span>";
+        					}
+        				}
+        				if (result.page == result.maxPage){
+    	    				output += "[다음]";
+        				} else {
+    	    				output += "<span onclick='searchState(" + (result.page + 1) + ")'> [다음] </span>";
+        				}
+					$("#pageList").html(output);
+				},
+				error: function(){
+					alert("페이징넘버링 실패");
+				}
+			})
 		}	
 		
 		// 회원상태 변경 확인 모달창 출력

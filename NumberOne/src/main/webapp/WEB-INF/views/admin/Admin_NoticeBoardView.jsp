@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="/resources/css/CommonCss.jsp" %>
-<title>${noticeBoard.nbtitle} - 1인자:게시판 공지글 상세페이지</title>
+<title>${noticeBoard.nbtitle} - 1인자:관리자 공지게시판</title>
 
 <style type="text/css">
 	textarea{
@@ -39,25 +39,17 @@
 </head>
 <body>
 	<!-- TobBar -->
-	<c:choose>
-		<c:when test="${sessionScope.loginId != 'admin'}">
-			<%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
-		</c:when>
-		<c:otherwise>
-			<%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
-		</c:otherwise>
-	</c:choose>
+	<%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
 	<!-- End of TobBar -->
 	
 	<main>
-	
 		<!-- 사이드바 -->
-		<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
+		<%@ include file= "/WEB-INF/views/includes/SideBar_Admin.jsp" %>
 		
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h1 class="text-center">공지글 상세페이지 : NoticeBoardView.jsp</h1>
+				<h1 class="text-center">관리자 공지글 상세페이지 : Admin_NoticeBoardView.jsp</h1>
 				
 				<form action="">
 					<div class="row">
@@ -77,7 +69,7 @@
 						
 						<div class="col-3 offset-md-3">
 							<span class="boardDate">${noticeBoard.nbdate } | </span> 
-							<span class="commentDate" style="right:0;"><i class="fa-regular fa-eye"></i>15 </span> 
+							<span class="commentDate" style="right:0;"><i class="fa-regular fa-eye"></i>${noticeBoard.nbhits}</span> 
 						</div>
 					</div>
 					
@@ -95,11 +87,8 @@
 						<a href="#"><input type="button" style="left:0;" class="middelBtn btn btn-lg bg-success fw-bold text-white" value="글목록"></a> 
 					</div>
 					<div class="col-4 offset-md-6" >
-						<!-- 관리자계정으로만 로그인 시 보이도록 설정하기! -->
-						<c:if test="${sessionScope.loginId == 'admin'}">
-							<input type="button" style="float:right;" class="btn btn-lg bg-success fw-bold text-white" value="삭제">
-							<input type="button" style="float:right; margin-right: 5px;" class="btn btn-lg bg-success fw-bold text-white" value="수정">
-						</c:if>
+						<input type="button" style="float:right;" class="btn btn-lg bg-success fw-bold text-white" value="삭제">
+						<input type="button" style="float:right; margin-right: 5px;" class="btn btn-lg bg-success fw-bold text-white" value="수정">
 					</div>
 				</div>
 				
