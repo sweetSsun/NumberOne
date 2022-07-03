@@ -84,7 +84,7 @@
 		AND BD.BDCODE = #{bdcode}
  	 </select>
  	 
-<<<<<<< HEAD
+
  	 <select id="selectRoomView" resultType="com.NumberOne.dto.BoardDto">
  	 	<!-- 일반글 상세 -->
  	 	SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, TO_CHAR(BDDATE,'YY-MM-DD HH24:MI') AS BDDATE, 
@@ -93,7 +93,7 @@
 		WHERE BD.BDMID = MB.MID
 		AND BD.BDCODE = #{bdcode}
  	 </select>
-=======
+
  	 <select id="selectReplyMaxNumber" resultType="String">
  	 	<!-- 댓글 최대번호 조회 -->
  	 	SELECT MAX(RPCODE) 
@@ -151,5 +151,5 @@
 		WHERE RCBDCODE = #{bdcode}
  	</select>
  	 
->>>>>>> 1df3eadb160a1bdd0a387553d4a719e6c1c93795
+
  </mapper>
