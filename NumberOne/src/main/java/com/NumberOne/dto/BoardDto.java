@@ -34,7 +34,14 @@ public class BoardDto {
 	
 	//검색할 때 필요한 필드
 	private String bdnickname;      //작성자 닉네임
+	private String bdmprofile;      //작성자 프로필
 	
+	//로그인 아이디의 추천, 스크랩, 신고 기록
+	private String rchistory;   //추천 기록
+	private String schistory;   //스크랩 기록
+	private String wbhistory;   //신고 기록	
+	
+
 	public String getBdcode() {
 		return bdcode;
 	}
@@ -198,5 +205,6 @@ public class BoardDto {
 				+ bdscrap + ", bdimgfile=" + bdimgfile + ", bddetailimgfile=" + Arrays.toString(bddetailimgfile)
 				+ ", bdnickname=" + bdnickname + "]";
 	}
+
 
 }

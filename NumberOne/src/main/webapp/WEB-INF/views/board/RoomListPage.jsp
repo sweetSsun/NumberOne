@@ -200,9 +200,17 @@
 </style>
 </head>
 <body>
-	<!-- TobBar -->
-	<%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
-	<!-- End of TobBar -->
+
+	   	<!-- TopBar -->
+        <c:choose>
+                <c:when test="${sessionScope.loginId != 'admin'}">
+                        <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
+                </c:when>
+                <c:otherwise>
+                        <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
+                </c:otherwise>
+        </c:choose>
+        <!-- End of TopBar -->
 	
 	<main>
 		
@@ -285,25 +293,25 @@
   <span class="close">&times;</span>
 
   <!-- Modal Content (The Image) -->
-  
   <div class="row" style="width:1200px; height:600px;">
   		<div class="product-title tb col-lg-8">
   			<div id="roomimg" class="product-img-div">
   			</div>
   		</div>
-  		<div class="tb col-lg-4">
- 			<div id="">
- 				<div id="roomContents">
- 				</div>
- 				<div id="roomInfo">
- 				</div>
+  		<div class="tb col-lg-4" style="background-color:white; padding:10px">
+ 			<div class="row" style="height:225px;">
+ 				<div id="roomMprofile" style="color:black; width:60px;"></div>
+ 				<div id="roomContents" style="width:330px;"></div>
  			</div>
- 			<div id="">
- 				<div id="reply">
- 				</div>
- 				<div id="replyWriteForm">
- 				</div>
- 			</div>			
+ 			<div id="reply" style="height:205px; border:1px solid black; color:black;">
+ 			    댓글 영역
+ 			</div>
+ 			<div id="roomInfo" style="height:35px; color:black; font-size:30px; position:relative;">
+ 				추천, 스크랩, 신고
+ 			</div>
+ 			<div id="replyWriteForm" style="height:100px; border:1px solid black; color:black;">
+ 				댓글 작성 영역
+ 			</div>		
   		</div>	
   </div>
   
@@ -329,12 +337,52 @@
 			async : false,
 			success: function(roomView){
 				console.log(roomView);
-				modal.style.display = "block";
-				console.log(roomView.bdimg)
+				//글 이미지
 				$("#roomimg").html("<img class='product-img' style='width:100%; height:100%' src='${pageContext.request.contextPath }/resources/img/room/"+roomView.bdimg+"'></img>");
-				$("#roomContents").html("<textarea style=''>"+roomView.bdcontents+"</textarea>");
-				var roomInfo = "<div> <a onclick='recommend(\""+roomView.bdcode+"\")'><i class='fa-regular fa-thumbs-up'></i></a> <a onclick='scrap(\""+roomView.bdcode+"\")'><i class='fa-regular fa-star'></i></a> </div>";
-				$("#roomInfo").html(roomInfo);
+				//작성자 프로필	
+				var mprofileOutput = "<img class='product-img' style='width:60px; height:40px' ";
+				if(roomView.bdmprofile != 'nomprofile'){
+					console.log()
+					mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+roomView.bdmprofile+"'>";
+				} else {
+					mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/logo_beige.jpg'>"; 
+				}
+				mprofileOutput += "</img>";
+				$("#roomMprofile").html(mprofileOutput);
+				//글 내용
+				$("#roomContents").html("<textarea style='width:100%; height:225px; resize:none; overflow-y:scroll;' readonly>"+roomView.bdcontents+"</textarea>");
+				//추천, 스크랩, 신고 출력
+				var roomInfoOutput = " "
+				//추천
+				if(roomView.rchistory != "n"){
+					console.log("추천 기록 있음")
+					roomInfoOutput += "<a onclick='recommend(\""+roomView.bdcode+"\")'><span id='"+roomView.bdcode+"_rchistory'><i class='fa-solid fa-heart'></i></span></a> ";
+				} else {					
+					console.log("추천 기록 없음")
+					roomInfoOutput += "<a onclick='recommend(\""+roomView.bdcode+"\")'><span id='"+roomView.bdcode+"_rchistory'><i class='fa-regular fa-heart'></i></span></a> ";
+				}
+				//스크랩
+				if(roomView.schistory != "n"){
+					console.log("스크랩 기록 있음")
+					roomInfoOutput += "<a onclick='scrap(\""+roomView.bdcode+"\")'><span id='"+roomView.bdcode+"_schistory'><i class='fa-solid fa-star' style=''></i></span></a> ";
+				} else {					
+					console.log("스크랩 기록 없음")
+					roomInfoOutput += "<a onclick='scrap(\""+roomView.bdcode+"\")'><span id='"+roomView.bdcode+"_schistory'><i class='fa-regular fa-star'></i></span></a> ";
+				}
+				//신고
+				if(roomView.wbhistory != "n"){
+					console.log("신고 기록 있음")
+					roomInfoOutput += "<a onclick='warningboards(\""+roomView.bdcode+"\")'><span id='"+roomView.bdcode+"_wbhistory'><i class='fa-solid fa-dove' style='position:absolute; right:0;'></i></span></a> ";
+				} else {					
+					console.log("신고 기록 없음")
+					roomInfoOutput += "<a onclick='warningboards(\""+roomView.bdcode+"\")'><span id='"+roomView.bdcode+"_wbhistory'><i class='fa-solid fa-land-mine-on' style='position:absolute; right:0;'></i></span></a> ";
+				}
+				//console.log(roomInfoOutput);
+				
+				$("#roomInfo").html(roomInfoOutput);
+				
+				
+				modal.style.display = "block";
 				//modalImg.src = this.src;
 				//captionText.innerHTML = this.alt;
 			}
@@ -360,14 +408,39 @@
 	
 	function recommend(bdcode){
 		console.log("자랑글 추천 함수 호출")
+		
+		var currentHistory="";
 		$.ajax({
 			type : "get",
-			url : "updateRbrecommend",
-			data : { "bdcode" : bdcode },
+			url : "currentHistory",
+			data : { "bdcode" : bdcode, "history": "rchistory"},
 			//dataType : "json",
 			async : false,
 			success: function(result){
 				console.log(result);
+				currentHistory = result;				
+			}
+		});
+		
+		console.log(bdcode+"의 현재 추천 상태: "+currentHistory)
+		$.ajax({
+			type : "get",
+			url : "updateLog",
+			data : { "bdcode" : bdcode, "history": "rchistory", "currentState":currentHistory},
+			//dataType : "json",
+			async : false,
+			success: function(result){
+				//console.log(result);
+				if(result == '1'){ //추천 업데이트 성공시
+					if(currentHistory == '0'){ //추천 성공
+						console.log("추천 성공");
+						$("#"+bdcode+"_rchistory").html("<i class='fa-solid fa-heart'></i>");	
+					} else { //추천 취소 성공
+						console.log("추천 취소 성공");
+						$("#"+bdcode+"_rchistory").html("<i class='fa-regular fa-heart'></i>");							
+					}
+					
+				}
 				
 			}
 		});
@@ -376,6 +449,81 @@
 	function scrap(bdcode){
 		console.log("자랑글 스크랩 함수 호출")
 		
+		var currentHistory="";
+		$.ajax({
+			type : "get",
+			url : "currentHistory",
+			data : { "bdcode" : bdcode, "history": "schistory"},
+			//dataType : "json",
+			async : false,
+			success: function(result){
+				console.log(result);
+				currentHistory = result;				
+			}
+		});
+		
+		console.log(bdcode+"의 현재 스크랩 상태: "+currentHistory)
+		$.ajax({
+			type : "get",
+			url : "updateLog",
+			data : { "bdcode" : bdcode, "history": "schistory", "currentState":currentHistory},
+			//dataType : "json",
+			async : false,
+			success: function(result){
+				//console.log(result);
+				if(result == '1'){ //추천 업데이트 성공시
+					if(currentHistory == '0'){ //추천 성공
+						console.log("스크랩 성공");
+						$("#"+bdcode+"_schistory").html("<i class='fa-solid fa-star'></i>");	
+					} else { //추천 취소 성공
+						console.log("스크랩 취소 성공");
+						$("#"+bdcode+"_schistory").html("<i class='fa-regular fa-star'></i>");							
+					}
+					
+				}
+				
+			}
+		});
+	}
+	
+	function warningboards(bdcode){
+		console.log("자랑글 신고 함수 호출")
+		
+		var currentHistory="";
+		$.ajax({
+			type : "get",
+			url : "currentHistory",
+			data : { "bdcode" : bdcode, "history": "wbhistory"},
+			//dataType : "json",
+			async : false,
+			success: function(result){
+				console.log(result);
+				currentHistory = result;				
+			}
+		});
+		
+		console.log(bdcode+"의 현재 신고 상태: "+currentHistory)
+		$.ajax({
+			type : "get",
+			url : "updateLog",
+			data : { "bdcode" : bdcode, "history": "wbhistory", "currentState":currentHistory},
+			//dataType : "json",
+			async : false,
+			success: function(result){
+				//console.log(result);
+				if(result == '1'){ //추천 업데이트 성공시
+					if(currentHistory == '0'){ //추천 성공
+						console.log("신고 성공");
+						$("#"+bdcode+"_wbhistory").html("<i class='fa-solid fa-dove' style='position:absolute; right:0;'></i>");	
+					} else { //추천 취소 성공
+						console.log("신고 취소 성공");
+						$("#"+bdcode+"_wbhistory").html("<i class='fa-solid fa-land-mine-on' style='position:absolute; right:0;'></i>");							
+					}
+					
+				}
+				
+			}
+		});
 	}
 </script>
 
