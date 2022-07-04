@@ -104,7 +104,7 @@ public class BoardController {
 		 return mav;
 	 }
 	 
-	 //일반게시판 - 글상세페이지 : 댓글작성(ajax)
+	 //댓글작성(ajax)
 	 @RequestMapping ( value = "/insertBoardReply_ajax")
 	 @ResponseBody
 	 public int insertBoardReply_ajax(String bdcode, String rpcontents) {
@@ -115,7 +115,7 @@ public class BoardController {
 		 return insertResult;
 	 }
 	 
-	 //일반게시판 - 글상세페이지 : 댓글목록 조회(ajax)
+	 //댓글목록 조회(ajax)
 	 @RequestMapping ( value = "/selectBoardReplyList_ajax")
 	 @ResponseBody
 	 public String selectBoardReplyList_ajax(String bdcode) {
@@ -126,7 +126,7 @@ public class BoardController {
 		 return replyList_ajax;
 	 }
 	 
-	 //일반게시판 - 글상세페이지 : 댓글개수 조회(ajax)
+	 //댓글개수 조회(ajax)
 	 @RequestMapping ( value= "/selectReplyCount_ajax")
 	 @ResponseBody
 	 public int selectReplyCount_ajax(String bdcode) {
@@ -137,7 +137,7 @@ public class BoardController {
 		 return replyCount;
 	 }
 	 
-	 //일반게시판 - 글상세페이지 : 댓글삭제(상태변경) (ajax)
+	 //댓글삭제(상태변경) (ajax)
 	 @RequestMapping ( value = "/updateReplyState_ajax")
 	 @ResponseBody 
 	 public int updateReplyState_ajax(String rpcode) {
@@ -148,7 +148,7 @@ public class BoardController {
 		 return updateResult;
 	 }
 	 
-	 //일반게시판 - 글상세페이지 : 게시글 추천
+	 //게시글 추천
 	 @RequestMapping ( value = "/insertBoardRecommend_ajax")
 	 @ResponseBody 
 	 public int insertBoardRecommend_ajax(String loginId, String bdcode) {
@@ -159,7 +159,7 @@ public class BoardController {
 		 return insertResult;
 	 }
 	 
-	 //일반게시판 - 글상세페이지 : 게시글 신고 
+	 //게시글 신고 
 	 @RequestMapping ( value = "/insertBoardWarning_ajax")
 	 @ResponseBody
 	 public int insertBoardWarning_ajax(String loginId, String bdcode) {
@@ -170,7 +170,7 @@ public class BoardController {
 		 return insertResult;
 	 }
 	 
-	 //일반게시판 - 글상세페이지 : 게시글 추천수 조회 
+	 //게시글 추천수 조회 
 	 @RequestMapping ( value = "/selectBoardRecommendCount_ajax")
 	 @ResponseBody 
 	 public int selectBoardRecommendCount_ajax(String bdcode) {

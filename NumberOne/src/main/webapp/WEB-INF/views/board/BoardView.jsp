@@ -110,7 +110,8 @@
 					<!-- 본문 글 내용-->
 					<div class="row mt-3 mb-3 boardContents">
 						<div class="col">
-							<textarea rows="10%" cols="100%" readonly>${board.bdcontents }</textarea>
+							<%-- <textarea rows="10%" cols="100%" readonly>${board.bdcontents }</textarea> --%>
+							<div style="min-height:400px;">${board.bdcontents }</div>
 						</div>
 					</div>
 				</form>
