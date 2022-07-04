@@ -13,6 +13,9 @@ public class MemberDto {
 	private String mnickname;		//닉네임	
 	private String mphone;			//전화번호
 	private String memail;			//이메일
+	
+	private String mregion;			//관심지역
+	
 	private String maddr;			//주소
 
 

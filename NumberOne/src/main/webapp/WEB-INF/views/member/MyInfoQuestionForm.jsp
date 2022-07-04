@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 1:1 문의 내역 페이지</title>
+<title>1인자 - 1:1문의 작성 페이지</title>
 
 <%@ include file="/resources/css/CommonCss.jsp"%>
 <!-- 부트스트랩 -->
@@ -55,40 +55,46 @@
 				<br>
 				<div class="checkout__form"><h4>마이페이지 1:1문의</h4></div>
 				<br>
+				<!-- 재수정 -->
 				<!-- 작성글 목록 -->
-				<div class="row" style="margin:20px;">
-					<div class="col-lg-10">
-					<h4 class="checkout__form" style="color: #004804;">문의내역</h4>
-					</div>  
-					<div class="col-lg-2" >					                      
-					<!-- 작성하기 버튼 -->    
-                        <button class="site-btn" style="border-radius: 4px;"  
-                       onclick = "location.href = 'loadToMyInfoQuestionForm' " >                        
-                        작성하기</button>
-					</div>					
-				</div> <br>
-				<div class="row"  style="margin:20px;">
-				<table>
-						<tr class="text-center" id="board_column">
-							<td>글번호</td>
-							<td>제목</td>
-							<td>날짜</td>
-						</tr>
-						<%-- <c:forEach items="${board }" var="board"> --%>
-							<!-- 작성글 목록 -->
-							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center;">
-								<td>1 (예시)</td>
-								<%-- <td><a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a></td> --%>
-								<td>문의드립니다. (예시)</td>
-								<td>2022-07-01</td>								
-							</tr>
-						<%-- </c:forEach> --%>
-				</table>
-				</div>
+                <form class="user" action="insertMyInfoQuestionWrite" method="post">                                
+                            <div class="row">
+                                    <div>
+										<h4 class="" style="color: #004804; margin-left: 30px;">문의하기</h4>  
+										<table style="width: 1000px;">
+											<tr class="text-center" id="board_column">
+											<td style="width: 200px; padding: 20px;">작성자</td>
+											<td style="padding: 20px;" name="ctmid"></td>
+											</tr>
+											<tr class="text-center" id="board_column">
+											<td style="width: 200px; padding: 20px;">제목</td> 
+											<td style="padding: 20px;" name="cttitle"></td>
+											</tr>
+											<tr class="text-center" id="board_column">
+											<td style="width: 200px; padding: 20px;">내용</td>
+											<td style="padding: 20px;">
+											<textarea  style="height: 300px; width: 800px; padding: 20px;" name="ctcontents"></textarea></td>
+											</tr>											
+										</table>										                                  
+                                    </div>
+                                   
+                             </div>				
+				<!-- 작성글 목록 -->
+				
+				<br>
+                        <div class="row">
+                        	<div class="col-lg-12" style="margin-left: 400px;">						
+                        		<button type="button" class="site-btn" style="width: 130px; border-radius: 4px;"
+                        		onclick = "location.href = 'selectMyInfoQuestionListView' " >
+                        		취소</button>
+                        		<button type="submit" class="site-btn" style="width: 130px; border-radius: 4px;"> 
+                        		등록</button>                        
+                        	</div>
+                         </div>
+                         </form>
+                         <br>					
+				</div> 
 			
-				<br><hr><br>
-
-			</div>
 		</section>
 	</main>
 	
