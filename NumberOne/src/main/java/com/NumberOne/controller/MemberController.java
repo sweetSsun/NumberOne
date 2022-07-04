@@ -2,17 +2,14 @@ package com.NumberOne.controller;
 
 import java.io.IOException;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.NumberOne.dto.ContactDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.service.MemberService;
 
@@ -126,7 +123,7 @@ public class MemberController {
 		@RequestMapping(value = "/selectMyInfoMemberView")
 		public ModelAndView selectMyInfoMemberView() {
 			System.out.println("마이페이지 회원정보 이동 요청");
-			
+			mav = new ModelAndView();
 			mav = msvc.selectMyInfoMemberView();
 			
 			return mav;
@@ -138,7 +135,7 @@ public class MemberController {
 		@RequestMapping(value = "/loadToMyInfoModifyForm")
 		public ModelAndView loadToMyInfoModifyForm() {
 			System.out.println("마이페이지 회원정보수정페이지 이동 요청");
-			
+			mav = new ModelAndView();
 			mav = msvc.loadToMyInfoModifyForm();
 			
 			return mav;
@@ -152,7 +149,7 @@ public class MemberController {
 		@RequestMapping(value="/updateMyInfoMemberModify")
 		public ModelAndView updateMyInfoMemberModify(RedirectAttributes ra, MemberDto member) throws IllegalStateException, IOException {
 			System.out.println("마이페이지 회원정보수정 요청");
-		
+			mav = new ModelAndView();
 			mav = msvc.updateMyInfoMemberModify(ra, member);
 			
 			return mav;
@@ -162,7 +159,7 @@ public class MemberController {
 		@RequestMapping(value="/updateMemberWithdraw")
 		public ModelAndView updateMemberWithdraw(RedirectAttributes ra) throws IllegalStateException, IOException {
 			System.out.println("마이페이지 회원정보수정 요청");
-		
+			mav = new ModelAndView();
 			mav = msvc.updateMemberWithdraw(ra);
 			
 			return mav;
@@ -174,7 +171,7 @@ public class MemberController {
 		@RequestMapping(value = "/selectMyInfoCommunityView")
 		public ModelAndView selectMyInfoCommunityView() {
 			System.out.println("마이페이지 커뮤니티");
-			
+			mav = new ModelAndView();
 			mav = msvc.selectMyInfoCommunityView();
 			
 			return mav;
@@ -186,7 +183,7 @@ public class MemberController {
 		@RequestMapping(value = "/selectMyInfoResellView")
 		public ModelAndView selectMyInfoResellView() {
 			System.out.println("마이페이지 중고거래");
-			
+			mav = new ModelAndView();
 			mav = msvc.selectMyInfoResellView();
 			
 			return mav;
@@ -194,12 +191,12 @@ public class MemberController {
 		}
 		
 		
-		//마이페이지 1:1 문의 내역
+		//마이페이지 1:1 문의 내역 / 상세
 		
 		@RequestMapping(value = "/selectMyInfoQuestionListView")
 		public ModelAndView selectMyInfoQuestionListView() {
-			System.out.println("마이페이지 1:1 문의");
-			
+			System.out.println("마이페이지 1:1 문의 목록 / 상세");
+			mav = new ModelAndView();
 			mav = msvc.selectMyInfoQuestionListView();
 			
 			return mav;
@@ -210,7 +207,7 @@ public class MemberController {
 		@RequestMapping(value = "/loadToMyInfoQuestionForm")
 		public ModelAndView loadToMyInfoQuestionForm() {
 			System.out.println("마이페이지 1:1 문의 작성페이지 이동");
-			
+			mav = new ModelAndView();
 			mav = msvc.loadToMyInfoQuestionForm();
 			
 			return mav;
@@ -219,10 +216,10 @@ public class MemberController {
 
 		//마이페이지 1:1 문의 작성 요청
 		@RequestMapping(value = "/insertMyInfoQuestionWrite")
-		public ModelAndView insertMyInfoQuestionWrite() {
+		public ModelAndView insertMyInfoQuestionWrite(ContactDto contact, RedirectAttributes ra) throws IllegalStateException, IOException {
 			System.out.println("마이페이지 1:1 문의 작성요청");
-			
-			mav = msvc.insertMyInfoQuestionWrite();
+			mav = new ModelAndView();
+			mav = msvc.insertMyInfoQuestionWrite(contact,ra);
 			
 			return mav;
 	

@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.NumberOne.dao.MemberDao;
 import com.NumberOne.dto.BoardDto;
+import com.NumberOne.dto.ContactDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.ReplyDto;
 
@@ -394,15 +395,17 @@ public class MemberService {
 	}
 
 
-	//마이페이지 1:1 문의
+	//마이페이지 1:1 문의 내역 / 상세
 	public ModelAndView selectMyInfoQuestionListView() {
 		ModelAndView mav = new ModelAndView();
 		System.out.println("MemberService.selectMyInfoQuestionListView 호출");
 		String loginId = (String) session.getAttribute("loginId");
 		System.out.println("로그인 된 아이디 : " + loginId);
 		
+		ArrayList<ContactDto> contact = mdao.selectMyInfoQuestionListView(loginId);
+		System.out.println(contact);
 		
-		
+		mav.addObject("contact", contact);
 		mav.setViewName("member/MyInfoQuestionListPage");
 		return mav;
 	}
@@ -421,14 +424,50 @@ public class MemberService {
 	}
 
 	//마이페이지 1:1 문의 작성 요청
-	public ModelAndView insertMyInfoQuestionWrite() {
+	public ModelAndView insertMyInfoQuestionWrite(ContactDto contact, RedirectAttributes ra) throws IllegalStateException, IOException {
 		ModelAndView mav = new ModelAndView();
 		System.out.println("MemberService.loadToMyInfoQuestionForm() 호출");
 		String loginId = (String) session.getAttribute("loginId");
 		System.out.println("로그인 된 아이디 : " + loginId);
 		
+		//글번호 생성(CT00001) 
+		String ctcode = mdao.selectMaxCtcode();
+		System.out.println("maxCtcode: "+ctcode);
+		int ctcodeNum = Integer.parseInt(ctcode.substring(2))+1;
+		System.out.println("ctcodeNum: "+ctcodeNum);
+		if(ctcodeNum<10) {
+			ctcode = "CT0000"+ctcodeNum;
+		} else if(ctcodeNum<100) {
+			ctcode = "CT000"+ctcodeNum;
+		} else if(ctcodeNum<1000) {
+			ctcode = "CT00"+ctcodeNum;
+		} else if(ctcodeNum<10000) {
+			ctcode = "CT0"+ctcodeNum;
+		} else if(ctcodeNum<100000) {
+			ctcode = "CT"+ctcodeNum;
+		}
 		
-		//mav.setViewName("member/MyInfoQuestionForm");
+		contact.setCtcode(ctcode);
+		System.out.println(ctcode);
+		
+		//로그인된 아이디 작성자에 저장
+		contact.setCtmid(loginId);
+		
+		System.out.println(contact);
+
+	      int contactResult = mdao.insertMyInfoQuestionWrite(contact);
+
+	      if(contactResult != 0) {
+
+				System.out.println("문의 작성 성공");
+				ra.addFlashAttribute("msg", "문의글이 등록 되었습니다.");
+				mav.setViewName("redirect:/selectMyInfoQuestionListView");
+			}else {
+				System.out.println("문의 작성 실패");
+				ra.addFlashAttribute("msg" , "문의글 작성에 실패하였습니다.");
+				mav.setViewName("redirect:/");
+			}
+
 		return mav;
 	}
 
