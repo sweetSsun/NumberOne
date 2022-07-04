@@ -105,10 +105,10 @@ public class AdminController {
 		return mav;
 	}
 	
-	@RequestMapping (value="admin_loadToWriteNotice")
-	public ModelAndView admin_loadToWriteNotice(RedirectAttributes ra) {
+	@RequestMapping (value="admin_loadToNoticeWrite")
+	public ModelAndView admin_loadToNoticeWrite(RedirectAttributes ra) {
 		System.out.println("공지 작성페이지 이동 요청");
-		mav = asvc.admin_loadToWriteNotice(ra);
+		mav = asvc.admin_loadToNoticeWrite(ra);
 		return mav;
 	}
 	
@@ -119,5 +119,18 @@ public class AdminController {
 		return mav;
 	}
 	
+	@RequestMapping (value="admin_selectNoticeModify")
+	public ModelAndView admin_selectNoticeModify(String nbcode) {
+		System.out.println("공지 수정페이지 이동 요청");
+		mav = asvc.admin_selectNoticeModify(nbcode);
+		return mav;
+	}
+	
+	@RequestMapping (value="admin_updateNoticeModify")
+	public ModelAndView admin_updateNoticeModify(NoticeDto notice, RedirectAttributes ra) throws IllegalStateException, IOException {
+		System.out.println("공지 수정 요청");
+		mav = asvc.admin_updateNoticeModify(notice, ra);
+		return mav;
+	}
 		
 }

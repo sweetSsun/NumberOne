@@ -27,5 +27,7 @@ public interface AdminDao {
 
 	int admin_insertNoticeWrite(NoticeDto notice);
 
+	int admin_updateNoticeModify(NoticeDto notice);
+
 
 }

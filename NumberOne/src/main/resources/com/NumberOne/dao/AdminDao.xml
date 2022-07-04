@@ -131,11 +131,16 @@
 	</update>
 	
 	<select id="admin_selectMaxNbcode" resultType="String">
-		SELECT MAX(NBCODE) FROM NOTICEBOARDS
+		SELECT NVL(MAX(NBCODE),NB00000) FROM NOTICEBOARDS
 	</select>
 	
 	<insert id="admin_insertNoticeWrite">
 		INSERT INTO NOTICEBOARDS (NBCODE, NBMID, NBTITLE, NBCONTENTS, NBDATE, NBIMG)
 		VALUES (#{nbcode}, #{nbmid}, #{nbtitle}, #{nbcontents}, SYSDATE, #{nbimg})
 	</insert>
+	
+	<update id="admin_updateNoticeModify">
+		UPDATE NOTICEBOARDS SET NBTITLE=#{nbtitle}, NBCONTENTS=#{nbcontents}
+		WHERE NBCODE=#{nbcode}
+	</update>
 </mapper>

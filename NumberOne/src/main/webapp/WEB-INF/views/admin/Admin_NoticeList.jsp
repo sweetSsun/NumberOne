@@ -85,7 +85,7 @@
 	            	</div>
 		            <div class="col-2">
 						<!-- 공지작성 버튼 -->
-						<button class="btn btn-primary btm-sm" type="button" onclick="location.href='admin_loadToWriteNotice'">글쓰기</button>
+						<button class="btn btn-primary btm-sm" type="button" onclick="location.href='admin_loadToNoticeWrite'">글쓰기</button>
 					</div>
                	</div>
            

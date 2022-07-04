@@ -263,8 +263,7 @@ public class AdminService {
 		int updateResult = adao.admin_updateNbstate_ajax(nbcode, nbstate);
 		if (updateResult > 0) {
 			ra.addFlashAttribute("msg", nbcode+" 공지가 비활성화 처리 되었습니다.");
-//			mav.setViewName("redirect:/admin_selectNoticeList?searchVal=?&searchType=?&keyword=?&page=?");
-			mav.setViewName("admin/Admin_NoticeList");
+			mav.setViewName("redirect:/admin_selectNoticeList?searchVal=all&searchType=&keyword=&page=1");
 		}
 		return mav;
 	}
@@ -284,8 +283,8 @@ public class AdminService {
 	}
 
 	// 공지 작성페이지 이동
-	public ModelAndView admin_loadToWriteNotice(RedirectAttributes ra) {
-		System.out.println("AdminService.admin_loadToWriteNotice() 호출");
+	public ModelAndView admin_loadToNoticeWrite(RedirectAttributes ra) {
+		System.out.println("AdminService.admin_loadToNoticeWrite() 호출");
 		
 		// 닉네임 찾기
 		String mid = (String) session.getAttribute("loginId");
@@ -316,15 +315,15 @@ public class AdminService {
 //		System.out.println("nbcodeNum: "+nbcodeNum);
 		String nbcode;
 		if(nbcodeNum<10) {
-			nbcode = "BD0000"+nbcodeNum;
+			nbcode = "NB0000"+nbcodeNum;
 		} else if(nbcodeNum<100) {
-			nbcode = "BD000"+nbcodeNum;
+			nbcode = "NB000"+nbcodeNum;
 		} else if(nbcodeNum<1000) {
-			nbcode = "BD00"+nbcodeNum;
+			nbcode = "NB00"+nbcodeNum;
 		} else if(nbcodeNum<10000) {
-			nbcode = "BD0"+nbcodeNum;
+			nbcode = "NB0"+nbcodeNum;
 		} else {
-			nbcode = "BD"+nbcodeNum;
+			nbcode = "NB"+nbcodeNum;
 		} 
 //		System.out.println("nbcode: "+nbcode);
 		notice.setNbcode(nbcode); // 생성한 nbcode set
@@ -356,10 +355,55 @@ public class AdminService {
 		}
 		return mav;
 	}
-	
-	
+
 	// 공지 수정페이지 이동
+	public ModelAndView admin_selectNoticeModify(String nbcode) {
+		System.out.println("AdminService.admin_selectNoticeModify() 호출");
+		System.out.println("nbcode : " + nbcode);
+		mav = new ModelAndView();
+		
+		String mnickname = bdao.selectRoomWriterMnickname( (String)session.getAttribute("loginId") );
+		mav.addObject("mnickname", mnickname);
+		
+		NoticeDto noticeBoard = bdao.selectNoticeBoardView(nbcode);
+		System.out.println(noticeBoard);
+		mav.addObject("noticeBoard", noticeBoard);
+		mav.setViewName("admin/Admin_NoticeModifyForm");
+		
+		return mav;
+	}
 	
+	// 작성 공지 DB에 입력
+	public ModelAndView admin_updateNoticeModify(NoticeDto notice, RedirectAttributes ra) throws IllegalStateException, IOException {
+		System.out.println("AdminService.admin_updateNoticeModify() 호출");
+		
+		// 파일 등록
+		// 파일 저장 경로
+//		String nbImgSavePath = request.getSession().getServletContext().getRealPath("resources/img/noticeUpLoad");
+//		MultipartFile nbimgfile = notice.getNbimgfile();
+//		String nbimg = ""; // 파일명 저장할 변수명
+//		if(!nbimgfile.isEmpty()) {
+//			System.out.println("첨부파일 있음");
+//			UUID uuid = UUID.randomUUID(); // 랜덤코드 생성
+//			nbimg = uuid.toString() + "_" + nbimgfile.getOriginalFilename();
+//			nbimgfile.transferTo( new File(nbImgSavePath, nbimg) );
+//		}
+//		notice.setNbimg(nbimg); // 생성한 파일명 set
+		
+		// UPDATE
+		System.out.println(notice);
+		int updateresult =  adao.admin_updateNoticeModify(notice);
+		
+		mav = new ModelAndView();
+		if(updateresult > 0) {
+			ra.addFlashAttribute("msg", notice.getNbcode()+ " 공지가 수정되었습니다.");
+			mav.setViewName("redirect:/admin_selectNoticeBoardView?nbcode="+notice.getNbcode());
+		} else {
+			ra.addFlashAttribute("msg", "공지 수정에 실패했습니다.");
+			mav.setViewName("redirect:/loadToFail");
+		}
+		return mav;
+	}	
 
 
 }
