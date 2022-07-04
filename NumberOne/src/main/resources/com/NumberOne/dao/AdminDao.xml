@@ -5,6 +5,8 @@
   
 <mapper namespace="com.NumberOne.dao.AdminDao">
 
+
+	<!-- 회원 관리 -->
 	<select id="admin_selectMemberTotalCount" resultType="int">
 		SELECT COUNT(*)
 		FROM MEMBERS MB
@@ -55,6 +57,7 @@
 		 WHERE MID=#{mid}
 	</select>
 	
+	<!-- 공지 관리 -->
 	<!-- 페이징 위한 공지 총 갯수 조회 -->
 	<select id="admin_selectNoticeTotalCount" resultType="int">
 		SELECT COUNT(*)
@@ -84,37 +87,6 @@
 			NBSTATE=0
 		</if>
 	</select>
-	
-	<!-- 페이징 전 쿼리문 -->	
-<!-- 	<select id="admin_selectNoticeList" resultType="com.NumberOne.dto.NoticeDto">
-		SELECT ROWNUM RN, NBCODE, NBMID, NBTITLE, NBCONTENTS, TO_CHAR(NBDATE, 'MM-DD') NBDATE, NBIMG, NBSTATE, NBHITS
-		FROM NOTICEBOARDS
-		<if test="keyword.length > 0 || searchVal == 'active' || searchVal == 'inactive'">
-			WHERE
-			검색한 키워드 정렬
-			<if test="keyword.length > 0">
-				<choose>
-					<when test="searchType == 'nbTitleContents'">
-						NBTITLE LIKE '%'||#{keyword}||'%' OR NBCONTENTS LIKE '%'||#{keyword}||'%'
-					</when>
-					<otherwise>
-						${searchType} LIKE '%'||#{keyword}||'%'
-					</otherwise>				
-				</choose>
-				<if test="searchVal == 'active' || searchVal == 'inactive'">
-						AND
-				</if>
-			</if>
-		</if>
-		상태값에 따른 정렬
-		<if test="searchVal == 'active'">
-			NBSTATE=1
-		</if>
-		<if test="searchVal == 'inactive'">
-			NBSTATE=0
-		</if>
-		ORDER BY NBCODE
-	</select> -->
 	
 	<!-- 페이징처리 후의 쿼리문 -->
  	<select id="admin_selectNoticeList" resultType="com.NumberOne.dto.NoticeDto">
@@ -151,10 +123,19 @@
 			
 	</select>
 	 
+	 <!-- 공지 상태 변경 -->
 	<update id="admin_updateNbstate_ajax">
 		UPDATE NOTICEBOARDS 
 		SET NBSTATE=${nbstate}
 		WHERE NBCODE=#{nbcode}
 	</update>
 	
+	<select id="admin_selectMaxNbcode" resultType="String">
+		SELECT MAX(NBCODE) FROM NOTICEBOARDS
+	</select>
+	
+	<insert id="admin_insertNoticeWrite">
+		INSERT INTO NOTICEBOARDS (NBCODE, NBMID, NBTITLE, NBCONTENTS, NBDATE, NBIMG)
+		VALUES (#{nbcode}, #{nbmid}, #{nbtitle}, #{nbcontents}, SYSDATE, #{nbimg})
+	</insert>
 </mapper>

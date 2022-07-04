@@ -36,6 +36,15 @@
 		font-size: 20px;
 	}
 </style>
+
+<script type="text/javascript">
+	var checkMsg = "${msg}"
+	console.log(checkMsg.length);
+	if(checkMsg.length > 0){
+		alert(checkMsg);
+	}
+</script>
+
 </head>
 <body>
 	<!-- TobBar -->
@@ -76,6 +85,9 @@
 					<!-- 본문 글 내용-->
 					<div class="row mt-3 mb-3 boardContents">
 						<div class="col">
+							<c:if test="${noticeBoard.nbimg != null }">
+								<img alt="" src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg}" style="max-width:100%;">
+							</c:if>
 							<textarea rows="10%" cols="100%" readonly>${noticeBoard.nbcontents }</textarea>
 						</div>
 					</div>
@@ -87,8 +99,10 @@
 						<a href="#"><input type="button" style="left:0;" class="middelBtn btn btn-lg bg-success fw-bold text-white" value="글목록"></a> 
 					</div>
 					<div class="col-4 offset-md-6" >
-						<input type="button" style="float:right;" class="btn btn-lg bg-success fw-bold text-white" value="삭제">
-						<input type="button" style="float:right; margin-right: 5px;" class="btn btn-lg bg-success fw-bold text-white" value="수정">
+						<input type="button" style="float:right;" class="btn btn-lg bg-success fw-bold text-white" 
+							onclick="updateNbstate('${noticeBoard.nbcode }')" value="삭제">
+						<input type="button" style="float:right; margin-right: 5px;" class="btn btn-lg bg-success fw-bold text-white"
+							onclick="" value="수정">
 					</div>
 				</div>
 				
@@ -100,5 +114,15 @@
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+<script type="text/javascript">
+	// 공지글 삭제 요청 (nbstate 0으로 변경)
+	function updateNbstate(nbcode){
+		console.log("공지 삭제 요청");
+		var nbstate = 0;
+		location.href="admin_updateNbstate?nbcode="+nbcode+"&nbstate="+nbstate;
+	}
+</script>
+
 </body>
 </html>

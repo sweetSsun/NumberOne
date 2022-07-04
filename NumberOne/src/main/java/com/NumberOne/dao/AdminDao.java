@@ -23,5 +23,9 @@ public interface AdminDao {
 
 	int admin_updateNbstate_ajax(@Param("nbcode") String nbcode, @Param("nbstate") String nbstate);
 
+	String admin_selectMaxNbcode();
+
+	int admin_insertNoticeWrite(NoticeDto notice);
+
 
 }

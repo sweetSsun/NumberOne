@@ -26,6 +26,14 @@
 	}
 </style>
 
+<script type="text/javascript">
+	var checkMsg = "${msg}"
+	console.log(checkMsg.length);
+	if(checkMsg.length > 0){
+		alert(checkMsg);
+	}
+</script>
+    
 </head>
 
 
@@ -60,26 +68,26 @@
 			<div class="container">
 	            <div class="row" style="margin:auto;">
 	                <h1 class="text-center">공지 관리페이지 : Admin_NoticeList.jsp</h1>
-					<div class="col-4 ">
+	            </div>
+	            <div class="row">
+					<div class="col-5">
 						<select name="searchType" id="searchTypeSel">
 							<option value="nbTitle">제목</option>
 							<option value="nbContents">내용</option>
 							<option value="nbTitleContents">제목+내용</option>
 						</select>
 					</div>
-	                <div class="col-6">
-	                	<div class="input-group">
-	                    	<input type="text" class="form-control" name="keyword" id="searchText" placeholder="검색 키워드를 입력하세요!" value="${searchText}">
-	                    	<span class="input-group-btn">
+	                <div class="col-5 input-group">
+                    	<input type="text" style="width:100px;" class="form-control" name="keyword" id="searchText" placeholder="검색 키워드를 입력하세요!" value="${searchText}">
+                    	<span class="input-group-btn">
 	                      	<button class="btn btn-secondary" type="submit" name="page" value="1">찾기</button>
-	                    	</span>
-	                	</div>
+                    	</span>
 	            	</div>
 		            <div class="col-2">
 						<!-- 공지작성 버튼 -->
-						<button type="button" class="btn btn-primary btm-sm">글쓰기</button>
+						<button class="btn btn-primary btm-sm" type="button" onclick="location.href='admin_loadToWriteNotice'">글쓰기</button>
 					</div>
-	            </div>
+               	</div>
            
             <div class="row" style="margin-top: 20px;">
                <div class="col">
@@ -110,17 +118,17 @@
 	                   <!-- 회원관리 목록 -->
 	                   <tr style="border-bottom: solid gray 1px;">
 	                      <td>${notice.nbcode}</td>
-	                      <td><a href="selectNoticeBoardView?nbcode=${notice.nbcode}">${notice.nbtitle}</a></td>
+	                      <td><a href="admin_selectNoticeBoardView?nbcode=${notice.nbcode}">${notice.nbtitle}</a></td>
 	                      <td>${notice.nbmid}</td>
 	                      <td>${notice.nbdate}</td>
 	                      <td>${notice.nbhits}</td>
 	                      <td>
 	                      	<c:choose>
 	                      		<c:when test="${notice.nbstate == 1}">
-	                      			<button class="btn btn-primary" onclick="showNbstateModal(this,'${notice.nbcode }')">활성</button>
+	                      			<button class="btn btn-primary" type="button" onclick="showNbstateModal(this,'${notice.nbcode }')">활성</button>
 	                      		</c:when>
 	                      		<c:otherwise>
-	                      			<button class="btn btn-secondary" onclick="showNbstateModal(this, '${notice.nbcode }')">비활성</button>
+	                      			<button class="btn btn-secondary" type="button" onclick="showNbstateModal(this, '${notice.nbcode }')">비활성</button>
 	                      		</c:otherwise>
 	                      	</c:choose>
 	                      </td>
@@ -216,6 +224,7 @@
 	<script type="text/javascript">
 		console.log("요청 페이지 : " + ${param.page});
 	
+		// onsubmit. 페이징 넘버를 누르지 않고 검색 버튼으로 controller를 호출할 때 페이지값 넘겨주기 위한 함수
 		function pageCheck(){
 			console.log("pageInput() 실행");
 			$("#pageInput").attr("name", "page").val("1");
@@ -270,15 +279,15 @@
 					for (var i = 0; i < result.length; i++){
 						output += "<tr style='border-bottom: solid gray 1px;'>";
 						output += "<td>" + result[i].nbcode + "</td>";
-						output += "<td><a href='selectNoticeBoardView?nbcode=" + result[i].nbcode + "'>" + result[i].nbtitle + "</a></td>";
+						output += "<td><a href='admin_selectNoticeBoardView?nbcode=" + result[i].nbcode + "'>" + result[i].nbtitle + "</a></td>";
 						output += "<td>" + result[i].nbmid + "</td>";
 						output += "<td>" + result[i].nbdate + "</td>";
 						output += "<td>" + result[i].nbhits + "</td>";
 						output += "<td>"
 						if (result[i].nbstate == 1){
-							output += "<button class='btn btn-primary' onclick='showNbstateModal(this, \""+result[i].nbcode+"\")'>활성</button>";
+							output += "<button class='btn btn-primary' type='button' onclick='showNbstateModal(this, \""+result[i].nbcode+"\")'>활성</button>";
 						} else {
-							output += "<button class='btn btn-secondary' onclick='showNbstateModal(this,\""+result[i].nbcode+"\")'>비활성</button>";
+							output += "<button class='btn btn-secondary' type='button' onclick='showNbstateModal(this,\""+result[i].nbcode+"\")'>비활성</button>";
 						}
 						output += "</td>";
 						output += "</tr>";

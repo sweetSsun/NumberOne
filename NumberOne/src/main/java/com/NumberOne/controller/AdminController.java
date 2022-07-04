@@ -1,15 +1,15 @@
 package com.NumberOne.controller;
 
-import java.util.ArrayList;
+import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.NumberOne.dto.MemberDto;
+import com.NumberOne.dto.NoticeDto;
 import com.NumberOne.service.AdminService;
 
 @Controller
@@ -79,7 +79,7 @@ public class AdminController {
 	
 	@RequestMapping (value="/admin_selectNoticePagingNumber_ajax")
 	public @ResponseBody String admin_selectNoticePagingNumber_ajax(String searchVal, String searchType, String keyword, int page) {
-		System.out.println("회원 관리페이지 페이징넘버 조회 요청");
+		System.out.println("공지 관리페이지 페이징넘버 조회 요청");
 		String paging_json = asvc.admin_selectNoticePagingNumber_ajax(searchVal, searchType, keyword, page);
 		return paging_json;
 	}
@@ -91,6 +91,33 @@ public class AdminController {
 		return updateResult;
 	}
 	
+	@RequestMapping (value="admin_updateNbstate")
+	public ModelAndView admin_updateNbstate(String nbcode, String nbstate, RedirectAttributes ra) {
+		System.out.println("공지상태 변경 요청_공지글 삭제");
+		mav = asvc.admin_updateNbstate(nbcode, nbstate, ra);
+		return mav;
+	}
+	
+	@RequestMapping (value="admin_selectNoticeBoardView")
+	public ModelAndView admin_selectNoticeBoardView(String nbcode) {
+		System.out.println("공지 상세페이지 이동 요청");
+		mav = asvc.admin_selectNoticeBoardView(nbcode);
+		return mav;
+	}
+	
+	@RequestMapping (value="admin_loadToWriteNotice")
+	public ModelAndView admin_loadToWriteNotice(RedirectAttributes ra) {
+		System.out.println("공지 작성페이지 이동 요청");
+		mav = asvc.admin_loadToWriteNotice(ra);
+		return mav;
+	}
+	
+	@RequestMapping (value="admin_insertNoticeWrite")
+	public ModelAndView admin_insertNoticeWrite(NoticeDto notice, RedirectAttributes ra) throws IllegalStateException, IOException {
+		System.out.println("작성한 공지 입력 요청");
+		mav = asvc.admin_insertNoticeWrite(notice, ra);
+		return mav;
+	}
 	
 		
 }
