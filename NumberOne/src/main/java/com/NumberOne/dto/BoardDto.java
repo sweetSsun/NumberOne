@@ -13,6 +13,7 @@ public class BoardDto {
 
 	private String bdcode; 			//글번호
 	private String bdrgcode;		//지역코드(말머리)
+	private String bdrgname;		//지역이름
 	private String bdcategory;		//카테고리	
 	private String bdmid;			//작성자
 	private String bdtitle;			//제목
@@ -40,171 +41,158 @@ public class BoardDto {
 	private String rchistory;   //추천 기록
 	private String schistory;   //스크랩 기록
 	private String wbhistory;   //신고 기록	
-	
-
 	public String getBdcode() {
 		return bdcode;
 	}
-
 	public void setBdcode(String bdcode) {
 		this.bdcode = bdcode;
 	}
-
 	public String getBdrgcode() {
 		return bdrgcode;
 	}
-
 	public void setBdrgcode(String bdrgcode) {
 		this.bdrgcode = bdrgcode;
 	}
-
+	public String getBdrgname() {
+		return bdrgname;
+	}
+	public void setBdrgname(String bdrgname) {
+		this.bdrgname = bdrgname;
+	}
 	public String getBdcategory() {
 		return bdcategory;
 	}
-
 	public void setBdcategory(String bdcategory) {
 		this.bdcategory = bdcategory;
 	}
-
 	public String getBdmid() {
 		return bdmid;
 	}
-
 	public void setBdmid(String bdmid) {
 		this.bdmid = bdmid;
 	}
-
 	public String getBdtitle() {
 		return bdtitle;
 	}
-
 	public void setBdtitle(String bdtitle) {
 		this.bdtitle = bdtitle;
 	}
-
 	public String getBdcontents() {
 		return bdcontents;
 	}
-
 	public void setBdcontents(String bdcontents) {
 		this.bdcontents = bdcontents;
 	}
-
 	public String getBddate() {
 		return bddate;
 	}
-
 	public void setBddate(String bddate) {
 		this.bddate = bddate;
 	}
-
 	public String getBdimg() {
 		return bdimg;
 	}
-
 	public void setBdimg(String bdimg) {
 		this.bdimg = bdimg;
 	}
-
 	public String getBddetailimg() {
 		return bddetailimg;
 	}
-
 	public void setBddetailimg(String bddetailimg) {
 		this.bddetailimg = bddetailimg;
 	}
-
 	public int getBdstate() {
 		return bdstate;
 	}
-
 	public void setBdstate(int bdstate) {
 		this.bdstate = bdstate;
 	}
-
 	public int getBdhits() {
 		return bdhits;
 	}
-
 	public void setBdhits(int bdhits) {
 		this.bdhits = bdhits;
 	}
-
 	public String getBdrecommend() {
 		return bdrecommend;
 	}
-
-
-
 	public void setBdrecommend(String bdrecommend) {
 		this.bdrecommend = bdrecommend;
 	}
-
 	public String getBdwarning() {
 		return bdwarning;
 	}
-
-
-
 	public void setBdwarning(String bdwarning) {
-
 		this.bdwarning = bdwarning;
 	}
-
 	public String getBdreply() {
 		return bdreply;
 	}
-
-
-
 	public void setBdreply(String bdreply) {
-
 		this.bdreply = bdreply;
 	}
-
 	public String getBdscrap() {
 		return bdscrap;
 	}
-
-
 	public void setBdscrap(String bdscrap) {
-
 		this.bdscrap = bdscrap;
 	}
-
 	public MultipartFile getBdimgfile() {
 		return bdimgfile;
 	}
-
 	public void setBdimgfile(MultipartFile bdimgfile) {
 		this.bdimgfile = bdimgfile;
 	}
-
 	public MultipartFile[] getBddetailimgfile() {
 		return bddetailimgfile;
 	}
-
 	public void setBddetailimgfile(MultipartFile[] bddetailimgfile) {
 		this.bddetailimgfile = bddetailimgfile;
 	}
-
 	public String getBdnickname() {
 		return bdnickname;
 	}
-
 	public void setBdnickname(String bdnickname) {
 		this.bdnickname = bdnickname;
 	}
-
+	public String getBdmprofile() {
+		return bdmprofile;
+	}
+	public void setBdmprofile(String bdmprofile) {
+		this.bdmprofile = bdmprofile;
+	}
+	public String getRchistory() {
+		return rchistory;
+	}
+	public void setRchistory(String rchistory) {
+		this.rchistory = rchistory;
+	}
+	public String getSchistory() {
+		return schistory;
+	}
+	public void setSchistory(String schistory) {
+		this.schistory = schistory;
+	}
+	public String getWbhistory() {
+		return wbhistory;
+	}
+	public void setWbhistory(String wbhistory) {
+		this.wbhistory = wbhistory;
+	}
 	@Override
 	public String toString() {
-		return "BoardDto [bdcode=" + bdcode + ", bdrgcode=" + bdrgcode + ", bdcategory=" + bdcategory + ", bdmid="
-				+ bdmid + ", bdtitle=" + bdtitle + ", bdcontents=" + bdcontents + ", bddate=" + bddate + ", bdimg="
-				+ bdimg + ", bddetailimg=" + bddetailimg + ", bdstate=" + bdstate + ", bdhits=" + bdhits
-				+ ", bdrecommend=" + bdrecommend + ", bdwarning=" + bdwarning + ", bdreply=" + bdreply + ", bdscrap="
-				+ bdscrap + ", bdimgfile=" + bdimgfile + ", bddetailimgfile=" + Arrays.toString(bddetailimgfile)
-				+ ", bdnickname=" + bdnickname + "]";
+		return "BoardDto [bdcode=" + bdcode + ", bdrgcode=" + bdrgcode + ", bdrgname=" + bdrgname + ", bdcategory="
+				+ bdcategory + ", bdmid=" + bdmid + ", bdtitle=" + bdtitle + ", bdcontents=" + bdcontents + ", bddate="
+				+ bddate + ", bdimg=" + bdimg + ", bddetailimg=" + bddetailimg + ", bdstate=" + bdstate + ", bdhits="
+				+ bdhits + ", bdrecommend=" + bdrecommend + ", bdwarning=" + bdwarning + ", bdreply=" + bdreply
+				+ ", bdscrap=" + bdscrap + ", bdimgfile=" + bdimgfile + ", bddetailimgfile="
+				+ Arrays.toString(bddetailimgfile) + ", bdnickname=" + bdnickname + ", bdmprofile=" + bdmprofile
+				+ ", rchistory=" + rchistory + ", schistory=" + schistory + ", wbhistory=" + wbhistory + "]";
 	}
+	
+
+
+		
 
 
 }

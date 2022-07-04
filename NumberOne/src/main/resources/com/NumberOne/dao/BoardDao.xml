@@ -3,13 +3,43 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
- <mapper namespace ="com.NumberOne.dao.BoardDao">
+<mapper namespace ="com.NumberOne.dao.BoardDao">
  	
  	<select id="selectNoticeList" resultType="com.NumberOne.dto.NoticeDto">
  		<!-- 공지 게시글 목록 조회 -->
  		SELECT NBCODE,NBMID,NBTITLE,NBCONTENTS,TO_CHAR(NBDATE,'YY-MM-DD') AS NBDATE,
  			   NBIMG,NBSTATE,NBHITS 
  		FROM NOTICEBOARDS
+ 	</select>
+ 	
+	<!-- 카테고리별(자유,질문,정보,후기) 글목록 조회 -->
+ 	<select id="selectBoardList_Free" resultType="com.NumberOne.dto.BoardDto">
+ 		<!-- 자유 게시글 목록 조회  -->
+ 		SELECT *
+	    FROM BOARDS
+	   	WHERE BDCATEGORY = #{bdcategory_Free}
+	   	AND BDSTATE = 1
+ 	</select>
+ 	<select id="selectBoardList_Question" resultType="com.NumberOne.dto.BoardDto">
+ 		<!-- 질문 게시글 목록 조회  -->
+ 		SELECT *
+	    FROM BOARDS
+	   	WHERE BDCATEGORY = #{bdcategory_Question}
+	   	AND BDSTATE = 1
+ 	</select>
+ 	<select id="selectBoardList_Information" resultType="com.NumberOne.dto.BoardDto">
+ 		<!--정보 게시글 목록 조회  -->
+ 		SELECT *
+	    FROM BOARDS
+	   	WHERE BDCATEGORY = #{bdcategory_Infomation}
+	   	AND BDSTATE = 1
+ 	</select>
+ 	<select id="selectBoardList_Review" resultType="com.NumberOne.dto.BoardDto">
+ 		<!--후기 게시글 목록 조회  -->
+ 		SELECT *
+	    FROM BOARDS
+	   	WHERE BDCATEGORY = #{bdcategory_Review}
+	   	AND BDSTATE = 1
  	</select>
  	
  	<select id="selectBoardSearchList" resultType="com.NumberOne.dto.BoardDto">
@@ -39,6 +69,7 @@
  		AND BDNICKNAME LIKE '%'||#{searchText}||'%'
  		</if>
  		
+ 		AND BDSTATE = 1
  		ORDER BY BDCODE DESC
  	 </select>
  	 
@@ -60,6 +91,7 @@
 		order by bdcode desc
 	 </select>
  	 
+ 	 <!-- !!자꾸 중복되는 메소드 -->
  	 <select id="selectNoticeBoardView" resultType="com.NumberOne.dto.NoticeDto">	
 	 	 <!-- 공지글 상세 -->
 	 	 SELECT NBCODE,NBMID,NBTITLE,NBCONTENTS,TO_CHAR(NBDATE,'YY-MM-DD HH24:MI') AS NBDATE,
@@ -70,10 +102,11 @@
  	 
  	 <select id="selectBoardView" resultType="com.NumberOne.dto.BoardDto">
  	 	<!-- 일반글 상세 -->
- 	 	SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, TO_CHAR(BDDATE,'YY-MM-DD HH24:MI') AS BDDATE, 
-	    BDIMG, BDDETAILIMG, BDSTATE, BDHITS, MB.MNICKNAME AS BDNICKNAME
-		FROM BOARDS BD, MEMBERS MB
+		SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, TO_CHAR(BDDATE,'YY-MM-DD HH24:MI') AS BDDATE, 
+	    	   BDIMG, BDDETAILIMG, BDSTATE, BDHITS, MB.MNICKNAME AS BDNICKNAME, RG.RGCODE AS BDRGCODE, RG.RGNAME AS BDRGNAME
+		FROM BOARDS BD, MEMBERS MB, REGION RG
 		WHERE BD.BDMID = MB.MID
+        AND BD.BDRGCODE = RG.RGCODE
 		AND BD.BDCODE = #{bdcode}
  	 </select>
  	 
@@ -145,6 +178,20 @@
  		VALUES ( #{loginId}, #{bdcode} )
  	</insert> 
  	
+ 	<delete id="deleteBoardRecommend_ajax">
+ 		<!-- 게시글 추천 삭제 -->
+ 		DELETE FROM RECOMMEND
+ 		WHERE RCMID = #{loginId} AND RCBDCODE = #{bdcode}
+ 		
+ 	</delete>
+ 	
+ 	<select id="checkBoardRecommend_ajax" resultType = "String">
+ 		<!-- 게시글 추천 유무 확인  -->
+ 		SELECT RCBDCODE
+ 		FROM RECOMMEND
+ 		WHERE RCMID = #{loginId}
+ 		AND RCBDCODE = #{bdcode}
+ 	</select>
  	
  	<insert id="insertBoardWarning_ajax">
  		<!-- 게시글 신고 -->
@@ -159,6 +206,23 @@
 		WHERE RCBDCODE = #{bdcode}
  	</select>
  	 
+ 	<update id="updateBoardDelete">
+ 		<!-- 게시글 삭제(상태 변경) -->
+ 		UPDATE BOARDS
+ 		SET BDSTATE = 0
+ 		WHERE BDCODE = #{bdcode}
+ 	</update>
+ 	 
+	<update id="updateBoardModify">
+		<!-- 게시글 수정 -->
+		UPDATE BOARDS
+		SET BDCATEGORY = #{bdcategory},
+		BDRGCODE = #{bdrgcode},
+		BDTITLE = #{bdtitle},
+		BDCONTENTS = #{bdcontents}
+		WHERE BDCODE = #{bdcode}
+	</update>
+	
  	<update id="updateRoomhits">
  		<!-- 조회수 올리기-->
  		UPDATE Boards
@@ -212,5 +276,6 @@
 		</if>
 		values (#{loginId}, #{bdcode})
 	</insert>
+
 	
  </mapper>
