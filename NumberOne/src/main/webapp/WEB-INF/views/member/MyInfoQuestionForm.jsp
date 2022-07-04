@@ -64,11 +64,16 @@
 										<table style="width: 1000px;">
 											<tr class="text-center" id="board_column">
 											<td style="width: 200px; padding: 20px;">작성자</td>
-											<td style="padding: 20px;" name="ctmid"></td>
+											<td style="padding: 20px;" >
+											<input style=" height: 60px; width: 800px; padding: 20px; border:0px;" readonly="readonly" rename="ctmid"
+											value="${sessionScope.loginId }">
+											</td>
 											</tr>
 											<tr class="text-center" id="board_column">
 											<td style="width: 200px; padding: 20px;">제목</td> 
-											<td style="padding: 20px;" name="cttitle"></td>
+											<td style="padding: 20px;" >
+											<input style=" height: 60px; width: 800px; padding: 20px;" name="cttitle">
+											</td>
 											</tr>
 											<tr class="text-center" id="board_column">
 											<td style="width: 200px; padding: 20px;">내용</td>
@@ -84,9 +89,9 @@
 				<br>
                         <div class="row">
                         	<div class="col-lg-12" style="margin-left: 400px;">						
-                        		<button type="button" class="site-btn" style="width: 130px; border-radius: 4px;"
+                        		<!--<button type="button" class="site-btn" style="width: 130px; border-radius: 4px;"
                         		onclick = "location.href = 'selectMyInfoQuestionListView' " >
-                        		취소</button>
+                        		취소</button>-->
                         		<button type="submit" class="site-btn" style="width: 130px; border-radius: 4px;"> 
                         		등록</button>                        
                         	</div>

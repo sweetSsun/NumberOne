@@ -509,7 +509,17 @@
 		});	
 	
 	</script>
+
+	<!-- 관심지역 script -->
+	<script type="text/javascript">
+		
+	$("#regionSelect").change(function(){	
+		var regionVal = $("#regionSelect").val();
+		console.log(regionVal);
+		$("#inputmregion").val(regionVal);	
+		});	
 	
+	</script>	
 	
 	
 	<!-- 파일 input 이름 생성 -->

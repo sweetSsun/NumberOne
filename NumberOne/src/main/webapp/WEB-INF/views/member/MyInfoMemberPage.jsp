@@ -95,11 +95,13 @@
                                         <p class="fw-bold" style="color: #004804;">프로필사진</p>
                                          <c:choose>
                                          <c:when test="${memberInfo.mprofile != null}">
-                                        <img style="height: 200px; border: 2px;" class="img-account-profile rounded-circle mb-2"
+                                        <img style="height: 200px; width: 200px; border: 1px solid #004804; padding: 10px;" 
+                                        class="img-account-profile rounded-circle mb-2"
                                         src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/${memberInfo.mprofile }" alt="">    
                                     </c:when>
                                     <c:otherwise>
-                                        <img style="height: 200px; border: 2px;" class="img-account-profile rounded-circle mb-2"
+                                        <img style="height: 200px; width: 200px; border: 1px solid #004804; padding: 10px;" 
+                                        class="img-account-profile rounded-circle mb-2"
                                         src="${pageContext.request.contextPath }/resources/img/logo.jpg" alt="">                                    
                                     </c:otherwise>
                                     </c:choose>
@@ -435,16 +437,16 @@
     		$("#inputEmailId").focus();
     		return false;
     	}   
-    	if($("#inputEmailDomail").val().length == 0){
+    	if($("#inputEmailDomain").val().length == 0){
     		alert("이메일도메인을 입력해주세요.");
-    		$("#inputEmailDomail").focus();
+    		$("#inputEmailDomain").focus();
     		return false;
     	}
     	
-    	/*주소 유무*/
-    	if($("#sample6_postcode").val().length == 0){
-    		alert("주소를 입력해주세요.");
-    		$("#sample6_postcode").focus();
+    	/*관심지역 유무*/
+    	if($("#inputmregion").val().length == 0){
+    		alert("관심지역을 선택해주세요.");
+    		$("#inputmregion").focus();
     		return false;
     	} 
     	
@@ -465,7 +467,17 @@
 		});	
 	
 	</script>
+
+	<!-- 관심지역 script -->
+	<script type="text/javascript">
+		
+	$("#regionSelect").change(function(){	
+		var regionVal = $("#regionSelect").val();
+		console.log(regionVal);
+		$("#inputmregion").val(regionVal);	
+		});	
 	
+	</script>	
 	
 	
 	<!-- 파일 input 이름 생성 -->

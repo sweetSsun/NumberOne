@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.NumberOne.dto.BoardDto;
+import com.NumberOne.dto.ContactDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.ReplyDto;
 
@@ -42,10 +43,8 @@ public interface MemberDao {
 
 	//회원정보수정
 	@Update("UPDATE MEMBERS SET MPW = #{mpw}, MNAME = #{mname}, MNICKNAME = #{mnickname}, MPHONE = #{mphone}, MEMAIL = #{memail}, MADDR = #{maddr}, "
-			+ "MPROFILE = #{mprofile}, MMESSAGE = #{mmessage} WHERE MID = #{mid}")
-	
+			+ "MPROFILE = #{mprofile}, MMESSAGE = #{mmessage} WHERE MID = #{mid}")	
 	int updateMyInfoMemberModify(MemberDto member);
-	
 	
 	//마이페이지 회원정보 _ 작성글
 	@Select("SELECT BD.BDCODE, BD.BDTITLE, RP.BDREPLY, BD.BDMID, BD.BDDATE "
@@ -65,8 +64,22 @@ public interface MemberDao {
 	@Update("UPDATE MEMBERS SET MSTATE = 2 WHERE MID = #{loginId}")
 	int updateMemberWithdraw(String loginId);
 
+	//1:1문의 글 번호 생성 (최대값)
+	@Select("SELECT NVL(MAX(CTCODE), 'CT00000') FROM CONTACT")
+	String selectMaxCtcode();
+
+	//1:1문의 글 작성 요청
+	@Insert("INSERT INTO CONTACT (CTCODE, CTTITLE, CTCONTENTS, CTMID, CTDATE) "
+			+ "VALUES (#{ctcode}, #{cttitle}, #{ctcontents}, #{ctmid}, SYSDATE) ")
+	int insertMyInfoQuestionWrite(ContactDto contact);
+
+	//1:1 문의 내역
+	@Select("SELECT CTCODE, CTTITLE, CTCONTENTS, CTMID, CTDATE FROM CONTACT WHERE CTMID=#{loginId} ORDER BY CTCODE DESC")
+	ArrayList<ContactDto> selectMyInfoQuestionListView(String loginId);
 
 
+	 
+	 	
 
 
 	
