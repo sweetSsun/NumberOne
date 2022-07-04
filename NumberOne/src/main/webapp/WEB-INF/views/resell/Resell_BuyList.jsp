@@ -237,7 +237,7 @@ z-index: 1;
 								<option value="JJD">제주도</option>
 							</select></span><span>** 지역입니다.</span></div>
 	
-						<div class="item_end"><a href="loadToResellWriteForm">글작성</a></div>
+						<div class="item_end"><a href="loadToResellWriteForm?titleCheck=B">글작성</a></div>
 						</div>
 								
 								<div class="flex_div flex-p0 flex_center">

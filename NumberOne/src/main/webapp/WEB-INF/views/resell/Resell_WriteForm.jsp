@@ -166,7 +166,7 @@ display: none;
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h1 class="text-center">중고거래 글작성페이지</h1>
+				<h1 class="text-center" id="boardTitle">중고거래 글작성페이지</h1>
 
 
 <form action="insertResellWrite">
@@ -291,6 +291,18 @@ display: none;
 		crossorigin="anonymous"></script>
 </body>
 
+<script type="text/javascript">
+
+
+/* var boardTitle = document.getElementById("boardTitle");
+var titleCheck = '${titleCheck}';
+console.log("타이틀체크 : "+titleCheck);
+console.log(typeof titleCheck);
+(titleCheck == 'B') ? boardTitle.innerText = "중고거래게시판- 사구 글 작성" : "중고게시판 - 팔구 글 작성";*/
+
+
+ 
+</script>
 
 <script type="text/javascript">
 /* 추가버튼 변수 */

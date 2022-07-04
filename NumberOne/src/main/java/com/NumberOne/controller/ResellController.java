@@ -2,12 +2,16 @@ package com.NumberOne.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.NumberOne.service.MemberService;
 
 @Controller
 public class ResellController {
+
+	ModelAndView mav;
 
 	@Autowired
 	private MemberService mscv;
@@ -23,8 +27,13 @@ public class ResellController {
 		return "resell/Resell_View";
 	}
 	@RequestMapping (value="/loadToResellWriteForm")
-	public String loadToResellWriteForm() {
-		return "resell/Resell_WriteForm";
+	public ModelAndView loadToResellWriteForm(String titleCheck) {
+		
+		System.out.println("타이틀체크 : " + titleCheck);
+					
+		mav.addObject("titleCheck", titleCheck);
+		mav.setViewName("Resell_WriteForm");
+		return mav;
 	}	
 	@RequestMapping (value="/selectResellModify")
 	public String selectResellModify() {
@@ -33,6 +42,7 @@ public class ResellController {
 	
 	@RequestMapping (value="/selectResellBuyList")
 	public String selectResellBuyList() {
+		
 		return "resell/Resell_BuyList";
 	}
 	
@@ -40,6 +50,7 @@ public class ResellController {
 	public String selectResellSellList() {
 		return "resell/Resell_SellList";
 	}
+	
 	
 	
 }
