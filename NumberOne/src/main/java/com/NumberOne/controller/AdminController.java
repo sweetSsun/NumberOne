@@ -3,6 +3,7 @@ package com.NumberOne.controller;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -63,9 +64,9 @@ public class AdminController {
 	
 	/* 공지 관리 */
 	@RequestMapping (value="admin_selectNoticeList")
-	public ModelAndView admin_selectNoticeList(String searchVal, String searchType, String keyword) {
+	public ModelAndView admin_selectNoticeList(String searchVal, String searchType, String keyword, int page) {
 		System.out.println("공지 관리페이지 이동 요청");
-		mav = asvc.admin_selectNoticeList(searchVal, searchType, keyword);
+		mav = asvc.admin_selectNoticeList(searchVal, searchType, keyword, page);
 		return mav;
 	}
 	

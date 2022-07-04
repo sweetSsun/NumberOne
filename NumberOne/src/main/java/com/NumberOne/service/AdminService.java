@@ -3,6 +3,7 @@ package com.NumberOne.service;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -136,11 +137,15 @@ public class AdminService {
 	
 	/* 공지 관리*/
 	// 공지 관리페이지 이동
-	public ModelAndView admin_selectNoticeList(String searchVal, String searchType, String keyword) {
+	public ModelAndView admin_selectNoticeList(String searchVal, String searchType, String keyword, int page) {
 		System.out.println("AdminService_admin_selectNoticeList() 호출");
 		System.out.println("정렬 val : " + searchVal);
 		System.out.println("검색 type : " + searchType);
 		System.out.println("검색 keyword : " + keyword);
+		if (page < 0) {
+			page = 1;
+		}
+		System.out.println("이동요청 페이지 : " + page);
 		mav = new ModelAndView();
 		ArrayList<NoticeDto> noticeList = adao.admin_selectNoticeList(searchVal, searchType, keyword);
 		System.out.println(noticeList);

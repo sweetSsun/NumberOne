@@ -18,12 +18,19 @@
     table{
        margin: 20px;
     }
+  	#pageList button{
+ 		display: none;
+	}
+	label{
+		cursor: pointer;
+	}
 </style>
 
 </head>
 
 
 <body>
+
 
 	<!-- TobBar -->
 	<c:choose>
@@ -49,12 +56,12 @@
 		
 		<section>
 		<!-- 본문 -->
+         <form action="admin_selectNoticeList" method="get" onclick="return pageCheck()">
 			<div class="container">
-            	<form action="admin_selectNoticeList" method="get">
 	            <div class="row" style="margin:auto;">
 	                <h1 class="text-center">공지 관리페이지 : Admin_NoticeList.jsp</h1>
 					<div class="col-4 ">
-						<select name="searchType">
+						<select name="searchType" id="searchTypeSel">
 							<option value="nbTitle">제목</option>
 							<option value="nbContents">내용</option>
 							<option value="nbTitleContents">제목+내용</option>
@@ -62,9 +69,9 @@
 					</div>
 	                <div class="col-6">
 	                	<div class="input-group">
-	                    	<input type="text" class="form-control" name="keyword" placeholder="검색 키워드를 입력하세요!">
+	                    	<input type="text" class="form-control" name="keyword" id="searchText" placeholder="검색 키워드를 입력하세요!" value="${searchText}">
 	                    	<span class="input-group-btn">
-	                      	<button class="btn btn-secondary">찾기</button>
+	                      	<button class="btn btn-secondary" type="submit">찾기</button>
 	                    	</span>
 	                	</div>
 	            	</div>
@@ -73,18 +80,17 @@
 						<button type="button" class="btn btn-primary btm-sm">글쓰기</button>
 					</div>
 	            </div>
-	            </form>
-				
+<%-- 				
 			<c:if test="${searchText.length() > 0 }">
 				<!-- 검색결과 안내  -->
 				<div class="row mb-1 mt-1">
 					<h3 class="text-center">[ <span class="text-primary">${searchText}</span> ] 로 검색한 결과 입니다.</h3>  
 				</div>
-			</c:if>
+			</c:if> --%>
 			
 			<!-- 검색 후 상태값으로 정렬 시 함께 넘겨줄 데이터 -->
-			<input type="hidden" id="ParamSearchText" value="${searchText }">
-			<input type="hidden" id="ParamSearchType" value="${searchType }">
+<%-- 			<input type="hidden" id="ParamSearchText" value="${searchText }">
+			<input type="hidden" id="ParamSearchType" value="${searchType }"> --%>
            
             <div class="row" style="margin-top: 20px;">
                <div class="col">
@@ -135,10 +141,47 @@
             </table>
             
   			<!-- 페이징 -->
+	  		<input type="text" id="pageInput" name="">
+	  		
+  			<div class="block text-center" id="pageList">
+               	<c:choose>
+               		<c:when test="${paging.page <= 1 }">
+               			[이전]
+               		</c:when>
+               		<c:otherwise>
+               			<button type="submit" name="page" value="${paging.page -1 }" id="btn1"></button>
+               			<label for="btn0">[이전]</label>
+               		</c:otherwise>
+               	</c:choose>
+               	
+               	<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="num" step="1">
+                	<c:choose>
+                		<c:when test="${paging.page == num }">
+                			<span>${num }</span>
+                		</c:when>
+                		<c:otherwise>
+                			<button type="submit" name="page" value="${num }" id="btn${num }"></button>
+               				<label for="btn${num }">${num }</label>
+                		</c:otherwise>
+                	</c:choose>
+               	</c:forEach>
+
+               	<c:choose>
+               		<c:when test="${paging.page >= paging.maxPage }">
+               			[다음]
+               		</c:when>
+               		<c:otherwise>
+               			<button type="submit" name="page" value="${paging.page +1 }" id="btn6"></button>
+               			<label for="btn6">[다음]</label>
+               		</c:otherwise>
+               	</c:choose>
+            </div>
             
             </div>
             
 			</div>
+		</form>
+			
 		</section>
 	</main>
 	
@@ -182,12 +225,38 @@
 	</script>
 	
 	<script type="text/javascript">
+		console.log("요청 페이지 : " + ${param.page});
+	
+		function pageCheck(){
+			console.log("pageInput() 실행");
+			$("#pageInput").attr("name", "page").val("1");
+		}
+	</script>
+	
+	
+	<script type="text/javascript">
+		var searchOption = $("#searchTypeSel option");
+		console.log("searchOption.length : " + searchOption.length);
+		var searchType = "${searchType}";
+		console.log("searchType : " + searchType);
+		if ('${searchType}'.length > 0) {
+			for (var i = 0; i < searchOption.length; i++){
+				if (searchOption.eq(i).val() == searchType){
+					searchOption.eq(i).attr("selected", "selected");
+				}
+			}
+		}
+	</script>
+	<script type="text/javascript">
 		// 정렬 select하면 ajax로 공지목록 받고 출력을 바꿔주는 함수
 		function nbSearchState(searchVal){
 			console.log("nbSearchState() 실행");
 			console.log("정렬 선택 : " + searchVal);
-			var searchType = $("#ParamSearchType").val();
-			var searchText = $("#ParamSearchText").val();
+			//var searchType = $("#searchType option:selected").val();
+			var searchType = $("#searchTypeSel").val();
+			var searchText = $("#searchText").val();
+			console.log(searchType);
+			console.log(searchText);
 			$.ajax({
 				type: "get",
 				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText},
@@ -265,6 +334,8 @@
 			});
 		}
 	</script>
+	
+	
 </body>
 
 </html>
