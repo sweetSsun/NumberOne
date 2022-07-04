@@ -121,21 +121,26 @@
 	}
 	.chatRe{
 		width: auto;
+		max-width: 300px;
 		word-wrap: break-word;
+		word-break: break-all;
 		float: left;
 		display: inline-block;
 		background-color: #D2D2D2;
 		padding: 0.5rem! important;
+		margin-bottom: 10px;
 		border-radius: 10px;
 		
 	}
 	.chatSe{
 		width: auto;
+		max-width: 300px;
 		word-wrap: break-word;
 		float: right;
 		display: inline-block;
 		background-color: #004804;
 		padding: 0.5rem! important;
+		margin-bottom: 10px;
 		border-radius: 10px;
 		/* margin-right: 3px; */
 		color: #ffffff;
@@ -225,48 +230,54 @@
 			console.log("onmessage event.data : "+event.data);
 		    
 	   		var receiveData = JSON.parse(event.data);
-	   		console.log(receiveData.chcontents);
+	   		console.log("보낸사람 : "+receiveData.chfrmnick);
+	   		console.log("받은메세지 : "+receiveData.chcontents);
 		    
 	   		 	
-		    var receiveMsg = "<div style=\"text-align:left;\"><span style=\"color: #004804;\" name=\"chtomid\">"+receiveData.chfrmid+"</span><div>";
-		    receiveMsg += "<div><span class=\"chatRe\" name=\"chconents\">"+receiveData.chcontents+"</span></div>";
+		    var receiveMsg = "<div style=\"text-align:left;\"><span style=\"color: #004804;\">"+receiveData.chfrmnick+"</span><div>";
+		    receiveMsg += "<div style=\"display: table;\"><span class=\"chatRe\">"+receiveData.chcontents+"</span>";
+		    receiveMsg += "<span style=\"color: #004804; vertical-align: bottom; display: table-cell;\">"+receiveData.chdatetime+"</span></div>";
 		    	    
 		    
 		    $("#chatList").append(receiveMsg);
 		    $("#chatList").scrollTop( $("#chatList")[0].scrollHeight );
-			console.log("msgData"+JSON.stringify(receiveMsg));
+			console.log("받은 메세지 json : "+JSON.stringify(receiveData));
 
 		    
 	    };
 	    
         // 연결이 끊어지면 실행되는 부분
 	    chatWebSocket.onclose = function(event) {
-	    	console.log("onclose evt.data : " + event.data);
+	    	console.log("onclose event.data : " + event.data);
 		};
 		
 	</script>
 
 	<script type="text/javascript">
 		function messageSend(){
-			var chFrmid = '${sessionScope.loginId}';
-			var chContents = $("#inputMsg").val();
+			var frmid = '${sessionScope.loginId}';
+			var tomid = 'chtest';
+			var contents = $("#inputMsg").val();
 			
-			if( chContents.trim().length >0 ){
+			if( contents.trim().length >0 ){
 
 				var sendData = {
-					chfrmid : chFrmid,
-					chcontents : chContents
+					chfrmid : frmid,
+					chcontents : contents,
+					chtomid : tomid
 				};
 				chatWebSocket.send(JSON.stringify(sendData));
-				var sendMsg = "<div style=\"text-align:right;\"><span class=\"chatSe\" name=\"chcontents\">"+chContents+"</span></div>";
+				var	sendMsg ="<div style=\"text-align:right;\"><span class=\"chatSe\">"+sendData.chcontents+"</span>";
 
 				$("#chatList").append(sendMsg);
 				$("#chatList").scrollTop( $("#chatList")[0].scrollHeight );
-				console.log("msgData"+JSON.stringify(sendData));
+
+				console.log("보낸메세지 json : "+JSON.stringify(sendData));
+				// console.log("받는사람 닉네임 : "+ sendData.chtomnick);
 			}
 			$("#inputMsg").val(""); // 입력창 초기화
 			
-			location.href="insertChat";
+			//location.href="insertChat";
 			
 		}
 	</script>
