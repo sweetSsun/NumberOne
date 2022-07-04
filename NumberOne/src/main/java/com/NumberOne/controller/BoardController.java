@@ -109,7 +109,7 @@ public class BoardController {
 	 @RequestMapping ( value = "/insertBoardReply_ajax")
 	 @ResponseBody
 	 public int insertBoardReply_ajax(String bdcode, String rpcontents) {
-		 System.out.println("글상세페이지 - 댓글등록 요청_ajax");
+		 System.out.println("댓글등록 요청_ajax");
 		 
 		 int insertResult = bsvc.insertBoardReply_ajax(bdcode, rpcontents);
 		 
@@ -120,7 +120,7 @@ public class BoardController {
 	 @RequestMapping ( value = "/selectBoardReplyList_ajax")
 	 @ResponseBody
 	 public String selectBoardReplyList_ajax(String bdcode) {
-		 System.out.println("글상세페이지 - 댓글목록 요청_ajax");
+		 System.out.println("댓글목록 요청_ajax");
 		 
 		 String replyList_ajax = bsvc.selectBoardReplyList_ajax(bdcode);
 		 
@@ -131,7 +131,7 @@ public class BoardController {
 	 @RequestMapping ( value= "/selectReplyCount_ajax")
 	 @ResponseBody
 	 public int selectReplyCount_ajax(String bdcode) {
-		 System.out.println("글상세페이지 - 댓글개수 요청_ajax");
+		 System.out.println("댓글개수 요청_ajax");
 		 
 		 int replyCount = bsvc.selectReplyCount_ajax(bdcode);
 		 
@@ -142,7 +142,7 @@ public class BoardController {
 	 @RequestMapping ( value = "/updateReplyState_ajax")
 	 @ResponseBody 
 	 public int updateReplyState_ajax(String rpcode) {
-		 System.out.println("글상세페이지 - 댓글삭제 요청_ajax");
+		 System.out.println("댓글삭제 요청_ajax");
 		 
 		 int updateResult = bsvc.updateReplyState_ajax(rpcode);
 		 
@@ -153,37 +153,90 @@ public class BoardController {
 	 @RequestMapping ( value = "/insertBoardRecommend_ajax")
 	 @ResponseBody 
 	 public int insertBoardRecommend_ajax(String loginId, String bdcode) {
-		 System.out.println("글상세페이지 - 게시글 추천 요청_ajax");
+		 System.out.println("게시글 추천 요청_ajax");
 		 
 		 int insertResult = bsvc.insertBoardRecommend_ajax(loginId, bdcode);
 		 
 		 return insertResult;
 	 }
 	 
+	 //게시글 추천 취소(추천 중복 클릭 시)
+	 @RequestMapping ( value = "/deleteBoardRecommend_ajax")
+	 @ResponseBody
+	 public int deleteBoardRecommend_ajax(String loginId, String bdcode ) {
+		 
+		 int deleteResult = bsvc.deleteBoardRecommend_ajax(loginId, bdcode);
+		 
+		 return deleteResult;
+	 }
+	 
 	 //게시글 신고 
 	 @RequestMapping ( value = "/insertBoardWarning_ajax")
 	 @ResponseBody
 	 public int insertBoardWarning_ajax(String loginId, String bdcode) {
-		 System.out.println("글상세페이지 - 게시글 신고 요청_ajax");
+		 System.out.println("게시글 신고 요청_ajax");
 		 
 		 int insertResult = bsvc.insertBoardWarning_ajax(loginId, bdcode);
 		 
 		 return insertResult;
 	 }
 	 
+	 //게시글 추천 유무 조회 
+	 @RequestMapping ( value = "/checkBoardRecommend_ajax")
+	 @ResponseBody
+	 public String checkBoardRecommend_ajax(String loginId, String bdcode) {
+		 System.out.println("게시글 추천 유무 확인 요청");
+		 
+		 String rcCheck = bsvc.checkBoardRecommend_ajax(loginId, bdcode);
+		 
+		 return rcCheck;
+		 
+	 }
+	 
 	 //게시글 추천수 조회 
 	 @RequestMapping ( value = "/selectBoardRecommendCount_ajax")
 	 @ResponseBody 
 	 public int selectBoardRecommendCount_ajax(String bdcode) {
-		 System.out.println("글상세페이지 - 게시글 추천수 조회 요청_ajax");
+		 System.out.println("게시글 추천수 조회 요청_ajax");
 		 
 		 int boardRecommendCount = bsvc.selectBoardRecommendCount_ajax(bdcode);
 		 
 		 return boardRecommendCount;
 		 
 	 }
+	 //게시글 수정 페이지 이동 
+	 @RequestMapping ( value = "/loadToBoardModify")
+	 public ModelAndView loadToBoardModify(String bdcode) {
+		 System.out.println("게시글 수정페이지 이동 요청");
+		 
+		 ModelAndView mav = bsvc.loadToBoardModify(bdcode);
+		 
+		 return mav;
+	 }
 	 
-
+	 //게시글 수정 
+	 @RequestMapping ( value = "/updateBoardModify")
+	 public ModelAndView updateBoardModify(BoardDto board, RedirectAttributes ra) {
+		 System.out.println("게시글 수정 요청");
+		 
+		 ModelAndView mav = bsvc.updateBoardModify(board, ra);
+		 
+		 return mav;
+		 
+	 }
+	 
+	 //게시글 삭제
+	 @RequestMapping ( value = "/updateBoardDelete")
+	 public ModelAndView updateBoardDelete (String bdcode, RedirectAttributes ra) {
+		 System.out.println("게시글 삭제 요청");
+		 
+		 ModelAndView mav = bsvc.updateBoardDelete(bdcode, ra);
+		 
+		 return mav;
+		 
+	 }
+	 
+	 
 	 //자취방 자랑글 상세 페이지 이동
 	 @RequestMapping ( value = "/selectRoomView")
 	 public @ResponseBody String selectRoomView(String bdcode) {

@@ -153,15 +153,35 @@ public class BoardService {
 	      System.out.println("BoardService.loadToBoardMainPage() 호출");
 	      ModelAndView mav = new ModelAndView();
 	      
-	      //일반게시판 글목록 조회 
-	      ArrayList<BoardDto> boardList = bdao.selectBoardList();
-	      System.out.println(boardList);
+	      /* 카테고리별 게시글 목록 조회 */
+	      //1. 자유 게시글 목록 
+		  String bdcategory_Free = "자유";
+	      ArrayList<BoardDto> boardList_Free = bdao.selectBoardList_Free(bdcategory_Free);
+		  System.out.println(boardList_Free);
+		  
+		  //2. 질문 게시글 목록 
+		  String bdcategory_Question = "질문";
+	      ArrayList<BoardDto> boardList_Question = bdao.selectBoardList_Question(bdcategory_Question);
+	      System.out.println(boardList_Question);
+	      
+	      //3. 정보 게시글 목록 
+	      String bdcategory_Infomation = "정보";
+	      ArrayList<BoardDto> boardList_Information = bdao.selectBoardList_Information(bdcategory_Infomation);  
+	      System.out.println(boardList_Information);
+	     
+	      //4. 후기 게시글 목록 
+	      String bdcategory_Review = "후기";
+	      ArrayList<BoardDto> boardList_Review = bdao.selectBoardList_Review(bdcategory_Review);
+	      System.out.println(boardList_Review);
 	      
 	      //공지게시판 글목록 조회 
 	      ArrayList<NoticeDto> noticeList = bdao.selectNoticeList();
 	      System.out.println(noticeList);
 	      
-	      mav.addObject("boardList", boardList);
+	      mav.addObject("boardList_Free", boardList_Free);
+	      mav.addObject("boardList_Question", boardList_Question);
+	      mav.addObject("boardList_Information", boardList_Information);
+	      mav.addObject("boardList_Review", boardList_Review);
 	      mav.addObject("noticeList", noticeList);
 	      mav.setViewName("board/BoardMain");
 	      
@@ -180,8 +200,6 @@ public class BoardService {
 	      //일반게시판 글목록 조회 
 	      ArrayList<BoardDto> boardList = bdao.selectBoardList();
 	      System.out.println(boardList);
-	      
-	      
 	      
 	      //일반게시판 댓글개수 조회 
 	      mav.addObject("noticeList", noticeList);
@@ -278,15 +296,9 @@ public class BoardService {
 		
 		//글상세정보 조회 
 		BoardDto board = bdao.selectBoardView(bdcode);
-		
-		/*
-		//댓글목록 조회 
-		ArrayList<ReplyDto> replyList = bdao.selectBoardReplyList(bdcode);
-		System.out.println(replyList);
-		*/
+		System.out.println(board);
 		
 		mav.addObject("board", board);
-		/* mav.addObject("replyList", replyList); */
 		mav.setViewName("board/BoardView");
 		
 		return mav;
@@ -471,6 +483,32 @@ public class BoardService {
 		return insertResult;
 	}
 	
+	//게시글 추천 취소 (추천 중복 클릭 시) 
+	public int deleteBoardRecommend_ajax(String loginId, String bdcode) {
+		System.out.println("BoardService.deleteBoardRecommend_ajax() 호출");
+		
+		int deleteResult = bdao.deleteBoardRecommend_ajax(loginId, bdcode);
+		
+		return deleteResult;
+	}
+	
+	//게시글 추천 유무 확인 
+	public String checkBoardRecommend_ajax(String loginId, String bdcode) {
+		System.out.println("BoardService.checkBoardRecommend_ajax() 호출");
+		
+		String recommendCheck = bdao.checkBoardRecommend_ajax(loginId, bdcode);
+		System.out.println(recommendCheck);
+		String rcCheck = null;
+		if( recommendCheck == null ) {
+			rcCheck = "No";//추천한적 없음 
+		}else {
+			rcCheck = "Yes";//추천한적 있음 
+		}
+		
+		
+		return rcCheck;
+	}
+	
 	//게시글 추천수 조회 
 	public int selectBoardRecommendCount_ajax(String bdcode) {
 		System.out.println("BoardService.selectBoardRecommendCount_ajax() 호출");
@@ -480,5 +518,58 @@ public class BoardService {
 		
 		return boardRecommendCount;
 	}
+	
+	//게시글 삭제 
+	public ModelAndView updateBoardDelete(String bdcode, RedirectAttributes ra) {
+		System.out.println("BoardService.updateBoardDelete() 호출");
+		ModelAndView mav = new ModelAndView();
+		System.out.println("삭제할 글번호 : " + bdcode );
+		
+		int updateResult = bdao.updateBoardDelete(bdcode);
+		if( updateResult > 0 ) {
+			ra.addFlashAttribute("msg", "게시글이 삭제되었습니다.");
+		}
+		
+		//삭제 후 전체 글목록 페이지로 이동
+		mav.setViewName("redirect:/selectBoardList");
+		
+		return mav;
+	}
+	
+	//게시글 수정 페이지 이동 요청 
+	public ModelAndView loadToBoardModify(String bdcode) {
+		System.out.println("BoardService.loadToBoardModify() 호출");
+		ModelAndView mav = new ModelAndView();
+		
+		//수정할 게시글 정보 
+		BoardDto board = bdao.selectBoardView(bdcode);
+		System.out.println(board);
+		
+		mav.addObject("board", board);
+		mav.setViewName("board/BoardModifyForm");
+		
+		return mav;
+	}
+	
+	//게시글 수정
+	public ModelAndView updateBoardModify(BoardDto board, RedirectAttributes ra) {
+		System.out.println("BoardService.updateBoardModify() 호출");
+		ModelAndView mav = new ModelAndView();
+		System.out.println(board);
+		
+		String bdcontents = board.getBdcontents().replace("", "&nbsp;");
+		bdcontents = board.getBdcontents().replace("\r\n", "<br>");
+		board.setBdcontents(bdcontents);
+		
+		int updateResult = bdao.updateBoardModify(board);
+		ra.addFlashAttribute("msg", "글이 수정되었습니다.");
+		//글수정 후 다시 글 상세페이지로 이동 
+		mav.setViewName("redirect:/selectBoardView?bdcode="+board.getBdcode());
+		
+		return mav;
+	}
+
+	
+	
 	
 }

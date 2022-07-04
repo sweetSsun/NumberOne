@@ -13,6 +13,7 @@ public class BoardDto {
 
 	private String bdcode; 			//글번호
 	private String bdrgcode;		//지역코드(말머리)
+	private String bdrgname;		//지역이름
 	private String bdcategory;		//카테고리	
 	private String bdmid;			//작성자
 	private String bdtitle;			//제목
@@ -189,14 +190,27 @@ public class BoardDto {
 		this.bdnickname = bdnickname;
 	}
 
+	public String getBdrgname() {
+		return bdrgname;
+	}
+
+	public void setBdrgname(String bdrgname) {
+		this.bdrgname = bdrgname;
+	}
+
 	@Override
 	public String toString() {
-		return "BoardDto [bdcode=" + bdcode + ", bdrgcode=" + bdrgcode + ", bdcategory=" + bdcategory + ", bdmid="
-				+ bdmid + ", bdtitle=" + bdtitle + ", bdcontents=" + bdcontents + ", bddate=" + bddate + ", bdimg="
-				+ bdimg + ", bddetailimg=" + bddetailimg + ", bdstate=" + bdstate + ", bdhits=" + bdhits
-				+ ", bdrecommend=" + bdrecommend + ", bdwarning=" + bdwarning + ", bdreply=" + bdreply + ", bdscrap="
-				+ bdscrap + ", bdimgfile=" + bdimgfile + ", bddetailimgfile=" + Arrays.toString(bddetailimgfile)
-				+ ", bdnickname=" + bdnickname + "]";
+		return "BoardDto [bdcode=" + bdcode + ", bdrgcode=" + bdrgcode + ", bdrgname=" + bdrgname + ", bdcategory="
+				+ bdcategory + ", bdmid=" + bdmid + ", bdtitle=" + bdtitle + ", bdcontents=" + bdcontents + ", bddate="
+				+ bddate + ", bdimg=" + bdimg + ", bddetailimg=" + bddetailimg + ", bdstate=" + bdstate + ", bdhits="
+				+ bdhits + ", bdrecommend=" + bdrecommend + ", bdwarning=" + bdwarning + ", bdreply=" + bdreply
+				+ ", bdscrap=" + bdscrap + ", bdimgfile=" + bdimgfile + ", bddetailimgfile="
+				+ Arrays.toString(bddetailimgfile) + ", bdnickname=" + bdnickname + "]";
 	}
+
+
+		
+	
+	
 
 }
