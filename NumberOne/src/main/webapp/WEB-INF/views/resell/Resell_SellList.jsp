@@ -237,7 +237,9 @@ z-index: 1;
 								<option value="JJD">제주도</option>
 							</select></span><span>** 지역입니다.</span></div>
 	
-						<div class="item_end"><a href="loadToResellWriteForm?titleCheck=S">글작성</a></div>
+	<c:if test="${sessionScope.loginId != null }">
+						<div class="item_end"><a href="loadToResellWriteForm?sell_buy=S">글작성</a></div>
+						</c:if>
 						</div>
 								
 								<div class="flex_div flex-p0 flex_center">

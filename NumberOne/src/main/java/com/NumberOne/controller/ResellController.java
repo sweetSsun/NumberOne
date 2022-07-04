@@ -1,21 +1,23 @@
 package com.NumberOne.controller;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.NumberOne.dto.GoodsDto;
+import com.NumberOne.dto.UsedBoardDto;
 import com.NumberOne.service.MemberService;
+import com.NumberOne.service.ResellService;
 
 @Controller
 public class ResellController {
 
-	ModelAndView mav;
-
 	@Autowired
-	private MemberService mscv;
-	
+	private ResellService rsvc;
 	
 	@RequestMapping (value="/loadToResellMainPage")
 	public String loadToResellMainPage() {
@@ -27,12 +29,12 @@ public class ResellController {
 		return "resell/Resell_View";
 	}
 	@RequestMapping (value="/loadToResellWriteForm")
-	public ModelAndView loadToResellWriteForm(String titleCheck) {
+	public ModelAndView loadToResellWriteForm(String sell_buy) {
+		ModelAndView mav = new ModelAndView();
+		System.out.println("타이틀체크 : " + sell_buy);
+		mav.addObject("sell_buy", sell_buy);
+		mav.setViewName("resell/Resell_WriteForm");
 		
-		System.out.println("타이틀체크 : " + titleCheck);
-					
-		mav.addObject("titleCheck", titleCheck);
-		mav.setViewName("Resell_WriteForm");
 		return mav;
 	}	
 	@RequestMapping (value="/selectResellModify")
@@ -50,7 +52,18 @@ public class ResellController {
 	public String selectResellSellList() {
 		return "resell/Resell_SellList";
 	}
-	
+	@RequestMapping (value="/insertResellWrite")
+	public ModelAndView insertResellWrite(GoodsDto gdDto, UsedBoardDto ubDto, RedirectAttributes ra) throws IllegalStateException, IOException {
+		
+		System.out.println(gdDto);
+		System.out.println(ubDto);
+
+		ModelAndView mav = new ModelAndView();
+		mav = rsvc.insertResellWrite(gdDto, ubDto, ra);
+		
+		
+		return mav;
+	}
 	
 	
 }
