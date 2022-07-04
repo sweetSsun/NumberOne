@@ -195,7 +195,6 @@
     width: 100%;
   }
 }
-
 	
 </style>
 </head>
@@ -356,26 +355,26 @@
 				//추천
 				if(roomView.rchistory != "n"){
 					console.log("추천 기록 있음")
-					roomInfoOutput += "<a onclick='recommend(\""+roomView.bdcode+"\")'><span id='"+roomView.bdcode+"_rchistory'><i class='fa-solid fa-heart'></i></span></a> ";
+					roomInfoOutput += "<a onclick='log(\""+roomView.bdcode+"\", \"rchistory\")'><span id='"+roomView.bdcode+"_rchistory'><i class='fa-solid fa-heart'></i></span></a> ";
 				} else {					
 					console.log("추천 기록 없음")
-					roomInfoOutput += "<a onclick='recommend(\""+roomView.bdcode+"\")'><span id='"+roomView.bdcode+"_rchistory'><i class='fa-regular fa-heart'></i></span></a> ";
+					roomInfoOutput += "<a onclick='log(\""+roomView.bdcode+"\", \"rchistory\")'><span id='"+roomView.bdcode+"_rchistory'><i class='fa-regular fa-heart'></i></span></a> ";
 				}
 				//스크랩
 				if(roomView.schistory != "n"){
 					console.log("스크랩 기록 있음")
-					roomInfoOutput += "<a onclick='scrap(\""+roomView.bdcode+"\")'><span id='"+roomView.bdcode+"_schistory'><i class='fa-solid fa-star' style=''></i></span></a> ";
+					roomInfoOutput += "<a onclick='log(\""+roomView.bdcode+"\", \"schistory\")'><span id='"+roomView.bdcode+"_schistory'><i class='fa-solid fa-star' style=''></i></span></a> ";
 				} else {					
 					console.log("스크랩 기록 없음")
-					roomInfoOutput += "<a onclick='scrap(\""+roomView.bdcode+"\")'><span id='"+roomView.bdcode+"_schistory'><i class='fa-regular fa-star'></i></span></a> ";
+					roomInfoOutput += "<a onclick='log(\""+roomView.bdcode+"\", \"schistory\")'><span id='"+roomView.bdcode+"_schistory'><i class='fa-regular fa-star'></i></span></a> ";
 				}
 				//신고
 				if(roomView.wbhistory != "n"){
 					console.log("신고 기록 있음")
-					roomInfoOutput += "<a onclick='warningboards(\""+roomView.bdcode+"\")'><span id='"+roomView.bdcode+"_wbhistory'><i class='fa-solid fa-dove' style='position:absolute; right:0;'></i></span></a> ";
+					roomInfoOutput += "<a onclick='log(\""+roomView.bdcode+"\", \"wbhistory\")'><span id='"+roomView.bdcode+"_wbhistory'><i class='fa-solid fa-dove' style='position:absolute; right:0;'></i></span></a> ";
 				} else {					
 					console.log("신고 기록 없음")
-					roomInfoOutput += "<a onclick='warningboards(\""+roomView.bdcode+"\")'><span id='"+roomView.bdcode+"_wbhistory'><i class='fa-solid fa-land-mine-on' style='position:absolute; right:0;'></i></span></a> ";
+					roomInfoOutput += "<a onclick='log(\""+roomView.bdcode+"\", \"wbhistory\")'><span id='"+roomView.bdcode+"_wbhistory'><i class='fa-solid fa-land-mine-on' style='position:absolute; right:0;'></i></span></a> ";
 				}
 				//console.log(roomInfoOutput);
 				
@@ -406,14 +405,32 @@
 	  modal.style.display = "none";
 	}
 	
-	function recommend(bdcode){
-		console.log("자랑글 추천 함수 호출")
+	function log(bdcode, history){
+		console.log("log 함수 호출");
+		if(history == 'rchistory'){
+			console.log("자랑글 추천 요청");		
+		} else if(history == 'schistory'){
+			console.log("자랑글 스크랩 요청");					
+		} else {
+			console.log("자랑글 신고 요청");								
+		}
+		
+		
+		if('${sessionScope.loginId}'==''){
+			var confirmResult = confirm("로그인 후 이용가능합니다."); 
+			console.log(confirmResult);
+			if(confirmResult==true){
+				location.href = '${pageContext.request.contextPath }/loadToLogin';
+			} else {
+				return;
+			}
+		}
 		
 		var currentHistory="";
 		$.ajax({
 			type : "get",
 			url : "currentHistory",
-			data : { "bdcode" : bdcode, "history": "rchistory"},
+			data : { "bdcode" : bdcode, "history": history},
 			//dataType : "json",
 			async : false,
 			success: function(result){
@@ -422,109 +439,45 @@
 			}
 		});
 		
-		console.log(bdcode+"의 현재 추천 상태: "+currentHistory)
+		console.log(bdcode+"의 현재 상태: "+currentHistory)
 		$.ajax({
 			type : "get",
 			url : "updateLog",
-			data : { "bdcode" : bdcode, "history": "rchistory", "currentState":currentHistory},
+			data : { "bdcode" : bdcode, "history": history, "currentState":currentHistory},
 			//dataType : "json",
 			async : false,
 			success: function(result){
 				//console.log(result);
-				if(result == '1'){ //추천 업데이트 성공시
-					if(currentHistory == '0'){ //추천 성공
-						console.log("추천 성공");
-						$("#"+bdcode+"_rchistory").html("<i class='fa-solid fa-heart'></i>");	
-					} else { //추천 취소 성공
-						console.log("추천 취소 성공");
-						$("#"+bdcode+"_rchistory").html("<i class='fa-regular fa-heart'></i>");							
-					}
+				if(result == '1'){ //업데이트 성공시
+					if(currentHistory == '0'){ //성공
+						if(history == 'rchistory'){
+							console.log("추천 성공");
+							$("#"+bdcode+"_rchistory").html("<i class='fa-solid fa-heart'></i>");		
+						} else if(history == 'schistory'){
+							console.log("스크랩 성공");
+							$("#"+bdcode+"_schistory").html("<i class='fa-solid fa-star'></i>");	
+						} else {
+							console.log("신고 성공");
+							$("#"+bdcode+"_wbhistory").html("<i class='fa-solid fa-dove' style='position:absolute; right:0;'></i>");				
+						}
 					
-				}
-				
+					} else { //취소 성공
+						if(history == 'rchistory'){
+							console.log("추천 취소 성공");
+							$("#"+bdcode+"_rchistory").html("<i class='fa-regular fa-heart'></i>");					
+						} else if(history == 'schistory'){
+							console.log("스크랩 취소 성공");
+							$("#"+bdcode+"_schistory").html("<i class='fa-regular fa-star'></i>");
+						} else {
+							console.log("신고 취소 성공");
+							$("#"+bdcode+"_wbhistory").html("<i class='fa-solid fa-land-mine-on' style='position:absolute; right:0;'></i>");				
+						}						
+					}	
+				}	
 			}
-		});
+		});		
 	}
 	
-	function scrap(bdcode){
-		console.log("자랑글 스크랩 함수 호출")
-		
-		var currentHistory="";
-		$.ajax({
-			type : "get",
-			url : "currentHistory",
-			data : { "bdcode" : bdcode, "history": "schistory"},
-			//dataType : "json",
-			async : false,
-			success: function(result){
-				console.log(result);
-				currentHistory = result;				
-			}
-		});
-		
-		console.log(bdcode+"의 현재 스크랩 상태: "+currentHistory)
-		$.ajax({
-			type : "get",
-			url : "updateLog",
-			data : { "bdcode" : bdcode, "history": "schistory", "currentState":currentHistory},
-			//dataType : "json",
-			async : false,
-			success: function(result){
-				//console.log(result);
-				if(result == '1'){ //추천 업데이트 성공시
-					if(currentHistory == '0'){ //추천 성공
-						console.log("스크랩 성공");
-						$("#"+bdcode+"_schistory").html("<i class='fa-solid fa-star'></i>");	
-					} else { //추천 취소 성공
-						console.log("스크랩 취소 성공");
-						$("#"+bdcode+"_schistory").html("<i class='fa-regular fa-star'></i>");							
-					}
-					
-				}
-				
-			}
-		});
-	}
-	
-	function warningboards(bdcode){
-		console.log("자랑글 신고 함수 호출")
-		
-		var currentHistory="";
-		$.ajax({
-			type : "get",
-			url : "currentHistory",
-			data : { "bdcode" : bdcode, "history": "wbhistory"},
-			//dataType : "json",
-			async : false,
-			success: function(result){
-				console.log(result);
-				currentHistory = result;				
-			}
-		});
-		
-		console.log(bdcode+"의 현재 신고 상태: "+currentHistory)
-		$.ajax({
-			type : "get",
-			url : "updateLog",
-			data : { "bdcode" : bdcode, "history": "wbhistory", "currentState":currentHistory},
-			//dataType : "json",
-			async : false,
-			success: function(result){
-				//console.log(result);
-				if(result == '1'){ //추천 업데이트 성공시
-					if(currentHistory == '0'){ //추천 성공
-						console.log("신고 성공");
-						$("#"+bdcode+"_wbhistory").html("<i class='fa-solid fa-dove' style='position:absolute; right:0;'></i>");	
-					} else { //추천 취소 성공
-						console.log("신고 취소 성공");
-						$("#"+bdcode+"_wbhistory").html("<i class='fa-solid fa-land-mine-on' style='position:absolute; right:0;'></i>");							
-					}
-					
-				}
-				
-			}
-		});
-	}
 </script>
 
 </html>
