@@ -23,5 +23,5 @@ public class UsedBoardDto {
 	private int ubzzim;			//찜수 (zzim 테이블 조인)
 	
 	private MultipartFile ubmainimgfile;	//대표사진
-	private MultipartFile[] ubdetailimgfile;	
+	private MultipartFile[] ubdetailimgfile;	//상세사진
 }

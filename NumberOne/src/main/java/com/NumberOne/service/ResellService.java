@@ -115,7 +115,7 @@ public class ResellService {
 				uddetailimg += "___" + uddetailimgname;
 			}
 
-			// room에 setBddetailimg
+			
 			System.out.println("uddetailimg : " + uddetailimg);
 		}
 		
@@ -143,15 +143,15 @@ public class ResellService {
 				int gdCode_int = Integer.parseInt(gd_codeNumber)+1;
 
 				if (gdCode_int < 10) {
-					gdCode = ub_char + "0000" + gdCode_int;
+					gdCode = gd_char + "0000" + gdCode_int;
 				} else if (gdCode_int < 100) {
-					gdCode = ub_char + "000" + gdCode_int;
+					gdCode = gd_char + "000" + gdCode_int;
 				} else if (gdCode_int < 1000) {
-					gdCode = ub_char + "00" + gdCode_int;
+					gdCode = gd_char + "00" + gdCode_int;
 				} else if (gdCode_int < 10000) {
-					gdCode = ub_char + "0" + gdCode_int;
+					gdCode = gd_char + "0" + gdCode_int;
 				} else if (gdCode_int < 100000) {
-					gdCode = ub_char + gdCode_int;
+					gdCode = gd_char + gdCode_int;
 				}
 			}
 
@@ -183,6 +183,37 @@ public class ResellService {
 		
 		return mav;
 
+	}
+
+
+	public ModelAndView selectResellBuyList() {
+		System.out.println("selectResellBuyList 서비스 호출");
+		//회원의 관심지역
+		String mregion = (String)session.getAttribute("");
+		
+		ModelAndView mav = new ModelAndView();
+		
+		ArrayList<UsedBoardDto> buyList= rdao.selectResellBuyList(mregion);
+			
+		mav.addObject("buyList", buyList);
+		mav.setViewName("resell/Resell_BuyList");
+		
+		return mav;
+	}
+
+	public ModelAndView selectResellSellList() {
+		System.out.println("selectResellSellList 서비스 호출");
+		//회원의 관심지역
+		String mregion = (String)session.getAttribute("");
+		
+		ModelAndView mav = new ModelAndView();
+		
+		ArrayList<UsedBoardDto> sellList= rdao.selectResellSellList(mregion);
+			
+		mav.addObject("sellList", sellList);
+		mav.setViewName("resell/Resell_SellList");
+		
+		return mav;
 	}
 
 }

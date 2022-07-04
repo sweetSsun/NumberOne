@@ -44,13 +44,20 @@ public class ResellController {
 	
 	@RequestMapping (value="/selectResellBuyList")
 	public String selectResellBuyList() {
+		ModelAndView mav = new ModelAndView();
 		
-		return "resell/Resell_BuyList";
+		mav = rsvc.selectResellBuyList();
+		
+		return null;
 	}
 	
 	@RequestMapping (value="/selectResellSellList")
 	public String selectResellSellList() {
-		return "resell/Resell_SellList";
+	ModelAndView mav = new ModelAndView();
+		
+		mav = rsvc.selectResellSellList();
+		
+		return null;
 	}
 	@RequestMapping (value="/insertResellWrite")
 	public ModelAndView insertResellWrite(GoodsDto gdDto, UsedBoardDto ubDto, RedirectAttributes ra) throws IllegalStateException, IOException {
@@ -60,10 +67,14 @@ public class ResellController {
 
 		ModelAndView mav = new ModelAndView();
 		mav = rsvc.insertResellWrite(gdDto, ubDto, ra);
-		
-		
+				
 		return mav;
 	}
+	
+	
+	
+	
+	
 	
 	
 }

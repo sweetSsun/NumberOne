@@ -210,12 +210,12 @@ div {
 
 						<div class="container-card_goods">
 
-							<div class="container-card_goods_2">
+							<div class="container-card_goods_2s">
 								<div class="item-basis_7 flex-shrink">
-									<input type="text" name="gd_names" size="60" placeholder="품목명">
+									<input type="text" name="gd_names" size="60" placeholder="품목명" class="gd_check">
 								</div>
 								<div class="item-basis_3 flex-shrink">
-									<input type="text" size="20" placeholder="가격" name="gd_price">
+									<input type="text" size="20" placeholder="가격" name="gd_price" class="gd_check">
 								</div>
 
 							</div>
@@ -226,13 +226,14 @@ div {
 							<div class="d_none btn_d-none">
 								<div class="container-card_goods_2">
 									<div class="item-basis_7 flex-shrink">
-										<input type="text" name="gd_names" size="60" placeholder="품목명">
+										<input type="text" name="gd_names" size="60" placeholder="품목명" class="gd_check">
 									</div>
 									<div class="item-basis_3 flex-shrink">
-										<input type="text" size="20" placeholder="가격" name="gd_price">
+										<input type="text" size="20" placeholder="가격" name="gd_price" class="gd_check">
 									</div>
 
 								</div>
+								
 								<div class="container-flex_1 flex-end">
 									<div class="addBtn">+추가</div>
 									<div class="removeBtn">제거</div>
@@ -242,11 +243,12 @@ div {
 							<div class="d_none btn_d-none">
 								<div class="container-card_goods_2">
 									<div class="item-basis_7 flex-shrink">
-										<input type="text" name="gd_names" size="60" placeholder="품목명">
+										<input type="text" name="gd_names" size="60" placeholder="품목명" class="gd_check">
 									</div>
 									<div class="item-basis_3 flex-shrink">
-										<input type="text" size="20" placeholder="가격" name="gd_price">
+										<input type="text" size="20" placeholder="가격" name="gd_price" class="gd_check">
 									</div>
+
 
 								</div>
 								<div class="container-flex_1 flex-end flex-shrink">
@@ -259,10 +261,10 @@ div {
 
 								<div class="container-card_goods_2">
 									<div class="item-basis_7 flex-shrink">
-										<input type="text" name="gd_names" size="60" placeholder="품목명">
+										<input type="text" name="gd_names" size="60" placeholder="품목명" class="gd_check">
 									</div>
 									<div class="item-basis_3 flex-shrink">
-										<input type="text" size="20" placeholder="가격" name="gd_price">
+										<input type="text" size="20" placeholder="가격" name="gd_price" class="gd_check">
 									</div>
 								</div>
 								<div class="container-flex_1 flex-end">
@@ -272,7 +274,14 @@ div {
 							</div>
 
 							<div class="d_none btn_d-none">
-
+	<div class="container-card_goods_2">
+									<div class="item-basis_7 flex-shrink">
+										<input type="text" name="gd_names" size="60" placeholder="품목명" class="gd_check">
+									</div>
+									<div class="item-basis_3 flex-shrink">
+										<input type="text" size="20" placeholder="가격" name="gd_price" class="gd_check">
+									</div>
+								</div>
 					
 								<div class="container-flex_1 flex-end">
 									<div class="removeBtn">제거</div>
@@ -290,7 +299,7 @@ div {
 
 						<!-- 상품 설명  -->
 						<div class="container-flex_1">
-							<textarea rows="4" cols="80" style="resize: none" name="ubcontents">상품상세설명</textarea>
+							<textarea rows="4" cols="80" style="resize: none" name="ubcontents" id="contentsCheck">상품상세설명</textarea>
 
 						</div>
 
@@ -302,11 +311,11 @@ div {
 						<div>
 							<div>사진첨부</div>
 							<div class="">
-								<input type="file" placeholder="메인사진 1개" name="ubmainimgfile">
+								<input type="file" placeholder="메인사진 1개" name="ubmainimgfile" id="mainImgCheck">
 							</div>
 
 							<div class="">
-								<input type="file" multiple="multiple" placeholder="그 외 상세 사진" name="ubdetailimgfile">
+								<input type="file" multiple="multiple"  name="ubdetailimgfile">
 							</div>
 						</div>
 					</div>
@@ -328,7 +337,15 @@ div {
 		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
 		crossorigin="anonymous"></script>
 </body>
+<script type="text/javascript">
+/* 로그인회원인지 체크 */
+var loginCheck = '${sessionScope.loginId}';
+if(loginCheck.length > 0){
+	alert("잘못된 접근입니다.");
+	location.href = "loadToLogin";
+}
 
+</script>
 
 <script type="text/javascript">
 /* 사구, 팔구 중 어떤 게시판에 글 작성하고있는지 표시 */
@@ -338,6 +355,8 @@ var boardTitle = document.getElementById("boardTitle");
 var sell_buy = '${sell_buy}';
 console.log("셀바이체크 : "+sell_buy);
 console.log(typeof sell_buy);
+
+
 
 /* 사구, 팔구 중 어느게시판에서 글작성눌렀는지 확인해서 출력  */
 for(var i=0; i< boardTitle.options.length; i++){
@@ -409,7 +428,16 @@ addBtn0.onclick = function(){
 				}
 
 			
-					/* 폼태그 데이터 확인 */
+				
+			/* 폼태그 데이터 공백 체크  */	
+			
+			/*  contentsCheck
+			mainImgCheck
+			gd_check
+			
+			
+			*/
+				
 				function checkFormData(){
 						let checkForm = true;
 					console.log("폼데이터 핸들러 호출");
