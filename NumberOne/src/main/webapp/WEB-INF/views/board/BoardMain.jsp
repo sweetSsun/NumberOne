@@ -20,20 +20,31 @@
 	  border: solid gray 2px;
 	}
 	.board_category{
+	  height: 100px;
 	  width: 100px;
-	  height: 100px;	
 	  font-weight: bold;
-	  text-align: center;
 	  line-height: 100px;
+	  text-align: center;
+	  background-color:#004804;
+	}
+	h2{
+		color: #004804;
 	}
 	
 </style>
 
 </head>
 <body>
-	<!-- TobBar -->
-	<%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
-	<!-- End of TobBar -->
+	    <!-- TopBar -->
+        <c:choose>
+                <c:when test="${sessionScope.loginId != 'admin'}">
+                        <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
+                </c:when>
+                <c:otherwise>
+                        <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
+                </c:otherwise>
+        </c:choose>
+        <!-- End of TopBar -->
 	
 	<main>
 		<!-- 사이드바 -->
@@ -42,10 +53,10 @@
 		<!-- 본문 -->
 			<section>
 			<div class="container-fluid">
-				<h1 class="text-center">게시판 메인 : BoardMainPage.jsp</h1>
+				<h1 class="text-center">게시판 메인 : BoardMain.jsp</h1>
 				<div class="row">
 					<div class="col-11">
-						<h1>자취방자랑</h1>
+						<h2>자취방자랑</h2>
 					</div>
 					<div class="col-1">
 						<h5><a href="selectRoomList">더보기</a></h5>
@@ -76,21 +87,19 @@
 				<!-- 공지게시판 -->
 				<div class="row">
 					<div class="col-11">
-						<h1>커뮤니티</h1>
+						<h2>커뮤니티</h2>
 					</div>
 					<div class="col-1">
 						<h5><a href="selectBoardList">더보기</a></h5>
 					</div>
 				</div>	
 				<div class="row " style="border-bottom: solid gray 2px;">
-					<div class="col-1 bg-info">
-						<div class="board_category">
-							<span>공지</span>
-						</div>
+					<div class="col-1 board_category">
+						<span class="text-white">공지</span>
 					</div>
 					<div class="col-11 bg-white">
 						<table>
-							<c:forEach items="${noticeList }" var="notice">
+							<c:forEach items="${noticeList }" end="2" var="notice">
 								<tr>
 									<td>
 										<a href="selectNoticeBoardView?nbcode=${notice.nbcode }">${notice.nbtitle}</a>
@@ -102,75 +111,63 @@
 				</div>
 				<!-- 자유게시판 -->
 				<div class="row" style="border-bottom: solid gray 2px;">
-					<div class="col-1 bg-info">
-						<div class="board_category ">
-							<span>자유</span>
-						</div>
+					<div class="col-1 board_category">
+						<span class="text-white">자유</span>
 					</div>
 					<div class="col-11 bg-white">
 						<table>
-							<c:forEach items="${boardList }" var="board">
-								<c:if test="${board.bdcategory.equals('자유') }">
+							<c:forEach items="${boardList_Free }" end="2" var="board">
 									<tr>
 										<td>
 											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a>
 										</td>
 									</tr>
-								</c:if>
 							</c:forEach>
 						</table>
 					</div>
 				</div>
 				<!-- 질문게시판 -->
 				<div class="row" style="border-bottom: solid gray 2px;">
-					<div class="col-1 bg-info">
-						<div class="board_category ">
-							<span>질문</span>
-						</div>
+					<div class="col-1 board_category">
+						<span class="text-white">질문</span>
 					</div>
 					<div class="col-11 bg-white">
 						<table>
-							<c:forEach items="${boardList }" var="board">
-								<c:if test="${board.bdcategory.equals('질문') }">
+							<c:forEach items="${boardList_Question }" end="2" var="board">
 									<tr>
 										<td>
 											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a>
 										</td>
 									</tr>
-								</c:if>
 							</c:forEach>
 						</table>
 					</div>
 				</div>
 				<!-- 정보게시판 -->
 				<div class="row" style="border-bottom: solid gray 2px;">
-					<div class="col-1 bg-info">
-						<div class="board_category ">
-							<span>정보</span>
-						</div>
+					<div class="col-1 board_category">
+						<span class="text-white">정보</span>
 					</div>
 					<div class="col-11 bg-white">
 						<table>
-							<c:forEach items="${boardList }" var="board">
-								<c:if test="${board.bdcategory.equals('정보') }">
-									<td>
-										<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a>
-									</td>
-								</c:if>
+							<c:forEach items="${boardList_Information }" end="2" var="board">
+									<tr>
+										<td>
+											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a>
+										</td>
+									</tr>
 							</c:forEach>
 						</table>
 					</div>
 				</div>
 				<!-- 후기게시판 -->
 				<div class="row" style="border-bottom: solid gray 2px;">
-					<div class="col-1 bg-info">
-						<div class="board_category ">
-							<span>후기</span>
-						</div>
+					<div class="col-1 board_category">
+						<span class="text-white">후기</span>
 					</div>
 					<div class="col-11 bg-white">
 						<table>
-							<c:forEach items="${boardList }" var="board">
+							<c:forEach items="${boardList_Review }" end="2" var="board">
 								<c:if test="${board.bdcategory.equals('후기') }">
 									<tr>
 										<td>
@@ -187,48 +184,48 @@
 				<!-- 지역게시판-->
 				<div class="row ">
 					<div class="col-11">
-						<h1>지역</h1>
+						<h2>지역</h2>
 					</div>
 					<div class="col-1">
 						<h5><a href="">더보기</a></h5>
 					</div>
-					<div class="col bg-info">
-						<div class="board_category">
+					<div class="col ">
+						<div class="">
 							<a href="#"> <span>서울</span> </a>
 						</div>
 					</div>
-					<div class="col bg-primary">
-						<div class="board_category">
+					<div class="col ">
+						<div class="">
 							<a href="#"> <span>인천</span> </a>
 						</div>
 					</div>
-					<div class="col bg-warning">
-						<div class="board_category">
+					<div class="col ">
+						<div class="">
 							<a href="#"> <span>경기</span> </a>
 						</div>
 					</div>
-					<div class="col bg-info">
-						<div class="board_category">
+					<div class="col">
+						<div class="">
 							<a href="#"> <span>경상</span> </a>
 						</div>
 					</div>
-					<div class="col bg-primary">
-						<div class="board_category">
+					<div class="col ">
+						<div class="">
 							<a href="#"> <span>전라</span> </a>
 						</div>
 					</div>
-					<div class="col bg-warning">
-						<div class="board_category">
+					<div class="col ">
+						<div class="">
 							<a href="#"> <span>충청</span> </a>
 						</div>
 					</div>
-					<div class="col bg-info">
-						<div class="board_category">
+					<div class="col ">
+						<div class="">
 							<a href="#"> <span>강원</span> </a>
 						</div>
 					</div>
-					<div class="col bg-primary">
-						<div class="board_category">
+					<div class="col ">
+						<div class="">
 							<a href="#"> <span>제주</span> </a>
 						</div>
 					</div>
