@@ -34,7 +34,7 @@ public class AdminService {
 		
 		System.out.println("요청 페이지 : " + page);
 		// 페이징
-		int memberTotalCount = adao.selectMemberTotalCount(searchVal); // 전체 회원수 조회
+		int memberTotalCount = adao.admin_selectMemberTotalCount(searchVal); // 전체 회원수 조회
 		int startRow = (page-1) * viewCount + 1;
 		int endRow = page * viewCount;
 		
@@ -86,7 +86,7 @@ public class AdminService {
 	public String admin_selectMemberPagingNumber_ajax(String searchVal, int page) {
 		System.out.println("AdminServiceadmin_admin_selectMemberPagingNumber_ajax() 호출");
 		
-		int memberTotalCount = adao.selectMemberTotalCount(searchVal); // 전체 회원수 조회
+		int memberTotalCount = adao.admin_selectMemberTotalCount(searchVal); // 전체 회원수 조회
 		// 페이지에서 출력할 페이지번호 생성
 		PageDto paging = new PageDto();
 		// 글 최대값에 따라 페이지 번호 최대값
@@ -142,14 +142,40 @@ public class AdminService {
 		System.out.println("정렬 val : " + searchVal);
 		System.out.println("검색 type : " + searchType);
 		System.out.println("검색 keyword : " + keyword);
+		
+		// 페이징
 		if (page < 0) {
 			page = 1;
 		}
 		System.out.println("이동요청 페이지 : " + page);
-		mav = new ModelAndView();
-		ArrayList<NoticeDto> noticeList = adao.admin_selectNoticeList(searchVal, searchType, keyword);
+		int noticeTotalCount = adao.admin_selectNoticeTotalCount(searchVal, searchType, keyword); // 전체 공지수 조회
+		System.out.println("공지총갯수 : " + noticeTotalCount);
+		int startRow = (page-1) * viewCount + 1;
+		int endRow = page * viewCount;
+		
+		ArrayList<NoticeDto> noticeList = adao.admin_selectNoticeList(searchVal, searchType, keyword, startRow, endRow);
 		System.out.println(noticeList);
+		
+		// 페이지에서 출력할 페이지번호 생성
+		PageDto paging = new PageDto();
+		// 글 최대값에 따라 페이지 번호 최대값
+		int maxPage = (int) (Math.ceil( (double)noticeTotalCount/viewCount ) );
+		// 출력될 페이지 번호 시작값
+		int startPage = (int) ( (Math.ceil( (double)page/pageNumCount )) -1 ) * pageNumCount + 1;
+		// 출력될 페이지 번호 마지막값
+		int endPage = startPage + pageNumCount - 1; 			
+		if(endPage > maxPage) { 	
+			endPage = maxPage;
+		}			
+		paging.setPage(page);
+		paging.setMaxPage(maxPage);
+		paging.setStartPage(startPage);
+		paging.setEndPage(endPage);
+
+		mav = new ModelAndView();
+		mav.addObject("paging", paging);
 		mav.addObject("noticeList", noticeList);
+		mav.addObject("searchVal", searchVal);
 		mav.addObject("searchText", keyword);
 		mav.addObject("searchType", searchType);
 		mav.setViewName("admin/Admin_NoticeList");
@@ -157,16 +183,50 @@ public class AdminService {
 	}
 
 	// 선택한 상태값에 따른 공지목록 ajax
-	public String admin_selectNoticeList_ajax(String searchVal, String searchType, String keyword) {
+	public String admin_selectNoticeList_ajax(String searchVal, String searchType, String keyword, int page) {
 		System.out.println("AdminService_admin_selectNoticeList_ajax() 호출");
 		System.out.println("정렬 val : " + searchVal);
 		System.out.println("검색 type : " + searchType);
 		System.out.println("검색 keyword : " + keyword);
-		ArrayList<NoticeDto> noticeList = adao.admin_selectNoticeList(searchVal, searchType, keyword);
+		System.out.println("요청 페이지 : " + page);
+
+		int startRow = (page-1) * viewCount + 1;
+		int endRow = page * viewCount;
+		
+		ArrayList<NoticeDto> noticeList = adao.admin_selectNoticeList(searchVal, searchType, keyword, startRow, endRow);
 		System.out.println(noticeList);
+		System.out.println("noticeList.size() : " + noticeList.size());
 		gson = new Gson();
 		String noticeList_json = gson.toJson(noticeList);
 		return noticeList_json;
+	}
+	
+	// 공지목록 ajax 페이징 넘버 조회
+	public String admin_selectNoticePagingNumber_ajax(String searchVal, String searchType, String keyword, int page) {
+		System.out.println("AdminService_admin_selectNoticePagingNumber_ajax() 호출");
+		
+		int noticeTotalCount = adao.admin_selectNoticeTotalCount(searchVal, searchType, keyword); // 전체 회원수 조회
+		
+		// 페이지에서 출력할 페이지번호 생성
+		PageDto paging = new PageDto();
+		// 글 최대값에 따라 페이지 번호 최대값
+		int maxPage = (int) (Math.ceil( (double)noticeTotalCount/viewCount ) );
+		// 출력될 페이지 번호 시작값
+		int startPage = (int) ( (Math.ceil( (double)page/pageNumCount )) -1 ) * pageNumCount + 1;
+		// 출력될 페이지 번호 마지막값
+		int endPage = startPage + pageNumCount - 1; 			
+		if(endPage > maxPage) { 	
+			endPage = maxPage;
+		}			
+		paging.setPage(page);
+		paging.setMaxPage(maxPage);
+		paging.setStartPage(startPage);
+		paging.setEndPage(endPage);
+		
+		gson = new Gson();
+		String paging_json = gson.toJson(paging);
+		System.out.println(paging_json);
+		return paging_json;
 	}
 
 	// 공지상태 변경

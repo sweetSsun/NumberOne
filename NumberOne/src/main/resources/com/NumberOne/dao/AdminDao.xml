@@ -5,7 +5,7 @@
   
 <mapper namespace="com.NumberOne.dao.AdminDao">
 
-	<select id="selectMemberTotalCount" resultType="int">
+	<select id="admin_selectMemberTotalCount" resultType="int">
 		SELECT COUNT(*)
 		FROM MEMBERS MB
 		    LEFT OUTER JOIN (SELECT WMEDMID, COUNT(WMEDMID) MWARNING FROM WARNINGMEMBERS GROUP BY WMEDMID) WM
@@ -55,8 +55,9 @@
 		 WHERE MID=#{mid}
 	</select>
 	
-	<select id="admin_selectNoticeList" resultType="com.NumberOne.dto.NoticeDto">
-		SELECT ROWNUM RN, NBCODE, NBMID, NBTITLE, NBCONTENTS, TO_CHAR(NBDATE, 'MM-DD') NBDATE, NBIMG, NBSTATE, NBHITS
+	<!-- 페이징 위한 공지 총 갯수 조회 -->
+	<select id="admin_selectNoticeTotalCount" resultType="int">
+		SELECT COUNT(*)
 		FROM NOTICEBOARDS
 		<if test="keyword.length > 0 || searchVal == 'active' || searchVal == 'inactive'">
 			WHERE
@@ -64,7 +65,7 @@
 			<if test="keyword.length > 0">
 				<choose>
 					<when test="searchType == 'nbTitleContents'">
-						NBTITLE LIKE '%'||#{keyword}||'%' OR NBCONTENTS LIKE '%'||#{keyword}||'%'
+						(NBTITLE LIKE '%'||#{keyword}||'%' OR NBCONTENTS LIKE '%'||#{keyword}||'%')
 					</when>
 					<otherwise>
 						${searchType} LIKE '%'||#{keyword}||'%'
@@ -82,21 +83,52 @@
 		<if test="searchVal == 'inactive'">
 			NBSTATE=0
 		</if>
-		ORDER BY NBCODE
 	</select>
-	<!-- 페이징처리 후의 쿼리문 -->
+	
+	<!-- 페이징 전 쿼리문 -->	
 <!-- 	<select id="admin_selectNoticeList" resultType="com.NumberOne.dto.NoticeDto">
+		SELECT ROWNUM RN, NBCODE, NBMID, NBTITLE, NBCONTENTS, TO_CHAR(NBDATE, 'MM-DD') NBDATE, NBIMG, NBSTATE, NBHITS
+		FROM NOTICEBOARDS
+		<if test="keyword.length > 0 || searchVal == 'active' || searchVal == 'inactive'">
+			WHERE
+			검색한 키워드 정렬
+			<if test="keyword.length > 0">
+				<choose>
+					<when test="searchType == 'nbTitleContents'">
+						NBTITLE LIKE '%'||#{keyword}||'%' OR NBCONTENTS LIKE '%'||#{keyword}||'%'
+					</when>
+					<otherwise>
+						${searchType} LIKE '%'||#{keyword}||'%'
+					</otherwise>				
+				</choose>
+				<if test="searchVal == 'active' || searchVal == 'inactive'">
+						AND
+				</if>
+			</if>
+		</if>
+		상태값에 따른 정렬
+		<if test="searchVal == 'active'">
+			NBSTATE=1
+		</if>
+		<if test="searchVal == 'inactive'">
+			NBSTATE=0
+		</if>
+		ORDER BY NBCODE
+	</select> -->
+	
+	<!-- 페이징처리 후의 쿼리문 -->
+ 	<select id="admin_selectNoticeList" resultType="com.NumberOne.dto.NoticeDto">
 		SELECT NBCODE, NBMID, NBTITLE, NBCONTENTS, TO_CHAR(NBDATE, 'MM-DD') NBDATE, NBIMG, NBSTATE, NBHITS
 		FROM
-			(SELECT ROWNUM RN, NBCODE, NBMID, NBTITLE, NBCONTENTS, TO_CHAR(NBDATE, 'MM-DD') NBDATE, NBIMG, NBSTATE, NBHITS
+			(SELECT ROWNUM RN, NBCODE, NBMID, NBTITLE, NBCONTENTS, NBDATE, NBIMG, NBSTATE, NBHITS
 			FROM NOTICEBOARDS
-			<if test="searchType.length > 0 || searchVal != 'all'">
+			<if test="keyword.length > 0 || searchVal == 'active' || searchVal == 'inactive'">
 				WHERE
-				검색한 키워드 정렬
-				<if test="searchType.length > 0">
+				<!-- 검색한 키워드 정렬 -->
+				<if test="keyword.length > 0">
 					<choose>
 						<when test="searchType == 'nbTitleContents'">
-							NBTITLE LIKE '%'||#{keyword}||'%' OR NBCONTENTS LIKE '%'||#{keyword}||'%'
+							(NBTITLE LIKE '%'||#{keyword}||'%' OR NBCONTENTS LIKE '%'||#{keyword}||'%')
 						</when>
 						<otherwise>
 							${searchType} LIKE '%'||#{keyword}||'%'
@@ -107,18 +139,18 @@
 					</if>
 				</if>
 			</if>
-			상태값에 따른 정렬
+			<!-- 상태값에 따른 정렬 -->
 			<if test="searchVal == 'active'">
 				NBSTATE=1
 			</if>
 			<if test="searchVal == 'inactive'">
 				NBSTATE=0
 			</if>
-			ORDER BY NBDATE)
+			ORDER BY NBCODE)
 		WHERE RN BETWEEN ${startRow} AND ${endRow}
 			
 	</select>
-	 -->
+	 
 	<update id="admin_updateNbstate_ajax">
 		UPDATE NOTICEBOARDS 
 		SET NBSTATE=${nbstate}

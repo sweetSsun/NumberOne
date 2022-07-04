@@ -71,10 +71,17 @@ public class AdminController {
 	}
 	
 	@RequestMapping (value="admin_selectNoticeList_ajax")
-	public @ResponseBody String admin_selectNoticeList_ajax(String searchVal, String searchType, String keyword) {
+	public @ResponseBody String admin_selectNoticeList_ajax(String searchVal, String searchType, String keyword, int page) {
 		System.out.println("공지 관리페이지 정렬 요청");
-		String noticeList_json = asvc.admin_selectNoticeList_ajax(searchVal, searchType, keyword);
+		String noticeList_json = asvc.admin_selectNoticeList_ajax(searchVal, searchType, keyword, page);
 		return noticeList_json;
+	}	
+	
+	@RequestMapping (value="/admin_selectNoticePagingNumber_ajax")
+	public @ResponseBody String admin_selectNoticePagingNumber_ajax(String searchVal, String searchType, String keyword, int page) {
+		System.out.println("회원 관리페이지 페이징넘버 조회 요청");
+		String paging_json = asvc.admin_selectNoticePagingNumber_ajax(searchVal, searchType, keyword, page);
+		return paging_json;
 	}
 	
 	@RequestMapping (value="admin_updateNbstate_ajax")

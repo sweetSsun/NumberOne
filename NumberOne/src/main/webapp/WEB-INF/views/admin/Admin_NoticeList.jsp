@@ -56,7 +56,7 @@
 		
 		<section>
 		<!-- 본문 -->
-         <form action="admin_selectNoticeList" method="get" onclick="return pageCheck()">
+         <form action="admin_selectNoticeList" method="get">
 			<div class="container">
 	            <div class="row" style="margin:auto;">
 	                <h1 class="text-center">공지 관리페이지 : Admin_NoticeList.jsp</h1>
@@ -71,7 +71,7 @@
 	                	<div class="input-group">
 	                    	<input type="text" class="form-control" name="keyword" id="searchText" placeholder="검색 키워드를 입력하세요!" value="${searchText}">
 	                    	<span class="input-group-btn">
-	                      	<button class="btn btn-secondary" type="submit">찾기</button>
+	                      	<button class="btn btn-secondary" type="submit" name="page" value="1">찾기</button>
 	                    	</span>
 	                	</div>
 	            	</div>
@@ -80,22 +80,11 @@
 						<button type="button" class="btn btn-primary btm-sm">글쓰기</button>
 					</div>
 	            </div>
-<%-- 				
-			<c:if test="${searchText.length() > 0 }">
-				<!-- 검색결과 안내  -->
-				<div class="row mb-1 mt-1">
-					<h3 class="text-center">[ <span class="text-primary">${searchText}</span> ] 로 검색한 결과 입니다.</h3>  
-				</div>
-			</c:if> --%>
-			
-			<!-- 검색 후 상태값으로 정렬 시 함께 넘겨줄 데이터 -->
-<%-- 			<input type="hidden" id="ParamSearchText" value="${searchText }">
-			<input type="hidden" id="ParamSearchType" value="${searchType }"> --%>
            
             <div class="row" style="margin-top: 20px;">
                <div class="col">
                   <!-- 상태값 정렬 -->
-                   <select onchange="nbSearchState(this.value)">
+                   <select name="searchVal" id="searchValSel" onchange="nbSearchState(this.value)">
                      <option value="all">전체</option>
                      <option value="active">활성</option>
                      <option value="inactive">비활성</option>
@@ -141,7 +130,7 @@
             </table>
             
   			<!-- 페이징 -->
-	  		<input type="text" id="pageInput" name="">
+	  		<input type="hidden" id="pageInput" name="">
 	  		
   			<div class="block text-center" id="pageList">
                	<c:choose>
@@ -149,7 +138,7 @@
                			[이전]
                		</c:when>
                		<c:otherwise>
-               			<button type="submit" name="page" value="${paging.page -1 }" id="btn1"></button>
+               			<button type="submit" name="page" value="${paging.page -1 }" id="btn0"></button>
                			<label for="btn0">[이전]</label>
                		</c:otherwise>
                	</c:choose>
@@ -235,14 +224,26 @@
 	
 	
 	<script type="text/javascript">
+		// 선택한 검색 select option으로 선택되도록 하기
 		var searchOption = $("#searchTypeSel option");
 		console.log("searchOption.length : " + searchOption.length);
 		var searchType = "${searchType}";
 		console.log("searchType : " + searchType);
-		if ('${searchType}'.length > 0) {
+		if (searchType.length > 0) {
 			for (var i = 0; i < searchOption.length; i++){
 				if (searchOption.eq(i).val() == searchType){
 					searchOption.eq(i).attr("selected", "selected");
+				}
+			}
+		}
+		
+		// 선택한 정렬 select option으로 선택되도록 하기
+		var searchValOption = $("#searchValSel option");
+		var searchVal = "${searchVal}";
+		if (searchVal.length > 0) {
+			for (var i = 0; i < searchValOption.length; i++){
+				if (searchValOption.eq(i).val() == searchVal){
+					searchValOption.eq(i).attr("selected", "selected");
 				}
 			}
 		}
@@ -255,11 +256,12 @@
 			//var searchType = $("#searchType option:selected").val();
 			var searchType = $("#searchTypeSel").val();
 			var searchText = $("#searchText").val();
+			var page = 1; // 정렬 시 요청페이지
 			console.log(searchType);
 			console.log(searchText);
 			$.ajax({
 				type: "get",
-				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText},
+				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "page":page},
 				url: "admin_selectNoticeList_ajax",
 				dataType: "json",
 				success: function(result){
@@ -284,6 +286,42 @@
 					$("#nbListTbody").html(output);
 				}
 			});
+			// 페이지에서 출력할 페이지번호 받아오기
+			$.ajax({
+				type: "get",
+				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "page":page},
+				url: "admin_selectNoticePagingNumber_ajax",
+				dataType: "json",
+				success: function(result){
+					console.log("요청 페이지 : " + result.page);
+					$("#pageList").text("");
+					var output = "";
+    					if (result.page == 1) {
+    	    				output += "[이전]";
+        				} else {
+                   			output += "<button type='submit' name='page' value='" + (result.page - 1) + "' id='btn0'></button>";
+                   			output += "<label for='btn0'>[이전]</label>";
+        				}
+        				for (var i = result.startPage; i <= result.endPage; i++){
+        					if (page == i){
+        	    				output += "<span>" + i + "</span>";
+        					} else {
+	                   			output += "<button type='submit' name='page' value='" + i + "' id='btn" + i + "'></button>";
+	                   			output += "<label for='btn" + i + "'>" + i + "</label>";
+        					}
+        				}
+        				if (result.page == result.maxPage){
+    	    				output += "[다음]";
+        				} else {
+                   			output += "<button type='submit' name='page' value='" + (result.page + 1) + "' id='btn6'></button>";
+                   			output += "<label for='btn6'>[다음]</label>";
+        				}
+					$("#pageList").html(output);
+				},
+				error: function(){
+					alert("페이징넘버링 실패");
+				}
+			})
 		}	
 		
 		// 공지상태 변경 확인 모달창 출력
@@ -332,6 +370,7 @@
 					alert("공지상태 변경에 실패했습니다.");
 				}
 			});
+			
 		}
 	</script>
 	
