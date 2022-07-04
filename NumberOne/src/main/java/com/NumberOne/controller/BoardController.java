@@ -195,12 +195,22 @@ public class BoardController {
 	 }
 	 
 	 //자취방 자랑글 추천
-	 @RequestMapping ( value = "/updateRbrecommend")
-	 public @ResponseBody String updateRbrecommend(String bdcode) {
-		 System.out.println(bdcode+"번글 추천 요청");
-		 int updateResult = bsvc.updateRbrecommend(bdcode);
+	 @RequestMapping ( value = "/updateLog")
+	 public @ResponseBody String updateRbrecommend(String bdcode, String history, String currentState ) {
+		 System.out.println(bdcode+"번글 "+history+"업데이트 요청 현재상태: "+currentState);
+		 int updateResult = bsvc.updateLog(bdcode, history, currentState);
 		 
-		 return null;
+		 return updateResult+"";
+	 }
+	 
+	 //자취방 자랑글 현재 추천,스크랩,신고 상태
+	 @RequestMapping ( value = "/currentHistory")
+	 public @ResponseBody String currentRchistory(String bdcode, String history) {
+		 System.out.print(bdcode+"번글 ");
+		 System.out.println(history+"의 현재 상태 요청");
+		 String currnetState = bsvc.currentRchistory(bdcode, history);
+
+		 return currnetState;
 	 }
 
 }

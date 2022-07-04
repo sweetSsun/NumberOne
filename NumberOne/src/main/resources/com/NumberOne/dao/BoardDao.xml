@@ -43,6 +43,7 @@
  	 </select>
  	 
  	 <select id="selectRoomList" resultType="com.NumberOne.dto.BoardDto">
+ 	 	<!-- 자랑글 목록 -->
  	 	select bdcode, bdmid, bdtitle, bddate, bdimg, bdstate, bdhits, bdcontents,
 		bdscrap, bdrecommend, bdreply, mnickname as bdnickname   	
 		from boards b
@@ -56,15 +57,7 @@
 		on b.bdmid = m.mid
 		where b.bdcategory='자랑'
 		and b.bdstate='1'
-		
-		<if test="bdcode != null">
- 		<!--글상세 검색  -->
- 		and b.bdcode = #{bdcode}
- 		</if>
- 		
 		order by bdcode desc
-		
-		
 	 </select>
  	 
  	 <select id="selectNoticeBoardView" resultType="com.NumberOne.dto.NoticeDto">	
@@ -86,12 +79,27 @@
  	 
 
  	 <select id="selectRoomView" resultType="com.NumberOne.dto.BoardDto">
- 	 	<!-- 일반글 상세 -->
- 	 	SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, TO_CHAR(BDDATE,'YY-MM-DD HH24:MI') AS BDDATE, 
-	    BDIMG, BDDETAILIMG, BDSTATE, BDHITS, MB.MNICKNAME AS BDNICKNAME
-		FROM BOARDS BD, MEMBERS MB
-		WHERE BD.BDMID = MB.MID
-		AND BD.BDCODE = #{bdcode}
+ 	 	<!-- 자랑글 상세 -->
+ 	 	select bdcode, bdmid, bdtitle, bddate, bdimg, bdstate, bdhits, bdcontents,
+		bdscrap, bdrecommend, bdreply, m.mnickname as bdnickname, m.mprofile as bdmprofile,
+        sh.scmid as schistory, rch.rcmid as rchistory, wbh.wbmid as wbhistory
+		from boards b
+		left outer join (select scbdcode, count(*) as bdscrap from scrap group by scbdcode) sc
+		on b.bdcode = sc.scbdcode
+		left outer join (select rcbdcode, count(*) as bdrecommend from recommend group by rcbdcode) rc
+		on b.bdcode = rc.rcbdcode
+		left outer join (select rpbdcode, count(*) as bdreply from reply group by rpbdcode) rp
+		on b.bdcode = rp.rpbdcode
+		left outer join members m
+		on b.bdmid = m.mid
+        left outer join (select * from scrap where scmid=#{loginId}) sh on b.bdcode = sh.scbdcode
+        left outer join (select * from recommend where rcmid=#{loginId}) rch on b.bdcode = rch.rcbdcode
+        left outer join (select * from warningboards where wbmid=#{loginId}) wbh on b.bdcode = wbh.wbedbdcode
+        
+		where b.bdcategory='자랑'
+		and b.bdstate='1'
+        and b.bdcode=#{bdcode}
+        order by bdcode desc
  	 </select>
 
  	 <select id="selectReplyMaxNumber" resultType="String">
@@ -151,5 +159,58 @@
 		WHERE RCBDCODE = #{bdcode}
  	</select>
  	 
+ 	<update id="updateRoomhits">
+ 		<!-- 조회수 올리기-->
+ 		UPDATE Boards
+ 		SET bdhits = bdhits +1
+ 		WHERE bdCODE = #{bdcode}
+ 	</update> 
 
+	<select id="selectCurrentHisroty" resultType="String">
+		select count(*) from 
+		
+		<if test="history == 'rchistory' ">
+			recommend where rcbdcode = #{bdcode} 
+			and rcmid=#{loginId}
+		</if>
+		<if test="history == 'schistory'">	
+			scrap where scbdcode = #{bdcode}
+			and scmid=#{loginId}
+		</if>	
+		<if test="history == 'wbhistory'">
+			warningboards where wbedbdcode=#{bdcode}
+			and wbmid=#{loginId}
+		</if>	
+	</select>
+	
+	<delete id="deleteState">
+		delete from 
+		<if test="history == 'rchistory' ">
+			recommend where rcbdcode = #{bdcode} 
+			and rcmid=#{loginId}
+		</if>
+		<if test="history == 'schistory'">	
+			scrap where scbdcode = #{bdcode}
+			and scmid=#{loginId}
+		</if>	
+		<if test="history == 'wbhistory'">
+			warningboards where wbedbdcode=#{bdcode}
+			and wbmid=#{loginId}
+		</if>
+	</delete>
+	
+	<insert id="insertState">
+		insert into 
+		<if test="history == 'rchistory' ">
+			recommend 
+		</if>
+		<if test="history == 'schistory'">	
+			scrap 
+		</if>	
+		<if test="history == 'wbhistory'">
+			warningboards
+		</if>
+		values (#{loginId}, #{bdcode})
+	</insert>
+	
  </mapper>
