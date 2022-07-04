@@ -245,11 +245,11 @@ public class BoardService {
 	    
 	    mav.addObject("roomList", roomList);
 	    //확인용 출력
-	    /*
+	    
 	    for(int i=0; i<roomList.size(); i++) {
 	    	System.out.println(roomList.get(i));
 	    }
-	    */
+	    
 
 	    
 	    mav.setViewName("board/RoomListPage");
@@ -379,12 +379,14 @@ public class BoardService {
 		return roomView_json;
 	}
 
+	//roomView 추천/스크랩/신고 
 	public int updateLog(String bdcode, String history, String currentState) {
 		System.out.print("service.updateLog() 호출 ");
 		System.out.println(history+"상태 변경 요청");
 		int updateResult=0;
 		String loginId = (String)session.getAttribute("loginId");
 		System.out.println("아이디: "+loginId);
+		
 		
 		if(currentState.equals("1")) {
 			//history 있다면 취소
