@@ -340,7 +340,7 @@ div {
 <script type="text/javascript">
 /* 로그인회원인지 체크 */
 var loginCheck = '${sessionScope.loginId}';
-if(loginCheck.length > 0){
+if(loginCheck.length == 0){
 	alert("잘못된 접근입니다.");
 	location.href = "loadToLogin";
 }
@@ -355,7 +355,6 @@ var boardTitle = document.getElementById("boardTitle");
 var sell_buy = '${sell_buy}';
 console.log("셀바이체크 : "+sell_buy);
 console.log(typeof sell_buy);
-
 
 
 /* 사구, 팔구 중 어느게시판에서 글작성눌렀는지 확인해서 출력  */
