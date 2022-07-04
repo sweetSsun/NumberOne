@@ -11,6 +11,9 @@ public class ReplyDto {
 	private String rpmid;		//작성자
 	private String rpdate;		//작성일
 	private int rpstate;		//상태
+
+	private String rpbdtitle;		//댓글원본 글 제목
+
 	private String rpnickname;	//작성자 닉네임
 	
 	public String getRpcode() {
@@ -61,8 +64,5 @@ public class ReplyDto {
 		return "ReplyDto [rpcode=" + rpcode + ", rpbdcode=" + rpbdcode + ", rpcontents=" + rpcontents + ", rpmid="
 				+ rpmid + ", rpdate=" + rpdate + ", rpstate=" + rpstate + ", rpnickname=" + rpnickname + "]";
 	}
-	
-	
-	
 	
 }

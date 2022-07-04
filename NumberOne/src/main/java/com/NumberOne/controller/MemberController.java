@@ -52,6 +52,16 @@ public class MemberController {
 		return idCheckResult;  
 	}
 	
+	//닉네임 중복 확인 요청
+	@RequestMapping(value = "/selectMemberNickname_ajax")
+	public @ResponseBody String selectMemberNickname_ajax(String inputNickname) {
+		System.out.println("닉네임 중복 확인 요청");
+		System.out.println("입력한 닉네임 : " + inputNickname);
+		String nicknameCheckResult = msvc.selectMemberNickname_ajax(inputNickname);
+		return nicknameCheckResult;  
+	}	
+	
+	
 	
 	//로그인 페이지 이동
 	@RequestMapping(value="/loadToLogin")
@@ -115,16 +125,112 @@ public class MemberController {
 		//회원정보 보기
 		@RequestMapping(value = "/selectMyInfoMemberView")
 		public ModelAndView selectMyInfoMemberView() {
-			System.out.println("회원정보 페이지 이동요청");
+			System.out.println("마이페이지 회원정보 이동 요청");
 			
 			mav = msvc.selectMyInfoMemberView();
 			
 			return mav;
 			
 		}
+		
+		//회원정보 수정페이지 이동
+		
+		@RequestMapping(value = "/loadToMyInfoModifyForm")
+		public ModelAndView loadToMyInfoModifyForm() {
+			System.out.println("마이페이지 회원정보수정페이지 이동 요청");
+			
+			mav = msvc.loadToMyInfoModifyForm();
+			
+			return mav;
+			
+		}		
+		
+		
+		
+		//회원정보 수정 요청
+
+		@RequestMapping(value="/updateMyInfoMemberModify")
+		public ModelAndView updateMyInfoMemberModify(RedirectAttributes ra, MemberDto member) throws IllegalStateException, IOException {
+			System.out.println("마이페이지 회원정보수정 요청");
+		
+			mav = msvc.updateMyInfoMemberModify(ra, member);
+			
+			return mav;
+		}
+		
+		//회원탈퇴
+		@RequestMapping(value="/updateMemberWithdraw")
+		public ModelAndView updateMemberWithdraw(RedirectAttributes ra) throws IllegalStateException, IOException {
+			System.out.println("마이페이지 회원정보수정 요청");
+		
+			mav = msvc.updateMemberWithdraw(ra);
+			
+			return mav;
+		}		
+		
+		
+		
+		//마이페이지 커뮤니티 
+		@RequestMapping(value = "/selectMyInfoCommunityView")
+		public ModelAndView selectMyInfoCommunityView() {
+			System.out.println("마이페이지 커뮤니티");
+			
+			mav = msvc.selectMyInfoCommunityView();
+			
+			return mav;
+			
+		}		
+		
+		//마이페이지 중고거래
+		
+		@RequestMapping(value = "/selectMyInfoResellView")
+		public ModelAndView selectMyInfoResellView() {
+			System.out.println("마이페이지 중고거래");
+			
+			mav = msvc.selectMyInfoResellView();
+			
+			return mav;
+	
+		}
+		
+		
+		//마이페이지 1:1 문의 내역
+		
+		@RequestMapping(value = "/selectMyInfoQuestionListView")
+		public ModelAndView selectMyInfoQuestionListView() {
+			System.out.println("마이페이지 1:1 문의");
+			
+			mav = msvc.selectMyInfoQuestionListView();
+			
+			return mav;
+	
+		}	
+		
+		//마이페이지 1:1 문의 작성페이지 이동 
+		@RequestMapping(value = "/loadToMyInfoQuestionForm")
+		public ModelAndView loadToMyInfoQuestionForm() {
+			System.out.println("마이페이지 1:1 문의 작성페이지 이동");
+			
+			mav = msvc.loadToMyInfoQuestionForm();
+			
+			return mav;
+	
+		}	
+
+		//마이페이지 1:1 문의 작성 요청
+		@RequestMapping(value = "/insertMyInfoQuestionWrite")
+		public ModelAndView insertMyInfoQuestionWrite() {
+			System.out.println("마이페이지 1:1 문의 작성요청");
+			
+			mav = msvc.insertMyInfoQuestionWrite();
+			
+			return mav;
+	
+		}		
+		
+		
+
 }
-
-
 
 
 
