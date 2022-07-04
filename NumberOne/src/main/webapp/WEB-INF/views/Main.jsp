@@ -44,34 +44,38 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 	
 	<style type="text/css">
-	.td, .th{
-		font-size: 2.5rem;
-	}
-	.owl-prev, .owl-next {
-		position: absolute;
-        height: 100px;
-        color: inherit;
-        background: none;
-        border: none;
-        z-index: 100;
-
-        i {
-            font-size: 2.5rem;
-            color: #cecece;
-        }
-    }
-
-    .owl-prev {
-    	top: 10%;
-        left: -100px;
-    }
-
-    .owl-next {
-    	top: 10%;
-        right: -100px;
-    }
-    
-	}
+		.td, .th{
+			font-size: 2.5rem;
+		}
+		.owl-prev, .owl-next {
+			position: absolute;
+	        height: 100px;
+	        color: inherit;
+	        background: none;
+	        border: none;
+	        z-index: 100;
+	
+	        i {
+	            font-size: 2.5rem;
+	            color: #cecece;
+	        }
+	    }
+	
+	    .owl-prev {
+	    	top: 10%;
+	        left: -100px;
+	    }
+	
+	    .owl-next {
+	    	top: 10%;
+	        right: -100px;
+	    }
+	    
+	    .display_none{
+	    	display: none;
+	    }
+	    
+	
 	</style>
 	
 	
@@ -102,7 +106,7 @@
 
 			<div class="container">
 			
-				<div style="width: 100%; height: 70vh;">
+				<div style="width: 100%; height: 80vh;">
 					<div id="carousel-example-generic" class="carousel slide">
 					  <!-- Indicators -->
 					  <ol class="carousel-indicators">
@@ -166,9 +170,6 @@
 			</div>
 	  	<!-- 캐러셀 : 배너 끝 -->
     <!-- Header Section End -->
-
-    <!-- Hero Section Begin -->
-    <!-- Hero Section End -->
 
     <!-- Featured Section Begin -->
         <div class="container">
@@ -291,6 +292,7 @@
 
 
     <!-- Latest Product Section Begin -->
+    
 	<div class="container">
 	    <div class="row section-title" style="margin-bottom: 0;">
 	        <div class="col-lg-6">
@@ -298,22 +300,23 @@
 	                <h2><a href="loadToResellMainPage">중고거래</a></h2>
 	            </div>
 	        </div>
-	        
-	        <div class="col-lg-6 featured__controls">
-                <ul>
-                    <li data-filter=".resell">팔구</li>
-                    <li data-filter=".rebuy">사구</li>
-                </ul>
+	        <div class="col-lg-6">
+                <span><a>팔구</a></span>
+                <span><a>사구</a></span>
+            </div>                
+	           	<p><a href="selectResellSellList" style="float: right; margin-bottom: 20px;">팔구보기</a></p>
             </div>
+            
         </div>
+            <div class="owl-nav">
+           	</div>           	
+
         
+        <!-- 팔구보기 -->
         <div>
-        	<div class="featured__filter" style="margin-left: 100px; margin-right: 100px; margin-bottom: 100px; min-height: 170px;">
-            	<!-- 팔구보기 -->
-                <div class="row mix resell active">
-	        	<p><a href="#" style="float: right; margin-bottom: 20px;">팔구보기</a></p>
+	        <div id="owl-banner" class="owl-carousel" style="margin-left: 100px; margin-right: 100px; margin-bottom: 100px; min-height: 170px; max-width: 1105px;">
+                <div class="item">
             	<%-- <c:forEach items="${resellList }" end="4" var="resellBuy"> --%>
-                    <div class="col-lg-3 col-md-3 col-sm-3 featured__item" style="margin-bottom: 0;">
                         <table>
                         	<tr>
                         		<td rowspan="3"> <img src="${pageContext.request.contextPath }/resources/img/latest-product/lp-2.jpg" alt="중고판매대표사진">
@@ -327,109 +330,77 @@
                         		<th><h5>팔가격1</h5></th>
                         	</tr>
                         </table>
-                    </div>
                 <%-- </c:forEach> --%>
                 </div>
                 
-                <!-- 사구보기 -->
-                <div class="row mix rebuy" style="display:none;">
-	            	<p><a href="#" style="float: right; margin-bottom: 20px;">사구보기</a></p>
-            <%--    <c:forEach items="${reBuyList }" end="4" var="reBuyList"> --%>
-                    <div class="col-lg-3 col-md-3 col-sm-3 featured__item" style="margin-bottom: 0;">
+                <div class="item">
+            	<%-- <c:forEach items="${resellList }" end="4" var="resellBuy"> --%>
                         <table>
                         	<tr>
                         		<td rowspan="3"> <img src="${pageContext.request.contextPath }/resources/img/latest-product/lp-2.jpg" alt="중고판매대표사진">
                         		</td>
-                        		<td><h4>제목1</h4></td>
+                        		<td><h4>팔제목2</h4></td>
                         	</tr>
                         	<tr>
-                        		<td><h5>상품명1</h5></td>
+                        		<td><h5>팔상품명2</h5></td>
                        		</tr>
                        		<tr>
-                        		<td><h5>가격1</h5></td>
+                        		<th><h5>팔가격2</h5></th>
                         	</tr>
                         </table>
-                    </div>
-             <%--   </c:forEach> --%>
+                    
+                <%-- </c:forEach> --%>
+                </div>
                 
-                	<div class="col-lg-3 col-md-3 col-sm-3 mix resell">
-	                    <div class="featured__item">
-	                        <table>
-	                        	<tr>
-	                        		<td rowspan="3"> <img src="${pageContext.request.contextPath }/resources/img/latest-product/lp-2.jpg" alt="중고판매대표사진">
-	                        		</td>
-	                        		<td><h4>제목2</h4></td>
-	                        	</tr>
-	                        	<tr>
-	                        		<td><h5>상품명2</h5></td>
-	                       		</tr>
-	                       		<tr>
-	                        		<td><h5>가격2</h5></td>
-	                        	</tr>
-	                        </table>
-	                    </div>
-                	</div>
-	                <div class="col-lg-3 col-md-3 col-sm-3 mix resell">
-	                    <div class="featured__item">
-	                        <table>
-	                        	<tr>
-	                        		<td rowspan="3"> <img src="${pageContext.request.contextPath }/resources/img/latest-product/lp-2.jpg" alt="중고판매대표사진">
-	                        		</td>
-	                        		<td><h4><a href="#">제목3</a></h4></td>
-	                        	</tr>
-	                        	<tr>
-	                        		<td><h5>상품명3</h5></td>
-	                       		</tr>
-	                       		<tr>
-	                        		<td><h5>가격3</h5></td>
-	                        	</tr>
-	                        </table>
-	                    </div>
-	                </div>
-	                <div class="col-lg-3 col-md-3 col-sm-3 mix resell">
-	                    <div class="featured__item">
-	                        <table>
-	                        	<tr>
-	                        		<td rowspan="3"> <img src="${pageContext.request.contextPath }/resources/img/latest-product/lp-2.jpg" alt="중고판매대표사진">
-	                        		</td>
-	                        		<td><h4><a href="#">제목4</a></h4></td>
-	                        	</tr>
-	                        	<tr>
-	                        		<td><h5>상품명4</h5></td>
-	                       		</tr>
-	                       		<tr>
-	                        		<td><h5>가격4</h5></td>
-	                        	</tr>
-	                        </table>
-	                    </div>
-	                </div>
-          		</div>
-          </div>
-     	</div>
-	</div>
-	
-	<div class="container">
-	    <div class="row section-title" style="margin-bottom: 0;">
-	        <div class="col-lg-6">
-	            <div>
-	                <h2><a href="loadToResellMainPage">중고거래</a></h2>
-	            </div>
-	        </div>
-	        <div class="col-lg-6 featured__controls">
-                <ul>
-                    <li>팔구</li>
-                    <li>사구</li>
-                </ul>
-	           	<p><a href="#" style="float: right; margin-bottom: 20px;">팔구보기</a></p>
+                <div class="item">
+		        	
+            	<%-- <c:forEach items="${resellList }" end="4" var="resellBuy"> --%>
+                   
+                        <table>
+                        	<tr>
+                        		<td rowspan="3"> <img src="${pageContext.request.contextPath }/resources/img/latest-product/lp-2.jpg" alt="중고판매대표사진">
+                        		</td>
+                        		<td><h4>팔제목3</h4></td>
+                        	</tr>
+                        	<tr>
+                        		<td><h5>팔상품명3</h5></td>
+                       		</tr>
+                       		<tr>
+                        		<th><h5>팔가격3</h5></th>
+                        	</tr>
+                        </table>
+                    
+                <%-- </c:forEach> --%>
+                </div>
+                
+                <div class="item">
+		        	
+            	<%-- <c:forEach items="${resellList }" end="4" var="resellBuy"> --%>
+                    
+                        <table>
+                        	<tr>
+                        		<td rowspan="3"> <img src="${pageContext.request.contextPath }/resources/img/latest-product/lp-2.jpg" alt="중고판매대표사진">
+                        		</td>
+                        		<td><h4>팔제목4</h4></td>
+                        	</tr>
+                        	<tr>
+                        		<td><h5>팔상품명4</h5></td>
+                       		</tr>
+                       		<tr>
+                        		<th><h5>팔가격4</h5></th>
+                        	</tr>
+                        </table>
+                    
+                <%-- </c:forEach> --%>
+                </div>
             </div>
-            
-        </div>
-            <div class="owl-nav">
-           	</div>           	
-        
-        <div>
-	        <div id="owl-banner" class="owl-carousel" style="margin-left: 100px; margin-right: 100px; margin-bottom: 100px; min-height: 170px; max-width: 1105px;">
-	            	<!-- 팔구보기 -->
+         </div>
+         
+         
+         <!-- 사구보기 -->        
+         <div>
+			<div id="owl-banner" class="owl-carousel display_none" style="margin-left: 100px; margin-right: 100px; margin-bottom: 100px; min-height: 170px; max-width: 1105px;">
+
                 <div class="item">
             	<%-- <c:forEach items="${resellList }" end="4" var="resellBuy"> --%>
                         <table>
@@ -520,10 +491,9 @@
     <!-- Footer Section Begin -->
     <!-- Footer Section End -->
 
-	
 
 
-	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
+<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
 </body>
