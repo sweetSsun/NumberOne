@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+    
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 공지작성</title>
+<title>1인자 - 공지수정</title>
 
 <%@ include file="/resources/css/CommonCss.jsp" %>
 <!-- 부트스트랩 -->
@@ -64,10 +66,12 @@
 		<section>
 		<!-- 본문 -->
 			<div class="container">
-				<h1 class="text-center">공지 작성페이지 : Admin_NoticeWriteForm.jsp</h1>
+				<h1 class="text-center">공지 수정페이지 : Admin_NoticeModifyForm.jsp</h1>
 				<div>
- 				<form action="admin_insertNoticeWrite" method="post" enctype="multipart/form-data">
-				<table>
+ 				<form action="admin_updateNoticeModify" method="post" enctype="multipart/form-data">
+ 				<!-- 수정 불가능한 값 숨기고 submit에는 데이터 넘겨주는 변수 -->
+ 				<input type="hidden" name="nbcode" value="${noticeBoard.nbcode }">
+ 				<table>
 					<tr class="tableRow">
 						<th class="tableHead">작성자</th>
 						<!-- imhido 부분은 나중에 로그인 아이디로 출력 -->
@@ -77,13 +81,13 @@
 						<!-- th, td에 패딩, 마진을 주고 싶은데 먹히지 않아서 tableHead 클래스로 여백 줬슴당 -->
 						<th class="tableHead">제목</th>
 						<td colspan="3">
-							<input name="nbtitle" type="text" placeholder="제목을 입력하세요" size="35%">
+							<input name="nbtitle" type="text" placeholder="제목을 입력하세요" size="35%" value="${noticeBoard.nbtitle }">
 						</td>
 					</tr>
 					<tr class="tableRow">
 						<th class="tableHead">내용</th>
 						<td colspan="3">
-							<textarea rows="15" cols="40" name="nbcontents" placeholder="내용을 입력하세요"></textarea>
+							<textarea rows="15" cols="40" name="nbcontents" placeholder="내용을 입력하세요">${noticeBoard.nbcontents }</textarea>
 						</td>
 					</tr>
 					<tr class="tableRow">
@@ -92,13 +96,16 @@
 							<!--  
 							<input type="text" id="mainImgScreen"> <span class="mainfile"><label for="mainImg">대표사진 선택</label></span>
 							-->
+							<c:if test="${noticeBoard.nbimg != null }">
+								<img src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg}" style="max-width:100px;">
+							</c:if>
 							<input type="file" id="nbImg" name="nbimgfile" class=""> 
 						</td>
 					</tr>
 					<tr class="tableRow">
 						<th colspan="4">
 							<center>
-							<button type="submit">등록</button> 
+							<button type="submit">수정</button> 
 							<!-- 취소하면 돌아갈 페이지가 없어서 취소는 function 연결만 되어 있음-->
 							<button type="button" onclick="withdraw()">취소</button>
 							</center>
@@ -127,7 +134,7 @@
 	
 	function withdraw(){
 		console.log("취소 버튼 클릭");
-		location.href="admin_selectNoticeList?searchVal=all&searchType=&keyword=&page=1";
+		location.href="admin_selectNoticeBoardView?nbcode=${noticeBoard.nbcode}";
 	}
 </script>
 

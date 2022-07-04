@@ -1,14 +1,15 @@
 package com.NumberOne.controller;
 
-import java.util.ArrayList;
+import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.NumberOne.dto.MemberDto;
+import com.NumberOne.dto.NoticeDto;
 import com.NumberOne.service.AdminService;
 
 @Controller
@@ -63,17 +64,24 @@ public class AdminController {
 	
 	/* 공지 관리 */
 	@RequestMapping (value="admin_selectNoticeList")
-	public ModelAndView admin_selectNoticeList(String searchVal, String searchType, String keyword) {
+	public ModelAndView admin_selectNoticeList(String searchVal, String searchType, String keyword, int page) {
 		System.out.println("공지 관리페이지 이동 요청");
-		mav = asvc.admin_selectNoticeList(searchVal, searchType, keyword);
+		mav = asvc.admin_selectNoticeList(searchVal, searchType, keyword, page);
 		return mav;
 	}
 	
 	@RequestMapping (value="admin_selectNoticeList_ajax")
-	public @ResponseBody String admin_selectNoticeList_ajax(String searchVal, String searchType, String keyword) {
+	public @ResponseBody String admin_selectNoticeList_ajax(String searchVal, String searchType, String keyword, int page) {
 		System.out.println("공지 관리페이지 정렬 요청");
-		String noticeList_json = asvc.admin_selectNoticeList_ajax(searchVal, searchType, keyword);
+		String noticeList_json = asvc.admin_selectNoticeList_ajax(searchVal, searchType, keyword, page);
 		return noticeList_json;
+	}	
+	
+	@RequestMapping (value="/admin_selectNoticePagingNumber_ajax")
+	public @ResponseBody String admin_selectNoticePagingNumber_ajax(String searchVal, String searchType, String keyword, int page) {
+		System.out.println("공지 관리페이지 페이징넘버 조회 요청");
+		String paging_json = asvc.admin_selectNoticePagingNumber_ajax(searchVal, searchType, keyword, page);
+		return paging_json;
 	}
 	
 	@RequestMapping (value="admin_updateNbstate_ajax")
@@ -83,6 +91,46 @@ public class AdminController {
 		return updateResult;
 	}
 	
+	@RequestMapping (value="admin_updateNbstate")
+	public ModelAndView admin_updateNbstate(String nbcode, String nbstate, RedirectAttributes ra) {
+		System.out.println("공지상태 변경 요청_공지글 삭제");
+		mav = asvc.admin_updateNbstate(nbcode, nbstate, ra);
+		return mav;
+	}
 	
+	@RequestMapping (value="admin_selectNoticeBoardView")
+	public ModelAndView admin_selectNoticeBoardView(String nbcode) {
+		System.out.println("공지 상세페이지 이동 요청");
+		mav = asvc.admin_selectNoticeBoardView(nbcode);
+		return mav;
+	}
+	
+	@RequestMapping (value="admin_loadToNoticeWrite")
+	public ModelAndView admin_loadToNoticeWrite(RedirectAttributes ra) {
+		System.out.println("공지 작성페이지 이동 요청");
+		mav = asvc.admin_loadToNoticeWrite(ra);
+		return mav;
+	}
+	
+	@RequestMapping (value="admin_insertNoticeWrite")
+	public ModelAndView admin_insertNoticeWrite(NoticeDto notice, RedirectAttributes ra) throws IllegalStateException, IOException {
+		System.out.println("작성한 공지 입력 요청");
+		mav = asvc.admin_insertNoticeWrite(notice, ra);
+		return mav;
+	}
+	
+	@RequestMapping (value="admin_selectNoticeModify")
+	public ModelAndView admin_selectNoticeModify(String nbcode) {
+		System.out.println("공지 수정페이지 이동 요청");
+		mav = asvc.admin_selectNoticeModify(nbcode);
+		return mav;
+	}
+	
+	@RequestMapping (value="admin_updateNoticeModify")
+	public ModelAndView admin_updateNoticeModify(NoticeDto notice, RedirectAttributes ra) throws IllegalStateException, IOException {
+		System.out.println("공지 수정 요청");
+		mav = asvc.admin_updateNoticeModify(notice, ra);
+		return mav;
+	}
 		
 }

@@ -1,5 +1,7 @@
 package com.NumberOne.dto;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import lombok.Data;
 
 @Data
@@ -13,6 +15,9 @@ public class NoticeDto {
 	private String nbimg;		//사진	
 	private int nbstate;		//글상태	
 	private int nbhits;			//조회수
+	
+	// 파일 처리를 위한 필드
+	private MultipartFile nbimgfile;
 	
 	public String getNbcode() {
 		return nbcode;
@@ -66,7 +71,7 @@ public class NoticeDto {
 	public String toString() {
 		return "NoticeDto [nbcode=" + nbcode + ", nbmid=" + nbmid + ", nbtitle=" + nbtitle + ", nbcontents="
 				+ nbcontents + ", nbdate=" + nbdate + ", nbimg=" + nbimg + ", nbstate=" + nbstate + ", nbhits=" + nbhits
-				+ "]";
+				+ ", nbimgfile=" + nbimgfile + "]";
 	}
 	
 	
