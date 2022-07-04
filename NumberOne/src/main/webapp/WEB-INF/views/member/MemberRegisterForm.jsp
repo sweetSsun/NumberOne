@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,7 +26,7 @@
 	  padding: 100px 200px;
 	}
 
-	#domainSelect{
+	.selectOption{
 	font-size: 17px;
 	height: 45px;
 	width: 130px;
@@ -105,9 +106,17 @@
 
 </head>
 <body>
-	<!-- TobBar -->
-	<%@ include file="/WEB-INF/views/includes/TopBar.jsp"%>
-	<!-- End of TobBar -->
+        <!-- TopBar -->
+        <c:choose>
+                <c:when test="${sessionScope.loginId != 'admin'}">
+                        <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
+                </c:when>
+                <c:otherwise>
+                        <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
+                </c:otherwise>
+        </c:choose>
+        <!-- End of TopBar -->
+	<!-- End of TopBar -->
 
 	<main>
 		<!-- 사이드바 -->
@@ -202,18 +211,45 @@
                                 </div>
                                 <div class="col-lg-2">
                                     <div class="checkout__input" style="margin-top: 45px;">
-                                        <select id="domainSelect">
-										<option>직접입력</option>
-										<option>naver.com</option>
-										<option>gmail.com</option>
-										<option>hanmail.net</option>
+                                        <select id="domainSelect"  class="selectOption">
+										<option value="">직접입력</option>
+										<option value="naver.com">naver.com</option>
+										<option value="gmail.com">gmail.com</option>
+										<option value="hanmail.net">hanmail.net</option>
 										</select>
                                     </div>
                                 </div> 
-                            </div>                                                          
+                            </div>  
+                            
+                            <!-- 관심지역 -->
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <div class="checkout__input">
+                                        <p>관심지역<span>*</span></p>
+                                        <input type="text"  id="inputmregion" name="mregion" placeholder="관심지역 선택">
+ 									<span id="regionCheckMsg"></span>                                        
+                                    </div> 
+                                </div>
+                                <div class="col-lg-2"> 
+                                    <div class="checkout__input" style="margin-top: 45px;">
+                                        <select id="regionSelect" class="selectOption">
+										<option disabled selected>지역선택</option>
+										<option value="서울">서울</option>
+										<option value="인천">인천</option>
+										<option value="경기">경기</option>
+										<option value="경상">경상</option>
+										<option value="전라">전라</option>
+										<option value="충청">충청</option>										
+										<option value="강원">강원</option>
+										<option value="제주">제주</option>										
+										</select>
+                                    </div>                                      
+                                </div>                                                                  
+                            </div>                            
+                                              
                             <!-- 주소 -->
                            <div class="checkout__input">
-                                <p>주소<span>*</span></p>
+                                <p>주소</p>
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
@@ -431,9 +467,8 @@
 				
 			}
 		});
-		</script>					
-	
-		
+		</script>
+
 
 <!-- 입력칸 유무 확인 -->
      <script type="text/javascript">
@@ -490,16 +525,16 @@
     		$("#inputEmailId").focus();
     		return false;
     	}   
-    	if($("#inputEmailDomail").val().length == 0){
+    	if($("#inputEmailDomain").val().length == 0){
     		alert("이메일도메인을 입력해주세요.");
-    		$("#inputEmailDomail").focus();
+    		$("#inputEmailDomain").focus();
     		return false;
     	}
     	
-    	/*주소 유무*/
-    	if($("#sample6_postcode").val().length == 0){
-    		alert("주소를 입력해주세요.");
-    		$("#sample6_postcode").focus();
+    	/*관심지역 유무*/
+    	if($("#inputmregion").val().length == 0){
+    		alert("관심지역을 선택해주세요.");
+    		$("#inputmregion").focus();
     		return false;
     	} 
     	
@@ -520,6 +555,18 @@
 		});	
 	
 	</script>
+	
+	<!-- 관심지역 script -->
+	<script type="text/javascript">
+		
+	$("#regionSelect").change(function(){	
+		var regionVal = $("#regionSelect").val();
+		console.log(regionVal);
+		$("#inputmregion").val(regionVal);	
+		});	
+	
+	</script>	
+	
 	
 	
 	

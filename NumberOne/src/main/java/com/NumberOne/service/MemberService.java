@@ -16,6 +16,11 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.NumberOne.dao.MemberDao;
+<<<<<<< HEAD
+=======
+import com.NumberOne.dto.BoardDto;
+import com.NumberOne.dto.ContactDto;
+>>>>>>> 00991820b59735aa43211aa830dd0a01754a5782
 import com.NumberOne.dto.MemberDto;
 
 @Service
@@ -71,12 +76,24 @@ public class MemberService {
 	      // 이메일 처리
 	      member.setMemail(member.getMemailId()+"@"+member.getMemailDomain());
 	      
+	      
+	      String message = member.getMmessage();
+	      if(message.length()==0) {
+	    	  member.setMmessage("안녕하세요!");
+	      }
+
+	      System.out.println(member);
+	      
+	      
+	      
 	      int joinResult = mdao.insertRegisterWrite(member);
 	      
 	      if(joinResult != 0) {
 				System.out.println("회원가입 가능");
 				ra.addFlashAttribute("msg", "회원가입 되었습니다.");
-				mav.setViewName("main");
+
+				mav.setViewName("redirect:/loadToLogin");
+
 			}else {
 				System.out.println("회원가입 실패");
 				ra.addFlashAttribute("msg" , "회원가입에 실패하였습니다.");
@@ -116,7 +133,18 @@ public class MemberService {
 			if(loginMember .getMstate() == 0) {
 				ra.addFlashAttribute("msg", "이용 정지 된 계정 입니다.");
 				mav.setViewName("redirect:/loadToLogin");
+<<<<<<< HEAD
 			}else {
+=======
+			} else if(loginMember.getMid().equals("admin")) {
+				session.setAttribute("loginId", loginMember.getMid());
+				mav.setViewName("redirect:/admin_loadToAdminMainPage");
+			} else if(loginMember .getMstate() == 2){
+				ra.addFlashAttribute("msg", "탈퇴 처리 된 회원입니다.");
+				mav.setViewName("redirect:/loadToLogin");				
+			}else {
+			
+>>>>>>> 00991820b59735aa43211aa830dd0a01754a5782
 				//로그인 성공
 				session.setAttribute("loginId", loginMember.getMid());
 				session.setAttribute("loginProfile", loginMember.getMprofile());
@@ -194,11 +222,224 @@ public class MemberService {
 	}
 
 
+<<<<<<< HEAD
 	public String getTitleCheck(String checkMsg) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+=======
+	//회원정보 수정 요청  
+	public ModelAndView updateMyInfoMemberModify(RedirectAttributes ra, MemberDto member) throws IllegalStateException, IOException {
+		  
+		ModelAndView mav = new ModelAndView();
+		  System.out.println("MemberService.updateMyInfoMemberModify() 호출"); 
+		  String loginId = (String) session.getAttribute("loginId");
+		  System.out.println("로그인 된 아이디 : " + loginId);
+			
+		  member.setMid(loginId);
+		  
+
+
+		      //이미지 파일
+		      MultipartFile mfile = member.getMfile();
+		      
+		      //이미지의 파일명
+		      String mprofile = "";
+		      
+		      //이미지 파일 처리	      
+		      if(!mfile.isEmpty()) {
+		         System.out.println("이미지파일확인");
+		         
+		         UUID uuid = UUID.randomUUID();
+
+		         mprofile = uuid.toString()+"_"+mfile.getOriginalFilename();
+
+		         mfile.transferTo(  new File(savePath, mprofile)   );
+		      } 
+		         
+		         System.out.println("mprofile : " + mprofile);
+		         member.setMprofile(mprofile);
+		        
+	      
+		         
+		         
+		         System.out.println(member);
+		      
+		      
+		      // 주소 처리 
+		      member.setMaddr( member.getMpostcode()+"_"+member.getMaddress()+"_"+member.getMdetailAddr()+"_"+member.getMextraAddr());
+
+		      // 이메일 처리
+		      member.setMemail(member.getMemailId()+"@"+member.getMemailDomain());
+		      
+
+		      int memberInfoModify = mdao.updateMyInfoMemberModify(member);
+
+		      if(memberInfoModify != 0) {
+
+					System.out.println("회원정보가 수정 성공");
+					ra.addFlashAttribute("msg", "회원정보가 수정 되었습니다.");
+					mav.setViewName("redirect:/");
+				}else {
+					System.out.println("회원정보가 수정 실패");
+					ra.addFlashAttribute("msg" , "회원 정보 수정을 실패하였습니다.");
+					mav.setViewName("member/MyInfoMemberPage");
+				}
+
+			return mav;
+	}	
+	
+	//회원탈퇴
+	public ModelAndView updateMemberWithdraw(RedirectAttributes ra) {
+		
+		ModelAndView mav = new ModelAndView();
+		  System.out.println("MemberService.uupdateMemberWithdraw() 호출"); 
+		  String loginId = (String) session.getAttribute("loginId");
+		  System.out.println("로그인 된 아이디 : " + loginId);
+		
+		  int updateMemberWithdraw = mdao.updateMemberWithdraw(loginId);
+		  
+		  //로그아웃 시킴
+			session.invalidate();
+			
+		  System.out.println("탈퇴 성공");
+			ra.addFlashAttribute("msg" , "회원 탈퇴 하였습니다.");
+			mav.setViewName("redirect:/");		  
+		  
+		  
+		  return mav;
+	}
+	
+	
+	
+	
+
+	//마이페이지 커뮤니티
+	public ModelAndView selectMyInfoCommunityView() {
+		ModelAndView mav = new ModelAndView();
+		System.out.println("MemberService.selectMyInfoCommunityView 호출");
+		String loginId = (String) session.getAttribute("loginId");
+		System.out.println("로그인 된 아이디 : " + loginId);
+		
+		//작성글
+		ArrayList<BoardDto> board = mdao.selectMyInfoMemberView_Boards(loginId);
+		System.out.println(board);
+
+		//댓글작성한 글
+		ArrayList<ReplyDto> reply = mdao.selectMyInfoMemberView_Reply(loginId);
+		System.out.println(reply);	
+
+		mav.addObject("board", board);
+		mav.addObject("reply", reply);
+		mav.setViewName("member/MyInfoCommunityPage");
+		return mav;
+	}
+
+	//마이페이지 중고거래
+	public ModelAndView selectMyInfoResellView() {
+		
+		ModelAndView mav = new ModelAndView();
+		System.out.println("MemberService.selectMyInfoResellView 호출");
+		String loginId = (String) session.getAttribute("loginId");
+		System.out.println("로그인 된 아이디 : " + loginId);
+		
+		
+		
+		mav.setViewName("member/MyInfoResellPage");
+		return mav;
+	}
+
+
+	//마이페이지 1:1 문의 내역 / 상세
+	public ModelAndView selectMyInfoQuestionListView() {
+		ModelAndView mav = new ModelAndView();
+		System.out.println("MemberService.selectMyInfoQuestionListView 호출");
+		String loginId = (String) session.getAttribute("loginId");
+		System.out.println("로그인 된 아이디 : " + loginId);
+		
+		ArrayList<ContactDto> contact = mdao.selectMyInfoQuestionListView(loginId);
+		System.out.println(contact);
+		
+		mav.addObject("contact", contact);
+		mav.setViewName("member/MyInfoQuestionListPage");
+		return mav;
+	}
+
+	//마이페이지 1:1 문의 작성 페이지
+	public ModelAndView loadToMyInfoQuestionForm() {
+		ModelAndView mav = new ModelAndView();
+		System.out.println("MemberService.loadToMyInfoQuestionForm() 호출");
+		String loginId = (String) session.getAttribute("loginId");
+		System.out.println("로그인 된 아이디 : " + loginId);
+		
+		
+		
+		mav.setViewName("member/MyInfoQuestionForm");
+		return mav;
+	}
+
+	//마이페이지 1:1 문의 작성 요청
+	public ModelAndView insertMyInfoQuestionWrite(ContactDto contact, RedirectAttributes ra) throws IllegalStateException, IOException {
+		ModelAndView mav = new ModelAndView();
+		System.out.println("MemberService.loadToMyInfoQuestionForm() 호출");
+		String loginId = (String) session.getAttribute("loginId");
+		System.out.println("로그인 된 아이디 : " + loginId);
+		
+		//글번호 생성(CT00001) 
+		String ctcode = mdao.selectMaxCtcode();
+		System.out.println("maxCtcode: "+ctcode);
+		int ctcodeNum = Integer.parseInt(ctcode.substring(2))+1;
+		System.out.println("ctcodeNum: "+ctcodeNum);
+		if(ctcodeNum<10) {
+			ctcode = "CT0000"+ctcodeNum;
+		} else if(ctcodeNum<100) {
+			ctcode = "CT000"+ctcodeNum;
+		} else if(ctcodeNum<1000) {
+			ctcode = "CT00"+ctcodeNum;
+		} else if(ctcodeNum<10000) {
+			ctcode = "CT0"+ctcodeNum;
+		} else if(ctcodeNum<100000) {
+			ctcode = "CT"+ctcodeNum;
+		}
+		
+		contact.setCtcode(ctcode);
+		System.out.println(ctcode);
+		
+		//로그인된 아이디 작성자에 저장
+		contact.setCtmid(loginId);
+		
+		System.out.println(contact);
+
+	      int contactResult = mdao.insertMyInfoQuestionWrite(contact);
+
+	      if(contactResult != 0) {
+
+				System.out.println("문의 작성 성공");
+				ra.addFlashAttribute("msg", "문의글이 등록 되었습니다.");
+				mav.setViewName("redirect:/selectMyInfoQuestionListView");
+			}else {
+				System.out.println("문의 작성 실패");
+				ra.addFlashAttribute("msg" , "문의글 작성에 실패하였습니다.");
+				mav.setViewName("redirect:/");
+			}
+
+		return mav;
+	}
+
+
+
+
+
+
+
+
+
+
+
+
+
+>>>>>>> 00991820b59735aa43211aa830dd0a01754a5782
 
 		
 	}

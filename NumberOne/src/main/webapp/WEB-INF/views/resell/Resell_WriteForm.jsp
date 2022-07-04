@@ -261,7 +261,7 @@ div {
 
 								<div class="container-card_goods_2">
 									<div class="item-basis_7 flex-shrink">
-										<input type="text" name="gd_names" size="60" placeholder="품목명" class="gd_check">
+										<input type="text" name="gd_names" size="60" placeholder="품목명" class="gd_check" >
 									</div>
 									<div class="item-basis_3 flex-shrink">
 										<input type="text" size="20" placeholder="가격" name="gd_price" class="gd_check">
@@ -396,6 +396,8 @@ var dsiplay_btn3 =document.getElementsByClassName("btn_d-none")[3];
 addBtn0.onclick = function(){
 	console.log("addBtn0 호출");	
 	dsiplay_btn0.classList.remove("d_none");
+	document.getElementsByClassName("gd_check")
+	
 	};
 	addBtn1.onclick = function(){
 		console.log("addBtn1 호출");

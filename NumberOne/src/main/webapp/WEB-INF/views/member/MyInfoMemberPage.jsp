@@ -62,9 +62,17 @@
 
 </head>
 <body>
-	<!-- TobBar -->
-	<%@ include file="/WEB-INF/views/includes/TopBar.jsp"%>
-	<!-- End of TobBar -->
+        <!-- TopBar -->
+        <c:choose>
+                <c:when test="${sessionScope.loginId != 'admin'}">
+                        <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
+                </c:when>
+                <c:otherwise>
+                        <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
+                </c:otherwise>
+        </c:choose>
+        <!-- End of TopBar -->
+	<!-- End of TopBar -->
 
 	<main>
 		<!-- 사이드바 -->
@@ -86,12 +94,14 @@
                                     <div class="checkout__input">
                                         <p class="fw-bold" style="color: #004804;">프로필사진</p>
                                          <c:choose>
-                                         <c:when test="${sessionScope.loginProfile != null}">
-                                        <img style="max-height: 200px; border: 2px;" class="img-account-profile rounded-circle mb-2"
+                                         <c:when test="${memberInfo.mprofile != null}">
+                                        <img style="height: 200px; width: 200px; border: 1px solid #004804; padding: 10px;" 
+                                        class="img-account-profile rounded-circle mb-2"
                                         src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/${memberInfo.mprofile }" alt="">    
                                     </c:when>
                                     <c:otherwise>
-                                        <img style="max-height: 200px; border: 2px;" class="img-account-profile rounded-circle mb-2"
+                                        <img style="height: 200px; width: 200px; border: 1px solid #004804; padding: 10px;" 
+                                        class="img-account-profile rounded-circle mb-2"
                                         src="${pageContext.request.contextPath }/resources/img/logo.jpg" alt="">                                    
                                     </c:otherwise>
                                     </c:choose>
@@ -104,14 +114,7 @@
                                     </div>                                    
                                     <div class="checkout__input">
                                         <p class="fw-bold" style="color: #004804;">상태메세지</p>
-                                        <c:choose>
-                                        <c:when test="${memberInfo.mmessage != null}">
-                                        <input type="text" style="height: 100px;" id="inputMmessage" name="mmessage" readonly="readonly" value="${memberInfo.mmessage }">                                   
-                                    	</c:when>
-                                    	<c:otherwise>
-                                    	 <input type="text" style="height: 100px;" id="inputMmessage" name="mmessage" readonly="readonly" value="안녕하세요!">  
-                                    	</c:otherwise>
-                                    	</c:choose>                                   
+                                			<input type="text" style="height: 100px;" id="inputMmessage" name="mmessage" readonly="readonly" value="${memberInfo.mmessage }">                                                                 
                                     </div>
                                 </div>
                             </div>
@@ -161,6 +164,19 @@
                                     </div>
                                 </div>
                             </div>  
+
+                            <!-- 관심지역 -->
+                           <div class="checkout__input">
+                                <p class="fw-bold" style="color: #004804;">관심지역</p>
+                            <div class="row">
+                                <div class="col-lg-6">
+                                    <div class="checkout__input">
+                                        <input type="text" id="inputmregion" name="mregion"
+                                         readonly="readonly" value="${memberInfo.mregion }">                                  
+                                    </div>
+                                </div>
+                            </div>
+							</div>
                                                           
                             <!-- 주소 -->
                            <div class="checkout__input">
@@ -206,7 +222,9 @@
                         		<button type="submit" class="site-btn" style="width: 130px; border-radius: 4px;"
                         		onclick = "location.href = 'loadToMyInfoModifyForm' " >
                         		수정</button>
-                        		<button type="submit" class="site-btn" style="width: 130px; border-radius: 4px;"> 탈퇴</button>                        
+                        		<button type="submit" class="site-btn" style="width: 130px; border-radius: 4px;"
+                        		onclick = "location.href = 'updateMemberWithdraw' " > 
+                        		탈퇴</button>                        
                         	</div>
                          </div>
                     </div>
@@ -419,16 +437,16 @@
     		$("#inputEmailId").focus();
     		return false;
     	}   
-    	if($("#inputEmailDomail").val().length == 0){
+    	if($("#inputEmailDomain").val().length == 0){
     		alert("이메일도메인을 입력해주세요.");
-    		$("#inputEmailDomail").focus();
+    		$("#inputEmailDomain").focus();
     		return false;
     	}
     	
-    	/*주소 유무*/
-    	if($("#sample6_postcode").val().length == 0){
-    		alert("주소를 입력해주세요.");
-    		$("#sample6_postcode").focus();
+    	/*관심지역 유무*/
+    	if($("#inputmregion").val().length == 0){
+    		alert("관심지역을 선택해주세요.");
+    		$("#inputmregion").focus();
     		return false;
     	} 
     	
@@ -449,7 +467,17 @@
 		});	
 	
 	</script>
+
+	<!-- 관심지역 script -->
+	<script type="text/javascript">
+		
+	$("#regionSelect").change(function(){	
+		var regionVal = $("#regionSelect").val();
+		console.log(regionVal);
+		$("#inputmregion").val(regionVal);	
+		});	
 	
+	</script>	
 	
 	
 	<!-- 파일 input 이름 생성 -->

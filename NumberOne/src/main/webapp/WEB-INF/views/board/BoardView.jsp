@@ -30,6 +30,10 @@
 		color : #004804;
 		font-size: 25px;
 	}
+	.bdregion{
+		font-weight: bold;
+		color : #7fad39;
+	}
 	.idDateHits{
 		border-bottom: solid #E0E0E0 3px;
 	}
@@ -63,6 +67,7 @@
 		border : solid gray 2px;
 		border-radius: 5px;
 		padding: 2px;
+		color : gray;
 	}
 	.icon:hover{
 		cursor: pointer;
@@ -70,9 +75,16 @@
 </style>
 </head>
 <body>
-	<!-- TobBar -->
-	<%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
-	<!-- End of TobBar -->
+	    <!-- TopBar -->
+        <c:choose>
+            <c:when test="${sessionScope.loginId != 'admin'}">
+                    <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
+            </c:when>
+            <c:otherwise>
+                    <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
+            </c:otherwise>
+        </c:choose>
+        <!-- End of TopBar -->
 	
 	<main>
 		<!-- 사이드바 -->
@@ -85,7 +97,8 @@
 				<form action="">
 					<div class="row">
 						<div class="col">
-							<a href="#"><span class="fw-bold boardCategory"> | ${board.bdcategory }게시판</span></a> 
+							<a href="#"><span class="fw-bold boardCategory"> | ${board.bdcategory }게시판 </span></a> 
+							<span class="fw-bold" style="color:gray;">/</span> <a href="#"><span class="bdregion"> ${board.bdrgname}</span></a>
 						</div>
 					</div>
 					<div class="row" >
@@ -110,7 +123,8 @@
 					<!-- 본문 글 내용-->
 					<div class="row mt-3 mb-3 boardContents">
 						<div class="col">
-							<textarea rows="10%" cols="100%" readonly>${board.bdcontents }</textarea>
+							<%-- <textarea rows="10%" cols="100%" readonly>${board.bdcontents }</textarea> --%>
+							<div style="min-height:400px;">${board.bdcontents }</div>
 						</div>
 					</div>
 				</form>
@@ -124,18 +138,20 @@
 					<c:when test="${sessionScope.loginId == board.bdmid }">
 						<div class="col-4 offset-md-6" >
 							<!-- 수정,삭제 : 로그인 아이디 = 글작성자 -->
-							<input type="button" style="float:right;" class="btn btn-lg bg-success fw-bold text-white" value="삭제">
-							<input type="button" style="float:right; margin-right: 5px;" class="btn btn-lg bg-success fw-bold text-white" value="수정">
+							<input onclick="updateBoardDelete()" type="button" style="float:right;" class="btn btn-lg bg-success fw-bold text-white" value="삭제">
+							<input onclick="loadToBoardModify()" type="button" style="float:right; margin-right: 5px;" class="btn btn-lg bg-success fw-bold text-white" value="수정">
 						</div>
 					</c:when>
 					
 					<c:when test="${sessionScope.loginId != null }">
 						<div class="col-4 offset-md-6" >
 							<!-- 추천,신고 : 로그인 한 아이디  -->
-							<i onclick="insertBoardWarning()" class="fa-solid fa-triangle-exclamation text-danger fa-2x icon" style="float:right;"></i><!-- 신고 -->
+							<!-- <i onclick="insertBoardWarning()" class="fa-solid fa-triangle-exclamation text-danger fa-2x icon" style="float:right;"></i>신고 -->
 							<!-- <input type="button" style="float:right;" class="btn btn-lg bg-success fw-bold text-white" value="신고"> -->
-							<i onclick="insertBoardRecommend()" class="fa-regular fa-thumbs-up text-primary fa-2x icon" style="float:right; margin-right:5px;"></i>
+							<i id="bdWarning" onclick="insertBoardWarning()" class='fa-solid fa-land-mine-on  fa-2x icon' style="float:right; margin-right:5px;"></i>
+							<i id="bdRecommend" onclick="boardRecommend()" class="fa-regular fa-thumbs-up  fa-2x icon" style="float:right; margin-right:5px;"></i>
 							<!-- <input type="button" style="float:right; margin-right: 5px;" class="btn btn-lg bg-success fw-bold text-white" value="추천"> -->
+							
 						</div>
 					</c:when>
 				
@@ -150,6 +166,7 @@
 							<i class="fa-regular fa-comment"></i> 댓글 <span class="text-success fw-bold" id="ReplyCount"></span>개
 						</div>
 					</div>
+					
 					<!-- 댓글목록 -->
 					<div class="row" id="replyList_ajax">
 	
@@ -189,11 +206,13 @@
 </body>
 
 <script type="text/javascript">
-	
+	var checkMsg = '${msg}';
+	if ( checkMsg.length > 0 ){
+		alert(checkMsg);
+	}
 </script>
 
 <script type="text/javascript">
-	
 	//선택한 글번호 
 	var bdcode = '${board.bdcode}';
 	//현재 로그인중인 아이디
@@ -203,11 +222,35 @@
 		selectReplyList();//게시글 댓글목록
 		selectReplyCount();//게시글 댓글수
 		updateBoardRecommendCount();//게시글 추천수 
+		checkBoardRecommend();//게시글 추천 확인
 	});
 </script>
 
 <script type="text/javascript">
-	/* 게시글 관련 메소드 */
+	/* 게시글 추천, 삭제 메소드 */
+	function boardRecommend(){
+		insertBoardRecommend();
+		
+		
+	}
+	
+	function checkBoardRecommend(){
+		/* 게시글 추천 확인 */
+		$.ajax({
+			type : "get",
+			url : "checkBoardRecommend_ajax",
+			data : { "loginId" : loginId, "bdcode" : bdcode },
+			async: false,
+			success : function(rcCheck){
+				console.log(rcCheck);
+				console.log("추천유무 확인 : " + rcCheck);
+				if( rcCheck == "Yes" ){
+					$("#bdRecommend").addClass("text-primary");
+				}
+			}
+		});
+	}
+	
 	function insertBoardRecommend(){
 		/* 게시글 추천 */
 		console.log("게시글 추천자 :" + loginId);
@@ -220,15 +263,30 @@
 			async: false,
 			success : function(updateResult){
 				console.log(updateResult);
-				if ( updateResult > 0 ){
-					alert("게시글이 추천되었습니다.");	
 					updateBoardRecommendCount();
-				}else{
-					//????이 메시지를 어떻게 띄울 수 있을까?
-					alert("이미 추천한 게시글입니다.");
-				}
+					$("#bdRecommend").addClass("text-primary");
 			}
 		});
+	}
+	
+	function deleteBoardRecommend(){
+		/* 추천 중복 클릭 시 추천 취소 */
+		console.log("추천취소할 사용자 : " + loginId);
+		console.log("추천취소할 게시글 : " + bdcode);
+		$("#bdRecommend").removeClass("text-primary");
+		$.ajax({
+			type : "get",
+			url : "deleteBoardRecommend_ajax",
+			data : { "loginId" : loginId, "bdcode" : bdcode },
+			async : false,
+			success : function(deleteResult){
+				console.log(deleteResult);
+					updateBoardRecommendCount();
+					$("#bdRecommend").removeClass("text-primary");
+			}
+			
+		});
+		
 	}
 	
 	function updateBoardRecommendCount(){
@@ -261,15 +319,26 @@
 				
 				if( insertResult > 0 ){
 					alert("게시글 신고가 접수되었습니다.");
-				}else{
-					alert("이미 신고한 게시물입니다.");
-					/* 이미 신고한 게시물일때 어떻게 이 메시지를 띄우지?? */
-					
 				}
 			}
 			
 		});
 		
+	}
+	
+</script>
+
+<script type="text/javascript">
+	/* 게시글 수정, 삭제 */
+	function loadToBoardModify(){
+		/* 게시글 수정 페이지 이동  */
+		location.href="loadToBoardModify?bdcode="+bdcode;
+	}
+	
+	
+	function updateBoardDelete(){
+		/* 게시글 삭제(상태변경) */
+		location.href="updateBoardDelete?bdcode="+bdcode;
 	}
 	
 </script>

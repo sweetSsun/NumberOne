@@ -16,13 +16,33 @@
 	table{
 		margin: 20px;
 	}
-	
+	.bdcategory{
+		color : #004804;
+	}
+	.bdCategoryList{
+		
+		color : #004804;
+		border: none;
+	}
+	.bdcategorySel{
+		font-weight: bold;
+		text-align : center;
+		color : #004804;
+		
+	}
 </style>
 </head>
 <body>
-	<!-- TobBar -->
-	<%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
-	<!-- End of TobBar -->
+	    <!-- TopBar -->
+        <c:choose>
+            <c:when test="${sessionScope.loginId != 'admin'}">
+                    <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
+            </c:when>
+            <c:otherwise>
+                    <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
+            </c:otherwise>
+        </c:choose>
+        <!-- End of TopBar -->
 	
 	<main>
 		
@@ -61,13 +81,13 @@
 				<div class="row" style="margin-top: 20px;">
 					<div class="col">
 						<!-- 말머리 정렬 -->
-						<select id="bdCategory" onchange="bdCategorySel(this.value)">
-							<option value="">카테고리 선택</option>
-							<option value="자유">자유</option>
-							<option value="질문">질문</option>
-							<option value="정보">정보</option>
-							<option value="후기">후기</option>
-							<option value="지역">지역</option>
+						<select class="bdCategoryList" onchange="bdCategorySel(this.value)">
+							<option class="bdcategorySel" value="">말머리 선택</option>
+							<option class="bdcategorySel" value="자유">자유</option>
+							<option class="bdcategorySel" value="질문">질문</option>
+							<option class="bdcategorySel" value="정보">정보</option>
+							<option class="bdcategorySel" value="후기">후기</option>
+							<option class="bdcategorySel" value="지역">지역</option>
 						</select>
 					</div>
 				</div>
@@ -85,7 +105,8 @@
 							<td>조회</td>
 							<td>추천</td>
 						</tr>
-						<c:forEach items="${noticeList }" var="notice">
+						
+						<c:forEach items="${noticeList }" end="2" var="notice">
 							<!-- 공지게시판 -->
 							<tr class="fw-bold" style="border-bottom: solid #E0E0E0 1px;">
 								<td>${notice.nbcode}</td>
@@ -108,7 +129,7 @@
 						<c:if test="${board.bdcategory != '자랑' }">
 						<tr style="border-bottom: solid #E0E0E0 1px;">
 							<td>${board.bdcode}</td>
-							<td>${board.bdcategory}</td>
+							<td class="fw-bold bdcategory">${board.bdcategory}</td>
 							<td>
 							 	<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a>
 							 </td>
@@ -134,6 +155,14 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
+
+<script type="text/javascript">
+	var checkMsg = '${msg}';
+	if ( checkMsg.length > 0 ){
+		alert(checkMsg);
+	}
+	
+</script>
 
 <script type="text/javascript">
 	/* 게시판 카테고리 선택 */
