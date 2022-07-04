@@ -167,21 +167,6 @@
 						</div>
 					</div>
 					
-					<!-- 프로필 출력 -->
-					<div class="row">
-						<div class="col-1">
-							<img class="rounded-circle" alt="" src="${pageContext.request.contextPath }/resources/img/room/logo.jpg">
-						</div>
-						<div class="col-9">
-							<div class="row">
-								아이디 / 시간 
-							</div>
-							<div class="row">
-								댓글내용
-							</div>
-						</div>
-					</div>
-					
 					<!-- 댓글목록 -->
 					<div class="row" id="replyList_ajax">
 	

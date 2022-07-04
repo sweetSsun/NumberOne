@@ -103,13 +103,25 @@ public interface BoardDao {
 	@Select("select mnickname from members where mid= #{mid}")
 	String selectRoomWriterMnickname(String mid);
 
-	//자취방 자랑글 상세 조회
-	BoardDto selectRoomList(String bdcode);
-
 	//자취방 자랑글 추천
 	@Insert("insert into recommend values (#{rcmid}, #{rcbdcode})")
 	int insertRecommend(@Param ("rcbdcode") String bdcode,@Param ("rcmid") String bdmid);
-	
+
+	//자취방 자랑글 추천/스크랩/신고 취소(테이블에서 튜플 삭제)
+	int deleteState(@Param ("bdcode")String bdcode, @Param ("loginId")String attribute,@Param ("history") String history);
+
+	//자취방 상세보기 누르면 조회수 업데이트
+	int updateRoomhits(String bdcode);
+
+	//자취방 상세보기 글 정보 select
+	BoardDto selectRoomView(@Param ("bdcode") String bdcode, @Param ("loginId") String loginId);
+
+	//자취방 글의 현재 추천,스크랩,신고 상태 조회
+	String selectCurrentHisroty(@Param ("bdcode")String bdcode, @Param ("history") String history, @Param ("loginId")String loginId);
+
+	//자취방 자랑글 추천/스크랩/신고
+	int insertState(@Param ("bdcode")String bdcode, @Param ("loginId")String attribute,@Param ("history") String history);
+
 
 	//자취방 자랑글 추천 이력 조회
 	@Select("select count(*) from recommend where rcbdcode = #{rcbdcode} and rcmid=#{rcmid}")
@@ -126,12 +138,6 @@ public interface BoardDao {
 	int updateBoardModify(BoardDto board);
 	
 	
-	
-
-	
-
-	
-
 
 
 

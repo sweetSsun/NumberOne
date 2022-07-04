@@ -37,7 +37,7 @@ public class BoardService {
 	private HttpSession session;
 	
 	//사용할 때 자기 폴더 경로로 바꾸어야 함
-	//private String roomSavePath = "D:\\numberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\room";
+	private String roomSavePath = "D:\\numberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\room";
 
 	//자취방자랑 글 등록
 	public ModelAndView insertRoomWrite(BoardDto room, RedirectAttributes ra) throws IllegalStateException, IOException {
@@ -65,23 +65,28 @@ public class BoardService {
 		room.setBdcode(bdcode);
 		
 		//파일 저장 경로
-		String savePath = request.getSession().getServletContext().getRealPath("resources/img/room");
-		
+		//String savePath = request.getSession().getServletContext().getRealPath("resources/img/room");
+		//System.out.println(request.getRealPath("resources/img/room"));
 		//대표이미지 파일
 		MultipartFile bdimgfile = room.getBdimgfile();
 		//대표이미지의 파일명
 		String bdimg = "";
+		
+		//D:\numberOne\NumberOne\src\main\webapp\resources\img
+		String projectPath = request.getRealPath("").split(".metadata")[0];
+		System.out.println(request.getRealPath(""));
+		System.out.println(projectPath + "numberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\room");
+		
+		
 		//대표이미지 파일 처리
 		if( ! bdimgfile.isEmpty() ) {
 			System.out.println("대표 이미지 있음");
 			UUID uuid = UUID.randomUUID();
 			
-			System.out.println(savePath);
-			
 			//파일명 생성
 			bdimg = "M"+uuid.toString()+"_"+bdimgfile.getOriginalFilename();
 			//대표 이미지 파일 저장
-			bdimgfile.transferTo(  new File(savePath, bdimg)   );
+			bdimgfile.transferTo( new File (roomSavePath, bdimg)  );
 			
 			//room에 setBdimg 
 			System.out.println("bdimg : " + bdimg);
@@ -107,7 +112,7 @@ public class BoardService {
 				//파일명 생성
 				String bddetailimgname = uuid.toString()+bddetailimgfile[i].getOriginalFilename();
 				//상세 이미지 파일 저장
-				bddetailimgfile[i].transferTo(  new File(savePath, bddetailimgname)   );
+				bddetailimgfile[i].transferTo(  new File(roomSavePath, bddetailimgname)   );
 				bddetailimg += "___"+bddetailimgname;
 			}
 			
@@ -125,11 +130,9 @@ public class BoardService {
 		//System.out.println(room);
 		//자취방자랑 글 등록 (dao  - insert문)
 		int insertResult = 0;
-		try {
+		
 			insertResult = bdao.insertRoomWrite(room);
-		} catch (Exception e) {
-			// TODO: handle exception
-		}
+		
 				
 		if(insertResult>0) {
 			System.out.println("등록 성공!");
@@ -260,11 +263,11 @@ public class BoardService {
 	    
 	    mav.addObject("roomList", roomList);
 	    //확인용 출력
-	    /*
+	    
 	    for(int i=0; i<roomList.size(); i++) {
 	    	System.out.println(roomList.get(i));
 	    }
-	    */
+	    
 
 	    
 	    mav.setViewName("board/RoomListPage");
@@ -327,11 +330,24 @@ public class BoardService {
 	//자취방 자랑글 상세 보기
 	public String selectRoomView(String bdcode) {
 		System.out.println("BoardService.selectRoomView() 호출");
+		
+		//조회수 업데이트
+		int updateResult = bdao.updateRoomhits(bdcode);
+		System.out.println("hitsUpdateResult: "+updateResult);
+		
 		ModelAndView mav = new ModelAndView();
-		BoardDto roomView = bdao.selectRoomList(bdcode);	
+		
+		//로그인 여부 확인
+		String loginId = (String) session.getAttribute("loginId");
+		if(loginId == null) {
+			loginId = "";
+		}
+		System.out.println("로그인 아이디: "+loginId);
+		BoardDto roomView = bdao.selectRoomView(bdcode, loginId);
+		System.out.println("추천/신고/스크랩 기록 추가: "+roomView);
 		//System.out.println(roomView);
 		
-		//null이면 ajax로 넘어가지 않음 null값을 수정
+		//null이면 toJson할 때 사라짐 null값을 수정
 		//img, detailimg, bdreply, bdscrap, bdrecommend
 		if(roomView.getBdimg() == null) {
 			roomView.setBdimg("noimg");
@@ -353,6 +369,21 @@ public class BoardService {
 			roomView.setBdrecommend("0");
 		}
 		
+		if(roomView.getRchistory() == null) {
+			roomView.setRchistory("n");
+		}
+		
+		if(roomView.getSchistory()==null) {
+			roomView.setSchistory("n");
+		}
+		
+		if(roomView.getWbhistory()==null) {
+			roomView.setWbhistory("n");
+		}
+		
+		if(roomView.getBdmprofile()==null) {
+			roomView.setBdmprofile("nomprofile");
+		}
 		Gson gson = new Gson();
 		String roomView_json = gson.toJson(roomView);
 		
@@ -360,26 +391,26 @@ public class BoardService {
 		return roomView_json;
 	}
 
-	public int updateRbrecommend(String bdcode) {
-		System.out.println("service.udateRbrecommend() 호출");
+	//roomView 추천/스크랩/신고 
+	public int updateLog(String bdcode, String history, String currentState) {
+		System.out.print("service.updateLog() 호출 ");
+		System.out.println(history+"상태 변경 요청");
 		int updateResult=0;
-
-		//추천한 적이 있는지 조회
-		int recommendCh = bdao.recommendCh(bdcode, (String)session.getAttribute("loginId"));
-		//System.out.println(recommendCh);
-		if(recommendCh>0) {
-			//추천한 적 있다면 추천 취소
-			updateResult = bdao.deleteRecommend(bdcode, (String)session.getAttribute("loginId")); 
+		String loginId = (String)session.getAttribute("loginId");
+		System.out.println("아이디: "+loginId);
+		
+		
+		if(currentState.equals("1")) {
+			//history 있다면 취소
+			updateResult = bdao.deleteState(bdcode, loginId, history); 
 			System.out.println("추천취소결과:"+updateResult);
 			return updateResult;
 		}
 		
-		//추천한 적이 없다면 recommend 테이블에 insert
+		//history 없다면 입력
+		updateResult = bdao.insertState(bdcode, loginId, history); 	
 		
-			updateResult = bdao.insertRecommend(bdcode, (String)session.getAttribute("loginId")); 	
-		
-		
-		System.out.println("추천결과:"+updateResult);
+		System.out.println("updateStateResult: "+updateResult);
 		
 		return updateResult;
 	}
@@ -519,6 +550,7 @@ public class BoardService {
 		return boardRecommendCount;
 	}
 	
+
 	//게시글 삭제 
 	public ModelAndView updateBoardDelete(String bdcode, RedirectAttributes ra) {
 		System.out.println("BoardService.updateBoardDelete() 호출");
@@ -572,4 +604,14 @@ public class BoardService {
 	
 	
 	
+
+	//자랑글 현재 추천,스크랩,신고 상태 조회
+	public String currentRchistory(String bdcode, String history) {
+		System.out.println("BoardService.currentRchistory() 호출");
+		String loginId = (String)session.getAttribute("loginId");
+		String currnetState = bdao.selectCurrentHisroty(bdcode, history, loginId);
+		System.out.println(bdcode+"의 현재 "+history+"상태: "+currnetState);
+		return currnetState;
+	}
+
 }
