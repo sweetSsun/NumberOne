@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.UUID;
 
+import javax.print.DocFlavor.URL;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -36,12 +37,13 @@ public class BoardService {
 	private HttpSession session;
 	
 	//사용할 때 자기 폴더 경로로 바꾸어야 함
-	private String roomSavePath = "D:\\numberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\room";
-	
+	//private String roomSavePath = "D:\\numberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\room";
+
 	//자취방자랑 글 등록
 	public ModelAndView insertRoomWrite(BoardDto room, RedirectAttributes ra) throws IllegalStateException, IOException {
 		ModelAndView mav = new ModelAndView();
 		System.out.println("BoardService.insertRoomWrite() 호출");
+		
 		
 		//글번호 생성
 		String bdcode = bdao.selectMaxBdcode();
@@ -59,8 +61,11 @@ public class BoardService {
 		} else if(bdcodeNum<100000) {
 			bdcode = "BD"+bdcodeNum;
 		} 
-		System.out.println("bdcode: "+bdcode);
+		//System.out.println("bdcode: "+bdcode);
 		room.setBdcode(bdcode);
+		
+		//파일 저장 경로
+		String savePath = request.getSession().getServletContext().getRealPath("resources/img/room");
 		
 		//대표이미지 파일
 		MultipartFile bdimgfile = room.getBdimgfile();
@@ -71,15 +76,18 @@ public class BoardService {
 			System.out.println("대표 이미지 있음");
 			UUID uuid = UUID.randomUUID();
 			
+			System.out.println(savePath);
+			
 			//파일명 생성
 			bdimg = "M"+uuid.toString()+"_"+bdimgfile.getOriginalFilename();
 			//대표 이미지 파일 저장
-			bdimgfile.transferTo(  new File(roomSavePath, bdimg)   );
+			bdimgfile.transferTo(  new File(savePath, bdimg)   );
 			
 			//room에 setBdimg 
 			System.out.println("bdimg : " + bdimg);
-			room.setBdimg(bdimg);
 		} 
+		
+		room.setBdimg(bdimg);
 		
 		
 		//상세이미지 파일
@@ -87,38 +95,46 @@ public class BoardService {
 		//상세이미지의 파일명(최대 5개)
 		String bddetailimg = "";
 		//상세이미지 파일 처리
-		System.out.println("상세이미지개수: "+bddetailimgfile.length);
+		//System.out.println("상세이미지개수: "+bddetailimgfile.length);
+		//상세 이미지를 선택 안해도 배열의 크키가 1로 나옴
+		//0번 인덱스의 filename이 있는지로 확인해야 함
+		System.out.println("bddetailimgfile[0].length: "+bddetailimgfile[0].getOriginalFilename().length());
 		
-		if( bddetailimgfile.length > 0 ) {
+		if( bddetailimgfile[0].getOriginalFilename().length() > 0 ) {
 			
 			for(int i=0; i<bddetailimgfile.length; i++) {
 				UUID uuid = UUID.randomUUID();
 				//파일명 생성
 				String bddetailimgname = uuid.toString()+bddetailimgfile[i].getOriginalFilename();
 				//상세 이미지 파일 저장
-				bddetailimgfile[i].transferTo(  new File(roomSavePath, bddetailimgname)   );
+				bddetailimgfile[i].transferTo(  new File(savePath, bddetailimgname)   );
 				bddetailimg += "___"+bddetailimgname;
 			}
 			
 			//room에 setBddetailimg 
 			System.out.println("bddetailimg : " + bddetailimg);
-			room.setBddetailimg(bddetailimg);
 		} 
-
-		//로그인 기능 없어서 id는 nhd로 함
-		room.setBdmid("nhd");
+		room.setBddetailimg(bddetailimg);
+		
+		//로그인 아이디
+		room.setBdmid((String)session.getAttribute("loginId"));
 		
 		//카테고리 -- 자랑
 		room.setBdcategory("자랑");
 		
 		//System.out.println(room);
 		//자취방자랑 글 등록 (dao  - insert문)
-		int insertResult = bdao.insertRoomWrite(room);
-		
+		int insertResult = 0;
+		try {
+			insertResult = bdao.insertRoomWrite(room);
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+				
 		if(insertResult>0) {
 			System.out.println("등록 성공!");
 			ra.addFlashAttribute("msg", "자취방 자랑글이 등록되었습니다.");
-			//메인페이지로 돌아가기	>> 자랑글 메인으로 수정 해야 함	
+			//메인페이지로 돌아가기	>> 등록한 글 상세보기 페이지로 이동으로 수정	
 			mav.setViewName("redirect:/");
 		} else {
 			System.out.println("등록 실패!");
@@ -213,15 +229,25 @@ public class BoardService {
 	public ModelAndView selectRoomList() {
 		System.out.println("BoardService.selectRoomList() 호출");
 		ModelAndView mav = new ModelAndView();
-	    ArrayList<BoardDto> roomList = bdao.selectRoomList("자랑");	
+	    ArrayList<BoardDto> roomList = bdao.selectRoomList();	
 	    System.out.println("자취방 자랑글 개수: "+roomList.size());
 	    
-	    mav.addObject("roomList", roomList);
+	    /*
+	    for (int i = 0; i < roomList.size(); i++) {
+			if(roomList.get(i).getBdimg().equals("")){
+				
+			}
+		}
+	    */
 	    
+	    mav.addObject("roomList", roomList);
 	    //확인용 출력
+	    /*
 	    for(int i=0; i<roomList.size(); i++) {
 	    	System.out.println(roomList.get(i));
 	    }
+	    */
+
 	    
 	    mav.setViewName("board/RoomListPage");
 		return mav;
@@ -264,6 +290,86 @@ public class BoardService {
 		mav.setViewName("board/BoardView");
 		
 		return mav;
+	}
+
+	//아이디로 닉네임 찾기
+	public ModelAndView selectRoomWriterMnickname(RedirectAttributes ra) {
+		System.out.println("BoardService.selectRoomWriterMnickname() 호출");
+		String mid = (String) session.getAttribute("loginId");
+		ModelAndView mav = new ModelAndView();
+		
+		if(mid == null) {
+			System.out.println("비로그인 상태!");
+			ra.addFlashAttribute("msg", "로그인 후 이용할 수 있습니다.");
+			//로그인 폼으로 돌아가기
+			mav.setViewName("redirect:/loadToLogin");
+			return mav;
+		}
+		
+		String mnickname = bdao.selectRoomWriterMnickname(mid);
+		mav.addObject("mnickname", mnickname);
+		mav.setViewName("board/WriteRoomForm");
+		return mav;
+	}
+
+	//자취방 자랑글 상세 보기
+	public String selectRoomView(String bdcode) {
+		System.out.println("BoardService.selectRoomView() 호출");
+		ModelAndView mav = new ModelAndView();
+		BoardDto roomView = bdao.selectRoomList(bdcode);	
+		//System.out.println(roomView);
+		
+		//null이면 ajax로 넘어가지 않음 null값을 수정
+		//img, detailimg, bdreply, bdscrap, bdrecommend
+		if(roomView.getBdimg() == null) {
+			roomView.setBdimg("noimg");
+		}
+		
+		if(roomView.getBddetailimg() == null) {
+			roomView.setBddetailimg("noimg");
+		}
+		
+		if(roomView.getBdreply() == null) {
+			roomView.setBdreply("0");
+		}
+		
+		if(roomView.getBdscrap() == null) {
+			roomView.setBdscrap("0");
+		}
+		
+		if(roomView.getBdrecommend() == null) {
+			roomView.setBdrecommend("0");
+		}
+		
+		Gson gson = new Gson();
+		String roomView_json = gson.toJson(roomView);
+		
+		System.out.println(roomView_json);
+		return roomView_json;
+	}
+
+	public int updateRbrecommend(String bdcode) {
+		System.out.println("service.udateRbrecommend() 호출");
+		int updateResult=0;
+
+		//추천한 적이 있는지 조회
+		int recommendCh = bdao.recommendCh(bdcode, (String)session.getAttribute("loginId"));
+		//System.out.println(recommendCh);
+		if(recommendCh>0) {
+			//추천한 적 있다면 추천 취소
+			updateResult = bdao.deleteRecommend(bdcode, (String)session.getAttribute("loginId")); 
+			System.out.println("추천취소결과:"+updateResult);
+			return updateResult;
+		}
+		
+		//추천한 적이 없다면 recommend 테이블에 insert
+		
+			updateResult = bdao.insertRecommend(bdcode, (String)session.getAttribute("loginId")); 	
+		
+		
+		System.out.println("추천결과:"+updateResult);
+		
+		return updateResult;
 	}
 	
 	//게시글 댓글작성(ajax)

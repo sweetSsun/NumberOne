@@ -1,11 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-	<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>  
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 마이페이지 회원정보</title>
+<title>1인자 - 회원정보수정</title>
 
 <%@ include file="/resources/css/CommonCss.jsp"%>
 <!-- 부트스트랩 -->
@@ -38,18 +37,62 @@
 	}
 	
 	.checkout__input input {
-	border: 1px solid #004804;
-	font-weight: bold; 
-	/* background-color: #EAEAEA; */
+	border: 1px solid #808080;
 }
 
 	.gender__input {
-	border: 1px solid #004804;
+	border: 1px solid #808080;
 	height: 45px;
 	width: 440px;
 	border-radius : 4px;		
 		
 	}
+	
+	textarea {
+		padding: 10px;
+		border: 1px solid #808080;
+		border-radius : 4px;
+	}
+
+	
+/* 첨부파일 CSS */
+/* 1. 인풋 스타일 변경 */
+.filebox .upload-name {
+	font-size:15px;
+    display: inline-block;
+    height: 40px;
+    width : 350px;
+    padding: 0 10px;
+    vertical-align: middle;
+    border: 1px solid #808080;
+    border-radius : 4px;
+    /* width: 78%; */
+    color: #999999;
+}
+/* 2. label 스타일 변경 */
+.filebox label {
+	font-size:15px;
+    display: inline-block;
+    padding: 10px 20px;
+    color: #fff;
+    vertical-align: middle;
+    background-color: #999999;
+    cursor: pointer;
+    height: 40px;
+    margin-left: 10px;
+    margin-top: 0px;
+    border-radius : 4px;
+}
+/* 3. 기존 디자인 없애기 */
+.filebox input[type="file"] {
+    /* position: absolute; */
+    width: 0; 
+    height: 0; 
+    padding: 0;
+    /* overflow: hidden; */
+    border: 0;
+}
+
 
 .msg {
 	font-size: 15px;
@@ -75,101 +118,115 @@
         <div class="container">
 
             <div class="checkout__form">
-                <h4>마이페이지 회원정보</h4>
-                <!-- <form> -->
+                <h4>회원정보수정</h4>
+                <form class="user" action="updateMyInfoMemberModify" method="post" enctype="multipart/form-data" onsubmit="return joinFormCheck()">
                     <div class="row">
                         <div class="col-lg-12 col-md-6">
-                        
-                        <!-- 프로필 사진 , 상태메세지 -->
+                        <!-- ID , 이름 -->
                             <div class="row">
-                                <div class="col-lg-3">
+                                <div class="col-lg-6">
                                     <div class="checkout__input">
-                                        <p class="fw-bold" style="color: #004804;">프로필사진</p>
-                                         <c:choose>
-                                         <c:when test="${sessionScope.loginProfile != null}">
-                                        <img style="max-height: 200px; border: 2px;" class="img-account-profile rounded-circle mb-2"
-                                        src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/${memberInfo.mprofile }" alt="">    
-                                    </c:when>
-                                    <c:otherwise>
-                                        <img style="max-height: 200px; border: 2px;" class="img-account-profile rounded-circle mb-2"
-                                        src="${pageContext.request.contextPath }/resources/img/logo.jpg" alt="">                                    
-                                    </c:otherwise>
-                                    </c:choose>
+                                        <p>아이디<span>*</span></p>
+                                        <input type="text" placeholder="영문&숫자 5~10자로 입력해주세요." id="inputMid" name="mid" value="${memberInfo.mid }"
+                                        style="background-color: #EAEAEA " readonly="readonly">
+                                        <span id="idCheckMsg" class="msg"></span>  
                                     </div>
                                 </div>
-                                <div class="col-lg-9">
+                                <div class="col-lg-6">
                                     <div class="checkout__input">
-                                        <p class="fw-bold" style="color: #004804;">아이디</p>
-                                        <input type="text" id="inputMid" name="mid" readonly="readonly" value="${memberInfo.mid }">   
-                                    </div>                                    
-                                    <div class="checkout__input">
-                                        <p class="fw-bold" style="color: #004804;">상태메세지</p>
-                                        <c:choose>
-                                        <c:when test="${memberInfo.mmessage != null}">
-                                        <input type="text" style="height: 100px;" id="inputMmessage" name="mmessage" readonly="readonly" value="${memberInfo.mmessage }">                                   
-                                    	</c:when>
-                                    	<c:otherwise>
-                                    	 <input type="text" style="height: 100px;" id="inputMmessage" name="mmessage" readonly="readonly" value="안녕하세요!">  
-                                    	</c:otherwise>
-                                    	</c:choose>                                   
+                                        <p>이름<span>*</span></p>
+                                        <input type="text" id="inputMname" name="mname" placeholder="2~10자로 입력해주세요."  value="${memberInfo.mname }">
+                                        <span id="nameCheckMsg" class="msg"></span>                                    
                                     </div>
                                 </div>
                             </div>
-                        
-                        
-                        
-                        <!-- 이름,닉네임 -->
+                        <!-- 비번 , 비번확인 -->
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
-                                        <p class="fw-bold" style="color: #004804;">이름</p>
-                                        <input type="text" id="inputMname" name="mname" readonly="readonly" value="${memberInfo.mname }">                                    
-                                    </div>
-                                </div>    
-                                <div class="col-lg-6">
-                                    <div class="checkout__input">
-                                        <p class="fw-bold" style="color: #004804;">닉네임</p>
-                                        <input type="text"id="inputMnickname" name="mnickname" readonly="readonly" value="${memberInfo.mnickname }">                                  
+                                        <p>비밀번호<span>*</span></p>
+                                        <input type="text" placeholder="영문&숫자 6~20자로 입력해주세요." id="inputMpw" name="mpw"  value="${memberInfo.mpw }">
+									<span id="pwCheckMsg" class="msg"></span>                                      
                                     </div>
                                 </div>
-                             </div>   
-                        
-                        <!-- 비번 -->
-                            <div class="row">
                                 <div class="col-lg-6">
-                                    <div class="checkout__input" style="display:none">
-                                        <p class="fw-bold" style="color: #004804;">비밀번호</p>
-                                        <input type="hidden" id="inputMpw" name="mpw" readonly="readonly" value="${memberInfo.mpw }">                                     
+                                    <div class="checkout__input">
+                                        <p>비밀번호확인<span>*</span></p>
+                                        <input type="text" placeholder="비밀번호를 확인해주세요." id="checkMpw">
+									<span id="pwReCheckMsg" class="msg"></span>                                    
                                     </div>
                                 </div>
                             </div>                            
-
-                        <!-- 이메일,전화번호 -->
+                        <!-- 닉네임 , 성별 -->
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
-                                        <p class="fw-bold" style="color: #004804;">이메일</p>
-                                        <input type="text"  id="inputEmail" name="memail" readonly="readonly" value="${memberInfo.memail }">                                       
-                                    </div> 
-                                </div>                                    
-                      <!-- 전화번호 -->
+                                        <p>닉네임<span>*</span></p>
+                                        <input type="text" placeholder="2~10자로 입력해주세요." id="inputMnickname" name="mnickname"  value="${memberInfo.mnickname }">
+ 									<span id="nicknameCheckMsg" class="msg"></span>                                   
+                                    </div>
+                                </div>
+                            <!-- 전화번호 -->
+                           
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
-                                        <p class="fw-bold" style="color: #004804;">전화번호</p>
-                                        <input type="text" id="inputMphone" name="mphone" readonly="readonly" value="${memberInfo.mphone }">
+                                        <p>전화번호<span>*</span></p>
+                                        <input type="text" id="inputMphone" name="mphone" placeholder="'-' 포함하여 번호 입력해주세요."  value="${memberInfo.mphone }">
  									<span id="phoneCheckMsg" class="msg"></span>                                    
                                     </div>
                                 </div>
-                            </div>  
-                                                          
+                                <div class="col-lg-6">
+                            </div> 
+                            </div> 
+                                                        
+                                                      
+                            <!-- 이메일 --> 
+                            <div class="row">
+                                <div class="col-lg-5">
+                                    <div class="checkout__input">
+                                        <p>이메일<span>*</span></p>
+                                        <input type="text"  id="inputEmailId" name="memailId" placeholder="이메일 아이디"  value="${memberInfo.memailId }">
+ 									<span id="emailIdCheckMsg"></span>                                        
+                                    </div> 
+                                </div> 
+                                <div class="col-lg-1">
+                                    <div class="checkout__input" style="margin-top:50px; margin-left:18px;">    
+                                       @
+                                    </div> 
+                                </div>                                
+                                <div class="col-lg-4">
+                                    <div class="checkout__input">
+                                        <p style="margin-top: 45px;">
+                                        <input type="text" id="inputEmailDomain" name="memailDomain" placeholder="이메일 도메인"  value="${memberInfo.memailDomain }"></p>
+ 									<span id="emailDomainCheckMsg"></span>                                         
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="checkout__input" style="margin-top: 45px;">
+                                        <select id="domainSelect">
+										<option>직접입력</option>
+										<option>naver.com</option>
+										<option>gmail.com</option>
+										<option>hanmail.net</option>
+										</select>
+                                    </div>
+                                </div> 
+                            </div>                                                          
                             <!-- 주소 -->
                            <div class="checkout__input">
-                                <p class="fw-bold" style="color: #004804;">주소</p>
+                                <p>주소<span>*</span></p>
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
-                                        <input type="text" id="sample6_postcode" name="mpostcode"
-                                         readonly="readonly" value="${memberInfo.mpostcode }">                                  
+                                        <input type="text" class="form-control form-control-user" id="sample6_postcode" name="mpostcode" placeholder="우편번호"
+                                         value="${memberInfo.mpostcode }"> 
+ 									<span id="postcodeCheckMsg"></span>                                    
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div >
+                                        <input type="button"  class="addr-btn" style="color : white; background-color: #999999; border: 0px;"
+                                        onclick="sample6_execDaumPostcode()" value="우편번호 찾기">
                                     </div>
                                 </div>
                             </div>
@@ -177,8 +234,9 @@
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="checkout__input">
-                                        <input type="text" id="sample6_address" name="maddress" 
-                                        readonly="readonly" value="${memberInfo.maddress }">                                 
+                                        <input type="text"  class="form-control form-control-user" id="sample6_address" name="maddress" placeholder="주소"
+                                         value="${memberInfo.maddress }">
+ 									<span id="addressCheckMsg"></span>                                    
                                     </div>
                                 </div>
                             </div> 
@@ -186,31 +244,41 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
-                                        <input type="text" id="sample6_detailAddress" name="mdetailAddr" 
-                                        readonly="readonly" value="${memberInfo.mdetailAddr }">
+                                        <input type="text"  class="form-control form-control-user" id="sample6_detailAddress" name="mdetailAddr" placeholder="상세주소"
+                                         value="${memberInfo.mdetailAddr }">
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
-                                        <input type="text" id="sample6_extraAddress" name="mextraAddr" 
-                                        readonly="readonly" value="${memberInfo.mextraAddr }">
+                                        <input type="text"  class="form-control form-control-user" id="sample6_extraAddress" name="mextraAddr" placeholder="참고항목"
+                                         value="${memberInfo.mextraAddr }">
                                     </div>
                                 </div>
                             </div>                            
-                          </div>
+                            
+                            
+                            </div>
+
+                          <!-- 파일 업로드 -->
+ 							<div class="filebox checkout__input">
+							<p>프로필 사진</p>
+    							<input class="upload-name" value="첨부파일" placeholder="첨부파일" id="inputFile" >
+    							<label for="inputMfile" >파일찾기</label> 
+    							<input type="file" id="inputMfile" name="mfile" value="">${memberInfo.mprofile }
+							</div>						
+                            <!-- 상태메세지 -->                            
+                            <div class="checkout__input">
+                                <p>상태메세지</p>
+                                <p><textarea cols="102" rows="2" id="inputMmessage" name="mmessage" placeholder="100자 이하로 입력해주세요." 
+                                value="">${memberInfo.mmessage }</textarea></p>
+                            </div>
                           <!-- 끝 -->
-						
 						<br>
-                        <div class="row">
-                        	<div class="col-lg-12">						
-                        		<button type="submit" class="site-btn" style="width: 130px; border-radius: 4px;"
-                        		onclick = "location.href = 'loadToMyInfoModifyForm' " >
-                        		수정</button>
-                        		<button type="submit" class="site-btn" style="width: 130px; border-radius: 4px;"> 탈퇴</button>                        
-                        	</div>
-                         </div>
+                        <button type="submit" class="site-btn" style="width: 130px; margin-left: 40%; border-radius: 4px;">
+                        수정완료</button>
+                        </div>
                     </div>
-                <!-- </form> -->
+                 </form>
             </div>
         </div>
     </section>
@@ -225,56 +293,8 @@
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="${pageContext.request.contextPath }/resources/MemberJs/daumPostCode.js"></script>
     
-	<!-- 아이디 중복 체크 -->
-    <script type="text/javascript">
-    
-    var inputIdCheck =false;
-    var inputPwCheck = false;
-    var inputNameCheck = false;
-    var inputNicknameCheck = false;
-    
-    $(document).ready(function(){
-    	console.log("스크립트 확인!");
-    	
-    	<!-- 아이디 중복 확인 -->
-    	$("#inputMid").focusout(function(){
-    		var inputId = $("#inputMid").val();
-    		console.log("inputId : "+inputId);
-    		
-    		if(inputId.length == 0) {
-    			$("#idCheckMsg").text("아이디를 입력 해주세요.").css("color" , "red");
-    			inputIdCheck =false;
-    		}else if( inputId.length < 5 || inputId.length > 10 ){
-				$("#idCheckMsg").text("아이디는 5~10자리 입니다.").css("color", "red");
-				inputIdCheck = false;
-    		}else {
 
-    			$.ajax({
-    				type : "get",
-    				url : "selectMemberId_ajax",
-    				data : {"inputId" : inputId },
-    				success : function(result){
-    					
-    					
-    					if(result=="OK") {
-    					$("#idCheckMsg").text("사용가능한 아이디 입니다.").css("color" , "green");    
-    					inputIdCheck =true;
-    					}else {
-    					$("#idCheckMsg").text("이미 사용중인 아이디 입니다.").css("color" , "red");  		
-    					inputIdCheck =false;
-    					}
-    				}
-	
-    			});
-    			
-    		}
-    		
-    	})
 
-    });
-    
-    </script>
-    
 
     <!-- 비밀번호 길이 확인 -->
     <script type="text/javascript">
@@ -315,11 +335,7 @@
 			}
 		});
 		</script>		
-		
-		
-		
-		
-		
+	
     <!-- 이름 길이 확인 -->
     <script type="text/javascript">
 		$("#inputMname").keyup(function(){
@@ -352,32 +368,36 @@
 				$("#nicknameCheckMsg").text("닉네임은 2~10자리 입니다.").css("color", "red");
 				inputNicknameCheck = false;				
 			} else {
-				$("#nicknameCheckMsg").css("color","green").text("사용가능한 닉네임 입니다.");
-				inputNicknameCheck = true;
+				
+    			$.ajax({
+    				type : "get",
+    				url : "selectMemberNickname_ajax",
+    				data : {"inputNickname" : inputNickname },
+    				success : function(result){
+    					
+    					
+    					if(result=="OK") {
+    					$("#nicknameCheckMsg").text("사용가능한 닉네임 입니다.").css("color" , "green");    
+    					inputIdCheck =true;
+    					}else {
+    					$("#nicknameCheckMsg").text("이미 사용중인 닉네임 입니다.").css("color" , "red");  		
+    					inputIdCheck =false;
+    					}
+    				}
+	
+    			});
 				
 			}
 		});
 		</script>					
-		
-		
-		
-		
+	
 		
 
 <!-- 입력칸 유무 확인 -->
      <script type="text/javascript">
     
     function joinFormCheck(){
-    	/*아이디 유뮤*/
-    	
-    	console.log("joinFormCheck 호출");
-    	console.log(inputIdCheck);
-    	
-    	if(!inputIdCheck){
-    		alert("아이디를 입력해주세요");
-    		$("#inputMid").focus();
-    		return false;
-    	}
+
     	/*이름 유무*/
     	if($("#inputMname").val().length == 0){
     		alert("이름을 입력해주세요.");

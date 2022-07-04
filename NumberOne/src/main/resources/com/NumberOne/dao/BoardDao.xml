@@ -43,7 +43,7 @@
  	 </select>
  	 
  	 <select id="selectRoomList" resultType="com.NumberOne.dto.BoardDto">
- 	 	select bdcode, bdmid, bdtitle, bddate, bdimg, bdstate, bdhits,
+ 	 	select bdcode, bdmid, bdtitle, bddate, bdimg, bdstate, bdhits, bdcontents,
 		bdscrap, bdrecommend, bdreply, mnickname as bdnickname   	
 		from boards b
 		left outer join (select scbdcode, count(*) as bdscrap from scrap group by scbdcode) sc
@@ -56,6 +56,15 @@
 		on b.bdmid = m.mid
 		where b.bdcategory='자랑'
 		and b.bdstate='1'
+		
+		<if test="bdcode != null">
+ 		<!--글상세 검색  -->
+ 		and b.bdcode = #{bdcode}
+ 		</if>
+ 		
+		order by bdcode desc
+		
+		
 	 </select>
  	 
  	 <!-- 자꾸 중복되는 메소드 -->
@@ -76,6 +85,16 @@
 		AND BD.BDCODE = #{bdcode}
  	 </select>
  	 
+
+ 	 <select id="selectRoomView" resultType="com.NumberOne.dto.BoardDto">
+ 	 	<!-- 일반글 상세 -->
+ 	 	SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, TO_CHAR(BDDATE,'YY-MM-DD HH24:MI') AS BDDATE, 
+	    BDIMG, BDDETAILIMG, BDSTATE, BDHITS, MB.MNICKNAME AS BDNICKNAME
+		FROM BOARDS BD, MEMBERS MB
+		WHERE BD.BDMID = MB.MID
+		AND BD.BDCODE = #{bdcode}
+ 	 </select>
+
  	 <select id="selectReplyMaxNumber" resultType="String">
  	 	<!-- 댓글 최대번호 조회 -->
  	 	SELECT MAX(RPCODE) 
@@ -133,4 +152,5 @@
 		WHERE RCBDCODE = #{bdcode}
  	</select>
  	 
+
  </mapper>

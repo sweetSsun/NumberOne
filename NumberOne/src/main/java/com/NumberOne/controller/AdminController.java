@@ -27,17 +27,24 @@ public class AdminController {
 	
 	/* 회원 관리 */
 	@RequestMapping (value="/admin_selectMemberList")
-	public ModelAndView admin_selectMemberList() {
+	public ModelAndView admin_selectMemberList(int page) {
 		System.out.println("회원 관리페이지 이동 요청");
-		mav = asvc.admin_selectMemberList();
+		mav = asvc.admin_selectMemberList(page);
 		return mav;
 	}
 	
 	@RequestMapping (value="/admin_selectMemberList_ajax")
-	public @ResponseBody String admin_selectMemberList_ajax(String searchVal) {
+	public @ResponseBody String admin_selectMemberList_ajax(String searchVal, int page) {
 		System.out.println("회원 관리페이지 정렬 요청");
-		String memberList_json = asvc.admin_selectMemberList_ajax(searchVal);
+		String memberList_json = asvc.admin_selectMemberList_ajax(searchVal, page);
 		return memberList_json;
+	}
+	
+	@RequestMapping (value="/admin_selectMemberPagingNumber_ajax")
+	public @ResponseBody String admin_selectMemberPagingNumber_ajax(String searchVal, int page) {
+		System.out.println("회원 관리페이지 페이징넘버 조회 요청");
+		String paging_json = asvc.admin_selectMemberPagingNumber_ajax(searchVal, page);
+		return paging_json;
 	}
 	
 	@RequestMapping (value= "/admin_updateMstate_ajax")
@@ -56,25 +63,26 @@ public class AdminController {
 	
 	/* 공지 관리 */
 	@RequestMapping (value="admin_selectNoticeList")
-	public ModelAndView admin_selectNoticeList() {
+	public ModelAndView admin_selectNoticeList(String searchVal, String searchType, String keyword) {
 		System.out.println("공지 관리페이지 이동 요청");
-		mav = asvc.admin_selectNoticeList();
+		mav = asvc.admin_selectNoticeList(searchVal, searchType, keyword);
 		return mav;
 	}
 	
 	@RequestMapping (value="admin_selectNoticeList_ajax")
-	public @ResponseBody String admin_selectNoticeList_ajax(String searchVal) {
+	public @ResponseBody String admin_selectNoticeList_ajax(String searchVal, String searchType, String keyword) {
 		System.out.println("공지 관리페이지 정렬 요청");
-		String noticeList_json = asvc.admin_selectNoticeList_ajax(searchVal);
+		String noticeList_json = asvc.admin_selectNoticeList_ajax(searchVal, searchType, keyword);
 		return noticeList_json;
 	}
 	
 	@RequestMapping (value="admin_updateNbstate_ajax")
 	public @ResponseBody int admin_updateNbstate_ajax(String nbcode, String nbstate) {
 		System.out.println("공지상태 변경 요청");
-		// 서비스에서 nbstate update 필요ik m,
 		int updateResult = asvc.admin_updateNbstate_ajax(nbcode, nbstate);
 		return updateResult;
 	}
+	
+	
 		
 }

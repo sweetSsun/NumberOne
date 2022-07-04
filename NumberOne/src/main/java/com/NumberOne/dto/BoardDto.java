@@ -23,11 +23,11 @@ public class BoardDto {
 	private int bdstate;			//글상태
 	private int bdhits;				//조회수
 	
-	private String bdrecommend;        	//추천수-자취방 자랑, 일반게시글 (recommend 테이블 조인)
+	private String bdrecommend;        //추천수-자취방 자랑, 일반게시글 (recommend 테이블 조인)
 	private String bdwarning;			//신고수-자취방 자랑, 일반게시글 (warning 테이블 조인)
-	private String bdreply;				//댓글수-자취방 자랑, 일반게시글 (reply 테이블 조인)
-	private String bdscrap;            	//스크랩수-자취방 자랑 (필요없으면 삭제)
-	
+	private String bdreply;			//댓글수-자취방 자랑, 일반게시글 (reply 테이블 조인)
+	private String bdscrap;            //스크랩수-자취방 자랑 (필요없으면 삭제)
+
 	//파일 처리를 위한 필드
 	private MultipartFile bdimgfile;			//프로필 파일
 	private MultipartFile[] bddetailimgfile;	//프로필 파일
@@ -127,6 +127,8 @@ public class BoardDto {
 		return bdrecommend;
 	}
 
+
+
 	public void setBdrecommend(String bdrecommend) {
 		this.bdrecommend = bdrecommend;
 	}
@@ -135,7 +137,10 @@ public class BoardDto {
 		return bdwarning;
 	}
 
+
+
 	public void setBdwarning(String bdwarning) {
+
 		this.bdwarning = bdwarning;
 	}
 
@@ -143,7 +148,10 @@ public class BoardDto {
 		return bdreply;
 	}
 
+
+
 	public void setBdreply(String bdreply) {
+
 		this.bdreply = bdreply;
 	}
 
@@ -151,7 +159,9 @@ public class BoardDto {
 		return bdscrap;
 	}
 
+
 	public void setBdscrap(String bdscrap) {
+
 		this.bdscrap = bdscrap;
 	}
 
