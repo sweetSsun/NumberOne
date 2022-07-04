@@ -16,8 +16,8 @@ import com.NumberOne.dto.ReplyDto;
 public interface MemberDao {
 
 	//회원가입 처리
-	@Insert("INSERT INTO MEMBERS(MID, MPW, MNAME, MNICKNAME, MPHONE, MEMAIL, MADDR, MPROFILE, MMESSAGE, MJOINDATE ) "
-			+ "VALUES(#{mid}, #{mpw}, #{mname}, #{mnickname}, #{mphone}, #{memail}, #{maddr}, #{mprofile}, #{mmessage}, SYSDATE )")
+	@Insert("INSERT INTO MEMBERS(MID, MPW, MNAME, MNICKNAME, MPHONE, MEMAIL, MREGION ,MADDR, MPROFILE, MMESSAGE, MJOINDATE ) "
+			+ "VALUES(#{mid}, #{mpw}, #{mname}, #{mnickname}, #{mphone}, #{memail}, #{mregion}, #{maddr}, #{mprofile}, #{mmessage}, SYSDATE )")
 	int insertRegisterWrite(MemberDto member);
 	
 	//아이디 중복 확인
@@ -37,7 +37,7 @@ public interface MemberDao {
 	String selectLookforId_ajax(@Param("mname")String checkMname, @Param("memail")String checkMemail);
 
 	//회원정보
-	@Select("SELECT MID, MPW, MNAME, MNICKNAME, MPHONE, MEMAIL, MADDR, MPROFILE, MMESSAGE FROM MEMBERS WHERE MID = #{loginId}")
+	@Select("SELECT MID, MPW, MNAME, MNICKNAME, MPHONE, MEMAIL, MREGION, MADDR, MPROFILE, MMESSAGE FROM MEMBERS WHERE MID = #{loginId}")
 	MemberDto selectMyInfoMemberView(String loginId);
 
 	//회원정보수정
@@ -60,6 +60,10 @@ public interface MemberDao {
 			+ "WHERE BDCODE = RPBDCODE AND RPMID = #{loginId} "
 			+ "ORDER BY RP.RPCODE DESC")
 	ArrayList<ReplyDto> selectMyInfoMemberView_Reply(String loginId);
+
+	//회원탈퇴
+	@Update("UPDATE MEMBERS SET MSTATE = 2 WHERE MID = #{loginId}")
+	int updateMemberWithdraw(String loginId);
 
 
 

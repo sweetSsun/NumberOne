@@ -150,15 +150,23 @@ public class MemberController {
 		//회원정보 수정 요청
 
 		@RequestMapping(value="/updateMyInfoMemberModify")
-		public ModelAndView updateMyInfoMemberModify
-		(RedirectAttributes ra, MemberDto member) 
-				throws IllegalStateException, IOException {
+		public ModelAndView updateMyInfoMemberModify(RedirectAttributes ra, MemberDto member) throws IllegalStateException, IOException {
 			System.out.println("마이페이지 회원정보수정 요청");
 		
 			mav = msvc.updateMyInfoMemberModify(ra, member);
 			
 			return mav;
 		}
+		
+		//회원탈퇴
+		@RequestMapping(value="/updateMemberWithdraw")
+		public ModelAndView updateMemberWithdraw(RedirectAttributes ra) throws IllegalStateException, IOException {
+			System.out.println("마이페이지 회원정보수정 요청");
+		
+			mav = msvc.updateMemberWithdraw(ra);
+			
+			return mav;
+		}		
 		
 		
 		
@@ -186,7 +194,7 @@ public class MemberController {
 		}
 		
 		
-		//마이페이지 중고거래
+		//마이페이지 1:1 문의 내역
 		
 		@RequestMapping(value = "/selectMyInfoQuestionListView")
 		public ModelAndView selectMyInfoQuestionListView() {
@@ -196,7 +204,31 @@ public class MemberController {
 			
 			return mav;
 	
+		}	
+		
+		//마이페이지 1:1 문의 작성페이지 이동 
+		@RequestMapping(value = "/loadToMyInfoQuestionForm")
+		public ModelAndView loadToMyInfoQuestionForm() {
+			System.out.println("마이페이지 1:1 문의 작성페이지 이동");
+			
+			mav = msvc.loadToMyInfoQuestionForm();
+			
+			return mav;
+	
+		}	
+
+		//마이페이지 1:1 문의 작성 요청
+		@RequestMapping(value = "/insertMyInfoQuestionWrite")
+		public ModelAndView insertMyInfoQuestionWrite() {
+			System.out.println("마이페이지 1:1 문의 작성요청");
+			
+			mav = msvc.insertMyInfoQuestionWrite();
+			
+			return mav;
+	
 		}		
+		
+		
 
 }
 
