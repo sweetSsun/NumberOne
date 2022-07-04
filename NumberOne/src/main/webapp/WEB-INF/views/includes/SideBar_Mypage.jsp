@@ -13,7 +13,7 @@
                 <div class="col">
                         <div class="sidebar-item">
 							<h3 class="text-center font-weight-bold">
-							<a href="selectMyInfoMemberView">회원정보</h3>
+							<a href="selectMyInfoMemberView">회원정보</a></h3>
 							<hr>
                         </div>
                         <div class="sidebar-item">
@@ -29,6 +29,9 @@
                                 <li><a href="selectMyInfoResellView">사구팔구</a></li>
                                 <li><a href="selectMyInfoResellView">채팅</a></li>
                                 <li><a href="selectMyInfoResellView">찜목록</a></li>
+                                <li><a href="loadToResellMainPage">사구팔구</a></li>
+                                <li><a href="#">채팅</a></li>
+                                <li><a href="#">찜목록</a></li>
                             </ul>
                         </div>
                        

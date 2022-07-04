@@ -85,7 +85,7 @@
 							<td>${searchBd.bdcode}</td>
 							<td>${searchBd.bdcategory}</td>
 							<td>
-							 	<a href="#">${searchBd.bdtitle}</a>
+							 	<a href="selectNoticeBoardView">${searchBd.bdtitle}</a>
 							 </td>
 							<td>
 								<a>${searchBd.bdnickname}</a>

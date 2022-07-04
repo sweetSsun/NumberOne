@@ -67,12 +67,12 @@
 			<br>
 				<h1 class="text-center">자취방 자랑 글작성 페이지</h1>
 				<div>
-				<form action="writeRoom" method="post" enctype="multipart/form-data">
+				<form action="insertRoomWrite" method="post" enctype="multipart/form-data">
 				<table>
 					<tr class="tableRow">
 						<th class="tableHead">작성자</th>
 						<!-- imhido 부분은 나중에 로그인 아이디로 출력 -->
-						<td colspan="3">imhido</td>						
+						<td colspan="3">${mnickname}</td>						
 					</tr>
 					<!-- 이 행은 자랑게시판은 d_none -->
 					<tr class="d_none tableRow">

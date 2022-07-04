@@ -28,14 +28,13 @@ public class BoardDto {
 	private String bdreply;			//댓글수-자취방 자랑, 일반게시글 (reply 테이블 조인)
 	private String bdscrap;            //스크랩수-자취방 자랑 (필요없으면 삭제)
 
-	
 	//파일 처리를 위한 필드
 	private MultipartFile bdimgfile;			//프로필 파일
 	private MultipartFile[] bddetailimgfile;	//프로필 파일
 	
 	//검색할 때 필요한 필드
 	private String bdnickname;      //작성자 닉네임
-
+	
 	public String getBdcode() {
 		return bdcode;
 	}
@@ -128,7 +127,9 @@ public class BoardDto {
 		return bdrecommend;
 	}
 
-	public void setBdrecommend1(String bdrecommend) {
+
+
+	public void setBdrecommend(String bdrecommend) {
 		this.bdrecommend = bdrecommend;
 	}
 
@@ -136,7 +137,10 @@ public class BoardDto {
 		return bdwarning;
 	}
 
-	public void setBdwarning1(String bdwarning) {
+
+
+	public void setBdwarning(String bdwarning) {
+
 		this.bdwarning = bdwarning;
 	}
 
@@ -144,7 +148,10 @@ public class BoardDto {
 		return bdreply;
 	}
 
-	public void setBdreply1(String bdreply) {
+
+
+	public void setBdreply(String bdreply) {
+
 		this.bdreply = bdreply;
 	}
 
@@ -152,7 +159,9 @@ public class BoardDto {
 		return bdscrap;
 	}
 
-	public void setBdscrap1(String bdscrap) {
+
+	public void setBdscrap(String bdscrap) {
+
 		this.bdscrap = bdscrap;
 	}
 
@@ -189,23 +198,5 @@ public class BoardDto {
 				+ bdscrap + ", bdimgfile=" + bdimgfile + ", bddetailimgfile=" + Arrays.toString(bddetailimgfile)
 				+ ", bdnickname=" + bdnickname + "]";
 	}
-
-	public void setBdrecommend(String bdrecommend) {
-		this.bdrecommend = bdrecommend;
-	}
-
-	public void setBdwarning(String bdwarning) {
-		this.bdwarning = bdwarning;
-	}
-
-	public void setBdreply(String bdreply) {
-		this.bdreply = bdreply;
-	}
-
-	public void setBdscrap(String bdscrap) {
-		this.bdscrap = bdscrap;
-	}
-
-	
 
 }

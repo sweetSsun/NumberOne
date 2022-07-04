@@ -57,15 +57,15 @@
 		<div class="row">	
 			<div class="col-2">
 			<!-- 로고이미지 -->
-				<a href="loadToAdminMainPage"><img style="height:100px;"src="${pageContext.request.contextPath }/resources/img/logo_green.jpg"></a>
+				<a href="admin_loadToAdminMainPage"><img style="height:100px;"src="${pageContext.request.contextPath }/resources/img/logo_beige.jpg"></a>
 			</div>
 			<div class="col-6 offset-sm-4">
 			<div class="row">
 				<!-- 로그인, 회원가입, 고객센터 -->
 					<ul class="list-unstyled" >
 					<!-- 마이페이지 -->
-					<li ><a href="#"><i class="fa-solid fa-circle-user"></i>관리자모드</a> |</li>
-					<li ><a href="#">로그아웃</a> </li>
+					<li ><a href="admin_loadToAdminMainPage"><i class="fa-solid fa-circle-user"></i>관리자모드</a> |</li>
+					<li ><a href="selectMemberLogout">로그아웃</a> </li>
 				</ul>
 			</div>
 			<div class="row">
@@ -73,13 +73,13 @@
 					<!-- Home, 커뮤니티, 중고거래 목록 -->
 					<ul class="list-unstyled " >
 						<li class="nav-item active">
-							<a href="loadToAdminMainPage">HOME</a>
+							<a href="${pageContext.request.contextPath }/">HOME</a>
 						</li>
 						<li class="nav-item ">
-							<a href="#">커뮤니티</a>
+							<a href="loadToBoardMainPage">커뮤니티</a>
 						</li>
 						<li class="nav-item ">
-							<a href="#">중고거래</a>
+							<a href="loadToResellMainPage">중고거래</a>
 						</li>
 					</ul>
 				</div>

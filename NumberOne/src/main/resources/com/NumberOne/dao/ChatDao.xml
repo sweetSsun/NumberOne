@@ -5,22 +5,39 @@
   
 <mapper namespace="com.NumberOne.dao.ChatDao">
 
-
-<select resultType="com.NumberOne.dto.ChatDto" id="selectChatList">
-SELECT CHCODE, CHFRMID, CHTOMID, CHCONTENTS, TO_CHAR(CHDATE,'YYYY-MM-DD HH24:MI') AS CHDATE
-FROM CHAT ORDER BY CHDATE
-</select>
-
-<select resultType="int" id="selectMaxChcode">
-SELECT NVL(MAX(CHCODE),0)
-FROM CHAT
-</select>
-
-<insert id="insertChat">
-INSERT INTO CHAT (CHCODE, CHFRMID, CHTOMID, CHCONTENTS, TO_CHAR(CHDATE,'YYYY-MM-DD HH24:MI') AS CHDATE)
-VALUES (#{chcode}, #{chfrmid}, #{chtomid}, #{chcontents}, #{chdate}, TO_DATE(#{chdate},'YYYY.MM.DD'))
-</insert>
 	
-
+	
+	<select resultType="com.NumberOne.dto.ChatDto" id="selectChatList">
+	SELECT CHCODE, CHFRMID, CHTOMID, CHCONTENTS, TO_CHAR(CHDATE,'YYYY-MM-DD HH24:MI') AS CHDATE
+	FROM CHAT ORDER BY CHDATE
+	</select>
+	
+	<select resultType="int" id="selectMaxChcode">
+	SELECT NVL(MAX(CHCODE),0)
+	FROM CHAT
+	</select>
+	
+	<insert id="insertChat">
+	INSERT INTO CHAT (CHCODE, CHFRMID, CHTOMID, CHCONTENTS, CHDATE)
+	VALUES (#{chcode}, #{chfrmid}, #{chtomid}, #{chcontents}, sysdate)
+	</insert>
+	
+	<select resultType="String" id="selectMfrnick">
+	SELECT MNICKNAME
+	FROM MEMBERS
+	WHERE MID = #{chfrmid}
+	</select>
+	
+	<select resultType="String" id="selectMtonick">
+	SELECT MNICKNAME
+	FROM MEMBERS
+	WHERE MID = #{chtomid}
+	</select>
+	
+	<select resultType="String" id="selectTime">
+	SELECT TO_CHAR(CHDATE, 'YYYY-MM-DD AM HH:MI')
+	FROM CHAT
+	WHERE CHCODE = #{chcode}
+	</select>
 
 </mapper>
