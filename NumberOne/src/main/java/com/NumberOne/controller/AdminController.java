@@ -28,9 +28,9 @@ public class AdminController {
 	
 	/* 회원 관리 */
 	@RequestMapping (value="/admin_selectMemberList")
-	public ModelAndView admin_selectMemberList(int page) {
+	public ModelAndView admin_selectMemberList(int page, RedirectAttributes ra) {
 		System.out.println("회원 관리페이지 이동 요청");
-		mav = asvc.admin_selectMemberList(page);
+		mav = asvc.admin_selectMemberList(page, ra);
 		return mav;
 	}
 	
@@ -64,9 +64,9 @@ public class AdminController {
 	
 	/* 공지 관리 */
 	@RequestMapping (value="admin_selectNoticeList")
-	public ModelAndView admin_selectNoticeList(String searchVal, String searchType, String keyword, int page) {
+	public ModelAndView admin_selectNoticeList(String searchVal, String searchType, String keyword, int page, RedirectAttributes ra) {
 		System.out.println("공지 관리페이지 이동 요청");
-		mav = asvc.admin_selectNoticeList(searchVal, searchType, keyword, page);
+		mav = asvc.admin_selectNoticeList(searchVal, searchType, keyword, page, ra);
 		return mav;
 	}
 	
@@ -127,9 +127,9 @@ public class AdminController {
 	}
 	
 	@RequestMapping (value="admin_updateNoticeModify")
-	public ModelAndView admin_updateNoticeModify(NoticeDto notice, String originImg, RedirectAttributes ra) throws IllegalStateException, IOException {
+	public ModelAndView admin_updateNoticeModify(NoticeDto modiNotice, String originImg, RedirectAttributes ra) throws IllegalStateException, IOException {
 		System.out.println("공지 수정 요청");
-		mav = asvc.admin_updateNoticeModify(notice, originImg, ra);
+		mav = asvc.admin_updateNoticeModify(modiNotice, originImg, ra);
 		return mav;
 	}
 		

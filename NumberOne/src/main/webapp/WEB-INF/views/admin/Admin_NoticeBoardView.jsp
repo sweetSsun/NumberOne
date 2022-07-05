@@ -90,7 +90,7 @@
 					<div class="row mt-3 mb-3 boardContents">
 						<div class="col">
 							<c:if test="${noticeBoard.nbimg != null }">
-								<img alt="" src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg}" style="max-width:100%;">
+								<img alt="" src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg}" style="max-width:100%; max-height:500px;">
 							</c:if>
 							<textarea rows="10%" cols="100%" readonly>${noticeBoard.nbcontents }</textarea>
 						</div>

@@ -137,7 +137,7 @@
 	</update>
 	
 	<select id="admin_selectMaxNbcode" resultType="String">
-		SELECT NVL(MAX(NBCODE),NB00000) FROM NOTICEBOARDS
+		SELECT NVL(MAX(NBCODE),'NB00000') FROM NOTICEBOARDS
 	</select>
 	
 	<insert id="admin_insertNoticeWrite">
@@ -146,7 +146,7 @@
 	</insert>
 	
 	<update id="admin_updateNoticeModify">
-		UPDATE NOTICEBOARDS SET NBTITLE=#{nbtitle}, NBCONTENTS=#{nbcontents}
+		UPDATE NOTICEBOARDS SET NBTITLE=#{nbtitle}, NBCONTENTS=#{nbcontents}, NBIMG=#{nbimg}
 		WHERE NBCODE=#{nbcode}
 	</update>
 </mapper>
