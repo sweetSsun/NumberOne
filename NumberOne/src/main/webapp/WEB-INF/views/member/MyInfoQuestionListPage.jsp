@@ -29,12 +29,34 @@
 		font-size: 20px;
 	}
 	
+
+  summary {
+    cursor: pointer;
+  }
+
+  /* 삼각형 없애기 */
+  summary {
+    list-style: none;
+  }
+  summary::-webkit-details-marker {
+    display: none;
+  }
+  
+
 </style>
 </head>
 <body>
-	<!-- TobBar -->
-	<%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
-	<!-- End of TobBar -->
+        <!-- TopBar -->
+        <c:choose>
+                <c:when test="${sessionScope.loginId != 'admin'}">
+                        <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
+                </c:when>
+                <c:otherwise>
+                        <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
+                </c:otherwise>
+        </c:choose>
+        <!-- End of TopBar -->
+	<!-- End of TopBar -->
 	
 	<main>
 		
@@ -45,7 +67,7 @@
 		<!-- 본문 -->
 			<div class="container">
 				<br>
-				<div class="checkout__form"><h4>마이페이지 커뮤니티</h4></div>
+				<div class="checkout__form"><h4>마이페이지 1:1문의</h4></div>
 				<br>
 				<!-- 작성글 목록 -->
 				<div class="row" style="margin:20px;">
@@ -54,31 +76,65 @@
 					</div>  
 					<div class="col-lg-2" >					                      
 					<!-- 작성하기 버튼 -->    
-                        <button class="site-btn" style="border-radius: 4px;">
-                        
+                        <button class="site-btn" style="border-radius: 4px;"  
+                       onclick = "location.href = 'loadToMyInfoQuestionForm' " >                        
                         작성하기</button>
 					</div>					
 				</div> <br>
+				<!-- 댓글작성글 목록 -->
+				<div class="row" style="margin:20px;">
+					<br><h4 class="checkout__form" style="color: #004804;"> 댓글 작성 글 목록</h4>
+				</div>
 				<div class="row"  style="margin:20px;">
+				<table >
+				
+						
+						<tr class="text-center" id="board_column">
+							<td>글번호</td><td>제목</td><td>날짜</td>
+						</tr>
+												
+						<c:forEach items="${contact }" var="contact">
+							<!-- 작성글 목록 -->
+							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center; height: 50px;">
+								<td>${contact.ctcode }</td>
+								<td>${contact.cttitle }</td>
+								<td>${contact.ctdate }</td>								
+							</tr>
+							<tr style="border-bottom: solid #E0E0E0 1px; height: 50px;">
+								<td colspan="3" class="fw-bold" style=" padding-left: 30px;">문의 내용 </td>							
+							</tr>							
+							<tr style="border-bottom: solid #E0E0E0 1px; height: 100px;">
+								<td colspan="3" style=" padding-left: 30px;">${contact.ctcontents }</td>							
+							</tr>							
+							
+						</c:forEach>
+				
+				</table>
+				</div>			
+			
+				<br><hr><br>
+				<%-- <div class="row"  style="margin:20px;">
 				<table>
 						<tr class="text-center" id="board_column">
 							<td>글번호</td>
 							<td>제목</td>
 							<td>날짜</td>
 						</tr>
-						<%-- <c:forEach items="${board }" var="board"> --%>
+						<c:forEach items="${contact }" var="contact">
 							<!-- 작성글 목록 -->
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center;">
-								<td>1 (예시)</td>
-								<%-- <td><a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a></td> --%>
-								<td>문의드립니다. (예시)</td>
-								<td>2022-07-01</td>								
+								<td>${contact.ctcode }</td>
+								<td>${contact.cttitle }</td>
+								<td>${contact.ctdate }</td>															
 							</tr>
-						<%-- </c:forEach> --%>
+							
+							
+							<tr><td>문의 내용</td></tr>
+							<tr><td>${contact.cttitle }</td></tr>
+							
+						</c:forEach>
 				</table>
-				</div>
-			
-				<br><hr><br>
+				</div> --%>
 
 			</div>
 		</section>
@@ -89,38 +145,5 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 
-<script type="text/javascript">
-	/* 게시판 카테고리 선택 */
-	function bdCategorySel(categorySel){
-		console.log("categorySel: " + categorySel);
-		
-		var output = "";
-		$.ajax({
-			type : "get",
-			url : "getBoardCategoryList",
-			data : { "bdcategory" : categorySel},
-			dataType : "json",
-			async : false,
-			success : function(bdCategoryList){
-				console.log(bdCategoryList);
-				
-				for(var i = 0; i< bdCategoryList.length; i++ ){
-					output += "<tr style=\"border-bottom: solid gray 1px;\">";
-					output += "<td>" + bdCategoryList[i].bdcode + "</td>";
-					output += "<td>" + bdCategoryList[i].bdcategory + "</td>";
-					output += "<td>" + bdCategoryList[i].bdtitle + "</td>";
-					output += "<td>" + bdCategoryList[i].bdnickname + "</td>";
-					output += "<td>" + bdCategoryList[i].bddate + "</td>";
-					output += "</tr>";
-				}
-			
-			}
-		});
-		console.log(output);
-		$("#bdCategoryList").html(output);
-	}
-	
-	
-</script>
 
 </html>

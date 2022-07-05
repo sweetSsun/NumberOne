@@ -36,8 +36,8 @@ public class ChatWebSocketMsg extends TextWebSocketHandler {
 		ChatDto chatdto = new ChatDto();
 		chatdto.setChfrmid(chfrmid); 		// from 메세지를 보내는 사람의 ID 
 		
-		
-		/* 실행하면서 나타날 말이 있으면 여기다 쓰면 좋겠다 싶어서 ... 입력도 안한 날짜가 들어갈까?.. 응안들어가
+
+		/* 실행하면서 나타날 말이 있으면 여기다 쓰면 좋을것같다
 		for(int i = 0; i < sessionList.size(); i++) {
 	        if( !sessionList.get(i).getId().equals(session.getId())) {
 	        	sessionList.get(i).sendMessage(new TextMessage(gson.toJson(chatdto.getChdate())));
@@ -46,8 +46,6 @@ public class ChatWebSocketMsg extends TextWebSocketHandler {
 		*/
 
 		super.afterConnectionEstablished(session);
-
-		
 
 	}
 	
@@ -67,7 +65,7 @@ public class ChatWebSocketMsg extends TextWebSocketHandler {
 		ChatDto chatdto = new ChatDto();
 		chatdto.setChfrmid(chfrmid); 		// from 메세지를 보내는 사람의 ID
 		
-		/* 끄면서 나타날 말이 있으면 여기다 쓰면 좋겠는데 객체타입만 받는다... 날짜를 넣어보고 싶었다.
+		/* 끄면서 나타날 말이 있으면 여기다 쓰면 좋을 것 같다
 		for(int i = 0; i < sessionList.size(); i++) {
 	        if( !sessionList.get(i).getId().equals(session.getId())) {
 	        	sessionList.get(i).sendMessage(new TextMessage(gson.toJson(chatdto.getChdate())));

@@ -32,9 +32,17 @@
 </style>
 </head>
 <body>
-	<!-- TobBar -->
-	<%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
-	<!-- End of TobBar -->
+        <!-- TopBar -->
+        <c:choose>
+                <c:when test="${sessionScope.loginId != 'admin'}">
+                        <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
+                </c:when>
+                <c:otherwise>
+                        <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
+                </c:otherwise>
+        </c:choose>
+        <!-- End of TopBar -->
+	<!-- End of TopBar -->
 	
 	<main>
 		

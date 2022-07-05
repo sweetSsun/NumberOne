@@ -83,5 +83,10 @@ public class HomeController {
 
 	}
 	
+	@RequestMapping(value="/loadToFail")
+	public String loadToFail() {
+		System.out.println("실패 페이지로 이동");
+		return "Fail";
+	}
 	
 }
