@@ -129,12 +129,12 @@
 	  		
   			<div class="block text-center" id="pageList">
                	<c:choose>
-               		<c:when test="${paging.page <= 1 }">
-               			[이전]
-               		</c:when>
-               		<c:otherwise>
+               		<c:when test="${paging.prev }">
                			<button type="submit" name="page" value="${paging.page -1 }" id="btn0"></button>
                			<label for="btn0">[이전]</label>
+               		</c:when>
+               		<c:otherwise>
+               			[이전]
                		</c:otherwise>
                	</c:choose>
                	
@@ -151,12 +151,12 @@
                	</c:forEach>
 
                	<c:choose>
-               		<c:when test="${paging.page >= paging.maxPage }">
-               			[다음]
-               		</c:when>
-               		<c:otherwise>
+               		<c:when test="${paging.next }">
                			<button type="submit" name="page" value="${paging.page +1 }" id="btn6"></button>
                			<label for="btn6">[다음]</label>
+               		</c:when>
+               		<c:otherwise>
+               			[다음]
                		</c:otherwise>
                	</c:choose>
             </div>
@@ -254,7 +254,6 @@
 			//var searchType = $("#searchType option:selected").val();
 			var searchType = $("#searchTypeSel").val();
 			var searchText = $("#searchText").val();
-			var page = 1; // 정렬 시 요청페이지
 			console.log(searchType);
 			console.log(searchText);
 			$.ajax({

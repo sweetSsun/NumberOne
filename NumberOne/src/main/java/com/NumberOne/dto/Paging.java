@@ -13,7 +13,7 @@ public class Paging {
 	
 	// jsp 하단 부분의 페이지 표시에 필요한 정보
 	private int totalCount;		// 게시글의 총 갯수
-	private int totalPage;		// 총 페이지 수
+	private int maxPage;		// 총 페이지 수
 	private int displayPageNum;	// 페이지에 보여줄 페이지 넘버 갯수
 	private int startPage;		// 특정 페이지에서 보일 시작 페이지 넘버
 	private int endPage;		// 특정 페이지에서 보일 마지막 페이지 넘버
@@ -39,6 +39,8 @@ public class Paging {
 		
 		prev = false;
 		next = false;
+		
+		searchVal = "all";
 	}
 	
 	// 데이터 들어올 경우 페이지 정보 계산
@@ -48,21 +50,21 @@ public class Paging {
 		endRow = startRow + perPageNum - 1;
 		
 		// jsp 하단 부분의 페이지 표시에 필요한 데이터 계산
-		totalPage = (totalCount - 1) / perPageNum + 1;
+		maxPage = (totalCount - 1) / perPageNum + 1;
 		startPage = (int) ( (Math.ceil( (double)page/displayPageNum )) -1 ) * displayPageNum + 1;
 		endPage = startPage + displayPageNum - 1; 
 		if(startPage >= 0) {
 			startPage = 1;
 		}
-		if (endPage > totalPage) {
-			endPage = totalPage;
+		if (endPage > maxPage) {
+			endPage = maxPage;
 		}
 		
 		// 앞뒤 페이지 유무 확인
 		if (startPage != 1) {
 			prev = true;
 		}
-		if (endPage != totalPage) {
+		if (endPage <= maxPage) {
 			next = true;
 		}
 	}

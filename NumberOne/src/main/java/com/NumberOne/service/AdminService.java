@@ -20,6 +20,7 @@ import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.NoticeDto;
 import com.NumberOne.dto.PageDto;
+import com.NumberOne.dto.Paging;
 import com.google.gson.Gson;
 
 @Service
@@ -434,16 +435,41 @@ public class AdminService {
 	
 	/* 커뮤니티 관리 */
 	// 커뮤니티 관리페이지 이동
-	public ModelAndView admin_selectBoardList() {
+	public ModelAndView admin_selectBoardList(Paging paging, RedirectAttributes ra) {
 		System.out.println("AdminService.admin_selectBoardList() 호출");
+		
+		// 관리자 로그인 여부 체크
+		String loginId = (String)session.getAttribute("loginId");
+		if (loginId == null) {
+			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
+			mav.setViewName("redirect:/loadToLogin");	
+			return mav;
+		}
+		
+		int totalCount = adao.admin_selectBoardTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
+		paging.setTotalCount(totalCount);
+		paging.calc(); // 페이지 처리 계산 실행
+		
+		System.out.println(paging);
 		mav = new ModelAndView();
-		String searchVal = "all";
-		ArrayList<BoardDto> boardList = adao.admin_selectBoardList(searchVal);
+		ArrayList<BoardDto> boardList = adao.admin_selectBoardList(paging);
 		System.out.println("boardList : " + boardList);
+		mav.addObject("paging", paging);
 		mav.addObject("boardList", boardList);
 		mav.setViewName("admin/Admin_BoardList");
 		return mav;
+//		return null;
 	}
+//	public ModelAndView admin_selectBoardList() {
+//		System.out.println("AdminService.admin_selectBoardList() 호출");
+//		mav = new ModelAndView();
+//		String searchVal = "all";
+//		ArrayList<BoardDto> boardList = adao.admin_selectBoardList(searchVal);
+//		System.out.println("boardList : " + boardList);
+//		mav.addObject("boardList", boardList);
+//		mav.setViewName("admin/Admin_BoardList");
+//		return mav;
+//	}
 
 	// 커뮤니티 글 상태 변경 요청
 	public int admin_updateBdstate_ajax(String bdcode, String bdstate) {

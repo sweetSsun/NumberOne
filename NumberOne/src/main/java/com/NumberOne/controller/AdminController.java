@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.NumberOne.dto.NoticeDto;
+import com.NumberOne.dto.Paging;
 import com.NumberOne.service.AdminService;
 
 @Controller
@@ -141,18 +142,18 @@ public class AdminController {
 	
 	/* 커뮤니티 관리 */
 //	페이징하면 필요한 파라미터값
-//	@RequestMapping (value="admin_selectBoardList")
-//	public ModelAndView admin_selectBoardList(String searchVal, String searchType, String keyword, int page, RedirectAttributes ra) {
-//		System.out.println("커뮤니티 관리페이지 이동 요청");
-//		mav = asvc.admin_selectBoardList(searchVal, searchType, keyword, page, ra);
-//		return mav;
-//	}
 	@RequestMapping (value="admin_selectBoardList")
-	public ModelAndView admin_selectBoardList() {
+	public ModelAndView admin_selectBoardList(Paging paging, RedirectAttributes ra) {
 		System.out.println("커뮤니티 관리페이지 이동 요청");
-		mav = asvc.admin_selectBoardList();
+		mav = asvc.admin_selectBoardList(paging, ra);
 		return mav;
 	}
+//	@RequestMapping (value="admin_selectBoardList")
+//	public ModelAndView admin_selectBoardList() {
+//		System.out.println("커뮤니티 관리페이지 이동 요청");
+//		mav = asvc.admin_selectBoardList();
+//		return mav;
+//	}
 	@RequestMapping (value="admin_updateBdstate_ajax")
 	public @ResponseBody int admin_updateBdstate_ajax(String bdcode, String bdstate) {
 		System.out.println("글상태 변경 요청");
