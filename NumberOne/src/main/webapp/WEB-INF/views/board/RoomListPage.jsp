@@ -420,7 +420,8 @@
 			var confirmResult = confirm("로그인 후 이용가능합니다."); 
 			console.log(confirmResult);
 			if(confirmResult==true){
-				location.href = '${pageContext.request.contextPath }/loadToLogin';
+				location.href = '${pageContext.request.contextPath }/loadToLogin?afterUrl=selectRoomList';
+				return;
 			} else {
 				return;
 			}

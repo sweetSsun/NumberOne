@@ -156,6 +156,9 @@ public class MemberService {
 				session.setAttribute("loginProfile", loginMember.getMprofile());
 	
 				ra.addFlashAttribute("msg", "로그인 되었습니다.");
+				
+				
+	
 				mav.setViewName("redirect:/");				
 			}
 			
