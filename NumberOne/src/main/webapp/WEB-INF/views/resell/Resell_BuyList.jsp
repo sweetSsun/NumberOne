@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+	<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,6 +9,7 @@
 <title>1인자 - 중고거래 사구게시판</title>
 
 <%@ include file="/resources/css/BarCss.jsp"%>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- 부트스트랩 -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
@@ -15,198 +17,7 @@
 	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
 	crossorigin="anonymous">
 <script src="https://kit.fontawesome.com/dadeda074b.js" crossorigin="anonymous"></script>
-
-<style type="text/css">
-
-
-.container{
-	width: 90%;
-	max-width: 1240px;
-	margin: 0 auto;
-	display: grid;
-	grid-template-columns: 1fr;
-	grid-template-rows: auto;
-	grid-gap: 20px;
-}
-
-.list_grid{
-display: grid;
-margin: 0 auto;
-grid-template-columns: 1fr 1fr;
-	grid-template-rows: auto;
-
-}
-
-div {
-	border: solid 1px black;
-}
-
-
-.flex_div {
-
-	display: flex;
-	flex-flow: row nowrap;
-
-}
-.flex-p2{
-	padding: 20px;
-}
-.flex-p0{
-	padding: 0;
-}
-.flex_center  {
-justify-content: center;
-}
-.flex_space-around{
-justify-content: space-around;
-}
-.flex_between{
-justify-content:space-between;
-}
-
-.container-card_w100{
-width: 100%;
-}
-
-.flex_card {
-	display: flex;
-	flex-direction: column;
-	margin-top: 5%;
-}
-
-.item_start {
-	flex: 0 0 auto; 
-	align-self: flex-start;
-}
-
-.item_end {
-	flex: 0 0 auto;
-	align-self: flex-end;
-}
-
-.img_size {
-	max-width: 350px;
-	max-height: 300px;	
-}
-
-.grid_m{
-margin-left: 3%;
-margin-right: 3%
-}
-.grid_m-t{
-margin-top: 3%;
-}
-.grid_m-b{
-margin-bottom: 5%;
-}
-/* .col_2 {
-	flex: 0 0 auto;
-	width: 25%;
-} */
-
-.padding-right{
-padding-right: 10px;
-}
-.row_9 {
-	flex-basis: 80%;
-}
-
-.row_1 {
-	flex-basis: 20%;
-}
-
-
-.position_change {
-	position: relative;
-	right: 20px;
-}
-
-.select-size {
-	width: 80px;
-	height: 50px;
-	border-radius: 5px;
-}
-
-.search-bar {
-	width: 300px;
-	height: 50px;
-	border-radius: 5px;
-	border: solid 1px rgba(0, 0, 0, 0.3);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	z-index: 1;
-	opacity: 1;
-}
-
-.search-bar_input {
-	width: 290px; border : none;
-	-webkit-apprearance: none;
-	text-align: left;
-	margin-left: 10px;
-	overflow: auto;
-	z-index: -1;
-	border: none; -webkit-apprearance : none; text-align : left;
-	margin-left : 10px; overflow : auto; z-index : -1;
-	font-size: 30px;
-}
-
-search-bar_input:focus {
-	outline: none;
-	width: 300px;
-	text-align: left;
-}
-
-.fa-search {
-	font-size: 30px;
-}
-
-.fas {
-	width: 20px;
-	height: 20px;
-	color: gray;
-	font-weight: lighter;
-}
-.font-s{
-font-size: 15px;
-}
-.font-m{
-font-size: 20px;
-}
-.font-l{
-font-size: 30px;
-}
-.text-right{
-	text-align: right;
-}
-
-.text-left{
-	text-align: left;
-}
-.text-bold{
-font-weight: bold;
-}
-.zzim_icon{
-position: absolute;
-
-}
-.zzim_size{
-width: 20px;
-height: 20px;
-
-}
-.position_relative{
-position: relative;
-z-index: -1;
-}
-.position_absolute{
-position: absolute;
-bottom: 5px;
-right: 5px;
-z-index: 1;
-}
-
-</style>
+ <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/resell.css" type="text/css">
 
 </head>
 <body>
@@ -269,8 +80,8 @@ z-index: 1;
 					<div class="flex_div">
 					<div class="flex_div flex-p2 ">
 <div class="position_relative">
-							<img alt="" src="${pageContext.request.contextPath }/resources/img/logo.jpg"
-									class="img_size">
+							<a href="selectResellView?ubcode=${buy_List.ubcode }&ubsellbuy=${buy_List.ubsellbuy }"><img alt="" src="${pageContext.request.contextPath }/resources/img/logo.jpg"
+									class="img_size"></a>
 											<!--찜 기본  -->
 								<i class="fa-solid fa-heart-circle-plus zzim_size position_absolute"></i>
 								<!--찜하면 show  -->
@@ -281,7 +92,7 @@ z-index: 1;
 
 						<div class="flex_card ">
 							<div class="card_top position_relative">
-							제목
+							<a href="selectResellView?ubcode=${buy_List.ubcode }&ubsellbuy=${buy_List.ubsellbuy }">제목</a>
 							</div>
 							<div class="card_body font-s text-right padding-right text-bold">작성자 - 날짜</div>
 							<div class="card_footer font-s text-right padding-right">가격</div>

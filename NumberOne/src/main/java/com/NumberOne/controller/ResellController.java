@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -25,10 +26,14 @@ public class ResellController {
 	}
 	
 	@RequestMapping (value="/selectResellView")
-	public String selectResellView(String ubcode) {
+	public String selectResellView(String ubcode, String ubsellbuy) {
 		System.out.println("selectResellView 호출");
+		System.out.println("ubcode : "+ubcode);
+		ModelAndView mav = new ModelAndView();
 		
-		return "resell/Resell_View";
+		mav = rsvc.selectResellView(ubcode, ubsellbuy);
+		
+		return "mav";
 	}
 	
 	
@@ -47,19 +52,22 @@ public class ResellController {
 	}
 	
 	@RequestMapping (value="/selectResellBuyList")
-	public String selectResellBuyList() {
-//		ModelAndView mav = new ModelAndView();		
-//		mav = rsvc.selectResellBuyList();
+	public ModelAndView selectResellBuyList() {
+		System.out.println("selectResellBuyList 요청");
+		ModelAndView mav = new ModelAndView();	
+		
+		mav = rsvc.selectResellBuyList();
 	
-		return "resell/Resell_BuyList";
+		return mav;
 	}
 	
 	@RequestMapping (value="/selectResellSellList")
-	public String selectResellSellList() {
-//	ModelAndView mav = new ModelAndView();		
-//		mav = rsvc.selectResellSellList();
+	public ModelAndView selectResellSellList() {
+		System.out.println("selectResellSellList 요청");
+	ModelAndView mav = new ModelAndView();		
+		mav = rsvc.selectResellSellList();
 		
-		return "resell/Resell_SellList";
+		return mav;
 	}
 	@RequestMapping (value="/insertResellWrite")
 	public ModelAndView insertResellWrite(GoodsDto gdDto, UsedBoardDto ubDto, RedirectAttributes ra) throws IllegalStateException, IOException {
@@ -73,10 +81,34 @@ public class ResellController {
 		return mav;
 	}
 	
+	@RequestMapping(value="/selectRegion_sellList_ajax")
+	public @ResponseBody String selectRegion_sellList_ajax(String selectRegion) {
+		System.out.println("selectRegion_sellList_ajax 요청");
+		System.out.println("파라메터확인 : "+ selectRegion);
+		String sellList_json = rsvc.selectRegion_sellList_ajax(selectRegion);
+				
+		return sellList_json;
+		
+	}
+	@RequestMapping(value="/selectRegion_buyList_ajax")
+	public @ResponseBody String selectRegion_buyList_ajax(String selectRegion) {
+		System.out.println("selectRegion_buyList_ajax 요청");
+		System.out.println("파라메터확인 : "+ selectRegion);
+		String buyList_json = rsvc.selectRegion_buyList_ajax(selectRegion);
+				
+		return buyList_json;
+	}
 	
+	@RequestMapping (value="/selectPage_sellList")
+	public ModelAndView selectPage_sellList(String select_page, String selectRegion) {
+		System.out.println("selectPage_sellList 호출");
 	
-	
-	
+
+		ModelAndView mav = new ModelAndView();
+		mav = rsvc.selectPage_sellList(select_page, selectRegion);
+				
+		return mav;
+	}
 	
 	
 	

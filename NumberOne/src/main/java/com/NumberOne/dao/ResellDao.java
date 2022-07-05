@@ -2,6 +2,9 @@ package com.NumberOne.dao;
 
 import java.util.ArrayList;
 
+import org.apache.ibatis.annotations.Param;
+import org.springframework.web.servlet.ModelAndView;
+
 import com.NumberOne.dto.GoodsDto;
 import com.NumberOne.dto.UsedBoardDto;
 
@@ -24,12 +27,29 @@ public interface ResellDao {
 	int insertResellWrite_ub(UsedBoardDto ubDto);
 
 
+//	관심지역 매개값줘야함
+	ArrayList<UsedBoardDto> selectResellBuyList(String loginRegion);
 
-	ArrayList<UsedBoardDto> selectResellBuyList(String mregion);
+
+//		관심지역 매개값줘야함
+	ArrayList<UsedBoardDto> selectResellSellList(String loginRegion);
 
 
 
-	ArrayList<UsedBoardDto> selectResellSellList(String mregion);
+	UsedBoardDto selectResellView(@Param("ubcode") String ubcode,  @Param("ubsellbuy") String ubsellbuy, @Param("loginId") String loginId);
+
+
+
+	int selectPageTotalCount();
+
+
+
+	ArrayList<UsedBoardDto> selectPage_sellList(@Param("selectRegion") String selectRegion, @Param("startRow") int startRow, @Param("endRow") int endRow);
+
+
+
+	GoodsDto selectResellView_goods(String ubcode);
+	
 
 	
 	

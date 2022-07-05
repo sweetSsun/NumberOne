@@ -5,26 +5,105 @@
   
 <mapper namespace="com.NumberOne.dao.ResellDao">
 
-
+<!-- 글작성 글번호 -->
 <select id="selectMaxNumber_ub" resultType="String">
 SELECT MAX(UBCODE)
 FROM USEDBOARDS
 </select>
 
 
-
+<!-- 글작성 상품번호  -->
 <select id="selectMaxNumber_gd" resultType="String">
 SELECT MAX(GDCODE)
 FROM GOODS
 </select>
 
+<!-- 팔구 글목록  -->
+<select id="selectResellSellList" resultType="com.NumberOne.dto.UsedBoardDto">
+SELECT UBNICKNAME, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE, UBCONTENTS, TO_CHAR(UBDATE, 'YYYY-MM-DD HH24:MI') AS UBDATE,
+UBMAINIMG, UBDETAILIMG, UBSTATE, NVL(ZZIMCOUNT, 0) ZZIMCOUNT
+FROM  USEDBOARDS LEFT OUTER JOIN (SELECT ZZUBCODE,COUNT(*) AS ZZIMCOUNT
+                                    FROM ZZIM
+                                    GROUP BY ZZUBCODE)
+                                    ON UBCODE = ZZUBCODE
+                                    ,(SELECT MID, MNICKNAME AS UBNICKNAME
+                                    FROM MEMBERS)
+WHERE MID = UBMID AND UBRGCODE = #{loginRegion} AND UBSELLBUY = 'S' AND UBSTATE = 1
+ORDER BY UBDATE DESC
+</select>
 
+<!-- 사구 글목록 -->
+<select id="selectResellBuyList" resultType="com.NumberOne.dto.UsedBoardDto">
+SELECT UBNICKNAME, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE, UBCONTENTS, TO_CHAR(UBDATE, 'YYYY/MM/DD HH24:MI') AS UBDATE,
+UBMAINIMG, UBDETAILIMG, UBSTATE, NVL(ZZIMCOUNT, 0) ZZIMCOUNT
+FROM  USEDBOARDS LEFT OUTER JOIN (SELECT ZZUBCODE,COUNT(*) AS ZZIMCOUNT
+                                    FROM ZZIM
+                                    GROUP BY ZZUBCODE)
+                                    ON UBCODE = ZZUBCODE
+                                    ,(SELECT MID, MNICKNAME AS UBNICKNAME
+                                    FROM MEMBERS)
+WHERE MID = UBMID AND UBRGCODE = #{loginRegion} AND UBSELLBUY = 'B' AND UBSTATE = 1
+ORDER BY UBDATE DESC
+</select>
+
+
+<!-- 지역선택  -->
+<select id="selectPage_sellList" resultType="com.NumberOne.dto.UsedBoardDto">
+
+SELECT UBNICKNAME, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE, UBCONTENTS,
+TO_CHAR(UBDATE, 'YYYY-MM-DD HH24:MI') UBDATE, UBMAINIMG, UBDETAILIMG, UBSTATE, NVL(ZZIMCOUNT, 0) ZZIMCOUNT
+FROM (SELECT ROWNUM RN, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE, UBCONTENTS, 
+        UBDATE, UBMAINIMG, UBDETAILIMG, UBSTATE
+      FROM  USEDBOARDS
+      WHERE UBRGCODE = #{selectRegion} AND UBSELLBUY = 'S' AND UBSTATE = 1
+      ORDER BY UBCODE DESC
+     ) LEFT OUTER JOIN (SELECT ZZUBCODE, COUNT(*) AS ZZIMCOUNT
+                                    FROM ZZIM
+                                    GROUP BY ZZUBCODE)
+                                    ON UBCODE = ZZUBCODE
+                                    ,(SELECT MID, MNICKNAME AS UBNICKNAME
+                                    FROM MEMBERS)
+WHERE MID = UBMID AND RN BETWEEN #{startRow} AND #{endRow}
+</select>
+
+<!-- 중고거래 전체 글 수 확인  -->
+<select id="selectPageTotalCount" resultType="int">
+SELECT COUNT(UBCODE)
+FROM (SELECT *
+      FROM  USEDBOARDS
+      WHERE UBRGCODE = 'SEL' AND UBSELLBUY = 'S' AND UBSTATE = 1
+      ORDER BY UBCODE DESC
+     ),(SELECT MID, MNICKNAME AS UBNICKNAME
+     FROM MEMBERS)
+WHERE MID = UBMID
+</select>
+
+
+<!-- 글상세의 상품불러오기 -->
+<select id="selectResellView_goods" resultType="com.NumberOne.dto.GoodsDto">
+
+SELECT GDNAME AS GD_NAMES, GDPRICE AS GD_PRICE
+FROM GOODS GD, USEDBOARDS UB
+WHERE GDUBCODE = UBCODE AND UBCODE = #{ubcode}
+AND UBSELLBUY = #{ubsellbuy} AND UBSTATE = 1
+</select>
+
+<!--  글 상세정보 -->
+<select id="selectResellView" resultType="com.NumberOne.dto.UsedBoardDto">
+SELECT UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE, UBCONTENTS,
+TO_CHAR(UBDATE,'YYYY/MM/DD HH24:MI') AS UBDATE, UBMAINIMG, UBDETAILIMG, UBSTATE
+FROM USEDBOARDS
+WHERE UBCODE = #{ubcode} AND UBSELLBUY = #{ubsellbuy} AND UBSTATE = 1
+
+</select>
+
+<!-- 중고거래 글작성 상품 insert -->
 <insert id="insertResellWrite_gd">
 INSERT INTO GOODS(GDCODE, GDUBCODE, GDNAME, GDPRICE, GDSTATE)
 VALUES(#{gdcode}, #{gdubcode}, #{gdname}, #{gdprice}, 1)
 </insert>
 
-
+<!-- 중고거래 글작성  글 insert -->
 <insert id="insertResellWrite_ub">
 INSERT INTO USEDBOARDS(UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE, UBCONTENTS, UBDATE, UBMAINIMG, UBDETAILIMG, UBSTATE)
 VALUES(#{ubcode}, #{ubrgcode}, #{ubsellbuy}, #{ubmid} , #{ubtitle}, #{ubcontents}, SYSDATE, #{ubmainimg}, #{ubdetailimg}, 1)

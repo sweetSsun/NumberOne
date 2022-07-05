@@ -16,7 +16,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.NumberOne.dao.ResellDao;
 import com.NumberOne.dto.GoodsDto;
+import com.NumberOne.dto.PageDto;
 import com.NumberOne.dto.UsedBoardDto;
+import com.google.gson.Gson;
 
 @Service
 public class ResellService {
@@ -39,6 +41,11 @@ public class ResellService {
 		String savePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\mprofileUpLoad";
 
 		String ubmid = (String)session.getAttribute("loginId");
+		
+		
+		
+		
+		
 		
 		
 		String ub_char = "UB";
@@ -196,31 +203,141 @@ public class ResellService {
 	public ModelAndView selectResellBuyList() {
 		System.out.println("selectResellBuyList 서비스 호출");
 		//회원의 관심지역
-		String mregion = (String)session.getAttribute("");
+		String loginRegion = (String)session.getAttribute("loginRegion");
 		
 		ModelAndView mav = new ModelAndView();
 		
-		ArrayList<UsedBoardDto> buyList= rdao.selectResellBuyList(mregion);
-			
+		ArrayList<UsedBoardDto> buyList= rdao.selectResellBuyList(loginRegion);
+		System.out.println(buyList);
 		mav.addObject("buyList", buyList);
 		mav.setViewName("resell/Resell_BuyList");
 		
 		return mav;
 	}
+	
+//  사구리스트 selected 지역으로 조회
+	public String selectRegion_buyList_ajax(String selectRegion) {
+		System.out.println("selectRegion_buyList_ajax 서비스 호출");
+		
+		String loginRegion = (String)session.getAttribute("loginRegion");
+		
+		ArrayList<UsedBoardDto> buyList= rdao.selectResellBuyList(loginRegion);
+		System.out.println(buyList);
+		Gson gson = new Gson();
+		String buyList_json = gson.toJson(buyList);
+				
+		return buyList_json;
+	}
+	
+	
 
 	public ModelAndView selectResellSellList() {
 		System.out.println("selectResellSellList 서비스 호출");
 		//회원의 관심지역
-		String mregion = (String)session.getAttribute("");
+		String loginRegion = (String)session.getAttribute("loginRegion");
 		
 		ModelAndView mav = new ModelAndView();
 		
-		ArrayList<UsedBoardDto> sellList= rdao.selectResellSellList(mregion);
-			
+//		회원의 관심지역과 일치하는 지역의 목록을 출력
+		ArrayList<UsedBoardDto> sellList= rdao.selectResellSellList(loginRegion);
+		System.out.println(sellList);
+	
 		mav.addObject("sellList", sellList);
 		mav.setViewName("resell/Resell_SellList");
+				
+		return mav;
+			
+	}
+	
+//   팔구리스트 selected 지역으로 조회
+	public String selectRegion_sellList_ajax(String selectRegion) {
+		System.out.println("selectRegion_sellList_ajax 서비스 호출");
+		
+		String loginRegion = (String)session.getAttribute("loginRegion");
+		
+		ArrayList<UsedBoardDto> sellList= rdao.selectResellSellList(loginRegion);
+		System.out.println(sellList);
+		Gson gson = new Gson();
+		String sellList_json = gson.toJson(sellList);
+				
+		return sellList_json;
+		
+	}
+	
+		
+
+
+	public ModelAndView selectResellView(String ubcode, String ubsellbuy) {
+		System.out.println("selectResellView 서비스 호출");
+		ModelAndView mav = new ModelAndView();
+		
+		String loginId = (String)session.getAttribute("loginId");
+		
+		UsedBoardDto ub_resellView = rdao.selectResellView(ubcode,ubsellbuy, loginId);
+					
+		GoodsDto gd_resellView = rdao.selectResellView_goods(ubcode);
+		
+//		String[] ubDetailImg = ub_resellView.getUbdetailimg().split("__");
+//		
+//		ub_resellView.setUbdetailimgfile(ub_resellView.getUbdetailimg().split("__"));
+		
+		
+		mav.addObject("ub_resellView", ub_resellView);
+		mav.addObject("gd_resellView", gd_resellView);
+		mav.setViewName("resell/Resell_View");
 		
 		return mav;
+		
 	}
+
+
+	public ModelAndView selectPage_sellList(String select_page, String selectRegion) {
+		System.out.println("selectPage_sellList 서비스 호출");
+		ModelAndView mav = new ModelAndView();
+		
+		int pageNum = 1;
+	
+			if (select_page != null) {
+				pageNum = Integer.parseInt(select_page);
+				System.out.println(" 페이지번호 :" + pageNum);
+			}
+			else {
+			int pageCount = 5;
+			int pageNumCount = 5;
+
+			// 선택된 페이지에 pageCount 숫자 만큼의 행 출력을 하기 위해서 ArrayList에 매개값으로 사용 할 변수선언
+			int startRow = (pageNum - 1) * pageCount + 1; // 출력할 시작 글번호. 1페이지면 1번글. 2페이지면 5번글부터
+			int endRow = pageNum * pageCount; // 출력할 마지막 글번호. 1페이지면 4번글까지, 2페이지면 8번글까지
+
+			ArrayList<UsedBoardDto> sellList = rdao.selectPage_sellList(selectRegion,startRow, endRow);
+			int pageTotalCount = rdao.selectPageTotalCount();
+
+			int maxPage = (int) (Math.ceil((double) pageTotalCount / pageNumCount));
+			int startPage = (int) ((Math.ceil((double) pageNum / pageNumCount)) - 1) * pageNumCount + 1;
+			int endPage = startPage + pageNumCount - 1;
+			if (endPage > maxPage) {
+				endPage = maxPage;
+			}
+			
+			
+			PageDto ubpage = new PageDto();
+			ubpage.setEndPage(endPage);
+			ubpage.setMaxPage(maxPage);
+			ubpage.setPage(pageNum);
+			ubpage.setStartPage(startPage);
+			
+			System.out.println("페이지 : "+ubpage);
+									
+			System.out.println(sellList);
+			
+			mav.addObject("ubpage", ubpage);
+			mav.addObject("sellList", sellList);
+			mav.setViewName("resell/Resell_SellList");
+			}	
+			
+		return mav;
+	}
+
+	
 
 }
