@@ -21,6 +21,7 @@
         /*------------------
             Gallery filter
         --------------------*/
+        
         $('.featured__controls li').on('click', function () {
             $('.featured__controls li').removeClass('active');
             $(this).addClass('active');
