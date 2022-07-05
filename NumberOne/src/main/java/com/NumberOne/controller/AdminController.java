@@ -132,5 +132,38 @@ public class AdminController {
 		mav = asvc.admin_updateNoticeModify(modiNotice, originImg, ra);
 		return mav;
 	}
-		
+	
+	/* 중고거래 관리 */
+	
+	
+	
+	
+	
+	/* 커뮤니티 관리 */
+//	페이징하면 필요한 파라미터값
+//	@RequestMapping (value="admin_selectBoardList")
+//	public ModelAndView admin_selectBoardList(String searchVal, String searchType, String keyword, int page, RedirectAttributes ra) {
+//		System.out.println("커뮤니티 관리페이지 이동 요청");
+//		mav = asvc.admin_selectBoardList(searchVal, searchType, keyword, page, ra);
+//		return mav;
+//	}
+	@RequestMapping (value="admin_selectBoardList")
+	public ModelAndView admin_selectBoardList() {
+		System.out.println("커뮤니티 관리페이지 이동 요청");
+		mav = asvc.admin_selectBoardList();
+		return mav;
+	}
+	@RequestMapping (value="admin_updateBdstate_ajax")
+	public @ResponseBody int admin_updateBdstate_ajax(String bdcode, String bdstate) {
+		System.out.println("글상태 변경 요청");
+		int updateResult = asvc.admin_updateBdstate_ajax(bdcode, bdstate);
+		return updateResult;
+	}
+	
+	@RequestMapping (value="admin_selectBoardList_ajax")
+	public @ResponseBody String admin_selectBoardList_ajax(String searchVal) {
+		System.out.println("커뮤니티 관리페이지 정렬 요청");
+		String boardList_json = asvc.admin_selectBoardList_ajax(searchVal);
+		return boardList_json;
+	}
 }

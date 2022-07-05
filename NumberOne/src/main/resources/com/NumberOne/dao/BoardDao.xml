@@ -95,9 +95,9 @@
  	 <select id="selectNoticeBoardView" resultType="com.NumberOne.dto.NoticeDto">	
 	 	 <!-- 공지글 상세 -->
 	 	 SELECT NBCODE,NBMID,NBTITLE,NBCONTENTS,TO_CHAR(NBDATE,'YY-MM-DD HH24:MI') AS NBDATE,
- 			   NBIMG,NBSTATE,NBHITS  
-	 	 FROM NOTICEBOARDS
-	 	 WHERE NBCODE = #{nbcode}
+ 			   NBIMG,NBSTATE,NBHITS,MB.MNICKNAME AS NBNICKNAME
+	 	 FROM NOTICEBOARDS NB, MEMBERS MB
+	 	 WHERE NBCODE = #{nbcode} AND NB.NBMID = MB.MID
  	 </select>
  	 
  	 <select id="selectBoardView" resultType="com.NumberOne.dto.BoardDto">

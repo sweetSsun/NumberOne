@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 공지관리</title>
+<title>1인자 - 커뮤니티관리</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -38,8 +38,6 @@
 
 
 <body>
-
-
 	<!-- TobBar -->
 	<%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
 	<!-- End of TobBar -->
@@ -53,14 +51,15 @@
          <form action="admin_selectNoticeList" method="get">
 			<div class="container">
 	            <div class="row" style="margin:auto;">
-	                <h1 class="text-center">공지 관리페이지 : Admin_NoticeList.jsp</h1>
+	                <h1 class="text-center">커뮤니티 관리페이지 : Admin_BoardList.jsp</h1>
 	            </div>
 	            <div class="row">
 					<div class="col-5">
 						<select name="searchType" id="searchTypeSel">
-							<option value="nbTitle">제목</option>
-							<option value="nbContents">내용</option>
-							<option value="nbTitleContents">제목+내용</option>
+							<option value="bdTitle">제목</option>
+							<option value="bdContents">내용</option>
+							<option value="bdTitleContents">제목+내용</option>
+							<option value="bdnickname">작성자</option>
 						</select>
 					</div>
 	                <div class="col-5 input-group">
@@ -71,17 +70,17 @@
 	            	</div>
 		            <div class="col-2">
 						<!-- 공지작성 버튼 -->
-						<button class="btn btn-primary btm-sm" type="button" onclick="location.href='admin_loadToNoticeWrite'">글쓰기</button>
+						<!-- <button class="btn btn-primary btm-sm" type="button" onclick="location.href='admin_loadToNoticeWrite'">글쓰기</button> -->
 					</div>
                	</div>
            
             <div class="row" style="margin-top: 20px;">
                <div class="col">
                   <!-- 상태값 정렬 -->
-                   <select name="searchVal" id="searchValSel" onchange="nbSearchState(this.value)">
+                   <select name="searchVal" id="searchValSel" onchange="bdSearchState(this.value)">
                      <option value="all">전체</option>
-                     <option value="active">활성</option>
-                     <option value="inactive">삭제</option>
+                     <option value="warning">경고</option>
+                     <option value="inactive">정지</option>
                   </select>
                </div>
             </div>
@@ -92,6 +91,7 @@
                <thead >
                   <tr class="fw-bold" id="board_column">
                      <td style="width:130px;">글번호</td>
+                     <td style="width:70px;">말머리</td>
                      <td style="min-width:200px;">제목</td>
                      <td>작성자</td>
                      <td>작성일</td>
@@ -99,22 +99,23 @@
                      <td style="width:80px;">상태</td>
                   </tr>
                </thead>
-               <tbody id="nbListTbody">
-	               <c:forEach items="${noticeList }" var="notice">
+               <tbody id="bdListTbody">
+	               <c:forEach items="${boardList }" var="board">
 	                   <!-- 회원관리 목록 -->
 	                   <tr style="border-bottom: solid gray 1px;">
-	                      <td>${notice.nbcode}</td>
-	                      <td><a href="admin_selectNoticeBoardView?nbcode=${notice.nbcode}">${notice.nbtitle}</a></td>
-	                      <td>${notice.nbnickname}</td>
-	                      <td>${notice.nbdate}</td>
-	                      <td>${notice.nbhits}</td>
+	                      <td>${board.bdcode}</td>
+	                      <td>${board.bdcategory }
+	                      <td><a href="admin_selectBoardView?bdcode=${board.bdcode}">${board.bdtitle}</a></td>
+	                      <td>${board.bdnickname}</td>
+	                      <td>${board.bddate}</td>
+	                      <td>${board.bdhits}</td>
 	                      <td>
 	                      	<c:choose>
-	                      		<c:when test="${notice.nbstate == 1}">
-	                      			<button class="btn btn-primary" type="button" onclick="showNbstateModal(this,'${notice.nbcode }')">활성</button>
+	                      		<c:when test="${board.bdstate == 1}">
+	                      			<button class="btn btn-warning" type="button" onclick="showBdstateModal(this,'${board.bdcode }')">경고</button>
 	                      		</c:when>
 	                      		<c:otherwise>
-	                      			<button class="btn btn-secondary" type="button" onclick="showNbstateModal(this, '${notice.nbcode }')">삭제</button>
+	                      			<button class="btn btn-danger" type="button" onclick="showBdstateModal(this, '${board.bdcode }')">정지</button>
 	                      		</c:otherwise>
 	                      	</c:choose>
 	                      </td>
@@ -170,20 +171,20 @@
 	
 	
 	<!-- 공지상태 변경 모달 -->
-	<div class="modal fade" id="updateNbstateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+	<div class="modal fade" id="updateBdstateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="updateNbstateModalLabel"> 공지상태 변경 확인 </h5>
+                    <h5 class="modal-title" id="updateBdstateModalLabel"> 게시글상태 변경 확인 </h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body" id="updateNbstateModalBody"> </div>
+                <div class="modal-body" id="updateBdstateModalBody"> </div>
                 <div class="modal-footer">
-                	<input type="hidden" id="nbcode">
-                    <button class="btn btn-primary" onclick="updateNbstate()">네</button>
+                	<input type="hidden" id="bdcode">
+                    <button class="btn btn-primary" onclick="updateBdstate()">네</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
             </div>
@@ -202,12 +203,13 @@
 		var close = $(".close");
 		for (var i = 0; i < close.length; i++){
 			close[i].addEventListener("click", function(){
-				$("#updateNbstateModal").modal("hide");
+				$("#updateBdstateModal").modal("hide");
 			});
 		}
 	</script>
 	
 	<script type="text/javascript">
+	/*
 		console.log("요청 페이지 : " + ${param.page});
 	
 		// onsubmit. 페이징 넘버를 누르지 않고 검색 버튼으로 controller를 호출할 때 페이지값 넘겨주기 위한 함수
@@ -215,6 +217,7 @@
 			console.log("pageInput() 실행");
 			$("#pageInput").attr("name", "page").val("1");
 		}
+		*/
 	</script>
 	
 	
@@ -245,8 +248,8 @@
 	</script>
 	<script type="text/javascript">
 		// 정렬 select하면 ajax로 공지목록 받고 출력을 바꿔주는 함수
-		function nbSearchState(searchVal){
-			console.log("nbSearchState() 실행");
+		function bdSearchState(searchVal){
+			console.log("bdSearchState() 실행");
 			console.log("정렬 선택 : " + searchVal);
 			//var searchType = $("#searchType option:selected").val();
 			var searchType = $("#searchTypeSel").val();
@@ -257,31 +260,32 @@
 			$.ajax({
 				type: "get",
 				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "page":page},
-				url: "admin_selectNoticeList_ajax",
+				url: "admin_selectBoardList_ajax",
 				dataType: "json",
 				success: function(result){
 					var output = "";
 					console.log(result);					
 					for (var i = 0; i < result.length; i++){
 						output += "<tr style='border-bottom: solid gray 1px;'>";
-						output += "<td>" + result[i].nbcode + "</td>";
-						output += "<td><a href='admin_selectNoticeBoardView?nbcode=" + result[i].nbcode + "'>" + result[i].nbtitle + "</a></td>";
-						output += "<td>" + result[i].nbmid + "</td>";
-						output += "<td>" + result[i].nbdate + "</td>";
-						output += "<td>" + result[i].nbhits + "</td>";
+						output += "<td>" + result[i].bdcode + "</td>";
+						output += "<td><a href='admin_selectBoardView?bdcode=" + result[i].bdcode + "'>" + result[i].bdtitle + "</a></td>";
+						output += "<td>" + result[i].bdmid + "</td>";
+						output += "<td>" + result[i].bddate + "</td>";
+						output += "<td>" + result[i].bdhits + "</td>";
 						output += "<td>"
-						if (result[i].nbstate == 1){
-							output += "<button class='btn btn-primary' type='button' onclick='showNbstateModal(this, \""+result[i].nbcode+"\")'>활성</button>";
+						if (result[i].bdstate == 1){
+							output += "<button class='btn btn-warning' type='button' onclick='showBdstateModal(this, \""+result[i].bdcode+"\")'>경고</button>";
 						} else {
-							output += "<button class='btn btn-secondary' type='button' onclick='showNbstateModal(this,\""+result[i].nbcode+"\")'>삭제</button>";
+							output += "<button class='btn btn-danger' type='button' onclick='showBdstateModal(this,\""+result[i].bdcode+"\")'>정지</button>";
 						}
 						output += "</td>";
 						output += "</tr>";
 					}
-					$("#nbListTbody").html(output);
+					$("#bdListTbody").html(output);
 				}
 			});
 			// 페이지에서 출력할 페이지번호 받아오기
+			/*
 			$.ajax({
 				type: "get",
 				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "page":page},
@@ -317,52 +321,53 @@
 					alert("페이징넘버링 실패");
 				}
 			})
+			*/
 		}	
 		
 		// 공지상태 변경 확인 모달창 출력
 		var btnObj;
-		function showNbstateModal(obj, nbcode){
-			console.log("showNbstateModal() 실행");
+		function showBdstateModal(obj, bdcode){
+			console.log("showBdstateModal() 실행");
 			btnObj = $(obj);
 			var btnObjText = btnObj.text();
 			console.log("btnObjText:"+btnObjText);
-			if (btnObjText == "활성"){
-				$("#updateNbstateModalBody").text(nbcode + "번 공지를 삭제 처리하시겠습니까?");
+			if (btnObjText == "경고"){
+				$("#updateBdstateModalBody").text(bdcode + "번 게시글을 정지 처리하시겠습니까?");
 			} else {
-				$("#updateNbstateModalBody").text(nbcode + "번 공지를 활성화 처리하시겠습니까?");
+				$("#updateBdstateModalBody").text(bdcode + "번 게시글의 정지를 취소하시겠습니까?");
 			}
-			$("#nbcode").val(nbcode);
-			$("#updateNbstateModal").modal("show");
+			$("#bdcode").val(bdcode);
+			$("#updateBdstateModal").modal("show");
 		}
 		
 		// 공지상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
-		function updateNbstate(){
-			console.log("updateNbstate() 실행");
-			var nbcode = $("#nbcode").val();
+		function updateBdstate(){
+			console.log("updateBdstate() 실행");
+			var bdcode = $("#bdcode").val();
 			console.log(btnObj.text());
-			if (btnObj.text() == "활성"){
-				var nbstate = 0;				
+			if (btnObj.text() == "경고"){
+				var bdstate = 0;				
 			} else {
-				var nbstate = 1;				
+				var bdstate = 1;				
 			}
 			$.ajax({
 				type: "get",
-				data: {"nbcode":nbcode, "nbstate":nbstate},
-				url: "admin_updateNbstate_ajax",
+				data: {"bdcode":bdcode, "bdstate":bdstate},
+				url: "admin_updateBdstate_ajax",
 				dataType: "json",
 				success: function(result){
 					if(result > 0){
-						if (nbstate == 0){
-							btnObj.text("삭제").addClass("btn-secondary").removeClass("btn-primary");
+						if (bdstate == 0){
+							btnObj.text("정지").addClass("btn-danger").removeClass("btn-warning");
 						} else {
-							btnObj.text("활성").addClass("btn-primary").removeClass("btn-secondary");
+							btnObj.text("경고").addClass("btn-warning").removeClass("btn-danger");
 						}
 					}
-					$("#updateNbstateModal").modal("hide");
+					$("#updateBdstateModal").modal("hide");
 				},
 				error: function(){
-					$("#updateNbstateModal").modal("hide");
-					alert("공지상태 변경에 실패했습니다.");
+					$("#updateBdstateModal").modal("hide");
+					alert("글상태 변경에 실패했습니다.");
 				}
 			});
 			

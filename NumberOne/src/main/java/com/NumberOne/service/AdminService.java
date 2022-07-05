@@ -16,6 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.NumberOne.dao.AdminDao;
 import com.NumberOne.dao.BoardDao;
+import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.NoticeDto;
 import com.NumberOne.dto.PageDto;
@@ -428,6 +429,40 @@ public class AdminService {
 			mav.setViewName("redirect:/loadToFail");
 		}
 		return mav;
+	}
+	
+	
+	/* 커뮤니티 관리 */
+	// 커뮤니티 관리페이지 이동
+	public ModelAndView admin_selectBoardList() {
+		System.out.println("AdminService.admin_selectBoardList() 호출");
+		mav = new ModelAndView();
+		String searchVal = "all";
+		ArrayList<BoardDto> boardList = adao.admin_selectBoardList(searchVal);
+		System.out.println("boardList : " + boardList);
+		mav.addObject("boardList", boardList);
+		mav.setViewName("admin/Admin_BoardList");
+		return mav;
+	}
+
+	// 커뮤니티 글 상태 변경 요청
+	public int admin_updateBdstate_ajax(String bdcode, String bdstate) {
+		System.out.println("AdminService.admin_updateBdstate_ajax() 호출");
+		System.out.println("상태변경할 bdcode : " + bdcode);
+		System.out.println("상태변경할 bdstate : " + bdstate);
+		int updateResult = adao.admin_updateBdstate_ajax(bdcode, bdstate);
+		return updateResult;
+	}
+
+	// 선택한 상태값에 따른 커뮤니티 목록 ajax
+	public String admin_selectBoardList_ajax(String searchVal) {
+		System.out.println("AdminService.admin_selectBoardList_ajax() 호출");
+		System.out.println("정렬 val : " + searchVal);
+		ArrayList<BoardDto> boardList = adao.admin_selectBoardList(searchVal);
+		System.out.println("boardList : " + boardList);
+		gson = new Gson();
+		String boardList_json = gson.toJson(boardList); 
+		return boardList_json;
 	}	
 
 

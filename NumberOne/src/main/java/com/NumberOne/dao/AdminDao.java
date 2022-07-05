@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.NoticeDto;
 
@@ -29,5 +30,8 @@ public interface AdminDao {
 
 	int admin_updateNoticeModify(NoticeDto notice);
 
+	ArrayList<BoardDto> admin_selectBoardList(@Param("searchVal") String searchVal);
+
+	int admin_updateBdstate_ajax(@Param("bdcode") String bdcode, @Param("bdstate") String bdstate);
 
 }
