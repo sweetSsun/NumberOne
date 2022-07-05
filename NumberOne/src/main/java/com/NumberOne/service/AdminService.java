@@ -481,15 +481,41 @@ public class AdminService {
 	}
 
 	// 선택한 상태값에 따른 커뮤니티 목록 ajax
-	public String admin_selectBoardList_ajax(String searchVal) {
+	public String admin_selectBoardList_ajax(Paging paging) {
 		System.out.println("AdminService.admin_selectBoardList_ajax() 호출");
-		System.out.println("정렬 val : " + searchVal);
-		ArrayList<BoardDto> boardList = adao.admin_selectBoardList(searchVal);
+		
+		int totalCount = adao.admin_selectBoardTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
+		paging.setTotalCount(totalCount);
+		paging.calc(); // 페이지 처리 계산 실행
+		System.out.println("paging : " + paging);
+		
+		ArrayList<BoardDto> boardList = adao.admin_selectBoardList(paging);
 		System.out.println("boardList : " + boardList);
 		gson = new Gson();
 		String boardList_json = gson.toJson(boardList); 
 		return boardList_json;
 	}	
+//	public String admin_selectBoardList_ajax(String searchVal) {
+//		System.out.println("AdminService.admin_selectBoardList_ajax() 호출");
+//		System.out.println("정렬 val : " + searchVal);
+//		ArrayList<BoardDto> boardList = adao.admin_selectBoardList(searchVal);
+//		System.out.println("boardList : " + boardList);
+//		gson = new Gson();
+//		String boardList_json = gson.toJson(boardList); 
+//		return boardList_json;
+//	}	
+
+	public String admin_selectBoardPagingNumber_ajax(Paging paging) {
+		System.out.println("AdminService.admin_selectBoardPagingNumber_ajax() 호출");
+	
+		int totalCount = adao.admin_selectBoardTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
+		paging.setTotalCount(totalCount);
+		paging.calc(); // 페이지 처리 계산 실행
+		System.out.println("paging : " + paging);
+		gson = new Gson();
+		String paging_json = gson.toJson(paging);
+		return paging_json;
+	}
 
 
 }

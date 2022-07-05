@@ -48,7 +48,7 @@
 		
 		<section>
 		<!-- 본문 -->
-         <form action="admin_selectNoticeList" method="get">
+         <form action="admin_selectBoardList" method="get">
 			<div class="container">
 	            <div class="row" style="margin:auto;">
 	                <h1 class="text-center">커뮤니티 관리페이지 : Admin_BoardList.jsp</h1>
@@ -254,6 +254,7 @@
 			//var searchType = $("#searchType option:selected").val();
 			var searchType = $("#searchTypeSel").val();
 			var searchText = $("#searchText").val();
+			var page = 1; // 요청페이지
 			console.log(searchType);
 			console.log(searchText);
 			$.ajax({
@@ -262,11 +263,13 @@
 				url: "admin_selectBoardList_ajax",
 				dataType: "json",
 				success: function(result){
+					// 정렬 목록 출력
 					var output = "";
 					console.log(result);					
 					for (var i = 0; i < result.length; i++){
 						output += "<tr style='border-bottom: solid gray 1px;'>";
 						output += "<td>" + result[i].bdcode + "</td>";
+						output += "<td>" + result[i].bdcategory + "</td>";
 						output += "<td><a href='admin_selectBoardView?bdcode=" + result[i].bdcode + "'>" + result[i].bdtitle + "</a></td>";
 						output += "<td>" + result[i].bdmid + "</td>";
 						output += "<td>" + result[i].bddate + "</td>";
@@ -284,43 +287,44 @@
 				}
 			});
 			// 페이지에서 출력할 페이지번호 받아오기
-			/*
+			
 			$.ajax({
 				type: "get",
 				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "page":page},
-				url: "admin_selectNoticePagingNumber_ajax",
+				url: "admin_selectBoardPagingNumber_ajax",
 				dataType: "json",
 				success: function(result){
 					console.log("요청 페이지 : " + result.page);
 					$("#pageList").text("");
-					var output = "";
-    					if (result.page == 1) {
-    	    				output += "[이전]";
-        				} else {
-                   			output += "<button type='submit' name='page' value='" + (result.page - 1) + "' id='btn0'></button>";
-                   			output += "<label for='btn0'>[이전]</label>";
-        				}
-        				for (var i = result.startPage; i <= result.endPage; i++){
-        					if (page == i){
-        	    				output += "<span>" + i + "</span>";
-        					} else {
-	                   			output += "<button type='submit' name='page' value='" + i + "' id='btn" + i + "'></button>";
-	                   			output += "<label for='btn" + i + "'>" + i + "</label>";
-        					}
-        				}
-        				if (result.page == result.maxPage){
-    	    				output += "[다음]";
-        				} else {
-                   			output += "<button type='submit' name='page' value='" + (result.page + 1) + "' id='btn6'></button>";
-                   			output += "<label for='btn6'>[다음]</label>";
-        				}
-					$("#pageList").html(output);
+					// 페이징 번호 출력
+					var pageList = "";
+					if (result.prev) {
+						pageList += "<button type='submit' name='page' value='" + (result.page - 1) + "' id='btn0'></button>";
+						pageList += "<label for='btn0'>[이전]</label>";
+					} else {
+						pageList += "[이전]";
+					}
+					for (var i = result.startPage; i <= result.endPage; i++){
+						if (page == i){
+							pageList += "<span>" + i + "</span>";
+						} else {
+							pageList += "<button type='submit' name='page' value='" + i + "' id='btn" + i + "'></button>";
+							pageList += "<label for='btn" + i + "'>" + i + "</label>";
+						}
+					}
+					if (result.next){
+						pageList += "<button type='submit' name='page' value='" + (result.page + 1) + "' id='btn6'></button>";
+						pageList += "<label for='btn6'>[다음]</label>";
+					} else {
+						pageList += "[다음]";
+					}
+					$("#pageList").html(pageList);
 				},
 				error: function(){
 					alert("페이징넘버링 실패");
 				}
 			})
-			*/
+			
 		}	
 		
 		// 공지상태 변경 확인 모달창 출력
