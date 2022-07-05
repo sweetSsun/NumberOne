@@ -131,22 +131,29 @@ public class MemberService {
 				ra.addFlashAttribute("msg", "이용 정지 된 계정 입니다.");
 				mav.setViewName("redirect:/loadToLogin");
 
-			} else if(loginMember.getMid().equals("admin")) {
+
+			}else if(loginMember.getMid().equals("admin")) {
+
 				session.setAttribute("loginId", loginMember.getMid());
 				mav.setViewName("redirect:/admin_loadToAdminMainPage");
 			} else if(loginMember .getMstate() == 2){
 				ra.addFlashAttribute("msg", "탈퇴 처리 된 회원입니다.");
 				mav.setViewName("redirect:/loadToLogin");				
 			}else {
-			
+
 
 				//로그인 성공
 				session.setAttribute("loginId", loginMember.getMid());
 				session.setAttribute("loginProfile", loginMember.getMprofile());
+
+				session.setAttribute("loginRegion", loginMember.getMregion());
+				
+				ra.addFlashAttribute("msg", "로그인 되었습니다.");
+
 				mav.setViewName("redirect:/");				
 			}
 			
-		} else {
+		}else {
 			//로그인 실패
 			ra.addFlashAttribute("msg", "아이디 또는 비밀번호가 일치 하지 않습니다!.");
 			mav.setViewName("redirect:/loadToLogin");
@@ -217,6 +224,10 @@ public class MemberService {
 	}
 
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> d7431bd273ec9f94afc760ff90a6487784cfe0e4
 	//회원정보 수정 요청  
 	public ModelAndView updateMyInfoMemberModify(RedirectAttributes ra, MemberDto member) throws IllegalStateException, IOException {
 		  
@@ -416,8 +427,47 @@ public class MemberService {
 	}
 
 
+	//카카오 로그인
+		public ModelAndView memberKakaoLogin(MemberDto member, RedirectAttributes ra) {
+			System.out.println("MemberService.memberKakaoLogin() 호출");
+			ModelAndView mav = new ModelAndView();
+			
+			MemberDto kakaoMember = mdao.selectMemberKakao(member.getMid());
+			System.out.println(kakaoMember);
+			if( kakaoMember != null ) {
+				//로그인 처리
+				session.setAttribute("loginId", kakaoMember.getMid());
+				session.setAttribute("loginProfile", member.getMprofile());
+				session.setAttribute("kakaoId",kakaoMember.getMid());
+				ra.addFlashAttribute("msg", "카카오 계정으로 로그인 되었습니다.");
+				mav.setViewName("redirect:/");
+			} else {
+				//회원가입 처리
+				System.out.println("회원가입 확인!!!!");
+				member.setMpw("1234");
+
+				mdao.insertMemberKakao(member);
+				ra.addFlashAttribute("msg", "회원정보가 등록되었습니다. 다시 로그인 해주세요.");
+				mav.setViewName("redirect:/loadToLogin");
+			}
+			
+			return mav;
+		}
+
+		//닉네임 중복 체크
+		public String selectMemberNickname_ajax(String inputNickname) {
+			System.out.println("selectMemberNickname_ajax() 호출");
+			String nicknameCheckResult = mdao.selectMemberNickname_ajax(inputNickname);
+			System.out.println(nicknameCheckResult);
+			if(nicknameCheckResult == null) {
+				return "OK";
+			}else {
+				return "NO";
+			}
+		}
 
 
+<<<<<<< HEAD
 
 
 
@@ -429,6 +479,8 @@ public class MemberService {
 
 
 		
+=======
+>>>>>>> d7431bd273ec9f94afc760ff90a6487784cfe0e4
 	}
 
 

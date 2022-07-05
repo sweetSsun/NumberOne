@@ -38,13 +38,13 @@
 	}
 	
 	.checkout__input input {
-	border: 1px solid #004804;
+	border: 1px solid #808080;
 	font-weight: bold; 
 	/* background-color: #EAEAEA; */
 }
 
 	.gender__input {
-	border: 1px solid #004804;
+	border: 1px solid #808080;
 	height: 45px;
 	width: 440px;
 	border-radius : 4px;		
@@ -55,7 +55,11 @@
 	font-size: 15px;
 }
 
+.site-btn {
 
+background-color: #00BCD4;
+
+}
 
 
 </style>
@@ -92,15 +96,15 @@
                             <div class="row">
                                 <div class="col-lg-3">
                                     <div class="checkout__input">
-                                        <p class="fw-bold" style="color: #004804;">프로필사진</p>
+                                        <p class="fw-bold" style="color: #808080;">프로필사진</p>
                                          <c:choose>
                                          <c:when test="${memberInfo.mprofile != null}">
-                                        <img style="height: 200px; width: 200px; border: 1px solid #004804; padding: 10px;" 
+                                        <img style="height: 200px; width: 200px; border: 1px solid #808080; padding: 10px;" 
                                         class="img-account-profile rounded-circle mb-2"
                                         src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/${memberInfo.mprofile }" alt="">    
                                     </c:when>
                                     <c:otherwise>
-                                        <img style="height: 200px; width: 200px; border: 1px solid #004804; padding: 10px;" 
+                                        <img style="height: 200px; width: 200px; border: 1px solid #808080; padding: 10px;" 
                                         class="img-account-profile rounded-circle mb-2"
                                         src="${pageContext.request.contextPath }/resources/img/logo.jpg" alt="">                                    
                                     </c:otherwise>
@@ -109,11 +113,11 @@
                                 </div>
                                 <div class="col-lg-9">
                                     <div class="checkout__input">
-                                        <p class="fw-bold" style="color: #004804;">아이디</p>
+                                        <p class="fw-bold" style="color: #808080;">아이디</p>
                                         <input type="text" id="inputMid" name="mid" readonly="readonly" value="${memberInfo.mid }">   
                                     </div>                                    
                                     <div class="checkout__input">
-                                        <p class="fw-bold" style="color: #004804;">상태메세지</p>
+                                        <p class="fw-bold" style="color: #808080;">상태메세지</p>
                                 			<input type="text" style="height: 100px;" id="inputMmessage" name="mmessage" readonly="readonly" value="${memberInfo.mmessage }">                                                                 
                                     </div>
                                 </div>
@@ -125,13 +129,13 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
-                                        <p class="fw-bold" style="color: #004804;">이름</p>
+                                        <p class="fw-bold" style="color: #808080;">이름</p>
                                         <input type="text" id="inputMname" name="mname" readonly="readonly" value="${memberInfo.mname }">                                    
                                     </div>
                                 </div>    
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
-                                        <p class="fw-bold" style="color: #004804;">닉네임</p>
+                                        <p class="fw-bold" style="color: #808080;">닉네임</p>
                                         <input type="text"id="inputMnickname" name="mnickname" readonly="readonly" value="${memberInfo.mnickname }">                                  
                                     </div>
                                 </div>
@@ -141,7 +145,7 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="checkout__input" style="display:none">
-                                        <p class="fw-bold" style="color: #004804;">비밀번호</p>
+                                        <p class="fw-bold" style="color: #808080;">비밀번호</p>
                                         <input type="hidden" id="inputMpw" name="mpw" readonly="readonly" value="${memberInfo.mpw }">                                     
                                     </div>
                                 </div>
@@ -151,14 +155,14 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
-                                        <p class="fw-bold" style="color: #004804;">이메일</p>
+                                        <p class="fw-bold" style="color: #808080;">이메일</p>
                                         <input type="text"  id="inputEmail" name="memail" readonly="readonly" value="${memberInfo.memail }">                                       
                                     </div> 
                                 </div>                                    
                       <!-- 전화번호 -->
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
-                                        <p class="fw-bold" style="color: #004804;">전화번호</p>
+                                        <p class="fw-bold" style="color: #808080;">전화번호</p>
                                         <input type="text" id="inputMphone" name="mphone" readonly="readonly" value="${memberInfo.mphone }">
  									<span id="phoneCheckMsg" class="msg"></span>                                    
                                     </div>
@@ -167,7 +171,7 @@
 
                             <!-- 관심지역 -->
                            <div class="checkout__input">
-                                <p class="fw-bold" style="color: #004804;">관심지역</p>
+                                <p class="fw-bold" style="color: #808080;">관심지역</p>
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="checkout__input">
@@ -180,7 +184,7 @@
                                                           
                             <!-- 주소 -->
                            <div class="checkout__input">
-                                <p class="fw-bold" style="color: #004804;">주소</p>
+                                <p class="fw-bold" style="color: #808080;">주소</p>
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="checkout__input">

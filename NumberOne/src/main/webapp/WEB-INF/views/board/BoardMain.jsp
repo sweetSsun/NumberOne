@@ -30,7 +30,9 @@
 	h2{
 		color: #004804;
 	}
-	
+	.restrict{
+		border-right: solid #004804 3px;
+	}
 </style>
 
 </head>
@@ -55,7 +57,7 @@
 			<div class="container-fluid">
 				<h1 class="text-center">게시판 메인 : BoardMain.jsp</h1>
 				<div class="row">
-					<div class="col-11">
+					<div class="col-11 mb-2">
 						<h2>자취방자랑</h2>
 					</div>
 					<div class="col-1">
@@ -63,7 +65,7 @@
 					</div>
 				</div>
 				<!-- 자취방자랑 Best 목록 -->
-				<div class="row" id="BestRoomList">
+				<div class="row mb-5" id="BestRoomList">
 					<div class="col-4" >
 						<div class="square" >
 							박스1
@@ -86,7 +88,7 @@
 				<!-- 게시판 목록 -->
 				<!-- 공지게시판 -->
 				<div class="row">
-					<div class="col-11">
+					<div class="col-11 mt-2 mb-2 ">
 						<h2>커뮤니티</h2>
 					</div>
 					<div class="col-1">
@@ -114,9 +116,20 @@
 					<div class="col-1 board_category">
 						<span class="text-white">자유</span>
 					</div>
-					<div class="col-11 bg-white">
+					<div class="col-5 bg-white restrict">
 						<table>
 							<c:forEach items="${boardList_Free }" end="2" var="board">
+									<tr>
+										<td>
+											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a>
+										</td>
+									</tr>
+							</c:forEach>
+						</table>
+					</div>
+					<div class="col-6 bg-white">
+						<table>
+							<c:forEach items="${boardList_Free }" begin="3" end="5" var="board">
 									<tr>
 										<td>
 											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a>
@@ -131,9 +144,20 @@
 					<div class="col-1 board_category">
 						<span class="text-white">질문</span>
 					</div>
-					<div class="col-11 bg-white">
+					<div class="col-5 bg-white">
 						<table>
 							<c:forEach items="${boardList_Question }" end="2" var="board">
+									<tr>
+										<td>
+											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a>
+										</td>
+									</tr>
+							</c:forEach>
+						</table>
+					</div>
+					<div class="col-6 bg-white">
+						<table>
+							<c:forEach items="${boardList_Question }" begin="3" end="5" var="board">
 									<tr>
 										<td>
 											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a>
@@ -148,9 +172,20 @@
 					<div class="col-1 board_category">
 						<span class="text-white">정보</span>
 					</div>
-					<div class="col-11 bg-white">
+					<div class="col-5 bg-white">
 						<table>
 							<c:forEach items="${boardList_Information }" end="2" var="board">
+									<tr>
+										<td>
+											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a>
+										</td>
+									</tr>
+							</c:forEach>
+						</table>
+					</div>
+					<div class="col-6 bg-white">
+						<table>
+							<c:forEach items="${boardList_Information }" begin="3" end="5" var="board">
 									<tr>
 										<td>
 											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a>
@@ -165,7 +200,7 @@
 					<div class="col-1 board_category">
 						<span class="text-white">후기</span>
 					</div>
-					<div class="col-11 bg-white">
+					<div class="col-5 bg-white">
 						<table>
 							<c:forEach items="${boardList_Review }" end="2" var="board">
 								<c:if test="${board.bdcategory.equals('후기') }">
@@ -178,11 +213,24 @@
 							</c:forEach>
 						</table>
 					</div>
+					<div class="col-6 bg-white">
+						<table>
+							<c:forEach items="${boardList_Review }" begin="3" end="5" var="board">
+								<c:if test="${board.bdcategory.equals('후기') }">
+									<tr>
+										<td>
+											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a>
+										</td>
+									</tr>
+								</c:if>
+							</c:forEach>
+						</table>
+					</div>
 				</div>
 				<!-- 게시판 목록 종료 -->
-				<hr>
+				
 				<!-- 지역게시판-->
-				<div class="row ">
+				<div class="row mt-3 mb-2">
 					<div class="col-11">
 						<h2>지역</h2>
 					</div>

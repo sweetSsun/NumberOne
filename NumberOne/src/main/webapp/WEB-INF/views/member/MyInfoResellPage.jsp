@@ -28,7 +28,12 @@
 		margin: 20px;
 		font-size: 20px;
 	}
-	
+
+.site-btn {
+
+background-color: #00BCD4;
+
+}	
 </style>
 </head>
 <body>
@@ -59,7 +64,7 @@
                             <div class="row">
                                 <div class="col-lg-6" >
                                     <div>
-										<h4 class="" style="color: #004804; margin-left: 30px;">사구</h4>  
+										<h4 class="" style="color: #00BCD4; margin-left: 30px;">사구</h4>  
 										<table style="width: 600px;">
 											<tr class="text-center" id="board_column">
 											<td>글제목</td>
@@ -76,7 +81,7 @@
                                 </div>    
                                 <div class="col-lg-6" >
                                     <div>
-										<h4 class="checkout__form" style="color: #004804; margin-left: 30px;">팔구</h4>
+										<h4 class="checkout__form" style="color: #00BCD4; margin-left: 30px;">팔구</h4>
 										<table style="width: 600px;">
 											<tr class="text-center" id="board_column">
 											<td>글제목</td>
@@ -96,7 +101,7 @@
 
 				<!-- 채팅 목록 -->
 				<div class="row" style="margin:20px;">
-					<br><h4 class="checkout__form" style="color: #004804;">채팅 내역</h4>
+					<br><h4 class="checkout__form" style="color: #00BCD4;">채팅 내역</h4>
 				</div>
 				<div class="row"  style="margin:20px;">
 				<table >
@@ -120,7 +125,7 @@
 								
 				<!-- 찜 목록 -->
 				<div class="row" style="margin:20px;">
-					<br><h4 class="checkout__form" style="color: #004804;">찜목록</h4>
+					<br><h4 class="checkout__form" style="color: #00BCD4;">찜목록</h4>
 				</div>
 				<div class="row" style="margin:20px;">
 				<table >

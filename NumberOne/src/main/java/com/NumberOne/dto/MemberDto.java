@@ -36,7 +36,6 @@ public class MemberDto {
 	
 	private String memailId; //이메일아이디 
 	private String memailDomain;  //이메일도메인
-	
 	public String getMid() {
 		return mid;
 	}
@@ -72,6 +71,12 @@ public class MemberDto {
 	}
 	public void setMemail(String memail) {
 		this.memail = memail;
+	}
+	public String getMregion() {
+		return mregion;
+	}
+	public void setMregion(String mregion) {
+		this.mregion = mregion;
 	}
 	public String getMaddr() {
 		return maddr;
@@ -151,15 +156,17 @@ public class MemberDto {
 	public void setMemailDomain(String memailDomain) {
 		this.memailDomain = memailDomain;
 	}
-	
 	@Override
 	public String toString() {
 		return "MemberDto [mid=" + mid + ", mpw=" + mpw + ", mname=" + mname + ", mnickname=" + mnickname + ", mphone="
-				+ mphone + ", memail=" + memail + ", maddr=" + maddr + ", mprofile=" + mprofile + ", mmessage="
-				+ mmessage + ", mstate=" + mstate + ", mjoindate=" + mjoindate + ", mwarning=" + mwarning + ", mfile="
-				+ mfile + ", mpostcode=" + mpostcode + ", maddress=" + maddress + ", mdetailAddr=" + mdetailAddr
-				+ ", mextraAddr=" + mextraAddr + ", memailId=" + memailId + ", memailDomain=" + memailDomain + "]";
+				+ mphone + ", memail=" + memail + ", mregion=" + mregion + ", maddr=" + maddr + ", mprofile=" + mprofile
+				+ ", mmessage=" + mmessage + ", mstate=" + mstate + ", mjoindate=" + mjoindate + ", mwarning="
+				+ mwarning + ", mfile=" + mfile + ", mpostcode=" + mpostcode + ", maddress=" + maddress
+				+ ", mdetailAddr=" + mdetailAddr + ", mextraAddr=" + mextraAddr + ", memailId=" + memailId
+				+ ", memailDomain=" + memailDomain + "]";
 	}
+	
+	
 	
 	
 	
