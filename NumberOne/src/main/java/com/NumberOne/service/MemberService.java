@@ -154,7 +154,8 @@ public class MemberService {
 				//로그인 성공
 				session.setAttribute("loginId", loginMember.getMid());
 				session.setAttribute("loginProfile", loginMember.getMprofile());
-	
+				session.setAttribute("loginRegion", loginMember.getMregion());
+				
 				ra.addFlashAttribute("msg", "로그인 되었습니다.");
 				mav.setViewName("redirect:/");				
 			}
@@ -470,6 +471,34 @@ public class MemberService {
 
 		return mav;
 	}
+
+
+	//카카오 로그인
+		public ModelAndView memberKakaoLogin(MemberDto member, RedirectAttributes ra) {
+			System.out.println("MemberService.memberKakaoLogin() 호출");
+			ModelAndView mav = new ModelAndView();
+			
+			MemberDto kakaoMember = mdao.selectMemberKakao(member.getMid());
+			System.out.println(kakaoMember);
+			if( kakaoMember != null ) {
+				//로그인 처리
+				session.setAttribute("loginId", kakaoMember.getMid());
+				session.setAttribute("loginProfile", member.getMprofile());
+				session.setAttribute("kakaoId",kakaoMember.getMid());
+				ra.addFlashAttribute("msg", "카카오 계정으로 로그인 되었습니다.");
+				mav.setViewName("redirect:/");
+			} else {
+				//회원가입 처리
+				System.out.println("회원가입 확인!!!!");
+				member.setMpw("1234");
+
+				mdao.insertMemberKakao(member);
+				ra.addFlashAttribute("msg", "회원정보가 등록되었습니다. 다시 로그인 해주세요.");
+				mav.setViewName("redirect:/loadToLogin");
+			}
+			
+			return mav;
+		}
 
 
 
