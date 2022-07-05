@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.NumberOne.dto.NoticeDto;
+import com.NumberOne.dto.Paging;
 import com.NumberOne.service.AdminService;
 
 @Controller
@@ -28,9 +29,9 @@ public class AdminController {
 	
 	/* 회원 관리 */
 	@RequestMapping (value="/admin_selectMemberList")
-	public ModelAndView admin_selectMemberList(int page) {
+	public ModelAndView admin_selectMemberList(int page, RedirectAttributes ra) {
 		System.out.println("회원 관리페이지 이동 요청");
-		mav = asvc.admin_selectMemberList(page);
+		mav = asvc.admin_selectMemberList(page, ra);
 		return mav;
 	}
 	
@@ -64,9 +65,9 @@ public class AdminController {
 	
 	/* 공지 관리 */
 	@RequestMapping (value="admin_selectNoticeList")
-	public ModelAndView admin_selectNoticeList(String searchVal, String searchType, String keyword, int page) {
+	public ModelAndView admin_selectNoticeList(String searchVal, String searchType, String keyword, int page, RedirectAttributes ra) {
 		System.out.println("공지 관리페이지 이동 요청");
-		mav = asvc.admin_selectNoticeList(searchVal, searchType, keyword, page);
+		mav = asvc.admin_selectNoticeList(searchVal, searchType, keyword, page, ra);
 		return mav;
 	}
 	
@@ -127,10 +128,57 @@ public class AdminController {
 	}
 	
 	@RequestMapping (value="admin_updateNoticeModify")
-	public ModelAndView admin_updateNoticeModify(NoticeDto notice, RedirectAttributes ra) throws IllegalStateException, IOException {
+	public ModelAndView admin_updateNoticeModify(NoticeDto modiNotice, String originImg, RedirectAttributes ra) throws IllegalStateException, IOException {
 		System.out.println("공지 수정 요청");
-		mav = asvc.admin_updateNoticeModify(notice, ra);
+		mav = asvc.admin_updateNoticeModify(modiNotice, originImg, ra);
 		return mav;
 	}
-		
+	
+	/* 중고거래 관리 */
+	
+	
+	
+	
+	
+	/* 커뮤니티 관리 */
+//	페이징하면 필요한 파라미터값
+	@RequestMapping (value="admin_selectBoardList")
+	public ModelAndView admin_selectBoardList(Paging paging, RedirectAttributes ra) {
+		System.out.println("커뮤니티 관리페이지 이동 요청");
+		mav = asvc.admin_selectBoardList(paging, ra);
+		return mav;
+	}
+//	@RequestMapping (value="admin_selectBoardList")
+//	public ModelAndView admin_selectBoardList() {
+//		System.out.println("커뮤니티 관리페이지 이동 요청");
+//		mav = asvc.admin_selectBoardList();
+//		return mav;
+//	}
+	
+	@RequestMapping (value="admin_updateBdstate_ajax")
+	public @ResponseBody int admin_updateBdstate_ajax(String bdcode, String bdstate) {
+		System.out.println("글상태 변경 요청");
+		int updateResult = asvc.admin_updateBdstate_ajax(bdcode, bdstate);
+		return updateResult;
+	}
+	
+	@RequestMapping (value="admin_selectBoardList_ajax")
+	public @ResponseBody String admin_selectBoardList_ajax(Paging paging) {
+		System.out.println("커뮤니티 관리페이지 정렬 요청");
+		String boardList_json = asvc.admin_selectBoardList_ajax(paging);
+		return boardList_json;
+	}
+//	@RequestMapping (value="admin_selectBoardList_ajax")
+//	public @ResponseBody String admin_selectBoardList_ajax(String searchVal) {
+//		System.out.println("커뮤니티 관리페이지 정렬 요청");
+//		String boardList_json = asvc.admin_selectBoardList_ajax(searchVal);
+//		return boardList_json;
+//	}
+	
+	@RequestMapping (value="admin_selectBoardPagingNumber_ajax")
+	public @ResponseBody String admin_selectBoardPagingNumber_ajax(Paging paging) {
+		System.out.println("커뮤니티 관리페이지 페이징넘버 조회 요청");
+		String paging_json = asvc.admin_selectBoardPagingNumber_ajax(paging);
+		return paging_json;
+	}
 }
