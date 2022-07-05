@@ -28,7 +28,12 @@
 		margin: 20px;
 		font-size: 20px;
 	}
-	
+
+.site-btn {
+
+background-color: #00BCD4;
+
+}	
 </style>
 </head>
 <body>
@@ -60,7 +65,7 @@
                 <form class="user" action="insertMyInfoQuestionWrite" method="post">                                
                             <div class="row">
                                     <div>
-										<h4 class="" style="color: #004804; margin-left: 30px;">문의하기</h4>  
+										<h4 class="" style="color: #00BCD4; margin-left: 30px;">문의하기</h4>  
 										<table style="width: 1000px;">
 											<tr class="text-center" id="board_column">
 											<td style="width: 200px; padding: 20px;">작성자</td>

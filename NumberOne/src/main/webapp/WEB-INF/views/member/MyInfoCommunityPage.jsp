@@ -29,6 +29,13 @@
 		font-size: 20px;
 	}
 	
+.site-btn {
+
+background-color: #00BCD4;
+
+}	
+	
+	
 </style>
 </head>
 <body>
@@ -57,7 +64,7 @@
 				<br>
 				<!-- 작성글 목록 -->
 				<div class="row" style="margin:20px;">
-					<br><h4 class="checkout__form" style="color: #004804;">작성글 목록 (댓글 쓴 글만 나오는중 ㅠ 수정 필요)</h4>
+					<br><h4 class="checkout__form" style="color: #00BCD4;">작성글 목록 (댓글 쓴 글만 나오는중 ㅠ 수정 필요)</h4>
 				</div>
 				<div class="row"  style="margin:20px;">
 				<table>
@@ -84,7 +91,7 @@
 				
 				<!-- 댓글작성글 목록 -->
 				<div class="row" style="margin:20px;">
-					<br><h4 class="checkout__form" style="color: #004804;"> 댓글 작성 글 목록</h4>
+					<br><h4 class="checkout__form" style="color: #00BCD4;"> 댓글 작성 글 목록</h4>
 				</div>
 				<div class="row"  style="margin:20px;">
 				<table >
@@ -110,7 +117,7 @@
 				
 				<!-- 스크랩 목록 -->
 				<div class="row" style="margin:20px;">
-					<br><h4 class="checkout__form" style="color: #004804;">스크랩 목록</h4>
+					<br><h4 class="checkout__form" style="color: #00BCD4;">스크랩 목록</h4>
 				</div>
 				<div class="row"  style="margin:20px;">
 				<table >

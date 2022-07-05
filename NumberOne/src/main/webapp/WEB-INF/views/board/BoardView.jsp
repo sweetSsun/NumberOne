@@ -113,7 +113,7 @@
 						
 						<div class="col-3 offset-md-3">
 							<span class="boardDate">${board.bddate } | </span> 
-							<span class="commentDate" style="right:0;"><i class="fa-regular fa-eye"></i>  15 |</span> 
+							<span class="commentDate" style="right:0;"><i class="fa-regular fa-eye"></i>  ${board.bdhits } |</span> 
 							<i class="fa-regular fa-thumbs-up commentDate" ></i> <span class="commentDate" style="right:0;" id="BoardRecommendSum"></span>
 						</div>
 					</div>
@@ -149,7 +149,7 @@
 							<!-- <i onclick="insertBoardWarning()" class="fa-solid fa-triangle-exclamation text-danger fa-2x icon" style="float:right;"></i>신고 -->
 							<!-- <input type="button" style="float:right;" class="btn btn-lg bg-success fw-bold text-white" value="신고"> -->
 							<i id="bdWarning" onclick="insertBoardWarning()" class='fa-solid fa-land-mine-on  fa-2x icon' style="float:right; margin-right:5px;"></i>
-							<i id="bdRecommend" onclick="boardRecommend()" class="fa-regular fa-thumbs-up  fa-2x icon" style="float:right; margin-right:5px;"></i>
+							<i id="bdRecommend" onclick="insertBoardRecommend()" class="fa-regular fa-thumbs-up  fa-2x icon" style="float:right; margin-right:5px;"></i>
 							<!-- <input type="button" style="float:right; margin-right: 5px;" class="btn btn-lg bg-success fw-bold text-white" value="추천"> -->
 							
 						</div>
@@ -182,7 +182,7 @@
 								<td>
 									<!-- 댓글입력칸 -->
 									<div class="commentWriteForm">
-										<textarea id="inputComment" class="commentInput mt-3" rows="3" cols="95" "></textarea>
+										<textarea id="inputComment" class="commentInput mt-3" rows="3" cols="95" ></textarea>
 									</div>
 								</td>
 								<td>
@@ -223,17 +223,12 @@
 		selectReplyCount();//게시글 댓글수
 		updateBoardRecommendCount();//게시글 추천수 
 		checkBoardRecommend();//게시글 추천 확인
+		checkBoardWarning();//게시글 신고 확인 
 	});
 </script>
 
 <script type="text/javascript">
-	/* 게시글 추천, 삭제 메소드 */
-	function boardRecommend(){
-		insertBoardRecommend();
-		
-		
-	}
-	
+	/* 게시글 추천, 신고 메소드 */
 	function checkBoardRecommend(){
 		/* 게시글 추천 확인 */
 		$.ajax({
@@ -242,7 +237,6 @@
 			data : { "loginId" : loginId, "bdcode" : bdcode },
 			async: false,
 			success : function(rcCheck){
-				console.log(rcCheck);
 				console.log("추천유무 확인 : " + rcCheck);
 				if( rcCheck == "Yes" ){
 					$("#bdRecommend").addClass("text-primary");
@@ -250,27 +244,31 @@
 			}
 		});
 	}
-	
 	function insertBoardRecommend(){
 		/* 게시글 추천 */
 		console.log("게시글 추천자 :" + loginId);
 		console.log("추천할 글번호 :" + bdcode);
 		
-		$.ajax({
-			type : "get",
-			url : "insertBoardRecommend_ajax",
-			data : { "loginId" : loginId, "bdcode" : bdcode },
-			async: false,
-			success : function(updateResult){
-				console.log(updateResult);
-					updateBoardRecommendCount();
-					$("#bdRecommend").addClass("text-primary");
-			}
-		});
+		if( $("#bdRecommend").hasClass("text-primary") ){
+			deleteBoardRecommend();
+		}else{
+			$.ajax({
+				type : "get",
+				url : "insertBoardRecommend_ajax",
+				data : { "loginId" : loginId, "bdcode" : bdcode },
+				async: false,
+				success : function(recommend){
+					console.log(recommend);
+					if( recommend.length > 0 ){
+						$("#bdRecommend").addClass("text-primary");
+						updateBoardRecommendCount();
+					}
+				}
+			});
+		}
 	}
-	
 	function deleteBoardRecommend(){
-		/* 추천 중복 클릭 시 추천 취소 */
+		/* 추천 취소(추천한 상태에서 추천버튼 누를 시) */
 		console.log("추천취소할 사용자 : " + loginId);
 		console.log("추천취소할 게시글 : " + bdcode);
 		$("#bdRecommend").removeClass("text-primary");
@@ -281,12 +279,9 @@
 			async : false,
 			success : function(deleteResult){
 				console.log(deleteResult);
-					updateBoardRecommendCount();
-					$("#bdRecommend").removeClass("text-primary");
-			}
-			
+				updateBoardRecommendCount();
+			}			
 		});
-		
 	}
 	
 	function updateBoardRecommendCount(){
@@ -300,7 +295,22 @@
 				console.log("게시글 추천수 : " + boardRecommendCount);
 				$("#BoardRecommendSum").text(boardRecommendCount);
 			}
-			
+		});
+	}
+	///////////////////////////[신고]/////////////////////////////////
+	function checkBoardWarning(){
+		/* 게시글 신고 확인 */
+		$.ajax({
+			type : "get",
+			url : "checkBoardWarning_ajax",
+			data : { "loginId" : loginId, "bdcode" : bdcode },
+			async: false,
+			success : function(wnCheck){
+				console.log("신고유무 확인 : " + wnCheck );
+				if( wnCheck == "Yes" ){
+					$("#bdWarning").addClass("text-danger");
+				}
+			}
 		});
 	}
 	
@@ -308,24 +318,37 @@
 		/* 게시글 신고 */
 		console.log("게시글 신고자 : " + loginId);
 		console.log("신고할 글번호 : " + bdcode);
-		
-		$.ajax({
-			type : "get",
-			url : "insertBoardWarning_ajax",
-			data : { "loginId" : loginId, "bdcode" : bdcode },
-			async: false,
-			success : function(insertResult){
-				console.log(insertResult);
-				
-				if( insertResult > 0 ){
-					alert("게시글 신고가 접수되었습니다.");
+		if( $("#bdWarning").hasClass("text-danger") ){
+			deleteBoardWarning();
+		}else{
+			$.ajax({
+				type : "get",
+				url : "insertBoardWarning_ajax",
+				data : { "loginId" : loginId, "bdcode" : bdcode },
+				async: false,
+				success : function(insertResult){
+					console.log(insertResult);
+					if( insertResult > 0 ){
+						$("#bdWarning").addClass("text-danger");
+					}
 				}
-			}
-			
-		});
-		
+			});
+		}
 	}
 	
+	function deleteBoardWarning(){
+		/* 신고 취소(추천한 상태에서 추천버튼 누를 시) */
+		$("#bdWarning").removeClass("text-danger");
+		$.ajax({
+			type : "get",
+			url : "deleteBoardWarning_ajax",
+			data : { "loginId" : loginId, "bdcode" : bdcode },
+			async : false,
+			success : function(deleteResult){
+				console.log(deleteResult);
+			}			
+		});
+	}
 </script>
 
 <script type="text/javascript">
@@ -334,8 +357,6 @@
 		/* 게시글 수정 페이지 이동  */
 		location.href="loadToBoardModify?bdcode="+bdcode;
 	}
-	
-	
 	function updateBoardDelete(){
 		/* 게시글 삭제(상태변경) */
 		location.href="updateBoardDelete?bdcode="+bdcode;
