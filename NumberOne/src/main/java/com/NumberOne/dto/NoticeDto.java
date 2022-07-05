@@ -18,61 +18,87 @@ public class NoticeDto {
 	
 	// 파일 처리를 위한 필드
 	private MultipartFile nbimgfile;
-	
+
 	public String getNbcode() {
 		return nbcode;
 	}
+
 	public void setNbcode(String nbcode) {
 		this.nbcode = nbcode;
 	}
+
 	public String getNbmid() {
 		return nbmid;
 	}
+
 	public void setNbmid(String nbmid) {
 		this.nbmid = nbmid;
 	}
+
 	public String getNbtitle() {
 		return nbtitle;
 	}
+
 	public void setNbtitle(String nbtitle) {
 		this.nbtitle = nbtitle;
 	}
+
 	public String getNbcontents() {
 		return nbcontents;
 	}
+
 	public void setNbcontents(String nbcontents) {
 		this.nbcontents = nbcontents;
 	}
+
 	public String getNbdate() {
 		return nbdate;
 	}
+
 	public void setNbdate(String nbdate) {
 		this.nbdate = nbdate;
 	}
+
 	public String getNbimg() {
 		return nbimg;
 	}
+
 	public void setNbimg(String nbimg) {
 		this.nbimg = nbimg;
 	}
+
 	public int getNbstate() {
 		return nbstate;
 	}
+
 	public void setNbstate(int nbstate) {
 		this.nbstate = nbstate;
 	}
+
 	public int getNbhits() {
 		return nbhits;
 	}
+
 	public void setNbhits(int nbhits) {
 		this.nbhits = nbhits;
 	}
+
+	public MultipartFile getNbimgfile() {
+		return nbimgfile;
+	}
+
+	public void setNbimgfile(MultipartFile nbimgfile) {
+		this.nbimgfile = nbimgfile;
+	}
+
 	@Override
 	public String toString() {
 		return "NoticeDto [nbcode=" + nbcode + ", nbmid=" + nbmid + ", nbtitle=" + nbtitle + ", nbcontents="
 				+ nbcontents + ", nbdate=" + nbdate + ", nbimg=" + nbimg + ", nbstate=" + nbstate + ", nbhits=" + nbhits
 				+ ", nbimgfile=" + nbimgfile + "]";
 	}
+	
+	
 	
 	
 }

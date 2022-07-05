@@ -16,7 +16,9 @@
 	table{
 		margin: 20px;
 	}
-	
+	.bdcategory{
+		color : #004804;
+	}
 </style>
 </head>
 <body>
@@ -42,8 +44,8 @@
 				<div class="row" style="margin:auto;">
 					<h1 class="text-center">게시판 검색결과 페이지 : BoardSearchListPage.jsp</h1>
 				</div>
-				<form action="searchBoard" method="get">
 				<div class="row">
+				<form action="selectBoardSearchList" method="get">
 					<!-- 검색기능 -->
 						<div class="col-5">
 								<select name="searchType">
@@ -59,16 +61,18 @@
 							    <button class="btn btn-secondary">찾기</button>
 							  </span>
 						</div>
+				</form>
 						<div class="col-2">
-							<!-- 글쓰기 버튼 -->
-							<button class="btn btn-primary btm-sm">글쓰기</button>
+							<!-- 글작성 버튼 -->
+							<c:if test="${sessionScope.loginId != null }">
+								<button onclick="loadToBoardWrite()" class="btn btn-success btm-sm fw-bold">글작성</button>
+							</c:if>
 						</div>
 				</div>
-				</form>
 				
 				<div class="row mb-5">
 					<!-- 검색결과 안내  -->
-					<h3 class="text-center">[ <span class="text-primary">${param.searchText}</span> ] 로 검색한 결과 입니다.</h3>  
+					<h3 class="text-center">[ <span class="text-success">${param.searchText}</span> ] 로 검색한 결과 입니다.</h3>  
 				</div>
 				
 				<!-- 게시글 목록 -->
@@ -90,7 +94,7 @@
 					<!-- 일반게시판 목록 -->
 						<tr style="border-bottom: solid gray 1px;">
 							<td>${searchBd.bdcode}</td>
-							<td>${searchBd.bdcategory}</td>
+							<td class="fw-bold bdcategory">${searchBd.bdcategory}</td>
 							<td>
 							 	<a href="selectNoticeBoardView">${searchBd.bdtitle}</a>
 							 </td>
