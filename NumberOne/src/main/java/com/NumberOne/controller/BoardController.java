@@ -152,12 +152,12 @@ public class BoardController {
 	 //게시글 추천
 	 @RequestMapping ( value = "/insertBoardRecommend_ajax")
 	 @ResponseBody 
-	 public int insertBoardRecommend_ajax(String loginId, String bdcode) {
+	 public String insertBoardRecommend_ajax(String loginId, String bdcode) {
 		 System.out.println("게시글 추천 요청_ajax");
 		 
-		 int insertResult = bsvc.insertBoardRecommend_ajax(loginId, bdcode);
+		 String rcCheck = bsvc.insertBoardRecommend_ajax(loginId, bdcode);
 		 
-		 return insertResult;
+		 return rcCheck;
 	 }
 	 
 	 //게시글 추천 취소(추천 중복 클릭 시)

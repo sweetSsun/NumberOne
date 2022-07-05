@@ -506,12 +506,19 @@ public class BoardService {
 	}
 	
 	//게시글 추천
-	public int insertBoardRecommend_ajax(String loginId, String bdcode) {
+	public String insertBoardRecommend_ajax(String loginId, String bdcode) {
 		System.out.println("BoardService.insertBoardRecommend_ajax() 호출");
 		
-		int insertResult = bdao.insertBoardRecommend_ajax(loginId, bdcode);
-
-		return insertResult;
+		String rcCheck = checkBoardRecommend_ajax(loginId, bdcode);
+		String check = "";
+		if( rcCheck == null ) {
+			int insertResult = bdao.insertBoardRecommend_ajax(loginId, bdcode);
+			if( insertResult > 0 ) {
+				check = "REGIST";
+			}
+		}
+		
+		return check;
 	}
 	
 	//게시글 추천 취소 (추천 중복 클릭 시) 

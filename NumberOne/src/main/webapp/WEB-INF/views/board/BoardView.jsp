@@ -230,8 +230,6 @@
 	/* 게시글 추천, 삭제 메소드 */
 	function boardRecommend(){
 		insertBoardRecommend();
-		
-		
 	}
 	
 	function checkBoardRecommend(){
@@ -261,10 +259,12 @@
 			url : "insertBoardRecommend_ajax",
 			data : { "loginId" : loginId, "bdcode" : bdcode },
 			async: false,
-			success : function(updateResult){
-				console.log(updateResult);
-					updateBoardRecommendCount();
+			success : function(check){
+				console.log(check);
+				if( rcCheck.length > 0 ){
 					$("#bdRecommend").addClass("text-primary");
+					updateBoardRecommendCount();
+				}
 			}
 		});
 	}
