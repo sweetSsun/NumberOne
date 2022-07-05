@@ -25,9 +25,13 @@ public class ResellController {
 	}
 	
 	@RequestMapping (value="/selectResellView")
-	public String selectResellView() {
+	public String selectResellView(String ubcode) {
+		System.out.println("selectResellView 호출");
+		
 		return "resell/Resell_View";
 	}
+	
+	
 	@RequestMapping (value="/loadToResellWriteForm")
 	public ModelAndView loadToResellWriteForm(String sell_buy) {
 		ModelAndView mav = new ModelAndView();
@@ -46,7 +50,7 @@ public class ResellController {
 	public String selectResellBuyList() {
 //		ModelAndView mav = new ModelAndView();		
 //		mav = rsvc.selectResellBuyList();
-		
+	
 		return "resell/Resell_BuyList";
 	}
 	

@@ -36,7 +36,7 @@ public class ResellService {
 		ModelAndView mav = new ModelAndView();
 		System.out.println("insertResellWrite 서비스호출");
 
-		String savePath = request.getSession().getServletContext().getRealPath("resources/img/resell");
+		String savePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\mprofileUpLoad";
 
 		String ubmid = (String)session.getAttribute("loginId");
 		
@@ -128,20 +128,26 @@ public class ResellService {
 		String gd_char = "GD";
 		String gdCode = null;
 		int insertResult_gd = 0;
-		String gd_codeNumber = rdao.selectMaxNumber_gd();
+		
 		for (int i = 0; i < gdDto.getGd_names().length; i++) {
-//			중고거래 상품 번호
 			
 			if(gdDto.getGd_names()[i] ==null) {
 				break;				
 			}
+			String gd_codeNumber = rdao.selectMaxNumber_gd();
+			System.out.println("맥스코드넘버 : " + gd_codeNumber);
 			
 			if (gd_codeNumber == null) {
-				gdCode = "UB00001";
-			} else {
-				gd_codeNumber = ub_codeNumber.substring(2);
+				gdCode = "GD00001";
+			}
+			else {
+				gd_codeNumber = gd_codeNumber.substring(2);
+				
 				int gdCode_int = Integer.parseInt(gd_codeNumber)+1;
-
+				
+				
+				System.out.println("서브스트링한숫자 : "+gdCode_int);
+				
 				if (gdCode_int < 10) {
 					gdCode = gd_char + "0000" + gdCode_int;
 				} else if (gdCode_int < 100) {
@@ -154,14 +160,15 @@ public class ResellService {
 					gdCode = gd_char + gdCode_int;
 				}
 			}
-
-			gdDto.setGdcode(gdCode);
-			
+				gdDto.setGdcode(gdCode);
+				
+	
 			System.out.println("물품리스트 : " + gdDto.getGd_names()[i]);
 			
 			gdDto.setGdname(gdDto.getGd_names()[i]);
 			gdDto.setGdprice(gdDto.getGd_price()[i]);
-		
+			
+			System.out.println(gdDto);
 				insertResult_gd = rdao.insertResellWrite_gd(gdDto);
 
 		}
