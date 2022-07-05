@@ -21,6 +21,9 @@
 		<if test="searchVal == 'inactive'">
 			WHERE MSTATE=0
 		</if>
+		<if test="searchVal == 'withdraw'">
+			WHERE MSTATE=2
+		</if>
 	</select>
 
 	<select id="admin_selectMemberList" resultType="com.NumberOne.dto.MemberDto">
@@ -38,6 +41,9 @@
 			</if>
 			<if test="searchVal == 'inactive'">
 				WHERE MSTATE=0
+			</if>
+			<if test="searchVal == 'withdraw'">
+				WHERE MSTATE=2
 			</if>
 			ORDER BY MJOINDATE)
 		WHERE RN BETWEEN ${startRow} AND ${endRow}

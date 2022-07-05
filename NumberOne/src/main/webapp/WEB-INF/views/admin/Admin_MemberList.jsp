@@ -63,6 +63,7 @@
                      <option value="active">활동</option>
                      <option value="warning">경고</option>
                      <option value="inactive">정지</option>
+                     <option value="withdraw">탈퇴</option>
                   </select>
                </div>
             </div>
@@ -96,12 +97,15 @@
 	                      		<c:when test="${member.mwarning > 0}">
 	                      			<button class="btn btn-warning" onclick="showMstateModal(this,'${member.mid }')">경고</button>
 	                      		</c:when>
+	                      		<c:when test="${member.mstate == 0}">
+	                      			<button class="btn btn-danger" onclick="showMstateModal(this, '${member.mid }')">정지</button>
+	                      		</c:when>
 	                      		<c:when test="${member.mstate == 1}">
 	                      			<button class="btn btn-primary" onclick="showMstateModal(this,'${member.mid }')">활동</button>
 	                      		</c:when>
-	                      		<c:otherwise>
-	                      			<button class="btn btn-secondary" onclick="showMstateModal(this, '${member.mid }')">정지</button>
-	                      		</c:otherwise>
+	                      		<c:when test="${member.mstate == 2}">
+	                      			<button class="btn btn-secondary" style="cursor:default;">탈퇴</button>
+	                      		</c:when>
 	                      	</c:choose>
 	                      </td>
 	                   </tr>
@@ -326,10 +330,12 @@
 						output += "<td>"
 						if (result[i].mwarning > 0){
 							output += "<button class='btn btn-warning' onclick='showMstateModal(this, \""+result[i].mid+"\")'>경고</button>";
+						} else if (result[i].mstate == 0){
+							output += "<button class='btn btn-danger' onclick='showMstateModal(this, \""+result[i].mid+"\")'>정지</button>";
 						} else if (result[i].mstate == 1){
 							output += "<button class='btn btn-primary' onclick='showMstateModal(this, \""+result[i].mid+"\")'>활동</button>";
 						} else {
-							output += "<button class='btn btn-secondary' onclick='showMstateModal(this,\""+result[i].mid+"\")'>정지</button>";
+							output += "<button class='btn btn-secondary' style='cursor:default;'>탈퇴</button>";
 						}
 						output += "</td>";
 						output += "</tr>";
