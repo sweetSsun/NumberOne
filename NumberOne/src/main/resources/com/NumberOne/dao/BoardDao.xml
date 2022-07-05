@@ -72,7 +72,6 @@
  		AND BDSTATE = 1
  		ORDER BY BDCODE DESC
  	 </select>
- 	 
  	 <select id="selectRoomList" resultType="com.NumberOne.dto.BoardDto">
  	 	<!-- 자랑글 목록 -->
  	 	select bdcode, bdmid, bdtitle, bddate, bdimg, bdstate, bdhits, bdcontents,
