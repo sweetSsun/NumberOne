@@ -374,21 +374,26 @@ public class AdminService {
 	}
 	
 	// 작성 공지 DB에 입력
-	public ModelAndView admin_updateNoticeModify(NoticeDto notice, RedirectAttributes ra) throws IllegalStateException, IOException {
+	public ModelAndView admin_updateNoticeModify(NoticeDto notice, String originImg, RedirectAttributes ra) throws IllegalStateException, IOException {
 		System.out.println("AdminService.admin_updateNoticeModify() 호출");
 		
 		// 파일 등록
 		// 파일 저장 경로
-//		String nbImgSavePath = request.getSession().getServletContext().getRealPath("resources/img/noticeUpLoad");
-//		MultipartFile nbimgfile = notice.getNbimgfile();
-//		String nbimg = ""; // 파일명 저장할 변수명
-//		if(!nbimgfile.isEmpty()) {
-//			System.out.println("첨부파일 있음");
-//			UUID uuid = UUID.randomUUID(); // 랜덤코드 생성
-//			nbimg = uuid.toString() + "_" + nbimgfile.getOriginalFilename();
-//			nbimgfile.transferTo( new File(nbImgSavePath, nbimg) );
-//		}
-//		notice.setNbimg(nbimg); // 생성한 파일명 set
+		String nbImgSavePath = request.getSession().getServletContext().getRealPath("resources/img/noticeUpLoad");
+		MultipartFile nbimgfile = notice.getNbimgfile();
+		String nbimg = ""; // 파일명 저장할 변수명
+		if(!nbimgfile.isEmpty()) {
+			if(originImg.length() > 0) { // 기존 첨부파일이 있으면
+				
+			} else { // 기존 첨부파일이 없으면
+				
+			}
+			System.out.println("첨부파일 있음");
+			UUID uuid = UUID.randomUUID(); // 랜덤코드 생성
+			nbimg = uuid.toString() + "_" + nbimgfile.getOriginalFilename();
+			nbimgfile.transferTo( new File(nbImgSavePath, nbimg) );
+			notice.setNbimg(nbimg); // 생성한 파일명 set
+		}
 		
 		// UPDATE
 		System.out.println(notice);
