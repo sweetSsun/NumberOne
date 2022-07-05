@@ -159,6 +159,8 @@ public class MemberService {
 				
 				String afterUrl = (String) session.getAttribute("afterUrl");
 				//System.out.println(afterUrl);
+				session.removeAttribute("afterUrl");
+				
 				if(afterUrl.equals("noUrl")) {
 					//afterUrl 없는 경우는 메인으로 이동
 					mav.setViewName("redirect:/");				
