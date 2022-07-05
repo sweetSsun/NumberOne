@@ -8,7 +8,7 @@
 <%@ include file="/resources/css/CommonCss.jsp" %>
 <!-- 폰트어썸 -->
 <script src="https://kit.fontawesome.com/86a85cd392.js" crossorigin="anonymous"></script>
-<title>1인자 - 게시글 수정페이지</title>
+<title>1인자 - 게시글 작성페이지</title>
 <!-- Jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
@@ -46,6 +46,9 @@
 	.selectPlaceHolder{
 		display: none;
 	}
+	textarea{
+		spellcheck: false;
+	}
 </style>
 </head>
 <body>
@@ -67,19 +70,14 @@
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h1 class="text-center">게시판 글수정페이지 : BoardModifyForm.jsp</h1>
-				<form action="updateBoardModify" method="post" enctype="multipart/form-data">
-				<div class="row">
-					<input type="hidden" name="bdmid" value="${board.bdmid }">
-					<input type="hidden" name="bdcode" value="${board.bdcode }">
-					<span class="fw-bold" name="bdnickname">${board.bdnickname }</span>
-					<hr>
-				</div>
+				<h1 class="text-center">게시판 글작성페이지 : BoardWriteForm.jsp</h1>
+				<form action="insertBoardWrite" method="post" enctype="multipart/form-data" >
+					<input type="hidden" name="bdmid" value="${sessionScope.loginId }">
 				<div class="row">
 					<div class="col-6">
 						게시판<span class="text-danger">*</span>
-						<select name="bdcategory">
-							<option value="${board.bdcategory}"  class="selectPlaceHolder">${board.bdcategory }</option>
+						<select name="bdcategory" required>
+							<option value="" disabled selected class="selectPlaceHolder">필수</option>
 							<option value="자유">자유</option>
 							<option value="질문">질문</option>
 							<option value="정보">정보</option>
@@ -89,7 +87,7 @@
 					<div class="col-6">
 						지역
 						<select name="bdrgcode">
-							<option value="${board.bdrgcode }"  class="selectPlaceHolder">${board.bdrgname }</option>
+							<option value="" disabled selected class="selectPlaceHolder">선택</option>
 							<option value="ALL">전국</option>
 							<option value="SEL">서울</option>
 							<option value="ICN">인천</option>
@@ -104,20 +102,19 @@
 				</div>
 				<hr>
 				<div class="row">
-					<input class="bdtitle" name="bdtitle" type="text" value="${board.bdtitle }">
+					<input class="bdtitle" name="bdtitle" type="text" >
 				</div>
 				<hr>
 				<div class="row">
-					<textarea class="bdcontents" rows="15" name="bdcontents">${board.bdcontents }</textarea>
+					<textarea class="bdcontents" rows="15" name="bdcontents"></textarea>
 				</div>
 				<div class="row mt-4">
-					<!-- 첨부파일! 나중에 경로 및 name 수정  -->
-					<input type="file" name="bdimgfile" value="${pageContext.request.contextPath }/resources/img/board/${board.bdimg}">
+					<input type="file" name="bdimgfile">
 				</div>
 				<div class="row mt-4">
 					<div class="col btn-wrapper">
-						<input class="btn btn-lg buttons bg-success fw-bold text-white" type="submit" value="수정">
-						<input onclick="modifyBoardCancel()" class="btn btn-lg buttons bg-success fw-bold text-white" type="button" value="취소">
+						<input class="btn btn-lg buttons bg-success fw-bold text-white" type="submit" value="작성">
+						<input onclick="writeBoardCancel()" class="btn btn-lg buttons bg-success fw-bold text-white" type="button" value="취소">
 					</div>
 				</div>
 			</form>
@@ -136,8 +133,6 @@
 </script>
 
 <script type="text/javascript">
-	//선택한 글번호 
-	var bdcode = '${board.bdcode}';
 	//현재 로그인중인 아이디
 	var loginId = '${sessionScope.loginId}';
 	
@@ -145,8 +140,8 @@
 </script>
 
 <script type="text/javascript">
-	function modifyBoardCancel(){
-		/* 수정취소 */
+	function writeBoardCancel(){
+		/* 작성취소 */
 		history.back();
 		
 	}

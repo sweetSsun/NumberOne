@@ -41,6 +41,8 @@ public class BoardDto {
 	private String rchistory;   //추천 기록
 	private String schistory;   //스크랩 기록
 	private String wbhistory;   //신고 기록	
+	
+	
 	public String getBdcode() {
 		return bdcode;
 	}
