@@ -161,33 +161,33 @@
 	<!-- 일반게시판 게시글 수 조회 -->
 	<select id="admin_selectBoardTotalCount" resultType="int">
 		SELECT COUNT(*)
-		FROM BOARDS BD 
-		    LEFT OUTER JOIN (SELECT WBEDBDCODE, COUNT(WBEDBDCODE) BDWARNING FROM WARNINGBOARDS GROUP BY WBEDBDCODE) WB
-		                   ON BD.BDCODE = WB.WBEDBDCODE
-		<if test="searchVal == 'all'">
-			WHERE (BDWARNING > 0 OR BDSTATE = 0)
-		</if>
-		<if test="searchVal == 'warning'">
-			WHERE BDWARNING > 0
-		</if>
-		<if test="searchVal == 'inactive'">
-			WHERE BDSTATE = 0
-		</if>
-		<if test="keyword != null or searchVal == 'active' or searchVal == 'inactive'">
-			AND
-			<!-- 검색한 키워드 정렬 -->
-			<if test="keyword != null">
-				<choose>
-					<when test="searchType == 'nbTitleContents'">
-						(BDTITLE LIKE '%'||#{keyword}||'%' OR BDCONTENTS LIKE '%'||#{keyword}||'%')
-					</when>
-					<otherwise>
-						${searchType} LIKE '%'||#{keyword}||'%'
-					</otherwise>				
-				</choose>
+		FROM 
+			(SELECT MB.MNICKNAME AS BDNICKNAME, BD.*
+			FROM MEMBERS MB, BOARDS BD
+			    LEFT OUTER JOIN (SELECT WBEDBDCODE, COUNT(WBEDBDCODE) BDWARNING FROM WARNINGBOARDS GROUP BY WBEDBDCODE) WB
+			                   ON BDCODE = WB.WBEDBDCODE
+			WHERE MB.MID = BD.BDMID
+			<if test="searchVal == 'all'">
+				AND (BDWARNING > 0 OR BDSTATE = 0)
 			</if>
+			<if test="searchVal == 'warning'">
+				AND (BDWARNING > 0 AND BDSTATE = 1)
+			</if>
+			<if test="searchVal == 'inactive'">
+				AND BDSTATE = 0
+			</if>
+	        ORDER BY BDCODE)
+			<!-- 검색한 키워드 정렬 -->
+		<if test="keyword != null">
+			<choose>
+				<when test="searchType == 'bdTitleContents'">
+					WHERE (BDTITLE LIKE '%'||#{keyword}||'%' OR BDCONTENTS LIKE '%'||#{keyword}||'%')
+				</when>
+				<otherwise>
+					WHERE ${searchType} LIKE '%'||#{keyword}||'%'
+				</otherwise>				
+			</choose>
 		</if>
-		ORDER BY BDCODE
 	</select>
 	
 	<!-- 일반게시판 목록 조회 -->
@@ -208,27 +208,29 @@
 	</select>-->
 		<!-- 일반게시판 목록 조회 -->
 	<select id="admin_selectBoardList" resultType="com.NumberOne.dto.BoardDto">
-		SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, TO_CHAR(BDDATE, 'MM-DD') BDDATE, BDIMG, BDDETAILIMG, BDSTATE, BDHITS, NVL(BDWARNING, 0) BDWARNING
+		SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, TO_CHAR(BDDATE, 'MM-DD') BDDATE, BDIMG, BDDETAILIMG, BDSTATE, BDHITS, NVL(BDWARNING, 0) BDWARNING, BDNICKNAME
 		FROM
-		(SELECT ROWNUM RN, BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, BDDATE, BDIMG, BDDETAILIMG, BDSTATE, BDHITS, NVL(WB.BDWARNING, 0) BDWARNING
-		FROM BOARDS BD 
-		    LEFT OUTER JOIN (SELECT WBEDBDCODE, COUNT(WBEDBDCODE) BDWARNING FROM WARNINGBOARDS GROUP BY WBEDBDCODE) WB
-		                   ON BD.BDCODE = WB.WBEDBDCODE
+			(SELECT ROWNUM RN, BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, BDDATE, BDIMG, BDDETAILIMG, BDSTATE, BDHITS, NVL(WB.BDWARNING, 0) BDWARNING, MB.MNICKNAME AS BDNICKNAME
+			FROM MEMBERS MB, BOARDS BD 
+			    LEFT OUTER JOIN (SELECT WBEDBDCODE, COUNT(WBEDBDCODE) BDWARNING FROM WARNINGBOARDS GROUP BY WBEDBDCODE) WB
+			                   ON BD.BDCODE = WB.WBEDBDCODE
+			WHERE BDMID = MB.MID
+		
 		<if test="searchVal == 'all'">
-			WHERE (BDWARNING > 0 OR BDSTATE = 0)
+			AND (BDWARNING > 0 OR BDSTATE = 0)
 		</if>
 		<if test="searchVal == 'warning'">
-			WHERE BDWARNING > 0 AND BDSTATE = 1
+			AND (BDWARNING > 0 AND BDSTATE = 1)
 		</if>
 		<if test="searchVal == 'inactive'">
-			WHERE BDSTATE = 0
+			AND BDSTATE = 0
 		</if>
 		<if test="keyword != null or searchVal == 'active' or searchVal == 'inactive'">
 			AND
 			<!-- 검색한 키워드 정렬 -->
 			<if test="keyword != null">
 				<choose>
-					<when test="searchType == 'nbTitleContents'">
+					<when test="searchType == 'bdTitleContents'">
 						(BDTITLE LIKE '%'||#{keyword}||'%' OR BDCONTENTS LIKE '%'||#{keyword}||'%')
 					</when>
 					<otherwise>
@@ -237,7 +239,7 @@
 				</choose>
 			</if>
 		</if>
-		ORDER BY BDCODE)
+		ORDER BY BDCODE), MEMBERS MB
 		WHERE RN BETWEEN ${startRow} AND ${endRow}
 	</select>
 	

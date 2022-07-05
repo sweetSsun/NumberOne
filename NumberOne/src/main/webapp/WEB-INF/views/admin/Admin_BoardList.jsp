@@ -63,7 +63,7 @@
 						</select>
 					</div>
 	                <div class="col-5 input-group">
-                    	<input type="text" style="width:100px;" class="form-control" name="keyword" id="searchText" placeholder="검색 키워드를 입력하세요!" value="${searchText}">
+                    	<input type="text" style="width:100px;" class="form-control" name="keyword" id="searchText" placeholder="검색 키워드를 입력하세요!" value="${paging.keyword}">
                     	<span class="input-group-btn">
 	                      	<button class="btn btn-secondary" type="submit" name="page" value="1">찾기</button>
                     	</span>
@@ -125,8 +125,7 @@
             </table>
             
   			<!-- 페이징 -->
-	  		<input type="hidden" id="pageInput" name="">
-	  		
+	  		<!-- 페이징 넘버가 이상해~~~~~~ ajax로 받아오는 부분 매우매우매우 수정 요망 -->
   			<div class="block text-center" id="pageList">
                	<c:choose>
                		<c:when test="${paging.prev }">
@@ -225,7 +224,7 @@
 		// 선택한 검색 select option으로 선택되도록 하기
 		var searchOption = $("#searchTypeSel option");
 		console.log("searchOption.length : " + searchOption.length);
-		var searchType = "${searchType}";
+		var searchType = "${paging.searchType}";
 		console.log("searchType : " + searchType);
 		if (searchType.length > 0) {
 			for (var i = 0; i < searchOption.length; i++){
@@ -237,7 +236,7 @@
 		
 		// 선택한 정렬 select option으로 선택되도록 하기
 		var searchValOption = $("#searchValSel option");
-		var searchVal = "${searchVal}";
+		var searchVal = "${paging.searchVal}";
 		if (searchVal.length > 0) {
 			for (var i = 0; i < searchValOption.length; i++){
 				if (searchValOption.eq(i).val() == searchVal){

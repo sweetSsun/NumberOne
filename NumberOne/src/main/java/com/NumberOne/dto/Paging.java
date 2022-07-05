@@ -53,7 +53,7 @@ public class Paging {
 		maxPage = (totalCount - 1) / perPageNum + 1;
 		startPage = (int) ( (Math.ceil( (double)page/displayPageNum )) -1 ) * displayPageNum + 1;
 		endPage = startPage + displayPageNum - 1; 
-		if(startPage >= 0) {
+		if(startPage <= 0) {
 			startPage = 1;
 		}
 		if (endPage > maxPage) {
@@ -61,10 +61,10 @@ public class Paging {
 		}
 		
 		// 앞뒤 페이지 유무 확인
-		if (startPage != 1) {
+		if (page != 1) {
 			prev = true;
 		}
-		if (endPage <= maxPage) {
+		if (page != maxPage) {
 			next = true;
 		}
 	}

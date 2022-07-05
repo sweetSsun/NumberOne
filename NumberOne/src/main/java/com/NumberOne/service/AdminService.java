@@ -483,7 +483,7 @@ public class AdminService {
 	// 선택한 상태값에 따른 커뮤니티 목록 ajax
 	public String admin_selectBoardList_ajax(Paging paging) {
 		System.out.println("AdminService.admin_selectBoardList_ajax() 호출");
-		
+		System.out.println("searchVal : " + paging.getSearchVal());
 		int totalCount = adao.admin_selectBoardTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
 		paging.setTotalCount(totalCount);
 		paging.calc(); // 페이지 처리 계산 실행
