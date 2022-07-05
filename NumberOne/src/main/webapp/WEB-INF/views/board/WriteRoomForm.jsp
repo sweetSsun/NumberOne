@@ -133,7 +133,7 @@
 							<!--  
 							<input type="text" id="detailImgScreen"> <span class="mainfile"><label for="detailImg">상세사진 선택</label></span>
 							-->
-							<input type="file" multiple="multiple" id="detailImg" name="bddetailimgfile">
+							<input type="file" multiple="multiple" id="detailImg" name="bddetailimgfile" onclick="return mainimgCh()">
 							<div id="detailImgList"></div>
 						</td>
 					</tr>
@@ -179,6 +179,7 @@
 	})
 		
 	$("#detailImg").change(function(){
+		
 		var detailImg = $("#detailImg")[0].files;
 		console.log(detailImg);
 		var output = "";
@@ -191,6 +192,16 @@
 	function withdraw(){
 		console.log("취소 버튼 클릭");
 	}
+	
+	function mainimgCh(){
+		console.log("메인이미지 확인 함수");
+		var mainImg = $("#mainImg").val();
+		console.log(mainImg);
+		if(mainImg==""){
+			alert("메인이미지를 먼저 등록하세요");
+			return false;
+		}
+	} 
 </script>
 
 </html>

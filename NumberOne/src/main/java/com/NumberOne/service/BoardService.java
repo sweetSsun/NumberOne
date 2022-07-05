@@ -37,7 +37,7 @@ public class BoardService {
 	private HttpSession session;
 	
 	//사용할 때 자기 폴더 경로로 바꾸어야 함
-	private String roomSavePath = "D:\\numberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\room";
+	private String roomSavePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\room";
 
 	//자취방자랑 글 등록
 	public ModelAndView insertRoomWrite(BoardDto room, RedirectAttributes ra) throws IllegalStateException, IOException {
@@ -64,19 +64,10 @@ public class BoardService {
 		//System.out.println("bdcode: "+bdcode);
 		room.setBdcode(bdcode);
 		
-		//파일 저장 경로
-		//String savePath = request.getSession().getServletContext().getRealPath("resources/img/room");
-		//System.out.println(request.getRealPath("resources/img/room"));
 		//대표이미지 파일
 		MultipartFile bdimgfile = room.getBdimgfile();
 		//대표이미지의 파일명
 		String bdimg = "";
-		
-		//D:\numberOne\NumberOne\src\main\webapp\resources\img
-		String projectPath = request.getRealPath("").split(".metadata")[0];
-		System.out.println(request.getRealPath(""));
-		System.out.println(projectPath + "numberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\room");
-		
 		
 		//대표이미지 파일 처리
 		if( ! bdimgfile.isEmpty() ) {
@@ -86,6 +77,7 @@ public class BoardService {
 			//파일명 생성
 			bdimg = "M"+uuid.toString()+"_"+bdimgfile.getOriginalFilename();
 			//대표 이미지 파일 저장
+			System.out.println(roomSavePath);
 			bdimgfile.transferTo( new File (roomSavePath, bdimg)  );
 			
 			//room에 setBdimg 
@@ -110,10 +102,10 @@ public class BoardService {
 			for(int i=0; i<bddetailimgfile.length; i++) {
 				UUID uuid = UUID.randomUUID();
 				//파일명 생성
-				String bddetailimgname = uuid.toString()+bddetailimgfile[i].getOriginalFilename();
+				String bddetailimgname = uuid.toString()+"_"+bddetailimgfile[i].getOriginalFilename();
 				//상세 이미지 파일 저장
 				bddetailimgfile[i].transferTo(  new File(roomSavePath, bddetailimgname)   );
-				bddetailimg += "___"+bddetailimgname;
+				bddetailimg += bddetailimgname+"___";
 			}
 			
 			//room에 setBddetailimg 

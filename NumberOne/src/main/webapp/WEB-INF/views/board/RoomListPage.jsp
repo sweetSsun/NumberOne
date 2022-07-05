@@ -6,8 +6,10 @@
 <head>
 <meta charset="UTF-8">
 <title>1인자 - 게시판 글목록 페이지</title>
-<!-- Jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <%@ include file="/resources/css/CommonCss.jsp" %>
 <style type="text/css">
 	#board_column{
@@ -271,7 +273,14 @@
 											</c:otherwise>
 										</c:choose>
 											
-										<div class="info">${room.bdnickname }| <i class="fa-regular fa-eye"></i> ${room.bdhits }| <i class="fa-regular fa-thumbs-up"></i> ${room.bdrecommend} | <i class="fa-regular fa-comment"></i> ${room.bdreply} | <i class="fa-regular fa-star"></i> ${room.bdscrap}</div>										
+										<div class="info">
+											${room.bdnickname }
+											| <i class="fa-solid fa-eye"></i> <span id="${room.bdcode }_bdhits">${room.bdhits }</span>
+											| <i class='fa-solid fa-heart'></i> <span id="${room.bdcode }_bdlikes">${room.bdrecommend}</span> 
+											| <i class="fa-solid fa-comment"></i> <span id="${room.bdcode }_bdreplies">${room.bdreply}</span> 
+											| <i class="fa-solid fa-star"></i> <span id="${room.bdcode }_bdscraps">${room.bdscrap}</span>
+										</div>										
+							
 									</div>
 								</a>
 							</li>						
@@ -335,9 +344,65 @@
 			dataType : "json",
 			async : false,
 			success: function(roomView){
-				console.log(roomView);
+				//console.log(roomView);
 				//글 이미지
-				$("#roomimg").html("<img class='product-img' style='width:100%; height:100%' src='${pageContext.request.contextPath }/resources/img/room/"+roomView.bdimg+"'></img>");
+				var imgHtml = "";
+				
+				if(roomView.bdimg=='noimg'){
+					console.log('noimg');
+					imgHtml += "<img alt='NumberOneLogo' style='width:100%; height:100%' src='${pageContext.request.contextPath }/resources/img/logo_grey.jpg'>";
+				} else {
+					console.log(roomView.bddetailimg);
+					var imgs = roomView.bddetailimg.split("___");
+					imgs.unshift(roomView.bdimg);
+					imgs.pop();
+					var numOfImgs = parseInt(imgs.length);
+					console.log("이미지 개수: "+numOfImgs);
+					
+					imgHtml += "<div id='myCarousel' class='carousel slide' data-ride='carousel'>";		
+
+					//indicators
+					imgHtml += "<ol class='carousel-indicators'>";
+					imgHtml += "<li data-target='#myCarousel' data-slide-to='0' class='active'></li>";
+					for(var i=1; i<numOfImgs; i++){
+						imgHtml += "<li data-target='#myCarousel' data-slide-to='"+i+"'></li>";
+					}
+					imgHtml += "</ol>";
+					
+					//wrapper for slide
+					imgHtml += "<div class='carousel-inner'>";
+					imgHtml += "<div class='item active'>";
+					imgHtml += "<img style='width:100%; height:100%' src='${pageContext.request.contextPath }/resources/img/room/"+imgs[0]+"'></img>";		
+					imgHtml += "</div>";
+					for(var j=1; j<numOfImgs; j++){
+						imgHtml += "<div class='item'>";
+						imgHtml += "<img style='width:100%; height:100%' src='${pageContext.request.contextPath }/resources/img/room/"+imgs[j]+"' ></img>";		
+						imgHtml += "</div>";
+					}
+					imgHtml += "</div>";
+					
+					//left and right controls
+					imgHtml += "<a class='left carousel-control' href='#myCarousel' data-slide='prev'>";	
+					imgHtml += "<span class='glyphicon glyphicon-chevron-left'></span>";
+					imgHtml += "<span class='sr-only'>Previous</span>"
+					imgHtml += "</a>";
+					imgHtml += "<a class='right carousel-control' href='#myCarousel' data-slide='next'>";	
+					imgHtml += "<span class='glyphicon glyphicon-chevron-right'></span>";
+					imgHtml += "<span class='sr-only'>Next</span>"
+					imgHtml += "</a>";
+
+					imgHtml += "</div>";
+					
+
+					
+					//console.log(imgHtml);
+					/*
+					*/
+				
+				} 
+				
+				//$("#roomimg").html("<img class='product-img' style='width:100%; height:100%' src='${pageContext.request.contextPath }/resources/img/room/"+roomView.bdimg+"'></img>");
+				$("#roomimg").html(imgHtml);
 				//작성자 프로필	
 				var mprofileOutput = "<img class='product-img' style='width:60px; height:40px' ";
 				if(roomView.bdmprofile != 'nomprofile'){
@@ -380,6 +445,12 @@
 				
 				$("#roomInfo").html(roomInfoOutput);
 				
+				//bdhits 1 추가
+				var bdhits = $("#"+bdcode+"_bdhits").text();
+				//console.log("before: "+bdhits);
+				var afterBdhits = parseInt(bdhits)+1;
+				//console.log("after: "+afterBdhits);
+				$("#"+bdcode+"_bdhits").text(afterBdhits);
 				
 				modal.style.display = "block";
 				//modalImg.src = this.src;
@@ -387,6 +458,11 @@
 			}
 		});
 	}
+	
+	$('#myModal').on('show.bs.modal',function(e){
+		alert("모달 오픈");
+	})
+	
 	
 	// Get the modal
 	var modal = document.getElementById("myModal");
@@ -453,22 +529,59 @@
 					if(currentHistory == '0'){ //성공
 						if(history == 'rchistory'){
 							console.log("추천 성공");
-							$("#"+bdcode+"_rchistory").html("<i class='fa-solid fa-heart'></i>");		
+							$("#"+bdcode+"_rchistory").html("<i class='fa-solid fa-heart'></i>");
+							//bdlikes +1 
+							var bdlikes = $("#"+bdcode+"_bdlikes").text();
+							var afterBdlikes;
+							if(bdlikes==""){
+								afterBdlikes=1;
+							} else {
+								afterBdlikes = parseInt(bdlikes)+1;
+							}
+							$("#"+bdcode+"_bdlikes").text(afterBdlikes);
+							
 						} else if(history == 'schistory'){
 							console.log("스크랩 성공");
 							$("#"+bdcode+"_schistory").html("<i class='fa-solid fa-star'></i>");	
+							//bdscraps +1 
+							var bdscraps = $("#"+bdcode+"_bdscraps").text();
+							var afterBdscraps;
+							if(bdscraps==""){
+								afterBdscraps=1;
+							} else {
+								afterBdscraps = parseInt(bdscraps)+1;
+							}
+							$("#"+bdcode+"_bdscraps").text(afterBdscraps);
+							
 						} else {
 							console.log("신고 성공");
-							$("#"+bdcode+"_wbhistory").html("<i class='fa-solid fa-dove' style='position:absolute; right:0;'></i>");				
+							$("#"+bdcode+"_wbhistory").html("<i class='fa-solid fa-dove' style='position:absolute; right:0;'></i>");
 						}
+
 					
 					} else { //취소 성공
 						if(history == 'rchistory'){
 							console.log("추천 취소 성공");
-							$("#"+bdcode+"_rchistory").html("<i class='fa-regular fa-heart'></i>");					
+							$("#"+bdcode+"_rchistory").html("<i class='fa-regular fa-heart'></i>");		
+							//bdlikes -1 
+							var bdlikes = $("#"+bdcode+"_bdlikes").text();
+							var afterBdlikes = parseInt(bdlikes)-1;
+							if(afterBdlikes == 0){
+								afterBdlikes = "";
+							}
+							$("#"+bdcode+"_bdlikes").text(afterBdlikes);
+							
 						} else if(history == 'schistory'){
 							console.log("스크랩 취소 성공");
 							$("#"+bdcode+"_schistory").html("<i class='fa-regular fa-star'></i>");
+							//bdscraps -1 
+							var bdscraps = $("#"+bdcode+"_bdscraps").text();
+							var afterBdscraps = parseInt(bdscraps)-1;
+							if(afterBdscraps == 0){
+								afterBdscraps = "";
+							}
+							$("#"+bdcode+"_bdscraps").text(afterBdscraps);
+							
 						} else {
 							console.log("신고 취소 성공");
 							$("#"+bdcode+"_wbhistory").html("<i class='fa-solid fa-land-mine-on' style='position:absolute; right:0;'></i>");				

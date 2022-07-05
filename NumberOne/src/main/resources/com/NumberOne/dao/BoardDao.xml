@@ -113,7 +113,7 @@
 
  	 <select id="selectRoomView" resultType="com.NumberOne.dto.BoardDto">
  	 	<!-- 자랑글 상세 -->
- 	 	select bdcode, bdmid, bdtitle, bddate, bdimg, bdstate, bdhits, bdcontents,
+ 	 	select bdcode, bdmid, bdtitle, bddate, bdimg, bdstate, bdhits, bdcontents, bddetailimg,
 		bdscrap, bdrecommend, bdreply, m.mnickname as bdnickname, m.mprofile as bdmprofile,
         sh.scmid as schistory, rch.rcmid as rchistory, wbh.wbmid as wbhistory
 		from boards b
