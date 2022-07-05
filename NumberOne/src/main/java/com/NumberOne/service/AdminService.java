@@ -38,7 +38,7 @@ public class AdminService {
 	private HttpServletRequest request;
 	
 	// 페이징 관련 필드
-	int viewCount = 5; // 한 페이지에 보여줄 갯수
+	int viewCount = 20; // 한 페이지에 보여줄 갯수
 	int pageNumCount = 5; // 한 페이지에 보여줄 페이징 갯수
 	
 	/* 회원 관리 */

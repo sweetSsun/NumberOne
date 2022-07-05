@@ -127,9 +127,9 @@ public class AdminController {
 	}
 	
 	@RequestMapping (value="admin_updateNoticeModify")
-	public ModelAndView admin_updateNoticeModify(NoticeDto notice, RedirectAttributes ra) throws IllegalStateException, IOException {
+	public ModelAndView admin_updateNoticeModify(NoticeDto notice, String originImg, RedirectAttributes ra) throws IllegalStateException, IOException {
 		System.out.println("공지 수정 요청");
-		mav = asvc.admin_updateNoticeModify(notice, ra);
+		mav = asvc.admin_updateNoticeModify(notice, originImg, ra);
 		return mav;
 	}
 		

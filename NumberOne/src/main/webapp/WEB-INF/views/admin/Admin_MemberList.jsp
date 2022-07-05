@@ -86,8 +86,8 @@
 	                   <!-- 회원관리 목록 -->
 	                   <tr style="border-bottom: solid gray 1px;">
 	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;">${member.mid}</td>
-	                      <td>${member.mname}</td>
-	                      <td>${member.mnickname}</td>
+	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;">${member.mname}</td>
+	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;">${member.mnickname}</td>
 	                      <td>${member.mphone}</td>
 	                      <td>${member.memail}</td>
 	                      <td>${member.mjoindate}</td>
@@ -184,8 +184,7 @@
                 	<div class="row">
 	                		<div class="col-5">
                                 <div class="no-gutters align-items-center">
-                                    <div class="h6 mb-1 font-weight-bold text-gray-800" >
-                                 		<img class="img-fluid" alt="영화포스터" style="max-height:300px;" id="mI_mprofile" src="">
+                                    <div class="h6 mb-1 font-weight-bold text-gray-800 text-center" id="mI_mprofile">
                                  		프로필이미지
                                     </div>
                                     <div>
@@ -280,9 +279,11 @@
 				success: function(result){
 					console.log(result);
 					$("#memberInfoModalLabel").text(mid + " 회원 상세정보");
-
+					$("#mI_mprofile").text("");
 					// 저장경로 때문에 프로필이미지는 수정 필요
-					$("#mI_mprofile").attr("src", result.mprofile);
+					if (result.mprofile != null){
+						$("#mI_mprofile").html("<img class='img-fluid rounded-circle' alt='프로필이미지' style='height: 200px; width: 200px;' src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/" + result.mprofile + "'>");
+					}
 					$("#mI_mmessage").text(result.mmessage);
 					$("#mI_mid").text(result.mid);
 					$("#mI_mname").text(result.mname);
