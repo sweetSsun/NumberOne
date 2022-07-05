@@ -77,7 +77,7 @@
 					<div class="row idDateHits">
 						<div class="col-6">
 							<!-- 닉네임 출력으로 바꾸기 -->
-							<a href="#"><span class="">${noticeBoard.nbmid }</span></a> 
+							<a href="#"><span class="">${noticeBoard.nbnickname }</span></a> 
 						</div>
 						
 						<div class="col-3 offset-md-3">
@@ -90,7 +90,7 @@
 					<div class="row mt-3 mb-3 boardContents">
 						<div class="col">
 							<c:if test="${noticeBoard.nbimg != null }">
-								<img alt="" src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg}" style="max-width:100%;">
+								<img alt="" src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg}" style="max-width:100%; max-height:500px;">
 							</c:if>
 							<textarea rows="10%" cols="100%" readonly>${noticeBoard.nbcontents }</textarea>
 						</div>
@@ -122,7 +122,7 @@
 	// 공지글 삭제 요청 (nbstate 0으로 변경)
 	$("#deleteBtn").click(function(){
 		console.log("공지 삭제 요청");
-		var nbstate = 0;
+		var nbstate = 2;
 		var nbcode = '${noticeBoard.nbcode}';
 		console.log("nbcode : " + nbcode);
 		location.href="admin_updateNbstate?nbcode="+nbcode+"&nbstate="+nbstate;

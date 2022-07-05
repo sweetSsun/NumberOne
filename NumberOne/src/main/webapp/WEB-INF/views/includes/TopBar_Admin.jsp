@@ -72,6 +72,12 @@
 				<div class="col-6 offset-sm-6">
 					<!-- Home, 커뮤니티, 중고거래 목록 -->
 					<ul class="list-unstyled " >
+						<li class="nav-item ">
+							<h5>로그인 아이디 : ${sessionScope.loginId}<h5>
+						</li>					
+						<li class="nav-item active">
+							<h5>로그인 프로필 : ${sessionScope.loginProfile}<h5>
+						</li>	
 						<li class="nav-item active">
 							<a href="${pageContext.request.contextPath }/">HOME</a>
 						</li>

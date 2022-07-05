@@ -136,8 +136,7 @@ public class MemberController {
 		public ModelAndView loadToMyInfoModifyForm() {
 			System.out.println("마이페이지 회원정보수정페이지 이동 요청");
 			mav = new ModelAndView();
-			mav = msvc.loadToMyInfoModifyForm();
-			
+			mav.setViewName("member/MyInfoMemberModifyForm");
 			return mav;
 			
 		}		
@@ -225,6 +224,16 @@ public class MemberController {
 	
 		}		
 		
+		//카카오아이디 중복 확인
+		@RequestMapping(value = "/memberKakaoLogin")
+		public ModelAndView memberKakaoLogin(MemberDto member, RedirectAttributes ra) {
+			System.out.println("카카오로 로그인 요청");
+			System.out.println(member);
+			ModelAndView mav = msvc.memberKakaoLogin(member, ra);
+			
+			return mav;
+			
+		}
 		
 
 }
