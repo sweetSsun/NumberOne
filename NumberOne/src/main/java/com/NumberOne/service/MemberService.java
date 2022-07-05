@@ -133,9 +133,7 @@ public class MemberService {
 			if(loginMember .getMstate() == 0) {
 				ra.addFlashAttribute("msg", "이용 정지 된 계정 입니다.");
 				mav.setViewName("redirect:/loadToLogin");
-<<<<<<< HEAD
-			}else {
-=======
+
 			} else if(loginMember.getMid().equals("admin")) {
 				session.setAttribute("loginId", loginMember.getMid());
 				mav.setViewName("redirect:/admin_loadToAdminMainPage");
@@ -143,8 +141,8 @@ public class MemberService {
 				ra.addFlashAttribute("msg", "탈퇴 처리 된 회원입니다.");
 				mav.setViewName("redirect:/loadToLogin");				
 			}else {
-			
->>>>>>> 00991820b59735aa43211aa830dd0a01754a5782
+		
+
 				//로그인 성공
 				session.setAttribute("loginId", loginMember.getMid());
 				session.setAttribute("loginProfile", loginMember.getMprofile());

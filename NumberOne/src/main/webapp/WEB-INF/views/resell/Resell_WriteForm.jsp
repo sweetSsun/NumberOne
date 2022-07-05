@@ -212,10 +212,10 @@ div {
 
 							<div class="container-card_goods_2s">
 								<div class="item-basis_7 flex-shrink">
-									<input type="text" name="gd_names" size="60" placeholder="품목명" class="gd_check">
+									<input type="text" name="gd_names" size="60" placeholder="품목명" class="gdcheck_n">
 								</div>
 								<div class="item-basis_3 flex-shrink">
-									<input type="text" size="20" placeholder="가격" name="gd_price" class="gd_check">
+									<input type="text" size="20" placeholder="가격" name="gd_price" class="gdcheck_p">
 								</div>
 
 							</div>
@@ -226,11 +226,11 @@ div {
 							<div class="d_none btn_d-none">
 								<div class="container-card_goods_2">
 									<div class="item-basis_7 flex-shrink">
-										<input type="text" name="gd_names" size="60" placeholder="품목명" class="gd_check">
-									</div>
-									<div class="item-basis_3 flex-shrink">
-										<input type="text" size="20" placeholder="가격" name="gd_price" class="gd_check">
-									</div>
+									<input type="text" name="gd_names" size="60" placeholder="품목명" class="gdcheck_n">
+								</div>
+								<div class="item-basis_3 flex-shrink">
+									<input type="text" size="20" placeholder="가격" name="gd_price" class="gdcheck_p">
+								</div>
 
 								</div>
 								
@@ -243,11 +243,11 @@ div {
 							<div class="d_none btn_d-none">
 								<div class="container-card_goods_2">
 									<div class="item-basis_7 flex-shrink">
-										<input type="text" name="gd_names" size="60" placeholder="품목명" class="gd_check">
-									</div>
-									<div class="item-basis_3 flex-shrink">
-										<input type="text" size="20" placeholder="가격" name="gd_price" class="gd_check">
-									</div>
+									<input type="text" name="gd_names" size="60" placeholder="품목명" class="gdcheck_n">
+								</div>
+								<div class="item-basis_3 flex-shrink">
+									<input type="text" size="20" placeholder="가격" name="gd_price" class="gdcheck_p">
+								</div>
 
 
 								</div>
@@ -261,11 +261,11 @@ div {
 
 								<div class="container-card_goods_2">
 									<div class="item-basis_7 flex-shrink">
-										<input type="text" name="gd_names" size="60" placeholder="품목명" class="gd_check" >
-									</div>
-									<div class="item-basis_3 flex-shrink">
-										<input type="text" size="20" placeholder="가격" name="gd_price" class="gd_check">
-									</div>
+									<input type="text" name="gd_names" size="60" placeholder="품목명" class="gdcheck_n">
+								</div>
+								<div class="item-basis_3 flex-shrink">
+									<input type="text" size="20" placeholder="가격" name="gd_price" class="gdcheck_p">
+								</div>
 								</div>
 								<div class="container-flex_1 flex-end">
 									<div class="addBtn">+추가</div>
@@ -275,12 +275,12 @@ div {
 
 							<div class="d_none btn_d-none">
 	<div class="container-card_goods_2">
-									<div class="item-basis_7 flex-shrink">
-										<input type="text" name="gd_names" size="60" placeholder="품목명" class="gd_check">
-									</div>
-									<div class="item-basis_3 flex-shrink">
-										<input type="text" size="20" placeholder="가격" name="gd_price" class="gd_check">
-									</div>
+								<div class="item-basis_7 flex-shrink">
+									<input type="text" name="gd_names" size="60" placeholder="품목명" class="gdcheck_n">
+								</div>
+								<div class="item-basis_3 flex-shrink">
+									<input type="text" size="20" placeholder="가격" name="gd_price" class="gdcheck_p">
+								</div>
 								</div>
 					
 								<div class="container-flex_1 flex-end">
@@ -384,48 +384,72 @@ var addBtn0 = document.getElementsByClassName("addBtn")[0];
 var addBtn1 = document.getElementsByClassName("addBtn")[1];
 var addBtn2 = document.getElementsByClassName("addBtn")[2];
 var addBtn3 = document.getElementsByClassName("addBtn")[3];
+
+/* 제거버튼 변수*/
 var removeBtn0 = document.getElementsByClassName("removeBtn")[0];
 var removeBtn1 = document.getElementsByClassName("removeBtn")[1];
 var removeBtn2 = document.getElementsByClassName("removeBtn")[2];
 var removeBtn3 = document.getElementsByClassName("removeBtn")[3];
+
+/* input태그의 부모div */
 var dsiplay_btn0 =document.getElementsByClassName("btn_d-none")[0];
 var dsiplay_btn1 =document.getElementsByClassName("btn_d-none")[1];
 var dsiplay_btn2 =document.getElementsByClassName("btn_d-none")[2];
 var dsiplay_btn3 =document.getElementsByClassName("btn_d-none")[3];
 
+/* 품목이름 변수 */
+var gdcheck_n1 = document.getElementsByClassName("gdcheck_n")[1];
+var gdcheck_n2 = document.getElementsByClassName("gdcheck_n")[2];
+var gdcheck_n3 = document.getElementsByClassName("gdcheck_n")[3];
+var gdcheck_n4 = document.getElementsByClassName("gdcheck_n")[4];
+
+/* 품목가격 변수  */
+var gdcheck_p1 = document.getElementsByClassName("gdcheck_p")[1];
+var gdcheck_p2 = document.getElementsByClassName("gdcheck_p")[2];
+var gdcheck_p3 = document.getElementsByClassName("gdcheck_p")[3];
+var gdcheck_p4 = document.getElementsByClassName("gdcheck_p")[4];
+
 addBtn0.onclick = function(){
 	console.log("addBtn0 호출");	
 	dsiplay_btn0.classList.remove("d_none");
-	document.getElementsByClassName("gd_check")
+	gdcheck_n1.setAttribute("name","gd_names");
+	gdcheck_p1.setAttribute("name","gd_price");
 	
 	};
 	addBtn1.onclick = function(){
-		console.log("addBtn1 호출");
 		dsiplay_btn1.classList.remove("d_none");
+		gdcheck_n2.setAttribute("name","gd_names");
+		gdcheck_p2.setAttribute("name","gd_price");
 		};
 		addBtn2.onclick = function(){
-			console.log("addBtn2 호출");
 			dsiplay_btn2.classList.remove("d_none");
+			gdcheck_n3.setAttribute("name","gd_names");
+			gdcheck_p3.setAttribute("name","gd_price");
 			};
 			addBtn3.onclick = function(){
-				console.log("addBtn3 호출");
 				dsiplay_btn3.classList.remove("d_none");
+				gdcheck_n4.setAttribute("name","gd_names");
+				gdcheck_p4.setAttribute("name","gd_price");
 				};
 				removeBtn3.onclick= function(){
-					console.log("removeBtn3 호출");
 					dsiplay_btn3.classList.add("d_none");		
+					gdcheck_n4.removeAttribute("name","gd_names");
+					gdcheck_p4.removeAttribute("name","gd_price");
 				}
 				removeBtn2.onclick= function(){
-					console.log("removeBtn2 호출");
-					dsiplay_btn2.classList.add("d_none");	;					
+					dsiplay_btn2.classList.add("d_none");	
+					gdcheck_n3.removeAttribute("name","gd_names");
+					gdcheck_p3.removeAttribute("name","gd_price");
 				}
 				removeBtn1.onclick= function(){
-					console.log("removeBtn1 호출");
 					dsiplay_btn1.classList.add("d_none");			
+					gdcheck_n2.removeAttribute("name","gd_names");
+					gdcheck_p2.removeAttribute("name","gd_price");
 				}
 				removeBtn0.onclick= function(){
-					console.log("removeBtn0 호출");
-					dsiplay_btn0.classList.add("d_none");				
+					dsiplay_btn0.classList.add("d_none");	
+					gdcheck_n1.removeAttribute("name","gd_names");
+					gdcheck_p1.removeAttribute("name","gd_price");
 				}
 
 			
@@ -435,7 +459,6 @@ addBtn0.onclick = function(){
 			/*  contentsCheck
 			mainImgCheck
 			gd_check
-			
 			
 			*/
 				
