@@ -64,6 +64,22 @@ public interface ResellDao {
 
 
 	String selectZzimCheck(@Param("loginId") String loginId, @Param("ubcode") String ubcode);
+
+
+
+	String selectRegionCode(String mRegion);
+
+
+
+	String loadToResellWriteForm(String loginId);
+
+
+
+	ArrayList<UsedBoardDto> selectResellPageList(@Param("sell_buy") String sell_buy, @Param("mregion") String mregion, @Param("startRow") int startRow, @Param("endRow") int endRow);
+
+
+
+	ArrayList<UsedBoardDto> selectResellRegionList_ajax(@Param("mregion") String mregion, @Param("sell_buy") String sell_buy);
 	
 	
 

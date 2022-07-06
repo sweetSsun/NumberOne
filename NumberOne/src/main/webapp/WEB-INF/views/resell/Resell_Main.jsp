@@ -59,7 +59,7 @@
 				<div class="d_body">
 					<div class="flex_div flex_between flex-p0">
 						<div class="item_start font-l">팔구</div>
-						<div class="item_end font-m"><a href="selectResellSellList"> 더보기+</a></div>
+						<div class="item_end font-m"><a href="selectResellPageList?sell_buy=S"> 더보기+</a></div>
 
 					</div>
 					<div class="flex_div flex_space-even flex-p2 container-card_w100">
@@ -164,7 +164,7 @@
 				<div class="d_footer">
 					<div class="flex_div flex_between flex-p0">
 						<div class="item_start font-l">사구</div>
-						<div class="item_end font-m"><a href="selectResellBuyList">더보기+</a></div>
+						<div class="item_end font-m"><a href="selectResellPageList?sell_buy=B">더보기+</a></div>
 
 					</div>
 					

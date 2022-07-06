@@ -35,15 +35,15 @@ public class ResellController {
 		
 		return mav;
 	}
-	
-	
+		
 	
 	@RequestMapping (value="/loadToResellWriteForm")
 	public ModelAndView loadToResellWriteForm(String sell_buy) {
 		ModelAndView mav = new ModelAndView();
 		System.out.println("타이틀체크 : " + sell_buy);
-		mav.addObject("sell_buy", sell_buy);
-		mav.setViewName("resell/Resell_WriteForm");
+		
+		mav = rsvc.loadToResellWriteForm(sell_buy);
+				
 		
 		return mav;
 	}	
@@ -52,24 +52,7 @@ public class ResellController {
 		return "resell/Resell_ModifyForm";
 	}
 	
-	@RequestMapping (value="/selectResellBuyList")
-	public ModelAndView selectResellBuyList() {
-		System.out.println("selectResellBuyList 요청");
-		ModelAndView mav = new ModelAndView();	
-		
-		mav = rsvc.selectResellBuyList();
-	
-		return mav;
-	}
-	
-	@RequestMapping (value="/selectResellSellList")
-	public ModelAndView selectResellSellList() {
-		System.out.println("selectResellSellList 요청");
-	ModelAndView mav = new ModelAndView();		
-		mav = rsvc.selectResellSellList();
-		
-		return mav;
-	}
+
 	@RequestMapping (value="/insertResellWrite")
 	public ModelAndView insertResellWrite(GoodsDto gdDto, UsedBoardDto ubDto, RedirectAttributes ra) throws IllegalStateException, IOException {
 		System.out.println("insertResellWrite 호출");
@@ -82,34 +65,17 @@ public class ResellController {
 		return mav;
 	}
 	
-	@RequestMapping(value="/selectRegion_sellList_ajax")
-	public @ResponseBody String selectRegion_sellList_ajax(String selectRegion) {
-		System.out.println("selectRegion_sellList_ajax 요청");
-		System.out.println("파라메터확인 : "+ selectRegion);
-		String sellList_json = rsvc.selectRegion_sellList_ajax(selectRegion);
+	@RequestMapping(value="/selectResellRegionList_ajax")
+	public @ResponseBody String selectResellRegionList_ajax(String selRegion, String sell_buy) {
+		System.out.println("selectResellRegionList_ajax 요청");
+		System.out.println("파라메터확인 : "+ selRegion);
+		String sell_buyList = rsvc.selectResellRegionList_ajax(selRegion, sell_buy);
 		
-		return sellList_json;
+		return sell_buyList;
 		
 	}
-	@RequestMapping(value="/selectRegion_buyList_ajax")
-	public @ResponseBody String selectRegion_buyList_ajax(String selectRegion) {
-		System.out.println("selectRegion_buyList_ajax 요청");
-		System.out.println("파라메터확인 : "+ selectRegion);
-		String buyList_json = rsvc.selectRegion_buyList_ajax(selectRegion);
-				
-		return buyList_json;
-	}
-	
-	@RequestMapping (value="/selectPage_sellList")
-	public ModelAndView selectPage_sellList(String select_page, String selectRegion) {
-		System.out.println("selectPage_sellList 호출");
 	
 
-		ModelAndView mav = new ModelAndView();
-		mav = rsvc.selectPage_sellList(select_page, selectRegion);
-				
-		return mav;
-	}
 	@RequestMapping(value="/zzimClick_ajax")
 	public @ResponseBody String zzimClick_ajax(String zzubcode, String zzmid, int zzim_num) {
 		System.out.println("zzimClick_ajax 요청");
@@ -120,6 +86,18 @@ public class ResellController {
 		String zzimCheck = rsvc.zzimClick_ajax(zzubcode, zzmid, zzim_num);
 				
 		return zzimCheck;
+	}
+	
+	
+	@RequestMapping (value="/selectResellPageList")
+	public ModelAndView selectResellPageList(String sell_buy, String select_page, String selectRegion) {
+		System.out.println("selectResellPageList 호출");
+	
+
+		ModelAndView mav = new ModelAndView();
+		mav = rsvc.selectResellPageList(sell_buy, select_page, selectRegion);
+				
+		return mav;
 	}
 	
 	

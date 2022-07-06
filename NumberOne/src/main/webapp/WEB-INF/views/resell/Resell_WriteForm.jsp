@@ -39,7 +39,7 @@
 					<div class="container-header">
 						<div class="container-flex_1 flex_between">
 							<div class="item_start">
-								<span> <select class="position_change select-size"
+								<span> <select class="select-size"
 									onchange="selectSB()" id="boardTitle" name="ubsellbuy">
 										<option value="S">팔구</option>
 										<option value="B">사구</option>
@@ -58,7 +58,7 @@
 								</span>
 							</div>
 
-							<div class="item_end">작성자 : 닉네임  ${sessionScope.loginRegion }</div>
+							<div class="item_end">작성자 :  ${mNickname }</div>
 
 						</div>
 

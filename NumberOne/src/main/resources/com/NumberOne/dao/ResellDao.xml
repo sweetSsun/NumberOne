@@ -11,51 +11,32 @@ SELECT MAX(UBCODE)
 FROM USEDBOARDS
 </select>
 
-
 <!-- 글작성 상품번호  -->
 <select id="selectMaxNumber_gd" resultType="String">
 SELECT MAX(GDCODE)
 FROM GOODS
 </select>
 
-<!-- 팔구 글목록  -->
-<select id="selectResellSellList" resultType="com.NumberOne.dto.UsedBoardDto">
-SELECT UBNICKNAME, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE, UBCONTENTS, TO_CHAR(UBDATE, 'YYYY-MM-DD HH24:MI') AS UBDATE,
-UBMAINIMG, UBDETAILIMG, UBSTATE, NVL(ZZIMCOUNT, 0) ZZIMCOUNT
-FROM  USEDBOARDS LEFT OUTER JOIN (SELECT ZZUBCODE,COUNT(*) AS ZZIMCOUNT
-                                    FROM ZZIM
-                                    GROUP BY ZZUBCODE)
-                                    ON UBCODE = ZZUBCODE
-                                    ,(SELECT MID, MNICKNAME AS UBNICKNAME
-                                    FROM MEMBERS)
-WHERE MID = UBMID AND UBRGCODE = #{loginRegion} AND UBSELLBUY = 'S' AND UBSTATE = 1
-ORDER BY UBDATE DESC
+<select id="selectRegionCode" resultType="String">
+SELECT RGCODE
+FROM REGION
+WHERE RGNAME = #{mregion}
 </select>
 
-<!-- 사구 글목록 -->
-<select id="selectResellBuyList" resultType="com.NumberOne.dto.UsedBoardDto">
-SELECT UBNICKNAME, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE, UBCONTENTS, TO_CHAR(UBDATE, 'YYYY/MM/DD HH24:MI') AS UBDATE,
-UBMAINIMG, UBDETAILIMG, UBSTATE, NVL(ZZIMCOUNT, 0) ZZIMCOUNT
-FROM  USEDBOARDS LEFT OUTER JOIN (SELECT ZZUBCODE,COUNT(*) AS ZZIMCOUNT
-                                    FROM ZZIM
-                                    GROUP BY ZZUBCODE)
-                                    ON UBCODE = ZZUBCODE
-                                    ,(SELECT MID, MNICKNAME AS UBNICKNAME
-                                    FROM MEMBERS)
-WHERE MID = UBMID AND UBRGCODE = #{loginRegion} AND UBSELLBUY = 'B' AND UBSTATE = 1
-ORDER BY UBDATE DESC
+<select id="loadToResellWriteForm" resultType="String">
+SELECT MNICKNAME
+FROM MEMBERS
+WHERE MID = #{loginId}
 </select>
 
-
-<!-- 지역선택  -->
-<select id="selectPage_sellList" resultType="com.NumberOne.dto.UsedBoardDto">
-
+<!-- 중고거래 글목록 -->
+<select id="selectResellPageList"  resultType="com.NumberOne.dto.UsedBoardDto">
 SELECT UBNICKNAME, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE, UBCONTENTS,
 TO_CHAR(UBDATE, 'YYYY-MM-DD HH24:MI') UBDATE, UBMAINIMG, UBDETAILIMG, UBSTATE, NVL(ZZIMCOUNT, 0) ZZIMCOUNT
 FROM (SELECT ROWNUM RN, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE, UBCONTENTS, 
         UBDATE, UBMAINIMG, UBDETAILIMG, UBSTATE
       FROM  USEDBOARDS
-      WHERE UBRGCODE = #{selectRegion} AND UBSELLBUY = 'S' AND UBSTATE = 1
+      WHERE UBRGCODE = #{mregion} AND UBSELLBUY = #{sell_buy} AND UBSTATE = 1
       ORDER BY UBCODE DESC
      ) LEFT OUTER JOIN (SELECT ZZUBCODE, COUNT(*) AS ZZIMCOUNT
                                     FROM ZZIM
@@ -64,7 +45,23 @@ FROM (SELECT ROWNUM RN, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE, UBCONTENTS,
                                     ,(SELECT MID, MNICKNAME AS UBNICKNAME
                                     FROM MEMBERS)
 WHERE MID = UBMID AND RN BETWEEN #{startRow} AND #{endRow}
+
 </select>
+
+<!-- 지역글 목록 ajax -->
+<select id="selectResellRegionList_ajax" resultType="com.NumberOne.dto.UsedBoardDto">
+SELECT UBNICKNAME, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE, UBCONTENTS, TO_CHAR(UBDATE, 'YYYY/MM/DD HH24:MI') AS UBDATE,
+UBMAINIMG, UBDETAILIMG, UBSTATE, NVL(ZZIMCOUNT, 0) ZZIMCOUNT
+FROM  USEDBOARDS LEFT OUTER JOIN (SELECT ZZUBCODE,COUNT(*) AS ZZIMCOUNT
+                                    FROM ZZIM
+                                    GROUP BY ZZUBCODE)
+                                    ON UBCODE = ZZUBCODE
+                                    ,(SELECT MID, MNICKNAME AS UBNICKNAME
+                                    FROM MEMBERS)
+WHERE MID = UBMID AND UBRGCODE = #{mregion} AND UBSELLBUY = #{sell_buy} AND UBSTATE = 1
+ORDER BY UBDATE DESC
+</select>
+
 
 <!-- 중고거래 전체 글 수 확인  -->
 <select id="selectPageTotalCount" resultType="int">
@@ -118,15 +115,12 @@ VALUES(#{ubcode}, #{ubrgcode}, #{ubsellbuy}, #{ubmid} , #{ubtitle}, #{ubcontents
 </insert>
 
 
-
-
 <insert id="zzimClick_ajax">
 
 INSERT INTO ZZIM(ZZMID, ZZUBCODE)
 VALUSE()
 
 </insert>
-
 
 
 
