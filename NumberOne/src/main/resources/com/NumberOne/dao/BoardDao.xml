@@ -10,6 +10,7 @@
  		SELECT NBCODE,NBMID,NBTITLE,NBCONTENTS,TO_CHAR(NBDATE,'YY-MM-DD') AS NBDATE,
  			   NBIMG,NBSTATE,NBHITS 
  		FROM NOTICEBOARDS
+ 		ORDER BY NBCODE DESC
  	</select>
  	
 	<!-- 카테고리별(자유,질문,정보,후기) 글목록 조회 -->
@@ -19,6 +20,7 @@
 	    FROM BOARDS
 	   	WHERE BDCATEGORY = #{bdcategory_Free}
 	   	AND BDSTATE = 1
+	   	ORDER BY BDCODE DESC
  	</select>
  	<select id="selectBoardList_Question" resultType="com.NumberOne.dto.BoardDto">
  		<!-- 질문 게시글 목록 조회  -->
@@ -26,6 +28,7 @@
 	    FROM BOARDS
 	   	WHERE BDCATEGORY = #{bdcategory_Question}
 	   	AND BDSTATE = 1
+	   	ORDER BY BDCODE DESC
  	</select>
  	<select id="selectBoardList_Information" resultType="com.NumberOne.dto.BoardDto">
  		<!--정보 게시글 목록 조회  -->
@@ -33,6 +36,7 @@
 	    FROM BOARDS
 	   	WHERE BDCATEGORY = #{bdcategory_Infomation}
 	   	AND BDSTATE = 1
+	   	ORDER BY BDCODE DESC
  	</select>
  	<select id="selectBoardList_Review" resultType="com.NumberOne.dto.BoardDto">
  		<!--후기 게시글 목록 조회  -->
@@ -40,6 +44,7 @@
 	    FROM BOARDS
 	   	WHERE BDCATEGORY = #{bdcategory_Review}
 	   	AND BDSTATE = 1
+	   	ORDER BY BDCODE DESC
  	</select>
  	
  	<select id="selectBoardSearchList" resultType="com.NumberOne.dto.BoardDto">
@@ -47,6 +52,7 @@
  		SELECT BD.*, MB.MNICKNAME AS BDNICKNAME 
  		FROM BOARDS BD, MEMBERS MB
  		WHERE BD.BDMID = MB.MID 
+ 		AND BDCATEGORY NOT IN ( '자랑' )
  		
  		<if test="searchType == 'bdtitle' ">
  		<!-- 제목으로 검색 -->
@@ -72,7 +78,6 @@
  		AND BDSTATE = 1
  		ORDER BY BDCODE DESC
  	 </select>
- 	 
  	 <select id="selectRoomList" resultType="com.NumberOne.dto.BoardDto">
  	 	<!-- 자랑글 목록 -->
  	 	select bdcode, bdmid, bdtitle, bddate, bdimg, bdstate, bdhits, bdcontents,
@@ -103,14 +108,13 @@
  	 <select id="selectBoardView" resultType="com.NumberOne.dto.BoardDto">
  	 	<!-- 일반글 상세 -->
 		SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, TO_CHAR(BDDATE,'YY-MM-DD HH24:MI') AS BDDATE, 
-	    	   BDIMG, BDDETAILIMG, BDSTATE, BDHITS, MB.MNICKNAME AS BDNICKNAME, RG.RGCODE AS BDRGCODE, RG.RGNAME AS BDRGNAME
+	    	   BDIMG, BDDETAILIMG, BDSTATE, BDIMG, BDHITS, MB.MNICKNAME AS BDNICKNAME, RG.RGCODE AS BDRGCODE, RG.RGNAME AS BDRGNAME
 		FROM BOARDS BD, MEMBERS MB, REGION RG
 		WHERE BD.BDMID = MB.MID
         AND BD.BDRGCODE = RG.RGCODE
 		AND BD.BDCODE = #{bdcode}
  	 </select>
  	 
-
  	 <select id="selectRoomView" resultType="com.NumberOne.dto.BoardDto">
  	 	<!-- 자랑글 상세 -->
  	 	select bdcode, bdmid, bdtitle, bddate, bdimg, bdstate, bdhits, bdcontents, bddetailimg,
@@ -193,11 +197,26 @@
  		AND RCBDCODE = #{bdcode}
  	</select>
  	
+ 	<select id="checkBoardWarning_ajax" resultType = "String">
+		<!-- 게시글 신고 유무 확인 --> 		
+ 		SELECT WBEDBDCODE
+ 		FROM WARNINGBOARDS
+ 		WHERE WBMID = #{loginId}
+ 		AND WBEDBDCODE = #{bdcode}
+ 	</select>
+ 	
  	<insert id="insertBoardWarning_ajax">
  		<!-- 게시글 신고 -->
  		INSERT INTO WARNINGBOARDS 
  		VALUES ( #{loginId}, #{bdcode} )
  	</insert>
+ 	 
+ 	<delete id="deleteBoardWarning_ajax">
+ 		<!-- 게시글 신고 취소 -->
+ 		DELETE FROM WARNINGBOARDS
+ 		WHERE WBMID = #{loginId}
+ 		AND WBEDBDCODE = #{bdcode}
+ 	</delete>
  	 
  	<select id="selectBoardRecommendCount_ajax" resultType="int">
  		<!-- 게시글 추천수 조회 -->
@@ -222,6 +241,13 @@
 		BDCONTENTS = #{bdcontents}
 		WHERE BDCODE = #{bdcode}
 	</update>
+	
+	<insert id="insertBoard">
+		<!-- 게시글 작성 -->
+		INSERT INTO BOARDS (BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, BDDATE, BDIMG)
+		VALUES ( #{bdcode}, #{bdrgcode}, #{bdcategory}, #{bdmid}, #{bdtitle}, #{bdcontents}, SYSDATE, #{bdimg} )
+		
+	</insert>
 	
  	<update id="updateRoomhits">
  		<!-- 조회수 올리기-->
@@ -277,5 +303,12 @@
 		values (#{loginId}, #{bdcode})
 	</insert>
 
+	<update id="updateBoardHits">
+		<!-- 게시글 조회수 증가 -->
+		UPDATE BOARDS
+		SET BDHITS = BDHITS + 1
+		WHERE BDCODE = #{bdcode}
+	</update>
+	
 	
  </mapper>

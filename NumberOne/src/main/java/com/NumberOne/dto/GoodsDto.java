@@ -12,4 +12,5 @@ public class GoodsDto {
 	private int gdstate;		//상품상태
 	
 	private String[] gd_names;  //작성된 품목들
+	private int[] gd_price;
 }

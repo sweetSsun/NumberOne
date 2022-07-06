@@ -62,8 +62,14 @@ public interface BoardDao {
 	//댓글삭제[상태변경]  (ajax)
 	int updateReplyState_ajax(String rpcode);
 	
+	//게시글 신고 유무 확인 
+	String checkBoardWarning_ajax(@Param("loginId")String loginId, @Param("bdcode")String bdcode);
+		
 	//게시글 신고 
 	int insertBoardWarning_ajax(@Param("loginId")String loginId, @Param("bdcode")String bdcode);
+	
+	//게시글 신고 취소(삭제)
+	int deleteBoardWarning_ajax(@Param("loginId")String loginId, @Param("bdcode")String bdcode);
 	
 	//게시글 추천
 	int insertBoardRecommend_ajax(@Param("loginId")String loginId, @Param("bdcode")String bdcode);
@@ -74,19 +80,18 @@ public interface BoardDao {
 	//게시글 추천유무 확인 
 	String checkBoardRecommend_ajax(@Param("loginId")String loginId, @Param("bdcode")String bdcode);
 
-	
 	//게시글 추천수 조회
 	int selectBoardRecommendCount_ajax(String bdcode);	
 	
-	//일반게시판 글목록 조회 
+	//글 전체 목록 조회 
 	@Select("SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, "
-	          + "      TO_CHAR(BDDATE,'YY-MM-DD') AS BDDATE, "
-	          + "      BDIMG, BDDETAILIMG, BDSTATE, BDHITS, MB.MNICKNAME AS BDNICKNAME "
+	          + "   TO_CHAR(BDDATE,'YY-MM-DD') AS BDDATE, "
+	          + "   BDIMG, BDDETAILIMG, BDSTATE, BDHITS, MB.MNICKNAME AS BDNICKNAME "
 	          + "FROM BOARDS BD, MEMBERS MB "
 	          + "WHERE BD.BDMID = MB.MID "
 	          + "AND BDSTATE = 1 "
 	          + "ORDER BY BDCODE DESC " )
-	   ArrayList<BoardDto> selectBoardList();
+	  ArrayList<BoardDto> selectBoardList();
 	
 	
 	/* 일반게시판 글목록 조회 */
@@ -122,7 +127,6 @@ public interface BoardDao {
 	//자취방 자랑글 추천/스크랩/신고
 	int insertState(@Param ("bdcode")String bdcode, @Param ("loginId")String attribute,@Param ("history") String history);
 
-
 	//자취방 자랑글 추천 이력 조회
 	@Select("select count(*) from recommend where rcbdcode = #{rcbdcode} and rcmid=#{rcmid}")
 	int recommendCh(@Param ("rcbdcode") String bdcode,@Param ("rcmid") String bdmid);
@@ -136,6 +140,15 @@ public interface BoardDao {
 	
 	//게시글 수정
 	int updateBoardModify(BoardDto board);
+	
+	//게시글 작성
+	int insertBoard(BoardDto board);
+	
+	//게시글 조회수 증가
+	int updateBoardHits(String bdcode);
+
+	
+	
 	
 	
 

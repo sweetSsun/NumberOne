@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.NumberOne.dao.ResellDao">
+
+
+<select id="selectMaxNumber_ub" resultType="String">
+SELECT MAX(UBCODE)
+FROM USEDBOARDS
+</select>
+
+
+
+<select id="selectMaxNumber_gd" resultType="String">
+SELECT MAX(GDCODE)
+FROM GOODS
+</select>
+
+
+<insert id="insertResellWrite_gd">
+INSERT INTO GOODS(GDCODE, GDUBCODE, GDNAME, GDPRICE, GDSTATE)
+VALUES(#{gdcode}, #{gdubcode}, #{gdname}, #{gdprice}, 1)
+</insert>
+
+
+<insert id="insertResellWrite_ub">
+INSERT INTO USEDBOARDS(UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE, UBCONTENTS, UBDATE, UBMAINIMG, UBDETAILIMG, UBSTATE)
+VALUES(#{ubcode}, #{ubrgcode}, #{ubsellbuy}, #{ubmid} , #{ubtitle}, #{ubcontents}, SYSDATE, #{ubmainimg}, #{ubdetailimg}, 1)
+</insert>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</mapper>

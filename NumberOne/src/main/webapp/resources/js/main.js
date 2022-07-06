@@ -21,9 +21,12 @@
         /*------------------
             Gallery filter
         --------------------*/
+        
         $('.featured__controls li').on('click', function () {
             $('.featured__controls li').removeClass('active');
+            $('.featured__controls li').removeClass('title_color');
             $(this).addClass('active');
+            $(this).addClass('title_color');
         });
         if ($('.featured__filter').length > 0) {
             var containerEl = document.querySelector('.featured__filter');

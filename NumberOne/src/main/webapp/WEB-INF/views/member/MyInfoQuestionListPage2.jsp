@@ -84,19 +84,19 @@ background-color: #00BCD4;
 				<div class="checkout__form"><h4>마이페이지 1:1문의</h4></div>
 				<br>
 				<!-- 작성글 목록 -->
-				<div class="row">
-					<div class="col-lg-9"   style="margin:0px; padding-left: 50px;">
-					<h4 class="checkout__form" style="color: #00BCD4;">문의내역</h4>
+				<div class="row" >
+					<div class="col-lg-6">
+					<h4 class="checkout__form" style="color: #00BCD4; padding-left: 30px;">문의내역22</h4>
 					</div>  
-					<div class="col-lg-3"  style=" margin:0px; padding-right: 50px;">					                      
+					<div class="col-lg-6" style="padding-left: 20px;">					                      
 					<!-- 작성하기 버튼 -->    
-                       <button class="site-btn" style="border-radius: 4px; float: right;"
+                        <button class="site-btn" style="border-radius: 4px; "  
                        onclick = "location.href = 'loadToMyInfoQuestionForm' " >                        
                         작성하기</button>
 					</div>					
 				</div> <br>
 
-				<div class="row" >
+				<div class="row"  style="margin:20px;">
 				<table >
 				
 						
@@ -108,24 +108,11 @@ background-color: #00BCD4;
 												
 						<c:forEach items="${contact }" var="contact">
 							<!-- 작성글 목록 -->
-							
-							<!-- 글번호 -->
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center; height: 50px;">
 								<td>${contact.ctcode }</td>
-							<!-- 글제목 -->
-							<c:choose>
-							<c:when test="${contact.ctans !=null}">
-								<td onclick="showContents('${contact.ctcode }')" class="buttonPoint">${contact.cttitle } &nbsp;
-								<i class="fa-solid fa-comment-dots"></i></td>
-							</c:when>
-							<c:otherwise>
 								<td onclick="showContents('${contact.ctcode }')" class="buttonPoint">${contact.cttitle }</td>
-							</c:otherwise>
-							</c:choose>	
-							<!-- 문의날짜 -->	
 								<td>${contact.ctdate }</td>								
 							</tr>
-							<!-- 문의내용 -->
 							<tr style="border-bottom: solid #E0E0E0 1px; height: 50px;" class="d_none" id="${contact.ctcode }_title">
 								<td colspan="3" class="fw-bold" style=" padding-left: 30px; background-color: #EAEAEA;">
 								문의 내용 </td>							
@@ -134,22 +121,27 @@ background-color: #00BCD4;
 								<td colspan="3" style=" padding-left: 30px;" >${contact.ctcontents }</td>							
 							</tr>
 							<!-- 답변 -->							
-								<c:choose>
-									<c:when test="${contact.ctans !=null}">
-							<tr style="border-bottom: solid #E0E0E0 1px; height: 50px; margin-bottom:30px; " class="d_none" id="${contact.ctcode }_replytitle">
-								<td colspan="3" class="fw-bold" style=" padding-left: 30px; background-color: #EAEAEA;"> ⤷ 답변 </td>							
-							</tr>
-										<tr style="border-bottom: solid #E0E0E0 1px; height: 100px; background-color: #EAEAEA;" 
-										class="d_none"  id="${contact.ctcode }_replycontents">
-										<td colspan="2" style=" padding-left: 50px; color: #00BCD4; font-weight: bold;" >${contact.ctans }</td>
-										<td colspan="1" style=" padding-left: 30px; color: #00BCD4; font-weight: bold;" >${contact.ctansdate }</td>						
-										</tr>
-									</c:when>														
-							</c:choose>																												
-						</c:forEach>				
-					</table>
-				</div>				
-				<br><br>
+							<tr style="border-bottom: solid #E0E0E0 1px; height: 50px;" class="d_none" id="${contact.ctcode }_replytitle">
+								<td colspan="3" class="fw-bold" style=" padding-left: 30px; background-color: #EAEAEA;"> 답변 </td>							
+							</tr>							
+							<tr style="border-bottom: solid #E0E0E0 1px; height: 100px;" class="d_none" id="${contact.ctcode }_replycontents">
+								<td colspan="2">
+									<div class="commentWriteForm">
+										<textarea id="inputComment" class="textareaSt" rows="3" cols="80" placeholder="답변을 조금만 기다려주세요 :)"></textarea>
+									</div>	
+								</td>
+								<td  style="padding-left: 50px;">
+									<input type="button" onclick="insertReply()" value="등록" 
+									class="site-btn" style="width: 130px; border-radius: 4px;">
+								</td>															
+							</tr>							
+						</c:forEach>
+				
+				</table>
+				</div>			
+
+				<br><hr><br>
+
 			</div>
 		</section>
 	</main>
