@@ -2,11 +2,10 @@ package com.NumberOne.service;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,12 +15,10 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.NumberOne.dao.MemberDao;
-<<<<<<< HEAD
-=======
 import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.ContactDto;
->>>>>>> 00991820b59735aa43211aa830dd0a01754a5782
 import com.NumberOne.dto.MemberDto;
+import com.NumberOne.dto.ReplyDto;
 
 @Service
 public class MemberService {
@@ -133,9 +130,9 @@ public class MemberService {
 			if(loginMember .getMstate() == 0) {
 				ra.addFlashAttribute("msg", "이용 정지 된 계정 입니다.");
 				mav.setViewName("redirect:/loadToLogin");
-<<<<<<< HEAD
+
 			}else {
-=======
+
 			} else if(loginMember.getMid().equals("admin")) {
 				session.setAttribute("loginId", loginMember.getMid());
 				mav.setViewName("redirect:/admin_loadToAdminMainPage");
@@ -144,7 +141,7 @@ public class MemberService {
 				mav.setViewName("redirect:/loadToLogin");				
 			}else {
 			
->>>>>>> 00991820b59735aa43211aa830dd0a01754a5782
+
 				//로그인 성공
 				session.setAttribute("loginId", loginMember.getMid());
 				session.setAttribute("loginProfile", loginMember.getMprofile());
@@ -221,14 +218,11 @@ public class MemberService {
 		return mav;
 	}
 
-
-<<<<<<< HEAD
 	public String getTitleCheck(String checkMsg) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-=======
 	//회원정보 수정 요청  
 	public ModelAndView updateMyInfoMemberModify(RedirectAttributes ra, MemberDto member) throws IllegalStateException, IOException {
 		  
@@ -433,13 +427,6 @@ public class MemberService {
 
 
 
-
-
-
-
-
-
->>>>>>> 00991820b59735aa43211aa830dd0a01754a5782
 
 		
 	}
