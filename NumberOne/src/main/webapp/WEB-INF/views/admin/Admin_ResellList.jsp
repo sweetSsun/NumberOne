@@ -208,19 +208,6 @@
 	</script>
 	
 	<script type="text/javascript">
-	/*
-		console.log("요청 페이지 : " + ${param.page});
-	
-		// onsubmit. 페이징 넘버를 누르지 않고 검색 버튼으로 controller를 호출할 때 페이지값 넘겨주기 위한 함수
-		function pageCheck(){
-			console.log("pageInput() 실행");
-			$("#pageInput").attr("name", "page").val("1");
-		}
-		*/
-	</script>
-	
-	
-	<script type="text/javascript">
 		// 선택한 검색 select option으로 선택되도록 하기
 		var searchOption = $("#searchTypeSel option");
 		console.log("searchOption.length : " + searchOption.length);

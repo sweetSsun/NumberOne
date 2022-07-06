@@ -29,9 +29,9 @@ public class AdminController {
 	
 	/* 회원 관리 */
 	@RequestMapping (value="/admin_selectMemberList")
-	public ModelAndView admin_selectMemberList(int page, RedirectAttributes ra) {
+	public ModelAndView admin_selectMemberList(Paging paging, RedirectAttributes ra) {
 		System.out.println("회원 관리페이지 이동 요청");
-		mav = asvc.admin_selectMemberList(page, ra);
+		mav = asvc.admin_selectMemberList(paging, ra);
 		return mav;
 	}
 	

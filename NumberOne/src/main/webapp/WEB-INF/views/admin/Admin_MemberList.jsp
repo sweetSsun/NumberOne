@@ -38,23 +38,31 @@
 		
 		<section>
 		<!-- 본문 -->
+		<form action="admin_selectMemberList" method="get">
 			<div class="container">
             <div class="row" style="margin:auto;">
                <h1 class="text-center">회원 관리페이지 : Admin_MemberList.jsp</h1>
-               <div class="col-4 ">
-
-               </div>
-               <div class="col-8">
-                  <form action="#" method="get">
-                  <div class="input-group">
-                    <input type="text" class="form-control" name="keyword" placeholder="검색 키워드를 입력하세요!">
-                    <span class="input-group-btn">
-                      <button class="btn btn-secondary">찾기</button>
-                    </span>
-                  </div>
-                  </form>
-               </div>
             </div>
+            <div class="row">
+				<div class="col-5">
+					<select name="searchType" id="searchTypeSel">
+						<option value="mid">아이디</option>
+						<option value="mname">이름</option>
+						<option value="mnickname">닉네임</option>
+					</select>
+				</div>
+                <div class="col-5 input-group">
+                   	<input type="text" style="width:100px;" class="form-control" name="keyword" id="searchText" placeholder="검색 키워드를 입력하세요!" value="${paging.keyword}">
+                   	<span class="input-group-btn">
+                      	<button class="btn btn-secondary" type="submit" name="page" value="1">찾기</button>
+                   	</span>
+            	</div>
+	            <div class="col-2">
+					<!-- 공지작성 버튼 -->
+					<!-- <button class="btn btn-primary btm-sm" type="button" onclick="location.href='admin_loadToNoticeWrite'">글쓰기</button> -->
+				</div>
+           	</div>
+           
             <div class="row" style="margin-top: 20px;">
                <div class="col">
                   <!-- 상태값 정렬 -->
@@ -95,16 +103,16 @@
 	                      <td>
 	                      	<c:choose>
 	                      		<c:when test="${member.mwarning > 0}">
-	                      			<button class="btn btn-warning" onclick="showMstateModal(this,'${member.mid }')">경고</button>
+	                      			<button class="btn btn-warning" type="button" onclick="showMstateModal(this,'${member.mid }')">경고</button>
 	                      		</c:when>
 	                      		<c:when test="${member.mstate == 0}">
-	                      			<button class="btn btn-danger" onclick="showMstateModal(this, '${member.mid }')">정지</button>
+	                      			<button class="btn btn-danger"  type="button" onclick="showMstateModal(this, '${member.mid }')">정지</button>
 	                      		</c:when>
 	                      		<c:when test="${member.mstate == 1}">
-	                      			<button class="btn btn-primary" onclick="showMstateModal(this,'${member.mid }')">활동</button>
+	                      			<button class="btn btn-primary"  type="button" onclick="showMstateModal(this,'${member.mid }')">활동</button>
 	                      		</c:when>
 	                      		<c:when test="${member.mstate == 2}">
-	                      			<button class="btn btn-secondary" style="cursor:default;">탈퇴</button>
+	                      			<button class="btn btn-secondary" type="button"  style="cursor:default;">탈퇴</button>
 	                      		</c:when>
 	                      	</c:choose>
 	                      </td>
@@ -148,6 +156,7 @@
             </div>
             
 			</div>
+		</form>
 		</section>
 	</main>
 	
@@ -262,12 +271,33 @@
 			close[i].addEventListener("click", function(){
 				$("#updateMstateModal").modal("hide");
 				$("#memberInfoModal").modal("hide");
-/*
-				for (var j = 0; j < modal.length; j++){
-					modal[j].classList.remove('show');
-					$(".modal-backdrop").remove(); 
-				}*/
 			});
+		}
+	</script>
+	
+	<script type="text/javascript">
+		// 선택한 검색 select option으로 선택되도록 하기
+		var searchOption = $("#searchTypeSel option");
+		console.log("searchOption.length : " + searchOption.length);
+		var searchType = "${paging.searchType}";
+		console.log("searchType : " + searchType);
+		if (searchType.length > 0) {
+			for (var i = 0; i < searchOption.length; i++){
+				if (searchOption.eq(i).val() == searchType){
+					searchOption.eq(i).attr("selected", "selected");
+				}
+			}
+		}
+		
+		// 선택한 정렬 select option으로 선택되도록 하기
+		var searchValOption = $("#searchValSel option");
+		var searchVal = "${paging.searchVal}";
+		if (searchVal.length > 0) {
+			for (var i = 0; i < searchValOption.length; i++){
+				if (searchValOption.eq(i).val() == searchVal){
+					searchValOption.eq(i).attr("selected", "selected");
+				}
+			}
 		}
 	</script>
 	

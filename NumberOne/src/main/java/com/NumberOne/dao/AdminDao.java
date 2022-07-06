@@ -12,9 +12,9 @@ import com.NumberOne.dto.UsedBoardDto;
 
 public interface AdminDao {
 
-	int admin_selectMemberTotalCount(String searchVal);
+	int admin_selectMemberTotalCount(Paging paging);
 
-	ArrayList<MemberDto> admin_selectMemberList(@Param("searchVal") String searchVal, @Param("startRow") int startRow, @Param("endRow") int endRow);
+	ArrayList<MemberDto> admin_selectMemberList(Paging paging);
 
 	int admin_updateMstate_ajax(@Param("mid") String mid, @Param("mstate") String mstate);
 
@@ -45,6 +45,5 @@ public interface AdminDao {
 	ArrayList<BoardDto> admin_selectBoardList(Paging paging);
 
 	int admin_updateBdstate_ajax(@Param("bdcode") String bdcode, @Param("bdstate") String bdstate);
-
 
 }
