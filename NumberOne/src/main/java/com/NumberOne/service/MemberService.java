@@ -131,6 +131,7 @@ public class MemberService {
 				ra.addFlashAttribute("msg", "이용 정지 된 계정 입니다.");
 				mav.setViewName("redirect:/loadToLogin");
 
+
 			}else if(loginMember.getMid().equals("admin")) {
 
 				session.setAttribute("loginId", loginMember.getMid());
@@ -140,10 +141,10 @@ public class MemberService {
 				mav.setViewName("redirect:/loadToLogin");				
 			}else {
 
+
 				//로그인 성공
 				session.setAttribute("loginId", loginMember.getMid());
 				session.setAttribute("loginProfile", loginMember.getMprofile());
-
 				session.setAttribute("loginRegion", loginMember.getMregion());
 				
 				ra.addFlashAttribute("msg", "로그인 되었습니다.");
@@ -226,6 +227,7 @@ public class MemberService {
 		return null;
 	}
 
+
 	//회원정보 수정 요청  
 	public ModelAndView updateMyInfoMemberModify(RedirectAttributes ra, MemberDto member) throws IllegalStateException, IOException {
 		  
@@ -233,16 +235,17 @@ public class MemberService {
 		  System.out.println("MemberService.updateMyInfoMemberModify() 호출"); 
 		  String loginId = (String) session.getAttribute("loginId");
 		  System.out.println("로그인 된 아이디 : " + loginId);
-			
-		  member.setMid(loginId);
-		  
-
+		 
+		 member.setMid(loginId);
 
 		      //이미지 파일
 		      MultipartFile mfile = member.getMfile();
 		      
 		      //이미지의 파일명
 		      String mprofile = "";
+		      String loginProfile = (String) session.getAttribute("mprofile");
+
+		      System.out.println("원본프로필 : " + loginProfile);
 		      
 		      //이미지 파일 처리	      
 		      if(!mfile.isEmpty()) {
@@ -253,14 +256,16 @@ public class MemberService {
 		         mprofile = uuid.toString()+"_"+mfile.getOriginalFilename();
 
 		         mfile.transferTo(  new File(savePath, mprofile)   );
-		      } 
-		         
-		         System.out.println("mprofile : " + mprofile);
 		         member.setMprofile(mprofile);
-		        
-	      
-		         
-		         
+		         System.out.println("변경프로필 : " + mprofile);
+		      }else {
+		    	  if(loginProfile !=null) {
+		    		  member.setMprofile(loginProfile);  
+		    	  } else {
+		    		  member.setMprofile(mprofile);  
+		    	  }
+		      }
+
 		         System.out.println(member);
 		      
 		      
