@@ -36,8 +36,8 @@ public class BoardService {
 	@Autowired
 	private HttpSession session;
 	
-	//사용할 때 자기 폴더 경로로 바꾸어야 함
-	private String roomSavePath = "D:\\numberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\room";
+	//자랑게시판 이미지 등록 경로
+	private String roomSavePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\room";
 	
 	//일반게시판 이미지 등록 경로 
 	private String boardSavePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\board";
@@ -66,19 +66,10 @@ public class BoardService {
 		//System.out.println("bdcode: "+bdcode);
 		room.setBdcode(bdcode);
 		
-		//파일 저장 경로
-		//String savePath = request.getSession().getServletContext().getRealPath("resources/img/room");
-		//System.out.println(request.getRealPath("resources/img/room"));
 		//대표이미지 파일
 		MultipartFile bdimgfile = room.getBdimgfile();
 		//대표이미지의 파일명
 		String bdimg = "";
-		
-		//D:\numberOne\NumberOne\src\main\webapp\resources\img
-		String projectPath = request.getRealPath("").split(".metadata")[0];
-		System.out.println(request.getRealPath(""));
-		System.out.println(projectPath + "numberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\room");
-		
 		
 		//대표이미지 파일 처리
 		if( ! bdimgfile.isEmpty() ) {
@@ -88,6 +79,7 @@ public class BoardService {
 			//파일명 생성
 			bdimg = "M"+uuid.toString()+"_"+bdimgfile.getOriginalFilename();
 			//대표 이미지 파일 저장
+			System.out.println(roomSavePath);
 			bdimgfile.transferTo( new File (roomSavePath, bdimg)  );
 			
 			//room에 setBdimg 
@@ -112,10 +104,10 @@ public class BoardService {
 			for(int i=0; i<bddetailimgfile.length; i++) {
 				UUID uuid = UUID.randomUUID();
 				//파일명 생성
-				String bddetailimgname = uuid.toString()+bddetailimgfile[i].getOriginalFilename();
+				String bddetailimgname = uuid.toString()+"_"+bddetailimgfile[i].getOriginalFilename();
 				//상세 이미지 파일 저장
 				bddetailimgfile[i].transferTo(  new File(roomSavePath, bddetailimgname)   );
-				bddetailimg += "___"+bddetailimgname;
+				bddetailimg += bddetailimgname+"___";
 			}
 			
 			//room에 setBddetailimg 
@@ -140,7 +132,7 @@ public class BoardService {
 			System.out.println("등록 성공!");
 			ra.addFlashAttribute("msg", "자취방 자랑글이 등록되었습니다.");
 			//메인페이지로 돌아가기	>> 등록한 글 상세보기 페이지로 이동으로 수정	
-			mav.setViewName("redirect:/");
+			mav.setViewName("redirect:/selectRoomList");
 		} else {
 			System.out.println("등록 실패!");
 			ra.addFlashAttribute("msg", "자취방 자랑글 등록에 실패했습니다.");
@@ -248,7 +240,7 @@ public class BoardService {
 	   }
 
 
-	//자취방 메인 페이지(목록)   
+	//자취방 자랑 메인 페이지(목록)   
 	public ModelAndView selectRoomList() {
 		System.out.println("BoardService.selectRoomList() 호출");
 		ModelAndView mav = new ModelAndView();
@@ -264,11 +256,12 @@ public class BoardService {
 	    */
 	    
 	    mav.addObject("roomList", roomList);
-	    //확인용 출력
 	    
+	    /* 확인용 출력
 	    for(int i=0; i<roomList.size(); i++) {
 	    	System.out.println(roomList.get(i));
 	    }
+	    */
 	    
 
 	    
@@ -284,14 +277,19 @@ public class BoardService {
 		 
 		System.out.println("nbcode:" +  nbcode);
 		
+		//공지글 조회수 업데이트 
+		int updateResult = bdao.updateNoticeBdHits(nbcode);
+		
+		//공지글 정보 조회 
 		NoticeDto noticeBoard = bdao.selectNoticeBoardView(nbcode);
 		System.out.println(noticeBoard);
+		
 		mav.addObject("noticeBoard", noticeBoard);
 		mav.setViewName("board/NoticeBoardView");
 		
 		return mav;
 	}
-
+	
 	//일반게시판 - 글상세페이지 이동 
 	public ModelAndView selectBoardView(String bdcode) {
 		System.out.println("BoardService.selectBoardView() 호출");
@@ -505,7 +503,7 @@ public class BoardService {
 		
 		String wnCheck ="";
 		String warning = bdao.checkBoardWarning_ajax(loginId, bdcode);
-		if( wnCheck != null ) {
+		if( warning != null ) {
 			//이미 신고한 게시물
 			wnCheck = "Yes";
 		}

@@ -1,5 +1,6 @@
 package com.NumberOne.controller;
 
+import java.awt.Image;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;

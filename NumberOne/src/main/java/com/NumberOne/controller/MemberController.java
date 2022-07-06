@@ -2,6 +2,8 @@ package com.NumberOne.controller;
 
 import java.io.IOException;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +21,8 @@ public class MemberController {
 	
 	@Autowired
 	private MemberService msvc;
+	@Autowired 
+	private HttpSession session;
 	
 	//회원가입 페이지 이동
 	@RequestMapping(value="/loadToRegister")
@@ -62,9 +66,16 @@ public class MemberController {
 	
 	//로그인 페이지 이동
 	@RequestMapping(value="/loadToLogin")
-	public ModelAndView loadToLogin() {
+	public ModelAndView loadToLogin(String afterUrl) {
 		System.out.println("로그인 페이지 요청");
 		mav = new ModelAndView();
+		System.out.println("afterUrl: "+afterUrl);
+		if(afterUrl != null) {
+			session.setAttribute("afterUrl", afterUrl);						
+		} else {
+			session.setAttribute("afterUrl", "noUrl");			
+		}
+		System.out.println((String)session.getAttribute("afterUrl"));
 		mav.setViewName("member/MemberLoginForm");
 		return mav;
 	}	
@@ -231,7 +242,7 @@ public class MemberController {
 		public ModelAndView memberKakaoLogin(MemberDto member, RedirectAttributes ra) {
 			System.out.println("카카오로 로그인 요청");
 			System.out.println(member);
-			ModelAndView mav = msvc.memberKakaoLogin(member, ra);
+			//ModelAndView mav = msvc.memberKakaoLogin(member, ra);
 			
 			return mav;
 			

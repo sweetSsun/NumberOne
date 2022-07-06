@@ -41,26 +41,12 @@
 
 
 	<!-- TobBar -->
-	<c:choose>
-		<c:when test="${sessionScope.loginId != 'admin'}">
-			<%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
-		</c:when>
-		<c:otherwise>
-			<%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
-		</c:otherwise>
-	</c:choose>
+	<%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
 	<!-- End of TobBar -->
 	
 	<main>
 		<!-- 사이드바 -->
-	<c:choose>
-		<c:when test="${sessionScope.loginId != 'admin'}">
-		<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
-		</c:when>
-		<c:otherwise>
-			<%@ include file= "/WEB-INF/views/includes/SideBar_Admin.jsp" %>
-		</c:otherwise>
-	</c:choose>
+		<%@ include file= "/WEB-INF/views/includes/SideBar_Admin.jsp" %>
 		
 		<section>
 		<!-- 본문 -->
@@ -95,7 +81,7 @@
                    <select name="searchVal" id="searchValSel" onchange="nbSearchState(this.value)">
                      <option value="all">전체</option>
                      <option value="active">활성</option>
-                     <option value="inactive">비활성</option>
+                     <option value="inactive">삭제</option>
                   </select>
                </div>
             </div>
@@ -105,7 +91,7 @@
             <table >
                <thead >
                   <tr class="fw-bold" id="board_column">
-                     <td style="width:70px;">글번호</td>
+                     <td style="width:130px;">글번호</td>
                      <td style="min-width:200px;">제목</td>
                      <td>작성자</td>
                      <td>작성일</td>
@@ -119,7 +105,7 @@
 	                   <tr style="border-bottom: solid gray 1px;">
 	                      <td>${notice.nbcode}</td>
 	                      <td><a href="admin_selectNoticeBoardView?nbcode=${notice.nbcode}">${notice.nbtitle}</a></td>
-	                      <td>${notice.nbmid}</td>
+	                      <td>${notice.nbnickname}</td>
 	                      <td>${notice.nbdate}</td>
 	                      <td>${notice.nbhits}</td>
 	                      <td>
@@ -128,7 +114,7 @@
 	                      			<button class="btn btn-primary" type="button" onclick="showNbstateModal(this,'${notice.nbcode }')">활성</button>
 	                      		</c:when>
 	                      		<c:otherwise>
-	                      			<button class="btn btn-secondary" type="button" onclick="showNbstateModal(this, '${notice.nbcode }')">비활성</button>
+	                      			<button class="btn btn-secondary" type="button" onclick="showNbstateModal(this, '${notice.nbcode }')">삭제</button>
 	                      		</c:otherwise>
 	                      	</c:choose>
 	                      </td>
@@ -287,7 +273,7 @@
 						if (result[i].nbstate == 1){
 							output += "<button class='btn btn-primary' type='button' onclick='showNbstateModal(this, \""+result[i].nbcode+"\")'>활성</button>";
 						} else {
-							output += "<button class='btn btn-secondary' type='button' onclick='showNbstateModal(this,\""+result[i].nbcode+"\")'>비활성</button>";
+							output += "<button class='btn btn-secondary' type='button' onclick='showNbstateModal(this,\""+result[i].nbcode+"\")'>삭제</button>";
 						}
 						output += "</td>";
 						output += "</tr>";
@@ -341,7 +327,7 @@
 			var btnObjText = btnObj.text();
 			console.log("btnObjText:"+btnObjText);
 			if (btnObjText == "활성"){
-				$("#updateNbstateModalBody").text(nbcode + "번 공지를 비활성화 처리하시겠습니까?");
+				$("#updateNbstateModalBody").text(nbcode + "번 공지를 삭제 처리하시겠습니까?");
 			} else {
 				$("#updateNbstateModalBody").text(nbcode + "번 공지를 활성화 처리하시겠습니까?");
 			}
@@ -367,7 +353,7 @@
 				success: function(result){
 					if(result > 0){
 						if (nbstate == 0){
-							btnObj.text("비활성").addClass("btn-secondary").removeClass("btn-primary");
+							btnObj.text("삭제").addClass("btn-secondary").removeClass("btn-primary");
 						} else {
 							btnObj.text("활성").addClass("btn-primary").removeClass("btn-secondary");
 						}
