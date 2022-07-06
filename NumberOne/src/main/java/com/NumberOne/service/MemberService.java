@@ -64,6 +64,8 @@ public class MemberService {
 	         System.out.println("mprofile : " + mprofile);
 	         member.setMprofile(mprofile);
 	         
+	         
+	         
 	         System.out.println(member);
 	      
 	      
@@ -88,9 +90,7 @@ public class MemberService {
 	      if(joinResult != 0) {
 				System.out.println("회원가입 가능");
 				ra.addFlashAttribute("msg", "회원가입 되었습니다.");
-
 				mav.setViewName("redirect:/loadToLogin");
-
 			}else {
 				System.out.println("회원가입 실패");
 				ra.addFlashAttribute("msg" , "회원가입에 실패하였습니다.");
@@ -114,6 +114,19 @@ public class MemberService {
 			return "NO";
 		}
 	}
+	//닉네임 중복 확인 요청
+	public String selectMemberNickname_ajax(String inputNickname) {
+		System.out.println("MemberService.selectMemberNickname_ajax() 호출");
+		String nicknameCheckResult = mdao.selectMemberNickname_ajax(inputNickname);
+		System.out.println(nicknameCheckResult);
+		if(nicknameCheckResult == null) {
+			return "OK";
+		}else {
+			return "NO";
+		}
+	}
+	
+	
 
 	//로그인 요청
 	public ModelAndView selectMemberLogin(String mid, String mpw, RedirectAttributes ra) {
@@ -131,7 +144,6 @@ public class MemberService {
 				ra.addFlashAttribute("msg", "이용 정지 된 계정 입니다.");
 				mav.setViewName("redirect:/loadToLogin");
 
-
 			}else if(loginMember.getMid().equals("admin")) {
 
 				session.setAttribute("loginId", loginMember.getMid());
@@ -141,20 +153,30 @@ public class MemberService {
 				mav.setViewName("redirect:/loadToLogin");				
 			}else {
 
-
 				//로그인 성공
 				session.setAttribute("loginId", loginMember.getMid());
 				session.setAttribute("loginProfile", loginMember.getMprofile());
 				session.setAttribute("loginRegion", loginMember.getMregion());
 				
 				ra.addFlashAttribute("msg", "로그인 되었습니다.");
-
-				mav.setViewName("redirect:/");				
+				
+				String afterUrl = (String) session.getAttribute("afterUrl");
+				//System.out.println(afterUrl);
+				session.removeAttribute("afterUrl");
+				
+				if(afterUrl.equals("noUrl")) {
+					//afterUrl 없는 경우는 메인으로 이동
+					mav.setViewName("redirect:/");				
+				} else {					
+					//afterUrl 있는 경우는 해당페이지로 이동
+					mav.setViewName("redirect:/"+afterUrl);
+				}
+	
 			}
 			
-		}else {
+		} else {
 			//로그인 실패
-			ra.addFlashAttribute("msg", "아이디 또는 비밀번호가 일치 하지 않습니다!.");
+			ra.addFlashAttribute("msg", "아이디 또는 비밀번호가 일치 하지 않습니다.");
 			mav.setViewName("redirect:/loadToLogin");
 		}
 		
@@ -193,7 +215,7 @@ public class MemberService {
 		
 	}
 
-	//회원정보 보기
+	//마이페이지 회원정보
 	public ModelAndView selectMyInfoMemberView() {
 		ModelAndView mav = new ModelAndView();
 		System.out.println("MemberService.selectMyInfoMemberView 호출");
@@ -221,6 +243,49 @@ public class MemberService {
 		
 		return mav;
 	}
+
+	//회원정보수정페이지
+	
+	  public ModelAndView loadToMyInfoModifyForm() {
+	  
+	  ModelAndView mav = new ModelAndView();
+	  System.out.println("MemberService.loadToMyInfoModifyForm() 호출"); 
+	  String loginId = (String) session.getAttribute("loginId");
+	  System.out.println("로그인 된 아이디 : " + loginId);
+		
+		MemberDto memberInfo = mdao.selectMyInfoMemberView(loginId);
+		
+		//주소 분리 (우편번호, 주소, 상세주소, 참고주소)
+		String maddr = memberInfo.getMaddr();
+		
+		if( maddr != null) {
+			String[] maddr_arr = maddr.split("_");
+			System.out.println(maddr_arr.length);
+			if( maddr_arr.length >= 4 ) {
+				memberInfo.setMpostcode(maddr_arr[0]);
+				memberInfo.setMaddress(maddr_arr[1]);
+				memberInfo.setMdetailAddr(maddr_arr[2]);
+				memberInfo.setMextraAddr(maddr_arr[3]);
+			}
+		}
+		
+		//이메일 분리
+		String email = memberInfo.getMemail();
+		String[] email_arr = email.split("@");
+		memberInfo.setMemailId(email_arr[0]);
+		memberInfo.setMemailDomain(email_arr[1]);
+		
+		
+		System.out.println(memberInfo);
+		
+		
+		mav.addObject("memberInfo", memberInfo);	  
+	  
+	  
+	  mav.setViewName("member/MyInfoMemberModifyForm"); 
+	  return mav; 
+	  
+	  }
 
 
 	//회원정보 수정 요청  
@@ -423,46 +488,6 @@ public class MemberService {
 
 		return mav;
 	}
-
-
-	//카카오 로그인
-		public ModelAndView memberKakaoLogin(MemberDto member, RedirectAttributes ra) {
-			System.out.println("MemberService.memberKakaoLogin() 호출");
-			ModelAndView mav = new ModelAndView();
-			
-			MemberDto kakaoMember = mdao.selectMemberKakao(member.getMid());
-			System.out.println(kakaoMember);
-			if( kakaoMember != null ) {
-				//로그인 처리
-				session.setAttribute("loginId", kakaoMember.getMid());
-				session.setAttribute("loginProfile", member.getMprofile());
-				session.setAttribute("kakaoId",kakaoMember.getMid());
-				ra.addFlashAttribute("msg", "카카오 계정으로 로그인 되었습니다.");
-				mav.setViewName("redirect:/");
-			} else {
-				//회원가입 처리
-				System.out.println("회원가입 확인!!!!");
-				member.setMpw("1234");
-
-				mdao.insertMemberKakao(member);
-				ra.addFlashAttribute("msg", "회원정보가 등록되었습니다. 다시 로그인 해주세요.");
-				mav.setViewName("redirect:/loadToLogin");
-			}
-			
-			return mav;
-		}
-
-		//닉네임 중복 체크
-		public String selectMemberNickname_ajax(String inputNickname) {
-			System.out.println("selectMemberNickname_ajax() 호출");
-			String nicknameCheckResult = mdao.selectMemberNickname_ajax(inputNickname);
-			System.out.println(nicknameCheckResult);
-			if(nicknameCheckResult == null) {
-				return "OK";
-			}else {
-				return "NO";
-			}
-		}
 
 
 
