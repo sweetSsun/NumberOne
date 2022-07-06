@@ -87,6 +87,17 @@
 	transition:all .35s;
 }
 
+.gallerylist > ul > li > a .screen .middle {
+	position:absolute;
+	top:45%;
+	left:30%;
+	z-index:2;
+	color:#fff;
+	font-size:30px;
+	transition:all .35s;
+	opacity: 0;
+}
+
 .gallerylist > ul > li > a .screen .info {
 	position:absolute;
 	bottom:10%;
@@ -123,8 +134,22 @@
 	transition:all .35s;
 }
 
+textarea{
+	 width:100%; 
+	 height:100%; 
+	 resize:none; 
+	 overflow-y:scroll; 
+	 color:black;
+	 border: none; 
+}
+
+textarea:hover{
+	decoration : none;
+}
+
 .gallerylist > ul > li > a:hover .top {bottom:35%;}
 .gallerylist > ul > li > a:hover .bottom {top:63%;}
+.gallerylist > ul > li > a:hover .middle {color:white; opacity: 0.85;}
 .gallerylist > ul > li > a:hover .screen::after {opacity:1;}
 		
 /* The Modal (background) */
@@ -160,6 +185,14 @@
   color: #ccc;
   padding: 10px 0;
   height: 150px;
+  position: absolute;
+  top: 15px;
+  left: 50px;
+}
+
+#modalContents{
+	margin-left : auto;
+	margin-right : auto;
 }
 
 /* Add Animation - Zoom in the Modal */
@@ -178,10 +211,11 @@
   position: absolute;
   top: 15px;
   right: 35px;
-  color: #f1f1f1;
-  font-size: 40px;
+  color: #F5FFFA;
+  font-size: 50px;
   font-weight: bold;
   transition: 0.3s;
+  opacity: 0.9;
 }
 
 .close:hover,
@@ -197,7 +231,9 @@
     width: 100%;
   }
 }
-	
+
+.viewImgs{ width:800px; height:600px;}
+
 </style>
 </head>
 <body>
@@ -260,27 +296,55 @@
 							<li>
 								<a class="" onclick="roomView_ajax('${room.bdcode}')">
 									<div class="screen">
+										 
 										<div class="top">${room.bdtitle}</div>
 										<div class="bottom">${room.bddate }</div>
 										<c:choose>
 											<c:when test="${room.bdimg!=null}">	
-												<!-- 대표이미지 있을 경우 출력 -->											
+																						
 												<img class="roomMainImg" alt="" src="${pageContext.request.contextPath }/resources/img/room/${room.bdimg}"> 
 											</c:when>
 											<c:otherwise>
-												<!-- 대표이미지 없을 경우 로고 출력 -->											
+																							
 												<img class="roomMainImg" alt="" src="${pageContext.request.contextPath }/resources/img/logo_grey.jpg"> 									
 											</c:otherwise>
 										</c:choose>
-											
 										<div class="info">
 											${room.bdnickname }
-											| <i class="fa-solid fa-eye"></i> <span id="${room.bdcode }_bdhits">${room.bdhits }</span>
-											| <i class='fa-solid fa-heart'></i> <span id="${room.bdcode }_bdlikes">${room.bdrecommend}</span> 
-											| <i class="fa-solid fa-comment"></i> <span id="${room.bdcode }_bdreplies">${room.bdreply}</span> 
-											| <i class="fa-solid fa-star"></i> <span id="${room.bdcode }_bdscraps">${room.bdscrap}</span>
-										</div>										
-							
+											 <i class="fa-solid fa-eye"></i> 
+											<span id="${room.bdcode }_bdhits">
+												<c:choose>
+													<c:when test="${room.bdhits != 0}">${room.bdhits}</c:when>	
+													<c:otherwise>&nbsp;&nbsp;</c:otherwise>
+												</c:choose>
+											</span>
+											 <i class='fa-solid fa-heart'></i> <span id="${room.bdcode }_bdlikes">${room.bdrecommend}&nbsp;</span> 
+											 <i class="fa-solid fa-comment"></i> <span id="${room.bdcode }_bdreplies">${room.bdreply}&nbsp;</span> 
+											 <i class="fa-solid fa-star"></i> <span id="${room.bdcode }_bdscraps">${room.bdscrap}&nbsp;</span>
+										</div> 
+										
+										<!-- instagram ver
+										<c:choose>
+											<c:when test="${room.bdimg!=null}">	
+																						
+												<img class="roomMainImg" alt="" src="${pageContext.request.contextPath }/resources/img/room/${room.bdimg}"> 
+											</c:when>
+											<c:otherwise>
+																							
+												<img class="roomMainImg" alt="" src="${pageContext.request.contextPath }/resources/img/logo_grey.jpg"> 									
+											</c:otherwise>
+										</c:choose>
+										<div class="middle">
+											<i class="fa-solid fa-eye"></i> 
+											<span id="${room.bdcode }_bdhits">
+												<c:if test="${room.bdhits != 0}">${room.bdhits}</c:if>&nbsp;
+											</span>&nbsp;
+											<i class='fa-solid fa-heart'></i> <span id="${room.bdcode }_bdlikes">${room.bdrecommend}&nbsp;</span>&nbsp;
+											<i class="fa-solid fa-comment"></i> <span id="${room.bdcode }_bdreplies">${room.bdreply}&nbsp;</span>&nbsp; 
+											<i class="fa-solid fa-star"></i> <span id="${room.bdcode }_bdscraps">${room.bdscrap}&nbsp;</span>
+										</div>
+										 --> 												
+										
 									</div>
 								</a>
 							</li>						
@@ -300,21 +364,22 @@
   <!-- The Close Button -->
   <span class="close">&times;</span>
 
-  <!-- Modal Content (The Image) -->
-  <div class="row" style="width:1200px; height:600px;">
+  <!-- Modal Content -->
+  <div class="row" style="width:1200px; height:600px;" id="modalContents">
   		<div class="product-title tb col-lg-8">
-  			<div id="roomimg" class="product-img-div">
+  			<div id="roomimg" class="product-img-div" style="width:100%; height:100%;">
   			</div>
   		</div>
   		<div class="tb col-lg-4" style="background-color:white; padding:10px">
- 			<div class="row" style="height:225px;">
- 				<div id="roomMprofile" style="color:black; width:60px;"></div>
- 				<div id="roomContents" style="width:330px;"></div>
+ 			<div class="row" style="height:42px; width=:800px;">
+ 				<div id="roomMprofile" style="color:black; width:40px;"></div>
+ 				<div id="roomMnickname" style="width:352px;"></div>
  			</div>
- 			<div id="reply" style="height:205px; border:1px solid black; color:black;">
+ 			<div id="roomContents" style="height:210px; border:1px solid black; color:black;"></div>
+ 			<div id="reply" style="height:160px; border:1px solid black; color:black;">
  			    댓글 영역
  			</div>
- 			<div id="roomInfo" style="height:35px; color:black; font-size:30px; position:relative;">
+ 			<div id="roomInfo" style="height:35px; color:black; font-size:25px; position:relative;">
  				추천, 스크랩, 신고
  			</div>
  			<div id="replyWriteForm" style="height:100px; border:1px solid black; color:black;">
@@ -344,13 +409,13 @@
 			dataType : "json",
 			async : false,
 			success: function(roomView){
-				//console.log(roomView);
+				console.log(roomView);
 				//글 이미지
 				var imgHtml = "";
 				
 				if(roomView.bdimg=='noimg'){
 					console.log('noimg');
-					imgHtml += "<img alt='NumberOneLogo' style='width:100%; height:100%' src='${pageContext.request.contextPath }/resources/img/logo_grey.jpg'>";
+					imgHtml += "<img alt='NumberOneLogo' style='width:800px; height:600px' src='${pageContext.request.contextPath }/resources/img/logo_grey.jpg'>";
 				} else {
 					console.log(roomView.bddetailimg);
 					var imgs = roomView.bddetailimg.split("___");
@@ -359,7 +424,7 @@
 					var numOfImgs = parseInt(imgs.length);
 					console.log("이미지 개수: "+numOfImgs);
 					
-					imgHtml += "<div id='myCarousel' class='carousel slide' data-ride='carousel'>";		
+					imgHtml += "<div id='myCarousel' class='carousel slide' data-ride='carousel' style='width:100%; height:100%;'>";		
 
 					//indicators
 					imgHtml += "<ol class='carousel-indicators'>";
@@ -372,11 +437,11 @@
 					//wrapper for slide
 					imgHtml += "<div class='carousel-inner'>";
 					imgHtml += "<div class='item active'>";
-					imgHtml += "<img style='width:100%; height:100%' src='${pageContext.request.contextPath }/resources/img/room/"+imgs[0]+"'></img>";		
+					imgHtml += "<img style='width:800px; height:600px;' class='viewImgs' src='${pageContext.request.contextPath }/resources/img/room/"+imgs[0]+"'></img>";		
 					imgHtml += "</div>";
 					for(var j=1; j<numOfImgs; j++){
 						imgHtml += "<div class='item'>";
-						imgHtml += "<img style='width:100%; height:100%' src='${pageContext.request.contextPath }/resources/img/room/"+imgs[j]+"' ></img>";		
+						imgHtml += "<img class='viewImgs' style='width:800px; height:600px;' src='${pageContext.request.contextPath }/resources/img/room/"+imgs[j]+"' ></img>";		
 						imgHtml += "</div>";
 					}
 					imgHtml += "</div>";
@@ -392,19 +457,13 @@
 					imgHtml += "</a>";
 
 					imgHtml += "</div>";
-					
-
-					
-					//console.log(imgHtml);
-					/*
-					*/
 				
 				} 
 				
 				//$("#roomimg").html("<img class='product-img' style='width:100%; height:100%' src='${pageContext.request.contextPath }/resources/img/room/"+roomView.bdimg+"'></img>");
 				$("#roomimg").html(imgHtml);
 				//작성자 프로필	
-				var mprofileOutput = "<img class='product-img' style='width:60px; height:40px' ";
+				var mprofileOutput = "<img class='product-img' style='width:40px; height:40px; border-radius:50%;'";
 				if(roomView.bdmprofile != 'nomprofile'){
 					console.log()
 					mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+roomView.bdmprofile+"'>";
@@ -413,8 +472,9 @@
 				}
 				mprofileOutput += "</img>";
 				$("#roomMprofile").html(mprofileOutput);
+				$("#roomMnickname").html("<div id='mnickname' style='font-size:22px; margin-left:5px; margin-top:5px; color: black;'>"+roomView.bdnickname+"</div>");
 				//글 내용
-				$("#roomContents").html("<textarea style='width:100%; height:225px; resize:none; overflow-y:scroll;' readonly>"+roomView.bdcontents+"</textarea>");
+				$("#roomContents").html("<textarea style='font-size:17px;' readonly>"+roomView.bdcontents+"</textarea>");
 				//추천, 스크랩, 신고 출력
 				var roomInfoOutput = " "
 				//추천
@@ -446,9 +506,13 @@
 				$("#roomInfo").html(roomInfoOutput);
 				
 				//bdhits 1 추가
-				var bdhits = $("#"+bdcode+"_bdhits").text();
-				//console.log("before: "+bdhits);
-				var afterBdhits = parseInt(bdhits)+1;
+				var bdhits = $("#"+bdcode+"_bdhits").text().trim();
+				var afterBdhits;
+				if(bdhits==""){
+					afterBdhits=1;
+				} else {
+					afterBdhits = parseInt(bdhits)+1;
+				}
 				//console.log("after: "+afterBdhits);
 				$("#"+bdcode+"_bdhits").text(afterBdhits);
 				
@@ -458,10 +522,6 @@
 			}
 		});
 	}
-	
-	$('#myModal').on('show.bs.modal',function(e){
-		alert("모달 오픈");
-	})
 	
 	
 	// Get the modal
@@ -531,27 +591,27 @@
 							console.log("추천 성공");
 							$("#"+bdcode+"_rchistory").html("<i class='fa-solid fa-heart'></i>");
 							//bdlikes +1 
-							var bdlikes = $("#"+bdcode+"_bdlikes").text();
+							var bdlikes = $("#"+bdcode+"_bdlikes").text().trim();
 							var afterBdlikes;
 							if(bdlikes==""){
 								afterBdlikes=1;
 							} else {
 								afterBdlikes = parseInt(bdlikes)+1;
 							}
-							$("#"+bdcode+"_bdlikes").text(afterBdlikes);
+							$("#"+bdcode+"_bdlikes").html(afterBdlikes+"&nbsp;");
 							
 						} else if(history == 'schistory'){
 							console.log("스크랩 성공");
 							$("#"+bdcode+"_schistory").html("<i class='fa-solid fa-star'></i>");	
 							//bdscraps +1 
-							var bdscraps = $("#"+bdcode+"_bdscraps").text();
+							var bdscraps = $("#"+bdcode+"_bdscraps").text().trim();
 							var afterBdscraps;
 							if(bdscraps==""){
 								afterBdscraps=1;
 							} else {
 								afterBdscraps = parseInt(bdscraps)+1;
 							}
-							$("#"+bdcode+"_bdscraps").text(afterBdscraps);
+							$("#"+bdcode+"_bdscraps").html(afterBdscraps+"&nbsp;");
 							
 						} else {
 							console.log("신고 성공");
@@ -564,23 +624,23 @@
 							console.log("추천 취소 성공");
 							$("#"+bdcode+"_rchistory").html("<i class='fa-regular fa-heart'></i>");		
 							//bdlikes -1 
-							var bdlikes = $("#"+bdcode+"_bdlikes").text();
+							var bdlikes = $("#"+bdcode+"_bdlikes").text().trim();
 							var afterBdlikes = parseInt(bdlikes)-1;
 							if(afterBdlikes == 0){
-								afterBdlikes = "";
+								afterBdlikes = "&nbsp;";
 							}
-							$("#"+bdcode+"_bdlikes").text(afterBdlikes);
+							$("#"+bdcode+"_bdlikes").html(afterBdlikes);
 							
 						} else if(history == 'schistory'){
 							console.log("스크랩 취소 성공");
 							$("#"+bdcode+"_schistory").html("<i class='fa-regular fa-star'></i>");
 							//bdscraps -1 
-							var bdscraps = $("#"+bdcode+"_bdscraps").text();
+							var bdscraps = $("#"+bdcode+"_bdscraps").text().trim();
 							var afterBdscraps = parseInt(bdscraps)-1;
 							if(afterBdscraps == 0){
-								afterBdscraps = "";
+								afterBdscraps = "&nbsp;";
 							}
-							$("#"+bdcode+"_bdscraps").text(afterBdscraps);
+							$("#"+bdcode+"_bdscraps").html(afterBdscraps);
 							
 						} else {
 							console.log("신고 취소 성공");

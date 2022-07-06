@@ -132,7 +132,7 @@ public class BoardService {
 			System.out.println("등록 성공!");
 			ra.addFlashAttribute("msg", "자취방 자랑글이 등록되었습니다.");
 			//메인페이지로 돌아가기	>> 등록한 글 상세보기 페이지로 이동으로 수정	
-			mav.setViewName("redirect:/");
+			mav.setViewName("redirect:/selectRoomList");
 		} else {
 			System.out.println("등록 실패!");
 			ra.addFlashAttribute("msg", "자취방 자랑글 등록에 실패했습니다.");
@@ -240,7 +240,7 @@ public class BoardService {
 	   }
 
 
-	//자취방 메인 페이지(목록)   
+	//자취방 자랑 메인 페이지(목록)   
 	public ModelAndView selectRoomList() {
 		System.out.println("BoardService.selectRoomList() 호출");
 		ModelAndView mav = new ModelAndView();
@@ -256,11 +256,12 @@ public class BoardService {
 	    */
 	    
 	    mav.addObject("roomList", roomList);
-	    //확인용 출력
 	    
+	    /* 확인용 출력
 	    for(int i=0; i<roomList.size(); i++) {
 	    	System.out.println(roomList.get(i));
 	    }
+	    */
 	    
 
 	    
