@@ -50,7 +50,10 @@
 						</li>					
 						<li class="nav-item active">
 							<h5>로그인 프로필 : ${sessionScope.loginProfile}<h5>
-						</li>					
+						</li>
+						<li class="nav-item active">
+							<h5>관심지역 : ${sessionScope.loginRegion}<h5>
+						</li>											
 						<li class="nav-item active">
 							<a href="${pageContext.request.contextPath }/">HOME</a>
 						</li>
