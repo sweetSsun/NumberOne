@@ -1,5 +1,7 @@
 package com.NumberOne.dto;
 
+import java.util.Arrays;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;
@@ -27,6 +29,9 @@ public class UsedBoardDto {
 	private MultipartFile ubmainimgfile;	//대표사진
 	private MultipartFile[] ubdetailimgfile;	//상세사진
 
+	
+	private String ubnickname;
+	
 	public String getUbcode() {
 		return ubcode;
 	}
@@ -105,13 +110,37 @@ public class UsedBoardDto {
 	public void setUbzzim(int ubzzim) {
 		this.ubzzim = ubzzim;
 	}
+	
+	public MultipartFile getUbmainimgfile() {
+		return ubmainimgfile;
+	}
+	public void setUbmainimgfile(MultipartFile ubmainimgfile) {
+		this.ubmainimgfile = ubmainimgfile;
+	}
+	public MultipartFile[] getUbdetailimgfile() {
+		return ubdetailimgfile;
+	}
+	public void setUbdetailimgfile(MultipartFile[] ubdetailimgfile) {
+		this.ubdetailimgfile = ubdetailimgfile;
+	}
+	public String getUbnickname() {
+		return ubnickname;
+	}
+	public void setUbnickname(String ubnickname) {
+		this.ubnickname = ubnickname;
+	}
+	
 	@Override
 	public String toString() {
 		return "UsedBoardDto [ubcode=" + ubcode + ", ubrgcode=" + ubrgcode + ", ubsellbuy=" + ubsellbuy + ", ubmid="
 				+ ubmid + ", ubtitle=" + ubtitle + ", ubcontents=" + ubcontents + ", ubdate=" + ubdate + ", ubmainimg="
 				+ ubmainimg + ", ubdetailimg=" + ubdetailimg + ", ubstate=" + ubstate + ", ubrecommend=" + ubrecommend
-				+ ", ubwarning=" + ubwarning + ", ubzzim=" + ubzzim + "]";
+				+ ", ubwarning=" + ubwarning + ", ubzzim=" + ubzzim + ", ubmainimgfile=" + ubmainimgfile
+				+ ", ubdetailimgfile=" + Arrays.toString(ubdetailimgfile) + ", ubnickname=" + ubnickname + "]";
 	}
+	
+	
+	
 	
 	
 	
