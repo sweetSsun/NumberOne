@@ -26,12 +26,9 @@
                         <div class="sidebar-item" >
                             <h4><a href="selectMyInfoResellView">중고거래</a></h4>
                             <ul class="list-unstyled">
-                                <li><a href="selectMyInfoResellView">사구팔구</a></li>
-                                <li><a href="selectMyInfoResellView">채팅</a></li>
-                                <li><a href="selectMyInfoResellView">찜목록</a></li>
-                                <li><a href="loadToResellMainPage">사구팔구</a></li>
-                                <li><a href="#">채팅</a></li>
-                                <li><a href="#">찜목록</a></li>
+                                <li><a href="selectMyInfoResellView">팔구사구</a></li>
+                                <li><a href="selectMyInfoResellView#scroll-chat">채팅</a></li>
+                                <li><a href="selectMyInfoResellView#scroll-zzim">찜목록</a></li>
                             </ul>
                         </div>
                        
