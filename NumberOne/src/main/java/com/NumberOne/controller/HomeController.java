@@ -77,7 +77,6 @@ public class HomeController {
 	    
 		// 중고거래 상세 링크 /selectResellView
 		
-		
 		mav.setViewName("Main");
 		return mav;
 

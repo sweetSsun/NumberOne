@@ -216,7 +216,7 @@ background-color: #00BCD4;
                                 </div>
                                 <div class="col-lg-2">
                                     <div class="checkout__input" style="margin-top: 45px;">
-                                        <select id="domainSelect">
+                                        <select id="domainSelect" class="selectOption">
 										<option>직접입력</option>
 										<option>naver.com</option>
 										<option>gmail.com</option>
@@ -224,11 +224,7 @@ background-color: #00BCD4;
 										</select>
                                     </div>
                                 </div> 
-                            </div> 
-
-
-							
-							                         
+                            </div>               
                             <!-- 관심지역 -->
                             <div class="row">
                                 <div class="col-lg-5">

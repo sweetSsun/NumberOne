@@ -13,174 +13,7 @@
 	rel="stylesheet"
 	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
 	crossorigin="anonymous">
-<style type="text/css">
-div {
-	border: 1px solid black;
-}
-
-.container {
-	width: 90%;
-	max-width: 1240px;
-	margin: 0 auto;
-	display: grid;
-	grid-template-columns: 1fr;
-	grid-template-rows: auto;
-	grid-gap: 20px;
-}
-
-.container-card_goods {
-	display: flex;
-	flex-direction: column;
-	flex-wrap: nowrap;
-	justify-content: space-evenly;
-}
-
-.container-card_w100 {
-	width: 100%;
-}
-
-.container-card_goods_2 {
-	display: flex;
-	flex-flow: row nowrap;
-	justify-content: space-evenly;
-}
-
-.container-card_goods-item {
-	display: block;
-	flex-basis: 20%;
-}
-
-.container-flex_1 {
-	display: flex;
-	flex-flow: row nowrap;
-}
-
-.container-flex_2 {
-	display: flex;
-	flex-flow: row nowrap;
-	justify-content: space-evenly;
-}
-
-.container-flex_3 {
-	display: flex;
-	flex-flow: row nowrap;
-	justify-content: space-evenly;
-}
-
-.item-basis_1 {
-	flex-basis: 10%
-}
-
-.item-basis_2 {
-	flex-basis: 60%
-}
-
-.item-basis_3 {
-	flex-basis: 30%
-}
-
-.item-basis_4 {
-	flex-basis: 15%
-}
-
-.item-basis_5 {
-	flex-basis: 40%
-}
-
-.item-basis_6 {
-	flex-basis: 25%
-}
-
-.img_size {
-	max-width: 250px;
-	max-height: 200px;
-}
-
-.font-s {
-	font-size: 15px;
-}
-
-.font-m {
-	font-size: 20px;
-}
-
-.font-l {
-	font-size: 30px;
-}
-
-.text-right {
-	text-align: right;
-}
-
-.text-bold {
-	font-weight: bold;
-}
-
-.img-size {
-	width: 640px;
-	height: 480px;
-}
-.slider{
-position: relative;
-margin: 0 auto;
-overflow: hidden;
-}
-
-
-.mySlides {display:none;}
-.w3-left, .w3-right{
-margin: 5px;
-display: inline-block;
-background-color: #262626;
-border:2px solid #262626;
-border-radius: 10%;
-}
-
-.w3-left, .w3-right:before{
-content:'';
-left: 10px;
-bottom: 50%;
-width: 100%;
-height: 100%;
-background-color: #fff;
-transition: 0.5s;
-}
-.w3-left, .w3-right:hover:before{
-top 0;
-}
-
-
-.w3-badge {height:13px;width:13px;padding:0;}
-.position-left{
-position: absolute;
-left: 10px;
-bottom: 50%;
-width: 70px;
-height: 70px;
-}
-.position-right{
-position: absolute;
-right: 10px;
-bottom: 50%;
-width: 70px;
-height: 70px;
-}
-
-.wrap-vertical{
-overflow-y: scroll;
-
-overflow: auto;
-white-space: nowrap;
-padding: 20px;
-
-}
-.wrap-vertical::-webkit-scrollbar{
-display: none;
-}
-
-
-</style>
-
+ <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/resell.css" type="text/css">
 
 
 </head>
@@ -267,7 +100,7 @@ display: none;
 						<div class=item-basis_5>프로필</div>
 						<div class=" item-basis_4">목록</div>
 						<div class="item-basis_4">신고</div>
-						<div class="item-basis_4">찜</div>
+						<div class="item-basis_4" id="zzimBtn">찜</div>
 						<div class="item-basis_4">채팅</div>
 						<!-- 작성자 -->
 						<!-- 	<div class="card_in-icon">상태변경</div>
@@ -428,6 +261,57 @@ display: none;
 		crossorigin="anonymous"></script>
 </body>
 
+<script type="text/javascript">
+var zzim = '${zzimCheck}';
+if(zzim == null){
+	zzimBtn.classList.add("");
+}
+else{
+	zzimBtn.classList.remove("");
+}
+
+var zzimBtn = document.getElementById("zzimBtn");
+var zzim_class = document.getElementsByClassName("zzim_class");
+var zzim_num = '';
+   
+	
+
+
+zzimBtn.onclick = function(zzubcode,zzmid){
+	
+	zzim_class.length == 0 ? zzim_num = 0 : zzim_num = 1;
+			
+	
+	$.ajax({
+		type : "get",
+		url : "zzimClick_ajax",
+		data : {"zzubcode" : zzubcode , "zzmid" : zzmid, "zzim_num" : zzim_num},
+		success : function(result){
+			console.log(result);
+			if(result.length == null){
+				zzimBtn.classList.add("");
+			}
+			else{
+				zzimBtn.classList.remove("");
+			}
+		}
+		
+		
+	})
+	
+}
+
+
+
+
+
+
+</script>
+
+
+
+
+
 <script>
 var slideIndex = 1;
 showDivs(slideIndex);
@@ -456,4 +340,8 @@ function showDivs(n) {
   dots[slideIndex-1].className += " w3-white";
 }
 </script>
+
+
+
+
 </html>

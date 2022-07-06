@@ -147,13 +147,12 @@ public class MemberController {
 		public ModelAndView loadToMyInfoModifyForm() {
 			System.out.println("마이페이지 회원정보수정페이지 이동 요청");
 			mav = new ModelAndView();
+			mav = msvc.selectMyInfoMemberView();
 			mav.setViewName("member/MyInfoMemberModifyForm");
 			return mav;
 			
 		}		
-		
-		
-		
+
 		//회원정보 수정 요청
 
 		@RequestMapping(value="/updateMyInfoMemberModify")
