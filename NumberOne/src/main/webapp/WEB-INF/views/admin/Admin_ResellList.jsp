@@ -236,16 +236,15 @@
 		// 정렬 select하면 ajax로 공지목록 받고 출력을 바꿔주는 함수
 		function ubSearchState(searchVal){
 			console.log("ubSearchState() 실행");
-			console.log("정렬 선택 : " + searchVal);
-			//var searchType = $("#searchType option:selected").val();
 			var searchType = $("#searchTypeSel").val();
 			var searchText = $("#searchText").val();
 			var page = 1; // 요청페이지
-			console.log(searchType);
-			console.log(searchText);
+			console.log("정렬 선택 : " + searchVal);
+			console.log("검색 종류 : " + searchType);
+			console.log("검색 키워드 : " + searchText);
 			$.ajax({
 				type: "get",
-				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "page":page},
+				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText},
 				url: "admin_selectResellList_ajax",
 				dataType: "json",
 				success: function(result){

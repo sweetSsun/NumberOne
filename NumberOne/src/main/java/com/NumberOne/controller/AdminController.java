@@ -36,16 +36,16 @@ public class AdminController {
 	}
 	
 	@RequestMapping (value="/admin_selectMemberList_ajax")
-	public @ResponseBody String admin_selectMemberList_ajax(String searchVal, int page) {
+	public @ResponseBody String admin_selectMemberList_ajax(Paging paging) {
 		System.out.println("회원 관리페이지 정렬 요청");
-		String memberList_json = asvc.admin_selectMemberList_ajax(searchVal, page);
+		String memberList_json = asvc.admin_selectMemberList_ajax(paging);
 		return memberList_json;
 	}
 	
 	@RequestMapping (value="/admin_selectMemberPagingNumber_ajax")
-	public @ResponseBody String admin_selectMemberPagingNumber_ajax(String searchVal, int page) {
+	public @ResponseBody String admin_selectMemberPagingNumber_ajax(Paging paging) {
 		System.out.println("회원 관리페이지 페이징넘버 조회 요청");
-		String paging_json = asvc.admin_selectMemberPagingNumber_ajax(searchVal, page);
+		String paging_json = asvc.admin_selectMemberPagingNumber_ajax(paging);
 		return paging_json;
 	}
 	

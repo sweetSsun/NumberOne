@@ -121,6 +121,24 @@ public class AdminService {
 //	}
 	
 	// 선택한 상태값에 따른 회원목록 ajax
+	public String admin_selectMemberList_ajax(Paging paging) {
+		System.out.println("AdminService.admin_selectMemberList_ajax() 호출");
+		System.out.println("searchVal : " + paging.getSearchVal());
+		
+		int totalCount = adao.admin_selectMemberTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
+		paging.setTotalCount(totalCount);
+		paging.calc(); // 페이지 처리 계산 실행
+		System.out.println("paging : " + paging);
+		
+		ArrayList<MemberDto> memberList = adao.admin_selectMemberList(paging);
+		System.out.println("memberList : " + memberList);
+		
+		gson = new Gson();
+		String memberList_json = gson.toJson(memberList);
+		System.out.println("memberList_json : " + memberList_json);
+		return memberList_json;
+	}
+	// 선택한 상태값에 따른 회원목록 ajax
 //	public String admin_selectMemberList_ajax(String searchVal, int page) {
 //		System.out.println("AdminService.admin_selectMemberList_ajax() 호출");
 //		mav = new ModelAndView();
@@ -139,6 +157,19 @@ public class AdminService {
 //		return memberList_ajax;
 //	}
 	
+	// 회원목록 ajax 페이징 넘버 조회
+	public String admin_selectMemberPagingNumber_ajax(Paging paging) {
+		System.out.println("AdminServiceadmin.admin_selectMemberPagingNumber_ajax() 호출");
+		
+		int totalCount = adao.admin_selectMemberTotalCount(paging); // 전체 회원수 조회
+		paging.setTotalCount(totalCount);
+		paging.calc(); // 페이지 처리 계산 실행
+		
+		gson = new Gson();
+		String paging_json = gson.toJson(paging);
+		System.out.println(paging_json);
+		return paging_json;
+	}
 	// 회원목록 ajax 페이징 넘버 조회
 //	public String admin_selectMemberPagingNumber_ajax(String searchVal, int page) {
 //		System.out.println("AdminServiceadmin.admin_selectMemberPagingNumber_ajax() 호출");

@@ -13,10 +13,10 @@
 		FROM VIEW_LINEUPMJOINDATE
 		<choose>
 	    	<when test="searchVal == 'active'">
-				WHERE MSTATE=1 AND MWARNING IS NULL
+				WHERE MSTATE=1 AND MWARNING = 0
 			</when>
 			<when test="searchVal == 'warning'">
-				WHERE WM.MWARNING > 0
+				WHERE MWARNING > 0
 			</when>
 			<when test="searchVal == 'inactive'">
 				WHERE MSTATE=0
@@ -47,10 +47,10 @@
 			FROM VIEW_LINEUPMJOINDATE
 			<choose>
 		    	<when test="searchVal == 'active'">
-					WHERE MSTATE=1 AND MWARNING IS NULL
+					WHERE MSTATE=1 AND MWARNING = 0
 				</when>
 				<when test="searchVal == 'warning'">
-					WHERE WM.MWARNING > 0
+					WHERE MWARNING > 0
 				</when>
 				<when test="searchVal == 'inactive'">
 					WHERE MSTATE=0

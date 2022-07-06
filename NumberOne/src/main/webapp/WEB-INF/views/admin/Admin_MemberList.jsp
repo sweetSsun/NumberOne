@@ -18,9 +18,12 @@
     table{
        margin: 20px;
     }
-    .block span{
-    	cursor: pointer;
-    }
+  	#pageList button{
+ 		display: none;
+	}
+	label{
+		cursor: pointer;
+	}
 </style>
 
 </head>
@@ -66,7 +69,7 @@
             <div class="row" style="margin-top: 20px;">
                <div class="col">
                   <!-- 상태값 정렬 -->
-                   <select id="searchVal" onchange="searchState(1)">
+                   <select name="searchVal" id="searchValSel" onchange="mbSearchState(this.value)">
                      <option value="all">전체</option>
                      <option value="active">활동</option>
                      <option value="warning">경고</option>
@@ -76,7 +79,7 @@
                </div>
             </div>
             
-            <!-- 게시글 목록 -->
+            <!-- 회원 목록 -->
             <div class="row">
             <table >
                <thead >
@@ -121,34 +124,37 @@
                 </tbody>
             </table>
             
-            <!-- 페이징 -->
-            <div class="block text-center" id="pageList">
+   			<!-- 페이징 -->
+  			<div class="block text-center" id="pageList">
                	<c:choose>
-               		<c:when test="${paging.page <= 1 }">
-               			[이전]
+               		<c:when test="${paging.prev }">
+               			<button type="submit" name="page" value="${paging.page -1 }" id="btn0"></button>
+               			<label for="btn0">[이전]</label>
                		</c:when>
                		<c:otherwise>
-               			<span onclick="searchState(${paging.page -1 })">[이전]</span>
+               			[이전]
                		</c:otherwise>
                	</c:choose>
                	
                	<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="num" step="1">
                 	<c:choose>
                 		<c:when test="${paging.page == num }">
-                			<span>${num }</span>
+                			<span style="color:#00bcd4;">${num }</span>
                 		</c:when>
                 		<c:otherwise>
-                			<span onclick="searchState(${num})">${num }</span>
+                			<button type="submit" name="page" value="${num }" id="btn${num }"></button>
+               				<label for="btn${num }">${num }</label>
                 		</c:otherwise>
                 	</c:choose>
                	</c:forEach>
 
                	<c:choose>
-               		<c:when test="${paging.page >= paging.maxPage }">
-               			[다음]
+               		<c:when test="${paging.next }">
+               			<button type="submit" name="page" value="${paging.page +1 }" id="btn6"></button>
+               			<label for="btn6">[다음]</label>
                		</c:when>
                		<c:otherwise>
-               			<span onclick="searchState(${paging.page +1 })">[다음]</span>
+               			[다음]
                		</c:otherwise>
                	</c:choose>
             </div>
@@ -314,7 +320,6 @@
 					console.log(result);
 					$("#memberInfoModalLabel").text(mid + " 회원 상세정보");
 					$("#mI_mprofile").text("");
-					// 저장경로 때문에 프로필이미지는 수정 필요
 					if (result.mprofile != null){
 						$("#mI_mprofile").html("<img class='img-fluid rounded-circle' alt='프로필이미지' style='height: 200px; width: 200px;' src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/" + result.mprofile + "'>");
 					}
@@ -336,14 +341,17 @@
 	
 	<script type="text/javascript">
 		// 정렬 select하면 ajax로 회원목록 받고 출력을 바꿔주는 함수
-		function searchState(page){
-			console.log("searchState() 실행");
-			var searchVal = $("#searchVal").val();
+		function mbSearchState(searchVal){
+			console.log("mbSearchState() 실행");
+			var searchType = $("#searchTypeSel").val();
+			var searchText = $("#searchText").val();
+			var page = 1; // 정렬 시 요청페이지
 			console.log("정렬 선택 : " + searchVal);
-			console.log("요청 페이지 : " + page);
+			console.log("검색 종류 : " + searchType);
+			console.log("검색 키워드 : " + searchText);
 			$.ajax({
 				type: "get",
-				data: {"searchVal":searchVal, "page":page},
+				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "page":page},
 				url: "admin_selectMemberList_ajax",
 				dataType: "json",
 				success: function(result){
@@ -376,31 +384,35 @@
 			// 페이지에서 출력할 페이지번호 받아오기
 			$.ajax({
 				type: "get",
-				data: {"searchVal":searchVal, "page":page},
+				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "page":page},
 				url: "admin_selectMemberPagingNumber_ajax",
 				dataType: "json",
 				success: function(result){
-					console.log("페이징 : " + result);
+					console.log("요청 페이지 : " + result.page);
 					$("#pageList").text("");
-					var output = "";
-    					if (result.page == 1) {
-    	    				output += "[이전]";
-        				} else {
-    	    				output += "<span onclick='searchState(" + (result.page - 1) + ")'> [이전] </span>";
-        				}
-        				for (var i = result.startPage; i <= result.endPage; i++){
-        					if (page == i){
-        	    				output += "<span>" + i + "</span>";
-        					} else {
-        	    				output += "<span onclick='searchState(" + i + ")'>" + i + "</span>";
-        					}
-        				}
-        				if (result.page == result.maxPage){
-    	    				output += "[다음]";
-        				} else {
-    	    				output += "<span onclick='searchState(" + (result.page + 1) + ")'> [다음] </span>";
-        				}
-					$("#pageList").html(output);
+					// 페이징 번호 출력
+					var pageList = "";
+					if (result.prev) {
+						pageList += "<button type='submit' name='page' value='" + (result.page - 1) + "' id='btn0'></button>";
+						pageList += "<label for='btn0'>[이전]</label>";
+					} else {
+						pageList += "[이전] ";
+					}
+					for (var i = result.startPage; i <= result.endPage; i++){
+						if (result.page == i){
+							pageList += "<span style='color:#00bcd4'>" + i + "</span>";
+						} else {
+							pageList += "<button type='submit' name='page' value='" + i + "' id='btn" + i + "'></button>";
+							pageList += "<label for='btn" + i + "'>" + i + "</label>";
+						}
+					}
+					if (result.next){
+						pageList += "<button type='submit' name='page' value='" + (result.page + 1) + "' id='btn6'></button>";
+						pageList += "<label for='btn6'>[다음]</label>";
+					} else {
+						pageList += "[다음]";
+					}
+					$("#pageList").html(pageList);
 				},
 				error: function(){
 					alert("페이징넘버링 실패");
@@ -442,7 +454,7 @@
 				success: function(result){
 					console.log(result);
 						if (result.mstate == 0){
-							btnObj.text("정지").addClass("btn-secondary").removeClass("btn-primary").removeClass("btn-warning");
+							btnObj.text("정지").addClass("btn-danger").removeClass("btn-primary").removeClass("btn-warning");
 						} else if (result.mwarning > 0){
 							btnObj.text("경고").addClass("btn-warning").removeClass("btn-primary").removeClass("btn-secondary");
 						} else {
