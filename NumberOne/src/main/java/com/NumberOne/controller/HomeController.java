@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.NumberOne.dao.BoardDao;
 import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.NoticeDto;
+import com.NumberOne.dto.UsedBoardDto;
 import com.NumberOne.service.BoardService;
 
 /**
@@ -66,16 +67,15 @@ public class HomeController {
 	    
 	    
 		// 중고거래 팔구 목록 불러오기 /selectResellSellList
-	    // ArrayList<UsedBoardDto> resellSellList = bdao.selectResellSellList();
-	    // System.out.println(resellSellList);
-	    // mav.addObject("resellSellList", resellSellList");
+	    // ArrayList<UsedBoardDto> sellList= bsvc.selectResellSellList();
+	    // System.out.println(sellList);
+	    // mav.addObject("sellList", sellList");
 	    
 		// 중고거래 사구 목록 불러오기 /selectResellBuyList
-	    // ArrayList<UsedBoardDto> resellBuyList = bdao.selectResellBuyList();
-	    // System.out.println(resellBuyList);
-	    // mav.addObject("resellBuyList", resellBuyList");
+	    // ArrayList<UsedBoardDto> buyList= bsvc.selectResellBuyList();
+	    // System.out.println(buyList);
+	    // mav.addObject("buyList", buyList");
 	    
-		// 중고거래 상세 링크 /selectResellView
 		
 		
 		mav.setViewName("Main");
