@@ -63,6 +63,7 @@
                      <option value="active">활동</option>
                      <option value="warning">경고</option>
                      <option value="inactive">정지</option>
+                     <option value="withdraw">탈퇴</option>
                   </select>
                </div>
             </div>
@@ -86,8 +87,8 @@
 	                   <!-- 회원관리 목록 -->
 	                   <tr style="border-bottom: solid gray 1px;">
 	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;">${member.mid}</td>
-	                      <td>${member.mname}</td>
-	                      <td>${member.mnickname}</td>
+	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;">${member.mname}</td>
+	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;">${member.mnickname}</td>
 	                      <td>${member.mphone}</td>
 	                      <td>${member.memail}</td>
 	                      <td>${member.mjoindate}</td>
@@ -96,12 +97,15 @@
 	                      		<c:when test="${member.mwarning > 0}">
 	                      			<button class="btn btn-warning" onclick="showMstateModal(this,'${member.mid }')">경고</button>
 	                      		</c:when>
+	                      		<c:when test="${member.mstate == 0}">
+	                      			<button class="btn btn-danger" onclick="showMstateModal(this, '${member.mid }')">정지</button>
+	                      		</c:when>
 	                      		<c:when test="${member.mstate == 1}">
 	                      			<button class="btn btn-primary" onclick="showMstateModal(this,'${member.mid }')">활동</button>
 	                      		</c:when>
-	                      		<c:otherwise>
-	                      			<button class="btn btn-secondary" onclick="showMstateModal(this, '${member.mid }')">정지</button>
-	                      		</c:otherwise>
+	                      		<c:when test="${member.mstate == 2}">
+	                      			<button class="btn btn-secondary" style="cursor:default;">탈퇴</button>
+	                      		</c:when>
 	                      	</c:choose>
 	                      </td>
 	                   </tr>
@@ -184,8 +188,7 @@
                 	<div class="row">
 	                		<div class="col-5">
                                 <div class="no-gutters align-items-center">
-                                    <div class="h6 mb-1 font-weight-bold text-gray-800" >
-                                 		<img class="img-fluid" alt="영화포스터" style="max-height:300px;" id="mI_mprofile" src="">
+                                    <div class="h6 mb-1 font-weight-bold text-gray-800 text-center" id="mI_mprofile">
                                  		프로필이미지
                                     </div>
                                     <div>
@@ -280,9 +283,11 @@
 				success: function(result){
 					console.log(result);
 					$("#memberInfoModalLabel").text(mid + " 회원 상세정보");
-
+					$("#mI_mprofile").text("");
 					// 저장경로 때문에 프로필이미지는 수정 필요
-					$("#mI_mprofile").attr("src", result.mprofile);
+					if (result.mprofile != null){
+						$("#mI_mprofile").html("<img class='img-fluid rounded-circle' alt='프로필이미지' style='height: 200px; width: 200px;' src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/" + result.mprofile + "'>");
+					}
 					$("#mI_mmessage").text(result.mmessage);
 					$("#mI_mid").text(result.mid);
 					$("#mI_mname").text(result.mname);
@@ -325,10 +330,12 @@
 						output += "<td>"
 						if (result[i].mwarning > 0){
 							output += "<button class='btn btn-warning' onclick='showMstateModal(this, \""+result[i].mid+"\")'>경고</button>";
+						} else if (result[i].mstate == 0){
+							output += "<button class='btn btn-danger' onclick='showMstateModal(this, \""+result[i].mid+"\")'>정지</button>";
 						} else if (result[i].mstate == 1){
 							output += "<button class='btn btn-primary' onclick='showMstateModal(this, \""+result[i].mid+"\")'>활동</button>";
 						} else {
-							output += "<button class='btn btn-secondary' onclick='showMstateModal(this,\""+result[i].mid+"\")'>정지</button>";
+							output += "<button class='btn btn-secondary' style='cursor:default;'>탈퇴</button>";
 						}
 						output += "</td>";
 						output += "</tr>";

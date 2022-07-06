@@ -83,16 +83,30 @@ public interface BoardDao {
 	//게시글 추천수 조회
 	int selectBoardRecommendCount_ajax(String bdcode);	
 	
-	//글 전체 목록 조회 
+	//글 전체 목록 조회 ( Boards 테이블 + 닉네임, 댓글수, 추천수)
 	@Select("SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, "
-	          + "   TO_CHAR(BDDATE,'YY-MM-DD') AS BDDATE, "
-	          + "   BDIMG, BDDETAILIMG, BDSTATE, BDHITS, MB.MNICKNAME AS BDNICKNAME "
-	          + "FROM BOARDS BD, MEMBERS MB "
-	          + "WHERE BD.BDMID = MB.MID "
-	          + "AND BDSTATE = 1 "
-	          + "ORDER BY BDCODE DESC " )
+			+ "	   TO_CHAR(BDDATE,'YY-MM-DD') AS BDDATE, "
+			+ "	   BDIMG, BDDETAILIMG, BDSTATE, BDHITS, "
+			+ "       MB.MNICKNAME AS BDNICKNAME, "
+			+ "       NVL(RPCOUNT.BDRPCOUNT, 0) AS BDRPCOUNT, "
+			+ "       NVL(RCCOUNT.BDRCCOUNT, 0) AS BDRCCOUNT "
+			+ "FROM BOARDS BD "
+			+ "LEFT OUTER JOIN MEMBERS MB "
+			+ "ON BD.BDMID = MB.MID "
+			+ "LEFT OUTER JOIN (SELECT BD.BDCODE AS RPBDCODE, COUNT(*) AS BDRPCOUNT "
+			+ "                        FROM BOARDS BD LEFT OUTER JOIN REPLY RP "
+			+ "                        ON BD.BDCODE = RP.RPBDCODE "
+			+ "                        WHERE RP.RPSTATE = 1 "
+			+ "                        GROUP BY BD.BDCODE "
+			+ "                        ORDER BY BD.BDCODE) RPCOUNT "
+			+ "ON BD.BDCODE = RPCOUNT.RPBDCODE "
+			+ "LEFT OUTER JOIN (SELECT RCBDCODE, COUNT(*) AS BDRCCOUNT "
+			+ "                        FROM recommend "
+			+ "                        GROUP BY RCBDCODE ) RCCOUNT "
+			+ "ON BD.BDCODE = RCCOUNT.RCBDCODE "
+			+ "WHERE BD.BDSTATE = 1 "
+			+ "ORDER BY BDCODE DESC " )
 	  ArrayList<BoardDto> selectBoardList();
-	
 	
 	/* 일반게시판 글목록 조회 */
 	//자유 게시글 목록 
@@ -146,6 +160,9 @@ public interface BoardDao {
 	
 	//게시글 조회수 증가
 	int updateBoardHits(String bdcode);
+	
+	//공지글 조회수 증가 
+	int updateNoticeBdHits(String nbcode);
 
 	
 	
