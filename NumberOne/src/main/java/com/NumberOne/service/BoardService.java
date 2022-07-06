@@ -284,14 +284,19 @@ public class BoardService {
 		 
 		System.out.println("nbcode:" +  nbcode);
 		
+		//공지글 조회수 업데이트 
+		int updateResult = bdao.updateNoticeBdHits(nbcode);
+		
+		//공지글 정보 조회 
 		NoticeDto noticeBoard = bdao.selectNoticeBoardView(nbcode);
 		System.out.println(noticeBoard);
+		
 		mav.addObject("noticeBoard", noticeBoard);
 		mav.setViewName("board/NoticeBoardView");
 		
 		return mav;
 	}
-
+	
 	//일반게시판 - 글상세페이지 이동 
 	public ModelAndView selectBoardView(String bdcode) {
 		System.out.println("BoardService.selectBoardView() 호출");
@@ -505,7 +510,7 @@ public class BoardService {
 		
 		String wnCheck ="";
 		String warning = bdao.checkBoardWarning_ajax(loginId, bdcode);
-		if( wnCheck != null ) {
+		if( warning != null ) {
 			//이미 신고한 게시물
 			wnCheck = "Yes";
 		}

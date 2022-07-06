@@ -114,7 +114,7 @@
 				<div class="row mt-4">
 					<div class="col btn-wrapper">
 						<input class="btn btn-lg buttons bg-success fw-bold text-white" type="submit" value="작성">
-						<input onclick="writeBoardCancel()" class="btn btn-lg buttons bg-success fw-bold text-white" type="button" value="취소">
+						<input onclick="bdWriteCancelCheckModal()" class="btn btn-lg buttons bg-success fw-bold text-white" type="button" value="취소">
 					</div>
 				</div>
 			</form>
@@ -124,6 +124,33 @@
 	</main>
 	
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
+	
+	<!-- 게시글 작성 취소 확인 -->
+	<div class="modal fade" id="bdWriteCancelCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" "> 게시글 작성 취소 </h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" >
+                	<span class="fw-bold">게시글 작성을 취소하시겠습니까?</span>
+                	<br>
+                	<span class="fw-bold">이 페이지를 벗어나면 작성된 내용은 저장되지 않습니다.</span>
+                </div>	
+                <div class="modal-footer">
+                	<input type="hidden" >
+                    <button class="close btn btn-info text-white" onclick="writeBoardCancel()" >네</button>
+                    <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
+                </div>
+            </div>
+        </div>
+    </div>
+	
+	
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
@@ -136,10 +163,23 @@
 	//현재 로그인중인 아이디
 	var loginId = '${sessionScope.loginId}';
 	
-	
 </script>
-
 <script type="text/javascript">
+		// 게시글 작성 취소 경고 모달창 close 하는 스크립트
+ 		var modal = $(".modal");
+		var close = $(".close");
+		for (var i = 0; i < close.length; i++){
+			close[i].addEventListener("click", function(){
+				$("#bdWriteCancelCheckModal").modal("hide");
+			});
+		}
+</script>
+<script type="text/javascript">
+	
+	function bdWriteCancelCheckModal(){
+		/* 게시글 작성 취소버튼 클릭시 모달 출력 */
+		$("#bdWriteCancelCheckModal").modal('show');
+	}
 	function writeBoardCancel(){
 		/* 작성취소 */
 		history.back();

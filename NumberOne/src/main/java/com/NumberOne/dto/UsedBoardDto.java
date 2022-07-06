@@ -28,7 +28,6 @@ public class UsedBoardDto {
 	private MultipartFile[] ubdetailimgfile;	//상세사진
 
 	
-	
 	private String ubnickname;
 	
 	public String getUbcode() {
@@ -109,6 +108,26 @@ public class UsedBoardDto {
 	public void setUbzzim(int ubzzim) {
 		this.ubzzim = ubzzim;
 	}
+	
+	public MultipartFile getUbmainimgfile() {
+		return ubmainimgfile;
+	}
+	public void setUbmainimgfile(MultipartFile ubmainimgfile) {
+		this.ubmainimgfile = ubmainimgfile;
+	}
+	public MultipartFile[] getUbdetailimgfile() {
+		return ubdetailimgfile;
+	}
+	public void setUbdetailimgfile(MultipartFile[] ubdetailimgfile) {
+		this.ubdetailimgfile = ubdetailimgfile;
+	}
+	public String getUbnickname() {
+		return ubnickname;
+	}
+	public void setUbnickname(String ubnickname) {
+		this.ubnickname = ubnickname;
+	}
+	
 	@Override
 	public String toString() {
 		return "UsedBoardDto [ubcode=" + ubcode + ", ubrgcode=" + ubrgcode + ", ubsellbuy=" + ubsellbuy + ", ubmid="
@@ -117,7 +136,10 @@ public class UsedBoardDto {
 				+ ", ubwarning=" + ubwarning + ", ubzzim=" + ubzzim + ", ubmainimgfile=" + ubmainimgfile
 				+ ", ubdetailimgfile=" + Arrays.toString(ubdetailimgfile) + ", ubnickname=" + ubnickname + "]";
 	}
-
+	
+	
+	
+	
 	
 	
 	

@@ -222,6 +222,11 @@ public class MemberService {
 		return mav;
 	}
 
+	public String getTitleCheck(String checkMsg) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 
 	//회원정보 수정 요청  
 	public ModelAndView updateMyInfoMemberModify(RedirectAttributes ra, MemberDto member) throws IllegalStateException, IOException {
@@ -463,8 +468,6 @@ public class MemberService {
 				return "NO";
 			}
 		}
-
-
 
 	}
 
