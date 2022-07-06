@@ -131,8 +131,8 @@ background-color: #00BCD4;
 						<c:forEach items="${scrap }" var="scrap">
 							<!-- 작성글 목록 -->
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center; ">
-								<td>${scrap.bdcode }</td>
-								<td>${scrap.bdtitle }</td>
+								<td>${scrap.scbdcode }</td>
+								<td><a href="selectBoardView?bdcode=${scrap.scbdcode }">${scrap.bdtitle }</a></td>
 								<td>${scrap.bdreply }</td>
 								<td>${scrap.mnickname }</td>
 								<td>${scrap.bddate }</td>								

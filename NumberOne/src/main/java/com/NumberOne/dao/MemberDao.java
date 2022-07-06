@@ -104,7 +104,7 @@ public interface MemberDao {
 	ArrayList<UsedBoardDto> selectMyInfoResellView_Buy(String loginId);
  	
 	//마이페이지 스크랩 목록
-	@Select("SELECT BD.BDCODE, BD.BDTITLE, BD.BDDATE, M.MNICKNAME ,RP.BDREPLY, SC.SCMID "
+	@Select("SELECT SC.SCBDCODE, BD.BDTITLE, BD.BDDATE, M.MNICKNAME ,RP.BDREPLY, SC.SCMID "
 			+ "FROM SCRAP SC "
 			+ "LEFT OUTER JOIN BOARDS BD ON BD.BDCODE = SC.SCBDCODE "
 			+ "LEFT OUTER JOIN MEMBERS M ON BD.BDMID = M.MID "
