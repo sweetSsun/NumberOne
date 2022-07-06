@@ -145,7 +145,6 @@ public class MemberService {
 				mav.setViewName("redirect:/loadToLogin");
 
 			}else if(loginMember.getMid().equals("admin")) {
-
 				session.setAttribute("loginId", loginMember.getMid());
 				mav.setViewName("redirect:/admin_loadToAdminMainPage");
 			} else if(loginMember .getMstate() == 2){
