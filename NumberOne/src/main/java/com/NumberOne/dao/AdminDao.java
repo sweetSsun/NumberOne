@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.NoticeDto;
+import com.NumberOne.dto.Paging;
 
 public interface AdminDao {
 
@@ -28,6 +30,13 @@ public interface AdminDao {
 	int admin_insertNoticeWrite(NoticeDto notice);
 
 	int admin_updateNoticeModify(NoticeDto notice);
+
+	int admin_selectBoardTotalCount(Paging paging);
+
+//	ArrayList<BoardDto> admin_selectBoardList(@Param("searchVal") String searchVal);
+	ArrayList<BoardDto> admin_selectBoardList(Paging paging);
+
+	int admin_updateBdstate_ajax(@Param("bdcode") String bdcode, @Param("bdstate") String bdstate);
 
 
 }
