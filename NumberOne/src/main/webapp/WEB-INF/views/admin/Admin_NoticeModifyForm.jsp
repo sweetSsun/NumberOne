@@ -71,6 +71,7 @@
  				<form action="admin_updateNoticeModify" method="post" enctype="multipart/form-data">
  				<!-- 수정 불가능한 값 숨기고 submit에는 데이터 넘겨주는 변수 -->
  				<input type="hidden" name="nbcode" value="${noticeBoard.nbcode }">
+ 				<input type="hidden" name="originImg" value="${noticeBoard.nbimg }">
  				<table>
 					<tr class="tableRow">
 						<th class="tableHead">작성자</th>

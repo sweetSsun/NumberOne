@@ -19,6 +19,9 @@ public class NoticeDto {
 	// 파일 처리를 위한 필드
 	private MultipartFile nbimgfile;
 
+	// 글 출력시 필요한 필드
+	private String nbnickname;      //작성자 닉네임
+
 	public String getNbcode() {
 		return nbcode;
 	}
