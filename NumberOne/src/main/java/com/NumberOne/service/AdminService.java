@@ -446,6 +446,9 @@ public class AdminService {
 			return mav;
 		}
 		
+		if(paging.getKeyword() == null) {
+			paging.setKeyword("");
+		}
 		int totalCount = adao.admin_selectBoardTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
 		paging.setTotalCount(totalCount);
 		paging.calc(); // 페이지 처리 계산 실행

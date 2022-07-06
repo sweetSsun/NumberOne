@@ -125,7 +125,6 @@
             </table>
             
   			<!-- 페이징 -->
-	  		<!-- 페이징 넘버가 이상해~~~~~~ ajax로 받아오는 부분 매우매우매우 수정 요망 -->
   			<div class="block text-center" id="pageList">
                	<c:choose>
                		<c:when test="${paging.prev }">
@@ -270,7 +269,7 @@
 						output += "<td>" + result[i].bdcode + "</td>";
 						output += "<td>" + result[i].bdcategory + "</td>";
 						output += "<td><a href='admin_selectBoardView?bdcode=" + result[i].bdcode + "'>" + result[i].bdtitle + "</a></td>";
-						output += "<td>" + result[i].bdmid + "</td>";
+						output += "<td>" + result[i].bdnickname + "</td>";
 						output += "<td>" + result[i].bddate + "</td>";
 						output += "<td>" + result[i].bdhits + "</td>";
 						output += "<td>"
