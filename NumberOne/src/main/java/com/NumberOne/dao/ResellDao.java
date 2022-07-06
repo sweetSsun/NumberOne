@@ -36,7 +36,7 @@ public interface ResellDao {
 
 
 
-	UsedBoardDto selectResellView(@Param("ubcode") String ubcode,  @Param("ubsellbuy") String ubsellbuy, @Param("loginId") String loginId);
+	UsedBoardDto selectResellView(@Param("ubcode") String ubcode,  @Param("ubsellbuy") String ubsellbuy);
 
 
 
@@ -49,6 +49,22 @@ public interface ResellDao {
 
 
 	GoodsDto selectResellView_goods(String ubcode);
+
+
+
+
+
+
+	int zzimClick_ajax_delete(@Param("zzubcode") String zzubcode, @Param("zzmid") String zzmid);
+
+
+
+	int zzimClick_ajax_insert(@Param("zzubcode") String zzubcode, @Param("zzmid") String zzmid);
+
+
+
+	String selectZzimCheck(@Param("loginId") String loginId, @Param("ubcode") String ubcode);
+	
 	
 
 	

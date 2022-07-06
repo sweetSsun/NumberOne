@@ -100,7 +100,7 @@
 						<div class=item-basis_5>프로필</div>
 						<div class=" item-basis_4">목록</div>
 						<div class="item-basis_4">신고</div>
-						<div class="item-basis_4">찜</div>
+						<div class="item-basis_4" id="zzimBtn">찜</div>
 						<div class="item-basis_4">채팅</div>
 						<!-- 작성자 -->
 						<!-- 	<div class="card_in-icon">상태변경</div>
@@ -261,6 +261,57 @@
 		crossorigin="anonymous"></script>
 </body>
 
+<script type="text/javascript">
+var zzim = '${zzimCheck}';
+if(zzim == null){
+	zzimBtn.classList.add("");
+}
+else{
+	zzimBtn.classList.remove("");
+}
+
+var zzimBtn = document.getElementById("zzimBtn");
+var zzim_class = document.getElementsByClassName("zzim_class");
+var zzim_num = '';
+   
+	
+
+
+zzimBtn.onclick = function(zzubcode,zzmid){
+	
+	zzim_class.length == 0 ? zzim_num = 0 : zzim_num = 1;
+			
+	
+	$.ajax({
+		type : "get",
+		url : "zzimClick_ajax",
+		data : {"zzubcode" : zzubcode , "zzmid" : zzmid, "zzim_num" : zzim_num},
+		success : function(result){
+			console.log(result);
+			if(result.length == null){
+				zzimBtn.classList.add("");
+			}
+			else{
+				zzimBtn.classList.remove("");
+			}
+		}
+		
+		
+	})
+	
+}
+
+
+
+
+
+
+</script>
+
+
+
+
+
 <script>
 var slideIndex = 1;
 showDivs(slideIndex);
@@ -289,4 +340,8 @@ function showDivs(n) {
   dots[slideIndex-1].className += " w3-white";
 }
 </script>
+
+
+
+
 </html>

@@ -48,17 +48,17 @@
 										<option value="ALL">전체</option>
 										<option value="SEL">서울</option>
 										<option value="ICN">인천</option>
-										<option value="GGD">경기도</option>
-										<option value="GWD">강화도</option>
-										<option value="CCD">충청도</option>
-										<option value="JLD">전라도</option>
-										<option value="GSD">경상도</option>
-										<option value="JJD">제주도</option>
+										<option value="GGD">경기</option>
+										<option value="GWD">강화</option>
+										<option value="CCD">충청</option>
+										<option value="JLD">전라</option>
+										<option value="GSD">경상</option>
+										<option value="JJD">제주</option>
 								</select>
 								</span>
 							</div>
 
-							<div class="item_end">작성자 : 닉네임</div>
+							<div class="item_end">작성자 : 닉네임  ${sessionScope.loginRegion }</div>
 
 						</div>
 

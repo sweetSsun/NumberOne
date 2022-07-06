@@ -97,6 +97,14 @@ WHERE UBCODE = #{ubcode} AND UBSELLBUY = #{ubsellbuy} AND UBSTATE = 1
 
 </select>
 
+<select id="selectZzimCheck" resultType="String">
+SELECT ZZMID
+FROM ZZIM
+WHERE ZZMID #{loginId} AND ZZUBCODE #{ubcode};
+</select>
+
+
+
 <!-- 중고거래 글작성 상품 insert -->
 <insert id="insertResellWrite_gd">
 INSERT INTO GOODS(GDCODE, GDUBCODE, GDNAME, GDPRICE, GDSTATE)
@@ -111,6 +119,13 @@ VALUES(#{ubcode}, #{ubrgcode}, #{ubsellbuy}, #{ubmid} , #{ubtitle}, #{ubcontents
 
 
 
+
+<insert id="zzimClick_ajax">
+
+INSERT INTO ZZIM(ZZMID, ZZUBCODE)
+VALUSE()
+
+</insert>
 
 
 

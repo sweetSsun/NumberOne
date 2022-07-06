@@ -224,10 +224,6 @@ public class MemberService {
 	}
 
 
-<<<<<<< HEAD
-=======
-
->>>>>>> d7431bd273ec9f94afc760ff90a6487784cfe0e4
 	//회원정보 수정 요청  
 	public ModelAndView updateMyInfoMemberModify(RedirectAttributes ra, MemberDto member) throws IllegalStateException, IOException {
 		  
@@ -467,20 +463,7 @@ public class MemberService {
 		}
 
 
-<<<<<<< HEAD
 
-
-
-
-
-
-
-
-
-
-		
-=======
->>>>>>> d7431bd273ec9f94afc760ff90a6487784cfe0e4
 	}
 
 

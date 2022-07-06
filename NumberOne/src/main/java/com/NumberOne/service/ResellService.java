@@ -31,6 +31,8 @@ public class ResellService {
 
 	@Autowired
 	ResellDao rdao;
+	
+
 
 
 	public ModelAndView insertResellWrite(GoodsDto gdDto, UsedBoardDto ubDto, RedirectAttributes ra)
@@ -41,11 +43,6 @@ public class ResellService {
 		String savePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\mprofileUpLoad";
 
 		String ubmid = (String)session.getAttribute("loginId");
-		
-		
-		
-		
-		
 		
 		
 		String ub_char = "UB";
@@ -234,7 +231,11 @@ public class ResellService {
 	public ModelAndView selectResellSellList() {
 		System.out.println("selectResellSellList 서비스 호출");
 		//회원의 관심지역
+		String mid = (String)session.getAttribute("loginId");
 		String loginRegion = (String)session.getAttribute("loginRegion");
+		
+		System.out.println("내아이디 : "+ mid);
+		System.out.println("관심지역 : " + loginRegion);
 		
 		ModelAndView mav = new ModelAndView();
 		
@@ -273,15 +274,17 @@ public class ResellService {
 		
 		String loginId = (String)session.getAttribute("loginId");
 		
-		UsedBoardDto ub_resellView = rdao.selectResellView(ubcode,ubsellbuy, loginId);
+		UsedBoardDto ub_resellView = rdao.selectResellView(ubcode,ubsellbuy);
 					
 		GoodsDto gd_resellView = rdao.selectResellView_goods(ubcode);
+		
+		String zzimCheck = rdao. selectZzimCheck(loginId, ubcode);
 		
 //		String[] ubDetailImg = ub_resellView.getUbdetailimg().split("__");
 //		
 //		ub_resellView.setUbdetailimgfile(ub_resellView.getUbdetailimg().split("__"));
 		
-		
+		mav.addObject("zzimCheck", zzimCheck);
 		mav.addObject("ub_resellView", ub_resellView);
 		mav.addObject("gd_resellView", gd_resellView);
 		mav.setViewName("resell/Resell_View");
@@ -336,6 +339,25 @@ public class ResellService {
 			}	
 			
 		return mav;
+	}
+
+
+	public String zzimClick_ajax(String zzubcode, String zzmid, int zzim_num) {
+		System.out.println("zzimClick_ajax 서비스 호출");
+		int zzimResult = 0;
+		String zzimCheck = null;
+		if(zzim_num == 0) {
+			zzimResult = rdao.zzimClick_ajax_delete(zzubcode, zzmid);
+		}
+		else if(zzim_num == 1) {
+			zzimResult = rdao.zzimClick_ajax_insert(zzubcode, zzmid);			
+		}
+		if(zzimResult>0) {
+			zzimCheck = rdao. selectZzimCheck(zzmid, zzubcode);
+		}
+		
+		
+		return zzimCheck;
 	}
 
 	

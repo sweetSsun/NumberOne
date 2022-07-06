@@ -26,15 +26,16 @@ public class ResellController {
 	}
 	
 	@RequestMapping (value="/selectResellView")
-	public String selectResellView(String ubcode, String ubsellbuy) {
+	public ModelAndView selectResellView(String ubcode, String ubsellbuy) {
 		System.out.println("selectResellView 호출");
 		System.out.println("ubcode : "+ubcode);
 		ModelAndView mav = new ModelAndView();
 		
 		mav = rsvc.selectResellView(ubcode, ubsellbuy);
 		
-		return "mav";
+		return mav;
 	}
+	
 	
 	
 	@RequestMapping (value="/loadToResellWriteForm")
@@ -86,7 +87,7 @@ public class ResellController {
 		System.out.println("selectRegion_sellList_ajax 요청");
 		System.out.println("파라메터확인 : "+ selectRegion);
 		String sellList_json = rsvc.selectRegion_sellList_ajax(selectRegion);
-				
+		
 		return sellList_json;
 		
 	}
@@ -109,7 +110,17 @@ public class ResellController {
 				
 		return mav;
 	}
-	
+	@RequestMapping(value="/zzimClick_ajax")
+	public @ResponseBody String zzimClick_ajax(String zzubcode, String zzmid, int zzim_num) {
+		System.out.println("zzimClick_ajax 요청");
+		System.out.println("파라메터확인 : "+ zzubcode);
+		System.out.println("파라메터확인 : "+ zzmid);
+		System.out.println("파라메터확인 : "+ zzim_num);
+		
+		String zzimCheck = rsvc.zzimClick_ajax(zzubcode, zzmid, zzim_num);
+				
+		return zzimCheck;
+	}
 	
 	
 }
