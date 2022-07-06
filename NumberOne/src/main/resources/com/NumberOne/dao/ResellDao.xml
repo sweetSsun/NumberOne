@@ -35,29 +35,20 @@ SELECT UBNICKNAME, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE, UBCONTENTS,
 TO_CHAR(UBDATE, 'YYYY-MM-DD HH24:MI') UBDATE, UBMAINIMG, UBDETAILIMG, UBSTATE, NVL(ZZIMCOUNT, 0) ZZIMCOUNT
 FROM (SELECT ROWNUM RN, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE, UBCONTENTS, 
         UBDATE, UBMAINIMG, UBDETAILIMG, UBSTATE
-      FROM  USEDBOARDS
+      FROM  (SELECT * FROM USEDBOARDS ORDER BY UBCODE)
       WHERE UBRGCODE = #{mregion} AND UBSELLBUY = #{sell_buy} AND UBSTATE = 1
       ORDER BY UBCODE DESC
-     ) LEFT OUTER JOIN (SELECT ZZUBCODE, COUNT(*) AS ZZIMCOUNT
-                                    FROM ZZIM
-                                    GROUP BY ZZUBCODE)
-                                    ON UBCODE = ZZUBCODE
-                                    ,(SELECT MID, MNICKNAME AS UBNICKNAME
-                                    FROM MEMBERS)
+     ) LEFT OUTER JOIN ZZIM_VIEW
+                              ON UBCODE = ZZUBCODE, MNICKNAME_VIEW
 WHERE MID = UBMID AND RN BETWEEN #{startRow} AND #{endRow}
-
 </select>
 
 <!-- 지역글 목록 ajax -->
 <select id="selectResellRegionList_ajax" resultType="com.NumberOne.dto.UsedBoardDto">
 SELECT UBNICKNAME, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE, UBCONTENTS, TO_CHAR(UBDATE, 'YYYY/MM/DD HH24:MI') AS UBDATE,
 UBMAINIMG, UBDETAILIMG, UBSTATE, NVL(ZZIMCOUNT, 0) ZZIMCOUNT
-FROM  USEDBOARDS LEFT OUTER JOIN (SELECT ZZUBCODE,COUNT(*) AS ZZIMCOUNT
-                                    FROM ZZIM
-                                    GROUP BY ZZUBCODE)
-                                    ON UBCODE = ZZUBCODE
-                                    ,(SELECT MID, MNICKNAME AS UBNICKNAME
-                                    FROM MEMBERS)
+FROM  USEDBOARDS LEFT OUTER JOIN ZZIM_VIEW
+                              ON UBCODE = ZZUBCODE, MNICKNAME_VIEW
 WHERE MID = UBMID AND UBRGCODE = #{mregion} AND UBSELLBUY = #{sell_buy} AND UBSTATE = 1
 ORDER BY UBDATE DESC
 </select>
@@ -68,7 +59,7 @@ ORDER BY UBDATE DESC
 SELECT COUNT(UBCODE)
 FROM (SELECT *
       FROM  USEDBOARDS
-      WHERE UBRGCODE = 'SEL' AND UBSELLBUY = 'S' AND UBSTATE = 1
+      WHERE UBRGCODE = #{mregion} AND UBSELLBUY = #{sell_buy} AND UBSTATE = 1
       ORDER BY UBCODE DESC
      ),(SELECT MID, MNICKNAME AS UBNICKNAME
      FROM MEMBERS)
@@ -94,10 +85,23 @@ WHERE UBCODE = #{ubcode} AND UBSELLBUY = #{ubsellbuy} AND UBSTATE = 1
 
 </select>
 
+<select id="selectSearchList_ajax" resultType="com.NumberOne.dto.UsedBoardDto">
+SELECT UBNICKNAME, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE, UBCONTENTS, TO_CHAR(UBDATE, 'YYYY/MM/DD HH24:MI') AS UBDATE,
+UBMAINIMG, UBDETAILIMG, UBSTATE, NVL(ZZIMCOUNT, 0) ZZIMCOUNT
+FROM (SELECT * FROM USEDBOARDS ORDER BY UBCODE) 
+					LEFT OUTER JOIN ZZIM_VIEW
+                              ON UBCODE = ZZUBCODE, MNICKNAME_VIEW
+WHERE MID = UBMID AND UBRGCODE = #{selectRegion} AND UBSELLBUY = #{sell_buy} AND UBSTATE = 1
+        AND #{searchOp} LIKE '%'||#{searchVal}||'%'
+ORDER BY UBDATE DESC
+</select>
+
+
+
 <select id="selectZzimCheck" resultType="String">
 SELECT ZZMID
 FROM ZZIM
-WHERE ZZMID #{loginId} AND ZZUBCODE #{ubcode};
+WHERE ZZMID #{loginId} AND ZZUBCODE #{ubcode}
 </select>
 
 
@@ -115,21 +119,11 @@ VALUES(#{ubcode}, #{ubrgcode}, #{ubsellbuy}, #{ubmid} , #{ubtitle}, #{ubcontents
 </insert>
 
 
-<insert id="zzimClick_ajax">
+<!-- <insert id="zzimClick_ajax">
 
 INSERT INTO ZZIM(ZZMID, ZZUBCODE)
 VALUSE()
 
-</insert>
-
-
-
-
-
-
-
-
-
-
+</insert> -->
 
 </mapper>

@@ -68,8 +68,14 @@
 					<div class="flex_div flex-p0 flex_center">
 						<div class="search-bar">
 							<div class="row_9">
-								<input class="search-bar_input" type="search" size="80"
-									placeholder="검색">
+							<select id="searchOption">
+							<option value="total">제목+내용</option>
+							<option value="title">제목</option>
+							<option value="writer">작성자</option>					
+							
+							</select>
+								<input class="search-bar_input" type="search" placeholder="검색"
+									id="searchInput">
 
 							</div>
 							<div class="row_1">
@@ -135,7 +141,8 @@
                    [이전]
                    </c:when>
 								<c:otherwise>
-									<a href="selectResellPageList?select_page=${ubpage.page-1 }&sell_buy=S">
+									<a
+										href="selectResellPageList?select_page=${ubpage.page-1 }&sell_buy=S">
 										[이전]</a>
 								</c:otherwise>
 							</c:choose>
@@ -157,7 +164,8 @@
                        [다음]
                        </c:when>
 								<c:otherwise>
-									<a href="selectResellPageList?select_page=${ubpage.page+1 }&sell_buy=S">[다음]</a>
+									<a
+										href="selectResellPageList?select_page=${ubpage.page+1 }&sell_buy=S">[다음]</a>
 								</c:otherwise>
 
 							</c:choose>
@@ -185,7 +193,7 @@
 </script>
 
 <script type="text/javascript">
-var sell_buyCheck = 'S';
+	var sell_buyCheck = 'S';
 	var regionInfo = document.getElementById("regionInfo");
 	console.log(regionInfo);
 	var selRegion = regionInfo.options[regionInfo.selectedIndex].value;
@@ -197,12 +205,14 @@ var sell_buyCheck = 'S';
 	function selectRegion() {
 		console.log("selectRegion이벤트 호출");
 		selRegion = regionInfo.options[regionInfo.selectedIndex].value;
-		$.ajax({
+		$
+				.ajax({
 					type : "get",
 					url : "selectResellRegionList_ajax",
 					dataType : "json",
 					data : {
-						"selRegion" : selRegion , "sell_buy" : sell_buyCheck
+						"selRegion" : selRegion,
+						"sell_buy" : sell_buyCheck
 					},
 					success : function(result) {
 						alert("성공");
@@ -222,8 +232,9 @@ var sell_buyCheck = 'S';
 									+ '</div>'
 									+ '<div class=\"flex_card\">'
 									+ '<div class=\"card_top position_relative\">'
-									+ result[i].ubtitle + '</div>'
-									+'<div class=\"card_body font-s text-right padding-right text-bold\">'
+									+ result[i].ubtitle
+									+ '</div>'
+									+ '<div class=\"card_body font-s text-right padding-right text-bold\">'
 									+ result[i].ubnickname
 									+ '</div>'
 									+ '<div class=\"card_footer font-s text-right padding-right\">'
@@ -231,7 +242,7 @@ var sell_buyCheck = 'S';
 									+ '</div>';
 
 						}
-							document.getElementById("regionList").innerHTML = output;
+						document.getElementById("regionList").innerHTML = output;
 					}
 
 				})
@@ -239,6 +250,23 @@ var sell_buyCheck = 'S';
 				+ "] 지역 목록입니다.";
 	}
 </script>
+<script type="text/javascript">
+	var searchVal = document.getElementById("searchInput").value;
+	var searchOp = document.getElementById("searchOption").value;
+
+	$.ajax({
+			type : "get",
+			url : "selectSearchList_ajax",
+			dataType : "json",
+			data : {"searchVal" : searchVal, "sell_buy" : sell_buyCheck, "selRegion" : selRegion, "searchOp" : searchOp},
+			success : function(result){
+				console.log("결과 : "+result);
+			}
+		
+	})
+</script>
+
+
 
 
 </html>

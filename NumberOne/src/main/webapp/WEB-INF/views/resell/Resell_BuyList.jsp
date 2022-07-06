@@ -68,7 +68,7 @@
 					<div class="flex_div flex-p0 flex_center">
 						<div class="search-bar">
 							<div class="row_9">
-								<input class="search-bar_input" type="search" size="80"
+								<input class="search-bar_input" type="search"
 									placeholder="검색">
 
 							</div>

@@ -261,8 +261,9 @@ public class ResellService {
 		return mav;
 	}
 
-//         사구 팔수 통합
+//         사구 팔구 통합
 	public ModelAndView selectResellPageList(String sell_buy, String select_page, String selectRegion) {
+	
 		System.out.println("selectResellPageList 서비스 호출");
 		ModelAndView mav = new ModelAndView();
 		System.out.println("사구팔구확인 : " + sell_buy);
@@ -289,7 +290,7 @@ public class ResellService {
 		int endRow = pageNum * pageCount; // 출력할 마지막 글번호. 1페이지면 4번글까지, 2페이지면 8번글까지
 
 		ArrayList<UsedBoardDto> sell_buyList = rdao.selectResellPageList(sell_buy, mregion, startRow, endRow);
-		int pageTotalCount = rdao.selectPageTotalCount();
+		int pageTotalCount = rdao.selectPageTotalCount(mregion, sell_buy);
 
 		int maxPage = (int) (Math.ceil((double) pageTotalCount / pageNumCount));
 		int startPage = (int) ((Math.ceil((double) pageNum / pageNumCount)) - 1) * pageNumCount + 1;
@@ -323,5 +324,14 @@ public class ResellService {
 		}
 		return mav;
 
+	}
+
+
+	public String selectSearchList_ajax(String searchVal, String sell_buy, String selectRegion, String searchOp) {
+		System.out.println("selectSearchList_ajax 서비스 호출");
+		
+		String searchResult = rdao.selectSearchList_ajax(searchVal, sell_buy, selectRegion, searchOp);
+				
+		return searchResult;
 	}
 }
