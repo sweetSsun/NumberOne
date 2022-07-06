@@ -21,6 +21,8 @@ public class UsedBoardDto {
 	private int ubrecommend;	//추천수 (recommend 테이블 조인)
 	private int ubwarning;		//경고수 (warningBoards 테이블 조인)
 	private int ubzzim;			//찜수 (zzim 테이블 조인)
+	
+	private String ubnickname;	//작성자 닉네임 (members 테이블 조인) 
 
 	private MultipartFile ubmainimgfile;	//대표사진
 	private MultipartFile[] ubdetailimgfile;	//상세사진

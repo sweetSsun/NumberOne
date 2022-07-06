@@ -8,6 +8,7 @@ import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.NoticeDto;
 import com.NumberOne.dto.Paging;
+import com.NumberOne.dto.UsedBoardDto;
 
 public interface AdminDao {
 
@@ -30,10 +31,17 @@ public interface AdminDao {
 	int admin_insertNoticeWrite(NoticeDto notice);
 
 	int admin_updateNoticeModify(NoticeDto notice);
+	
+	int admin_selectResellTotalCount(Paging paging);
+	
+	ArrayList<UsedBoardDto> admin_selectResellList(Paging paging);
+	
+	int admin_updateUbstate_ajax(@Param("ubcode") String ubcode, @Param("ubstate") String ubstate);
 
+	
+	
 	int admin_selectBoardTotalCount(Paging paging);
 
-//	ArrayList<BoardDto> admin_selectBoardList(@Param("searchVal") String searchVal);
 	ArrayList<BoardDto> admin_selectBoardList(Paging paging);
 
 	int admin_updateBdstate_ajax(@Param("bdcode") String bdcode, @Param("bdstate") String bdstate);

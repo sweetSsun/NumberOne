@@ -135,29 +135,47 @@ public class AdminController {
 	}
 	
 	/* 중고거래 관리 */
+	@RequestMapping (value="admin_selectResellList")
+	public ModelAndView admin_selectResellList(Paging paging, RedirectAttributes ra) {
+		System.out.println("중고거래 관리페이지 이동 요청");
+		mav = asvc.admin_selectResellList(paging, ra);
+		return mav;
+	}
 	
+	@RequestMapping (value="admin_updateUbstate_ajax")
+	public @ResponseBody int admin_updateUbstate_ajax(String ubcode, String ubstate) {
+		System.out.println("중고거래 글상태 변경 요청");
+		int updateResult = asvc.admin_updateUbstate_ajax(ubcode, ubstate);
+		return updateResult;
+	}	
 	
+	@RequestMapping (value="admin_selectResellList_ajax")
+	public @ResponseBody String admin_selectResellList_ajax(Paging paging) {
+		System.out.println("중고거래 관리페이지 정렬 요청");
+		String usedBoardList_json = asvc.admin_selectResellList_ajax(paging);
+		return usedBoardList_json;
+	}
+	
+	@RequestMapping (value="admin_selectResellPagingNumber_ajax")
+	public @ResponseBody String admin_selectResellPagingNumber_ajax(Paging paging) {
+		System.out.println("커뮤니티 관리페이지 페이징넘버 조회 요청");
+		String paging_json = asvc.admin_selectResellPagingNumber_ajax(paging);
+		return paging_json;
+	}
 	
 	
 	
 	/* 커뮤니티 관리 */
-//	페이징하면 필요한 파라미터값
 	@RequestMapping (value="admin_selectBoardList")
 	public ModelAndView admin_selectBoardList(Paging paging, RedirectAttributes ra) {
 		System.out.println("커뮤니티 관리페이지 이동 요청");
 		mav = asvc.admin_selectBoardList(paging, ra);
 		return mav;
 	}
-//	@RequestMapping (value="admin_selectBoardList")
-//	public ModelAndView admin_selectBoardList() {
-//		System.out.println("커뮤니티 관리페이지 이동 요청");
-//		mav = asvc.admin_selectBoardList();
-//		return mav;
-//	}
 	
 	@RequestMapping (value="admin_updateBdstate_ajax")
 	public @ResponseBody int admin_updateBdstate_ajax(String bdcode, String bdstate) {
-		System.out.println("글상태 변경 요청");
+		System.out.println("커뮤니티 글상태 변경 요청");
 		int updateResult = asvc.admin_updateBdstate_ajax(bdcode, bdstate);
 		return updateResult;
 	}
@@ -168,17 +186,18 @@ public class AdminController {
 		String boardList_json = asvc.admin_selectBoardList_ajax(paging);
 		return boardList_json;
 	}
-//	@RequestMapping (value="admin_selectBoardList_ajax")
-//	public @ResponseBody String admin_selectBoardList_ajax(String searchVal) {
-//		System.out.println("커뮤니티 관리페이지 정렬 요청");
-//		String boardList_json = asvc.admin_selectBoardList_ajax(searchVal);
-//		return boardList_json;
-//	}
 	
 	@RequestMapping (value="admin_selectBoardPagingNumber_ajax")
 	public @ResponseBody String admin_selectBoardPagingNumber_ajax(Paging paging) {
 		System.out.println("커뮤니티 관리페이지 페이징넘버 조회 요청");
 		String paging_json = asvc.admin_selectBoardPagingNumber_ajax(paging);
 		return paging_json;
+	}
+	
+	@RequestMapping (value="admin_selectBoardView")
+	public ModelAndView admin_selectBoardView(Paging paging, String bdcode) {
+		System.out.println("커뮤니티 상세페이지 이동 요청_관리자");
+		
+		return null;
 	}
 }

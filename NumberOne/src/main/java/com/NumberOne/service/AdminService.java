@@ -21,6 +21,7 @@ import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.NoticeDto;
 import com.NumberOne.dto.PageDto;
 import com.NumberOne.dto.Paging;
+import com.NumberOne.dto.UsedBoardDto;
 import com.google.gson.Gson;
 
 @Service
@@ -432,6 +433,74 @@ public class AdminService {
 		return mav;
 	}
 	
+	/* 중고거래 관리 */
+	// 중고거래 관리페이지 이동
+	public ModelAndView admin_selectResellList(Paging paging, RedirectAttributes ra) {
+		System.out.println("AdminService.admin_selectResellList() 호출");
+		mav = new ModelAndView();
+		
+		// 관리자 로그인 여부 체크
+		String loginId = (String)session.getAttribute("loginId");
+		if (loginId == null) {
+			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
+			mav.setViewName("redirect:/loadToLogin");	
+			return mav;
+		}
+			
+		if(paging.getKeyword() == null) {
+			paging.setKeyword("");
+		}
+		int totalCount = adao.admin_selectResellTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
+		paging.setTotalCount(totalCount);
+		paging.calc(); // 페이지 처리 계산 실행
+		System.out.println(paging);
+		ArrayList<UsedBoardDto> usedBoardList = adao.admin_selectResellList(paging);
+		System.out.println("boardList : " + usedBoardList);
+		mav.addObject("paging", paging);
+		mav.addObject("usedBoardList", usedBoardList);
+			
+		mav.setViewName("admin/Admin_ResellList");
+		return mav;
+	}
+	
+	// 선택한 상태값에 따른 커뮤니티 목록 ajax
+	public String admin_selectResellList_ajax(Paging paging) {
+		System.out.println("AdminService.admin_selectResellList_ajax() 호출");
+		System.out.println("searchVal : " + paging.getSearchVal());
+		int totalCount = adao.admin_selectResellTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
+		paging.setTotalCount(totalCount);
+		paging.calc(); // 페이지 처리 계산 실행
+		System.out.println("paging : " + paging);
+		
+		ArrayList<UsedBoardDto> usedBoardList = adao.admin_selectResellList(paging);
+		System.out.println("usedBoardLis : " + usedBoardList);
+		gson = new Gson();
+		String usedBoardList_json = gson.toJson(usedBoardList); 
+		return usedBoardList_json;
+	}	
+	
+	// 중고거래 목록 ajax 페이징 넘버 조회
+	public String admin_selectResellPagingNumber_ajax(Paging paging) {
+		System.out.println("AdminService.admin_selectResellPagingNumber_ajax() 호출");
+	
+		int totalCount = adao.admin_selectResellTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
+		paging.setTotalCount(totalCount);
+		paging.calc(); // 페이지 처리 계산 실행
+		System.out.println("paging : " + paging);
+		gson = new Gson();
+		String paging_json = gson.toJson(paging);
+		return paging_json;
+	}
+
+	// 중고거래 글상태 변경 요청
+	public int admin_updateUbstate_ajax(String ubcode, String ubstate) {
+		System.out.println("AdminService.admin_updateUbstate_ajax() 호출");
+		System.out.println("상태변경할 ubcode : " + ubcode);
+		System.out.println("상태변경할 ubstate : " + ubstate);
+		int updateResult = adao.admin_updateUbstate_ajax(ubcode, ubstate);
+		return updateResult;
+	}
+	
 	
 	/* 커뮤니티 관리 */
 	// 커뮤니티 관리페이지 이동
@@ -461,18 +530,7 @@ public class AdminService {
 		mav.addObject("boardList", boardList);
 		mav.setViewName("admin/Admin_BoardList");
 		return mav;
-//		return null;
 	}
-//	public ModelAndView admin_selectBoardList() {
-//		System.out.println("AdminService.admin_selectBoardList() 호출");
-//		mav = new ModelAndView();
-//		String searchVal = "all";
-//		ArrayList<BoardDto> boardList = adao.admin_selectBoardList(searchVal);
-//		System.out.println("boardList : " + boardList);
-//		mav.addObject("boardList", boardList);
-//		mav.setViewName("admin/Admin_BoardList");
-//		return mav;
-//	}
 
 	// 커뮤니티 글 상태 변경 요청
 	public int admin_updateBdstate_ajax(String bdcode, String bdstate) {
@@ -498,16 +556,8 @@ public class AdminService {
 		String boardList_json = gson.toJson(boardList); 
 		return boardList_json;
 	}	
-//	public String admin_selectBoardList_ajax(String searchVal) {
-//		System.out.println("AdminService.admin_selectBoardList_ajax() 호출");
-//		System.out.println("정렬 val : " + searchVal);
-//		ArrayList<BoardDto> boardList = adao.admin_selectBoardList(searchVal);
-//		System.out.println("boardList : " + boardList);
-//		gson = new Gson();
-//		String boardList_json = gson.toJson(boardList); 
-//		return boardList_json;
-//	}	
 
+	// 커뮤니티 목록 ajax 페이징 넘버 조회
 	public String admin_selectBoardPagingNumber_ajax(Paging paging) {
 		System.out.println("AdminService.admin_selectBoardPagingNumber_ajax() 호출");
 	
@@ -519,6 +569,7 @@ public class AdminService {
 		String paging_json = gson.toJson(paging);
 		return paging_json;
 	}
+
 
 
 }
