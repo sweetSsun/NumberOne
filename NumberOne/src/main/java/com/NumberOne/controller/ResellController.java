@@ -100,5 +100,18 @@ public class ResellController {
 		return mav;
 	}
 	
+	@RequestMapping(value="/selectSearchList_ajax")
+	public @ResponseBody String selectSearchList_ajax(String searchVal, String sell_buy, String selectRegion, String searchOp) {
+		System.out.println("selectSearchList_ajax 요청");
+		System.out.println("파라메터확인 searchVal : "+ searchVal);
+		System.out.println("파라메터확인 sell_buy : "+ sell_buy);
+		System.out.println("파라메터확인 selectRegion : "+ selectRegion);
+		System.out.println("파라메터확인 searchOp : "+ searchOp);
+		
+		String searchResult = rsvc.selectSearchList_ajax(searchVal, sell_buy, selectRegion, searchOp);
+				
+		return searchResult;
+	}
+	
 	
 }
