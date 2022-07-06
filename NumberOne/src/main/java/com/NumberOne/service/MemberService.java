@@ -19,6 +19,8 @@ import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.ContactDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.ReplyDto;
+import com.NumberOne.dto.ScrapDto;
+import com.NumberOne.dto.UsedBoardDto;
 
 @Service
 public class MemberService {
@@ -144,6 +146,10 @@ public class MemberService {
 				session.setAttribute("loginProfile", loginMember.getMprofile());
 				session.setAttribute("loginRegion", loginMember.getMregion());
 				
+				System.out.println((String) session.getAttribute("loginId"));
+			    System.out.println((String) session.getAttribute("loginRegion"));
+			    System.out.println((String) session.getAttribute("loginProfile"));
+				
 				ra.addFlashAttribute("msg", "로그인 되었습니다.");
 
 				mav.setViewName("redirect:/");				
@@ -219,6 +225,47 @@ public class MemberService {
 		return mav;
 	}
 
+	//회원정보 수정 페이지
+	public ModelAndView loadToMyInfoModifyForm() {
+		  
+		  ModelAndView mav = new ModelAndView();
+		  System.out.println("MemberService.loadToMyInfoModifyForm() 호출"); 
+		  String loginId = (String) session.getAttribute("loginId");
+		  System.out.println("로그인 된 아이디 : " + loginId);
+			
+			MemberDto memberInfo = mdao.selectMyInfoMemberView(loginId);
+			
+			//주소 분리 (우편번호, 주소, 상세주소, 참고주소)
+			String maddr = memberInfo.getMaddr();
+			
+			if( maddr != null) {
+				String[] maddr_arr = maddr.split("_");
+				System.out.println(maddr_arr.length);
+				if( maddr_arr.length >= 4 ) {
+					memberInfo.setMpostcode(maddr_arr[0]);
+					memberInfo.setMaddress(maddr_arr[1]);
+					memberInfo.setMdetailAddr(maddr_arr[2]);
+					memberInfo.setMextraAddr(maddr_arr[3]);
+				}
+			}
+			
+			//이메일 분리
+			String email = memberInfo.getMemail();
+			String[] email_arr = email.split("@");
+			memberInfo.setMemailId(email_arr[0]);
+			memberInfo.setMemailDomain(email_arr[1]);
+			
+			
+			System.out.println(memberInfo);
+			
+			
+			mav.addObject("memberInfo", memberInfo);	  
+		  
+		  
+		  mav.setViewName("member/MyInfoMemberModifyForm"); 
+		  return mav; 
+		  
+		  }
 
 
 	//회원정보 수정 요청  
@@ -227,7 +274,9 @@ public class MemberService {
 		ModelAndView mav = new ModelAndView();
 		  System.out.println("MemberService.updateMyInfoMemberModify() 호출"); 
 		  String loginId = (String) session.getAttribute("loginId");
+		  String loginProfile = (String) session.getAttribute("loginProfile");
 		  System.out.println("로그인 된 아이디 : " + loginId);
+		  System.out.println("로그인 된 프로필 : " + loginProfile);
 		 
 		 member.setMid(loginId);
 
@@ -236,16 +285,11 @@ public class MemberService {
 		      
 		      //이미지의 파일명
 		      String mprofile = "";
-		      String loginProfile = (String) session.getAttribute("mprofile");
-
-		      System.out.println("원본프로필 : " + loginProfile);
 		      
 		      //이미지 파일 처리	      
 		      if(!mfile.isEmpty()) {
-		         System.out.println("이미지파일확인");
-		         
+		         System.out.println("변경 이미지 파일 있음");		         
 		         UUID uuid = UUID.randomUUID();
-
 		         mprofile = uuid.toString()+"_"+mfile.getOriginalFilename();
 
 		         mfile.transferTo(  new File(savePath, mprofile)   );
@@ -253,8 +297,10 @@ public class MemberService {
 		         System.out.println("변경프로필 : " + mprofile);
 		      }else {
 		    	  if(loginProfile !=null) {
+		    		  System.out.println("변경 이미지 파일 없고, 기존 이미지 있음");		         
 		    		  member.setMprofile(loginProfile);  
 		    	  } else {
+		    		  System.out.println("변경 이미지 파일 없고, 기존 이미지 없음");		         
 		    		  member.setMprofile(mprofile);  
 		    	  }
 		      }
@@ -268,14 +314,17 @@ public class MemberService {
 		      // 이메일 처리
 		      member.setMemail(member.getMemailId()+"@"+member.getMemailDomain());
 		      
+		      
+		      
 
 		      int memberInfoModify = mdao.updateMyInfoMemberModify(member);
 
 		      if(memberInfoModify != 0) {
 
 					System.out.println("회원정보가 수정 성공");
+					session.setAttribute("loginProfile", member.getMprofile());
 					ra.addFlashAttribute("msg", "회원정보가 수정 되었습니다.");
-					mav.setViewName("redirect:/");
+					mav.setViewName("redirect:/selectMyInfoMemberView");
 				}else {
 					System.out.println("회원정보가 수정 실패");
 					ra.addFlashAttribute("msg" , "회원 정보 수정을 실패하였습니다.");
@@ -323,10 +372,15 @@ public class MemberService {
 
 		//댓글작성한 글
 		ArrayList<ReplyDto> reply = mdao.selectMyInfoMemberView_Reply(loginId);
-		System.out.println(reply);	
+		System.out.println(reply);
+
+		//스크랩 글 목록
+		ArrayList<ScrapDto> scrap = mdao.selectMyInfoMemberView_scrap(loginId);
+		System.out.println(scrap);
 
 		mav.addObject("board", board);
 		mav.addObject("reply", reply);
+		mav.addObject("scrap", scrap);
 		mav.setViewName("member/MyInfoCommunityPage");
 		return mav;
 	}
@@ -339,6 +393,21 @@ public class MemberService {
 		String loginId = (String) session.getAttribute("loginId");
 		System.out.println("로그인 된 아이디 : " + loginId);
 		
+		//팔구
+		ArrayList<UsedBoardDto> sellBoard = mdao.selectMyInfoResellView_Sell(loginId);
+		System.out.println(sellBoard);		
+		
+		//사구
+		ArrayList<UsedBoardDto> buyBoard = mdao.selectMyInfoResellView_Buy(loginId);
+		System.out.println(buyBoard);	
+		
+		mav.addObject("sellBoard", sellBoard);
+		mav.addObject("buyBoard", buyBoard);	
+		if(sellBoard.size() > buyBoard.size()) {			
+			mav.addObject("sellbuySize", sellBoard.size());
+		} else {
+			mav.addObject("sellbuySize", buyBoard.size());
+		}
 		
 		
 		mav.setViewName("member/MyInfoResellPage");
