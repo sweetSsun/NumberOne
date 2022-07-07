@@ -7,10 +7,11 @@
 <meta charset="UTF-8">
 <title>1인자 - 게시판 글목록 페이지</title>
 
+
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<%@ include file="/resources/css/CommonCss.jsp" %>
+<%@ include file="/resources/css/BarCss.jsp" %>
 <style type="text/css">
 	#board_column{
 		border-bottom: solid gray 3px;
@@ -72,7 +73,7 @@
 	left:30px;
 	z-index:2;
 	color:#fff;
-	font-size:40px;
+	font-size:30px;
 	font-weight:900;
 	transition:all .35s;
 }
@@ -104,7 +105,8 @@
 	left:30px;
 	z-index:2;
 	color:#fff;
-	font-size:25px;
+	font-size:20px;
+	font-weight:bold;
 	transition:all .35s;
 }
 
@@ -147,7 +149,7 @@ textarea:hover{
 	decoration : none;
 }
 
-.gallerylist > ul > li > a:hover .top {bottom:35%;}
+.gallerylist > ul > li > a:hover .top {bottom:36%;}
 .gallerylist > ul > li > a:hover .bottom {top:63%;}
 .gallerylist > ul > li > a:hover .middle {color:white; opacity: 0.85;}
 .gallerylist > ul > li > a:hover .screen::after {opacity:1;}
@@ -234,6 +236,66 @@ textarea:hover{
 
 .viewImgs{ width:800px; height:600px;}
 
+#reply{
+	height:160px; 
+	width:100%; 
+	color:black; 
+	overflow-y:scroll;
+	padding-top: 5px;
+	border-bottom: solid 1px #DCDCDC;
+	padding-bottom: 10px;
+}
+
+#roomContents{
+	padding-top:10px;
+	height:250px; 
+	color:black;
+	margin-bottom:5px;
+	border-bottom: solid 1px #DCDCDC;
+}
+
+#replyWriteForm{
+	 height:30px; 
+	 color:black;
+	 padding-top:10px;
+	 border-top: solid 1px #DCDCDC;
+}
+
+#roomInfo{
+	height:35px; 
+	color:black; 
+	font-size:25px; 
+	position:relative;
+}
+
+#likes_Date{
+	height:35px; 
+	color:black; 
+	font-size:25px; 
+	position:relative;
+	border-bottom: solid 1px #DCDCDC;
+}
+
+#replyWriteForm input{ 
+	color: black;
+	font-size: 15px;
+	width: 330px;
+}
+
+#replyWriteForm button{
+	 border:none; 
+	 font-size:15px;
+}
+
+section{
+	max-width: 70%;
+    margin: auto;
+    margin-top: 0%;
+}
+
+.d_none{display:none;}
+
+#reply
 </style>
 </head>
 <body>
@@ -367,23 +429,26 @@ textarea:hover{
   <!-- Modal Content -->
   <div class="row" style="width:1200px; height:600px;" id="modalContents">
   		<div class="product-title tb col-lg-8">
-  			<div id="roomimg" class="product-img-div" style="width:100%; height:100%;">
-  			</div>
+  			<div id="roomimg" class="product-img-div" style="width:100%; height:100%;"></div>
   		</div>
   		<div class="tb col-lg-4" style="background-color:white; padding:10px">
- 			<div class="row" style="height:42px; width=:800px;">
- 				<div id="roomMprofile" style="color:black; width:40px;"></div>
- 				<div id="roomMnickname" style="width:352px;"></div>
+ 			<div class="row" style="height:32px; width:800px;" id="roomWriter">
+ 				<div id="roomMprofile" style="width:30px;"></div>
+ 				<div id="roomMnickname" style="width:372px; padding-bottom:10px;"></div>
  			</div>
- 			<div id="roomContents" style="height:210px; border:1px solid black; color:black;"></div>
- 			<div id="reply" style="height:160px; border:1px solid black; color:black;">
- 			    댓글 영역
+ 			<div id="roomContents"></div>
+ 			<div id="reply">
+				댓글 영역 			
  			</div>
- 			<div id="roomInfo" style="height:35px; color:black; font-size:25px; position:relative;">
+ 			<div id="roomInfo">
  				추천, 스크랩, 신고
  			</div>
- 			<div id="replyWriteForm" style="height:100px; border:1px solid black; color:black;">
- 				댓글 작성 영역
+ 			<div id="likes_date">
+ 				좋아요수, 날짜
+ 			</div>
+ 			<div id="replyWriteForm">
+ 				<input id="inputReply" type="text" placeholder="댓글 달기..." onkeydown="replyEnter(event)">
+ 				<button onclick='replyResister()'>게시</button>
  			</div>		
   		</div>	
   </div>
@@ -398,10 +463,69 @@ textarea:hover{
 </body>
 
 <script type="text/javascript">
+	var nowBdcode;
+	
+	function replyEnter(e){
+		if(e.keyCode==13){
+			replyResister();
+		}
+	}
+
+	function replyResister(){
+		console.log("댓글 등록 요청");
+		var rpcontents = $("#inputReply").val();
+		
+		$.ajax({
+			type : "get",
+			url : "insertBoardReply_ajax",
+			data : { "bdcode" : nowBdcode, "rpcontents" : rpcontents},
+			async : false,
+			success : function(insertResult){
+				if( insertResult > 0 ){
+					console.log("뎃글 등록 성공!");
+					$("#inputReply").val("");
+					replyPrint();
+					
+					//목록 페이지 댓글수 업데이트
+					logUpdate('bdreplies', 'up');
+				}
+			}
+		});
+	}
+	
+	//조회/추천/즐찾/댓글수 증가/감소시 목록 페이지 업데이트
+	function logUpdate(logType, updown){
+		
+		console.log("logUpdate() 호출")
+		var before = $("#"+nowBdcode+"_"+logType).text().trim();
+		var after;
+		if(updown == 'up'){
+			//증가
+			console.log("증가 요청");
+			if(before==""){
+				after = 1;
+			} else {
+				after = parseInt(before)+1;
+			}
+		} else {
+			//감소
+			console.log("감소 요청");
+			after = parseInt(before)-1;
+			if(after == 0){
+				after = "&nbsp;";
+			}
+
+		}
+		
+		$("#"+nowBdcode+"_"+logType).html(after+"&nbsp;");
+	}
+</script>
+
+<script type="text/javascript">
 	
 	function roomView_ajax(bdcode){
 		console.log(bdcode+"번글 roomView() 호출");
-		
+		nowBdcode = bdcode; 
 		$.ajax({
 			type : "get",
 			url : "selectRoomView",
@@ -460,10 +584,9 @@ textarea:hover{
 				
 				} 
 				
-				//$("#roomimg").html("<img class='product-img' style='width:100%; height:100%' src='${pageContext.request.contextPath }/resources/img/room/"+roomView.bdimg+"'></img>");
 				$("#roomimg").html(imgHtml);
 				//작성자 프로필	
-				var mprofileOutput = "<img class='product-img' style='width:40px; height:40px; border-radius:50%;'";
+				var mprofileOutput = "<img class='product-img' style='width:30px; height:30px; border-radius:50%;'";
 				if(roomView.bdmprofile != 'nomprofile'){
 					console.log()
 					mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+roomView.bdmprofile+"'>";
@@ -472,11 +595,11 @@ textarea:hover{
 				}
 				mprofileOutput += "</img>";
 				$("#roomMprofile").html(mprofileOutput);
-				$("#roomMnickname").html("<div id='mnickname' style='font-size:22px; margin-left:5px; margin-top:5px; color: black;'>"+roomView.bdnickname+"</div>");
+				$("#roomMnickname").html("<div id='mnickname' style='font-size:22px; margin-left:5px; padding-bottom:2px; color: black;'>"+roomView.bdnickname+"</div>");
 				//글 내용
-				$("#roomContents").html("<textarea style='font-size:17px;' readonly>"+roomView.bdcontents+"</textarea>");
+				$("#roomContents").html("<textarea style='font-size:15px;' readonly>"+roomView.bdcontents+"</textarea>");
 				//추천, 스크랩, 신고 출력
-				var roomInfoOutput = " "
+				var roomInfoOutput = ""
 				//추천
 				if(roomView.rchistory != "n"){
 					console.log("추천 기록 있음")
@@ -494,27 +617,33 @@ textarea:hover{
 					roomInfoOutput += "<a onclick='log(\""+roomView.bdcode+"\", \"schistory\")'><span id='"+roomView.bdcode+"_schistory'><i class='fa-regular fa-star'></i></span></a> ";
 				}
 				//신고
-				if(roomView.wbhistory != "n"){
-					console.log("신고 기록 있음")
-					roomInfoOutput += "<a onclick='log(\""+roomView.bdcode+"\", \"wbhistory\")'><span id='"+roomView.bdcode+"_wbhistory'><i class='fa-solid fa-dove' style='position:absolute; right:0;'></i></span></a> ";
-				} else {					
-					console.log("신고 기록 없음")
-					roomInfoOutput += "<a onclick='log(\""+roomView.bdcode+"\", \"wbhistory\")'><span id='"+roomView.bdcode+"_wbhistory'><i class='fa-solid fa-land-mine-on' style='position:absolute; right:0;'></i></span></a> ";
+				if(roomView.bdmid == '${sessionScope.loginId}'){
+					console.log("글 작성자");
+					roomInfoOutput += "<span style='position:absolute; right:0;'><button style='font-size:12px; border:none;'>수정</button>&nbsp;";
+					roomInfoOutput += "<button onclick='deleteRoomView(\""+bdcode+"\")' style='font-size:12px; border:none;'>삭제</button></span>";
+					
+				} else {
+					if(roomView.wbhistory != "n"){
+						console.log("신고 기록 있음")
+						roomInfoOutput += "<a onclick='log(\""+roomView.bdcode+"\", \"wbhistory\")'><span id='"+roomView.bdcode+"_wbhistory'><i class='fa-solid fa-dove' style='position:absolute; right:0;'></i></span></a> ";
+					} else {					
+						console.log("신고 기록 없음")
+						roomInfoOutput += "<a onclick='log(\""+roomView.bdcode+"\", \"wbhistory\")'><span id='"+roomView.bdcode+"_wbhistory'><i class='fa-solid fa-land-mine-on' style='position:absolute; right:0;'></i></span></a> ";
+					}	
 				}
 				//console.log(roomInfoOutput);
-				
 				$("#roomInfo").html(roomInfoOutput);
 				
+				//좋아요수, 날짜 출력
+				var likesDateOutput = "<span style='color:black; font-size:18px; font-weight:bold;'>좋아요&nbsp;<span id='likesNum'>"+roomView.bdrecommend+"</span>개</span><br>";
+				likesDateOutput += "<span style='color:grey; font-size:15px;'>"+roomView.bddate+"</span>"
+				$("#likes_date").html(likesDateOutput);
+				
+				//댓글 출력
+				replyPrint();
+				
 				//bdhits 1 추가
-				var bdhits = $("#"+bdcode+"_bdhits").text().trim();
-				var afterBdhits;
-				if(bdhits==""){
-					afterBdhits=1;
-				} else {
-					afterBdhits = parseInt(bdhits)+1;
-				}
-				//console.log("after: "+afterBdhits);
-				$("#"+bdcode+"_bdhits").text(afterBdhits);
+				logUpdate('bdhits', 'up');
 				
 				modal.style.display = "block";
 				//modalImg.src = this.src;
@@ -539,6 +668,15 @@ textarea:hover{
 	// When the user clicks on <span> (x), close the modal
 	span.onclick = function() {
 	  modal.style.display = "none";
+
+	  //모달창 비우기
+	  $("#roomMprofile").html("");
+	  $("#roomMnickname").html("");
+	  $("#roomContents").html("");
+	  $("#reply").html("");
+	  $("#reply").html("");
+	  nowBdcode = "";
+	  
 	}
 	
 	function log(bdcode, history){
@@ -550,8 +688,7 @@ textarea:hover{
 		} else {
 			console.log("자랑글 신고 요청");								
 		}
-		
-		
+			
 		if('${sessionScope.loginId}'==''){
 			var confirmResult = confirm("로그인 후 이용가능합니다."); 
 			console.log(confirmResult);
@@ -563,7 +700,7 @@ textarea:hover{
 			}
 		}
 		
-		var currentHistory="";
+		var currentState="";
 		$.ajax({
 			type : "get",
 			url : "currentHistory",
@@ -572,47 +709,46 @@ textarea:hover{
 			async : false,
 			success: function(result){
 				console.log(result);
-				currentHistory = result;				
+				currentState = result;				
 			}
 		});
 		
-		console.log(bdcode+"의 현재 상태: "+currentHistory)
+		console.log(bdcode+"의 현재 상태: "+currentState)
 		$.ajax({
 			type : "get",
 			url : "updateLog",
-			data : { "bdcode" : bdcode, "history": history, "currentState":currentHistory},
+			data : { "bdcode" : bdcode, "history": history, "currentState":currentState},
 			//dataType : "json",
 			async : false,
 			success: function(result){
 				//console.log(result);
 				if(result == '1'){ //업데이트 성공시
-					if(currentHistory == '0'){ //성공
+					if(currentState == '0'){ //성공
 						if(history == 'rchistory'){
 							console.log("추천 성공");
-							$("#"+bdcode+"_rchistory").html("<i class='fa-solid fa-heart'></i>");
-							//bdlikes +1 
-							var bdlikes = $("#"+bdcode+"_bdlikes").text().trim();
-							var afterBdlikes;
-							if(bdlikes==""){
-								afterBdlikes=1;
+							
+							//modal 안 좋아요수 업데이트
+							var modalLikeNum = $("#likesNum").text().trim();
+							if(modalLikeNum == ""){
+								modalLikeNum = 1;
 							} else {
-								afterBdlikes = parseInt(bdlikes)+1;
+								modalLikeNum = parseInt(modalLikeNum)+1;
 							}
-							$("#"+bdcode+"_bdlikes").html(afterBdlikes+"&nbsp;");
+							$("#likesNum").text(modalLikeNum);
+							
+							//아이콘 꽉찬 하트로 변경
+							$("#"+bdcode+"_rchistory").html("<i class='fa-solid fa-heart'></i>");
+							
+							//bdlikes +1 
+							logUpdate('bdlikes', 'up');
 							
 						} else if(history == 'schistory'){
 							console.log("스크랩 성공");
-							$("#"+bdcode+"_schistory").html("<i class='fa-solid fa-star'></i>");	
-							//bdscraps +1 
-							var bdscraps = $("#"+bdcode+"_bdscraps").text().trim();
-							var afterBdscraps;
-							if(bdscraps==""){
-								afterBdscraps=1;
-							} else {
-								afterBdscraps = parseInt(bdscraps)+1;
-							}
-							$("#"+bdcode+"_bdscraps").html(afterBdscraps+"&nbsp;");
+							$("#"+bdcode+"_schistory").html("<i class='fa-solid fa-star'></i>");
 							
+							//bdscraps +1 
+							logUpdate('bdscraps', 'up');
+
 						} else {
 							console.log("신고 성공");
 							$("#"+bdcode+"_wbhistory").html("<i class='fa-solid fa-dove' style='position:absolute; right:0;'></i>");
@@ -622,26 +758,26 @@ textarea:hover{
 					} else { //취소 성공
 						if(history == 'rchistory'){
 							console.log("추천 취소 성공");
+							
+							//modal 안 좋아요수 업데이트
+							var modalLikeNum = $("#likesNum").text().trim();
+							modalLikeNum = parseInt(modalLikeNum)-1;
+							$("#likesNum").text(modalLikeNum);
+							
+							//아이콘 빈 하트로 변경
 							$("#"+bdcode+"_rchistory").html("<i class='fa-regular fa-heart'></i>");		
+
 							//bdlikes -1 
-							var bdlikes = $("#"+bdcode+"_bdlikes").text().trim();
-							var afterBdlikes = parseInt(bdlikes)-1;
-							if(afterBdlikes == 0){
-								afterBdlikes = "&nbsp;";
-							}
-							$("#"+bdcode+"_bdlikes").html(afterBdlikes);
+							logUpdate('bdlikes', 'down');
+
 							
 						} else if(history == 'schistory'){
 							console.log("스크랩 취소 성공");
 							$("#"+bdcode+"_schistory").html("<i class='fa-regular fa-star'></i>");
-							//bdscraps -1 
-							var bdscraps = $("#"+bdcode+"_bdscraps").text().trim();
-							var afterBdscraps = parseInt(bdscraps)-1;
-							if(afterBdscraps == 0){
-								afterBdscraps = "&nbsp;";
-							}
-							$("#"+bdcode+"_bdscraps").html(afterBdscraps);
 							
+							//bdscraps -1 
+							logUpdate('bdscraps', 'down');
+						
 						} else {
 							console.log("신고 취소 성공");
 							$("#"+bdcode+"_wbhistory").html("<i class='fa-solid fa-land-mine-on' style='position:absolute; right:0;'></i>");				
@@ -652,6 +788,80 @@ textarea:hover{
 		});		
 	}
 	
+	function deleteRoomView(bdcode){
+		console.log(bdcode+"글 삭제 요청");
+		var confirmCh = confirm("해당 글을 삭제하시겠습니까?");
+		if(confirmCh == false){
+			return;
+		} 
+		
+		location.href = "updateBoardDelete?bdcode="+bdcode+"&bdcategory=자랑";
+
+	}
+	
+	//댓글 출력
+	function replyPrint(){
+		$.ajax({
+			type : "get",
+			url : "selectBoardReplyList_ajax",
+			data : { "bdcode" : nowBdcode },
+			dataType : "json",
+			async : false,
+			success: function(replys){
+				//console.log(replys)
+				var replyOutput ="";
+				for(var i=0; i<replys.length; i++){			
+					//console.log(replys[i]);
+					replyOutput += "<div id='reply_"+replys[i].rpcode+"' class='row' onmouseover='toggleReplyMenu(\""+replys[i].rpcode+"\", \"show\")' onmouseout='toggleReplyMenu(\""+replys[i].rpcode+"\", \"hide\")' onstyle='width:100%'>";
+					//댓글 작성자 프로필 이미지
+					replyOutput += "<div style='width:30px;'>";
+					replyOutput += "<img class='product-img' style='width:20px; height:20px; border-radius:50%;'";
+					if(replys[i].rpmprofile != 'nomprofile'){
+						console.log("프로필 있음")
+						replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+replys[i].rpmprofile+"'>";
+					} else {
+						replyOutput += "src='${pageContext.request.contextPath }/resources/img/logo_beige.jpg'>"; 
+					}
+					replyOutput += "</img></div>";
+					//댓글 내용 부분 시작
+					replyOutput += "<div style='width:320px; font-size:15px'>"; 
+					//닉네임(진하게)
+					replyOutput += "<span style='font-weight:600;'>"+replys[i].rpnickname+"&nbsp;&nbsp;</span>";
+					//내용 
+					replyOutput += replys[i].rpcontents;
+					
+					//댓글 작성자에게만 보이는 ...
+					if(replys[i].rpmid == '${sessionScope.loginId}'){
+						console.log("댓글 작성자");
+						replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='rpdeleteModal(\""+replys[i].rpcode+"\")' style='font-size:15px;'>&#8943;</span>"; 
+					}
+					
+					
+					replyOutput += "</div></div>";
+				}
+				
+				//console.log(replyOutput);
+				$("#reply").html(replyOutput);
+				$("#reply").scrollTop($("#reply")[0].scrollHeight);
+			}
+		})
+	}
+	
+	function toggleReplyMenu(rpcode, action){
+		console.log("댓글 메뉴 보여주기 요청");
+		if(action=='show'){
+			$("#"+rpcode+"_replyMenu").css("cursor", "pointer");
+			$("#"+rpcode+"_replyMenu").removeClass("d_none");
+		} else {
+			$("#"+rpcode+"_replyMenu").addClass("d_none");			
+		}
+		
+	}
+	
+	function rpdeleteModal(rpcode){
+		console.log("댓글 삭제 모달 요청");
+	}
+
 </script>
 
 </html>

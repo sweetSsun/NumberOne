@@ -217,7 +217,7 @@
  	
  	<select id="selectBoardReplyList" resultType="com.NumberOne.dto.ReplyDto">
  		<!-- 댓글목록 조회 -->
- 		SELECT RP.*, MB.MNICKNAME AS RPNICKNAME
+ 		SELECT RP.*, MB.MNICKNAME AS RPNICKNAME, mb.mprofile as RPMPROFILE
 		FROM REPLY RP, MEMBERS MB 
 		WHERE RP.RPMID = MB.MID
 		AND RPBDCODE = #{bdcode}

@@ -275,10 +275,10 @@ public class BoardController {
 	 
 	 //게시글 삭제
 	 @RequestMapping ( value = "/updateBoardDelete")
-	 public ModelAndView updateBoardDelete (String bdcode, RedirectAttributes ra) {
+	 public ModelAndView updateBoardDelete (String bdcode, String bdcategory, RedirectAttributes ra) {
 		 System.out.println("게시글 삭제 요청");
 		 
-		 ModelAndView mav = bsvc.updateBoardDelete(bdcode, ra);
+		 ModelAndView mav = bsvc.updateBoardDelete(bdcode, bdcategory ,ra);
 		 
 		 return mav;
 		 
