@@ -21,6 +21,7 @@ import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.NoticeDto;
 import com.NumberOne.dto.PageDto;
 import com.NumberOne.dto.Paging;
+import com.NumberOne.dto.ReplyDto;
 import com.NumberOne.dto.UsedBoardDto;
 import com.google.gson.Gson;
 
@@ -227,7 +228,7 @@ public class AdminService {
 	// 공지 관리페이지 이동
 	public ModelAndView admin_selectNoticeList(String searchVal, String searchType, String keyword, int page, RedirectAttributes ra) {
 		System.out.println("AdminService.admin_selectNoticeList() 호출");
-		
+		mav = new ModelAndView();
 		// 관리자 로그인 여부 체크
 		String loginId = (String)session.getAttribute("loginId");
 		if (loginId == null) {
@@ -269,7 +270,6 @@ public class AdminService {
 		paging.setStartPage(startPage);
 		paging.setEndPage(endPage);
 
-		mav = new ModelAndView();
 		mav.addObject("paging", paging);
 		mav.addObject("noticeList", noticeList);
 		mav.addObject("searchVal", searchVal);
@@ -565,7 +565,7 @@ public class AdminService {
 	// 커뮤니티 관리페이지 이동
 	public ModelAndView admin_selectBoardList(Paging paging, RedirectAttributes ra) {
 		System.out.println("AdminService.admin_selectBoardList() 호출");
-		
+		mav = new ModelAndView();
 		// 관리자 로그인 여부 체크
 		String loginId = (String)session.getAttribute("loginId");
 		if (loginId == null) {
@@ -582,7 +582,6 @@ public class AdminService {
 		paging.calc(); // 페이지 처리 계산 실행
 		
 		System.out.println(paging);
-		mav = new ModelAndView();
 		ArrayList<BoardDto> boardList = adao.admin_selectBoardList(paging);
 		System.out.println("boardList : " + boardList);
 		mav.addObject("paging", paging);
@@ -629,6 +628,73 @@ public class AdminService {
 		return paging_json;
 	}
 
+	/* 댓글 관리 */
+	// 댓글 관리페이지 이동
+	public ModelAndView admin_selectReplyList(Paging paging, RedirectAttributes ra) {
+		System.out.println("AdminService.admin_selectReplyList() 호출");
+		mav = new ModelAndView();
+		// 관리자 로그인 여부 체크
+		String loginId = (String)session.getAttribute("loginId");
+		if (loginId == null) {
+			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
+			mav.setViewName("redirect:/loadToLogin");	
+			return mav;
+		}
+		
+		if(paging.getKeyword() == null) {
+			paging.setKeyword("");
+		}
+		int totalCount = adao.admin_selectReplyTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
+		paging.setTotalCount(totalCount);
+		paging.calc(); // 페이지 처리 계산 실행
+		System.out.println(paging);
+		
+		ArrayList<ReplyDto> replyList = adao.admin_selectReplyList(paging);
+		System.out.println("replyList : " + replyList);
+		mav.addObject("paging", paging);
+		mav.addObject("replyList", replyList);
+		mav.setViewName("admin/Admin_ReplyList");
+		return mav;
+	}
+	
+	// 선택한 상태값에 따른 댓글 목록 ajax
+	public String admin_selectReplyList_ajax(Paging paging) {
+		System.out.println("AdminService.admin_selectReplyList_ajax() 호출");
+		System.out.println("searchVal : " + paging.getSearchVal());
+		int totalCount = adao.admin_selectReplyTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
+		paging.setTotalCount(totalCount);
+		paging.calc(); // 페이지 처리 계산 실행
+		System.out.println("paging : " + paging);
+		
+		ArrayList<ReplyDto> replyList = adao.admin_selectReplyList(paging);
+		System.out.println("replyList : " + replyList);
+		gson = new Gson();
+		String replyList_json = gson.toJson(replyList); 
+		return replyList_json;
+	}
+	
+	// 댓글 목록 ajax 페이징 넘버 조회
+	public String admin_selectReplyPagingNumber_ajax(Paging paging) {
+		System.out.println("AdminService.admin_selectReplyPagingNumber_ajax() 호출");
+		
+		int totalCount = adao.admin_selectReplyTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
+		paging.setTotalCount(totalCount);
+		paging.calc(); // 페이지 처리 계산 실행
+		System.out.println("paging : " + paging);
+		gson = new Gson();
+		String paging_json = gson.toJson(paging);
+		return paging_json;
+	}
+
+	// 댓글 상태 변경 요청
+	public int admin_updateRpstate_ajax(String rpcode, String rpstate) {
+		System.out.println("AdminService.admin_updateRpstate_ajax() 호출");
+		System.out.println("상태변경할 rpcode : " + rpcode);
+		System.out.println("상태변경할 rpstate : " + rpstate);
+		int updateResult = adao.admin_updateRpstate_ajax(rpcode, rpstate);
+		return updateResult;
+	}
+	
 
 
 }

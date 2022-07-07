@@ -57,7 +57,7 @@
 		<div class="row">	
 			<div class="col-2">
 			<!-- 로고이미지 -->
-				<a href="admin_loadToAdminMainPage"><img style="height:100px;"src="${pageContext.request.contextPath }/resources/img/logo_beige.jpg"></a>
+				<a href="admin_loadToAdminMainPage"><img style="height:100px;"src="${pageContext.request.contextPath }/resources/img/logo_beige_remove.png"></a>
 			</div>
 			<div class="col-6 offset-sm-4">
 			<div class="row">

@@ -342,4 +342,56 @@
 		SET BDSTATE=${bdstate}
 		WHERE BDCODE=#{bdcode}
 	</update>
+	
+	<!-- 댓글 관리 -->
+	<!-- 댓글 수 조회 -->
+	<select id="admin_selectReplyTotalCount" resultType="int">
+		SELECT COUNT(*)
+		FROM ADMIN_RPLIST_VIEW
+		<if test="searchVal != 'all'">
+			WHERE RPBDCATEGORY=#{searchVal}
+		</if>
+		<choose>
+			<when test="keyword.length > 0 and searchVal != 'all'">
+				AND
+			</when>
+			<when test="keyword.length > 0 and searchVal == 'all'">
+				WHERE
+			</when>
+		</choose>
+		<if test="keyword.length > 0">
+			${searchType} LIKE '%'||#{keyword}||'%'
+		</if>
+	</select>
+	
+	<!-- 댓글 목록 조회 -->
+	<select id="admin_selectReplyList" resultType="com.NumberOne.dto.ReplyDto">
+		SELECT RPBDCATEGORY, RPCODE, RPBDCODE, RPCONTENTS, RPMID, TO_CHAR(RPDATE,'YY-MM-DD HH24:MI') AS RPDATE, RPSTATE, RPNICKNAME
+		FROM
+		(SELECT ROWNUM RN, RPBDCATEGORY, RPCODE, RPBDCODE, RPCONTENTS, RPMID, RPDATE, RPSTATE, RPNICKNAME
+		FROM ADMIN_RPLIST_VIEW
+		<if test="searchVal != 'all'">
+			WHERE RPBDCATEGORY=#{searchVal}
+		</if>
+		<choose>
+			<when test="keyword.length > 0 and searchVal != 'all'">
+				AND
+			</when>
+			<when test="keyword.length > 0 and searchVal == 'all'">
+				WHERE
+			</when>
+		</choose>
+		<if test="keyword.length > 0">
+			${searchType} LIKE '%'||#{keyword}||'%'
+		</if>
+		)
+		WHERE RN BETWEEN ${startRow} AND ${endRow}
+	</select>
+	
+	<!-- 뎃글 상태 변경 -->
+	<update id="admin_updateRpstate_ajax">
+		UPDATE REPLY 
+		SET RPSTATE=${rpstate}
+		WHERE RPCODE=#{rpcode}
+	</update>
 </mapper>

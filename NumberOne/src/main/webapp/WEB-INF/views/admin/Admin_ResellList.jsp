@@ -53,6 +53,7 @@
 	            <div class="row" style="margin:auto;">
 	                <h1 class="text-center">중고거래 관리페이지 : Admin_ResellList.jsp</h1>
 	            </div>
+	            <!-- 검색 -->
 	            <div class="row">
 					<div class="col-5">
 						<select name="searchType" id="searchTypeSel">
@@ -238,7 +239,6 @@
 			console.log("ubSearchState() 실행");
 			var searchType = $("#searchTypeSel").val();
 			var searchText = $("#searchText").val();
-			var page = 1; // 요청페이지
 			console.log("정렬 선택 : " + searchVal);
 			console.log("검색 종류 : " + searchType);
 			console.log("검색 키워드 : " + searchText);
@@ -274,7 +274,7 @@
 			// 페이지에서 출력할 페이지번호 받아오기
 			$.ajax({
 				type: "get",
-				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "page":page},
+				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText},
 				url: "admin_selectResellPagingNumber_ajax",
 				dataType: "json",
 				success: function(result){
@@ -289,7 +289,7 @@
 						pageList += "[이전] ";
 					}
 					for (var i = result.startPage; i <= result.endPage; i++){
-						if (page == i){
+						if (result.page == i){
 							pageList += "<span style='color:#00bcd4'>" + i + "</span>";
 						} else {
 							pageList += "<button type='submit' name='page' value='" + i + "' id='btn" + i + "'></button>";

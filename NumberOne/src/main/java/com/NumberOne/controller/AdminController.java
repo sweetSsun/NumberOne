@@ -200,4 +200,33 @@ public class AdminController {
 		
 		return null;
 	}
+	
+	/* 댓글 관리 */
+	@RequestMapping (value="admin_selectReplyList")
+	public ModelAndView admin_selectReplyList(Paging paging, RedirectAttributes ra) {
+		System.out.println("댓글 관리페이지 이동 요청");
+		ModelAndView mav = asvc.admin_selectReplyList(paging, ra);
+		return mav;
+	}
+	
+	@RequestMapping (value="admin_selectReplyList_ajax")
+	public @ResponseBody String admin_selectReplyList_ajax(Paging paging) {
+		System.out.println("댓글 관리페이지 정렬 요청");
+		String replyList_json = asvc.admin_selectReplyList_ajax(paging);
+		return replyList_json;
+	}
+	
+	@RequestMapping (value="admin_selectReplyPagingNumber_ajax")
+	public @ResponseBody String admin_selectReplyPagingNumber_ajax(Paging paging) {
+		System.out.println("댓글 관리페이지 페이징넘버 조회 요청");
+		String paging_json = asvc.admin_selectReplyPagingNumber_ajax(paging);
+		return paging_json;
+	}
+	
+	@RequestMapping (value="admin_updateRpstate_ajax")
+	public @ResponseBody int admin_updateRpstate_ajax(String rpcode, String rpstate) {
+		System.out.println("댓글상태 변경 요청");
+		int updateResult = asvc.admin_updateRpstate_ajax(rpcode, rpstate);
+		return updateResult;
+	}
 }
