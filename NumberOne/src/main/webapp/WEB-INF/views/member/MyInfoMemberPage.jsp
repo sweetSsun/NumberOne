@@ -61,6 +61,15 @@ background-color: #00BCD4;
 
 }
 
+.msgTextarea {
+	height: 50px; 
+	width: 670px;
+	border-radius: 5px; 
+	padding:10px 10px;
+	resize: none;
+	font-weight: bold;
+}
+
 
 </style>
 
@@ -118,7 +127,7 @@ background-color: #00BCD4;
                                     </div>                                    
                                     <div class="checkout__input">
                                         <p class="fw-bold" style="color: #808080;">상태메세지</p>
-                                			<input type="text" style="height: 100px;" id="inputMmessage" name="mmessage" readonly="readonly" value="${memberInfo.mmessage }">                                                                 
+                                			<textarea class="msgTextarea" id="inputMmessage" name="mmessage" readonly="readonly">${memberInfo.mmessage }</textarea>                                                               
                                     </div>
                                 </div>
                             </div>
