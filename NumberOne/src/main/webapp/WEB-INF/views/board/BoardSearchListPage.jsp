@@ -14,7 +14,7 @@
 		border-bottom: solid gray 3px;
 	}
 	table{
-		margin: 20px;
+		margin: auto;
 	}
 	.bdcategory{
 		color : #00bcd4;

@@ -9,7 +9,7 @@
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<%@ include file="/resources/css/CommonCss.jsp" %>
+<%@ include file="/resources/css/BarCss.jsp" %>
 
 <style type="text/css">
     #board_column{
@@ -23,6 +23,10 @@
 	}
 	label{
 		cursor: pointer;
+		margin-bottom: 5px;
+	}
+	.cursor_auto{
+		cursor: auto;
 	}
 </style>
 
@@ -46,6 +50,7 @@
             <div class="row" style="margin:auto;">
                <h1 class="text-center">회원 관리페이지 : Admin_MemberList.jsp</h1>
             </div>
+            <!-- 검색 -->
             <div class="row">
 				<div class="col-5">
 					<select name="searchType" id="searchTypeSel">
@@ -61,8 +66,6 @@
                    	</span>
             	</div>
 	            <div class="col-2">
-					<!-- 공지작성 버튼 -->
-					<!-- <button class="btn btn-primary btm-sm" type="button" onclick="location.href='admin_loadToNoticeWrite'">글쓰기</button> -->
 				</div>
            	</div>
            
@@ -97,9 +100,9 @@
 	               <c:forEach items="${memberList }" var="member">
 	                   <!-- 회원관리 목록 -->
 	                   <tr style="border-bottom: solid gray 1px;">
-	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;">${member.mid}</td>
-	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;">${member.mname}</td>
-	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;">${member.mnickname}</td>
+	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;" class="overflow">${member.mid}</td>
+	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;" class="overflow">${member.mname}</td>
+	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;" class="overflow">${member.mnickname}</td>
 	                      <td>${member.mphone}</td>
 	                      <td>${member.memail}</td>
 	                      <td>${member.mjoindate}</td>
@@ -203,51 +206,51 @@
                 	<div class="row">
 	                		<div class="col-5">
                                 <div class="no-gutters align-items-center">
-                                    <div class="h6 mb-1 font-weight-bold text-gray-800 text-center" id="mI_mprofile">
+                                    <div class="h6 mb-1 text-center" id="mI_mprofile">
                                  		프로필이미지
                                     </div>
                                     <div>
-                                    	<label class="small">상태메세지</label>
-		                                <p class="form-control" id="mI_mmessage" style="min-height:38px;"></p>
+                                    	<label class="small cursor_auto">상태메세지</label>
+		                                <textarea readonly class="form-control" id="mI_mmessage" style="min-height:230px; max-height:230px; background-color:#fff"></textarea>
                                     </div>
                                 </div>
                             </div>
                            	<div class="col-7">
                                 <div class="no-gutters align-items-center">
-                                    <div class="h6 font-weight-bold text-gray-800">
+                                    <div class="h6">
                                     	<div>
-		                                  	<label class="small">아이디</label>
+		                                  	<label class="small cursor_auto">아이디</label>
 		                                	<p class="form-control" id="mI_mid" style="min-height:38px;"></p>
                                     	</div>
                                     	<div class="row">
 	                                  		<div class="col-6">
-			                                  	<label class="small">이름</label>
+			                                  	<label class="small cursor_auto">이름</label>
 		                               			<p class="form-control" id="mI_mname" style="min-height:38px;"></p>
 	                                  		</div>
 	                                  		<div class="col-6">
-			                                  	<label class="small">닉네임</label>
+			                                  	<label class="small cursor_auto">닉네임</label>
 			                                  	<p class="form-control" id="mI_mnickname" style="min-height:38px;"></p>
 	                                  		</div>
                                     	</div>
 	                                  	<div>                                	
-		                                  	<label class="small">연락처</label>
+		                                  	<label class="small cursor_auto">연락처</label>
 		                                <p class="form-control" id="mI_mphone"  style="min-height:38px;"></p>
 	                                  	</div>
 	                                  	<div>                                	
-		                                  	<label class="small">이메일</label>
+		                                  	<label class="small cursor_auto">이메일</label>
 		                              		<p class="form-control" id="mI_memail" style="min-height:38px;"></p>
 	                                  	</div>
 	                                  	<div>
-		                                  	<label class="small">주소</label>
+		                                  	<label class="small cursor_auto">주소</label>
 		                                	<p class="form-control" id="mI_maddr" style="min-height:38px;"></p>
                                     	</div>
 	                                  	<div class="row">
 	                                  		<div class="col-9">
-			                                  	<label class="small">가입일</label>
+			                                  	<label class="small cursor_auto">가입일</label>
 			                                	<p class="form-control" id="mI_mjoindate" style="min-height:38px;"></p>
 	                                  		</div>
 	                                  		<div class="col-3">
-			                                  	<label class="small">경고횟수</label>
+			                                  	<label class="small cursor_auto">경고횟수</label>
 			                                	<p class="form-control" id="mI_mwarning" style="min-height:38px;"></p>
 		                                	</div>
                                     	</div>
@@ -321,7 +324,10 @@
 					$("#memberInfoModalLabel").text(mid + " 회원 상세정보");
 					$("#mI_mprofile").text("");
 					if (result.mprofile != null){
-						$("#mI_mprofile").html("<img class='img-fluid rounded-circle' alt='프로필이미지' style='height: 200px; width: 200px;' src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/" + result.mprofile + "'>");
+						$("#mI_mprofile").html("<img class='img-account-profile rounded-circle' alt='프로필이미지' style='height: 200px; width: 200px; border: 1px solid #808080; object-fit: cover;' src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/" + result.mprofile + "'>");
+					} else {
+						$("#mI_mprofile").html("<img class='img-account-profile rounded-circle' alt='프로필이미지' style='height: 200px; width: 200px; border: 1px solid #808080; object-fit: contain;' src='${pageContext.request.contextPath }/resources/img/logo.jpg'>");
+                       //class="img-account-profile rounded-circle mb-2"
 					}
 					$("#mI_mmessage").text(result.mmessage);
 					$("#mI_mid").text(result.mid);
@@ -345,13 +351,12 @@
 			console.log("mbSearchState() 실행");
 			var searchType = $("#searchTypeSel").val();
 			var searchText = $("#searchText").val();
-			var page = 1; // 정렬 시 요청페이지
 			console.log("정렬 선택 : " + searchVal);
 			console.log("검색 종류 : " + searchType);
 			console.log("검색 키워드 : " + searchText);
 			$.ajax({
 				type: "get",
-				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "page":page},
+				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "ajaxCheck":"list"},
 				url: "admin_selectMemberList_ajax",
 				dataType: "json",
 				success: function(result){
@@ -360,8 +365,8 @@
 					for (var i = 0; i < result.length; i++){
 						output += "<tr style='border-bottom: solid gray 1px;'>";
 						output += "<td onclick='showMemberInfoModal( \"" + result[i].mid + "\")' style='cursor: pointer;'>" + result[i].mid + "</td>";
-						output += "<td>" + result[i].mname + "</td>";
-						output += "<td>" + result[i].mnickname + "</td>";
+						output += "<td onclick='showMemberInfoModal( \"" + result[i].mid + "\")' style='cursor: pointer;'>" + result[i].mname + "</td>";
+						output += "<td onclick='showMemberInfoModal( \"" + result[i].mid + "\")' style='cursor: pointer;'>" + result[i].mnickname + "</td>";
 						output += "<td>" + result[i].mphone + "</td>";
 						output += "<td>" + result[i].memail + "</td>";
 						output += "<td>" + result[i].mjoindate + "</td>";
@@ -384,8 +389,8 @@
 			// 페이지에서 출력할 페이지번호 받아오기
 			$.ajax({
 				type: "get",
-				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "page":page},
-				url: "admin_selectMemberPagingNumber_ajax",
+				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "ajaxCheck":"page"},
+				url: "admin_selectMemberList_ajax",
 				dataType: "json",
 				success: function(result){
 					console.log("요청 페이지 : " + result.page);
@@ -468,6 +473,7 @@
 				}
 			});
 		}
+	
 	</script>
 </body>
 

@@ -44,7 +44,7 @@
 
 					<div class="flex_div flex-p0 flex_between">
 						<div class="item_start">
-							<select class="select-size" onchange="selectRegion()"
+							<select class="select-size" onchange="selectRegion(1)"
 								id="regionInfo">
 								<option value="전국">전국</option>
 								<option value="서울">서울</option>
@@ -67,19 +67,24 @@
 
 					<div class="flex_div flex-p0 flex_center">
 						<div class="search-bar">
-							<div class="row_9">
-							<select id="searchOption">
-							<option value="total">제목+내용</option>
-							<option value="title">제목</option>
-							<option value="writer">작성자</option>					
-							
-							</select>
-								<input class="search-bar_input" type="search" placeholder="검색"
-									id="searchInput">
+							<div class="flex_div flex-p0 flex_between">
+								<div class="item_start">
+								<select id="searchType">
+									<option value="total">제목+내용</option>
+									<option value="ubtitle">제목</option>
+									<option value="ubmid">작성자</option>
 
+								</select> 
+								</div>
+								<div>
+								<input class="search-bar_input" type="search" placeholder="검색"
+									id="keyword">
+</div>
 							</div>
-							<div class="row_1">
-								<i class="fas fa-search"></i>
+							<div class="">
+								<button onclick="searchKeyword(1)">
+									<i class="fas fa-search"></i>
+								</button>
 							</div>
 						</div>
 
@@ -135,37 +140,35 @@
 
 					<div class="flex_div flex_center">
 
-						<div class="">
+						<div id="pageNumber">
 							<c:choose>
-								<c:when test="${ubpage.page <=1 }">
+								<c:when test="${paging.page <=1 }">
                    [이전]
                    </c:when>
 								<c:otherwise>
-									<a
-										href="selectResellPageList?select_page=${ubpage.page-1 }&sell_buy=S">
+									<a href="selectResellPageList?page=${paging.page-1 }&sellBuy=S">
 										[이전]</a>
 								</c:otherwise>
 							</c:choose>
-							<c:forEach begin="${ubpage.startPage }" end="${ubpage.endPage }"
+							<c:forEach begin="${paging.startPage }" end="${paging.endPage }"
 								var="num" step="1">
 								<c:choose>
-									<c:when test="${ubpage.page == num }">
+									<c:when test="${paging.page == num }">
 										<span style="font-size: 20px">&nbsp;${num }&nbsp;</span>
 									</c:when>
 									<c:otherwise>
-										<a href="selectResellPageList?select_page=${num}&sell_buy=S">${num }</a>
+										<a href="selectResellPageList?page=${num}&sellBuy=S">${num }</a>
 									</c:otherwise>
 
 								</c:choose>
 
 							</c:forEach>
 							<c:choose>
-								<c:when test="${ubpage.page >= ubpage.maxPage }">
+								<c:when test="${paging.page >= paging.maxPage }">
                        [다음]
                        </c:when>
 								<c:otherwise>
-									<a
-										href="selectResellPageList?select_page=${ubpage.page+1 }&sell_buy=S">[다음]</a>
+									<a href="selectResellPageList?page=${paging.page+1 }&sellBuy=S">[다음]</a>
 								</c:otherwise>
 
 							</c:choose>
@@ -188,84 +191,193 @@
 		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
 		crossorigin="anonymous"></script>
 </body>
-<script type="text/javascript">
-	
-</script>
+
 
 <script type="text/javascript">
-	var sell_buyCheck = 'S';
+	var loginRegion = '${sessionScope.loginRegion}';
 	var regionInfo = document.getElementById("regionInfo");
 	console.log(regionInfo);
+	for(var i in regionInfo.options.length){
+		if(regionInfo.options[i].value.equals(loginRegion)){
+			regionInfo.options[i].selected = "true";
+		}			
+	}
 	var selRegion = regionInfo.options[regionInfo.selectedIndex].value;
 	console.log(selRegion);
 	document.getElementById("mregion").innerText = "[" + selRegion
 			+ "] 지역 목록입니다.";
+	var output_page = '';
+	var output_pagerNum = '';
 	/* 조회  */
 
-	function selectRegion() {
+	function selectRegion(page) {
 		console.log("selectRegion이벤트 호출");
 		selRegion = regionInfo.options[regionInfo.selectedIndex].value;
+
+		/* 지역별조회 */
+		$.ajax({
+					type : "get",
+					url : "selectResellRegionList_ajax",
+					dataType : "json",
+					data : {
+						"searchVal" : selRegion,
+						"sellBuy" : 'S',
+						"ajaxCheck" : 'REGION',
+						"page" : page
+					},
+					success : function(result) {
+						 output_page = '';
+						alert("성공");
+						console.log("결과 : " + result);
+						listOutput(result);
+						document.getElementById("regionList").innerHTML = output_page;
+					}
+
+				})
+
+		/* 지역별조회 페이지번호 ajax */
 		$
 				.ajax({
 					type : "get",
 					url : "selectResellRegionList_ajax",
 					dataType : "json",
-					data : {
-						"selRegion" : selRegion,
-						"sell_buy" : sell_buyCheck
+					data : {					
+						"searchVal" : selRegion,
+						"sellBuy" : 'S',
+						"ajaxCheck" : 'PAGE',
+						"page" : page
 					},
 					success : function(result) {
-						alert("성공");
-						console.log("결과 : " + result);
-
-						output = '';
-
-						for ( var i in result) {
-
-							output += '<div class=\"flex_div\">'
-									+ '<div class=\"flex_div flex-p2\">'
-									+ '<div class=\"position_relative\">'
-									+ '<img alt=\"메인사진\" src=\"${pageContext.request.contextPath }/resources/img/mprofileUpLoad/'+result[i].ubmainimg+'\"'
-							+'class=\"img_size\">'
-									+ '<i class=\"fa-solid fa-heart-circle-plus zzim_size position_absolute\"></i>'
-									+ '</div>'
-									+ '</div>'
-									+ '<div class=\"flex_card\">'
-									+ '<div class=\"card_top position_relative\">'
-									+ result[i].ubtitle
-									+ '</div>'
-									+ '<div class=\"card_body font-s text-right padding-right text-bold\">'
-									+ result[i].ubnickname
-									+ '</div>'
-									+ '<div class=\"card_footer font-s text-right padding-right\">'
-									+ result[i].ubdate + '</div></div>'
-									+ '</div>';
-
+						alert("page_ajax");
+						console.log("결과페이지 : " + result.page);
+						output_pagerNum = '';
+						if (result.page <= 1) {
+							output_pagerNum = '[이전]';
 						}
-						document.getElementById("regionList").innerHTML = output;
-					}
+						else {
+							output_pagerNum = '<button onclick="selectRegion('
+									+ (result.page - 1) + ')">[이전]</button>';
+						}
+						for (var i = 1; i <= result.endPage; i++) {
 
+							if (result.endPage == i) {
+								output_pagerNum += '<span style=\"font-size: 20px\">&nbsp;'
+										+ i + '&nbsp;</span>';
+							} else {
+								output_pagerNum += '<button onclick="selectRegion('
+										+ i + ')">' + i + '</button>';
+							}
+						}
+						if (result.page >= result.maxPage) {
+							output_pagerNum += '[다음]';
+						} else {
+							output_pagerNum += '<button onclick="selectRegion('
+									+ (result.page + 1) + ')">[다음]</button>';
+						}
+						document.getElementById("pageNumber").innerHTML = output_pagerNum;
+					}
 				})
+
 		document.getElementById("mregion").innerText = "[" + selRegion
 				+ "] 지역 목록입니다.";
 	}
+	
+	
+	/* 페이지출력 ajax output */
+	function listOutput(result){
+		
+		for ( var i in result) {
+					
+		output_page += '<div class=\"flex_div\">'
+			+ '<div class=\"flex_div flex-p2\">'
+			+ '<div class=\"position_relative\">'
+			+ '<img alt=\"메인사진\" src=\"${pageContext.request.contextPath }/resources/img/mprofileUpLoad/'+result[i].ubmainimg+'\"'
+	+'class=\"img_size\">'
+			+ '<i class=\"fa-solid fa-heart-circle-plus zzim_size position_absolute\"></i>'
+			+ '</div>'
+			+ '</div>'
+			+ '<div class=\"flex_card\">'
+			+ '<div class=\"card_top position_relative\">'
+			+ result[i].ubtitle
+			+ '</div>'
+			+ '<div class=\"card_body font-s text-right padding-right text-bold\">'
+			+ result[i].ubnickname
+			+ '</div>'
+			+ '<div class=\"card_footer font-s text-right padding-right\">'
+			+ result[i].ubdate + '</div></div>'
+			+ '</div>';
+		}
+	}
 </script>
-<script type="text/javascript">
-	var searchVal = document.getElementById("searchInput").value;
-	var searchOp = document.getElementById("searchOption").value;
 
+<script type="text/javascript">
+ /* 검색 */
+	 
+	function searchKeyword(page){
+		var searchType = document.getElementById("searchType").value;
+		console.log(searchType);
+		var keyword = document.getElementById("keyword").value;
+		console.log(keyword);
 	$.ajax({
 			type : "get",
-			url : "selectSearchList_ajax",
+			url : "selectResellRegionList_ajax",
 			dataType : "json",
-			data : {"searchVal" : searchVal, "sell_buy" : sell_buyCheck, "selRegion" : selRegion, "searchOp" : searchOp},
+			data : {"keyword" : keyword, "sellBuy" : "S", "ajaxCheck" : 'REGION', "searchVal" : selRegion, "searchType" : searchType},
 			success : function(result){
 				console.log("결과 : "+result);
-			}
-		
+				output_page = '';
+					listOutput(result);
+					
+				document.getElementById("regionList").innerHTML = output_page;
+			}					
 	})
-</script>
+	
+	$.ajax({
+					type : "get",
+					url : "selectResellRegionList_ajax",
+					dataType : "json",
+					data : {
+						"keyword" : keyword,
+						"searchVal" : selRegion,
+						"sellBuy" : 'S',
+						"ajaxCheck" : 'PAGE',
+						"page" : page,
+						 "searchType" : searchType
+					},
+					success : function(result) {
+						output_pagerNum = '';
+						alert("page_ajax");
+						console.log("결과페이지 : " + result.page);
+						
+						if (result.page <= 1) {
+							output_pagerNum = '[이전]';
+						}
+						else {
+							output_pagerNum = '<button onclick="searchKeyword('
+									+ (result.page - 1) + ')">[이전]</button>';
+						}
+						for (var i = 1; i <= result.endPage; i++) {
 
+							if (result.endPage == i) {
+								output_pagerNum += '<span style=\"font-size: 20px\">&nbsp;'
+										+ i + '&nbsp;</span>';
+							} else {
+								output_pagerNum += '<button onclick="searchKeyword('
+										+ i + ')">' + i + '</button>';
+							}
+						}
+						if (result.page >= result.maxPage) {
+							output_pagerNum += '[다음]';
+						} else {
+							output_pagerNum += '<button onclick="searchKeyword('
+									+ (result.page + 1) + ')">[다음]</button>';
+						}
+						document.getElementById("pageNumber").innerHTML = output_pagerNum;
+					}
+				})
+	}
+	
+</script>
 
 
 

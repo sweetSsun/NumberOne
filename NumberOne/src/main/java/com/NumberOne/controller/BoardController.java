@@ -1,6 +1,5 @@
 package com.NumberOne.controller;
 
-import java.awt.Image;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,8 +10,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.NumberOne.dto.BoardDto;
+import com.NumberOne.dto.ReplyDto;
 import com.NumberOne.service.BoardService;
-import com.google.gson.Gson;
 
 @Controller
 public class BoardController {
@@ -139,6 +138,31 @@ public class BoardController {
 		 return replyCount;
 	 }
 	 
+	 //댓글 수정버튼 클릭 시 댓글정보 불러오기(ajax)
+	 @RequestMapping ( value = "/selectRpContents_ajax")
+	 @ResponseBody
+	 public ReplyDto selectRpContents_ajax(String rpcode) {
+		 System.out.println("댓글정보 요청_ajax");
+		 
+		 ReplyDto reply = bsvc.selectRpContents_ajax(rpcode);
+		 
+		 return reply;
+		 
+	 }
+	 
+	 //댓글 수정 (ajax)
+	 @RequestMapping ( value = "/updateRpcontents_ajax")
+	 @ResponseBody
+	 public int  updateRpcontents_ajax(String rpcode, String rpcontents) {
+		 System.out.println("댓글수정 요청_ajax");
+		 
+		 int updateResult = bsvc.updateRpcontents_ajax(rpcode, rpcontents);
+		 
+		 
+		 return updateResult;
+	 }
+	 
+	 
 	 //댓글삭제(상태변경) (ajax)
 	 @RequestMapping ( value = "/updateReplyState_ajax")
 	 @ResponseBody 
@@ -251,10 +275,10 @@ public class BoardController {
 	 
 	 //게시글 삭제
 	 @RequestMapping ( value = "/updateBoardDelete")
-	 public ModelAndView updateBoardDelete (String bdcode, RedirectAttributes ra) {
+	 public ModelAndView updateBoardDelete (String bdcode, String bdcategory, RedirectAttributes ra) {
 		 System.out.println("게시글 삭제 요청");
 		 
-		 ModelAndView mav = bsvc.updateBoardDelete(bdcode, ra);
+		 ModelAndView mav = bsvc.updateBoardDelete(bdcode, bdcategory ,ra);
 		 
 		 return mav;
 		 
@@ -287,7 +311,7 @@ public class BoardController {
 		 
 		 ModelAndView mav = bsvc.selectFreeBoardList();
 		 
-		 return null;
+		 return mav;
 		 
 	 }
 	 

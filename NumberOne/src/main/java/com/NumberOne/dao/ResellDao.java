@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.NumberOne.dto.GoodsDto;
+import com.NumberOne.dto.Paging;
 import com.NumberOne.dto.UsedBoardDto;
 
 public interface ResellDao {
@@ -27,7 +28,7 @@ public interface ResellDao {
 	UsedBoardDto selectResellView(@Param("ubcode") String ubcode, @Param("ubsellbuy") String ubsellbuy);
 
 
-	int selectPageTotalCount(@Param("mregion") String mregion, @Param("sell_buy") String sell_buy);
+	int selectPageTotalCount(Paging paging);
 
 
 	GoodsDto selectResellView_goods(String ubcode);
@@ -42,21 +43,23 @@ public interface ResellDao {
 	String selectZzimCheck(@Param("loginId") String loginId, @Param("ubcode") String ubcode);
 
 
-	String selectRegionCode(String mRegion);
+	String selectRegionCode(String mregion);
 
 
 	String loadToResellWriteForm(String loginId);
 
 
-	ArrayList<UsedBoardDto> selectResellPageList(@Param("sell_buy") String sell_buy, @Param("mregion") String mregion, @Param("startRow") int startRow, @Param("endRow") int endRow);
+	ArrayList<UsedBoardDto> selectResellPageList(Paging paging);
 
 
-
-	ArrayList<UsedBoardDto> selectResellRegionList_ajax(@Param("mregion") String mregion, @Param("sell_buy") String sell_buy);
+	ArrayList<UsedBoardDto> selectResellRegionList_ajax(Paging paging);
 
 
 
 	String selectSearchList_ajax(@Param("searchVal") String searchVal, @Param("sell_buy") String sell_buy, @Param("selectRegion") String selectRegion, @Param("searchOp") String searchOp);
+
+
+	String selectMemberId(String keyword);
 
 
 }

@@ -5,9 +5,11 @@ import java.util.ArrayList;
 import org.apache.ibatis.annotations.Param;
 
 import com.NumberOne.dto.BoardDto;
+import com.NumberOne.dto.ContactDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.NoticeDto;
 import com.NumberOne.dto.Paging;
+import com.NumberOne.dto.ReplyDto;
 import com.NumberOne.dto.UsedBoardDto;
 
 public interface AdminDao {
@@ -20,9 +22,9 @@ public interface AdminDao {
 
 	MemberDto admin_selectMemberInfo_ajax(String mid);
 
-	int admin_selectNoticeTotalCount(@Param("searchVal") String searchVal, @Param("searchType") String searchType, @Param("keyword") String keyword);
+	int admin_selectNoticeTotalCount(Paging paging);
 
-	ArrayList<NoticeDto> admin_selectNoticeList(@Param("searchVal") String searchVal, @Param("searchType") String searchType, @Param("keyword") String keyword, @Param("startRow") int startRow, @Param("endRow") int endRow);
+	ArrayList<NoticeDto> admin_selectNoticeList(Paging paging);
 
 	int admin_updateNbstate_ajax(@Param("nbcode") String nbcode, @Param("nbstate") String nbstate);
 
@@ -45,5 +47,17 @@ public interface AdminDao {
 	ArrayList<BoardDto> admin_selectBoardList(Paging paging);
 
 	int admin_updateBdstate_ajax(@Param("bdcode") String bdcode, @Param("bdstate") String bdstate);
+
+	int admin_selectReplyTotalCount(Paging paging);
+
+	ArrayList<ReplyDto> admin_selectReplyList(Paging paging);
+
+	int admin_updateRpstate_ajax(@Param("rpcode") String rpcode, @Param("rpstate") String rpstate);
+
+	int admin_selectContactTotalCount(Paging paging);
+
+	ArrayList<ContactDto> admin_selectContactList(Paging paging);
+
+	int admin_updateQuestionAns_ajax(@Param("ctcode") String ctcode, @Param("ctans") String ctans);
 
 }

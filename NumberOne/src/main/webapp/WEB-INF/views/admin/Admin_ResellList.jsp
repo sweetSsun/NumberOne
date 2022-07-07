@@ -9,7 +9,7 @@
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<%@ include file="/resources/css/CommonCss.jsp" %>
+<%@ include file="/resources/css/BarCss.jsp" %>
 
 <style type="text/css">
     #board_column{
@@ -53,6 +53,7 @@
 	            <div class="row" style="margin:auto;">
 	                <h1 class="text-center">중고거래 관리페이지 : Admin_ResellList.jsp</h1>
 	            </div>
+	            <!-- 검색 -->
 	            <div class="row">
 					<div class="col-5">
 						<select name="searchType" id="searchTypeSel">
@@ -103,7 +104,7 @@
 	                   <!-- 회원관리 목록 -->
 	                   <tr style="border-bottom: solid gray 1px;">
 	                      <td><img src="${pageContext.request.contextPath }/resources/img/resell/${usedBoard.ubmainimg }"
-	                      		class="img-fluid" style="width:100px; height:100px; display:revert;"></td>
+	                      		class="img-fluid" style="width:100px; height:100px; object-fit:fill;"></td>
 	                      <td>${usedBoard.ubcode}</td>
 	                      <%-- makeQueryPage 쓰는거 왜 안될까.... admin_selectBoardView${Paging.makeQueryPage(board.bdcode, paging.page) }/>  --%>
 	                      <td class="overflow"><a href="#">
@@ -238,13 +239,12 @@
 			console.log("ubSearchState() 실행");
 			var searchType = $("#searchTypeSel").val();
 			var searchText = $("#searchText").val();
-			var page = 1; // 요청페이지
 			console.log("정렬 선택 : " + searchVal);
 			console.log("검색 종류 : " + searchType);
 			console.log("검색 키워드 : " + searchText);
 			$.ajax({
 				type: "get",
-				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText},
+				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "ajaxCheck":"list"},
 				url: "admin_selectResellList_ajax",
 				dataType: "json",
 				success: function(result){
@@ -254,7 +254,7 @@
 					for (var i = 0; i < result.length; i++){
 						output += "<tr style='border-bottom: solid gray 1px;'>";
 						output += "<td><img src='${pageContext.request.contextPath }/resources/img/resell/" + result[i].ubmainimg
-                      			+ "class='img-fluid' style='width:100px; height:100px; display:revert;'></td>";
+								+ "' class='img-fluid' style='width:100px; height:100px;  object-fit:fill;'></td>";
 						output += "<td>" + result[i].ubcode + "</td>";
 						output += "<td class='overflow'><a href='admin_selectResellView?ubcode=" + result[i].ubcode + "'>" + result[i].ubtitle + "</a></td>";
 						output += "<td>" + result[i].ubnickname + "</td>";
@@ -274,8 +274,8 @@
 			// 페이지에서 출력할 페이지번호 받아오기
 			$.ajax({
 				type: "get",
-				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "page":page},
-				url: "admin_selectResellPagingNumber_ajax",
+				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "ajaxCheck":"page"},
+				url: "admin_selectResellList_ajax",
 				dataType: "json",
 				success: function(result){
 					console.log("요청 페이지 : " + result.page);
@@ -289,7 +289,7 @@
 						pageList += "[이전] ";
 					}
 					for (var i = result.startPage; i <= result.endPage; i++){
-						if (page == i){
+						if (result.page == i){
 							pageList += "<span style='color:#00bcd4'>" + i + "</span>";
 						} else {
 							pageList += "<button type='submit' name='page' value='" + i + "' id='btn" + i + "'></button>";
