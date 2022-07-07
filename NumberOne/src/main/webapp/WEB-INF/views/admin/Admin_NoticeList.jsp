@@ -9,7 +9,7 @@
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<%@ include file="/resources/css/CommonCss.jsp" %>
+<%@ include file="/resources/css/BarCss.jsp" %>
 
 <style type="text/css">
     #board_column{
@@ -55,6 +55,7 @@
 	            <div class="row" style="margin:auto;">
 	                <h1 class="text-center">공지 관리페이지 : Admin_NoticeList.jsp</h1>
 	            </div>
+	            <!-- 검색 -->
 	            <div class="row">
 					<div class="col-5">
 						<select name="searchType" id="searchTypeSel">

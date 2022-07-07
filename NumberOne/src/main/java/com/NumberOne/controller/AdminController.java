@@ -200,4 +200,55 @@ public class AdminController {
 		
 		return null;
 	}
+	
+	/* 댓글 관리 */
+	@RequestMapping (value="admin_selectReplyList")
+	public ModelAndView admin_selectReplyList(Paging paging, RedirectAttributes ra) {
+		System.out.println("댓글 관리페이지 이동 요청");
+		ModelAndView mav = asvc.admin_selectReplyList(paging, ra);
+		return mav;
+	}
+	
+	@RequestMapping (value="admin_selectReplyList_ajax")
+	public @ResponseBody String admin_selectReplyList_ajax(Paging paging) {
+		System.out.println("댓글 관리페이지 정렬 요청");
+		String replyList_json = asvc.admin_selectReplyList_ajax(paging);
+		return replyList_json;
+	}
+	
+	@RequestMapping (value="admin_selectReplyPagingNumber_ajax")
+	public @ResponseBody String admin_selectReplyPagingNumber_ajax(Paging paging) {
+		System.out.println("댓글 관리페이지 페이징넘버 조회 요청");
+		String paging_json = asvc.admin_selectReplyPagingNumber_ajax(paging);
+		return paging_json;
+	}
+	
+	@RequestMapping (value="admin_updateRpstate_ajax")
+	public @ResponseBody int admin_updateRpstate_ajax(String rpcode, String rpstate) {
+		System.out.println("댓글상태 변경 요청");
+		int updateResult = asvc.admin_updateRpstate_ajax(rpcode, rpstate);
+		return updateResult;
+	}
+	
+	/* 문의 관리 */
+	@RequestMapping (value="admin_selectQuestionList")
+	public ModelAndView admin_selectQuestionList(Paging paging, RedirectAttributes ra) {
+		System.out.println("문의 관리페이지 이동 요청");
+		mav = asvc.admin_selectQuestionList(paging, ra);
+		return mav;
+	}
+	
+	@RequestMapping (value="admin_selectQuestionList_ajax")
+	public @ResponseBody String admin_selectQuestionList_ajax(Paging paging) {
+		System.out.println("문의 관리페이지 정렬 요청");
+		String selectResult_json = asvc.admin_selectQuestionList_ajax(paging);
+		return selectResult_json;
+	}
+	
+	@RequestMapping (value="admin_updateQuestionAns_ajax")
+	public @ResponseBody int admin_updateQuestionAns_ajax(String ctcode, String ctans) {
+		System.out.println("문의 답변 입력 요청");
+		int updateResult = asvc.admin_updateQuestionAns_ajax(ctcode, ctans);
+		return updateResult;
+	}
 }
