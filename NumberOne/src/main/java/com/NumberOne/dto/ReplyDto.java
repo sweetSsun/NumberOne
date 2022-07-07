@@ -12,7 +12,8 @@ public class ReplyDto {
 	private String rpdate;		//작성일
 	private int rpstate;		//상태
 
-	private String rpbdtitle;		//댓글원본 글 제목
+	private String rpbdtitle;		//댓글 원본글 제목
+	private String rpbdcategory;	//댓글 원본글 카테고리
 
 	private String rpnickname;	//작성자 닉네임
 	

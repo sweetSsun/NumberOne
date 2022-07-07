@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.NumberOne.dao.ResellDao;
 import com.NumberOne.dto.GoodsDto;
 import com.NumberOne.dto.PageDto;
+import com.NumberOne.dto.Paging;
 import com.NumberOne.dto.UsedBoardDto;
 import com.google.gson.Gson;
 
@@ -188,20 +189,34 @@ public class ResellService {
 
 
 //   중고거래리스트 selected 지역으로 조회
-	public String selectResellRegionList_ajax(String selRegion, String sell_buy) {
+	public String selectResellRegionList_ajax(Paging paging) {
 		System.out.println("selectResellRegionList_ajax 서비스 호출");
-
-		String mregion = rdao.selectRegionCode(selRegion);
+		
+		
+		String mregion = rdao.selectRegionCode(paging.getSearchVal());
 		System.out.println("파라메터지역코드 : " + mregion);
-		System.out.println("사구팔구확인 : " + sell_buy);
-		ArrayList<UsedBoardDto> sellbuyList = rdao.selectResellRegionList_ajax(mregion, sell_buy);
-
+		paging.setSearchVal(mregion);
+		int totalCaount = rdao.selectPageTotalCount(paging);
+		
+		paging.setTotalCount(totalCaount);
+		paging.calc();
+		
+		System.out.println(paging);
+		ArrayList<UsedBoardDto> sellbuyList = rdao.selectResellRegionList_ajax(paging);
+		
 		System.out.println(sellbuyList);
 		Gson gson = new Gson();
+		
 		String sell_buyList = gson.toJson(sellbuyList);
-
-		return sell_buyList;
-
+		String pageNumber = gson.toJson(paging);
+		
+		if(paging.getAjaxCheck().equals("REGION")) {
+			return sell_buyList;
+		}
+		else {
+			return pageNumber;
+		}
+		
 	}
 
 	public ModelAndView selectResellView(String ubcode, String ubsellbuy) {
@@ -262,63 +277,34 @@ public class ResellService {
 	}
 
 //         사구 팔구 통합
-	public ModelAndView selectResellPageList(String sell_buy, String select_page, String selectRegion) {
+	public ModelAndView selectResellPageList(Paging paging) {
 	
 		System.out.println("selectResellPageList 서비스 호출");
 		ModelAndView mav = new ModelAndView();
-		System.out.println("사구팔구확인 : " + sell_buy);
-		int pageNum = 1;
-		String mregion = null;
-		if (select_page != null) {
-			pageNum = Integer.parseInt(select_page);
-			System.out.println(" 페이지번호 :" + pageNum);
-		}
-
-		if (selectRegion == null) {
-
-			mregion = rdao.selectRegionCode((String) session.getAttribute("loginRegion"));
-			System.out.println("관심지역 : " + mregion);
-		} else {
-			mregion = rdao.selectRegionCode(selectRegion);
-			System.out.println("파라메터지역 : " + mregion);
-		}
-		int pageCount = 2;
-		int pageNumCount = 2;
-
-		// 선택된 페이지에 pageCount 숫자 만큼의 행 출력을 하기 위해서 ArrayList에 매개값으로 사용 할 변수선언
-		int startRow = (pageNum - 1) * pageCount + 1; // 출력할 시작 글번호. 1페이지면 1번글. 2페이지면 5번글부터
-		int endRow = pageNum * pageCount; // 출력할 마지막 글번호. 1페이지면 4번글까지, 2페이지면 8번글까지
-
-		ArrayList<UsedBoardDto> sell_buyList = rdao.selectResellPageList(sell_buy, mregion, startRow, endRow);
-		int pageTotalCount = rdao.selectPageTotalCount(mregion, sell_buy);
-
-		int maxPage = (int) (Math.ceil((double) pageTotalCount / pageNumCount));
-		int startPage = (int) ((Math.ceil((double) pageNum / pageNumCount)) - 1) * pageNumCount + 1;
-		System.out.println("시작페이지 : " + startPage);
-		int endPage = startPage + pageNumCount - 1;
-		if (endPage > maxPage) {
-			endPage = maxPage;
-		}
-
-		PageDto ubpage = new PageDto();
-		ubpage.setEndPage(endPage);
-		ubpage.setMaxPage(maxPage);
-		ubpage.setPage(pageNum);
-		ubpage.setStartPage(startPage);
-
-		System.out.println("페이지 : " + ubpage);
-
+		
+		System.out.println(paging);
+		
+	
+		
+			if((String) session.getAttribute("loginRegion") != null) {
+				paging.setSearchVal(rdao.selectRegionCode((String) session.getAttribute("loginRegion")));				
+			}
+	
+		int totalCaount = rdao.selectPageTotalCount(paging);
+		paging.setTotalCount(totalCaount);
+		paging.calc();
+		
+		ArrayList<UsedBoardDto> sell_buyList = rdao.selectResellPageList(paging);
+		
 		System.out.println(sell_buyList);
 
-		mav.addObject("ubpage", ubpage);
 		mav.addObject("sell_buyList", sell_buyList);
-		
-		System.out.println("셀바이 : " +sell_buy);
-		if (sell_buy.equals("S")) {
+		mav.addObject("paging", paging);
+		if (paging.getSellBuy().equals("S")) {
 			System.out.println("조건문S");
 			mav.setViewName("resell/Resell_SellList");
 			
-		} else if (sell_buy.equals("B")) {
+		} else if (paging.getSellBuy().equals("B")) {
 			System.out.println("조건문B");
 			mav.setViewName("resell/Resell_BuyList");
 		}
