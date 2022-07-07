@@ -29,14 +29,23 @@ public class Paging {
 	private String searchVal;	// 정렬 항목(카테고리,지역)
 	private String searchType;	// 검색할 항목
 	private String keyword;		// 검색 문자열
-	private String sellBuy;	//중고거래 사구,팔구 구분용
-	private String ajaxCheck;
-	// 생성자
 	
+	// ajax로 페이징 할 경우 필요한 필드
+	private String ajaxCheck;
+	/* ajax로 페이징할 경우(정렬 선택 시) 리스트, 페이징넘버 두 번을 보내야하기 때문에
+	 	ajax는 두 번 보내더라도, 컨트롤러와 서비스는 하나의 메소드로 처리하기 위한 필드
+	 	ajax 내에서 ajaxCheck 변수의 data를 "page"로 보내면 list가 아니라 page를 return하도록 활용 가능*/
+	
+	
+	// 중고거래 페이징에서 필요한 필드
+	private String sellBuy;		//중고거래 사구,팔구 구분용
+	
+	
+	// 생성자
 	public Paging() {
 		// 초기값 설정
 		page = 1;
-		perPageNum = 10;
+		perPageNum = 3;
 		startRow = 1;
 		endRow = 10;
 		
