@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 중고거래관리</title>
+<title>1인자 - 댓글관리</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -48,19 +48,17 @@
 		
 		<section>
 		<!-- 본문 -->
-         <form action="admin_selectResellList" method="get">
+         <form action="admin_selectReplyList" method="get">
 			<div class="container">
 	            <div class="row" style="margin:auto;">
-	                <h1 class="text-center">중고거래 관리페이지 : Admin_ResellList.jsp</h1>
+	                <h1 class="text-center">댓글 관리페이지 : Admin_ReplyList.jsp</h1>
 	            </div>
 	            <!-- 검색 -->
 	            <div class="row">
 					<div class="col-5">
 						<select name="searchType" id="searchTypeSel">
-							<option value="ubTitle">제목</option>
-							<option value="ubContents">내용</option>
-							<option value="ubTitleContents">제목+내용</option>
-							<option value="ubnickname">작성자</option>
+							<option value="rpContents">내용</option>
+							<option value="rpnickname">작성자</option>
 						</select>
 					</div>
 	                <div class="col-5 input-group">
@@ -70,18 +68,19 @@
                     	</span>
 	            	</div>
 		            <div class="col-2">
-						<!-- 공지작성 버튼 -->
-						<!-- <button class="btn btn-primary btm-sm" type="button" onclick="location.href='admin_loadToNoticeWrite'">글쓰기</button> -->
 					</div>
                	</div>
            
             <div class="row" style="margin-top: 20px;">
                <div class="col">
-                  <!-- 상태값 정렬 -->
-                   <select name="searchVal" id="searchValSel" onchange="ubSearchState(this.value)">
+                   <!-- 상태값 정렬 -->
+                   <select name="searchVal" id="searchValSel" onchange="rpSearchState(this.value)">
                      <option value="all">전체</option>
-                     <option value="warning">경고</option>
-                     <option value="inactive">정지</option>
+                     <option value="자랑">자랑</option>
+                     <option value="자유">자유</option>
+                     <option value="질문">질문</option>
+                     <option value="정보">정보</option>
+                     <option value="후기">후기</option>
                   </select>
                </div>
             </div>
@@ -91,35 +90,27 @@
             <table >
                <thead >
                   <tr class="fw-bold" id="board_column">
-                     <td style="width:100px;">대표사진</td>
-                     <td style="width:130px;">글번호</td>
-                     <td style="min-width:200px;">제목</td>
+                     <td style="width:130px;">댓글번호</td>
+                     <td style="width:70px;">말머리</td>
+                     <td style="min-width:200px;">내용</td>
                      <td>작성자</td>
                      <td>작성일</td>
                      <td style="width:80px;">상태</td>
                   </tr>
                </thead>
-               <tbody id="bdListTbody">
-	               <c:forEach items="${usedBoardList }" var="usedBoard">
+               <tbody id="rpListTbody">
+	               <c:forEach items="${replyList }" var="reply">
 	                   <!-- 회원관리 목록 -->
 	                   <tr style="border-bottom: solid gray 1px;">
-	                      <td><img src="${pageContext.request.contextPath }/resources/img/resell/${usedBoard.ubmainimg }"
-	                      		class="img-fluid" style="width:100px; height:100px; object-fit:fill;"></td>
-	                      <td>${usedBoard.ubcode}</td>
+	                      <td>${reply.rpcode}</td>
+	                      <td>${reply.rpbdcategory}</td>
 	                      <%-- makeQueryPage 쓰는거 왜 안될까.... admin_selectBoardView${Paging.makeQueryPage(board.bdcode, paging.page) }/>  --%>
 	                      <td class="overflow"><a href="#">
-	                      ${usedBoard.ubtitle}</a></td>
-	                      <td>${usedBoard.ubnickname}</td>
-	                      <td>${usedBoard.ubdate}</td>
+	                      ${reply.rpcontents}</a></td>
+	                      <td>${reply.rpnickname}</td>
+	                      <td>${reply.rpdate}</td>
 	                      <td>
-	                      	<c:choose>
-	                      		<c:when test="${usedBoard.ubstate == 1}">
-	                      			<button class="btn btn-warning" type="button" onclick="showUbstateModal(this,'${usedBoard.ubcode }')">경고</button>
-	                      		</c:when>
-	                      		<c:otherwise>
-	                      			<button class="btn btn-danger" type="button" onclick="showUbstateModal(this, '${usedBoard.ubcode }')">정지</button>
-	                      		</c:otherwise>
-	                      	</c:choose>
+                   			  <button class="btn btn-danger" type="button" onclick="showRpstateModal(this, '${reply.rpcode }')">정지</button>
 	                      </td>
 	                   </tr>
 	                </c:forEach>                 
@@ -171,20 +162,20 @@
 	
 	
 	<!-- 공지상태 변경 모달 -->
-	<div class="modal fade" id="updateUbstateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+	<div class="modal fade" id="updateRpstateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="updateUbstateModalLabel"> 게시글상태 변경 확인 </h5>
+                    <h5 class="modal-title" id="updateRpstateModalLabel"> 게시글상태 변경 확인 </h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body" id="updateUbstateModalBody"> </div>
+                <div class="modal-body" id="updateRpstateModalBody"> </div>
                 <div class="modal-footer">
-                	<input type="hidden" id="ubcode">
-                    <button class="btn btn-primary" onclick="updateUbstate()">네</button>
+                	<input type="hidden" id="rpcode">
+                    <button class="btn btn-primary" onclick="updateRpstate()">네</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
             </div>
@@ -203,7 +194,7 @@
 		var close = $(".close");
 		for (var i = 0; i < close.length; i++){
 			close[i].addEventListener("click", function(){
-				$("#updateUbstateModal").modal("hide");
+				$("#updateRpstateModal").modal("hide");
 			});
 		}
 	</script>
@@ -235,8 +226,8 @@
 	</script>
 	<script type="text/javascript">
 		// 정렬 select하면 ajax로 공지목록 받고 출력을 바꿔주는 함수
-		function ubSearchState(searchVal){
-			console.log("ubSearchState() 실행");
+		function rpSearchState(searchVal){
+			console.log("rpSearchState() 실행");
 			var searchType = $("#searchTypeSel").val();
 			var searchText = $("#searchText").val();
 			console.log("정렬 선택 : " + searchVal);
@@ -245,7 +236,7 @@
 			$.ajax({
 				type: "get",
 				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText},
-				url: "admin_selectResellList_ajax",
+				url: "admin_selectReplyList_ajax",
 				dataType: "json",
 				success: function(result){
 					// 정렬 목록 출력
@@ -253,29 +244,24 @@
 					console.log(result);					
 					for (var i = 0; i < result.length; i++){
 						output += "<tr style='border-bottom: solid gray 1px;'>";
-						output += "<td><img src='${pageContext.request.contextPath }/resources/img/resell/" + result[i].ubmainimg
-                      			+ "class='img-fluid' style='width:100px; height:100px;  object-fit:fill;'></td>";
-						output += "<td>" + result[i].ubcode + "</td>";
-						output += "<td class='overflow'><a href='admin_selectResellView?ubcode=" + result[i].ubcode + "'>" + result[i].ubtitle + "</a></td>";
-						output += "<td>" + result[i].ubnickname + "</td>";
-						output += "<td>" + result[i].ubdate + "</td>";
+						output += "<td>" + result[i].rpcode + "</td>";
+						output += "<td>" + result[i].rpbdcategory + "</td>";
+						output += "<td class='overflow'><a href='admin_selectResellView?bdcode=" + result[i].bdcode + "'>" + result[i].rpcontents + "</a></td>";
+						output += "<td>" + result[i].rpnickname + "</td>";
+						output += "<td>" + result[i].rpdate + "</td>";
 						output += "<td>"
-						if (result[i].ubstate == 1){
-							output += "<button class='btn btn-warning' type='button' onclick='showBdstateModal(this, \""+result[i].ubcode+"\")'>경고</button>";
-						} else {
-							output += "<button class='btn btn-danger' type='button' onclick='showBdstateModal(this,\""+result[i].ubcode+"\")'>정지</button>";
-						}
+						output += "<button class='btn btn-danger' type='button' onclick='showRpstateModal(this,\""+result[i].rpcode+"\")'>정지</button>";
 						output += "</td>";
 						output += "</tr>";
 					}
-					$("#bdListTbody").html(output);
+					$("#rpListTbody").html(output);
 				}
 			});
 			// 페이지에서 출력할 페이지번호 받아오기
 			$.ajax({
 				type: "get",
 				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText},
-				url: "admin_selectResellPagingNumber_ajax",
+				url: "admin_selectReplyPagingNumber_ajax",
 				dataType: "json",
 				success: function(result){
 					console.log("요청 페이지 : " + result.page);
@@ -303,6 +289,7 @@
 						pageList += "[다음]";
 					}
 					$("#pageList").html(pageList);
+					console.log(pageList);
 				},
 				error: function(){
 					alert("페이징넘버링 실패");
@@ -313,47 +300,47 @@
 		
 		// 공지상태 변경 확인 모달창 출력
 		var btnObj;
-		function showUbstateModal(obj, ubcode){
-			console.log("showUbstateModal() 실행");
+		function showRpstateModal(obj, rpcode){
+			console.log("showRpstateModal() 실행");
 			btnObj = $(obj);
 			var btnObjText = btnObj.text();
 			console.log("btnObjText:"+btnObjText);
-			if (btnObjText == "경고"){
-				$("#updateUbstateModalBody").text(ubcode + "번 게시글을 정지 처리하시겠습니까?");
+			if (btnObjText == "활성"){
+				$("#updateRpstateModalBody").text(rpcode + "번 게시글을 정지 처리하시겠습니까?");
 			} else {
-				$("#updateUbstateModalBody").text(ubcode + "번 게시글의 정지를 취소하시겠습니까?");
+				$("#updateRpstateModalBody").text(rpcode + "번 게시글의 정지를 취소하시겠습니까?");
 			}
-			$("#ubcode").val(ubcode);
-			$("#updateUbstateModal").modal("show");
+			$("#rpcode").val(rpcode);
+			$("#updateRpstateModal").modal("show");
 		}
 		
 		// 공지상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
-		function updateUbstate(){
-			console.log("updateUbstate() 실행");
-			var ubcode = $("#ubcode").val();
+		function updateRpstate(){
+			console.log("updateRpstate() 실행");
+			var rpcode = $("#rpcode").val();
 			console.log(btnObj.text());
-			if (btnObj.text() == "경고"){
-				var ubstate = 0;				
+			if (btnObj.text() == "활성"){
+				var rpstate = 0;				
 			} else {
-				var ubstate = 1;				
+				var rpstate = 1;				
 			}
 			$.ajax({
 				type: "get",
-				data: {"ubcode":ubcode, "ubstate":ubstate},
-				url: "admin_updateUbstate_ajax",
+				data: {"rpcode":rpcode, "rpstate":rpstate},
+				url: "admin_updateRpstate_ajax",
 				dataType: "json",
 				success: function(result){
 					if(result > 0){
-						if (ubstate == 0){
-							btnObj.text("정지").addClass("btn-danger").removeClass("btn-warning");
+						if (rpstate == 0){
+							btnObj.text("정지").addClass("btn-danger").removeClass("btn-primary");
 						} else {
-							btnObj.text("경고").addClass("btn-warning").removeClass("btn-danger");
+							btnObj.text("활성").addClass("btn-primary").removeClass("btn-danger");
 						}
 					}
-					$("#updateUbstateModal").modal("hide");
+					$("#updateRpstateModal").modal("hide");
 				},
 				error: function(){
-					$("#updateUbstateModal").modal("hide");
+					$("#updateRpstateModal").modal("hide");
 					alert("글상태 변경에 실패했습니다.");
 				}
 			});

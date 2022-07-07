@@ -761,9 +761,35 @@ public class BoardService {
 		ArrayList<BoardDto> boardList = bdao.selectBoardList_Free(bdcategory_Free);
 		System.out.println(boardList);
 		
+		ArrayList<NoticeDto> noticeList = bdao.selectNoticeList();
 		
-		return null;
+		mav.addObject("noticeList", noticeList);
+		mav.addObject("boardList", boardList);
+		mav.setViewName("board/FreeBoardList");
+		
+		return mav;
 	}
+
+	//댓글정보 불러오기 
+	public ReplyDto selectRpContents_ajax(String rpcode) {
+		System.out.println("BoardService.selectRpContents_ajax() 호출");
+		System.out.println("수정할 댓글번호 : " + rpcode);
+		
+		ReplyDto reply = bdao.selectRpContents_ajax(rpcode);
+		System.out.println(reply);
+		
+		return reply;
+	}
+	
+	//댓글수정 
+	public int updateRpcontents_ajax(String rpcode, String rpcontents) {
+		System.out.println("BoardService.updateRpcontents_ajax() 호출");
+		System.out.println("rpcontents : " + rpcontents);
+		
+		int updateResult = bdao.updateRpcontents_ajax(rpcode, rpcontents);
+		
+		return updateResult;
+	} 
 	
 
 

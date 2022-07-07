@@ -14,8 +14,16 @@
 	    font-weight: normal;
 	    font-style: normal;
 	}
+	body{
+		font-family: 'pretendard';
+	}
 	
-	
+	header{
+		font-family: 'Jal_Onuel'! important;
+		color: #4C4C4C;
+	    white-space: nowrap;	
+	    
+	}
 	header,nav,aside,section,footer{
 		/* border: solid 1px black; */
 		margin-bottom: 5px;
@@ -25,8 +33,12 @@
 		position: sticky;
 		top: 0px;
 		z-index:10;
-		padding: 3px;
-		border-bottom: solid 3px #F2F2FF;
+		padding: tpx;
+		border-bottom: solid 5px #F2F2FF;
+	    margin-bottom: 10px;
+
+
+		
 	}
 	#header_menu ul li{
 		overflow: auto;
@@ -36,8 +48,13 @@
 	a{	
 	text-decoration: none;
     color: inherit; /* 링크의 색상 제거 */
-
 	}
+	
+	.menubar{	
+	text-decoration: none;
+    color: inherit; /* 링크의 색상 제거 */
+	}
+	
 	main{
 		display: flex;
 	}

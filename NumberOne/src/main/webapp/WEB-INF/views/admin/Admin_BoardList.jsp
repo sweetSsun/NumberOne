@@ -9,7 +9,7 @@
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<%@ include file="/resources/css/CommonCss.jsp" %>
+<%@ include file="/resources/css/BarCss.jsp" %>
 
 <style type="text/css">
     #board_column{
@@ -53,6 +53,7 @@
 	            <div class="row" style="margin:auto;">
 	                <h1 class="text-center">커뮤니티 관리페이지 : Admin_BoardList.jsp</h1>
 	            </div>
+	            <!-- 검색 -->
 	            <div class="row">
 					<div class="col-5">
 						<select name="searchType" id="searchTypeSel">
@@ -254,12 +255,11 @@
 			//var searchType = $("#searchType option:selected").val();
 			var searchType = $("#searchTypeSel").val();
 			var searchText = $("#searchText").val();
-			var page = 1; // 요청페이지
 			console.log(searchType);
 			console.log(searchText);
 			$.ajax({
 				type: "get",
-				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "page":page},
+				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText},
 				url: "admin_selectBoardList_ajax",
 				dataType: "json",
 				success: function(result){
@@ -287,10 +287,9 @@
 				}
 			});
 			// 페이지에서 출력할 페이지번호 받아오기
-			
 			$.ajax({
 				type: "get",
-				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "page":page},
+				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText},
 				url: "admin_selectBoardPagingNumber_ajax",
 				dataType: "json",
 				success: function(result){

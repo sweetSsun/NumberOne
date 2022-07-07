@@ -13,43 +13,58 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <style type="text/css">
+	section{
+		max-width: 80%;
+		margin: auto;
+		margin-top: 0%;
+	}
 	textarea{
 		border: none;
 		height: auto;
 	}
 	.commentDate{
 		color: gray;
-		font-size: 20px;
+		font-size: 17px;
 	}
 	.boardDate{
 		color: gray;
-		font-size: 20px;
+		font-size: 17px;
 		text-align: left;
+	}
+	.bdhit{
+		color: gray;
+		font-size: 17px;
 	}
 	.boardCategory{
 		color : #00a5ba;
-		font-size: 25px;
+		font-size: 20px;
+	}
+	.bdnickname{
+		font-size: 20px;
 	}
 	.bdregion{
 		font-weight: bold;
 		color : #00bcd4;
+		font-size: 20px;
 	}
 	.idDateHits{
 		border-bottom: solid #E0E0E0 3px;
 	}
 	.boardTitle{
-		font-size: 35px;
+		font-size: 25px;
 	}
 	.boardContents{
 		border-bottom: solid #E0E0E0 3px;
+		font-size: 21px;
 	}
 	
 	.commentCount{
 		border-bottom : solid #E0E0E0 3px;
-		
+		font-size:20px;
 	}
 	.commentContents{
 		border-bottom : solid #E0E0E0 2px;
+		font-size:20px;
 	}
 	.outerCmtBox{
 		background-color : #F6F6F6;
@@ -60,12 +75,12 @@
 		display: table-cell;
 		margin: auto;
 	}
-	/* .commentWriteForm{
-		/* min-height: 150px; */
-	} */
 	.replyButton{
 		background-color: #F4F4F4;
 		float: right;
+	}
+	.rpnickname{
+		font-size:20px;
 	}
 	.icon{
 		border : solid gray 2px;
@@ -102,7 +117,7 @@
 					<div class="row">
 						<div class="col">
 							<a href="#"><span class="fw-bold boardCategory"> | ${board.bdcategory }게시판 </span></a> 
-							<span class="fw-bold" style="color:gray;">/</span> <a href="#"><span class="bdregion"> ${board.bdrgname}</span></a>
+							<span class="fw-bold" style="color:gray; font-size:20px">/</span> <a href="#"><span class="bdregion"> ${board.bdrgname}</span></a>
 						</div>
 					</div>
 					<div class="row" >
@@ -112,12 +127,12 @@
 					</div>
 					<div class="row idDateHits">
 						<div class="col-6">
-							<a href="#"><span class="fw-bold">${board.bdnickname }</span></a> 
+							<a href="#"><span class="fw-bold bdnickname">${board.bdnickname }</span></a> 
 						</div>
 						
 						<div align="right"  class="col-3 offset-md-3">
 							<span class="boardDate">${board.bddate } | </span> 
-							<span class="commentDate" style="right:0;"><i class="fa-regular fa-eye"></i>  ${board.bdhits } |</span> 
+							<span class="bdhit" style="right:0;"><i class="fa-regular fa-eye"></i>  ${board.bdhits } |</span> 
 							<i class="fa-regular fa-thumbs-up commentDate" ></i> <span class="commentDate" style="right:0;" id="BoardRecommendSum"></span>
 						</div>
 					</div>
@@ -125,25 +140,25 @@
 					
 					
 					<!-- 본문 글 내용-->
-					<div class="row mt-3 mb-3 boardContents">
+					<div class="row mt-3 mb-1 boardContents">
 						<div class="col">
 							<%-- <textarea rows="10%" cols="100%" readonly>${board.bdcontents }</textarea> --%>
-							<div style="min-height:400px;">${board.bdcontents }</div>
+							<div style="min-height:270px;">${board.bdcontents }</div>
 						</div>
 					</div>
 				</form>
 				
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
-				<div class="row">
+				<div class="row mb-2">
 					<div class="col-2">
-						<input onclick="boardList()" type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-lg fw-bold text-white" value="글목록"> 
+						<input onclick="boardList()" type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록"> 
 					</div>
 				<c:choose>
 					<c:when test="${sessionScope.loginId == board.bdmid }">
 						<div align="right" class="col" >
 							<!-- 수정,삭제 : 로그인 아이디 = 글작성자 -->
-							<input onclick="loadToBoardModify()" type="button" style="margin-right: 2px; background-color: #00bcd4;" class="btn btn-lg fw-bold text-white" value="수정">
-							<input onclick="bdDeleteCheckModal()" type="button" style="background-color: #00bcd4;" class="btn btn-lg fw-bold text-white" value="삭제">
+							<input onclick="loadToBoardModify()" type="button" style="margin-right: 2px; background-color: #00bcd4;" class="btn btn-sm fw-bold text-white" value="수정">
+							<input onclick="bdDeleteCheckModal()" type="button" style="background-color: #00bcd4;" class="btn btn-sm fw-bold text-white" value="삭제">
 						</div>
 					</c:when>
 					
@@ -152,8 +167,8 @@
 							<!-- 추천,신고 : 로그인 한 아이디  -->
 							<!-- <i onclick="insertBoardWarning()" class="fa-solid fa-triangle-exclamation text-danger fa-2x icon" style="float:right;"></i>신고 -->
 							<!-- <input type="button" style="float:right;" class="btn btn-lg bg-success fw-bold text-white" value="신고"> -->
-							<i id="bdRecommend" onclick="insertBoardRecommend()" class="fa-regular fa-thumbs-up  fa-2x icon"  style="margin-right: 2px;"></i>
-							<i id="bdWarning" onclick="bdWarningCheckModal()" class='fa-solid fa-land-mine-on  fa-2x icon' style="margin-right: 2px;"></i>
+							<i id="bdRecommend" onclick="insertBoardRecommend()" class="fa-regular fa-thumbs-up  fa-2x icon"  style="margin-right: 2px; font-size:40px"></i>
+							<i id="bdWarning" onclick="bdWarningCheckModal()" class='fa-solid fa-land-mine-on  fa-2x icon' style="margin-right: 2px; font-size:40px"></i>
 							<!-- <input type="button" style="float:right; margin-right: 5px;" class="btn btn-lg bg-success fw-bold text-white" value="추천"> -->
 							
 						</div>
@@ -162,8 +177,9 @@
 				</c:choose>
 				</div>
 				
+				
 				<!------------------ 댓글영역 ------------------->
-				<div class="mt-3" id="commentBox">
+				<div class="mb-2" id="commentBox">
 					<!-- 댓글개수 -->	
 					<div class="row">
 						<div class="col commentCount">
@@ -173,21 +189,21 @@
 					
 					<!-- 댓글목록_ajax -->
 					<div class="row" id="replyList_ajax">
-				
+						
 					</div>
 					
 					<!-- 댓글입력박스 -->
 					<!-- 로그인 상태가 아닌 경우 댓글입력칸이 출력되지 않도록-->
 					<c:choose>
 					<c:when test="${sessionScope.loginId  != null }">
-						<div style="min-height:200px; border-radius:8px;" class="row outerCmtBox mt-3 mb-3">
+						<div style="min-height:20%; border-radius:8px;" class="row outerCmtBox mt-3 mb-3">
 							<div class="innerCmtBox">
 								<!-- 댓글입력 -->
-								<textarea id="inputComment" style="border: solid #E0E0E0 3px;" class="mt-4 ml-1" rows="3" cols="100" placeholder="상대방에게 불쾌감을 주는 욕설이나 댓글은 고지없이 삭제될 수 있습니다. "></textarea>
+								<textarea id="inputComment" style="border: solid #E0E0E0 3px; " class="mt-4 " rows="2" cols="100%" placeholder="상대방에게 불쾌감을 주는 욕설이나 댓글은 고지없이 삭제될 수 있습니다. "></textarea>
 							</div>
 							<div align="right" class="row">
 								<div align="right" class="col">
-									<button onclick="insertReply()" class="btn btn-lg bg-secondary mb-2 fw-bold text-white">등록</button>
+									<button onclick="insertReply()" class="btn btn-sm bg-secondary mb-2 fw-bold text-white">등록</button>
 								</div>
 							</div>
 						</div>
@@ -198,6 +214,34 @@
 			
 		</section>
 	</main>
+	
+	<!--  --><!--  --><!--  --><!-- 모달 --><!--  --><!--  --><!--  -->
+	<!-- 댓글 수정 모달 -->
+	<div class="modal fade" id="bdRpModifyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"> 댓글 수정 </h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" style="margin:auto;" >
+					<input type="hidden" id="inputRpcode">
+					<textarea rows="5" cols="50" id="inputModifyRp" style="border: solid #E0E0E0 2px; border-radius:5px;">
+					
+					</textarea>                
+                </div>
+                <div class="modal-footer">
+                	<input type="hidden" >
+                    <button class="close btn text-white " onclick="rpModify()">등록</button>
+                    <button class="close btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+                </div>
+            </div>
+        </div>
+    </div>
+	
 	
 	<!-- 신고 확인 모달 -->
 	<div class="modal fade" id="bdWarningCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -244,8 +288,6 @@
             </div>
         </div>
     </div>
-   
-	
 	
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
 
@@ -282,7 +324,6 @@
 	}
 </script>
 
-
 <script type="text/javascript">
 		// 게시글 경고 모달창 close 하는 스크립트
  		var modal = $(".modal");
@@ -301,6 +342,17 @@
 		for (var i = 0; i < close.length; i++){
 			close[i].addEventListener("click", function(){
 				$("#bdDeleteCheckModal").modal("hide");
+			});
+		}
+</script>
+
+<script type="text/javascript">
+		// 댓글 수정 모달창 close 하는 스크립트
+ 		var modal = $(".modal");
+		var close = $(".close");
+		for (var i = 0; i < close.length; i++){
+			close[i].addEventListener("click", function(){
+				$("#bdRpModifyModal").modal("hide");
 			});
 		}
 </script>
@@ -484,6 +536,7 @@
 	
 	/* 댓글목록 조회_ajax */
 	function selectReplyList(){
+		
 		var output = "";
 		$.ajax({
 			type: "get",
@@ -493,19 +546,33 @@
 			async : false,
 			success : function(replyList){
 				console.log(replyList);
-				
 				for( var i=0; i < replyList.length; i++ ){
-					output += "<div class=\"col mt-1\">"
-					output += "<span class=\"fw-bold\">" + replyList[i].rpnickname + "</span>"
-					output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span>"
-					output += "</div>"
-					output += "<div align=\"right\" class=\"col\">"
-					output += "<input style=\"margin-right:5px; border:solid gray 1px\" type=\"button\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"replyModify()\" value=\"수정\">"
-					output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"replyRemove('"+ replyList[i].rpcode +"')\" value=\"삭제\">"
-					output += "</div>"
-					output += "<div class=\"row commentContents mb-2\">"
-					output += "<span>" + replyList[i].rpcontents + "</span>"
-					output += "</div>"
+					
+					if( replyList[i].rpmid == '${sessionScope.loginId}' ){//동일한 아이디
+						output += "<div class=\"col\">"
+						output += "<span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span>"
+						output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span>"
+						output += "</div>"
+						output += "<div align=\"right\" class=\"col\">"
+						output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"replyRemove('"+ replyList[i].rpcode +"')\" value=\"삭제\">"
+						output += "<input style=\"margin-right:5px; border:solid gray 1px\" type=\"button\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"rpModifyModal('"+ replyList[i].rpcode +"')\" value=\"수정\">"
+						output += "</div>"
+						output += "<div class=\"row commentContents \">"
+						output += "<span>" + replyList[i].rpcontents + "</span>"
+						output += "</div>"
+					
+					}else{
+						output += "<div class=\"col \">"
+						output += "<span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span>"
+						output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span>"
+						output += "</div>"
+						output += "<div align=\"right\" class=\"col\">"
+						output += "</div>"
+						output += "<div class=\"row commentContents \">"
+						output += "<span>" + replyList[i].rpcontents + "</span>"
+						output += "</div>"
+					}
+
 				}
 			}
 		});
@@ -524,6 +591,49 @@
 				$("#ReplyCount").text(replyCount);
 			}
 		});
+	}
+	
+	function rpModifyModal(rpcode){
+		/* 댓글수정 모달창 띄우기 */
+		console.log("댓글코드 : " + rpcode );
+		
+		$.ajax({
+			type : "get",
+			url : "selectRpContents_ajax",
+			data : { "rpcode" : rpcode },
+			async : false,
+			success : function(reply){
+				
+				$("#inputModifyRp").text(reply.rpcontents);
+				$("#inputRpcode").val(reply.rpcode);
+			}
+		});
+		
+		$("#bdRpModifyModal").modal('show');
+		
+	}
+	
+	function rpModify(){
+		/* 댓글수정 */
+		var modifyRpContents = $("#inputModifyRp").val();
+		var inputRecode = $("#inputRpcode").val();
+		console.log("수정할 댓글코드 : " + inputRecode);
+		
+		$.ajax({
+			type : "get",
+			url : "updateRpcontents_ajax",
+			data : { "rpcode":inputRecode, "rpcontents":modifyRpContents },
+			async : false,
+			success : function(updateResult){
+				console.log("updateResult : " + updateResult);
+				if (updateResult > 0 ){
+					alert("댓글이 수정되었습니다.");
+					selectReplyList();
+				}
+			}
+			
+		});
+		
 	}
 	
 	function replyRemove(rpcode){

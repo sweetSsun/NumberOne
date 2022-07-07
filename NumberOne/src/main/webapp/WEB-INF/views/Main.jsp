@@ -46,7 +46,7 @@
 	<style type="text/css">
 		.fontOn{
 		    font-family: 'Jal_Onuel';
-		    font-size:50px;
+		    font-size:25px;
 		    font-weight: bold;
 		    color: #00bcd4;
 		}
@@ -60,7 +60,7 @@
 		}
 		
 		.td, .th{
-			font-size: 2.5rem;
+			font-size: 1.8rem;
 		}
 		.owl-prev, .owl-next {
 			position: absolute;
@@ -140,8 +140,9 @@
 
 			<div class="container">
 			
-				<div style="width: 100%; min-height: 50px;"> <!-- 사진크기 이상해지면 50vh 반응형넣기 -->
-					<div id="carousel-example-generic" class="carousel slide">
+				<div style="width: 75%; margin: auto;">
+					<div id="carousel-example-generic" class="carousel slide" style="width: 100%; min-height: 50px;">
+					<!-- 사진크기 이상해지면 50vh 반응형넣기 -->
 					  <!-- Indicators -->
 					  <ol class="carousel-indicators"style="min-width: -webkit-fill-available;">
 					    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
@@ -208,13 +209,13 @@
     <!-- Featured Section Begin -->
     
     <!-- 커뮤니티 -->
-        <div class="container mainbox">
-            <div class="row section-title" style="margin-top: 50px;">
-				<div class="col-lg-6">
-					<h1 class="fontOn"><a href="loadToBoardMainPage">커뮤니티</a></h1>
+        <div class="container mainbox" style="width: 66%;">
+            <div class="row section-title" style="margin-top: 5%;">
+				<div class="col-lg-5">
+					<span class="fontOn"><a href="loadToBoardMainPage">커뮤니티</a></span>
                 </div>
-                <div class="col-lg-6 featured__controls" style="margin-bottom: 0;">
-                    <ul style="font-size: 30px; padding-left: 0;">
+                <div class="col-lg-7 featured__controls" style="margin-bottom: 0;">
+                    <ul style="font-size: 20px; padding-left: 0;">
                         <li data-filter=".all" class="title_color">All</li>
                         <li data-filter=".free">자유</li>
                         <li data-filter=".question">질문</li>
@@ -226,18 +227,18 @@
             </div>
             
 
-            <div class="featured__filter" style="margin-left: 80px; margin-right: 80px; margin-bottom: 80px; min-height: 170px;">
+            <div class="featured__filter" style="margin-left: 5%; margin-right: 3%; margin-bottom: 5%; min-height: 170px;">
             	<!-- 전체보기 -->
                 <div class="row mix all active">
-            	<p><a href="loadToBoardMainPage"  style="float: right; margin-bottom: 20px; font-size: 20px;">더보기</a></p>
+            	<p><a href="loadToBoardMainPage"  style="float: right; margin-bottom: 20px; font-size: 15px;">더보기</a></p>
             	<c:forEach items="${boardList }" end="5" var="boardList">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;border-right: solid 20px white">
                         <div class="row">
                         	<div class="col-lg-8 col-md-8 col-sm-8 overflow">
-                        		<h1><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList.bdcode}">${boardList.bdtitle }</a></h1>
+                        		<h3><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList.bdcode}">${boardList.bdtitle }</a></h3>
                         	</div>
                         	<div class="col-lg-4 col-md-4 col-sm-4">	
-                        		<h2>${boardList.bddate }</h2>
+                        		<h4>${boardList.bddate }</h4>
                         	</div>
                         </div>
                     </div>
@@ -246,15 +247,15 @@
                 
                 <!-- 자유보기 -->
                 <div class="row mix free" style="display:none;">
-            	<p><a href="#"  style="float: right; margin-bottom: 20px;">더보기</a></p>
+            	<p><a href="#"  style="float: right; margin-bottom: 15px;">더보기</a></p>
             	<c:forEach items="${boardList }" end="5" var="boardList">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row">
                         	<div class="col-lg-8 col-md-8 col-sm-8 overflow">
-                        		<h1><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList.bdcode}">${boardList.bdtitle }</a></h1>
+                        		<h3><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList.bdcode}">${boardList.bdtitle }</a></h3>
                         	</div>
                         	<div class="col-lg-4 col-md-4 col-sm-4">	
-                        		<h2>${boardList.bddate }</h2>
+                        		<h4>${boardList.bddate }</h4>
                         	</div>
                         </div>
                     </div>
@@ -263,15 +264,15 @@
                 
                 <!-- 질문보기 -->
                 <div class="row mix question" style="display:none;">
-            	<p><a href="#"  style="float: right; margin-bottom: 20px;">더보기</a></p>
+            	<p><a href="#"  style="float: right; margin-bottom: 15px;">더보기</a></p>
             	<c:forEach items="${boardList }" end="5" var="boardList">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row">
                         	<div class="col-lg-8 col-md-8 col-sm-8 overflow">
-                        		<h1><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList.bdcode}">${boardList.bdtitle }</a></h1>
+                        		<h3><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList.bdcode}">${boardList.bdtitle }</a></h3>
                         	</div>
                         	<div class="col-lg-4 col-md-4 col-sm-4">	
-                        		<h2>${boardList.bddate }</h2>
+                        		<h4>${boardList.bddate }</h4>
                         	</div>
                         </div>
                     </div>
@@ -280,15 +281,15 @@
                 
                 <!-- 정보보기 -->
                 <div class="row mix information" style="display:none;">
-				<p><a href="#"  style="float: right; margin-bottom: 20px;">더보기</a></p>
+				<p><a href="#"  style="float: right; margin-bottom: 15px;">더보기</a></p>
             	<c:forEach items="${boardList }" end="5" var="boardList">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row">
                         	<div class="col-lg-8 col-md-8 col-sm-8 overflow">
-                        		<h1><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList.bdcode}">${boardList.bdtitle }</a></h1>
+                        		<h3><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList.bdcode}">${boardList.bdtitle }</a></h3>
                         	</div>
                         	<div class="col-lg-4 col-md-4 col-sm-4">	
-                        		<h2>${boardList.bddate }</h2>
+                        		<h4>${boardList.bddate }</h4>
                         	</div>
                         </div>
                     </div>
@@ -302,10 +303,10 @@
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row">
                         	<div class="col-lg-8 col-md-8 col-sm-8 overflow">
-                        		<h1><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList.bdcode}">${boardList.bdtitle }</a></h1>
+                        		<h3><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList.bdcode}">${boardList.bdtitle }</a></h3>
                         	</div>
                         	<div class="col-lg-4 col-md-4 col-sm-4">	
-                        		<h2>${boardList.bddate }</h2>
+                        		<h4>${boardList.bddate }</h4>
                         	</div>
                         </div>
                     </div>
@@ -319,10 +320,10 @@
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row">
                         	<div class="col-lg-8 col-md-8 col-sm-8 overflow">
-                        		<h1><a href="${pageContext.request.contextPath }/selectNoticeBoardView?nbcode=${noticeList.nbcode}">${noticeList.nbtitle }</a></h1>
+                        		<h3><a href="${pageContext.request.contextPath }/selectNoticeBoardView?nbcode=${noticeList.nbcode}">${noticeList.nbtitle }</a></h3>
                         	</div>
                         	<div class="col-lg-4 col-md-4 col-sm-4">	
-                        		<h2>${noticeList.nbdate }</h2>
+                        		<h4>${noticeList.nbdate }</h4>
                         	</div>
                         </div>
                     </div>
@@ -334,15 +335,15 @@
     <!-- Latest Product Section Begin -->
     	
     <!-- 중고거래 -->	
-		<div class="container mainbox">
-		    <div class="row section-title" style="margin-top: 50px;">
+		<div class="container mainbox" style="width: 66%;">
+		    <div class="row section-title" style="margin-top: 5%;">
 		        <div class="col-lg-6">
 		            <div>
-		                <h1 class="fontOn"><a href="#">중고거래</a></h1>
+		                <span class="fontOn"><a href="#">중고거래</a></span>
 		            </div>
 		        </div>
-		        <div class="col-lg-6" style="margin-bottom: 0; font-size: 30px;">
-		            <ul class="sellbuylist">
+		        <div class="col-lg-6" style="margin-bottom: 0;">
+		            <ul class="sellbuylist" style="font-size: 20px;">
                         <li id="selResell" class="title_color" style="float: left;" onclick="selectResell()">팔구</li>
                         <li style="float: left; width: 50px;"></li>
                         <li id="selRebuy" style="float: right;" onclick="selectRebuy()">사구</li>
@@ -354,8 +355,8 @@
            	</div>       	
 	       
    		<!-- 팔구보기 -->
-	        <div id="resell" style="margin-left: 100px; margin-right: 100px; margin-bottom: 100px; min-height: 170px; max-width: 1105px;">
-           		<div style="text-align: right;"><p><a href="#"  style="margin-bottom: 20px; font-size: 20px;">팔구보기</a></p>
+	        <div id="resell" style="margin-left: 5%; margin-right: 5%; margin-bottom: 5%; min-height: 170px; width: 90%;">
+           		<div style="text-align: right;"><p><a href="#"  style="margin-bottom: 20px; font-size: 15px;">팔구보기</a></p>
             	</div>
             	
             	<div id="owl-banner_resell" class="owl-carousel" style="margin-top: 50px;">
@@ -366,13 +367,13 @@
 	                        	<tr>
 	                        		<td rowspan="3"> <img src="${pageContext.request.contextPath }/resources/img/latest-product/lp-2.jpg" alt="중고판매대표사진">
 	                        		</td>
-	                        		<td><h2>팔제목1</h2></td>
+	                        		<td><h3>팔제목1</h3></td>
 	                        	</tr>
 	                        	<tr>
-	                        		<td><h2>팔상품명1</h2></td>
+	                        		<td><h3>팔상품명1</h3></td>
 	                       		</tr>
 	                       		<tr>
-	                        		<th><h2>팔가격1</h2></th>
+	                        		<th><h3>팔가격1</h3></th>
 	                        	</tr>
 	                        </table>
 	                <%-- </c:forEach> --%>
@@ -384,13 +385,13 @@
 		                 	<tr>
 		                 		<td rowspan="3"> <img src="${pageContext.request.contextPath }/resources/img/latest-product/lp-2.jpg" alt="중고판매대표사진">
 		                 		</td>
-		                 		<td><h2>팔제목2</h2></td>
+		                 		<td><h3>팔제목2</h3></td>
 		                 	</tr>
 		                 	<tr>
-		                 		<td><h2>팔상품명2</h2></td>
+		                 		<td><h3>팔상품명2</h3></td>
 		                		</tr>
 		                		<tr>
-		                 		<th><h2>팔가격2</h2></th>
+		                 		<th><h3>팔가격2</h3></th>
 		                 	</tr>
 		                 </table>
 	                <%-- </c:forEach> --%>
@@ -402,13 +403,13 @@
 		                       	<tr>
 		                       		<td rowspan="3"> <img src="${pageContext.request.contextPath }/resources/img/latest-product/lp-2.jpg" alt="중고판매대표사진">
 		                       		</td>
-		                       		<td><h2>팔제목3</h2></td>
+		                       		<td><h3>팔제목3</h3></td>
 		                       	</tr>
 		                       	<tr>
-		                       		<td><h2>팔상품명3</h2></td>
+		                       		<td><h3>팔상품명3</h3></td>
 		                      		</tr>
 		                      		<tr>
-		                       		<th><h2>팔가격3</h2></th>
+		                       		<th><h3>팔가격3</h3></th>
 		                       	</tr>
 		                    </table>
 	                <%-- </c:forEach> --%>
@@ -420,13 +421,13 @@
 		                       	<tr>
 		                       		<td rowspan="3"> <img src="${pageContext.request.contextPath }/resources/img/latest-product/lp-2.jpg" alt="중고판매대표사진">
 		                       		</td>
-		                       		<td><h2>팔제목4</h2></td>
+		                       		<td><h3>팔제목4</h3></td>
 		                       	</tr>
 		                       	<tr>
-		                       		<td><h2>팔상품명4</h2></td>
+		                       		<td><h3>팔상품명4</h3></td>
 		                      		</tr>
 		                      		<tr>
-		                       		<th><h2>팔가격4</h2></th>
+		                       		<th><h3>팔가격4</h3></th>
 		                       	</tr>
 		                    </table>
 		                <%-- </c:forEach> --%>
@@ -435,8 +436,8 @@
            	</div>
          
        <!-- 사구보기 -->        
-	        <div id="rebuy" class="display_none" style="margin-left: 100px; margin-right: 100px; margin-bottom: 100px; min-height: 170px; max-width: 1105px;">
-           		<div style="text-align: right;"><p><a href="#"  style="margin-bottom: 20px; font-size: 20px;">사구보기</a></p>
+	        <div id="rebuy" class="display_none" style="margin-left: 5%; margin-right: 5%; margin-bottom: 5%; min-height: 170px; width: 90%;">
+           		<div style="text-align: right;"><p><a href="#"  style="margin-bottom: 20px; font-size: 15px;">사구보기</a></p>
             	</div>
             	
             	<div id="owl-banner_rebuy" class="owl-carousel" style="margin-top: 50px;">
@@ -447,13 +448,13 @@
 	                        	<tr>
 	                        		<td rowspan="3"> <img src="${pageContext.request.contextPath }/resources/img/latest-product/lp-2.jpg" alt="중고판매대표사진">
 	                        		</td>
-	                        		<td><h2>팔제목1</h2></td>
+	                        		<td><h3>살제목1</h3></td>
 	                        	</tr>
 	                        	<tr>
-	                        		<td><h2>팔상품명1</h2></td>
+	                        		<td><h3>살상품명1</h3></td>
 	                       		</tr>
 	                       		<tr>
-	                        		<th><h2>팔가격1</h2></th>
+	                        		<th><h3>살가격1</h3></th>
 	                        	</tr>
 	                        </table>
 	                <%-- </c:forEach> --%>
@@ -465,13 +466,13 @@
 		                 	<tr>
 		                 		<td rowspan="3"> <img src="${pageContext.request.contextPath }/resources/img/latest-product/lp-2.jpg" alt="중고판매대표사진">
 		                 		</td>
-		                 		<td><h2>팔제목2</h2></td>
+		                 		<td><h3>살제목2</h3></td>
 		                 	</tr>
 		                 	<tr>
-		                 		<td><h2>팔상품명2</h2></td>
+		                 		<td><h3>살상품명2</h3></td>
 		                		</tr>
 		                		<tr>
-		                 		<th><h2>팔가격2</h2></th>
+		                 		<th><h3>살가격2</h3></th>
 		                 	</tr>
 		                 </table>
 	                <%-- </c:forEach> --%>
@@ -483,13 +484,13 @@
 		                       	<tr>
 		                       		<td rowspan="3"> <img src="${pageContext.request.contextPath }/resources/img/latest-product/lp-2.jpg" alt="중고판매대표사진">
 		                       		</td>
-		                       		<td><h2>팔제목3</h2></td>
+		                       		<td><h3>살제목3</h3></td>
 		                       	</tr>
 		                       	<tr>
-		                       		<td><h2>팔상품명3</h2></td>
+		                       		<td><h3>살상품명3</h3></td>
 		                      		</tr>
 		                      		<tr>
-		                       		<th><h2>팔가격3</h2></th>
+		                       		<th><h3>살가격3</h3></th>
 		                       	</tr>
 		                    </table>
 	                <%-- </c:forEach> --%>
@@ -501,13 +502,13 @@
 		                       	<tr>
 		                       		<td rowspan="3"> <img src="${pageContext.request.contextPath }/resources/img/latest-product/lp-2.jpg" alt="중고판매대표사진">
 		                       		</td>
-		                       		<td><h2>팔제목4</h2></td>
+		                       		<td><h3>살제목4</h3></td>
 		                       	</tr>
 		                       	<tr>
-		                       		<td><h2>팔상품명4</h2></td>
+		                       		<td><h3>살상품명4</h3></td>
 		                      		</tr>
 		                      		<tr>
-		                       		<th><h2>팔가격4</h2></th>
+		                       		<th><h3>살가격4</h3></th>
 		                       	</tr>
 		                    </table>
 		                <%-- </c:forEach> --%>
