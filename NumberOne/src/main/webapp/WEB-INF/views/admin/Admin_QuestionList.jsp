@@ -315,7 +315,7 @@
 								+ "</div>"
 								+ "</td>";
 						output += "<td style='padding-left: 50px;'>";
-						output += "<input type='button' onclick='insertReply(\'" + result[i].ctcode + "\')' value='등록' class='site-btn' style='width: 130px; border-radius: 4px;'>";
+						output += "<input type='button' onclick='insertReply(\"" + result[i].ctcode + "\")' value='등록' class='site-btn' style='width: 130px; border-radius: 4px;'>";
 						output += "</td>";
 					} else {
 						output += "<td colspan='5' class='p-4'>" + result[i].ctans + "</td>";

@@ -22,9 +22,10 @@ public class AdminController {
 	private AdminService asvc;
 	
 	@RequestMapping (value="/admin_loadToAdminMainPage")
-	public String admin_loadToAdminMainPage() {
+	public ModelAndView admin_loadToAdminMainPage(RedirectAttributes ra) {
 		System.out.println("관리자 메인페이지 이동 요청");
-		return "admin/Admin_Main";
+		mav = asvc.admin_loadToAdminMainPage(ra);
+		return mav;
 	}
 	
 	/* 회원 관리 */

@@ -45,9 +45,19 @@ public class AdminService {
 	// 파일 저장 경로
 	String nbImgSavePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\noticeUpLoad";
 	
-	// 페이징 관련 필드
-	int viewCount = 20; // 한 페이지에 보여줄 갯수
-	int pageNumCount = 5; // 한 페이지에 보여줄 페이징 갯수
+	/* 관리자 메인 */
+	public ModelAndView admin_loadToAdminMainPage(RedirectAttributes ra) {
+		System.out.println("AdminService.admin_loadToAdminMainPage() 호출");
+		// 관리자 로그인 여부 체크
+		String loginId = (String)session.getAttribute("loginId");
+		if (loginId == null) {
+			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
+			mav.setViewName("redirect:/loadToLogin");	
+		} else {
+			mav.setViewName("admin/Admin_Main");	
+		}
+		return mav;
+	}
 	
 	/* 회원 관리 */
 	// 회원 관리페이지 이동
