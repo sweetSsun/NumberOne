@@ -67,17 +67,21 @@
 
 					<div class="flex_div flex-p0 flex_center">
 						<div class="search-bar">
-							<div class="row_9">
+							<div class="flex_div flex-p0 flex_between">
+								<div class="item_start">
 								<select id="searchType">
 									<option value="total">제목+내용</option>
-									<option value="title">제목</option>
-									<option value="writer">작성자</option>
+									<option value="ubtitle">제목</option>
+									<option value="ubmid">작성자</option>
 
-								</select> <input class="search-bar_input" type="search" placeholder="검색"
+								</select> 
+								</div>
+								<div>
+								<input class="search-bar_input" type="search" placeholder="검색"
 									id="keyword">
-
+</div>
 							</div>
-							<div class="row_1">
+							<div class="">
 								<button onclick="searchKeyword(1)">
 									<i class="fas fa-search"></i>
 								</button>
@@ -187,13 +191,17 @@
 		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
 		crossorigin="anonymous"></script>
 </body>
-<script type="text/javascript">
-	
-</script>
+
 
 <script type="text/javascript">
+	var loginRegion = '${sessionScope.loginRegion}';
 	var regionInfo = document.getElementById("regionInfo");
 	console.log(regionInfo);
+	for(var i in regionInfo.options.length){
+		if(regionInfo.options[i].value.equals(loginRegion)){
+			regionInfo.options[i].selected = "true";
+		}			
+	}
 	var selRegion = regionInfo.options[regionInfo.selectedIndex].value;
 	console.log(selRegion);
 	document.getElementById("mregion").innerText = "[" + selRegion
@@ -304,16 +312,17 @@
 
 <script type="text/javascript">
  /* 검색 */
-	var keyword = document.getElementById("keyword").value;
-	var searchType = document.getElementById("searchType").value;
-
+	 
 	function searchKeyword(page){
-		
+		var searchType = document.getElementById("searchType").value;
+		console.log(searchType);
+		var keyword = document.getElementById("keyword").value;
+		console.log(keyword);
 	$.ajax({
 			type : "get",
 			url : "selectResellRegionList_ajax",
 			dataType : "json",
-			data : {"keyword" : keyword, "sellBuy" : "S", "searchVal" : selRegion, "searchType" : searchType},
+			data : {"keyword" : keyword, "sellBuy" : "S", "ajaxCheck" : 'REGION', "searchVal" : selRegion, "searchType" : searchType},
 			success : function(result){
 				console.log("결과 : "+result);
 				output_page = '';
@@ -328,10 +337,12 @@
 					url : "selectResellRegionList_ajax",
 					dataType : "json",
 					data : {
+						"keyword" : keyword,
 						"searchVal" : selRegion,
 						"sellBuy" : 'S',
 						"ajaxCheck" : 'PAGE',
-						"page" : page
+						"page" : page,
+						 "searchType" : searchType
 					},
 					success : function(result) {
 						output_pagerNum = '';

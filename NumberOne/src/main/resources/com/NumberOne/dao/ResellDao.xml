@@ -26,8 +26,15 @@ WHERE RGNAME = #{mregion}
 <select id="loadToResellWriteForm" resultType="String">
 SELECT MNICKNAME
 FROM MEMBERS
-WHERE MID = #{loginId}
+WHERE  = #{loginId}
 </select>
+
+<select id="selectMemberId" resultType="String" >
+SELECT MID
+FROM MEMBERS
+WHERE MNICKNAME = #{keyword}
+</select>
+
 
 <!-- 중고거래 글목록 -->
 <select id="selectResellPageList"  resultType="com.NumberOne.dto.UsedBoardDto">
@@ -41,8 +48,20 @@ FROM (SELECT ROWNUM RN, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE, UBCONTENTS,
      ) LEFT OUTER JOIN ZZIM_VIEW
                               ON UBCODE = ZZUBCODE, MNICKNAME_VIEW
 WHERE MID = UBMID AND RN BETWEEN #{startRow} AND #{endRow}
+<if test="keyword != null or searchType !=null">
+ <choose>
+ <when test="searchType == 'total'"> 
+ AND UBTITLE LIKE '%'||#{keyword}||'%' OR UBCONTENTS LIKE '%'||#{keyword}||'%'
+ </when>
+ 
+ <otherwise>
+ AND #{searchType} LIKE '%'||#{keyword}||'%'
+ </otherwise>
+ </choose>
+</if>
 ORDER BY UBDATE DESC
 </select>
+
 
 <!-- 지역글 목록 ajax -->
 <select id="selectResellRegionList_ajax" resultType="com.NumberOne.dto.UsedBoardDto">
@@ -51,11 +70,23 @@ TO_CHAR(UBDATE, 'YYYY-MM-DD HH24:MI') UBDATE, UBMAINIMG, UBDETAILIMG, UBSTATE, N
 FROM (SELECT ROWNUM RN, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE, UBCONTENTS, 
         UBDATE, UBMAINIMG, UBDETAILIMG, UBSTATE
       FROM  (SELECT * FROM USEDBOARDS ORDER BY UBCODE)
+      
       WHERE UBRGCODE = #{searchVal} AND UBSELLBUY = #{sellBuy} AND UBSTATE = 1
       ORDER BY UBCODE DESC
      ) LEFT OUTER JOIN ZZIM_VIEW
                               ON UBCODE = ZZUBCODE, MNICKNAME_VIEW
 WHERE MID = UBMID AND RN BETWEEN #{startRow} AND #{endRow}
+<if test="keyword != null or searchType !=null">
+ <choose>
+ <when test="searchType == 'total'"> 
+ AND UBTITLE LIKE '%'||#{keyword}||'%' OR UBCONTENTS LIKE '%'||#{keyword}||'%'
+ </when>
+ 
+ <otherwise>
+ AND #{searchType} LIKE '%'||#{keyword}||'%'
+ </otherwise>
+ </choose>
+</if>
 ORDER BY UBDATE DESC
 </select>
 
@@ -66,12 +97,20 @@ SELECT COUNT(UBCODE)
 FROM (SELECT *
       FROM  USEDBOARDS
       WHERE UBRGCODE = #{searchVal} AND UBSELLBUY = #{sellBuy} AND UBSTATE = 1
+     <if test="keyword != null and searchType !=null">
+ <choose>
+ <when test="searchType == 'total'"> 
+ AND UBTITLE LIKE '%'||#{keyword}||'%' OR UBCONTENTS LIKE '%'||#{keyword}||'%'
+ </when> 
+ <otherwise>
+ AND #{searchType} LIKE '%'||#{keyword}||'%'
+ </otherwise>
+ </choose>
+</if>
       ORDER BY UBCODE DESC
      ),MNICKNAME_VIEW
 WHERE MID = UBMID
-<if test="keyword != null">
- AND #{searchType} LIKE '%'||#{keyword}||'%'
-</if>
+
 ORDER BY UBDATE DESC
 </select>
 
