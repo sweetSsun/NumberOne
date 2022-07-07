@@ -192,13 +192,23 @@ public class ResellService {
 	public String selectResellRegionList_ajax(Paging paging) {
 		System.out.println("selectResellRegionList_ajax 서비스 호출");
 		
+		System.out.println("검색타입 : "+ paging.getSearchType());
+		System.out.println("검색어 : " + paging.getKeyword());
+		if(paging.getSearchType()!=null) {
+					
+		if(paging.getSearchType().equals("ubmid")) {
+					
+		String mid = rdao.selectMemberId(paging.getKeyword());
 		
+		paging.setKeyword(mid);
+		}
+		}
 		String mregion = rdao.selectRegionCode(paging.getSearchVal());
 		System.out.println("파라메터지역코드 : " + mregion);
 		paging.setSearchVal(mregion);
-		int totalCaount = rdao.selectPageTotalCount(paging);
+		int totalCount = rdao.selectPageTotalCount(paging);
 		
-		paging.setTotalCount(totalCaount);
+		paging.setTotalCount(totalCount);
 		paging.calc();
 		
 		System.out.println(paging);

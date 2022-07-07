@@ -69,7 +69,7 @@
                             <div class="row">
                                 <div class="col-lg-6" >
                                     <div>
-										<h4 class="" style="color: #00BCD4; margin-left: 30px;" class ="blank" id="scroll-sellbuy" id="scroll-chat">팔구</h4>  
+										<h4 class="" style="color: #00BCD4; margin-left: 30px;" class ="blank" id="scroll-sellbuy" id="scroll-chat">팔구 (제목링크필요)</h4>  
 										<table style="width: 600px;">
 											<tr class="text-center" id="board_column">
 											<td>글제목</td>
@@ -90,7 +90,7 @@
                                 </div>    
                                 <div class="col-lg-6" >
                                     <div>
-										<h4 class="checkout__form" style="color: #00BCD4; margin-left: 30px;">사구</h4>
+										<h4 class="checkout__form" style="color: #00BCD4; margin-left: 30px;">사구 (제목링크필요)</h4>
 										<table style="width: 600px;">
 											<tr class="text-center" id="board_column">
 											<td>글제목</td>
@@ -111,7 +111,7 @@
 
 				<!-- 채팅 목록 -->
 				<div class="row" style="margin:20px;">
-					<br><h4 class="checkout__form" style="color: #00BCD4;">채팅 내역</h4>
+					<br><h4 class="checkout__form" style="color: #00BCD4;">채팅 내역 (미완성)</h4>
 				</div>
 				<div class="row"  style="margin:20px;">
 				<table >
@@ -121,7 +121,7 @@
 							<td>날짜</td>
 						</tr>
 						<%-- <c:forEach items="${reply }" var="reply"> --%>
-							<!-- 작성글 목록 -->
+							<!-- 채팅 목록 -->
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center;">
 								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>
 								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>								
@@ -147,10 +147,10 @@
 				</div>
 
 				<br><hr><br>
-								
+	
 				<!-- 찜 목록 -->
 				<div class="row" style="margin:20px;">
-					<br><h4 class="checkout__form" style="color: #00BCD4;" id="scroll-zzim">찜목록</h4>
+					<br><h4 class="checkout__form" style="color: #00BCD4;" id="scroll-zzim">찜목록 (제목링크필요)</h4>
 				</div>
 				<div class="row" style="margin:20px;">
 				<table >
@@ -159,15 +159,15 @@
 							<td>작성자</td>						
 							<td>날짜</td>
 						</tr>
-						<%-- <c:forEach items="${scrap }" var="scrap"> --%>
-							<!-- 작성글 목록 -->
+						<c:forEach items="${zzimBoard }" var="zzim"> 
+							<!-- 찜한 목록 -->
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center; ">
-								<td>안녕하세요 (예시)</td>
-								<td>HJH (예시)</td>
-								<td>2022-06-24 00:00 (예시)</td>
+								<td>${zzim.ubtitle }</td>
+								<td>${zzim.mnickname }</td>
+								<td>${zzim.ubdate }</td>
 							</tr>
 														
-						<%-- </c:forEach> --%>
+						</c:forEach>
 				</table>
 				</div>	
 				
@@ -185,39 +185,5 @@
 <!--  -->
 
 
-
-<script type="text/javascript">
-	/* 게시판 카테고리 선택 */
-	function bdCategorySel(categorySel){
-		console.log("categorySel: " + categorySel);
-		
-		var output = "";
-		$.ajax({
-			type : "get",
-			url : "getBoardCategoryList",
-			data : { "bdcategory" : categorySel},
-			dataType : "json",
-			async : false,
-			success : function(bdCategoryList){
-				console.log(bdCategoryList);
-				
-				for(var i = 0; i< bdCategoryList.length; i++ ){
-					output += "<tr style=\"border-bottom: solid gray 1px;\">";
-					output += "<td>" + bdCategoryList[i].bdcode + "</td>";
-					output += "<td>" + bdCategoryList[i].bdcategory + "</td>";
-					output += "<td>" + bdCategoryList[i].bdtitle + "</td>";
-					output += "<td>" + bdCategoryList[i].bdnickname + "</td>";
-					output += "<td>" + bdCategoryList[i].bddate + "</td>";
-					output += "</tr>";
-				}
-			
-			}
-		});
-		console.log(output);
-		$("#bdCategoryList").html(output);
-	}
-	
-	
-</script>
 
 </html>

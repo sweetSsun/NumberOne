@@ -21,6 +21,7 @@ import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.ReplyDto;
 import com.NumberOne.dto.ScrapDto;
 import com.NumberOne.dto.UsedBoardDto;
+import com.NumberOne.dto.ZzimDto;
 
 @Service
 public class MemberService {
@@ -425,8 +426,15 @@ public class MemberService {
 		ArrayList<UsedBoardDto> buyBoard = mdao.selectMyInfoResellView_Buy(loginId);
 		System.out.println(buyBoard);	
 		
+		//찜목록
+		ArrayList<ZzimDto> zzimBoard = mdao.selectMyInfoResellView_Zzim(loginId);
+		System.out.println(zzimBoard);	
+		
+		
 		mav.addObject("sellBoard", sellBoard);
-		mav.addObject("buyBoard", buyBoard);	
+		mav.addObject("buyBoard", buyBoard);
+		mav.addObject("zzimBoard", zzimBoard);
+		
 		if(sellBoard.size() > buyBoard.size()) {			
 			mav.addObject("sellbuySize", sellBoard.size());
 		} else {
@@ -516,11 +524,31 @@ public class MemberService {
 	}
 
 
+	public ModelAndView insertWriteMemberInfo_Board(String nickname) {
+			ModelAndView mav = new ModelAndView();
+			System.out.println("MemberService.insertWriteMemberInfo_Board() 호출");
+			String loginId = (String) session.getAttribute("loginId");
+			System.out.println("로그인 된 아이디 : " + loginId);
+			
+			
+			System.out.println("닉네임 : " + nickname);
+			//닉네임 별 작성 글 제목 출력
+			ArrayList<BoardDto> Board = mdao.insertWriteMemberInfo_Board(nickname);
+			System.out.println(Board);
+			
+			mav.addObject("Board",Board);
+			mav.setViewName("member/WriteMemberInfoPage_Board");
+			return mav;
+
+
 
 	}
 
 
 
+
+
+}
 
 
 

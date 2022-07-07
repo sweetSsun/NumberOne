@@ -74,48 +74,18 @@
 						<!-- imhido 부분은 나중에 로그인 아이디로 출력 -->
 						<td colspan="3">${mnickname}</td>						
 					</tr>
-					<!-- 이 행은 자랑게시판은 d_none -->
-					<tr class="d_none tableRow">
-						<th>게시판</th>
-						<td>	
-							<select id="selCategory">
-								<option value="자랑"> 자랑
-								<option value="자유"> 자유
-								<option value="질문"> 질문
-								<option value="정보"> 정보
-								<option value="후기"> 후기
-							</select>
-							<!-- input은 히든해서 쓰세요 -->
-							<input type="text" name="bdcategory" placeholder="카테고리" id="categoryInput">
-						</td>
-						<th>지역</th>
-						<td>
-							<select id="selRegion">
-								<option value="ALL"> 전국
-								<option value="SEL"> 서울
-								<option value="ICN"> 인천
-								<option value="GGD"> 경기도
-								<option value="GWD"> 강원도
-								<option value="CCD"> 충청도
-								<option value="JLD"> 전라도
-								<option value="GSD"> 경상도
-								<option value="JJD"> 제주도
-							</select>
-							<!-- input은 히든해서 쓰세요 -->
-							<input type="text" name="bdrgcode" placeholder="지역" id="regionInput">
-						</td>
-					</tr>
+					
 					<tr class="tableRow">
 						<!-- th, td에 패딩, 마진을 주고 싶은데 먹히지 않아서 tableHead 클래스로 여백 줬슴당 -->
 						<th class="tableHead">제목</th>
 						<td colspan="3">
-							<input name="bdtitle" type="text" placeholder="제목을 입력하세요" size="35%">
+							<input name="bdtitle" type="text" placeholder="제목을 입력하세요" size="50%">
 						</td>
 					</tr>
 					<tr class="tableRow">
 						<th class="tableHead">내용</th>
 						<td colspan="3">
-							<textarea rows="15" cols="40" name="bdcontents" placeholder="내용을 입력하세요"></textarea>
+							<textarea rows="15" cols="53" name="bdcontents" placeholder="내용을 입력하세요"></textarea>
 						</td>
 					</tr>
 					<tr class="tableRow">
