@@ -5,13 +5,22 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="/resources/css/BarCss.jsp" %>
+
+<style type="text/css">
+	.sidebar{
+	    		
+	}
+
+</style>
+
+
 </head>
 <body>
 	<!-- 사이드바 : 커뮤니티 -->
-		<div class="sidebar" style="background: #eef9ec;">
+		<div class="sidebar" style="background: #eaf8ff;">
 			<div class="row">
                 <div class="col">
-                        <div class="sidebar-item">
+                        <div class="selectMenu">
 							<h3 class="text-center font-weight-bold">커뮤니티</h3>
 							<hr>
                         </div>

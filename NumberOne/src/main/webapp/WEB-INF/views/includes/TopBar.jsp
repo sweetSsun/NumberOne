@@ -51,7 +51,7 @@
 					<span style="float:right; margin-top: 5%;">				
 						<c:choose>
 							<c:when test="${sessionScope.loginId == null}">
-								<h5><a href="loadToLogin">로그인 해주세요</a></h5>
+								<p style="font-size: 12.5px"><a href="loadToLogin">로그인 해주세요</a></p>
 								
 			                </c:when>
 							<c:otherwise>

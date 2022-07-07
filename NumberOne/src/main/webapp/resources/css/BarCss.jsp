@@ -24,11 +24,13 @@
 	    white-space: nowrap;	
 	    
 	}
+	
 	header,nav,aside,section,footer{
 		/* border: solid 1px black; */
 		margin-bottom: 5px;
 		font-size: 24px;
 	}
+	
 	header{
 		position: sticky;
 		top: 0px;
@@ -37,9 +39,8 @@
 		border-bottom: solid 5px #F2F2FF;
 	    margin-bottom: 10px;
 
-
-		
 	}
+	
 	#header_menu ul li{
 		overflow: auto;
 		display: inline;
@@ -58,20 +59,13 @@
 	main{
 		display: flex;
 	}
+	
 	aside, section{
 		flex-grow: 1;
 		height:100%;
 	}
-	.sidebar{
-		position: sticky;
-		top: 0px;
-		height: 1200px;
-		width: 200px;
-		margin-bottom: 5px;
-		z-index: 1;
-	}
 	
-	li a:hover, ul i:hover {
+	li a:hover, ul i:hover, p a:hover {
 	color: #00bcd4;
 	text-decoration: none; 
 	}
@@ -80,4 +74,16 @@
 		height: 200px;
 		background-color: gray;
 	}
+	
+	.sidebar{
+		font-family: 'Jal_Onuel';
+		position: sticky;
+		top: 0px;
+		height: 1200px;
+		width: 200px;
+		margin-bottom: 5px;
+		z-index: 1;
+	}
+	
+	
 </style>
