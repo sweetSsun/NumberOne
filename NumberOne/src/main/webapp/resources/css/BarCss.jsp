@@ -78,11 +78,11 @@
 	.sidebar{
 		font-family: 'Jal_Onuel';
 		position: sticky;
-		top: 0px;
-		height: 1200px;
-		width: 200px;
-		margin-bottom: 5px;
+		margin-top: -2%;
+		height: auto;
+		min-width: 200px;
 		z-index: 1;
+		white-space: nowrap;
 	}
 	
 	
