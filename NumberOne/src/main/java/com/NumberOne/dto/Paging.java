@@ -26,11 +26,13 @@ public class Paging {
 	private boolean next;		// 뒷페이지 유무 여부
 	
 	// 검색, 정렬을 위한 필드
-	private String searchVal;	// 정렬 항목(카테고리)
+	private String searchVal;	// 정렬 항목(카테고리,지역)
 	private String searchType;	// 검색할 항목
 	private String keyword;		// 검색 문자열
-	
+	private String sellBuy;	//중고거래 사구,팔구 구분용
+	private String ajaxCheck;
 	// 생성자
+	
 	public Paging() {
 		// 초기값 설정
 		page = 1;
@@ -209,7 +211,8 @@ public class Paging {
 		return "Paging [page=" + page + ", perPageNum=" + perPageNum + ", startRow=" + startRow + ", endRow=" + endRow
 				+ ", totalCount=" + totalCount + ", maxPage=" + maxPage + ", displayPageNum=" + displayPageNum
 				+ ", startPage=" + startPage + ", endPage=" + endPage + ", prev=" + prev + ", next=" + next
-				+ ", searchVal=" + searchVal + ", searchType=" + searchType + ", keyword=" + keyword + "]";
+				+ ", searchVal=" + searchVal + ", searchType=" + searchType + ", keyword=" + keyword + ", sellBuy="
+				+ sellBuy + ", ajaxCheck=" + ajaxCheck + "]";
 	}
 	
 	
