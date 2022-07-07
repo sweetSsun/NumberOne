@@ -15,6 +15,7 @@ public class ReplyDto {
 	private String rpbdtitle;		//댓글원본 글 제목
 
 	private String rpnickname;	//작성자 닉네임
+	private String rpmprofile;  //작성자 프로필 사진
 	
 	public String getRpcode() {
 		return rpcode;
