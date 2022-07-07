@@ -171,6 +171,8 @@
 						</div>
 					</div>
 					
+					
+					
 					<!-- 댓글목록_ajax -->
 					<div class="row" id="replyList_ajax">
 				
