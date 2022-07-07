@@ -27,13 +27,27 @@
 -------------------------------------------------------------------*/
 
 /*----------------------------------------*/
+/* 폰트 font :: 기본 pretendard / 메뉴 오늘의집
+/*----------------------------------------*/
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+	
+/* 폰트 : 오늘의집 */	
+@font-face {
+    font-family: 'Jal_Onuel';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_20-10-21@1.0/Jal_Onuel.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+/*----------------------------------------*/
 /* Template default CSS
 /*----------------------------------------*/
 
 html,
 body {
 	height: 100%;
-/* 	font-family: "Cairo", sans-serif; */
+ 	font-family: 'pretendard'! important;
 	-webkit-font-smoothing: antialiased;
 	/* font-smoothing: antialiased; */
 }
@@ -107,13 +121,21 @@ ol {
 	margin: 0;
 }
 
+.overflow {
+    overflow: hidden;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+}
+
 /*---------------------
   Helper CSS
 -----------------------*/
 
 .section-title {
-	margin-bottom: 50px;
 	text-align: center;
+	align-items: center;
 }
 
 .section-title h2 {
@@ -129,7 +151,7 @@ ol {
 	right: 0;
 	height: 4px;
 	width: 80px;
-	background: #7fad39;
+/* 	background: #7fad39; */
 	content: "";
 	margin: 0 auto;
 }
@@ -167,7 +189,7 @@ ol {
 	color: #ffffff;
 	text-transform: uppercase;
 	font-weight: 700;
-	background: #7fad39;
+	background: #00bcd4;
 	letter-spacing: 2px;
 }
 
@@ -809,6 +831,20 @@ ol {
 /*---------------------
   Featured
 -----------------------*/
+.title_color{
+    color: #00bcd4! important;
+    font-weight: bold;
+}
+.sellbuylist{
+	font-size: 20px;
+	color: #1c1c1c;
+	text-align: center;
+	list-style: none;
+	display: inline-block;
+	position: relative;
+	cursor: pointer;
+	padding-left: 0;
+}
 
 .featured {
 	padding-top: 80px;
@@ -822,16 +858,18 @@ ol {
 
 .featured__controls ul li {
 	list-style: none;
-	font-size: 18px;
+	font-size: 20px;
 	color: #1c1c1c;
 	display: inline-block;
 	margin-right: 25px;
 	position: relative;
 	cursor: pointer;
+	display: "";
 }
 
 .featured__controls ul li.active:after {
 	opacity: 1;
+	display: "";
 }
 
 .featured__controls ul li:after {
@@ -843,15 +881,13 @@ ol {
 	background: #7fad39;
 	content: "";
 	opacity: 0;
+	display: none;
 }
 
 .featured__controls ul li:last-child {
 	margin-right: 0;
 }
 
-.featured__item {
-	margin-bottom: 50px;
-}
 
 .featured__item:hover .featured__item__pic .featured__item__pic__hover {
 	bottom: 20px;

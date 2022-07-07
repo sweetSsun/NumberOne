@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -52,16 +53,28 @@
 	font-size: 15px;
 }
 
+.site-btn {
 
+background-color: #00BCD4;
+
+}
 
 
 </style>
 
 </head>
 <body>
-	<!-- TobBar -->
-	<%@ include file="/WEB-INF/views/includes/TopBar.jsp"%>
-	<!-- End of TobBar -->
+	<!-- TopBar -->
+        <c:choose>
+                <c:when test="${sessionScope.loginId != 'admin'}">
+                        <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
+                </c:when>
+                <c:otherwise>
+                        <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
+                </c:otherwise>
+        </c:choose>
+        <!-- End of TopBar -->
+	<!-- End of TopBar -->
 
 	<main>
 		<!-- 사이드바 -->
@@ -81,7 +94,7 @@
                              <div class="row">
                              	<div class="col-lg-12 col-md-6">
                              		<div class="checkout__input"  style="text-align: center;">
-                                 		<input type="text" style="width: 420px; height:15px; border:1px;" value="아이디">
+                                 		<input type="text" style="width: 420px; height:15px; border:1px;" value="아이디"  readonly="readonly">
                              		</div>
                              	</div>
                             </div>
@@ -98,7 +111,7 @@
                              <div class="row">
                              	<div class="col-lg-12 col-md-6">
                              		<div class="checkout__input"  style="text-align: center;">
-                                 		<input type="text" style="width: 420px; height:15px; border:1px;" value="메일주소">
+                                 		<input type="text" style="width: 420px; height:15px; border:1px;" value="메일주소"  readonly="readonly">
                              		</div>
                              	</div>
                             </div>

@@ -17,25 +17,25 @@
 							<hr>
                         </div>
                         <div class="sidebar-item">
-                            <h4><a href="#">커뮤니티</a></h4>
+                            <h4><a href="selectMyInfoCommunityView">커뮤니티</a></h4>
                             <ul class="list-unstyled">
-                                <li><a href="#">글/댓글</a></li>
-                                <li><a href="#">스크랩</a></li>
+                                <li><a href="selectMyInfoCommunityView">글/댓글</a></li>
+                                <li><a href="selectMyInfoCommunityView">스크랩</a></li>
                             </ul>
                         </div>
                         <div class="sidebar-item" >
-                            <h4><a href="#">중고거래</a></h4>
+                            <h4><a href="selectMyInfoResellView">중고거래</a></h4>
                             <ul class="list-unstyled">
-                                <li><a href="loadToResellMainPage">사구팔구</a></li>
-                                <li><a href="#">채팅</a></li>
-                                <li><a href="#">찜목록</a></li>
+                                <li><a href="selectMyInfoResellView">팔구사구</a></li>
+                                <li><a href="selectMyInfoResellView#scroll-chat">채팅</a></li>
+                                <li><a href="selectMyInfoResellView#scroll-zzim">찜목록</a></li>
                             </ul>
                         </div>
                        
                        <div class="sidebar-item">
                             <h4>문의</h4>
                             <ul class="list-unstyled">
-                                <li><a href="#">1:1 문의</a></li>
+                                <li><a href="selectMyInfoQuestionListView">1:1 문의</a></li>
                             </ul>
                         </div>
                 </div>

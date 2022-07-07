@@ -14,15 +14,50 @@
 		border-bottom: solid gray 3px;
 	}
 	table{
-		margin: 20px;
+		margin: auto;
 	}
-	
+	.bdcategory{
+		color : #00bcd4;
+	}
+	.bdCategoryList{
+		
+		color : #00bcd4;
+		border: none;
+	}
+	.bdcategorySel{
+		font-weight: bold;
+		text-align : center;
+		color : #00bcd4;
+	}
+	input{
+		border-radius:5px;
+		border: solid #E0E0E0 3px;
+		height: 32px;
+		font-size: 20px;
+	}
+	.searchType{
+		text-align: center;
+		border-radius: 5px;
+	}
+	.community{
+		background-color: #00bcd4;
+	}
+	.malmeori{
+		display: none;
+	}
 </style>
 </head>
 <body>
-	<!-- TobBar -->
-	<%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
-	<!-- End of TobBar -->
+	    <!-- TopBar -->
+        <c:choose>
+                <c:when test="${sessionScope.loginId != 'admin'}">
+                        <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
+                </c:when>
+                <c:otherwise>
+                        <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
+                </c:otherwise>
+        </c:choose>
+        <!-- End of TopBar -->
 	
 	<main>
 		
@@ -35,33 +70,32 @@
 				<div class="row" style="margin:auto;">
 					<h1 class="text-center">게시판 검색결과 페이지 : BoardSearchListPage.jsp</h1>
 				</div>
-				<form action="searchBoard" method="get">
-				<div class="row">
-					<!-- 검색기능 -->
-						<div class="col-5">
-								<select name="searchType">
+				<form action="selectBoardSearchList" method="get">
+					<div class="row ">
+						<!-- 검색기능 -->
+						<div class="col-5" align="right">
+								<select name="searchType" class="searchType">
 									<option value="bdtitle">제목</option>
 									<option value="bdcontents">내용</option>
 									<option value="bdtitlecontents">제목+내용</option>
 									<option value="bdnickname">작성자</option>
 								</select>
 						</div>
-						<div class="col-5 input-group">
-							  <input type="text" style="width:100px;" class="form-control" name="searchText" placeholder="검색 키워드를 입력하세요!">
-							  <span class="input-group-btn">
-							    <button class="btn btn-secondary">찾기</button>
-							  </span>
+						<div class="col-7 ">
+							<input type="text" name="searchText" placeholder="검색어를 입력하세요">
+							<button class="btn btn-sm btn-secondary">검색</button>
 						</div>
-						<div class="col-2">
-							<!-- 글쓰기 버튼 -->
-							<button class="btn btn-primary btm-sm">글쓰기</button>
-						</div>
-				</div>
+					</div>		
 				</form>
+				</div>
 				
-				<div class="row mb-5">
+				<div class="row mt-5 mb-5">
 					<!-- 검색결과 안내  -->
-					<h3 class="text-center">[ <span class="text-primary">${param.searchText}</span> ] 로 검색한 결과 입니다.</h3>  
+					<h3 class="text-center">[ <span class="text-info">${param.searchText}</span> ] 로 검색한 결과 입니다.</h3>  
+				</div>
+				
+				<div class="community" style="text-align:center;">
+					<span class="fw-bold text-white">커뮤니티 검색 결과</span>
 				</div>
 				
 				<!-- 게시글 목록 -->
@@ -83,20 +117,27 @@
 					<!-- 일반게시판 목록 -->
 						<tr style="border-bottom: solid gray 1px;">
 							<td>${searchBd.bdcode}</td>
-							<td>${searchBd.bdcategory}</td>
+							<td class="bdcategory">${searchBd.bdcategory}</td>
 							<td>
-							 	<a href="selectNoticeBoardView">${searchBd.bdtitle}</a>
+							 	<a href="selectBoardView?bdcode=${searchBd.bdcode }" >${searchBd.bdtitle}</a>
 							 </td>
 							<td>
 								<a>${searchBd.bdnickname}</a>
 							</td>
 							<td>${searchBd.bddate}</td>
-							<td>조회수</td>
-							<td>추천수</td>
+							<td>${searchBd.bdhits }</td>
+							<td class="text-info">${searchBd.bdrccount }</td>
 						</tr>
 					</c:forEach>
 					</tbody>
 				</table>
+				<div align="right" class="row">
+					<div class="col">
+						<c:if test="${sessionScope.loginId != null }">
+								<button  onclick="loadToBoardWrite()" class="btn btn-info btm-sm fw-bold text-white">글작성</button>
+						</c:if>
+					</div>
+				</div>
 				</div>
 						
 			</div>

@@ -8,21 +8,68 @@
 <title>1인자 - 게시판 글목록 페이지</title>
 <!-- Jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<%@ include file="/resources/css/CommonCss.jsp" %>
+<%@ include file="/resources/css/BarCss.jsp" %>
 <style type="text/css">
+	section{
+		max-width: 70%;
+		margin: auto;
+		margin-top: 0%;
+	}
+	
 	#board_column{
-		border-bottom: solid gray 3px;
+		border-bottom: solid #E0E0E0 2px;
 	}
 	table{
-		margin: 20px;
+		margin: auto;
+	}
+	td{
+		font-size: 20px;
+	}
+	.bdcategory{
+		color : #00bcd4;
+	}
+	.bdCategoryList{
+		color : #00bcd4;
+		border: none;
+		font-size: 20px;
+	}
+	.bdcategorySel{
+		font-weight: bold;
+		text-align : center;
+		color : #00bcd4;
+	}
+	input{
+		border-radius:3px;
+		border: solid #E0E0E0 2px;
+		height: 28px;
+		font-size: 20px;
+	}
+	.searchType{
+		text-align: center;
+		border-radius: 5px;
+		font-size: 20px;
+		border: solid 1px #00bcd4;
+	}
+	.community{
+		background-color: #00bcd4;
+	}
+	.malmeori{
+		display: none;
 	}
 	
 </style>
 </head>
 <body>
-	<!-- TobBar -->
-	<%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
-	<!-- End of TobBar -->
+	    <!-- TopBar -->
+        <c:choose>
+            <c:when test="${sessionScope.loginId != 'admin'}">
+                    <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
+            </c:when>
+            <c:otherwise>
+                    <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
+            </c:otherwise>
+        </c:choose>
+        <!-- End of TopBar -->
 	
 	<main>
 		
@@ -36,40 +83,44 @@
 					<h1 class="text-center">게시판 글목록 페이지 : BoardListPage.jsp</h1>
 				</div>
 				<form action="selectBoardSearchList" method="get">
-				<div class="row">
-					<!-- 검색기능 -->
-						<div class="col-5">
-								<select name="searchType">
+					<div class="row ">
+						<!-- 검색기능 -->
+						<div class="col-5" align="right">
+								<select name="searchType" class="searchType">
 									<option value="bdtitle">제목</option>
 									<option value="bdcontents">내용</option>
 									<option value="bdtitlecontents">제목+내용</option>
 									<option value="bdnickname">작성자</option>
 								</select>
 						</div>
-						<div class="col-5 input-group">
-							  <input type="text" style="width:100px;" class="form-control" name="searchText" placeholder="검색 키워드를 입력하세요!">
-							  <span class="input-group-btn">
-							    <button class="btn btn-secondary">찾기</button>
-							  </span>
+						<div class="col-7 ">
+							<input type="text" name="searchText" placeholder="검색어를 입력하세요">
+							<button class="btn btn-sm btn-secondary">검색</button>
 						</div>
-						<div class="col-2 mb-5">
-							<!-- 글쓰기 버튼 -->
-							<button class="btn btn-primary btm-sm">글쓰기</button>
-						</div>
-				</div>
+					</div>		
 				</form>
+						
+				</div>
 				<div class="row" style="margin-top: 20px;">
 					<div class="col">
 						<!-- 말머리 정렬 -->
-						<select id="bdCategory" onchange="bdCategorySel(this.value)">
-							<option value="">카테고리 선택</option>
-							<option value="자유">자유</option>
-							<option value="질문">질문</option>
-							<option value="정보">정보</option>
-							<option value="후기">후기</option>
-							<option value="지역">지역</option>
+						<select class="bdCategoryList" onchange="bdCategorySel(this.value)">
+							<option class="bdcategorySel malmeori" value="" disabled selected >말머리 선택</option>
+							<option class="bdcategorySel" value="자유">자유</option>
+							<option class="bdcategorySel" value="질문">질문</option>
+							<option class="bdcategorySel" value="정보">정보</option>
+							<option class="bdcategorySel" value="후기">후기</option>
 						</select>
 					</div>
+					<%-- <div align="right" class="col">
+						<c:if test="${sessionScope.loginId != null }">
+								<button  onclick="loadToBoardWrite()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">글작성</button>
+						</c:if>
+					</div> --%>
+				</div>
+				
+				<div class=" community" style="text-align:center;">
+					<span style="font-size:21px;" class="fw-bold text-white">게시판</span>
 				</div>
 				
 				<!-- 게시글 목록 -->
@@ -77,25 +128,26 @@
 				<table >
 					<thead >
 						<tr class="text-center" id="board_column">
-							<td>글번호</td>
-							<td>말머리</td>
-							<td>제목</td>
-							<td>작성자</td>
-							<td>날짜</td>
-							<td>조회</td>
-							<td>추천</td>
+							<!-- <td>글번호</td> -->
+							<td style="font-size: 17px;">말머리</td>
+							<td style="font-size: 17px;">제목</td>
+							<td style="font-size: 17px;">작성자</td>
+							<td style="font-size: 17px;">날짜</td>
+							<td style="font-size: 17px;">조회</td>
+							<td style="font-size: 17px;">추천</td>
 						</tr>
-						<c:forEach items="${noticeList }" var="notice">
+						
+						<c:forEach items="${noticeList }" end="2" var="notice">
 							<!-- 공지게시판 -->
 							<tr class="fw-bold" style="border-bottom: solid #E0E0E0 1px;">
-								<td>${notice.nbcode}</td>
+								<%-- <td>${notice.nbcode}</td> --%>
 								<td></td>
 								<td>
 									<a href="selectNoticeBoardView?nbcode=${notice.nbcode }">${notice.nbtitle}</a>
 								</td>
-								<td>${notice.nbmid}</td>
-								<td>${notice.nbdate}</td>
-								<td>조회수</td>
+								<td class="text-center">관리자</td>
+								<td class="text-center">${notice.nbdate}</td>
+								<td class="text-center">${notice.nbhits }</td>
 								<td></td>
 							</tr>
 						</c:forEach>
@@ -107,26 +159,29 @@
 					<c:forEach items="${boardList }" var="board">
 						<c:if test="${board.bdcategory != '자랑' }">
 						<tr style="border-bottom: solid #E0E0E0 1px;">
-							<td>${board.bdcode}</td>
-							<td>${board.bdcategory}</td>
+							<%-- <td>${board.bdcode}</td> --%>
+							<td class="bdcategory text-center">${board.bdcategory}</td>
 							<td>
-							 	<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a>
+							 	<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
+							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
 							 </td>
-							<td>
-								<a>${board.bdnickname}</a>
+							<td class="text-center">
+								<a href="#">${board.bdnickname}</a>
 							</td>
-							<td>${board.bddate}</td>
-							<td>조회수</td>
-							<td></td>
+							<td class="text-center">${board.bddate}</td>
+							<td class="text-center">${board.bdhits }</td>
+							<td class="fw-bold text-center" style="color: #00bcd4;">${board.bdrccount}</td>
 						</tr>
 						</c:if>
 					</c:forEach>
-					
 					</tbody>
 				</table>
+				<div align="right" class="col mt-2">
+					<c:if test="${sessionScope.loginId != null }">
+						<button  onclick="loadToBoardWrite()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">글작성</button>
+					</c:if>
 				</div>
-						
-			</div>
+				</div>
 		</section>
 	</main>
 	
@@ -136,6 +191,21 @@
 </body>
 
 <script type="text/javascript">
+	var checkMsg = '${msg}';
+	if ( checkMsg.length > 0 ){
+		alert(checkMsg);
+	}
+	
+</script>
+
+<script type="text/javascript">
+
+	/* 글쓰기 버튼 클릭 */
+	function loadToBoardWrite(){
+		//글작성 페이지로 이동 
+		location.href= "loadToBoardWrite";
+	}
+
 	/* 게시판 카테고리 선택 */
 	function bdCategorySel(categorySel){
 		console.log("categorySel: " + categorySel);
@@ -151,15 +221,16 @@
 				console.log(bdCategoryList);
 				
 				for(var i = 0; i< bdCategoryList.length; i++ ){
-					output += "<tr style=\"border-bottom: solid gray 1px;\">";
-					output += "<td>" + bdCategoryList[i].bdcode + "</td>";
-					output += "<td>" + bdCategoryList[i].bdcategory + "</td>";
-					output += "<td>" + bdCategoryList[i].bdtitle + "</td>";
-					output += "<td>" + bdCategoryList[i].bdnickname + "</td>";
-					output += "<td>" + bdCategoryList[i].bddate + "</td>";
+					output += "<tr style=\"border-bottom: solid #E0E0E0 1px;\">";
+					/* output += "<td>" + bdCategoryList[i].bdcode + "</td>"; */
+					output += "<td class=\"bdcategory text-center\">" + bdCategoryList[i].bdcategory + "</td>";
+					output += "<td><a href='selectBoardView?bdcode=" + bdCategoryList[i].bdcode + "'>" + bdCategoryList[i].bdtitle + "</a></td>";
+					output += "<td class=\"text-center\"><a href=\"#\">" + bdCategoryList[i].bdnickname + "</a></td>";
+					output += "<td class=\"text-center\">" + bdCategoryList[i].bddate + "</td>";
+					output += "<td class=\"text-center\">" + bdCategoryList[i].bdhits + "</td>";
+					output += "<td class=\"text-center text-info fw-bold\">" + bdCategoryList[i].bdrccount + "</td>";
 					output += "</tr>";
 				}
-			
 			}
 		});
 		console.log(output);

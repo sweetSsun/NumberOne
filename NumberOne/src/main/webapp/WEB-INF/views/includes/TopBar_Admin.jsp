@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<%@ include file="/resources/css/BarCss.jsp" %>
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <!-- 폰트어썸 -->
@@ -57,7 +58,7 @@
 		<div class="row">	
 			<div class="col-2">
 			<!-- 로고이미지 -->
-				<a href="admin_loadToAdminMainPage"><img style="height:100px;"src="${pageContext.request.contextPath }/resources/img/logo_beige.jpg"></a>
+				<a href="admin_loadToAdminMainPage"><img style="height:100px;"src="${pageContext.request.contextPath }/resources/img/logo_beige_remove.png"></a>
 			</div>
 			<div class="col-6 offset-sm-4">
 			<div class="row">
@@ -72,6 +73,12 @@
 				<div class="col-6 offset-sm-6">
 					<!-- Home, 커뮤니티, 중고거래 목록 -->
 					<ul class="list-unstyled " >
+						<li class="nav-item ">
+							<h5>로그인 아이디 : ${sessionScope.loginId}<h5>
+						</li>					
+						<li class="nav-item active">
+							<h5>로그인 프로필 : ${sessionScope.loginProfile}<h5>
+						</li>	
 						<li class="nav-item active">
 							<a href="${pageContext.request.contextPath }/">HOME</a>
 						</li>

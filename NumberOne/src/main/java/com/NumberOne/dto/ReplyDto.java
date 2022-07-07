@@ -11,7 +11,12 @@ public class ReplyDto {
 	private String rpmid;		//작성자
 	private String rpdate;		//작성일
 	private int rpstate;		//상태
+
+	private String rpbdtitle;		//댓글 원본글 제목
+	private String rpbdcategory;	//댓글 원본글 카테고리
+
 	private String rpnickname;	//작성자 닉네임
+	private String rpmprofile;  //작성자 프로필 사진
 	
 	public String getRpcode() {
 		return rpcode;
@@ -56,12 +61,19 @@ public class ReplyDto {
 	public void setRpnickname(String rpnickname) {
 		this.rpnickname = rpnickname;
 	}
+	public String getRpbdtitle() {
+		return rpbdtitle;
+	}
+	public void setRpbdtitle(String rpbdtitle) {
+		this.rpbdtitle = rpbdtitle;
+	}
+	
 	@Override
 	public String toString() {
 		return "ReplyDto [rpcode=" + rpcode + ", rpbdcode=" + rpbdcode + ", rpcontents=" + rpcontents + ", rpmid="
-				+ rpmid + ", rpdate=" + rpdate + ", rpstate=" + rpstate + ", rpnickname=" + rpnickname + "]";
+				+ rpmid + ", rpdate=" + rpdate + ", rpstate=" + rpstate + ", rpbdtitle=" + rpbdtitle + ", rpnickname="
+				+ rpnickname + "]";
 	}
-	
 	
 	
 	

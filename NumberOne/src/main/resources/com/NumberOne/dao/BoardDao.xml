@@ -3,21 +3,121 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
- <mapper namespace ="com.NumberOne.dao.BoardDao">
+<mapper namespace ="com.NumberOne.dao.BoardDao">
  	
  	<select id="selectNoticeList" resultType="com.NumberOne.dto.NoticeDto">
  		<!-- 공지 게시글 목록 조회 -->
  		SELECT NBCODE,NBMID,NBTITLE,NBCONTENTS,TO_CHAR(NBDATE,'YY-MM-DD') AS NBDATE,
  			   NBIMG,NBSTATE,NBHITS 
  		FROM NOTICEBOARDS
+ 		ORDER BY NBCODE DESC
+ 	</select>
+ 	
+	<!-- 카테고리별(자유,질문,정보,후기) 글목록 조회 -->
+ 	<select id="selectBoardList_Free" resultType="com.NumberOne.dto.BoardDto">
+ 		<!-- 자유 게시글 목록 조회  -->
+ 		SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, 
+			   TO_CHAR(BDDATE,'YY-MM-DD') AS BDDATE, 
+			   BDIMG, BDDETAILIMG, BDSTATE, BDHITS, 
+		       MB.MNICKNAME AS BDNICKNAME, 
+		       NVL(RPCOUNT.BDRPCOUNT, 0) AS BDRPCOUNT,
+		       NVL(RCCOUNT.BDRCCOUNT, 0) AS BDRCCOUNT
+		FROM BOARDS BD 
+		LEFT OUTER JOIN MEMBERS MB 
+		ON BD.BDMID = MB.MID
+		LEFT OUTER JOIN (SELECT BD.BDCODE AS RPBDCODE, COUNT(*) AS BDRPCOUNT
+		                        FROM BOARDS BD LEFT OUTER JOIN REPLY RP
+		                        ON BD.BDCODE = RP.RPBDCODE
+		                        WHERE RP.RPSTATE = 1
+		                        GROUP BY BD.BDCODE
+		                        ORDER BY BD.BDCODE) RPCOUNT
+		ON BD.BDCODE = RPCOUNT.RPBDCODE
+		LEFT OUTER JOIN (SELECT RCBDCODE, COUNT(*) AS BDRCCOUNT
+		                        FROM RECOMMEND
+		                        GROUP BY RCBDCODE ) RCCOUNT
+		ON BD.BDCODE = RCCOUNT.RCBDCODE
+		WHERE BD.BDSTATE = 1
+		AND BD.BDCATEGORY = #{bdcategory_Free}
+		ORDER BY BDCODE DESC
+ 	</select>
+ 	<select id="selectBoardList_Question" resultType="com.NumberOne.dto.BoardDto">
+ 		<!-- 질문 게시글 목록 조회  -->
+ 		SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, 
+			   TO_CHAR(BDDATE,'YY-MM-DD') AS BDDATE, 
+			   BDIMG, BDDETAILIMG, BDSTATE, BDHITS, NVL(RPCOUNT.BDRPCOUNT, 0) AS BDRPCOUNT
+		FROM BOARDS BD
+		LEFT OUTER JOIN (SELECT BD.BDCODE AS RPBDCODE, COUNT(*)AS BDRPCOUNT
+		                FROM BOARDS BD 
+		                LEFT OUTER JOIN REPLY RP
+		                ON BD.BDCODE = RP.RPBDCODE
+		                WHERE RP.RPSTATE = 1
+		                GROUP BY BD.BDCODE
+		                ORDER BY BD.BDCODE) RPCOUNT
+		ON BD.BDCODE = RPCOUNT.RPBDCODE
+		WHERE BD.BDSTATE = 1
+		AND BD.BDCATEGORY = #{bdcategory_Question}
+		ORDER BY BD.BDCODE DESC
+ 	</select>
+ 	<select id="selectBoardList_Information" resultType="com.NumberOne.dto.BoardDto">
+ 		<!--정보 게시글 목록 조회  -->
+ 		SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, 
+			   TO_CHAR(BDDATE,'YY-MM-DD') AS BDDATE, 
+			   BDIMG, BDDETAILIMG, BDSTATE, BDHITS, NVL(RPCOUNT.BDRPCOUNT, 0) AS BDRPCOUNT
+		FROM BOARDS BD
+		LEFT OUTER JOIN (SELECT BD.BDCODE AS RPBDCODE, COUNT(*)AS BDRPCOUNT
+		                FROM BOARDS BD 
+		                LEFT OUTER JOIN REPLY RP
+		                ON BD.BDCODE = RP.RPBDCODE
+		                WHERE RP.RPSTATE = 1
+		                GROUP BY BD.BDCODE
+		                ORDER BY BD.BDCODE) RPCOUNT
+		ON BD.BDCODE = RPCOUNT.RPBDCODE
+		WHERE BD.BDSTATE = 1
+		AND BD.BDCATEGORY = #{bdcategory_Infomation}
+		ORDER BY BD.BDCODE DESC
+ 	</select>
+ 	<select id="selectBoardList_Review" resultType="com.NumberOne.dto.BoardDto">
+ 		<!--후기 게시글 목록 조회  -->
+ 		SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, 
+			   TO_CHAR(BDDATE,'YY-MM-DD') AS BDDATE, 
+			   BDIMG, BDDETAILIMG, BDSTATE, BDHITS, NVL(RPCOUNT.BDRPCOUNT, 0) AS BDRPCOUNT
+		FROM BOARDS BD
+		LEFT OUTER JOIN (SELECT BD.BDCODE AS RPBDCODE, COUNT(*)AS BDRPCOUNT
+		                FROM BOARDS BD 
+		                LEFT OUTER JOIN REPLY RP
+		                ON BD.BDCODE = RP.RPBDCODE
+		                WHERE RP.RPSTATE = 1
+		                GROUP BY BD.BDCODE
+		                ORDER BY BD.BDCODE) RPCOUNT
+		ON BD.BDCODE = RPCOUNT.RPBDCODE
+		WHERE BD.BDSTATE = 1
+		AND BD.BDCATEGORY = #{bdcategory_Review}
+		ORDER BY BD.BDCODE DESC
  	</select>
  	
  	<select id="selectBoardSearchList" resultType="com.NumberOne.dto.BoardDto">
  		<!-- 글검색 결과 조회 -->
- 		SELECT BD.*, MB.MNICKNAME AS BDNICKNAME 
- 		FROM BOARDS BD, MEMBERS MB
- 		WHERE BD.BDMID = MB.MID 
- 		
+ 		SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, 
+			   TO_CHAR(BDDATE,'YY-MM-DD') AS BDDATE, 
+			   BDIMG, BDDETAILIMG, BDSTATE, BDHITS, 
+		       MB.MNICKNAME AS BDNICKNAME, 
+		       NVL(RPCOUNT.BDRPCOUNT, 0) AS BDRPCOUNT,
+		       NVL(RCCOUNT.BDRCCOUNT, 0) AS BDRCCOUNT
+		FROM BOARDS BD 
+		LEFT OUTER JOIN MEMBERS MB 
+		ON BD.BDMID = MB.MID
+		LEFT OUTER JOIN (SELECT BD.BDCODE AS RPBDCODE, COUNT(*) AS BDRPCOUNT
+		                        FROM BOARDS BD LEFT OUTER JOIN REPLY RP
+		                        ON BD.BDCODE = RP.RPBDCODE
+		                        WHERE RP.RPSTATE = 1
+		                        GROUP BY BD.BDCODE
+		                        ORDER BY BD.BDCODE) RPCOUNT
+		ON BD.BDCODE = RPCOUNT.RPBDCODE
+		LEFT OUTER JOIN (SELECT RCBDCODE, COUNT(*) AS BDRCCOUNT
+		                        FROM RECOMMEND
+		                        GROUP BY RCBDCODE ) RCCOUNT
+		ON BD.BDCODE = RCCOUNT.RCBDCODE
+		WHERE BDCATEGORY NOT IN ( '자랑' )
  		<if test="searchType == 'bdtitle' ">
  		<!-- 제목으로 검색 -->
  		AND BDTITLE LIKE '%'||#{searchText}||'%'
@@ -39,11 +139,12 @@
  		AND BDNICKNAME LIKE '%'||#{searchText}||'%'
  		</if>
  		
+ 		AND BDSTATE = 1
  		ORDER BY BDCODE DESC
  	 </select>
- 	 
  	 <select id="selectRoomList" resultType="com.NumberOne.dto.BoardDto">
- 	 	select bdcode, bdmid, bdtitle, bddate, bdimg, bdstate, bdhits,
+ 	 	<!-- 자랑글 목록 -->
+ 	 	select bdcode, bdmid, bdtitle, bddate, bdimg, bdstate, bdhits, bdcontents,
 		bdscrap, bdrecommend, bdreply, mnickname as bdnickname   	
 		from boards b
 		left outer join (select scbdcode, count(*) as bdscrap from scrap group by scbdcode) sc
@@ -59,23 +160,49 @@
 		order by bdcode desc
 	 </select>
  	 
+ 	 <!-- !!자꾸 중복되는 메소드 -->
  	 <select id="selectNoticeBoardView" resultType="com.NumberOne.dto.NoticeDto">	
 	 	 <!-- 공지글 상세 -->
 	 	 SELECT NBCODE,NBMID,NBTITLE,NBCONTENTS,TO_CHAR(NBDATE,'YY-MM-DD HH24:MI') AS NBDATE,
- 			   NBIMG,NBSTATE,NBHITS  
-	 	 FROM NOTICEBOARDS
-	 	 WHERE NBCODE = #{nbcode}
+ 			   NBIMG,NBSTATE,NBHITS,MB.MNICKNAME AS NBNICKNAME
+	 	 FROM NOTICEBOARDS NB, MEMBERS MB
+	 	 WHERE NBCODE = #{nbcode} AND NB.NBMID = MB.MID
  	 </select>
  	 
  	 <select id="selectBoardView" resultType="com.NumberOne.dto.BoardDto">
  	 	<!-- 일반글 상세 -->
- 	 	SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, TO_CHAR(BDDATE,'YY-MM-DD HH24:MI') AS BDDATE, 
-	    BDIMG, BDDETAILIMG, BDSTATE, BDHITS, MB.MNICKNAME AS BDNICKNAME
-		FROM BOARDS BD, MEMBERS MB
+		SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, TO_CHAR(BDDATE,'YY-MM-DD HH24:MI') AS BDDATE, 
+	    	   BDIMG, BDDETAILIMG, BDSTATE, BDIMG, BDHITS, MB.MNICKNAME AS BDNICKNAME, RG.RGCODE AS BDRGCODE, RG.RGNAME AS BDRGNAME
+		FROM BOARDS BD, MEMBERS MB, REGION RG
 		WHERE BD.BDMID = MB.MID
+        AND BD.BDRGCODE = RG.RGCODE
 		AND BD.BDCODE = #{bdcode}
  	 </select>
  	 
+ 	 <select id="selectRoomView" resultType="com.NumberOne.dto.BoardDto">
+ 	 	<!-- 자랑글 상세 -->
+ 	 	select bdcode, bdmid, bdtitle, bddate, bdimg, bdstate, bdhits, bdcontents, bddetailimg,
+		bdscrap, bdrecommend, bdreply, m.mnickname as bdnickname, m.mprofile as bdmprofile,
+        sh.scmid as schistory, rch.rcmid as rchistory, wbh.wbmid as wbhistory
+		from boards b
+		left outer join (select scbdcode, count(*) as bdscrap from scrap group by scbdcode) sc
+		on b.bdcode = sc.scbdcode
+		left outer join (select rcbdcode, count(*) as bdrecommend from recommend group by rcbdcode) rc
+		on b.bdcode = rc.rcbdcode
+		left outer join (select rpbdcode, count(*) as bdreply from reply group by rpbdcode) rp
+		on b.bdcode = rp.rpbdcode
+		left outer join members m
+		on b.bdmid = m.mid
+        left outer join (select * from scrap where scmid=#{loginId}) sh on b.bdcode = sh.scbdcode
+        left outer join (select * from recommend where rcmid=#{loginId}) rch on b.bdcode = rch.rcbdcode
+        left outer join (select * from warningboards where wbmid=#{loginId}) wbh on b.bdcode = wbh.wbedbdcode
+        
+		where b.bdcategory='자랑'
+		and b.bdstate='1'
+        and b.bdcode=#{bdcode}
+        order by bdcode desc
+ 	 </select>
+
  	 <select id="selectReplyMaxNumber" resultType="String">
  	 	<!-- 댓글 최대번호 조회 -->
  	 	SELECT MAX(RPCODE) 
@@ -90,7 +217,7 @@
  	
  	<select id="selectBoardReplyList" resultType="com.NumberOne.dto.ReplyDto">
  		<!-- 댓글목록 조회 -->
- 		SELECT RP.*, MB.MNICKNAME AS RPNICKNAME
+ 		SELECT RP.*, MB.MNICKNAME AS RPNICKNAME, mb.mprofile as RPMPROFILE
 		FROM REPLY RP, MEMBERS MB 
 		WHERE RP.RPMID = MB.MID
 		AND RPBDCODE = #{bdcode}
@@ -119,12 +246,41 @@
  		VALUES ( #{loginId}, #{bdcode} )
  	</insert> 
  	
+ 	<delete id="deleteBoardRecommend_ajax">
+ 		<!-- 게시글 추천 삭제 -->
+ 		DELETE FROM RECOMMEND
+ 		WHERE RCMID = #{loginId} AND RCBDCODE = #{bdcode}
+ 		
+ 	</delete>
+ 	
+ 	<select id="checkBoardRecommend_ajax" resultType = "String">
+ 		<!-- 게시글 추천 유무 확인  -->
+ 		SELECT RCBDCODE
+ 		FROM RECOMMEND
+ 		WHERE RCMID = #{loginId}
+ 		AND RCBDCODE = #{bdcode}
+ 	</select>
+ 	
+ 	<select id="checkBoardWarning_ajax" resultType = "String">
+		<!-- 게시글 신고 유무 확인 --> 		
+ 		SELECT WBEDBDCODE
+ 		FROM WARNINGBOARDS
+ 		WHERE WBMID = #{loginId}
+ 		AND WBEDBDCODE = #{bdcode}
+ 	</select>
  	
  	<insert id="insertBoardWarning_ajax">
  		<!-- 게시글 신고 -->
  		INSERT INTO WARNINGBOARDS 
  		VALUES ( #{loginId}, #{bdcode} )
  	</insert>
+ 	 
+ 	<delete id="deleteBoardWarning_ajax">
+ 		<!-- 게시글 신고 취소 -->
+ 		DELETE FROM WARNINGBOARDS
+ 		WHERE WBMID = #{loginId}
+ 		AND WBEDBDCODE = #{bdcode}
+ 	</delete>
  	 
  	<select id="selectBoardRecommendCount_ajax" resultType="int">
  		<!-- 게시글 추천수 조회 -->
@@ -133,4 +289,111 @@
 		WHERE RCBDCODE = #{bdcode}
  	</select>
  	 
+ 	<update id="updateBoardDelete">
+ 		<!-- 게시글 삭제(상태 변경) -->
+ 		UPDATE BOARDS
+ 		SET BDSTATE = 0
+ 		WHERE BDCODE = #{bdcode}
+ 	</update>
+ 	 
+	<update id="updateBoardModify">
+		<!-- 게시글 수정 -->
+		UPDATE BOARDS
+		SET BDCATEGORY = #{bdcategory},
+		BDRGCODE = #{bdrgcode},
+		BDTITLE = #{bdtitle},
+		BDCONTENTS = #{bdcontents}
+		WHERE BDCODE = #{bdcode}
+	</update>
+	
+	<insert id="insertBoard">
+		<!-- 게시글 작성 -->
+		INSERT INTO BOARDS (BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, BDDATE, BDIMG)
+		VALUES ( #{bdcode}, #{bdrgcode}, #{bdcategory}, #{bdmid}, #{bdtitle}, #{bdcontents}, SYSDATE, #{bdimg} )
+		
+	</insert>
+	
+ 	<update id="updateRoomhits">
+ 		<!-- 조회수 올리기-->
+ 		UPDATE Boards
+ 		SET bdhits = bdhits +1
+ 		WHERE bdCODE = #{bdcode}
+ 	</update> 
+
+	<select id="selectCurrentHisroty" resultType="String">
+		select count(*) from 
+		
+		<if test="history == 'rchistory' ">
+			recommend where rcbdcode = #{bdcode} 
+			and rcmid=#{loginId}
+		</if>
+		<if test="history == 'schistory'">	
+			scrap where scbdcode = #{bdcode}
+			and scmid=#{loginId}
+		</if>	
+		<if test="history == 'wbhistory'">
+			warningboards where wbedbdcode=#{bdcode}
+			and wbmid=#{loginId}
+		</if>	
+	</select>
+	
+	<delete id="deleteState">
+		delete from 
+		<if test="history == 'rchistory' ">
+			recommend where rcbdcode = #{bdcode} 
+			and rcmid=#{loginId}
+		</if>
+		<if test="history == 'schistory'">	
+			scrap where scbdcode = #{bdcode}
+			and scmid=#{loginId}
+		</if>	
+		<if test="history == 'wbhistory'">
+			warningboards where wbedbdcode=#{bdcode}
+			and wbmid=#{loginId}
+		</if>
+	</delete>
+	
+	<insert id="insertState">
+		insert into 
+		<if test="history == 'rchistory' ">
+			recommend 
+		</if>
+		<if test="history == 'schistory'">	
+			scrap 
+		</if>	
+		<if test="history == 'wbhistory'">
+			warningboards
+		</if>
+		values (#{loginId}, #{bdcode})
+	</insert>
+
+	<update id="updateBoardHits">
+		<!-- 게시글 조회수 증가 -->
+		UPDATE BOARDS
+		SET BDHITS = BDHITS + 1
+		WHERE BDCODE = #{bdcode}
+	</update>
+	
+	<update id="updateNoticeBdHits">
+		<!-- 공지글 조회수 증가 -->
+		UPDATE NOTICEBOARDS
+		SET NBHITS = NBHITS + 1
+		WHERE NBCODE = #{nbcode}
+	</update>
+	
+	<select id="selectRpContents_ajax" resultType="com.NumberOne.dto.ReplyDto">
+		<!-- 댓글정보 조회 -->
+		SELECT RPCODE, RPBDCODE, RPCONTENTS, RPMID, RPDATE, RPSTATE
+		FROM REPLY
+		WHERE RPCODE = #{rpcode}
+	</select>
+	
+	<update id="updateRpcontents_ajax">
+		<!-- 댓글수정 -->
+		UPDATE REPLY
+		SET RPCONTENTS = #{rpcontents} 
+		WHERE RPCODE = #{rpcode}
+	</update>
+	
+	
  </mapper>

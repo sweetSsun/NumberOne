@@ -105,15 +105,42 @@
 	    max-height: 410px;
 	    overflow: scroll;
 		width:-webkit-fill-available;
+		padding-right: 10px;
 	}
+	.listArea::-webkit-scrollbar {
+		background-color: #F2F2FF;
+	}
+	.listArea::-webkit-scrollbar-thumb {
+   		background-color: #00a5ba;
+   		border-radius: 10px;
+ 	}
+	
+	.listArea::-webkit-scrollbar-track {
+		border-radius: 10px;
+ 	}
+  
 	.insertChat{
 		padding:10px 0;
 		height: 5em; 
 		width:-webkit-fill-available;"
 	}
+	.insertChat::-webkit-scrollbar {
+		background-color: #F2F2FF;
+		width: 10px;
+	}
+	.insertChat::-webkit-scrollbar-thumb {
+   		background-color: #00a5ba;
+   		border-radius: 10px;
+ 	}
+	
+	.insertChat::-webkit-scrollbar-track {
+		border-radius: 10px;
+ 	}
+ 	
+ 	
 	.insertBtn{
 		line-height: 55px;
-		background-color: #004804;
+		background-color: #00bcd4;
 		color: #ffffff;
 		padding-left: 0px;
 		padding-right: 0px;
@@ -138,7 +165,7 @@
 		word-wrap: break-word;
 		float: right;
 		display: inline-block;
-		background-color: #004804;
+		background-color: #00bcd4;
 		padding: 0.5rem! important;
 		margin-bottom: 10px;
 		border-radius: 10px;
@@ -154,12 +181,12 @@
 <body>
 
 	<div class="row">
-		<div class="col-xl-8 col-lg-8">
+		<div class="col-xl-12 col-lg-12">
 				<div class="subtitle" style="margin-bottom: 0.5rem;">
 					<div class="subtitle">
 					
 		                <div class="subtitle">
-		                	<h6 style="height: 50px; margin:0; font-weight: bold; line-height: 50px; background-color:#004804; color:#ffffff; border-radius: 5px;">1:1채팅</h6>
+		                	<h6 style="height: 50px; margin:0; font-weight: bold; line-height: 50px; background-color:#00bcd4; color:#ffffff; border-radius: 5px;">1:1채팅</h6>
 		                </div>
 		                 
 		                <div class="subtitle listArea" id="chatList">
@@ -181,11 +208,11 @@
 	        	<div>
 	            	<div class="row">
 	                	<div class="col-9" style="padding-right: 0px;">
-		                    <input class="insertChat" id="inputMsg" type="text" placeholder="메세지입력" onkeydown="if(event.keyCode==13){messageSend();}"
-		                    style="padding-left: 5px; border: none; background-color: #F2F5F2;">
+		                    <textarea class="insertChat" id="inputMsg" placeholder="메세지입력" onkeydown="if(event.keyCode==13){messageSend();}"
+		                    style="padding-left: 5px; border: none; background-color: #F2F2FF;"></textarea>
 	                    </div>
 	                    <div class="col-3" style="padding-left:0;">
-	                    	<input type="button" class="btn btn-lg insertBtn" onclick="messageSend()" value="Talk">
+	                    	<input type="button" class="btn btn-lg insertBtn" onclick="messageSend()" value="Talk" style="width:100%;">
 	                    	
 	                    	
 	                    	<!-- onkeydown을 통해서 엔터키로도 입력되도록 설정. -->
@@ -234,9 +261,9 @@
 	   		console.log("받은메세지 : "+receiveData.chcontents);
 		    
 	   		 	
-		    var receiveMsg = "<div style=\"text-align:left;\"><span style=\"color: #004804;\">"+receiveData.chfrmnick+"</span><div>";
+		    var receiveMsg = "<div style=\"text-align:left;\"><span>"+receiveData.chfrmnick+"</span><div>";
 		    receiveMsg += "<div style=\"display: table;\"><span class=\"chatRe\">"+receiveData.chcontents+"</span>";
-		    receiveMsg += "<span style=\"color: #004804; vertical-align: bottom; display: table-cell;\">"+receiveData.chdatetime+"</span></div>";
+		    receiveMsg += "<span style=\"vertical-align: bottom; display: table-cell;\">"+receiveData.chdatetime+"</span></div>";
 		    	    
 		    
 		    $("#chatList").append(receiveMsg);
@@ -267,7 +294,7 @@
 					chtomid : tomid
 				};
 				chatWebSocket.send(JSON.stringify(sendData));
-				var	sendMsg ="<div style=\"text-align:right;\"><span class=\"chatSe\">"+sendData.chcontents+"</span>";
+				var	sendMsg ="<div style=\"text-align:right; margin-top: 10px;\"><span class=\"chatSe\">"+sendData.chcontents+"</span>";
 
 				$("#chatList").append(sendMsg);
 				$("#chatList").scrollTop( $("#chatList")[0].scrollHeight );

@@ -22,16 +22,16 @@
                             <h4><a href="admin_selectNoticeList?searchVal=all&keyword=&page=1">공지 관리</a></h4>
                         </div>
                        	<div class="sidebar-item">
-                            <h4><a href="#">중고거래 관리</a></h4>
+                            <h4><a href="admin_selectResellList">중고거래 관리</a></h4>
                         </div>
                         <div class="sidebar-item">
-                            <h4><a href="#">커뮤니티 관리</a></h4>
+                            <h4><a href="admin_selectBoardList">커뮤니티 관리</a></h4>
                         </div>
                         <div class="sidebar-item">
-                            <h4><a href="#">댓글 관리</a></h4>
+                            <h4><a href="admin_selectReplyList">댓글 관리</a></h4>
                         </div>
                         <div class="sidebar-item">
-                            <h4><a href="#">문의 관리</a></h4>
+                            <h4><a href="admin_selectQuestionList">문의 관리</a></h4>
                         </div>
                 </div>
             </div>
