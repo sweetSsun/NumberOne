@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <title>1인자 - 커뮤니티 메인</title>
-<%@ include file="/resources/css/CommonCss.jsp" %>
+<%@ include file="/resources/css/BarCss.jsp" %>
 <style type="text/css">
 	
 	#BestRoomList{

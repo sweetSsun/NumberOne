@@ -212,7 +212,7 @@
 		                    style="padding-left: 5px; border: none; background-color: #F2F2FF;"></textarea>
 	                    </div>
 	                    <div class="col-3" style="padding-left:0;">
-	                    	<input type="button" class="btn btn-lg insertBtn" onclick="messageSend()" value="Talk">
+	                    	<input type="button" class="btn btn-lg insertBtn" onclick="messageSend()" value="Talk" style="width:100%;">
 	                    	
 	                    	
 	                    	<!-- onkeydown을 통해서 엔터키로도 입력되도록 설정. -->
