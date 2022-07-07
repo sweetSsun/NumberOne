@@ -377,7 +377,6 @@ textarea:hover{
  			</div>
  			<div id="roomContents" style="height:210px; border:1px solid black; color:black;"></div>
  			<div id="reply" style="height:160px; border:1px solid black; color:black;">
- 			    댓글 영역
  			</div>
  			<div id="roomInfo" style="height:35px; color:black; font-size:25px; position:relative;">
  				추천, 스크랩, 신고
@@ -504,6 +503,10 @@ textarea:hover{
 				//console.log(roomInfoOutput);
 				
 				$("#roomInfo").html(roomInfoOutput);
+				
+				//댓글 출력
+				
+				
 				
 				//bdhits 1 추가
 				var bdhits = $("#"+bdcode+"_bdhits").text().trim();
