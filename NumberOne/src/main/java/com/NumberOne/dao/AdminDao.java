@@ -22,9 +22,9 @@ public interface AdminDao {
 
 	MemberDto admin_selectMemberInfo_ajax(String mid);
 
-	int admin_selectNoticeTotalCount(@Param("searchVal") String searchVal, @Param("searchType") String searchType, @Param("keyword") String keyword);
+	int admin_selectNoticeTotalCount(Paging paging);
 
-	ArrayList<NoticeDto> admin_selectNoticeList(@Param("searchVal") String searchVal, @Param("searchType") String searchType, @Param("keyword") String keyword, @Param("startRow") int startRow, @Param("endRow") int endRow);
+	ArrayList<NoticeDto> admin_selectNoticeList(Paging paging);
 
 	int admin_updateNbstate_ajax(@Param("nbcode") String nbcode, @Param("nbstate") String nbstate);
 

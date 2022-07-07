@@ -244,7 +244,7 @@
 			console.log("검색 키워드 : " + searchText);
 			$.ajax({
 				type: "get",
-				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText},
+				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "ajaxCheck":"list"},
 				url: "admin_selectResellList_ajax",
 				dataType: "json",
 				success: function(result){
@@ -254,7 +254,7 @@
 					for (var i = 0; i < result.length; i++){
 						output += "<tr style='border-bottom: solid gray 1px;'>";
 						output += "<td><img src='${pageContext.request.contextPath }/resources/img/resell/" + result[i].ubmainimg
-                      			+ "class='img-fluid' style='width:100px; height:100px;  object-fit:fill;'></td>";
+								+ "' class='img-fluid' style='width:100px; height:100px;  object-fit:fill;'></td>";
 						output += "<td>" + result[i].ubcode + "</td>";
 						output += "<td class='overflow'><a href='admin_selectResellView?ubcode=" + result[i].ubcode + "'>" + result[i].ubtitle + "</a></td>";
 						output += "<td>" + result[i].ubnickname + "</td>";
@@ -274,8 +274,8 @@
 			// 페이지에서 출력할 페이지번호 받아오기
 			$.ajax({
 				type: "get",
-				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText},
-				url: "admin_selectResellPagingNumber_ajax",
+				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "ajaxCheck":"page"},
+				url: "admin_selectResellList_ajax",
 				dataType: "json",
 				success: function(result){
 					console.log("요청 페이지 : " + result.page);

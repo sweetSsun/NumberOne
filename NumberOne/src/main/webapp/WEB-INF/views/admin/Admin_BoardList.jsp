@@ -259,7 +259,7 @@
 			console.log(searchText);
 			$.ajax({
 				type: "get",
-				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText},
+				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "ajaxCheck":"list"},
 				url: "admin_selectBoardList_ajax",
 				dataType: "json",
 				success: function(result){
@@ -289,8 +289,8 @@
 			// 페이지에서 출력할 페이지번호 받아오기
 			$.ajax({
 				type: "get",
-				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText},
-				url: "admin_selectBoardPagingNumber_ajax",
+				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "ajaxCheck":"page"},
+				url: "admin_selectBoardList_ajax",
 				dataType: "json",
 				success: function(result){
 					console.log("요청 페이지 : " + result.page);
@@ -304,7 +304,7 @@
 						pageList += "[이전] ";
 					}
 					for (var i = result.startPage; i <= result.endPage; i++){
-						if (page == i){
+						if (result.page == i){
 							pageList += "<span style='color:#00bcd4'>" + i + "</span>";
 						} else {
 							pageList += "<button type='submit' name='page' value='" + i + "' id='btn" + i + "'></button>";
