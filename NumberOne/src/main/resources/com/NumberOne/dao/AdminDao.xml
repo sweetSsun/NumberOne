@@ -427,4 +427,10 @@
 		)
 		WHERE RN BETWEEN ${startRow} AND ${endRow}
 	</select>
+	
+	<!-- 문의 답변 입력 -->
+	<insert id="admin_updateQuestionAns_ajax">
+		UPDATE CONTACT SET CTANS=#{ctans}, CTANSDATE=SYSDATE
+		WHERE CTCODE=#{ctcode}
+	</insert>
 </mapper>

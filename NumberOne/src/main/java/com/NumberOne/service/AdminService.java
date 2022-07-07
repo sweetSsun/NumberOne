@@ -744,6 +744,15 @@ public class AdminService {
 			return paging_json;
 		}
 	}
+
+	// 문의 답변 입력 요청
+	public int admin_updateQuestionAns_ajax(String ctcode, String ctans) {
+		System.out.println("AdminService.admin_updateQuestionAns_ajax() 호출");
+		System.out.println("ctcode : " + ctcode);
+		System.out.println("ctans : " + ctans);
+		int updateResult = adao.admin_updateQuestionAns_ajax(ctcode, ctans);
+		return updateResult;
+	}
 	
 
 }

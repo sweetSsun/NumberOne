@@ -58,4 +58,6 @@ public interface AdminDao {
 
 	ArrayList<ContactDto> admin_selectContactList(Paging paging);
 
+	int admin_updateQuestionAns_ajax(@Param("ctcode") String ctcode, @Param("ctans") String ctans);
+
 }

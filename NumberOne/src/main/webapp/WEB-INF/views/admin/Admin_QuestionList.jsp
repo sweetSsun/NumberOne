@@ -54,6 +54,12 @@
 	label{
 		cursor: pointer;
 	}
+	.pl-3{
+		padding-left: 30px;
+	}
+	.m-3{
+		margin: 30px;
+	}
 </style>
 </head>
 <body>
@@ -127,26 +133,35 @@
 								</c:choose>								
 							</tr>
 							<tr style="border-bottom: solid #E0E0E0 1px; height: 50px;" class="replyForm d_none" id="${contact.ctcode }_title">
-								<td colspan="5" class="fw-bold" style=" padding-left: 30px; background-color: #EAEAEA;">
+								<td colspan="5" class="fw-bold p-3" style="background-color: #EAEAEA;">
 								문의 내용 </td>							
 							</tr>							
-							<tr style="border-bottom: solid #E0E0E0 1px; height: 100px;" class="replyForm d_none" id="${contact.ctcode }_contents">
-								<td colspan="5" style=" padding-left: 30px;" >${contact.ctcontents }</td>							
+							<tr style="border-bottom: solid #E0E0E0 1px; min-height: 100px;" class="replyForm d_none" id="${contact.ctcode }_contents">
+								<td colspan="5" class="p-4">${contact.ctcontents }</td>							
 							</tr>
 							<!-- 답변 -->							
 							<tr style="border-bottom: solid #E0E0E0 1px; height: 50px;" class="replyForm d_none" id="${contact.ctcode }_replytitle">
-								<td colspan="5" class="fw-bold" style=" padding-left: 30px; background-color: #EAEAEA;"> 답변 </td>							
+								<td colspan="5" class="fw-bold p-3" style="background-color: #EAEAEA;"> 답변 </td>							
 							</tr>							
-							<tr style="border-bottom: solid #E0E0E0 1px; height: 100px;" class="replyForm d_none" id="${contact.ctcode }_replycontents">
-								<td colspan="4">
-									<div class="commentWriteForm">
-										<textarea id="${contact.ctcode }_ctans" class="textareaSt" rows="3" cols="80" style="width:100%;" placeholder="문의글에 대한 답변을 작성해주세요."></textarea>
-									</div>	
-								</td>
-								<td  style="padding-left: 50px;">
-									<input type="button" onclick="insertReply('${contact.ctcode}')" value="등록" 
-									class="site-btn" style="width: 130px; border-radius: 4px;">
-								</td>															
+							<tr style="border-bottom: solid #E0E0E0 1px; min-height: 100px;" class="replyForm d_none" id="${contact.ctcode }_replycontents">
+								<c:choose>
+									<%-- 답변 없을 때 --%>
+									<c:when test="${contact.ctans == null }">
+										<td colspan="4">
+											<div class="commentWriteForm">
+												<textarea id="${contact.ctcode }_ctans" class="textareaSt" rows="3" cols="80" style="width:100%;" placeholder="문의글에 대한 답변을 작성해주세요."></textarea>
+											</div>	
+										</td>
+										<td  style="padding-left: 50px;">
+											<input type="button" onclick="insertReply('${contact.ctcode}')" value="등록" 
+											class="site-btn" style="width: 130px; border-radius: 4px;">
+										</td>
+									</c:when>
+									<%-- 답변 있을 때 --%>
+									<c:otherwise>
+										<td colspan='5' class='p-4'>${contact.ctans }</td>
+									</c:otherwise>															
+								</c:choose>
 							</tr>		
 												
 						</c:forEach>
@@ -217,23 +232,33 @@
 		$("#"+ctcode+"_replycontents").toggleClass("d_none");		
 	}
 
-	// 답변 insert
+	// 문의에 답변 달기
 	function insertReply(ctcode){
 		console.log("insertReply() 실행");
 		console.log("문의코드 : " + ctcode);
-		var ctans = $("#"+ctcode+"_ctans").val();
+		var ctans = $("#"+ctcode+"_ctans").val().replaceAll("\n", "<br>").replaceAll(" ", "&nbsp;");
 		console.log("답변 : " + ctans);
+		// 답변내용 CONTACT 테이블에 insert
+		$.ajax({
+			type: "post",
+			data: {"ctcode":ctcode, "ctans":ctans},
+			url: "admin_updateQuestionAns_ajax",
+			dataType: "json",
+			success: function(result){
+				if (result > 0) {
+					alert(ctcode + " 문의글에 답변이 작성되었습니다.");
+				} else {
+					alert("답변 작성에 실패했습니다.");
+				}
+			},
+			error: function(){
+				alert("연결 실패");
+			}
+		});
 		
-		
-		
-		
-		
-		var output = "<td colspan='5' style='padding-left: 30px;'>";
-		output += $("#"+ctcode+"_ctans").val().replaceAll("\r\n", "<br>");
-		output += "</td>";
-		
-		$("#"+ctcode+"_replycontents").text("")		
-			.html(output);
+		// 답변 textarea 없애고 단 것처럼 출력
+		var output = "<td colspan='5' class='p-4'>" + ctans + "</td>";
+		$("#"+ctcode+"_replycontents").text("").html(output);
 		$("#"+ctcode+"_state").text("완료");
 	}
 	
@@ -277,20 +302,24 @@
 					}
 					output += "</tr>";
 					output += "<tr style='border-bottom: solid #E0E0E0 1px; height: 50px;' class='replyForm d_none' id='" + result[i].ctcode + "_title'>"
-							+ "<td colspan='5' class='fw-bold' style='padding-left: 30px; background-color: #EAEAEA;'>문의 내용 </td></tr>";
-					output += "<tr style='border-bottom: solid #E0E0E0 1px; height: 100px;' class='replyForm d_none' id='" + result[i].ctcode + "_contents'>"
-							+ "<td colspan='5' style='padding-left: 30px;'>" + result[i].ctcontents + "</td></tr>";
+							+ "<td colspan='5' class='fw-bold p-3' style='background-color: #EAEAEA;'>문의 내용 </td></tr>";
+					output += "<tr style='border-bottom: solid #E0E0E0 1px; min-height: 100px;' class='replyForm d_none' id='" + result[i].ctcode + "_contents'>"
+							+ "<td colspan='5' class='p-4'>" + result[i].ctcontents + "</td></tr>";
 					output += "<tr style='border-bottom: solid #E0E0E0 1px; height: 50px;' class='replyForm d_none' id='" + result[i].ctcode + "_replytitle'>"
-							+ "<td colspan='5' class='fw-bold' style='padding-left: 30px; background-color: #EAEAEA;'> 답변 </td></tr>";
-					output += "<tr style='border-bottom: solid #E0E0E0 1px; height: 100px;' class='replyForm d_none' id='" + result[i].ctcode + "_replycontents'>";
-					output += "<td colspan='4'>"
-							+ "<div class='commentWriteForm'>"
-							+ "<textarea id='" + result[i].ctcode + "_ctans' class='textareaSt' rows='3' cols='80' style='width:100%;' placeholder='문의글에 대한 답변을 작성해주세요.'></textarea>"
-							+ "</div>"
-							+ "</td>";
-					output += "<td  style='padding-left: 50px;'>";
-					output += "<input type='button' onclick='insertReply(\'" + result[i].ctcode + "\')' value='등록' class='site-btn' style='width: 130px; border-radius: 4px;'>";
-					output += "</td>";
+							+ "<td colspan='5' class='fw-bold p-3' style='background-color: #EAEAEA;'> 답변 </td></tr>";
+					output += "<tr style='border-bottom: solid #E0E0E0 1px; min-height: 100px;' class='replyForm d_none' id='" + result[i].ctcode + "_replycontents'>";
+					if (result[i].ctans == null){
+						output += "<td colspan='4' class='p-4'>"
+								+ "<div class='commentWriteForm'>"
+								+ "<textarea id='" + result[i].ctcode + "_ctans' class='textareaSt' rows='3' cols='80' style='width:100%;' placeholder='문의글에 대한 답변을 작성해주세요.'></textarea>"
+								+ "</div>"
+								+ "</td>";
+						output += "<td style='padding-left: 50px;'>";
+						output += "<input type='button' onclick='insertReply(\'" + result[i].ctcode + "\')' value='등록' class='site-btn' style='width: 130px; border-radius: 4px;'>";
+						output += "</td>";
+					} else {
+						output += "<td colspan='5' class='p-4'>" + result[i].ctans + "</td>";
+					}
 					output += "</tr>";
 				}
 				$("#ctListTbody").html(output);

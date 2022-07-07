@@ -244,4 +244,11 @@ public class AdminController {
 		String selectResult_json = asvc.admin_selectQuestionList_ajax(paging);
 		return selectResult_json;
 	}
+	
+	@RequestMapping (value="admin_updateQuestionAns_ajax")
+	public @ResponseBody int admin_updateQuestionAns_ajax(String ctcode, String ctans) {
+		System.out.println("문의 답변 입력 요청");
+		int updateResult = asvc.admin_updateQuestionAns_ajax(ctcode, ctans);
+		return updateResult;
+	}
 }
