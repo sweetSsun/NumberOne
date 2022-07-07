@@ -10,8 +10,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.NumberOne.dto.GoodsDto;
+import com.NumberOne.dto.Paging;
 import com.NumberOne.dto.UsedBoardDto;
-import com.NumberOne.service.MemberService;
 import com.NumberOne.service.ResellService;
 
 @Controller
@@ -66,16 +66,20 @@ public class ResellController {
 	}
 	
 	@RequestMapping(value="/selectResellRegionList_ajax")
-	public @ResponseBody String selectResellRegionList_ajax(String selRegion, String sell_buy) {
+	public @ResponseBody String selectResellRegionList_ajax(Paging paging) {
+		
 		System.out.println("selectResellRegionList_ajax 요청");
-		System.out.println("파라메터확인 : "+ selRegion);
-		String sell_buyList = rsvc.selectResellRegionList_ajax(selRegion, sell_buy);
+		System.out.println("파라메터확인 : "+ paging);
+		String sell_buyList = rsvc.selectResellRegionList_ajax(paging);
+		
+		
 		
 		return sell_buyList;
 		
 	}
-	
 
+
+	
 	@RequestMapping(value="/zzimClick_ajax")
 	public @ResponseBody String zzimClick_ajax(String zzubcode, String zzmid, int zzim_num) {
 		System.out.println("zzimClick_ajax 요청");
@@ -90,12 +94,12 @@ public class ResellController {
 	
 	
 	@RequestMapping (value="/selectResellPageList")
-	public ModelAndView selectResellPageList(String sell_buy, String select_page, String selectRegion) {
+	public ModelAndView selectResellPageList(Paging paging) {
 		System.out.println("selectResellPageList 호출");
 	
 
 		ModelAndView mav = new ModelAndView();
-		mav = rsvc.selectResellPageList(sell_buy, select_page, selectRegion);
+		mav = rsvc.selectResellPageList(paging);
 				
 		return mav;
 	}
