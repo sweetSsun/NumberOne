@@ -12,6 +12,9 @@ public class ContactDto {
 	private String ctdate;		//작성일
 	private String ctans;		//답변
 	private String ctansdate;	//답변일
+	
+	private String ctnickname;	//작성자닉네임 (members 테이블 조인)
+
 	public String getCtcode() {
 		return ctcode;
 	}

@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.NumberOne.dao.AdminDao;
 import com.NumberOne.dao.BoardDao;
 import com.NumberOne.dto.BoardDto;
+import com.NumberOne.dto.ContactDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.NoticeDto;
 import com.NumberOne.dto.PageDto;
@@ -695,6 +696,54 @@ public class AdminService {
 		return updateResult;
 	}
 	
+	/* 문의 관리 */
+	// 문의 관리페이지 이동 요청
+	public ModelAndView admin_selectQuestionList(Paging paging, RedirectAttributes ra) {
+		System.out.println("AdminService.admin_selectQuestionList() 호출");
+		mav = new ModelAndView();
+		// 관리자 로그인 여부 체크
+		String loginId = (String)session.getAttribute("loginId");
+		if (loginId == null) {
+			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
+			mav.setViewName("redirect:/loadToLogin");	
+			return mav;
+		}
+		
+		int totalCount = adao.admin_selectContactTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
+		paging.setTotalCount(totalCount);
+		paging.calc(); // 페이지 처리 계산 실행
+		System.out.println(paging);
+		
+		ArrayList<ContactDto> contactList = adao.admin_selectContactList(paging);
+		System.out.println("contactList : " + contactList);
+		mav.addObject("paging", paging);
+		mav.addObject("contactList", contactList);
+		
+		mav.setViewName("admin/Admin_QuestionList");
+		return mav;
+	}
 
+	// 문의 관리페이지 정렬 요청
+	public String admin_selectQuestionList_ajax(Paging paging) {
+		System.out.println("AdminService.admin_selectQuestionList_ajax() 호출");
+		System.out.println("searchVal : " + paging.getSearchVal());
+		int totalCount = adao.admin_selectContactTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
+		paging.setTotalCount(totalCount);
+		paging.calc(); // 페이지 처리 계산 실행
+		System.out.println("paging : " + paging);
+		
+		ArrayList<ContactDto> contactList = adao.admin_selectContactList(paging);
+		System.out.println("contactList : " + contactList);
+		gson = new Gson();
+		
+		if (paging.getAjaxCheck().equals("list")) {
+			String contactList_json = gson.toJson(contactList); 
+			return contactList_json;
+		} else {
+			String paging_json = gson.toJson(paging);
+			return paging_json;
+		}
+	}
+	
 
 }

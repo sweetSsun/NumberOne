@@ -104,7 +104,7 @@
 	                   <!-- 회원관리 목록 -->
 	                   <tr style="border-bottom: solid gray 1px;">
 	                      <td><img src="${pageContext.request.contextPath }/resources/img/resell/${usedBoard.ubmainimg }"
-	                      		class="img-fluid" style="width:100px; height:100px; display:revert;"></td>
+	                      		class="img-fluid" style="width:100px; height:100px; object-fit:fill;"></td>
 	                      <td>${usedBoard.ubcode}</td>
 	                      <%-- makeQueryPage 쓰는거 왜 안될까.... admin_selectBoardView${Paging.makeQueryPage(board.bdcode, paging.page) }/>  --%>
 	                      <td class="overflow"><a href="#">
@@ -254,7 +254,7 @@
 					for (var i = 0; i < result.length; i++){
 						output += "<tr style='border-bottom: solid gray 1px;'>";
 						output += "<td><img src='${pageContext.request.contextPath }/resources/img/resell/" + result[i].ubmainimg
-                      			+ "class='img-fluid' style='width:100px; height:100px; display:revert;'></td>";
+                      			+ "class='img-fluid' style='width:100px; height:100px;  object-fit:fill;'></td>";
 						output += "<td>" + result[i].ubcode + "</td>";
 						output += "<td class='overflow'><a href='admin_selectResellView?ubcode=" + result[i].ubcode + "'>" + result[i].ubtitle + "</a></td>";
 						output += "<td>" + result[i].ubnickname + "</td>";

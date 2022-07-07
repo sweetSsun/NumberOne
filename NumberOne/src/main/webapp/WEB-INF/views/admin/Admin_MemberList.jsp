@@ -320,9 +320,9 @@
 					$("#memberInfoModalLabel").text(mid + " 회원 상세정보");
 					$("#mI_mprofile").text("");
 					if (result.mprofile != null){
-						$("#mI_mprofile").html("<img class='img-account-profile rounded-circle' alt='프로필이미지' style='height: 200px; width: 200px; border: 1px solid #808080;' src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/" + result.mprofile + "'>");
+						$("#mI_mprofile").html("<img class='img-account-profile rounded-circle' alt='프로필이미지' style='height: 200px; width: 200px; border: 1px solid #808080; object-fit: cover;' src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/" + result.mprofile + "'>");
 					} else {
-						$("#mI_mprofile").html("<img class='img-account-profile rounded-circle' alt='프로필이미지' style='height: 200px; width: 200px; border: 1px solid #808080;' src='${pageContext.request.contextPath }/resources/img/logo.jpg'>");
+						$("#mI_mprofile").html("<img class='img-account-profile rounded-circle' alt='프로필이미지' style='height: 200px; width: 200px; border: 1px solid #808080; object-fit: contain;' src='${pageContext.request.contextPath }/resources/img/logo.jpg'>");
                        //class="img-account-profile rounded-circle mb-2"
 					}
 					$("#mI_mmessage").text(result.mmessage);
@@ -469,6 +469,7 @@
 				}
 			});
 		}
+	
 	</script>
 </body>
 

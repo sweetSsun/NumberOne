@@ -229,4 +229,19 @@ public class AdminController {
 		int updateResult = asvc.admin_updateRpstate_ajax(rpcode, rpstate);
 		return updateResult;
 	}
+	
+	/* 문의 관리 */
+	@RequestMapping (value="admin_selectQuestionList")
+	public ModelAndView admin_selectQuestionList(Paging paging, RedirectAttributes ra) {
+		System.out.println("문의 관리페이지 이동 요청");
+		mav = asvc.admin_selectQuestionList(paging, ra);
+		return mav;
+	}
+	
+	@RequestMapping (value="admin_selectQuestionList_ajax")
+	public @ResponseBody String admin_selectQuestionList_ajax(Paging paging) {
+		System.out.println("문의 관리페이지 정렬 요청");
+		String selectResult_json = asvc.admin_selectQuestionList_ajax(paging);
+		return selectResult_json;
+	}
 }

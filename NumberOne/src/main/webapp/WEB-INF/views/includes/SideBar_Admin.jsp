@@ -31,7 +31,7 @@
                             <h4><a href="admin_selectReplyList">댓글 관리</a></h4>
                         </div>
                         <div class="sidebar-item">
-                            <h4><a href="#">문의 관리</a></h4>
+                            <h4><a href="admin_selectQuestionList">문의 관리</a></h4>
                         </div>
                 </div>
             </div>

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.ibatis.annotations.Param;
 
 import com.NumberOne.dto.BoardDto;
+import com.NumberOne.dto.ContactDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.NoticeDto;
 import com.NumberOne.dto.Paging;
@@ -52,5 +53,9 @@ public interface AdminDao {
 	ArrayList<ReplyDto> admin_selectReplyList(Paging paging);
 
 	int admin_updateRpstate_ajax(@Param("rpcode") String rpcode, @Param("rpstate") String rpstate);
+
+	int admin_selectContactTotalCount(Paging paging);
+
+	ArrayList<ContactDto> admin_selectContactList(Paging paging);
 
 }
