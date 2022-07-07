@@ -215,14 +215,32 @@ public class Paging {
 		this.keyword = keyword;
 	}
 
+	public String getAjaxCheck() {
+		return ajaxCheck;
+	}
+
+	public void setAjaxCheck(String ajaxCheck) {
+		this.ajaxCheck = ajaxCheck;
+	}
+
+	public String getSellBuy() {
+		return sellBuy;
+	}
+
+	public void setSellBuy(String sellBuy) {
+		this.sellBuy = sellBuy;
+	}
+
 	@Override
 	public String toString() {
 		return "Paging [page=" + page + ", perPageNum=" + perPageNum + ", startRow=" + startRow + ", endRow=" + endRow
 				+ ", totalCount=" + totalCount + ", maxPage=" + maxPage + ", displayPageNum=" + displayPageNum
 				+ ", startPage=" + startPage + ", endPage=" + endPage + ", prev=" + prev + ", next=" + next
-				+ ", searchVal=" + searchVal + ", searchType=" + searchType + ", keyword=" + keyword + ", sellBuy="
-				+ sellBuy + ", ajaxCheck=" + ajaxCheck + "]";
+				+ ", searchVal=" + searchVal + ", searchType=" + searchType + ", keyword=" + keyword + ", ajaxCheck="
+				+ ajaxCheck + ", sellBuy=" + sellBuy + "]";
 	}
+	
+	
 	
 	
 }
