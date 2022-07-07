@@ -468,7 +468,14 @@ public class BoardService {
 		System.out.println("BoardService.selectBoardReplyList_ajax() 호출");
 		
 		ArrayList<ReplyDto> replyList = bdao.selectBoardReplyList(bdcode);
-		System.out.println(replyList);
+		//System.out.println(replyList);
+	
+		//프로필 사진 없는 경우 rpmprofile에 nomprofile 저장
+		for (int i = 0; i < replyList.size(); i++) {
+			if(replyList.get(i).getRpmprofile()==null) {
+				replyList.get(i).setRpmprofile("nomprofile");
+			}
+		}
 		
 		//댓글목록 JSON 타입으로 변환 
 		Gson gson = new Gson();
@@ -577,7 +584,7 @@ public class BoardService {
 	
 
 	//게시글 삭제 
-	public ModelAndView updateBoardDelete(String bdcode, RedirectAttributes ra) {
+	public ModelAndView updateBoardDelete(String bdcode, String bdcategory, RedirectAttributes ra) {
 		System.out.println("BoardService.updateBoardDelete() 호출");
 		ModelAndView mav = new ModelAndView();
 		System.out.println("삭제할 글번호 : " + bdcode );
@@ -588,7 +595,13 @@ public class BoardService {
 		}
 		
 		//삭제 후 전체 글목록 페이지로 이동
-		mav.setViewName("redirect:/selectBoardList");
+		if(bdcategory.equals("자랑")) {
+			System.out.println("자랑글 삭제 성공");
+			mav.setViewName("redirect:/selectRoomList");			
+		} else {
+			System.out.println("일반글 삭제 성공");
+			mav.setViewName("redirect:/selectBoardList");			
+		}
 		
 		return mav;
 	}
@@ -748,9 +761,35 @@ public class BoardService {
 		ArrayList<BoardDto> boardList = bdao.selectBoardList_Free(bdcategory_Free);
 		System.out.println(boardList);
 		
+		ArrayList<NoticeDto> noticeList = bdao.selectNoticeList();
 		
-		return null;
+		mav.addObject("noticeList", noticeList);
+		mav.addObject("boardList", boardList);
+		mav.setViewName("board/FreeBoardList");
+		
+		return mav;
 	}
+
+	//댓글정보 불러오기 
+	public ReplyDto selectRpContents_ajax(String rpcode) {
+		System.out.println("BoardService.selectRpContents_ajax() 호출");
+		System.out.println("수정할 댓글번호 : " + rpcode);
+		
+		ReplyDto reply = bdao.selectRpContents_ajax(rpcode);
+		System.out.println(reply);
+		
+		return reply;
+	}
+	
+	//댓글수정 
+	public int updateRpcontents_ajax(String rpcode, String rpcontents) {
+		System.out.println("BoardService.updateRpcontents_ajax() 호출");
+		System.out.println("rpcontents : " + rpcontents);
+		
+		int updateResult = bdao.updateRpcontents_ajax(rpcode, rpcontents);
+		
+		return updateResult;
+	} 
 	
 
 
