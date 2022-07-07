@@ -29,11 +29,16 @@
 		font-size: 20px;
 	}
 
-.site-btn {
+.site-btn { background-color: #00BCD4; }	
 
-background-color: #00BCD4;
+/* .blank {
 
-}	
+		overflow: auto;
+		margin-top: 500px;
+} */
+
+
+
 </style>
 </head>
 <body>
@@ -60,43 +65,48 @@ background-color: #00BCD4;
 				<br>
 				<div class="checkout__form"><h4>마이페이지 중고거래</h4></div>
 				<br>
-				<!-- 작성글 목록 -->
+				<!-- 8949 목록 -->
                             <div class="row">
                                 <div class="col-lg-6" >
                                     <div>
-										<h4 class="" style="color: #00BCD4; margin-left: 30px;">사구</h4>  
+										<h4 class="" style="color: #00BCD4; margin-left: 30px;" class ="blank" id="scroll-sellbuy" id="scroll-chat">팔구</h4>  
 										<table style="width: 600px;">
 											<tr class="text-center" id="board_column">
 											<td>글제목</td>
 											</tr>
-										<%-- <c:forEach items="${board }" var="board"> --%>
-										<!-- 작성글 목록 -->
+										<c:forEach items="${sellBoard }" var="sell" varStatus="index">
+										<!-- 팔구 목록 -->
 											<tr style="border-bottom: solid #E0E0E0 1px; text-align: center;">
-										<%-- <td><a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a></td> --%>								
-											<td>아이패드 삽니다! (예시)</td>
+											<td>${sell.ubtitle} 
+												<c:if test="${index.count == sellbuySize -3}">
+													<span id="scroll-chat"></span>
+												</c:if>									
+											</td>
+											<%-- <td><a href="selectBoardView?bdcode=${board.bdcode }">${sell.udtitle}</a></td>		 --%>					
 											</tr>
-										<%-- </c:forEach> --%>
+										</c:forEach> 
 										</table>										                                  
                                     </div>
                                 </div>    
                                 <div class="col-lg-6" >
                                     <div>
-										<h4 class="checkout__form" style="color: #00BCD4; margin-left: 30px;">팔구</h4>
+										<h4 class="checkout__form" style="color: #00BCD4; margin-left: 30px;">사구</h4>
 										<table style="width: 600px;">
 											<tr class="text-center" id="board_column">
 											<td>글제목</td>
 											</tr>
-										<%-- <c:forEach items="${board }" var="board"> --%>
-										<!-- 작성글 목록 -->
+										<c:forEach items="${buyBoard }" var="buy">
+										<!-- 사구 목록 -->
 											<tr style="border-bottom: solid #E0E0E0 1px; text-align: center;">
-										<%-- <td><a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a></td> --%>								
-											<td>오예스 팝니다! (예시)</td>
+											<td>${buy.ubtitle}</td>
+											<%-- <td><a href="selectBoardView?bdcode=${board.bdcode }">${sell.udtitle}</a></td>		 --%>					
 											</tr>
-										<%-- </c:forEach> --%>
-										</table>										                                  
+										</c:forEach>
+										</table>
                                     </div>
                                 </div> 
-                             </div> 				
+																		                                  
+                             </div>                	        
 				<br><hr><br>
 
 				<!-- 채팅 목록 -->
@@ -113,9 +123,24 @@ background-color: #00BCD4;
 						<%-- <c:forEach items="${reply }" var="reply"> --%>
 							<!-- 작성글 목록 -->
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center;">
-								<td>건조기팝니다.(예시)</td>
-								<td>건조기 네고 부탁드려요!!!!! (예시)</td>
-								<td>2022-07-01 00:00 (예시)</td>								
+								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>
+								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>								
+								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>								
+								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>								
+								<tr  ><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>								
+								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>								
+								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>								
+								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>								
+								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>	
+								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>
+								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>								
+								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>								
+								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>								
+								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>								
+								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>								
+								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>								
+								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>								
+								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>																								
 							</tr>
 						<%-- </c:forEach> --%>
 				</table>
@@ -125,7 +150,7 @@ background-color: #00BCD4;
 								
 				<!-- 찜 목록 -->
 				<div class="row" style="margin:20px;">
-					<br><h4 class="checkout__form" style="color: #00BCD4;">찜목록</h4>
+					<br><h4 class="checkout__form" style="color: #00BCD4;" id="scroll-zzim">찜목록</h4>
 				</div>
 				<div class="row" style="margin:20px;">
 				<table >
@@ -134,13 +159,14 @@ background-color: #00BCD4;
 							<td>작성자</td>						
 							<td>날짜</td>
 						</tr>
-						<%-- <c:forEach items="${reply }" var="reply"> --%>
+						<%-- <c:forEach items="${scrap }" var="scrap"> --%>
 							<!-- 작성글 목록 -->
-							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center;">
-								<td>건조기팝니다.(예시)</td>
+							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center; ">
+								<td>안녕하세요 (예시)</td>
 								<td>HJH (예시)</td>
-								<td>2022-06-24 00:00 (예시)</td>								
+								<td>2022-06-24 00:00 (예시)</td>
 							</tr>
+														
 						<%-- </c:forEach> --%>
 				</table>
 				</div>	
@@ -155,6 +181,10 @@ background-color: #00BCD4;
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
+
+<!--  -->
+
+
 
 <script type="text/javascript">
 	/* 게시판 카테고리 선택 */

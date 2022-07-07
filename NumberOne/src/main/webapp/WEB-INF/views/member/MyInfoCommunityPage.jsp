@@ -64,7 +64,7 @@ background-color: #00BCD4;
 				<br>
 				<!-- 작성글 목록 -->
 				<div class="row" style="margin:20px;">
-					<br><h4 class="checkout__form" style="color: #00BCD4;">작성글 목록 (댓글 쓴 글만 나오는중 ㅠ 수정 필요)</h4>
+					<br><h4 class="checkout__form" style="color: #00BCD4;">작성글 목록</h4>
 				</div>
 				<div class="row"  style="margin:20px;">
 				<table>
@@ -128,16 +128,17 @@ background-color: #00BCD4;
 							<td>작성자</td>
 							<td>날짜</td>
 						</tr>
-						<%-- <c:forEach items="${noticeList }" var="notice"> --%>
+						<c:forEach items="${scrap }" var="scrap">
 							<!-- 작성글 목록 -->
-							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center;">
-								<td>1(예시)</td>
-								<td>안녕하세요(예시)</td>
-								<td>5(예시)</td>
-								<td>둘리(예시)</td>
-								<td>2022-07-01 11:13(예시)</td>								
+							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center; ">
+								<td>${scrap.scbdcode }</td>
+								<td><a href="selectBoardView?bdcode=${scrap.scbdcode }">${scrap.bdtitle }</a></td>
+								<td>${scrap.bdreply }</td>
+								<td>${scrap.mnickname }</td>
+								<td>${scrap.bddate }</td>								
 							</tr>
-						<%-- </c:forEach> --%>
+														
+						</c:forEach>
 				
 				</table>
 				<br>
@@ -155,38 +156,6 @@ background-color: #00BCD4;
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 
-<script type="text/javascript">
-	/* 게시판 카테고리 선택 */
-	function bdCategorySel(categorySel){
-		console.log("categorySel: " + categorySel);
-		
-		var output = "";
-		$.ajax({
-			type : "get",
-			url : "getBoardCategoryList",
-			data : { "bdcategory" : categorySel},
-			dataType : "json",
-			async : false,
-			success : function(bdCategoryList){
-				console.log(bdCategoryList);
-				
-				for(var i = 0; i< bdCategoryList.length; i++ ){
-					output += "<tr style=\"border-bottom: solid gray 1px;\">";
-					output += "<td>" + bdCategoryList[i].bdcode + "</td>";
-					output += "<td>" + bdCategoryList[i].bdcategory + "</td>";
-					output += "<td>" + bdCategoryList[i].bdtitle + "</td>";
-					output += "<td>" + bdCategoryList[i].bdnickname + "</td>";
-					output += "<td>" + bdCategoryList[i].bddate + "</td>";
-					output += "</tr>";
-				}
-			
-			}
-		});
-		console.log(output);
-		$("#bdCategoryList").html(output);
-	}
-	
-	
-</script>
+
 
 </html>
