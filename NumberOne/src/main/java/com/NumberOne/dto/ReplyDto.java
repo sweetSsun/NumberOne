@@ -59,10 +59,20 @@ public class ReplyDto {
 	public void setRpnickname(String rpnickname) {
 		this.rpnickname = rpnickname;
 	}
+	public String getRpbdtitle() {
+		return rpbdtitle;
+	}
+	public void setRpbdtitle(String rpbdtitle) {
+		this.rpbdtitle = rpbdtitle;
+	}
+	
 	@Override
 	public String toString() {
 		return "ReplyDto [rpcode=" + rpcode + ", rpbdcode=" + rpbdcode + ", rpcontents=" + rpcontents + ", rpmid="
-				+ rpmid + ", rpdate=" + rpdate + ", rpstate=" + rpstate + ", rpnickname=" + rpnickname + "]";
+				+ rpmid + ", rpdate=" + rpdate + ", rpstate=" + rpstate + ", rpbdtitle=" + rpbdtitle + ", rpnickname="
+				+ rpnickname + "]";
 	}
+	
+	
 	
 }

@@ -164,6 +164,12 @@ public interface BoardDao {
 	//공지글 조회수 증가 
 	int updateNoticeBdHits(String nbcode);
 
+	//댓글정보 불러오기
+	ReplyDto selectRpContents_ajax(String rpcode);
+	
+	//댓글 수정
+	int updateRpcontents_ajax(@Param("rpcode") String rpcode, @Param("rpcontents") String rpcontents); 
+
 	
 	
 	

@@ -30,7 +30,6 @@ public class UsedBoardDto {
 	private MultipartFile[] ubdetailimgfile;	//상세사진
 
 	
-	
 	public String getUbcode() {
 		return ubcode;
 	}
