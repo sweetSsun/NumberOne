@@ -105,7 +105,9 @@
 	                   <tr style="border-bottom: solid gray 1px;">
 	                      <td>${board.bdcode}</td>
 	                      <td>${board.bdcategory }
-	                      <td><a href="admin_selectBoardView?bdcode=${board.bdcode}">${board.bdtitle}</a></td>
+	                      <%-- makeQueryPage 쓰는거 왜 안될까.... admin_selectBoardView${Paging.makeQueryPage(board.bdcode, paging.page) }/>  --%>
+	                      <td><a href="#">
+	                      ${board.bdtitle}</a></td>
 	                      <td>${board.bdnickname}</td>
 	                      <td>${board.bddate}</td>
 	                      <td>${board.bdhits}</td>
@@ -125,7 +127,6 @@
             </table>
             
   			<!-- 페이징 -->
-	  		<!-- 페이징 넘버가 이상해~~~~~~ ajax로 받아오는 부분 매우매우매우 수정 요망 -->
   			<div class="block text-center" id="pageList">
                	<c:choose>
                		<c:when test="${paging.prev }">
@@ -140,7 +141,7 @@
                	<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="num" step="1">
                 	<c:choose>
                 		<c:when test="${paging.page == num }">
-                			<span>${num }</span>
+                			<span style="color:#00bcd4;">${num }</span>
                 		</c:when>
                 		<c:otherwise>
                 			<button type="submit" name="page" value="${num }" id="btn${num }"></button>
@@ -269,8 +270,8 @@
 						output += "<tr style='border-bottom: solid gray 1px;'>";
 						output += "<td>" + result[i].bdcode + "</td>";
 						output += "<td>" + result[i].bdcategory + "</td>";
-						output += "<td><a href='admin_selectBoardView?bdcode=" + result[i].bdcode + "'>" + result[i].bdtitle + "</a></td>";
-						output += "<td>" + result[i].bdmid + "</td>";
+						output += "<td class=''><a href='admin_selectBoardView?bdcode=" + result[i].bdcode + "'>" + result[i].bdtitle + "</a></td>";
+						output += "<td>" + result[i].bdnickname + "</td>";
 						output += "<td>" + result[i].bddate + "</td>";
 						output += "<td>" + result[i].bdhits + "</td>";
 						output += "<td>"
@@ -301,11 +302,11 @@
 						pageList += "<button type='submit' name='page' value='" + (result.page - 1) + "' id='btn0'></button>";
 						pageList += "<label for='btn0'>[이전]</label>";
 					} else {
-						pageList += "[이전]";
+						pageList += "[이전] ";
 					}
 					for (var i = result.startPage; i <= result.endPage; i++){
 						if (page == i){
-							pageList += "<span>" + i + "</span>";
+							pageList += "<span style='color:#00bcd4'>" + i + "</span>";
 						} else {
 							pageList += "<button type='submit' name='page' value='" + i + "' id='btn" + i + "'></button>";
 							pageList += "<label for='btn" + i + "'>" + i + "</label>";

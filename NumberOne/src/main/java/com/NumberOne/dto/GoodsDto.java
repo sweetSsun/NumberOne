@@ -1,5 +1,7 @@
 package com.NumberOne.dto;
 
+import java.util.Arrays;
+
 import lombok.Data;
 
 @Data
@@ -13,4 +15,57 @@ public class GoodsDto {
 	
 	private String[] gd_names;  //작성된 품목들
 	private int[] gd_price;
+	public String getGdcode() {
+		return gdcode;
+	}
+	public void setGdcode(String gdcode) {
+		this.gdcode = gdcode;
+	}
+	public String getGdubcode() {
+		return gdubcode;
+	}
+	public void setGdubcode(String gdubcode) {
+		this.gdubcode = gdubcode;
+	}
+	public String getGdname() {
+		return gdname;
+	}
+	public void setGdname(String gdname) {
+		this.gdname = gdname;
+	}
+	public int getGdprice() {
+		return gdprice;
+	}
+	public void setGdprice(int gdprice) {
+		this.gdprice = gdprice;
+	}
+	public int getGdstate() {
+		return gdstate;
+	}
+	public void setGdstate(int gdstate) {
+		this.gdstate = gdstate;
+	}
+	public String[] getGd_names() {
+		return gd_names;
+	}
+	public void setGd_names(String[] gd_names) {
+		this.gd_names = gd_names;
+	}
+	public int[] getGd_price() {
+		return gd_price;
+	}
+	public void setGd_price(int[] gd_price) {
+		this.gd_price = gd_price;
+	}
+	@Override
+	public String toString() {
+		return "GoodsDto [gdcode=" + gdcode + ", gdubcode=" + gdubcode + ", gdname=" + gdname + ", gdprice=" + gdprice
+				+ ", gdstate=" + gdstate + ", gd_names=" + Arrays.toString(gd_names) + ", gd_price="
+				+ Arrays.toString(gd_price) + "]";
+	}
+	
+	
+	
+	
+	
 }

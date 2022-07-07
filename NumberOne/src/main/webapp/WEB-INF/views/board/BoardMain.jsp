@@ -25,13 +25,13 @@
 	  font-weight: bold;
 	  line-height: 100px;
 	  text-align: center;
-	  background-color:#004804;
+	  background-color:#00bcd4;
 	}
 	h2{
-		color: #004804;
+		color: #00bcd4;
 	}
 	.restrict{
-		border-right: solid #004804 3px;
+		border-right: solid #00bcd4 3px;
 	}
 </style>
 
@@ -121,7 +121,8 @@
 							<c:forEach items="${boardList_Free }" end="2" var="board">
 									<tr>
 										<td>
-											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a>
+											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
+												<span class="text-info fw-bold" style="font-size:18px;">&nbsp;${board.bdrpcount }</span></a>
 										</td>
 									</tr>
 							</c:forEach>
@@ -132,7 +133,8 @@
 							<c:forEach items="${boardList_Free }" begin="3" end="5" var="board">
 									<tr>
 										<td>
-											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a>
+											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
+												<span class="text-info fw-bold" style="font-size:18px;">&nbsp;${board.bdrpcount }</span></a>
 										</td>
 									</tr>
 							</c:forEach>
@@ -149,7 +151,8 @@
 							<c:forEach items="${boardList_Question }" end="2" var="board">
 									<tr>
 										<td>
-											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a>
+											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
+												<span class="text-info fw-bold" style="font-size:18px;">&nbsp;${board.bdrpcount }</span></a>
 										</td>
 									</tr>
 							</c:forEach>
@@ -160,7 +163,8 @@
 							<c:forEach items="${boardList_Question }" begin="3" end="5" var="board">
 									<tr>
 										<td>
-											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a>
+											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
+												<span class="text-info fw-bold" style="font-size:18px;">&nbsp;${board.bdrpcount }</span></a>
 										</td>
 									</tr>
 							</c:forEach>
@@ -177,7 +181,8 @@
 							<c:forEach items="${boardList_Information }" end="2" var="board">
 									<tr>
 										<td>
-											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a>
+											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
+												<span class="text-info fw-bold" style="font-size:18px;">&nbsp;${board.bdrpcount }</span></a>
 										</td>
 									</tr>
 							</c:forEach>
@@ -188,7 +193,8 @@
 							<c:forEach items="${boardList_Information }" begin="3" end="5" var="board">
 									<tr>
 										<td>
-											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a>
+											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
+												<span class="text-info fw-bold" style="font-size:18px;">&nbsp;${board.bdrpcount }</span></a>
 										</td>
 									</tr>
 							</c:forEach>
@@ -206,7 +212,8 @@
 								<c:if test="${board.bdcategory.equals('후기') }">
 									<tr>
 										<td>
-											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a>
+											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
+												<span class="text-info fw-bold" style="font-size:18px;">&nbsp;${board.bdrpcount }</span></a>
 										</td>
 									</tr>
 								</c:if>
@@ -219,7 +226,8 @@
 								<c:if test="${board.bdcategory.equals('후기') }">
 									<tr>
 										<td>
-											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a>
+											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
+												<span class="text-info fw-bold" style="font-size:18px;">&nbsp;${board.bdrpcount }</span></a>
 										</td>
 									</tr>
 								</c:if>

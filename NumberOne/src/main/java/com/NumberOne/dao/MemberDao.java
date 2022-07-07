@@ -6,13 +6,13 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.apache.ibatis.annotations.Update;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.ContactDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.ReplyDto;
+import com.NumberOne.dto.ScrapDto;
+import com.NumberOne.dto.UsedBoardDto;
 
 public interface MemberDao {
 
@@ -30,7 +30,7 @@ public interface MemberDao {
 	String selectMemberNickname_ajax(String inputNickname);
 
 	//로그인 요청
-	@Select("SELECT MID, MPROFILE, MSTATE FROM MEMBERS WHERE MID = #{mid} AND MPW = #{mpw}")
+	@Select("SELECT MID, MPROFILE, MREGION, MSTATE FROM MEMBERS WHERE MID = #{mid} AND MPW = #{mpw}")
 	MemberDto selectMemberLogin(@Param("mid") String mid, @Param("mpw") String mpw);
 	
 	//아이디 찾기 요청
@@ -47,10 +47,10 @@ public interface MemberDao {
 	int updateMyInfoMemberModify(MemberDto member);
 	
 	//마이페이지 회원정보 _ 작성글
-	@Select("SELECT BD.BDCODE, BD.BDTITLE, RP.BDREPLY, BD.BDMID, BD.BDDATE "
-			+ "FROM BOARDS BD, (SELECT RPBDCODE, COUNT (RPBDCODE) AS BDREPLY FROM REPLY GROUP BY RPBDCODE) RP "
-			+ "WHERE BDCODE = RP.RPBDCODE AND BDMID = #{loginId} "
-			+ "ORDER BY BD.BDCODE DESC")
+	@Select("SELECT BD.BDCODE, BD.BDTITLE, BD.BDMID, BD.BDDATE, RP.BDREPLY FROM BOARDS BD left outer join (SELECT RPBDCODE, COUNT (RPBDCODE) AS BDREPLY FROM REPLY GROUP BY RPBDCODE) RP "
+			+ "on BD.BDCODE = RP.RPBDCODE "
+			+ "where bdmid= #{loginId} "
+			+ "ORDER BY BD.BDCODE DESC" )
 	ArrayList<BoardDto> selectMyInfoMemberView_Boards(String loginId);
 
 	//마이페이지 회원정보 _ 댓글 작성한 글	
@@ -94,13 +94,30 @@ public interface MemberDao {
 	@Insert("INSERT INTO MEMBERS(MID, MPW, MNAME, MNICKNAME, MPHONE, MEMAIL, MREGION ,MPROFILE, MSTATE) "
 			+ "VALUES(#{mid}, #{mpw},'kakaoLogin' ,#{mnickname},'000-0000-0000', #{memail},'인천', #{mprofile}, 5 )")
 		    int insertMemberKakao(MemberDto member);
+
+	//팔구
+	@Select("SELECT UBTITLE FROM USEDBOARDS WHERE UBSELLBUY = 'S' AND UBMID = #{loginId}")
+	ArrayList<UsedBoardDto> selectMyInfoResellView_Sell(String loginId);
+	
+	//사구
+	@Select("SELECT UBTITLE FROM USEDBOARDS WHERE UBSELLBUY = 'B' AND UBMID = #{loginId} ")	
+	ArrayList<UsedBoardDto> selectMyInfoResellView_Buy(String loginId);
  	
-	 
+	//마이페이지 스크랩 목록
+	@Select("SELECT SC.SCBDCODE, BD.BDTITLE, BD.BDDATE, M.MNICKNAME ,RP.BDREPLY, SC.SCMID "
+			+ "FROM SCRAP SC "
+			+ "LEFT OUTER JOIN BOARDS BD ON BD.BDCODE = SC.SCBDCODE "
+			+ "LEFT OUTER JOIN MEMBERS M ON BD.BDMID = M.MID "
+			+ "LEFT OUTER JOIN (SELECT RPBDCODE, COUNT (RPBDCODE) AS BDREPLY FROM REPLY GROUP BY RPBDCODE) RP ON BD.BDCODE = RP.RPBDCODE "
+			+ "AND SCMID = #{loginId} ORDER BY BD.BDCODE DESC ")
+	ArrayList<ScrapDto> selectMyInfoMemberView_scrap(String loginId);
 	 	
 
 
 	
 }
+
+	
 
 
 

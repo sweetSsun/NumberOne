@@ -216,7 +216,7 @@ background-color: #00BCD4;
                                 </div>
                                 <div class="col-lg-2">
                                     <div class="checkout__input" style="margin-top: 45px;">
-                                        <select id="domainSelect">
+                                        <select id="domainSelect" class="selectOption">
 										<option>직접입력</option>
 										<option>naver.com</option>
 										<option>gmail.com</option>
@@ -224,11 +224,7 @@ background-color: #00BCD4;
 										</select>
                                     </div>
                                 </div> 
-                            </div> 
-
-
-							
-							                         
+                            </div>               
                             <!-- 관심지역 -->
                             <div class="row">
                                 <div class="col-lg-5">
@@ -306,9 +302,9 @@ background-color: #00BCD4;
                           <!-- 파일 업로드 -->
  							<div class="filebox checkout__input">
 							<p>프로필 사진</p>
-    							<input class="upload-name" value="첨부파일" placeholder="첨부파일" id="inputFile" >
+    							<input class="upload-name" value="${memberInfo.mprofile }" placeholder="첨부파일" id="inputFile" >
     							<label for="inputMfile" >파일찾기</label> 
-    							<input type="file" id="inputMfile" name="mfile" value="">${memberInfo.mprofile }
+    							<input type="file" id="inputMfile" name="mfile" value="">
 							</div>						
                             <!-- 상태메세지 -->                            
                             <div class="checkout__input">

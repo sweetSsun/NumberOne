@@ -77,7 +77,6 @@ public class HomeController {
 	    // mav.addObject("buyList", buyList");
 	    
 		
-		
 		mav.setViewName("Main");
 		return mav;
 

@@ -1,5 +1,8 @@
 package com.NumberOne.dto;
 
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
+
 import lombok.Data;
 
 @Data
@@ -31,7 +34,7 @@ public class Paging {
 	public Paging() {
 		// 초기값 설정
 		page = 1;
-		perPageNum = 5;
+		perPageNum = 10;
 		startRow = 1;
 		endRow = 10;
 		
@@ -68,4 +71,146 @@ public class Paging {
 			next = true;
 		}
 	}
+	
+	// 상세페이지에서 목록으로 돌아가기 위한 uri 생성 메소드
+	// 인덱스 없는 버전
+	public String makeQueryPage(int page) {
+		UriComponents uri = UriComponentsBuilder.newInstance()
+				.queryParam("page", page)
+				.queryParam("perPageNum", perPageNum)
+				.build();
+		return uri.toUriString();
+	}
+	// 인덱스 있는 버전(상세페이지에서 수정, 삭제시)
+	public String makeQueryPage(int idx, int page) {
+		UriComponents uri = UriComponentsBuilder.newInstance()
+				.queryParam("idx", idx)
+				.queryParam("page", page)
+				.queryParam("perPageNum", perPageNum)
+				.build();
+		System.out.println(uri.toUriString());
+		return uri.toUriString();
+	}
+
+	public int getPage() {
+		return page;
+	}
+
+	public void setPage(int page) {
+		this.page = page;
+	}
+
+	public int getPerPageNum() {
+		return perPageNum;
+	}
+
+	public void setPerPageNum(int perPageNum) {
+		this.perPageNum = perPageNum;
+	}
+
+	public int getStartRow() {
+		return startRow;
+	}
+
+	public void setStartRow(int startRow) {
+		this.startRow = startRow;
+	}
+
+	public int getEndRow() {
+		return endRow;
+	}
+
+	public void setEndRow(int endRow) {
+		this.endRow = endRow;
+	}
+
+	public int getTotalCount() {
+		return totalCount;
+	}
+
+	public void setTotalCount(int totalCount) {
+		this.totalCount = totalCount;
+	}
+
+	public int getMaxPage() {
+		return maxPage;
+	}
+
+	public void setMaxPage(int maxPage) {
+		this.maxPage = maxPage;
+	}
+
+	public int getDisplayPageNum() {
+		return displayPageNum;
+	}
+
+	public void setDisplayPageNum(int displayPageNum) {
+		this.displayPageNum = displayPageNum;
+	}
+
+	public int getStartPage() {
+		return startPage;
+	}
+
+	public void setStartPage(int startPage) {
+		this.startPage = startPage;
+	}
+
+	public int getEndPage() {
+		return endPage;
+	}
+
+	public void setEndPage(int endPage) {
+		this.endPage = endPage;
+	}
+
+	public boolean isPrev() {
+		return prev;
+	}
+
+	public void setPrev(boolean prev) {
+		this.prev = prev;
+	}
+
+	public boolean isNext() {
+		return next;
+	}
+
+	public void setNext(boolean next) {
+		this.next = next;
+	}
+
+	public String getSearchVal() {
+		return searchVal;
+	}
+
+	public void setSearchVal(String searchVal) {
+		this.searchVal = searchVal;
+	}
+
+	public String getSearchType() {
+		return searchType;
+	}
+
+	public void setSearchType(String searchType) {
+		this.searchType = searchType;
+	}
+
+	public String getKeyword() {
+		return keyword;
+	}
+
+	public void setKeyword(String keyword) {
+		this.keyword = keyword;
+	}
+
+	@Override
+	public String toString() {
+		return "Paging [page=" + page + ", perPageNum=" + perPageNum + ", startRow=" + startRow + ", endRow=" + endRow
+				+ ", totalCount=" + totalCount + ", maxPage=" + maxPage + ", displayPageNum=" + displayPageNum
+				+ ", startPage=" + startPage + ", endPage=" + endPage + ", prev=" + prev + ", next=" + next
+				+ ", searchVal=" + searchVal + ", searchType=" + searchType + ", keyword=" + keyword + "]";
+	}
+	
+	
 }

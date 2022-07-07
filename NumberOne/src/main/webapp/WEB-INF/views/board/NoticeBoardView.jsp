@@ -75,9 +75,9 @@
 							<a href="#"><span class="">${noticeBoard.nbmid }</span></a> 
 						</div>
 						
-						<div class="col-3 offset-md-3">
+						<div align="right" class="col-3 offset-md-3">
 							<span class="boardDate">${noticeBoard.nbdate } | </span> 
-							<span class="commentDate" style="right:0;"><i class="fa-regular fa-eye"></i>15 </span> 
+							<span class="commentDate" style="right:0;"><i class="fa-regular fa-eye"></i> ${noticeBoard.nbhits} </span> 
 						</div>
 					</div>
 					
