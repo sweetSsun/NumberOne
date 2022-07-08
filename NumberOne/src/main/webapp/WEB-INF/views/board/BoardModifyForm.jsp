@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@ include file="/resources/css/CommonCss.jsp" %>
+<%@ include file="/resources/css/BarCss.jsp" %>
 <!-- 폰트어썸 -->
 <script src="https://kit.fontawesome.com/86a85cd392.js" crossorigin="anonymous"></script>
 <title>1인자 - 게시글 수정페이지</title>
