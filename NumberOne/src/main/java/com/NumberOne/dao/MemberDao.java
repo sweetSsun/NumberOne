@@ -31,7 +31,7 @@ public interface MemberDao {
 	String selectMemberNickname_ajax(String inputNickname);
 
 	//로그인 요청
-	@Select("SELECT MID, MPROFILE, MREGION, MSTATE FROM MEMBERS WHERE MID = #{mid} AND MPW = #{mpw}")
+	@Select("SELECT MID, MPROFILE, MREGION, MNICKNAME, MSTATE FROM MEMBERS WHERE MID = #{mid} AND MPW = #{mpw}")
 	MemberDto selectMemberLogin(@Param("mid") String mid, @Param("mpw") String mpw);
 	
 	//아이디 찾기 요청
@@ -117,9 +117,14 @@ public interface MemberDao {
 	@Select("SELECT UB.UBTITLE, M.MNICKNAME, UB.UBDATE FROM ZZIM ZZ LEFT OUTER JOIN USEDBOARDS UB ON ZZ.ZZUBCODE =  UB.UBCODE LEFT OUTER JOIN MEMBERS M ON UB.UBMID = M.MID WHERE ZZ.ZZMID = #{loginId} ORDER BY UB.UBCODE DESC")
 	ArrayList<ZzimDto> selectMyInfoResellView_Zzim(String loginId);
 
+	//닉네임으로 회원정보 가져오기
+	@Select("SELECT MPROFILE, MNICKNAME, MREGION, MMESSAGE FROM MEMBERS WHERE MNICKNAME = #{nickname} ")
+	MemberDto selectWriteMemberInfo_member(String nickname);
+
 	//닉네임 별 작성 글 출력
 	@Select("SELECT BD.BDTITLE FROM BOARDS BD, MEMBERS M WHERE BD.BDMID = M.MID AND M.MNICKNAME = #{nickname} ORDER BY BDCODE DESC")
 	ArrayList<BoardDto> insertWriteMemberInfo_Board(String nickname);
+	
 	
 	 	
 

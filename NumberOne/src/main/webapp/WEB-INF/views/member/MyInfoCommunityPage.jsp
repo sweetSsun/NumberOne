@@ -139,7 +139,7 @@ background-color: #00BCD4;
 								<td>${scrap.scbdcode }</td>
 								<td><a href="selectBoardView?bdcode=${scrap.scbdcode }">${scrap.bdtitle }</a></td>
 								<td>${scrap.bdreply }</td>
-								<td><input type="text" value="${scrap.mnickname }" readonly="readonly" onclick="showPopup('${scrap.mnickname }');"
+								<td><input type="text" value="${scrap.mnickname }" readonly="readonly" onclick="writeMember('${scrap.mnickname }');"
 								style="border: 0px; text-align: center; cursor: pointer;"></td>
 								<td>${scrap.bddate }</td>								
 							</tr>
@@ -162,9 +162,9 @@ background-color: #00BCD4;
 <!-- 팝업 -->
  <script type="text/javascript">
 
-  function showPopup(nickname) { 
-	  var url = 'insertWriteMemberInfo_Board?nickname='+nickname;
-	  window.open(url, 'memberInfo', 'width=560, height=510, left=500, top=250 '); 
+  function writeMember(nickname) { 
+	  var url = 'selectWriteMemberInfo?nickname='+nickname;
+	  window.open(url, 'memberInfo', 'width=600%, height=650%, left=500, top=50 '); 
 	  console.log("nickname : " + nickname);
 	  }
   </script>

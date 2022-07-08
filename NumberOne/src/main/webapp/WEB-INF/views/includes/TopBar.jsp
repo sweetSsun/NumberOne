@@ -31,7 +31,7 @@
 		text-align: right;
 		font-size: 16px;
 	}
-	
+
 </style>
 
 </head>
@@ -59,12 +59,12 @@
 								<c:choose>
 									<c:when test="${sessionScope.loginProfile == null}">
 										<p style="font-size: 12.5px"><a href="selectMyInfoMemberView">${sessionScope.loginId} 님 &nbsp;&nbsp;
-										<img class="img-profile rounded-circle" style="width:50px" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png">
+										<img class="img-profile rounded-circle" style="height: 50px; width:50px;" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png">
 										</a></p>
 									</c:when>
 									<c:otherwise>
 										<p style="font-size: 12.5px"><a href="selectMyInfoMemberView">${sessionScope.loginId} 님 &nbsp;&nbsp;
-										<img class="img-profile rounded-circle" style="width:50px" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/${sessionScope.loginProfile }">
+										<img class="img-profile rounded-circle" style="height: 50px; width:50px;" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/${sessionScope.loginProfile }">
 										</a></p>
 									</c:otherwise>
 								</c:choose>
@@ -84,7 +84,7 @@
 							<a href="loadToBoardMainPage">커뮤니티</a>
 						</li>
 						<li>
-							<a href="loadToResellMainPage">중고거래</a>
+							<a href="selectResellMainPage">중고거래</a>
 						</li>
 					</ul>
 				</div>
@@ -114,7 +114,8 @@
 			
 		</div>
 	</header>
-
+	
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 <script type="text/javascript">
 console.log("스크립트 확인!");

@@ -12,14 +12,14 @@
 (function ($) {
 
     /*------------------
-        Preloader
+        메인화면 느리고 어둡게 뜨는거
     --------------------*/
     $(window).on('load', function () {
         $(".loader").fadeOut();
         $("#preloder").delay(200).fadeOut("slow");
 
         /*------------------
-            Gallery filter
+            메인화면 게시판/ 민희
         --------------------*/
         
         $('.featured__controls li').on('click', function () {
@@ -34,6 +34,9 @@
         }
     });
 
+
+        
+        
     /*------------------
         Background Set
     --------------------*/
