@@ -41,6 +41,12 @@ public class BoardDto {
 	private String rchistory;   //추천 기록
 	private String schistory;   //스크랩 기록
 	private String wbhistory;   //신고 기록	
+	
+	//게시글 별 댓글수 저장
+	private int bdrpcount;		//댓글수
+	//게시글 별 추천수 저장 
+	private int bdrccount;		//추천수
+	
 	public String getBdcode() {
 		return bdcode;
 	}
@@ -179,6 +185,20 @@ public class BoardDto {
 	public void setWbhistory(String wbhistory) {
 		this.wbhistory = wbhistory;
 	}
+	public int getBdrpcount() {
+		return bdrpcount;
+	}
+	public void setBdrpcount(int bdrpcount) {
+		this.bdrpcount = bdrpcount;
+	}
+	
+	
+	public int getBdrccount() {
+		return bdrccount;
+	}
+	public void setBdrccount(int bdrccount) {
+		this.bdrccount = bdrccount;
+	}
 	@Override
 	public String toString() {
 		return "BoardDto [bdcode=" + bdcode + ", bdrgcode=" + bdrgcode + ", bdrgname=" + bdrgname + ", bdcategory="
@@ -187,8 +207,13 @@ public class BoardDto {
 				+ bdhits + ", bdrecommend=" + bdrecommend + ", bdwarning=" + bdwarning + ", bdreply=" + bdreply
 				+ ", bdscrap=" + bdscrap + ", bdimgfile=" + bdimgfile + ", bddetailimgfile="
 				+ Arrays.toString(bddetailimgfile) + ", bdnickname=" + bdnickname + ", bdmprofile=" + bdmprofile
-				+ ", rchistory=" + rchistory + ", schistory=" + schistory + ", wbhistory=" + wbhistory + "]";
+				+ ", rchistory=" + rchistory + ", schistory=" + schistory + ", wbhistory=" + wbhistory + ", bdrpcount="
+				+ bdrpcount + ", bdrccount=" + bdrccount + "]";
 	}
+	
+	
+	
+	
 	
 
 

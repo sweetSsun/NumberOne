@@ -16,9 +16,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.NumberOne.dao.AdminDao;
 import com.NumberOne.dao.BoardDao;
+import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.NoticeDto;
 import com.NumberOne.dto.PageDto;
+import com.NumberOne.dto.Paging;
 import com.google.gson.Gson;
 
 @Service
@@ -37,19 +39,29 @@ public class AdminService {
 	@Autowired
 	private HttpServletRequest request;
 	
+	// 파일 저장 경로
+	String nbImgSavePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\noticeUpLoad";
+	
 	// 페이징 관련 필드
-	int viewCount = 5; // 한 페이지에 보여줄 갯수
+	int viewCount = 20; // 한 페이지에 보여줄 갯수
 	int pageNumCount = 5; // 한 페이지에 보여줄 페이징 갯수
 	
 	/* 회원 관리 */
 	// 회원 관리페이지 이동
-	public ModelAndView admin_selectMemberList(int page) {
+	public ModelAndView admin_selectMemberList(int page, RedirectAttributes ra) {
 		System.out.println("AdminService.admin_selectMemberList() 호출");
 		mav = new ModelAndView();
-		String searchVal = "all";
+		// 관리자 로그인 여부 체크
+		String loginId = (String)session.getAttribute("loginId");
+		if (loginId == null) {
+			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
+			mav.setViewName("redirect:/loadToLogin");	
+			return mav;
+		}
 		
-		System.out.println("요청 페이지 : " + page);
+		String searchVal = "all";
 		// 페이징
+		System.out.println("요청 페이지 : " + page);
 		int memberTotalCount = adao.admin_selectMemberTotalCount(searchVal); // 전체 회원수 조회
 		int startRow = (page-1) * viewCount + 1;
 		int endRow = page * viewCount;
@@ -153,8 +165,17 @@ public class AdminService {
 	
 	/* 공지 관리*/
 	// 공지 관리페이지 이동
-	public ModelAndView admin_selectNoticeList(String searchVal, String searchType, String keyword, int page) {
+	public ModelAndView admin_selectNoticeList(String searchVal, String searchType, String keyword, int page, RedirectAttributes ra) {
 		System.out.println("AdminService.admin_selectNoticeList() 호출");
+		
+		// 관리자 로그인 여부 체크
+		String loginId = (String)session.getAttribute("loginId");
+		if (loginId == null) {
+			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
+			mav.setViewName("redirect:/loadToLogin");	
+			return mav;
+		}
+		
 		System.out.println("정렬 val : " + searchVal);
 		System.out.println("검색 type : " + searchType);
 		System.out.println("검색 keyword : " + keyword);
@@ -329,8 +350,6 @@ public class AdminService {
 		notice.setNbcode(nbcode); // 생성한 nbcode set
 		
 		// 파일 등록
-		// 파일 저장 경로
-		String nbImgSavePath = request.getSession().getServletContext().getRealPath("resources/img/noticeUpLoad");
 		MultipartFile nbimgfile = notice.getNbimgfile();
 		String nbimg = ""; // 파일명 저장할 변수명
 		if(!nbimgfile.isEmpty()) {
@@ -374,36 +393,129 @@ public class AdminService {
 	}
 	
 	// 작성 공지 DB에 입력
-	public ModelAndView admin_updateNoticeModify(NoticeDto notice, RedirectAttributes ra) throws IllegalStateException, IOException {
+	public ModelAndView admin_updateNoticeModify(NoticeDto modiNotice, String originImg, RedirectAttributes ra) throws IllegalStateException, IOException {
 		System.out.println("AdminService.admin_updateNoticeModify() 호출");
-		
+		System.out.println("originImg : " + originImg);
 		// 파일 등록
-		// 파일 저장 경로
-//		String nbImgSavePath = request.getSession().getServletContext().getRealPath("resources/img/noticeUpLoad");
-//		MultipartFile nbimgfile = notice.getNbimgfile();
-//		String nbimg = ""; // 파일명 저장할 변수명
-//		if(!nbimgfile.isEmpty()) {
-//			System.out.println("첨부파일 있음");
-//			UUID uuid = UUID.randomUUID(); // 랜덤코드 생성
-//			nbimg = uuid.toString() + "_" + nbimgfile.getOriginalFilename();
-//			nbimgfile.transferTo( new File(nbImgSavePath, nbimg) );
-//		}
-//		notice.setNbimg(nbimg); // 생성한 파일명 set
+		MultipartFile nbimgfile = modiNotice.getNbimgfile();
+		String nbimg = ""; // 파일명 저장할 변수명
+		if(!nbimgfile.isEmpty()) { // 파일 수정
+			System.out.println("첨부파일 있음");
+			UUID uuid = UUID.randomUUID(); // 랜덤코드 생성
+			nbimg = uuid.toString() + "_" + nbimgfile.getOriginalFilename();
+			nbimgfile.transferTo( new File(nbImgSavePath, nbimg) );
+			modiNotice.setNbimg(nbimg); // 생성한 파일명 set
+		} else { // 파일 수정 X
+			if(originImg.length() > 0) { // 기존 첨부파일이 있으면
+				modiNotice.setNbimg(originImg);
+			} else { // 기존 첨부파일이 없으면
+				modiNotice.setNbimg(nbimg); // 생성한 파일명 set
+			}
+		}
 		
 		// UPDATE
-		System.out.println(notice);
-		int updateresult =  adao.admin_updateNoticeModify(notice);
+		System.out.println(modiNotice);
+		int updateresult =  adao.admin_updateNoticeModify(modiNotice);
 		
 		mav = new ModelAndView();
 		if(updateresult > 0) {
-			ra.addFlashAttribute("msg", notice.getNbcode()+ " 공지가 수정되었습니다.");
-			mav.setViewName("redirect:/admin_selectNoticeBoardView?nbcode="+notice.getNbcode());
+			if(!nbimgfile.isEmpty() && originImg.length() > 0) { // 파일을 수정하고 기존 첨부파일이 있었으면
+					File delFile = new File(nbImgSavePath, originImg);
+					delFile.delete();
+			}
+			ra.addFlashAttribute("msg", modiNotice.getNbcode()+ " 공지가 수정되었습니다.");
+			mav.setViewName("redirect:/admin_selectNoticeBoardView?nbcode="+modiNotice.getNbcode());
 		} else {
 			ra.addFlashAttribute("msg", "공지 수정에 실패했습니다.");
 			mav.setViewName("redirect:/loadToFail");
 		}
 		return mav;
+	}
+	
+	
+	/* 커뮤니티 관리 */
+	// 커뮤니티 관리페이지 이동
+	public ModelAndView admin_selectBoardList(Paging paging, RedirectAttributes ra) {
+		System.out.println("AdminService.admin_selectBoardList() 호출");
+		
+		// 관리자 로그인 여부 체크
+		String loginId = (String)session.getAttribute("loginId");
+		if (loginId == null) {
+			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
+			mav.setViewName("redirect:/loadToLogin");	
+			return mav;
+		}
+		
+		int totalCount = adao.admin_selectBoardTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
+		paging.setTotalCount(totalCount);
+		paging.calc(); // 페이지 처리 계산 실행
+		
+		System.out.println(paging);
+		mav = new ModelAndView();
+		ArrayList<BoardDto> boardList = adao.admin_selectBoardList(paging);
+		System.out.println("boardList : " + boardList);
+		mav.addObject("paging", paging);
+		mav.addObject("boardList", boardList);
+		mav.setViewName("admin/Admin_BoardList");
+		return mav;
+//		return null;
+	}
+//	public ModelAndView admin_selectBoardList() {
+//		System.out.println("AdminService.admin_selectBoardList() 호출");
+//		mav = new ModelAndView();
+//		String searchVal = "all";
+//		ArrayList<BoardDto> boardList = adao.admin_selectBoardList(searchVal);
+//		System.out.println("boardList : " + boardList);
+//		mav.addObject("boardList", boardList);
+//		mav.setViewName("admin/Admin_BoardList");
+//		return mav;
+//	}
+
+	// 커뮤니티 글 상태 변경 요청
+	public int admin_updateBdstate_ajax(String bdcode, String bdstate) {
+		System.out.println("AdminService.admin_updateBdstate_ajax() 호출");
+		System.out.println("상태변경할 bdcode : " + bdcode);
+		System.out.println("상태변경할 bdstate : " + bdstate);
+		int updateResult = adao.admin_updateBdstate_ajax(bdcode, bdstate);
+		return updateResult;
+	}
+
+	// 선택한 상태값에 따른 커뮤니티 목록 ajax
+	public String admin_selectBoardList_ajax(Paging paging) {
+		System.out.println("AdminService.admin_selectBoardList_ajax() 호출");
+		System.out.println("searchVal : " + paging.getSearchVal());
+		int totalCount = adao.admin_selectBoardTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
+		paging.setTotalCount(totalCount);
+		paging.calc(); // 페이지 처리 계산 실행
+		System.out.println("paging : " + paging);
+		
+		ArrayList<BoardDto> boardList = adao.admin_selectBoardList(paging);
+		System.out.println("boardList : " + boardList);
+		gson = new Gson();
+		String boardList_json = gson.toJson(boardList); 
+		return boardList_json;
 	}	
+//	public String admin_selectBoardList_ajax(String searchVal) {
+//		System.out.println("AdminService.admin_selectBoardList_ajax() 호출");
+//		System.out.println("정렬 val : " + searchVal);
+//		ArrayList<BoardDto> boardList = adao.admin_selectBoardList(searchVal);
+//		System.out.println("boardList : " + boardList);
+//		gson = new Gson();
+//		String boardList_json = gson.toJson(boardList); 
+//		return boardList_json;
+//	}	
+
+	public String admin_selectBoardPagingNumber_ajax(Paging paging) {
+		System.out.println("AdminService.admin_selectBoardPagingNumber_ajax() 호출");
+	
+		int totalCount = adao.admin_selectBoardTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
+		paging.setTotalCount(totalCount);
+		paging.calc(); // 페이지 처리 계산 실행
+		System.out.println("paging : " + paging);
+		gson = new Gson();
+		String paging_json = gson.toJson(paging);
+		return paging_json;
+	}
 
 
 }

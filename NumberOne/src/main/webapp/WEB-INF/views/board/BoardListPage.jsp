@@ -17,18 +17,33 @@
 		margin: 20px;
 	}
 	.bdcategory{
-		color : #004804;
+		color : #00bcd4;
 	}
 	.bdCategoryList{
 		
-		color : #004804;
+		color : #00bcd4;
 		border: none;
 	}
 	.bdcategorySel{
 		font-weight: bold;
 		text-align : center;
-		color : #004804;
-		
+		color : #00bcd4;
+	}
+	input{
+		border-radius:5px;
+		border: solid #E0E0E0 3px;
+		height: 32px;
+		font-size: 20px;
+	}
+	.searchType{
+		text-align: center;
+		border-radius: 5px;
+	}
+	.community{
+		background-color: #00bcd4;
+	}
+	.malmeori{
+		display: none;
 	}
 </style>
 </head>
@@ -56,40 +71,38 @@
 					<h1 class="text-center">게시판 글목록 페이지 : BoardListPage.jsp</h1>
 				</div>
 				<form action="selectBoardSearchList" method="get">
-				<div class="row">
-					<!-- 검색기능 -->
-						<div class="col-5">
-								<select name="searchType">
+					<div class="row ">
+						<!-- 검색기능 -->
+						<div class="col-5" align="right">
+								<select name="searchType" class="searchType">
 									<option value="bdtitle">제목</option>
 									<option value="bdcontents">내용</option>
 									<option value="bdtitlecontents">제목+내용</option>
 									<option value="bdnickname">작성자</option>
 								</select>
 						</div>
-						<div class="col-5 input-group">
-							  <input type="text" style="width:100px;" class="form-control" name="searchText" placeholder="검색 키워드를 입력하세요!">
-							  <span class="input-group-btn">
-							    <button class="btn btn-secondary">찾기</button>
-							  </span>
+						<div class="col-7 ">
+							<input type="text" name="searchText" placeholder="검색어를 입력하세요">
+							<button class="btn btn-sm btn-secondary">검색</button>
 						</div>
-						<div class="col-2 mb-5">
-							<!-- 글쓰기 버튼 -->
-							<button class="btn btn-primary btm-sm">글쓰기</button>
-						</div>
-				</div>
+					</div>		
 				</form>
+						
+				</div>
 				<div class="row" style="margin-top: 20px;">
 					<div class="col">
 						<!-- 말머리 정렬 -->
 						<select class="bdCategoryList" onchange="bdCategorySel(this.value)">
-							<option class="bdcategorySel" value="">말머리 선택</option>
+							<option class="bdcategorySel malmeori" value="" disabled selected >말머리 선택</option>
 							<option class="bdcategorySel" value="자유">자유</option>
 							<option class="bdcategorySel" value="질문">질문</option>
 							<option class="bdcategorySel" value="정보">정보</option>
 							<option class="bdcategorySel" value="후기">후기</option>
-							<option class="bdcategorySel" value="지역">지역</option>
 						</select>
 					</div>
+				</div>
+				<div class=" community" style="text-align:center;">
+					<span class="fw-bold text-white">커뮤니티</span>
 				</div>
 				
 				<!-- 게시글 목록 -->
@@ -116,7 +129,7 @@
 								</td>
 								<td>${notice.nbmid}</td>
 								<td>${notice.nbdate}</td>
-								<td>조회수</td>
+								<td>${notice.nbhits }</td>
 								<td></td>
 							</tr>
 						</c:forEach>
@@ -129,25 +142,31 @@
 						<c:if test="${board.bdcategory != '자랑' }">
 						<tr style="border-bottom: solid #E0E0E0 1px;">
 							<td>${board.bdcode}</td>
-							<td class="fw-bold bdcategory">${board.bdcategory}</td>
+							<td class="bdcategory">${board.bdcategory}</td>
 							<td>
-							 	<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a>
+							 	<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
+							 		<span class="fw-bold" style="font-size:18px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
 							 </td>
 							<td>
 								<a>${board.bdnickname}</a>
 							</td>
 							<td>${board.bddate}</td>
-							<td>조회수</td>
-							<td></td>
+							<td>${board.bdhits }</td>
+							<td class="fw-bold" style="color: #00bcd4;">${board.bdrccount}</td>
 						</tr>
 						</c:if>
 					</c:forEach>
 					
 					</tbody>
 				</table>
+				<div align="right" class="row">
+					<div class="col">
+						<c:if test="${sessionScope.loginId != null }">
+								<button  onclick="loadToBoardWrite()" class="btn btn-info btm-sm fw-bold text-white">글작성</button>
+						</c:if>
+					</div>
 				</div>
-						
-			</div>
+				</div>
 		</section>
 	</main>
 	
@@ -165,6 +184,13 @@
 </script>
 
 <script type="text/javascript">
+
+	/* 글쓰기 버튼 클릭 */
+	function loadToBoardWrite(){
+		//글작성 페이지로 이동 
+		location.href= "loadToBoardWrite";
+	}
+
 	/* 게시판 카테고리 선택 */
 	function bdCategorySel(categorySel){
 		console.log("categorySel: " + categorySel);
@@ -182,7 +208,7 @@
 				for(var i = 0; i< bdCategoryList.length; i++ ){
 					output += "<tr style=\"border-bottom: solid gray 1px;\">";
 					output += "<td>" + bdCategoryList[i].bdcode + "</td>";
-					output += "<td>" + bdCategoryList[i].bdcategory + "</td>";
+					output += "<td class=\"bdcategory\">" + bdCategoryList[i].bdcategory + "</td>";
 					output += "<td>" + bdCategoryList[i].bdtitle + "</td>";
 					output += "<td>" + bdCategoryList[i].bdnickname + "</td>";
 					output += "<td>" + bdCategoryList[i].bddate + "</td>";

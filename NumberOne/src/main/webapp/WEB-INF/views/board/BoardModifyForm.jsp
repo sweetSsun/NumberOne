@@ -8,7 +8,7 @@
 <%@ include file="/resources/css/CommonCss.jsp" %>
 <!-- 폰트어썸 -->
 <script src="https://kit.fontawesome.com/86a85cd392.js" crossorigin="anonymous"></script>
-<title>${board.bdtitle } - 1인자 - 게시글 수정페이지</title>
+<title>1인자 - 게시글 수정페이지</title>
 <!-- Jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
@@ -43,6 +43,9 @@
 		display: block;
 		
 	}
+	.selectPlaceHolder{
+		display: none;
+	}
 </style>
 </head>
 <body>
@@ -67,6 +70,7 @@
 				<h1 class="text-center">게시판 글수정페이지 : BoardModifyForm.jsp</h1>
 				<form action="updateBoardModify" method="post" enctype="multipart/form-data">
 				<div class="row">
+					<input type="hidden" name="bdmid" value="${board.bdmid }">
 					<input type="hidden" name="bdcode" value="${board.bdcode }">
 					<span class="fw-bold" name="bdnickname">${board.bdnickname }</span>
 					<hr>
@@ -75,7 +79,7 @@
 					<div class="col-6">
 						게시판<span class="text-danger">*</span>
 						<select name="bdcategory">
-							<option value="${board.bdcategory }">${board.bdcategory }</option>
+							<option value="${board.bdcategory}"  class="selectPlaceHolder">${board.bdcategory }</option>
 							<option value="자유">자유</option>
 							<option value="질문">질문</option>
 							<option value="정보">정보</option>
@@ -83,9 +87,9 @@
 						</select>
 					</div>
 					<div class="col-6">
-						지역 카테고리
+						지역
 						<select name="bdrgcode">
-							<option value="${board.bdrgcode }">${board.bdrgname }</option>
+							<option value="${board.bdrgcode }"  class="selectPlaceHolder">${board.bdrgname }</option>
 							<option value="ALL">전국</option>
 							<option value="SEL">서울</option>
 							<option value="ICN">인천</option>
@@ -108,12 +112,12 @@
 				</div>
 				<div class="row mt-4">
 					<!-- 첨부파일! 나중에 경로 및 name 수정  -->
-					<input type="file"  value="">
+					<input type="file" name="bdimgfile" value="${pageContext.request.contextPath }/resources/img/board/${board.bdimg}">
 				</div>
 				<div class="row mt-4">
 					<div class="col btn-wrapper">
 						<input class="btn btn-lg buttons bg-success fw-bold text-white" type="submit" value="수정">
-						<input onclick="modifyBoardCancel()" class="btn btn-lg buttons bg-success fw-bold text-white" type="button" value="취소">
+						<input onclick="bdWriteCancelCheckModal()" class="btn btn-lg buttons bg-success fw-bold text-white" type="button" value="취소">
 					</div>
 				</div>
 			</form>
@@ -123,7 +127,32 @@
 	</main>
 	
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
-
+	
+	<!-- 게시글 작성 취소 확인 -->
+	<div class="modal fade" id="bdWriteCancelCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" "> 게시글 작성 취소 </h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" >
+                	<span class="fw-bold">게시글 작성을 취소하시겠습니까?</span>
+                	<br>
+                	<span class="fw-bold">이 페이지를 벗어나면 작성된 내용은 저장되지 않습니다.</span>
+                </div>	
+                <div class="modal-footer">
+                	<input type="hidden" >
+                    <button class="close btn btn-info text-white" onclick="modifyBoardCancel()" >네</button>
+                    <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
+                </div>
+            </div>
+        </div>
+    </div>
+	
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 
@@ -137,7 +166,24 @@
 	//현재 로그인중인 아이디
 	var loginId = '${sessionScope.loginId}';
 	
-	
+</script>
+
+<script type="text/javascript">
+	function bdWriteCancelCheckModal(){
+	/* 게시글 작성 취소버튼 클릭시 모달 출력 */
+	$("#bdWriteCancelCheckModal").modal('show');
+}
+</script>
+
+<script type="text/javascript">
+	// 게시글 삭제 경고 모달창 close 하는 스크립트
+ 	var modal = $(".modal");
+	var close = $(".close");
+	for (var i = 0; i < close.length; i++){
+		close[i].addEventListener("click", function(){
+			$("#bdWriteCancelCheckModal").modal("hide");
+		});
+	}
 </script>
 
 <script type="text/javascript">

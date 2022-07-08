@@ -1,5 +1,6 @@
 package com.NumberOne.controller;
 
+import java.awt.Image;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -152,45 +153,33 @@ public class BoardController {
 	 //게시글 추천
 	 @RequestMapping ( value = "/insertBoardRecommend_ajax")
 	 @ResponseBody 
-	 public int insertBoardRecommend_ajax(String loginId, String bdcode) {
+	 public String insertBoardRecommend_ajax(String loginId, String bdcode) {
 		 System.out.println("게시글 추천 요청_ajax");
 		 
-		 int insertResult = bsvc.insertBoardRecommend_ajax(loginId, bdcode);
+		 String recommend = bsvc.insertBoardRecommend_ajax(loginId, bdcode);
 		 
-		 return insertResult;
+		 return recommend;
 	 }
 	 
 	 //게시글 추천 취소(추천 중복 클릭 시)
 	 @RequestMapping ( value = "/deleteBoardRecommend_ajax")
 	 @ResponseBody
 	 public int deleteBoardRecommend_ajax(String loginId, String bdcode ) {
+		 System.out.println("게시글 추천 삭제_ajax");
 		 
 		 int deleteResult = bsvc.deleteBoardRecommend_ajax(loginId, bdcode);
 		 
 		 return deleteResult;
 	 }
-	 
-	 //게시글 신고 
-	 @RequestMapping ( value = "/insertBoardWarning_ajax")
-	 @ResponseBody
-	 public int insertBoardWarning_ajax(String loginId, String bdcode) {
-		 System.out.println("게시글 신고 요청_ajax");
-		 
-		 int insertResult = bsvc.insertBoardWarning_ajax(loginId, bdcode);
-		 
-		 return insertResult;
-	 }
-	 
-	 //게시글 추천 유무 조회 
+	 //게시글 추천 유무 확인 
 	 @RequestMapping ( value = "/checkBoardRecommend_ajax")
 	 @ResponseBody
 	 public String checkBoardRecommend_ajax(String loginId, String bdcode) {
-		 System.out.println("게시글 추천 유무 확인 요청");
+		 System.out.println("게시글 추천 유무 확인 요청_ajax");
 		 
 		 String rcCheck = bsvc.checkBoardRecommend_ajax(loginId, bdcode);
 		 
 		 return rcCheck;
-		 
 	 }
 	 
 	 //게시글 추천수 조회 
@@ -204,6 +193,41 @@ public class BoardController {
 		 return boardRecommendCount;
 		 
 	 }
+	 /* 게시글 신고  */
+	 //게시글 신고 유무 확인
+	 @RequestMapping ( value = "/checkBoardWarning_ajax")
+	 @ResponseBody
+	 public String checkBoardWarning_ajax(String loginId, String bdcode ) {
+		 System.out.println("게시글 신고 유무 확인 요청_ajax");
+		 
+		 String wnCheck = bsvc.checkBoardWarning_ajax(loginId, bdcode);
+		 
+		 return wnCheck;
+	 }
+	 
+	 //게시글 신고 
+	 @RequestMapping ( value = "/insertBoardWarning_ajax")
+	 @ResponseBody
+	 public int insertBoardWarning_ajax(String loginId, String bdcode) {
+		 System.out.println("게시글 신고 요청_ajax");
+		 
+		 int insertResult = bsvc.insertBoardWarning_ajax(loginId, bdcode);
+		 
+		 return insertResult;
+	 }
+	 //게시글 신고 취소 (신고 중복 클릭 시 )
+	 @RequestMapping ( value = "/deleteBoardWarning_ajax")
+	 @ResponseBody 
+	 public int deleteBoardWarning_ajax(String loginId, String bdcode ) {
+		 System.out.println("게시글 신고 취소 요청_ajax");
+		 
+		 int deleteResult = bsvc.deleteBoardWarning_ajax(loginId, bdcode);
+		 
+		 return deleteResult;
+		 
+	 }
+	 
+	 
 	 //게시글 수정 페이지 이동 
 	 @RequestMapping ( value = "/loadToBoardModify")
 	 public ModelAndView loadToBoardModify(String bdcode) {
@@ -216,7 +240,7 @@ public class BoardController {
 	 
 	 //게시글 수정 
 	 @RequestMapping ( value = "/updateBoardModify")
-	 public ModelAndView updateBoardModify(BoardDto board, RedirectAttributes ra) {
+	 public ModelAndView updateBoardModify(BoardDto board, RedirectAttributes ra) throws IllegalStateException, IOException {
 		 System.out.println("게시글 수정 요청");
 		 
 		 ModelAndView mav = bsvc.updateBoardModify(board, ra);
@@ -236,6 +260,36 @@ public class BoardController {
 		 
 	 }
 	 
+	 //게시글 작성 페이지 이동 
+	 @RequestMapping ( value = "/loadToBoardWrite")
+	 public ModelAndView loadToBoardWrite() {
+		 System.out.println("게시글 작성페이지 이동 요청");
+		 
+		 ModelAndView mav = bsvc.loadToBoardWrite();
+		 
+		 return mav;
+	 }
+	 
+	 //게시글 작성 
+	 @RequestMapping ( value = "/insertBoardWrite")
+	 public ModelAndView insertBoardWrite(BoardDto board, RedirectAttributes ra) throws IllegalStateException, IOException {
+		 System.out.println("게시글 작성 요청");
+		 
+		 ModelAndView mav = bsvc.insertBoardWrite(board, ra);
+		 
+		 return mav;
+	 }
+	 
+	 //자유게시판 이동 
+	 @RequestMapping ( value = "/selectFreeBoardList")
+	 public ModelAndView selectFreeBoardList() {
+		 System.out.println("자유게시판 이동 요청");
+		 
+		 ModelAndView mav = bsvc.selectFreeBoardList();
+		 
+		 return null;
+		 
+	 }
 	 
 	 //자취방 자랑글 상세 페이지 이동
 	 @RequestMapping ( value = "/selectRoomView")

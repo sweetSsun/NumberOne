@@ -27,12 +27,12 @@
 		text-align: left;
 	}
 	.boardCategory{
-		color : #004804;
+		color : #00a5ba;
 		font-size: 25px;
 	}
 	.bdregion{
 		font-weight: bold;
-		color : #7fad39;
+		color : #00bcd4;
 	}
 	.idDateHits{
 		border-bottom: solid #E0E0E0 3px;
@@ -51,15 +51,19 @@
 	.commentContents{
 		border-bottom : solid #E0E0E0 2px;
 	}
-	.commentWriteBox{
-		background-color : #E8E8E8;
+	.outerCmtBox{
+		background-color : #F6F6F6;
+		display: table;
 		vertical-align: middle;
 	}
-	.commentWriteForm{
-		min-height: 150px;
+	.innerCmtBox{
+		display: table-cell;
+		margin: auto;
 	}
+	/* .commentWriteForm{
+		/* min-height: 150px; */
+	} */
 	.replyButton{
-		border : solid gray 1px;
 		background-color: #F4F4F4;
 		float: right;
 	}
@@ -111,9 +115,9 @@
 							<a href="#"><span class="fw-bold">${board.bdnickname }</span></a> 
 						</div>
 						
-						<div class="col-3 offset-md-3">
+						<div align="right"  class="col-3 offset-md-3">
 							<span class="boardDate">${board.bddate } | </span> 
-							<span class="commentDate" style="right:0;"><i class="fa-regular fa-eye"></i>  15 |</span> 
+							<span class="commentDate" style="right:0;"><i class="fa-regular fa-eye"></i>  ${board.bdhits } |</span> 
 							<i class="fa-regular fa-thumbs-up commentDate" ></i> <span class="commentDate" style="right:0;" id="BoardRecommendSum"></span>
 						</div>
 					</div>
@@ -132,24 +136,24 @@
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
 				<div class="row">
 					<div class="col-2">
-						<a href="#"><input type="button" style="left:0;" class="middelBtn btn btn-lg bg-success fw-bold text-white" value="글목록"></a> 
+						<input onclick="boardList()" type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-lg fw-bold text-white" value="글목록"> 
 					</div>
 				<c:choose>
 					<c:when test="${sessionScope.loginId == board.bdmid }">
-						<div class="col-4 offset-md-6" >
+						<div align="right" class="col" >
 							<!-- 수정,삭제 : 로그인 아이디 = 글작성자 -->
-							<input onclick="updateBoardDelete()" type="button" style="float:right;" class="btn btn-lg bg-success fw-bold text-white" value="삭제">
-							<input onclick="loadToBoardModify()" type="button" style="float:right; margin-right: 5px;" class="btn btn-lg bg-success fw-bold text-white" value="수정">
+							<input onclick="loadToBoardModify()" type="button" style="margin-right: 2px; background-color: #00bcd4;" class="btn btn-lg fw-bold text-white" value="수정">
+							<input onclick="bdDeleteCheckModal()" type="button" style="background-color: #00bcd4;" class="btn btn-lg fw-bold text-white" value="삭제">
 						</div>
 					</c:when>
 					
 					<c:when test="${sessionScope.loginId != null }">
-						<div class="col-4 offset-md-6" >
+						<div align="right" class="col" >
 							<!-- 추천,신고 : 로그인 한 아이디  -->
 							<!-- <i onclick="insertBoardWarning()" class="fa-solid fa-triangle-exclamation text-danger fa-2x icon" style="float:right;"></i>신고 -->
 							<!-- <input type="button" style="float:right;" class="btn btn-lg bg-success fw-bold text-white" value="신고"> -->
-							<i id="bdWarning" onclick="insertBoardWarning()" class='fa-solid fa-land-mine-on  fa-2x icon' style="float:right; margin-right:5px;"></i>
-							<i id="bdRecommend" onclick="boardRecommend()" class="fa-regular fa-thumbs-up  fa-2x icon" style="float:right; margin-right:5px;"></i>
+							<i id="bdRecommend" onclick="insertBoardRecommend()" class="fa-regular fa-thumbs-up  fa-2x icon"  style="margin-right: 2px;"></i>
+							<i id="bdWarning" onclick="bdWarningCheckModal()" class='fa-solid fa-land-mine-on  fa-2x icon' style="margin-right: 2px;"></i>
 							<!-- <input type="button" style="float:right; margin-right: 5px;" class="btn btn-lg bg-success fw-bold text-white" value="추천"> -->
 							
 						</div>
@@ -163,42 +167,85 @@
 					<!-- 댓글개수 -->	
 					<div class="row">
 						<div class="col commentCount">
-							<i class="fa-regular fa-comment"></i> 댓글 <span class="text-success fw-bold" id="ReplyCount"></span>개
+							<i class="fa-regular fa-comment"></i> 댓글 <span class="text-info fw-bold" id="ReplyCount"></span>개
 						</div>
 					</div>
 					
-					<!-- 댓글목록 -->
+					<!-- 댓글목록_ajax -->
 					<div class="row" id="replyList_ajax">
-	
+				
 					</div>
 					
 					<!-- 댓글입력박스 -->
 					<!-- 로그인 상태가 아닌 경우 댓글입력칸이 출력되지 않도록-->
 					<c:choose>
 					<c:when test="${sessionScope.loginId  != null }">
-					<div class="row commentWriteBox mt-3">
-						<table>
-							<tr>
-								<td>
-									<!-- 댓글입력칸 -->
-									<div class="commentWriteForm">
-										<textarea id="inputComment" class="commentInput mt-3" rows="3" cols="95" "></textarea>
-									</div>
-								</td>
-								<td>
-									<input type="button" onclick="insertReply()" value="등록">
-								</td>
-							</tr>
-						</table>
-					</div>
+						<div style="min-height:200px; border-radius:8px;" class="row outerCmtBox mt-3 mb-3">
+							<div class="innerCmtBox">
+								<!-- 댓글입력 -->
+								<textarea id="inputComment" style="border: solid #E0E0E0 3px;" class="mt-4 ml-1" rows="3" cols="100" placeholder="상대방에게 불쾌감을 주는 욕설이나 댓글은 고지없이 삭제될 수 있습니다. "></textarea>
+							</div>
+							<div align="right" class="row">
+								<div align="right" class="col">
+									<button onclick="insertReply()" class="btn btn-lg bg-secondary mb-2 fw-bold text-white">등록</button>
+								</div>
+							</div>
+						</div>
 					</c:when>
 					</c:choose>
-					
 				</div>
 			</div>
 			
 		</section>
 	</main>
+	
+	<!-- 신고 확인 모달 -->
+	<div class="modal fade" id="bdWarningCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"> 게시글 신고 </h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" >
+                	게시글을 신고하시겠습니까?
+                	<br> <span class="text-danger fw-bold">(※한번 신고한 게시글은 신고취소가 불가능합니다.)</span></div>
+                <div class="modal-footer">
+                	<input type="hidden" >
+                    <button class="close btn btn-info text-white" onclick="insertBoardWarning()" >네</button>
+                    <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!--  --><!-- 삭제 확인 모달 -->
+	<div class="modal fade" id="bdDeleteCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" > 게시글 삭제 </h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" >
+                	<span class="fw-bold">게시글을 삭제하시겠습니까?</span>
+                </div>	
+                <div class="modal-footer">
+                	<input type="hidden" >
+                    <button class="close btn btn-info text-white" onclick="updateBoardDelete()" >네</button>
+                    <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+	
 	
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
 
@@ -223,17 +270,43 @@
 		selectReplyCount();//게시글 댓글수
 		updateBoardRecommendCount();//게시글 추천수 
 		checkBoardRecommend();//게시글 추천 확인
+		checkBoardWarning();//게시글 신고 확인 
 	});
 </script>
 
 <script type="text/javascript">
-	/* 게시글 추천, 삭제 메소드 */
-	function boardRecommend(){
-		insertBoardRecommend();
-		
+	/* 글목록 버튼 클릭 시 */
+	function boardList(){
+		history.back();
 		
 	}
-	
+</script>
+
+
+<script type="text/javascript">
+		// 게시글 경고 모달창 close 하는 스크립트
+ 		var modal = $(".modal");
+		var close = $(".close");
+		for (var i = 0; i < close.length; i++){
+			close[i].addEventListener("click", function(){
+				$("#bdWarningCheckModal").modal("hide");
+			});
+		}
+</script>
+
+<script type="text/javascript">
+		// 게시글 삭제 경고 모달창 close 하는 스크립트
+ 		var modal = $(".modal");
+		var close = $(".close");
+		for (var i = 0; i < close.length; i++){
+			close[i].addEventListener("click", function(){
+				$("#bdDeleteCheckModal").modal("hide");
+			});
+		}
+</script>
+
+<script type="text/javascript">
+	/* 게시글 추천, 신고 메소드 */
 	function checkBoardRecommend(){
 		/* 게시글 추천 확인 */
 		$.ajax({
@@ -242,7 +315,6 @@
 			data : { "loginId" : loginId, "bdcode" : bdcode },
 			async: false,
 			success : function(rcCheck){
-				console.log(rcCheck);
 				console.log("추천유무 확인 : " + rcCheck);
 				if( rcCheck == "Yes" ){
 					$("#bdRecommend").addClass("text-primary");
@@ -250,27 +322,31 @@
 			}
 		});
 	}
-	
 	function insertBoardRecommend(){
 		/* 게시글 추천 */
 		console.log("게시글 추천자 :" + loginId);
 		console.log("추천할 글번호 :" + bdcode);
 		
-		$.ajax({
-			type : "get",
-			url : "insertBoardRecommend_ajax",
-			data : { "loginId" : loginId, "bdcode" : bdcode },
-			async: false,
-			success : function(updateResult){
-				console.log(updateResult);
-					updateBoardRecommendCount();
-					$("#bdRecommend").addClass("text-primary");
-			}
-		});
+		if( $("#bdRecommend").hasClass("text-primary") ){
+			deleteBoardRecommend();
+		}else{
+			$.ajax({
+				type : "get",
+				url : "insertBoardRecommend_ajax",
+				data : { "loginId" : loginId, "bdcode" : bdcode },
+				async: false,
+				success : function(recommend){
+					console.log(recommend);
+					if( recommend.length > 0 ){
+						$("#bdRecommend").addClass("text-primary");
+						updateBoardRecommendCount();
+					}
+				}
+			});
+		}
 	}
-	
 	function deleteBoardRecommend(){
-		/* 추천 중복 클릭 시 추천 취소 */
+		/* 추천 취소(추천한 상태에서 추천버튼 누를 시) */
 		console.log("추천취소할 사용자 : " + loginId);
 		console.log("추천취소할 게시글 : " + bdcode);
 		$("#bdRecommend").removeClass("text-primary");
@@ -281,12 +357,9 @@
 			async : false,
 			success : function(deleteResult){
 				console.log(deleteResult);
-					updateBoardRecommendCount();
-					$("#bdRecommend").removeClass("text-primary");
-			}
-			
+				updateBoardRecommendCount();
+			}			
 		});
-		
 	}
 	
 	function updateBoardRecommendCount(){
@@ -300,7 +373,31 @@
 				console.log("게시글 추천수 : " + boardRecommendCount);
 				$("#BoardRecommendSum").text(boardRecommendCount);
 			}
-			
+		});
+	}
+	///////////////////////////[신고]/////////////////////////////////
+	function bdWarningCheckModal(){
+		/* 게시글 신고 클릭 시 모달창 출력 */
+		if( $("#bdWarning").hasClass("text-danger") ){
+			alert("이미 신고접수된 게시물입니다.");
+		}else{
+			$("#bdWarningCheckModal").modal('show');
+		}
+	}
+	
+	function checkBoardWarning(){
+		/* 게시글 신고 확인 */
+		$.ajax({
+			type : "get",
+			url : "checkBoardWarning_ajax",
+			data : { "loginId" : loginId, "bdcode" : bdcode },
+			async: false,
+			success : function(wnCheck){
+				console.log("신고유무 확인 : " + wnCheck );
+				if( wnCheck == "Yes" ){
+					$("#bdWarning").addClass("text-danger");
+				}
+			}
 		});
 	}
 	
@@ -308,24 +405,38 @@
 		/* 게시글 신고 */
 		console.log("게시글 신고자 : " + loginId);
 		console.log("신고할 글번호 : " + bdcode);
-		
-		$.ajax({
-			type : "get",
-			url : "insertBoardWarning_ajax",
-			data : { "loginId" : loginId, "bdcode" : bdcode },
-			async: false,
-			success : function(insertResult){
-				console.log(insertResult);
-				
-				if( insertResult > 0 ){
-					alert("게시글 신고가 접수되었습니다.");
+		if( $("#bdWarning").hasClass("text-danger") ){
+			deleteBoardWarning();
+		}else{
+			$.ajax({
+				type : "get",
+				url : "insertBoardWarning_ajax",
+				data : { "loginId" : loginId, "bdcode" : bdcode },
+				async: false,
+				success : function(insertResult){
+					console.log(insertResult);
+					if( insertResult > 0 ){
+						alert("게시글 신고가 접수되었습니다.")
+						$("#bdWarning").addClass("text-danger");
+					}
 				}
-			}
-			
-		});
-		
+			});
+		}
 	}
 	
+	function deleteBoardWarning(){
+		/* 신고 취소 // 22.07.06 신고취소 안되도록 수정 */
+		$("#bdWarning").removeClass("text-danger");
+		$.ajax({
+			type : "get",
+			url : "deleteBoardWarning_ajax",
+			data : { "loginId" : loginId, "bdcode" : bdcode },
+			async : false,
+			success : function(deleteResult){
+				console.log(deleteResult);
+			}			
+		});
+	}
 </script>
 
 <script type="text/javascript">
@@ -335,9 +446,13 @@
 		location.href="loadToBoardModify?bdcode="+bdcode;
 	}
 	
-	
+	function bdDeleteCheckModal(){
+		/* 게시글 삭제버튼 클릭 시 모달 출력 */
+		$("#bdDeleteCheckModal").modal('show');
+	}
 	function updateBoardDelete(){
 		/* 게시글 삭제(상태변경) */
+		//모달창에서 "네" 버튼 클릭 시 삭제
 		location.href="updateBoardDelete?bdcode="+bdcode;
 	}
 	
@@ -380,13 +495,15 @@
 				console.log(replyList);
 				
 				for( var i=0; i < replyList.length; i++ ){
-					output += "<div class=\"col\">"
+					output += "<div class=\"col mt-1\">"
 					output += "<span class=\"fw-bold\">" + replyList[i].rpnickname + "</span>"
 					output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span>"
-					output += "<input type=\"button\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"replyRemove('"+ replyList[i].rpcode +"')\" value=\"삭제\">"
-					output += "<input style=\"margin-right:5px;\" type=\"button\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"replyModify()\" value=\"수정\">"
 					output += "</div>"
-					output += "<div class=\"row commentContents\">"
+					output += "<div align=\"right\" class=\"col\">"
+					output += "<input style=\"margin-right:5px; border:solid gray 1px\" type=\"button\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"replyModify()\" value=\"수정\">"
+					output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"replyRemove('"+ replyList[i].rpcode +"')\" value=\"삭제\">"
+					output += "</div>"
+					output += "<div class=\"row commentContents mb-2\">"
 					output += "<span>" + replyList[i].rpcontents + "</span>"
 					output += "</div>"
 				}

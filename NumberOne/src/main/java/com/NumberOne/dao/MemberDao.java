@@ -30,7 +30,7 @@ public interface MemberDao {
 	String selectMemberNickname_ajax(String inputNickname);
 
 	//로그인 요청
-	@Select("SELECT MID, MPROFILE, MSTATE FROM MEMBERS WHERE MID = #{mid} AND MPW = #{mpw}")
+	@Select("SELECT MID, MPROFILE, MREGION, MSTATE FROM MEMBERS WHERE MID = #{mid} AND MPW = #{mpw}")
 	MemberDto selectMemberLogin(@Param("mid") String mid, @Param("mpw") String mpw);
 	
 	//아이디 찾기 요청
@@ -74,10 +74,27 @@ public interface MemberDao {
 	int insertMyInfoQuestionWrite(ContactDto contact);
 
 	//1:1 문의 내역
-	@Select("SELECT CTCODE, CTTITLE, CTCONTENTS, CTMID, CTDATE FROM CONTACT WHERE CTMID=#{loginId} ORDER BY CTCODE DESC")
+	@Select("SELECT CTCODE, CTTITLE, CTCONTENTS, CTMID, TO_CHAR(CTDATE,'YYYY-MM-DD HH24:MI') AS CTDATE, "
+			+ "CTANS, TO_CHAR(CTANSDATE,'YYYY-MM-DD HH24:MI') AS CTANSDATE FROM CONTACT WHERE CTMID=#{loginId} ORDER BY CTCODE DESC")
 	ArrayList<ContactDto> selectMyInfoQuestionListView(String loginId);
 
+	
+	//카카오 가입확인
+	@Select("SELECT MID, MPROFILE FROM MEMBERS WHERE MID = #{mid}")
+		MemberDto selectMemberKakao(String mid);
+	
+	//카카오 회원가입 처리
+/*	@Insert("INSERT INTO MEMBERS(MID, MPW, MNAME, MNICKNAME, MPHONE, MEMAIL, MREGION ,MPROFILE, MSTATE) "
+			+ "VALUES(#{mid}, #{mpw},#{mname} ,#{mnickname},#{mphone}, #{memail},#{mregion}, #{mprofile}, 5 )")
+		    int insertMemberKakao(MemberDto member);	
+*/
+	 
 
+ 	//카카오 회원가입 처리
+	@Insert("INSERT INTO MEMBERS(MID, MPW, MNAME, MNICKNAME, MPHONE, MEMAIL, MREGION ,MPROFILE, MSTATE) "
+			+ "VALUES(#{mid}, #{mpw},'kakaoLogin' ,#{mnickname},'000-0000-0000', #{memail},'인천', #{mprofile}, 5 )")
+		    int insertMemberKakao(MemberDto member);
+ 	
 	 
 	 	
 

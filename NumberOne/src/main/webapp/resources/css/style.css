@@ -112,8 +112,8 @@ ol {
 -----------------------*/
 
 .section-title {
-	margin-bottom: 50px;
 	text-align: center;
+	align-items: center;
 }
 
 .section-title h2 {
@@ -809,6 +809,20 @@ ol {
 /*---------------------
   Featured
 -----------------------*/
+.title_color{
+    background-color: #B5E61D;
+    border-radius: 15px;
+}
+.sellbuylist{
+	font-size: 30px;
+	color: #1c1c1c;
+	text-align: center;
+	list-style: none;
+	display: inline-block;
+	position: relative;
+	cursor: pointer;
+	padding-left: 0;
+}
 
 .featured {
 	padding-top: 80px;
@@ -822,16 +836,18 @@ ol {
 
 .featured__controls ul li {
 	list-style: none;
-	font-size: 18px;
+	/* font-size: 20px; */
 	color: #1c1c1c;
 	display: inline-block;
 	margin-right: 25px;
 	position: relative;
 	cursor: pointer;
+	display: "";
 }
 
 .featured__controls ul li.active:after {
 	opacity: 1;
+	display: "";
 }
 
 .featured__controls ul li:after {
@@ -843,15 +859,14 @@ ol {
 	background: #7fad39;
 	content: "";
 	opacity: 0;
+	display: none;
 }
 
 .featured__controls ul li:last-child {
 	margin-right: 0;
 }
 
-.featured__item {
-	margin-bottom: 50px;
-}
+
 
 .featured__item:hover .featured__item__pic .featured__item__pic__hover {
 	bottom: 20px;

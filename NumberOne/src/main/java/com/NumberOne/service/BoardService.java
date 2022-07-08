@@ -36,14 +36,16 @@ public class BoardService {
 	@Autowired
 	private HttpSession session;
 	
-	//사용할 때 자기 폴더 경로로 바꾸어야 함
-	private String roomSavePath = "D:\\numberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\room";
-
+	//자랑게시판 이미지 등록 경로
+	private String roomSavePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\room";
+	
+	//일반게시판 이미지 등록 경로 
+	private String boardSavePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\board";
+	
 	//자취방자랑 글 등록
 	public ModelAndView insertRoomWrite(BoardDto room, RedirectAttributes ra) throws IllegalStateException, IOException {
 		ModelAndView mav = new ModelAndView();
 		System.out.println("BoardService.insertRoomWrite() 호출");
-		
 		
 		//글번호 생성
 		String bdcode = bdao.selectMaxBdcode();
@@ -64,19 +66,10 @@ public class BoardService {
 		//System.out.println("bdcode: "+bdcode);
 		room.setBdcode(bdcode);
 		
-		//파일 저장 경로
-		//String savePath = request.getSession().getServletContext().getRealPath("resources/img/room");
-		//System.out.println(request.getRealPath("resources/img/room"));
 		//대표이미지 파일
 		MultipartFile bdimgfile = room.getBdimgfile();
 		//대표이미지의 파일명
 		String bdimg = "";
-		
-		//D:\numberOne\NumberOne\src\main\webapp\resources\img
-		String projectPath = request.getRealPath("").split(".metadata")[0];
-		System.out.println(request.getRealPath(""));
-		System.out.println(projectPath + "numberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\room");
-		
 		
 		//대표이미지 파일 처리
 		if( ! bdimgfile.isEmpty() ) {
@@ -86,6 +79,7 @@ public class BoardService {
 			//파일명 생성
 			bdimg = "M"+uuid.toString()+"_"+bdimgfile.getOriginalFilename();
 			//대표 이미지 파일 저장
+			System.out.println(roomSavePath);
 			bdimgfile.transferTo( new File (roomSavePath, bdimg)  );
 			
 			//room에 setBdimg 
@@ -110,10 +104,10 @@ public class BoardService {
 			for(int i=0; i<bddetailimgfile.length; i++) {
 				UUID uuid = UUID.randomUUID();
 				//파일명 생성
-				String bddetailimgname = uuid.toString()+bddetailimgfile[i].getOriginalFilename();
+				String bddetailimgname = uuid.toString()+"_"+bddetailimgfile[i].getOriginalFilename();
 				//상세 이미지 파일 저장
 				bddetailimgfile[i].transferTo(  new File(roomSavePath, bddetailimgname)   );
-				bddetailimg += "___"+bddetailimgname;
+				bddetailimg += bddetailimgname+"___";
 			}
 			
 			//room에 setBddetailimg 
@@ -138,7 +132,7 @@ public class BoardService {
 			System.out.println("등록 성공!");
 			ra.addFlashAttribute("msg", "자취방 자랑글이 등록되었습니다.");
 			//메인페이지로 돌아가기	>> 등록한 글 상세보기 페이지로 이동으로 수정	
-			mav.setViewName("redirect:/");
+			mav.setViewName("redirect:/selectRoomList");
 		} else {
 			System.out.println("등록 실패!");
 			ra.addFlashAttribute("msg", "자취방 자랑글 등록에 실패했습니다.");
@@ -246,7 +240,7 @@ public class BoardService {
 	   }
 
 
-	//자취방 메인 페이지(목록)   
+	//자취방 자랑 메인 페이지(목록)   
 	public ModelAndView selectRoomList() {
 		System.out.println("BoardService.selectRoomList() 호출");
 		ModelAndView mav = new ModelAndView();
@@ -262,11 +256,12 @@ public class BoardService {
 	    */
 	    
 	    mav.addObject("roomList", roomList);
-	    //확인용 출력
 	    
+	    /* 확인용 출력
 	    for(int i=0; i<roomList.size(); i++) {
 	    	System.out.println(roomList.get(i));
 	    }
+	    */
 	    
 
 	    
@@ -282,21 +277,27 @@ public class BoardService {
 		 
 		System.out.println("nbcode:" +  nbcode);
 		
+		//공지글 조회수 업데이트 
+		int updateResult = bdao.updateNoticeBdHits(nbcode);
+		
+		//공지글 정보 조회 
 		NoticeDto noticeBoard = bdao.selectNoticeBoardView(nbcode);
 		System.out.println(noticeBoard);
+		
 		mav.addObject("noticeBoard", noticeBoard);
 		mav.setViewName("board/NoticeBoardView");
 		
 		return mav;
 	}
-
+	
 	//일반게시판 - 글상세페이지 이동 
 	public ModelAndView selectBoardView(String bdcode) {
 		System.out.println("BoardService.selectBoardView() 호출");
 		ModelAndView mav = new ModelAndView();
-		
 		System.out.println("bdcode : " + bdcode);
 		
+		//게시글 조회수 증가 
+		updateBoardHits(bdcode);
 		//글상세정보 조회 
 		BoardDto board = bdao.selectBoardView(bdcode);
 		System.out.println(board);
@@ -495,23 +496,49 @@ public class BoardService {
 		
 		return updateResult;
 	}
-
+	
+	//게시글 신고 유무 확인 
+	public String checkBoardWarning_ajax(String loginId, String bdcode) {
+		System.out.println("BoardService.checkBoardWarning_ajax() 호출");
+		
+		String wnCheck ="";
+		String warning = bdao.checkBoardWarning_ajax(loginId, bdcode);
+		if( warning != null ) {
+			//이미 신고한 게시물
+			wnCheck = "Yes";
+		}
+		return wnCheck;
+	}
+	
 	//게시글 신고 (ajax)
 	public int insertBoardWarning_ajax(String loginId, String bdcode) {
 		System.out.println("BoardService.updateBoardWarningCount_ajax() 호출");
 		
 		int insertResult = bdao.insertBoardWarning_ajax(loginId, bdcode);
-		System.out.println("insertResult 신고결과 : " + insertResult );
 		return insertResult;
 	}
 	
+	//게시글 신고 취소(삭제)
+	public int deleteBoardWarning_ajax(String loginId, String bdcode) {
+		System.out.println("BoardService.deleteBoardWarning_ajax() 호출");
+		
+		int insertResult = bdao.deleteBoardWarning_ajax(loginId, bdcode);
+		
+		return insertResult;
+	}
+	
+	
 	//게시글 추천
-	public int insertBoardRecommend_ajax(String loginId, String bdcode) {
+	public String insertBoardRecommend_ajax(String loginId, String bdcode) {
 		System.out.println("BoardService.insertBoardRecommend_ajax() 호출");
 		
+		String recommend = "";
 		int insertResult = bdao.insertBoardRecommend_ajax(loginId, bdcode);
-
-		return insertResult;
+		if( insertResult > 0 ) {
+			recommend = "Regist";
+		}
+		
+		return recommend;
 	}
 	
 	//게시글 추천 취소 (추천 중복 클릭 시) 
@@ -527,20 +554,18 @@ public class BoardService {
 	public String checkBoardRecommend_ajax(String loginId, String bdcode) {
 		System.out.println("BoardService.checkBoardRecommend_ajax() 호출");
 		
-		String recommendCheck = bdao.checkBoardRecommend_ajax(loginId, bdcode);
-		System.out.println(recommendCheck);
-		String rcCheck = null;
-		if( recommendCheck == null ) {
-			rcCheck = "No";//추천한적 없음 
+		String rcCheck = "";
+		String rcBdcode = bdao.checkBoardRecommend_ajax(loginId, bdcode);
+		if( rcBdcode != null ) {
+			System.out.println("이미 추천한 글");
+			rcCheck = "Yes";
 		}else {
-			rcCheck = "Yes";//추천한적 있음 
+			rcCheck = "No";
 		}
-		
-		
 		return rcCheck;
 	}
 	
-	//게시글 추천수 조회 
+	//게시글 추천'수' 조회 
 	public int selectBoardRecommendCount_ajax(String bdcode) {
 		System.out.println("BoardService.selectBoardRecommendCount_ajax() 호출");
 		
@@ -584,14 +609,34 @@ public class BoardService {
 	}
 	
 	//게시글 수정
-	public ModelAndView updateBoardModify(BoardDto board, RedirectAttributes ra) {
+	public ModelAndView updateBoardModify(BoardDto board, RedirectAttributes ra) throws IllegalStateException, IOException {
 		System.out.println("BoardService.updateBoardModify() 호출");
 		ModelAndView mav = new ModelAndView();
 		System.out.println(board);
 		
+		//게시글 띄어쓰기, 줄바꿈 
 		String bdcontents = board.getBdcontents().replace("", "&nbsp;");
 		bdcontents = board.getBdcontents().replace("\r\n", "<br>");
 		board.setBdcontents(bdcontents);
+		
+		//이미지 저장 
+		String bdimgfile = "";
+		if ( !board.getBdimgfile().isEmpty() ) {//업로드한 이미지가 있을 경우 
+			System.out.println("첨부파일 있음");
+			//파일 가져오기 
+			MultipartFile bfile = board.getBdimgfile();//파일 자체를 가져오기 
+			
+			UUID uuid = UUID.randomUUID();
+			
+			//파일명 생성 
+			bdimgfile = uuid.toString()+"_"+board.getBdimgfile().getOriginalFilename();
+			//파일 저장 
+			//파일저장 경로 : "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\board"
+			bfile.transferTo( new File(boardSavePath, bdimgfile) );
+			
+		}
+		System.out.println(bdimgfile);
+		board.setBdimg(bdimgfile);
 		
 		int updateResult = bdao.updateBoardModify(board);
 		ra.addFlashAttribute("msg", "글이 수정되었습니다.");
@@ -601,9 +646,6 @@ public class BoardService {
 		return mav;
 	}
 
-	
-	
-	
 
 	//자랑글 현재 추천,스크랩,신고 상태 조회
 	public String currentRchistory(String bdcode, String history) {
@@ -613,5 +655,103 @@ public class BoardService {
 		System.out.println(bdcode+"의 현재 "+history+"상태: "+currnetState);
 		return currnetState;
 	}
+	
+	//글작성 페이지 이동 
+	public ModelAndView loadToBoardWrite() {
+		System.out.println("BoardService.loadToBoardWrite() 호출");
+		ModelAndView mav = new ModelAndView();
+		
+		mav.setViewName("board/BoardWriteForm");
+		
+		return mav;
+	}
+	
+	//글작성 
+	public ModelAndView insertBoardWrite(BoardDto board, RedirectAttributes ra) throws IllegalStateException, IOException {
+		System.out.println("BoardService.insertBoardWrite() 호출");
+		ModelAndView mav = new ModelAndView();
+		System.out.println(board);
+		
+		//글작성 시 지역선택을 하지 않았을 때 -> 전국으로 설정
+		if ( board.getBdrgcode() == null ) {
+			board.setBdrgcode("ALL");
+		}
+		
+		//게시글 띄어쓰기, 줄바꿈 
+		String bdcontents = board.getBdcontents().replace("", "&nbsp;");
+		bdcontents = board.getBdcontents().replace("\r\n", "<br>");
+		board.setBdcontents(bdcontents);
+		
+		//글번호 생성
+		String bdcode = bdao.selectMaxBdcode();
+		System.out.println("maxBdcode: "+bdcode);
+		int bdcodeNum = Integer.parseInt(bdcode.substring(2))+1;
+		System.out.println("bdcodeNum: "+bdcodeNum);
+		if(bdcodeNum<10) {
+			bdcode = "BD0000"+bdcodeNum;
+		} else if(bdcodeNum<100) {
+			bdcode = "BD000"+bdcodeNum;
+		} else if(bdcodeNum<1000) {
+			bdcode = "BD00"+bdcodeNum;
+		} else if(bdcodeNum<10000) {
+			bdcode = "BD0"+bdcodeNum;
+		} else if(bdcodeNum<100000) {
+			bdcode = "BD"+bdcodeNum;
+		} 
+		board.setBdcode(bdcode);
+		
+		//이미지 저장 
+		String bdimgfile = "";
+		if ( !board.getBdimgfile().isEmpty() ) {//업로드한 이미지가 있을 경우 
+			System.out.println("첨부파일 있음");
+			//파일 가져오기 
+			MultipartFile bfile = board.getBdimgfile();//파일 자체를 가져오기 
+			
+			UUID uuid = UUID.randomUUID();
+			
+			//파일명 생성 
+			bdimgfile = uuid.toString()+"_"+board.getBdimgfile().getOriginalFilename();
+			//파일 저장 
+			//파일저장 경로 : "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\board"
+			bfile.transferTo( new File(boardSavePath, bdimgfile) );
+			
+		}
+		System.out.println(bdimgfile);
+		ra.addFlashAttribute("msg", "글이 작성되었습니다");
+		board.setBdimg(bdimgfile);
+		
+		//글작성
+		int insertResult = bdao.insertBoard(board);
+		
+		
+		//글작성 성공 시 글상세페이지로 이동
+		mav.setViewName("redirect:/selectBoardView?bdcode="+bdcode);
+		return mav;
+	}
+
+	//게시글 조회수 증가
+	public int updateBoardHits(String bdcode) {
+		System.out.println("BoardService.updateBoardHits() 호출");
+		
+		int boardHits = bdao.updateBoardHits(bdcode);
+		
+		return boardHits;
+		
+	}
+	
+	//자유게시판 이동 
+	public ModelAndView selectFreeBoardList() {
+		System.out.println("BoardService.selectFreeBoardList() 호출");
+		ModelAndView mav = new ModelAndView();
+		
+		String bdcategory_Free = "자유";
+		ArrayList<BoardDto> boardList = bdao.selectBoardList_Free(bdcategory_Free);
+		System.out.println(boardList);
+		
+		
+		return null;
+	}
+	
+
 
 }
