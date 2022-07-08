@@ -128,7 +128,7 @@
 				<table >
 					<thead >
 						<tr class="text-center" id="board_column">
-							<!-- <td>글번호</td> -->
+							<td style="font-size: 17px;">글번호</td>
 							<td style="font-size: 17px;">말머리</td>
 							<td style="font-size: 17px;">제목</td>
 							<td style="font-size: 17px;">작성자</td>
@@ -140,7 +140,7 @@
 						<c:forEach items="${noticeList }" end="2" var="notice">
 							<!-- 공지게시판 -->
 							<tr class="fw-bold" style="border-bottom: solid #E0E0E0 1px;">
-								<%-- <td>${notice.nbcode}</td> --%>
+								<td class="text-center">${notice.nbcode}</td>
 								<td></td>
 								<td>
 									<a href="selectNoticeBoardView?nbcode=${notice.nbcode }">${notice.nbtitle}</a>
@@ -159,7 +159,7 @@
 					<c:forEach items="${boardList }" var="board">
 						<c:if test="${board.bdcategory != '자랑' }">
 						<tr style="border-bottom: solid #E0E0E0 1px;">
-							<%-- <td>${board.bdcode}</td> --%>
+							<td class="text-center">${board.bdcode}</td>
 							<td class="bdcategory text-center">${board.bdcategory}</td>
 							<td>
 							 	<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle} 

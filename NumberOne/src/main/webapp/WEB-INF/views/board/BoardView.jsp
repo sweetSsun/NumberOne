@@ -18,9 +18,14 @@
 		margin: auto;
 		margin-top: 0%;
 	}
-	textarea{
-		border: none;
+	textarea:focus {
+    	outline: none;
+	}
+	#inputComment{
+		resize: none;
 		height: auto;
+		width: -webkit-fill-available; 
+		padding: 10px 0px; 
 	}
 	.commentDate{
 		color: gray;
@@ -62,8 +67,7 @@
 		border-bottom : solid #E0E0E0 3px;
 		font-size:20px;
 	}
-	.commentContents{
-		border-bottom : solid #E0E0E0 2px;
+	.inputRpcontents{
 		font-size:20px;
 	}
 	.outerCmtBox{
@@ -91,6 +95,7 @@
 	.icon:hover{
 		cursor: pointer;
 	}
+	
 </style>
 </head>
 <body>
@@ -187,6 +192,7 @@
 						</div>
 					</div>
 					
+					
 					<!-- 댓글목록_ajax -->
 					<div class="row" id="replyList_ajax">
 						
@@ -235,7 +241,7 @@
                 </div>
                 <div class="modal-footer">
                 	<input type="hidden" >
-                    <button class="close btn text-white " onclick="rpModify()">등록</button>
+                    <button class="close btn text-white" style="background-color:#00bcd4" onclick="rpModify()">등록</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">취소</button>
                 </div>
             </div>
@@ -243,7 +249,7 @@
     </div>
 	
 	
-	<!-- 신고 확인 모달 -->
+	<!-- 게시글 신고 확인 모달 -->
 	<div class="modal fade" id="bdWarningCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -259,14 +265,14 @@
                 	<br> <span class="text-danger fw-bold">(※한번 신고한 게시글은 신고취소가 불가능합니다.)</span></div>
                 <div class="modal-footer">
                 	<input type="hidden" >
-                    <button class="close btn btn-info text-white" onclick="insertBoardWarning()" >네</button>
+                    <button class="close btn text-white" style="background-color:#00bcd4" onclick="insertBoardWarning()" >네</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
             </div>
         </div>
     </div>
     
-    <!--  --><!-- 삭제 확인 모달 -->
+    <!--  --><!-- 게시글 삭제 확인 모달 -->
 	<div class="modal fade" id="bdDeleteCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -282,13 +288,36 @@
                 </div>	
                 <div class="modal-footer">
                 	<input type="hidden" >
-                    <button class="close btn btn-info text-white" onclick="updateBoardDelete()" >네</button>
+                    <button class="close btn text-white" style="background-color:#00bcd4" onclick="updateBoardDelete()" >네</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
             </div>
         </div>
     </div>
-	
+    
+    <!--  --><!-- 댓글 삭제 확인 모달 -->
+	<div class="modal fade" id="rpDeleteCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" > 댓글 삭제 </h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" >
+                	<span class="fw-bold">댓글을 삭제하시겠습니까?</span>
+                </div>	
+                <div class="modal-footer">
+                	<input type="hidden" value="rpcode" id="deleteRpcode">
+                    <button class="close btn text-white" style="background-color:#00bcd4" onclick="replyRemove()" >네</button>
+                    <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
@@ -353,6 +382,17 @@
 		for (var i = 0; i < close.length; i++){
 			close[i].addEventListener("click", function(){
 				$("#bdRpModifyModal").modal("hide");
+			});
+		}
+</script>
+
+<script type="text/javascript">
+		// 댓글 삭제 모달창 close 하는 스크립트
+ 		var modal = $(".modal");
+		var close = $(".close");
+		for (var i = 0; i < close.length; i++){
+			close[i].addEventListener("click", function(){
+				$("#rpDeleteCheckModal").modal("hide");
 			});
 		}
 </script>
@@ -546,34 +586,53 @@
 			async : false,
 			success : function(replyList){
 				console.log(replyList);
+				output += "<div class=\"row\">"
 				for( var i=0; i < replyList.length; i++ ){
-					
 					if( replyList[i].rpmid == '${sessionScope.loginId}' ){//동일한 아이디
-						output += "<div class=\"col\">"
-						output += "<span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span>"
-						output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span>"
+						
+						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;\' >" /* 프로필영역 */
+						if( replyList[i].rpprofile != null ){
+							output += "<img class=\"img-profile rounded-circle \" style=\"height:55px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+						}else{
+							output += "<img class=\"img-profile rounded-circle \" style=\"height:40px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
+						}
 						output += "</div>"
-						output += "<div align=\"right\" class=\"col\">"
-						output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"replyRemove('"+ replyList[i].rpcode +"')\" value=\"삭제\">"
+						
+						output += "<div class=\"col-11\" style='border-bottom: solid #E0E0E0 1px;\'>"
+						/* 닉네임, 시간 */
+						output += "<span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span>"
+						output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span> "
+						
+						output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"rpRemoveModal('"+ replyList[i].rpcode +"')\" value=\"삭제\">"
 						output += "<input style=\"margin-right:5px; border:solid gray 1px\" type=\"button\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"rpModifyModal('"+ replyList[i].rpcode +"')\" value=\"수정\">"
+						output += "<br>"
+						/* 댓글내용 */
+						output += "<span class=\"inputRpcontents\">" + replyList[i].rpcontents + "</span>"
 						output += "</div>"
-						output += "<div class=\"row commentContents \">"
-						output += "<span>" + replyList[i].rpcontents + "</span>"
-						output += "</div>"
-					
+						
 					}else{
-						output += "<div class=\"col \">"
+						
+						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;\'>" /* 프로필영역 */
+						if( replyList[i].rpprofile != null ){
+							output += "<img class=\"img-profile rounded-circle \" style=\"height:55px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+						}else{
+							output += "<img class=\"img-profile rounded-circle\" style=\"height:40px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
+						}
+						output += "</div>"
+							
+						output += "<div class=\"col-11\" style='border-bottom: solid #E0E0E0 1px;\'>"
+						/* 닉네임, 시간 */
 						output += "<span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span>"
-						output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span>"
-						output += "</div>"
-						output += "<div align=\"right\" class=\"col\">"
-						output += "</div>"
-						output += "<div class=\"row commentContents \">"
-						output += "<span>" + replyList[i].rpcontents + "</span>"
+						output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span> "
+							
+						output += "<br>"
+						/* 댓글내용 */
+						output += "<span class=\"inputRpcontents\">" + replyList[i].rpcontents + "</span>"
 						output += "</div>"
 					}
 
 				}
+				output += "</div>"
 			}
 		});
 		$("#replyList_ajax").html(output);
@@ -636,12 +695,23 @@
 		
 	}
 	
-	function replyRemove(rpcode){
+	function rpRemoveModal(rpcode){
+		/* 댓글삭제 버튼 클릭 시 모달창 띄우기  */
+		console.log(rpcode);
+		
+		$("#deleteRpcode").val(rpcode);
+		$("#rpDeleteCheckModal").modal('show');
+		
+	}
+	
+	function replyRemove(){
 		/* 댓글삭제(update 상태변경) */
+		var deleteRpcode = $("#deleteRpcode").val();
+		
 		$.ajax({
 			type : "get",
 			url : "updateReplyState_ajax",
-			data : { "rpcode" : rpcode },
+			data : { "rpcode" : deleteRpcode },
 			async : false,
 			success : function(removeResult){
 				console.log(removeResult);

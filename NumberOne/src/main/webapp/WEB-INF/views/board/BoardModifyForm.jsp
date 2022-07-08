@@ -80,9 +80,10 @@
 					<span class="fw-bold" name="bdnickname">${board.bdnickname }</span>
 					<hr>
 				</div>
+				
 				<div class="row">
 					<div class="col-6">
-						게시판<span class="text-danger">*</span>
+						 <span>게시판<span class="text-danger">*</span></span>
 						<select name="bdcategory">
 							<option value="${board.bdcategory}"  class="selectPlaceHolder">${board.bdcategory }</option>
 							<option value="자유">자유</option>

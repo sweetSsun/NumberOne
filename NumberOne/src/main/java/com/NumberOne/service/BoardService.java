@@ -416,7 +416,7 @@ public class BoardService {
 		return updateResult;
 	}
 	
-	//게시글 댓글작성(ajax)
+	//게시글 댓글등록(ajax)
 	public int insertBoardReply_ajax(String bdcode, String rpcontents) {
 		System.out.println("BoardService.insertBoardComment_ajax() 호출");
 		
@@ -426,7 +426,13 @@ public class BoardService {
 		System.out.println("로그인 아이디 : " + loginId); 
 		System.out.println("댓글작성할 글번호 : " + bdcode); 
 		System.out.println("작성할 댓글 내용 : " + rpcontents);
-	
+		
+		//댓글 줄바꿈, 띄어쓰기 적용
+		rpcontents.replace("\r\n","<br>");
+		rpcontents.replace("","&nbsp;");
+		System.out.println(rpcontents);
+		reply.setRpcontents(rpcontents);
+		
 		//댓글번호 생성 
 		String maxRpcode = bdao.selectReplyMaxNumber();
 		System.out.println("maxRpcode : " + maxRpcode);
@@ -435,6 +441,7 @@ public class BoardService {
 		if( maxRpcode == null) {
 			rpcode = rpcode + "00001";
 		}else {
+		
 			String rpcode_stirng = maxRpcode.substring(4);
 			int rpcode_num = Integer.parseInt(rpcode_stirng)+1;
 			
@@ -456,7 +463,6 @@ public class BoardService {
 		reply.setRpcode(rpcode);
 		reply.setRpbdcode(bdcode);
 		reply.setRpmid(loginId);
-		reply.setRpcontents(rpcontents);
 		
 		int insertResult = bdao.insertBoardReply_ajax(reply);
 		
@@ -468,6 +474,13 @@ public class BoardService {
 		System.out.println("BoardService.selectBoardReplyList_ajax() 호출");
 		
 		ArrayList<ReplyDto> replyList = bdao.selectBoardReplyList(bdcode);
+		System.out.println(replyList);
+		
+		for ( int i=0; i< replyList.size(); i++) {
+			String rpcontents = replyList.get(i).getRpcontents().replace("<br>", "\r\n");
+			rpcontents = replyList.get(i).getRpcontents().replace("&nbsp;", "");
+			replyList.get(i).setRpcontents(rpcontents);
+		}
 		System.out.println(replyList);
 		
 		//댓글목록 JSON 타입으로 변환 
@@ -600,6 +613,9 @@ public class BoardService {
 		
 		//수정할 게시글 정보 
 		BoardDto board = bdao.selectBoardView(bdcode);
+		String bdcontents = board.getBdcontents().replace("&nbsp;","");
+		bdcontents = board.getBdcontents().replace("<br>","\r\n");
+		board.setBdcontents(bdcontents);
 		System.out.println(board);
 		
 		mav.addObject("board", board);

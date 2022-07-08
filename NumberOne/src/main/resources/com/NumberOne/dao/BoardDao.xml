@@ -217,7 +217,7 @@
  	
  	<select id="selectBoardReplyList" resultType="com.NumberOne.dto.ReplyDto">
  		<!-- 댓글목록 조회 -->
- 		SELECT RP.*, MB.MNICKNAME AS RPNICKNAME
+ 		SELECT RP.*, MB.MNICKNAME AS RPNICKNAME, MB.MPROFILE AS RPPROFILE
 		FROM REPLY RP, MEMBERS MB 
 		WHERE RP.RPMID = MB.MID
 		AND RPBDCODE = #{bdcode}
@@ -234,9 +234,9 @@
  	</select>
  	 
  	<update id="updateReplyState_ajax">
- 		<!-- 댓글상태 변경 -->
+ 		<!-- 댓글삭제 -->
  		UPDATE REPLY 
- 		SET RPSTATE = 0
+ 		SET RPSTATE = 2
  		WHERE RPCODE = #{rpcode}
  	</update> 
  	 
@@ -292,7 +292,7 @@
  	<update id="updateBoardDelete">
  		<!-- 게시글 삭제(상태 변경) -->
  		UPDATE BOARDS
- 		SET BDSTATE = 0
+ 		SET BDSTATE = 2
  		WHERE BDCODE = #{bdcode}
  	</update>
  	 
