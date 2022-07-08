@@ -1,10 +1,6 @@
 @charset "UTF-8";
 
 
-div {
-	border: 1px solid black;
-}
-
 .container {
 	width: 90%;
 	max-width: 1240px;
@@ -133,7 +129,7 @@ background-color: #fff;
 transition: 0.5s;
 }
 .w3-left, .w3-right:hover:before{
-top 0;
+top: 0;
 }
 
 
@@ -464,4 +460,11 @@ z-index: 1;
 
 .d_none {
 	display: none;
+}
+
+.red{
+	color: red;	
+}
+.blue{
+	color: blue;
 }

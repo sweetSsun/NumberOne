@@ -13,6 +13,7 @@ import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.ReplyDto;
 import com.NumberOne.dto.ScrapDto;
 import com.NumberOne.dto.UsedBoardDto;
+import com.NumberOne.dto.ZzimDto;
 
 public interface MemberDao {
 
@@ -30,7 +31,7 @@ public interface MemberDao {
 	String selectMemberNickname_ajax(String inputNickname);
 
 	//로그인 요청
-	@Select("SELECT MID, MPROFILE, MREGION, MSTATE FROM MEMBERS WHERE MID = #{mid} AND MPW = #{mpw}")
+	@Select("SELECT MID, MPROFILE, MREGION, MNICKNAME, MSTATE FROM MEMBERS WHERE MID = #{mid} AND MPW = #{mpw}")
 	MemberDto selectMemberLogin(@Param("mid") String mid, @Param("mpw") String mpw);
 	
 	//아이디 찾기 요청
@@ -95,11 +96,11 @@ public interface MemberDao {
 			+ "VALUES(#{mid}, #{mpw},'kakaoLogin' ,#{mnickname},'000-0000-0000', #{memail},'인천', #{mprofile}, 5 )")
 		    int insertMemberKakao(MemberDto member);
 
-	//팔구
+	//팔구 목록
 	@Select("SELECT UBTITLE FROM USEDBOARDS WHERE UBSELLBUY = 'S' AND UBMID = #{loginId}")
 	ArrayList<UsedBoardDto> selectMyInfoResellView_Sell(String loginId);
 	
-	//사구
+	//사구 목록
 	@Select("SELECT UBTITLE FROM USEDBOARDS WHERE UBSELLBUY = 'B' AND UBMID = #{loginId} ")	
 	ArrayList<UsedBoardDto> selectMyInfoResellView_Buy(String loginId);
  	
@@ -109,8 +110,22 @@ public interface MemberDao {
 			+ "LEFT OUTER JOIN BOARDS BD ON BD.BDCODE = SC.SCBDCODE "
 			+ "LEFT OUTER JOIN MEMBERS M ON BD.BDMID = M.MID "
 			+ "LEFT OUTER JOIN (SELECT RPBDCODE, COUNT (RPBDCODE) AS BDREPLY FROM REPLY GROUP BY RPBDCODE) RP ON BD.BDCODE = RP.RPBDCODE "
-			+ "AND SCMID = #{loginId} ORDER BY BD.BDCODE DESC ")
+			+ "WHERE SCMID = #{loginId} ORDER BY BD.BDCODE DESC ")
 	ArrayList<ScrapDto> selectMyInfoMemberView_scrap(String loginId);
+
+	//찜목록
+	@Select("SELECT UB.UBTITLE, M.MNICKNAME, UB.UBDATE FROM ZZIM ZZ LEFT OUTER JOIN USEDBOARDS UB ON ZZ.ZZUBCODE =  UB.UBCODE LEFT OUTER JOIN MEMBERS M ON UB.UBMID = M.MID WHERE ZZ.ZZMID = #{loginId} ORDER BY UB.UBCODE DESC")
+	ArrayList<ZzimDto> selectMyInfoResellView_Zzim(String loginId);
+
+	//닉네임으로 회원정보 가져오기
+	@Select("SELECT MPROFILE, MNICKNAME, MREGION, MMESSAGE FROM MEMBERS WHERE MNICKNAME = #{nickname} ")
+	MemberDto selectWriteMemberInfo_member(String nickname);
+
+	//닉네임 별 작성 글 출력
+	@Select("SELECT BD.BDTITLE FROM BOARDS BD, MEMBERS M WHERE BD.BDMID = M.MID AND M.MNICKNAME = #{nickname} ORDER BY BDCODE DESC")
+	ArrayList<BoardDto> insertWriteMemberInfo_Board(String nickname);
+	
+	
 	 	
 
 

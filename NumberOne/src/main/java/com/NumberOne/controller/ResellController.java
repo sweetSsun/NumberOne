@@ -20,18 +20,25 @@ public class ResellController {
 	@Autowired
 	private ResellService rsvc;
 	
-	@RequestMapping (value="/loadToResellMainPage")
-	public String loadToResellMainPage() {
-		return "resell/Resell_Main";
+	@RequestMapping (value="/selectResellMainPage")
+	public ModelAndView selectResellMainPage(Paging paging) {
+		System.out.println("selectResellMainPage 호출");
+		ModelAndView mav = new ModelAndView();
+		
+		mav=rsvc.selectResellMainPage(paging);
+		
+		return mav;
+		
+		
 	}
 	
 	@RequestMapping (value="/selectResellView")
-	public ModelAndView selectResellView(String ubcode, String ubsellbuy) {
+	public ModelAndView selectResellView(UsedBoardDto ubDto) {
 		System.out.println("selectResellView 호출");
-		System.out.println("ubcode : "+ubcode);
+		System.out.println("ubDto : "+ubDto);
 		ModelAndView mav = new ModelAndView();
 		
-		mav = rsvc.selectResellView(ubcode, ubsellbuy);
+		mav = rsvc.selectResellView(ubDto);
 		
 		return mav;
 	}
@@ -73,7 +80,6 @@ public class ResellController {
 		String sell_buyList = rsvc.selectResellRegionList_ajax(paging);
 		
 		
-		
 		return sell_buyList;
 		
 	}
@@ -97,25 +103,11 @@ public class ResellController {
 	public ModelAndView selectResellPageList(Paging paging) {
 		System.out.println("selectResellPageList 호출");
 	
-
 		ModelAndView mav = new ModelAndView();
 		mav = rsvc.selectResellPageList(paging);
 				
 		return mav;
 	}
-	
-	@RequestMapping(value="/selectSearchList_ajax")
-	public @ResponseBody String selectSearchList_ajax(String searchVal, String sell_buy, String selectRegion, String searchOp) {
-		System.out.println("selectSearchList_ajax 요청");
-		System.out.println("파라메터확인 searchVal : "+ searchVal);
-		System.out.println("파라메터확인 sell_buy : "+ sell_buy);
-		System.out.println("파라메터확인 selectRegion : "+ selectRegion);
-		System.out.println("파라메터확인 searchOp : "+ searchOp);
-		
-		String searchResult = rsvc.selectSearchList_ajax(searchVal, sell_buy, selectRegion, searchOp);
-				
-		return searchResult;
-	}
-	
+
 	
 }
