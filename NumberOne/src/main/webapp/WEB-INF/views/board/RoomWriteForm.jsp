@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 자취방 자랑 글 작성</title>
+<title>1인자 - 자취방 자랑 글작성</title>
 
 <%@ include file="/resources/css/BarCss.jsp" %>
 <!-- 부트스트랩 
@@ -12,15 +12,14 @@
 
 
 <style type="text/css">
-	table{
-		width:70%;
+	#roomWriteTable{
+		width:80%;
 		border:1px solid black;
-		margin-left: auto; margin-right: auto;
+		margin-left: auto; 
+		margin-right: auto;
+		padding : 10%;
 	};
-	
-	th, td{
-		padding-left: 40px;
-	}
+
 	.roomtxtarea{
 		width=:65%;
 	}
@@ -34,19 +33,22 @@
 		border-radius: 6px;
 	}
 	
-	span:hover {
-		/* border: 1px solid #897B63; */
-		padding: 6px;
-		background-color: #AFA58F;	
-		color: white;
-		border-radius: 6px;
-	}
-	
 	.d_none{ display:none; }
 	
-	.tableHead{ padding-left: 40px; }
+	.tableHead{ 
+		padding-top: 10px; 
+		padding-bottom: 10px; 
+		padding-left: 30px;
+		
+	}
 
+	section{
+      max-width: 70%;
+      margin: auto;
+      margin-top: 0%;
+    }
 	
+	.title{ width : 13%; }
 </style>
 
 </head>
@@ -67,39 +69,39 @@
 			<br>
 				<h1 class="text-center">자취방 자랑 글작성 페이지</h1>
 				<div>
-				<form action="insertRoomWrite" method="post" enctype="multipart/form-data">
-				<table>
-					<tr class="tableRow">
+				<form action="insertRoomWrite" method="post" enctype="multipart/form-data" onsubmit="return roomRegisterCh()">
+				<table id="roomWriteTable">
+					<tr>
 						<th class="tableHead">작성자</th>
-						<!-- imhido 부분은 나중에 로그인 아이디로 출력 -->
-						<td colspan="3">${mnickname}</td>						
+						<!-- session의 로그인 닉네임로 출력 -->
+						<td colspan="5">${sessionScope.loginNickname}</td>						
 					</tr>
 					
-					<tr class="tableRow">
+					<tr>
 						<!-- th, td에 패딩, 마진을 주고 싶은데 먹히지 않아서 tableHead 클래스로 여백 줬슴당 -->
-						<th class="tableHead">제목</th>
-						<td colspan="3">
-							<input name="bdtitle" type="text" placeholder="제목을 입력하세요" size="50%">
+						<th class="tableHead title">제목</th>
+						<td colspan="5">
+							<input name="bdtitle" id="bdtitle" type="text" placeholder="제목을 입력하세요" style="width:90%">
 						</td>
 					</tr>
-					<tr class="tableRow">
-						<th class="tableHead">내용</th>
-						<td colspan="3">
-							<textarea rows="15" cols="53" name="bdcontents" placeholder="내용을 입력하세요"></textarea>
+					<tr>
+						<th class="tableHead title">내용</th>
+						<td colspan="5">
+							<textarea id="bdcontents" style="width:90%; height:300px;" name="bdcontents" placeholder="내용을 입력하세요"></textarea>
 						</td>
 					</tr>
-					<tr class="tableRow">
-						<th class="tableHead">대표사진</th>
-						<td colspan="3">
+					<tr>
+						<th class="tableHead title">대표사진</th>
+						<td colspan="5">
 							<!--  
 							<input type="text" id="mainImgScreen"> <span class="mainfile"><label for="mainImg">대표사진 선택</label></span>
 							-->
 							<input type="file" id="mainImg" name="bdimgfile" class=""> 
 						</td>
 					</tr>
-					<tr class="tableRow">
-						<th class="tableHead">상세사진</th>
-						<td colspan="3">
+					<tr>
+						<th class="tableHead title">상세사진</th>
+						<td colspan="5">
 							<!--  
 							<input type="text" id="detailImgScreen"> <span class="mainfile"><label for="detailImg">상세사진 선택</label></span>
 							-->
@@ -107,13 +109,12 @@
 							<div id="detailImgList"></div>
 						</td>
 					</tr>
-					<tr class="tableRow">
-						<th colspan="4">
-							<center>
-							<button type="submit">등록</button> 
-							<!-- 취소하면 돌아갈 페이지가 없어서 취소는 function 연결만 되어 있음-->
-							<button type="button" onclick="withdraw()">취소</button>
-							</center>
+					<tr>
+						<th colspan="6" class="tableHead">
+						<center>
+							<input type="submit" value="등록">
+							<input type="button" onclick="location.href='${pageContext.request.contextPath}/selectRoomList'" value="취소">
+						</center>
 						</th>
 					</tr>
 				</table>
@@ -128,18 +129,11 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 <script type="text/javascript">
-	
-	$("#selCategory").change(function(){
-		console.log("카테고리 선택")
-		var selCategory = $("#selCategory option:selected").val()
-		$("#categoryInput").val(selCategory);
-	})
 
-	$("#selRegion").change(function(){
-		console.log("지역 선택")
-		var selRegion = $("#selRegion option:selected").val()
-		$("#regionInput").val(selRegion);
-	})	
+	if('${sessionScope.loginId}'==null){
+		console.log("로그인 후 이용가능합니다.");
+		location.href = "loadTologin?afterUrl=loadTowriteRoom";
+	}
 	
 	$("#mainImg").change(function(){
 		var mainImg = $("#mainImg").val().split("path")[1];
@@ -172,6 +166,18 @@
 			return false;
 		}
 	} 
+	
+	function  roomRegisterCh(){
+		console.log("자취방 자랑글 등록 확인");
+		if($("#bdtitle").val()==""){
+			alert("제목을 입력하세요");
+			return false;
+		} else if ($("#bdcontents").val()==""){
+			alert("내용을 입력하세요");
+			return false;
+		}
+		return true;
+	}
 </script>
 
 </html>
