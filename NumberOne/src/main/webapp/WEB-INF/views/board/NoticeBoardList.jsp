@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 게시판 글목록 페이지</title>
+<title>1인자 - 자유게시판</title>
 <!-- Jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <%@ include file="/resources/css/BarCss.jsp" %>
@@ -14,6 +14,15 @@
 		max-width: 70%;
 		margin: auto;
 		margin-top: 0%;
+		background-color: white;
+	}
+	.sidebar{
+		position: sticky;
+		top: 0px;
+		height: 100%;
+		width: 200px;
+		margin-bottom: 5px;
+		z-index: 1;
 	}
 	
 	#board_column{
@@ -63,10 +72,10 @@
 	    <!-- TopBar -->
         <c:choose>
             <c:when test="${sessionScope.loginId != 'admin'}">
-                    <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
+                  <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
             </c:when>
             <c:otherwise>
-                    <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
+                  <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
             </c:otherwise>
         </c:choose>
         <!-- End of TopBar -->
@@ -80,10 +89,10 @@
 		<!-- 본문 -->
 			<div class="container">
 				<div class="row" style="margin:auto;">
-					<h2 class="text-center">게시판 글목록 페이지 : BoardListPage.jsp</h2>
+					<h2 class="text-center">공지게시판 : NoticeBoardList.jsp</h2>
 				</div>
 				<form action="selectBoardSearchList" method="get">
-				<input type="hidden" name="bdcategory" value="" >
+				<input type="hidden" name="bdcategory" value="자유">
 					<div class="row ">
 						<!-- 검색기능 -->
 						<div class="col-5" align="right">
@@ -103,21 +112,7 @@
 						
 				</div>
 				<div class="row" style="margin-top: 20px;">
-					<div class="col">
-						<!-- 말머리 정렬 -->
-						<select class="bdCategoryList" onchange="bdCategorySel(this.value)">
-							<option class="bdcategorySel malmeori" value="" disabled selected >말머리 선택</option>
-							<option class="bdcategorySel" value="자유">자유</option>
-							<option class="bdcategorySel" value="질문">질문</option>
-							<option class="bdcategorySel" value="정보">정보</option>
-							<option class="bdcategorySel" value="후기">후기</option>
-						</select>
-					</div>
-					<%-- <div align="right" class="col">
-						<c:if test="${sessionScope.loginId != null }">
-								<button  onclick="loadToBoardWrite()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">글작성</button>
-						</c:if>
-					</div> --%>
+					
 				</div>
 				
 				<div class=" community" style="text-align:center;">
@@ -138,7 +133,7 @@
 							<td style="font-size: 17px;">추천</td>
 						</tr>
 						
-						<c:forEach items="${noticeList }" end="2" var="notice">
+						<c:forEach items="${noticeList }" var="notice">
 							<!-- 공지게시판 -->
 							<tr class="fw-bold" style="border-bottom: solid #E0E0E0 1px;">
 								<td class="text-center">${notice.nbcode}</td>
@@ -154,31 +149,9 @@
 						</c:forEach>
 					</thead>
 					
-					<tbody id="bdCategoryList">
-					<!-- 일반게시판 목록 -->
-					
-					<c:forEach items="${boardList }" var="board">
-						<c:if test="${board.bdcategory != '자랑' }">
-						<tr style="border-bottom: solid #E0E0E0 1px;">
-							<td class="text-center">${board.bdcode}</td>
-							<td class="bdcategory text-center">${board.bdcategory}</td>
-							<td>
-							 	<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
-							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
-							 </td>
-							<td class="text-center">
-								<a href="#">${board.bdnickname}</a>
-							</td>
-							<td class="text-center">${board.bddate}</td>
-							<td class="text-center">${board.bdhits }</td>
-							<td class="fw-bold text-center" style="color: #00bcd4;">${board.bdrccount}</td>
-						</tr>
-						</c:if>
-					</c:forEach>
-					</tbody>
 				</table>
 				<div align="right" class="col mt-2">
-					<c:if test="${sessionScope.loginId != null }">
+					<c:if test="${sessionScope.loginId == 'admin'}">
 						<button  onclick="loadToBoardWrite()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">글작성</button>
 					</c:if>
 				</div>
@@ -237,7 +210,6 @@
 		});
 		$("#bdCategoryList").html(output);
 	}
-	
 	
 </script>
 
