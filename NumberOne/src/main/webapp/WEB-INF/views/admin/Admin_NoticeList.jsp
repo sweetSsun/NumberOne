@@ -96,7 +96,7 @@
                   <tr class="fw-bold" id="board_column">
                      <td style="width:10%;">글번호</td>
                      <td>제목</td>
-                     <td style="width:15%;">작성자</td>
+				     <td style="width:15%;">작성자</td>
                      <td style="width:15%;">작성일</td>
                      <td style="width:3rem;">조회</td>
                      <td style="width:4rem;">상태</td>
@@ -107,7 +107,11 @@
 	                   <!-- 회원관리 목록 -->
 	                   <tr style="border-bottom: solid gray 1px;">
 	                      <td class="overflow">${notice.nbcode}</td>
-	                      <td class="overflow"><a href="admin_selectNoticeBoardView?nbcode=${notice.nbcode}">${notice.nbtitle}</a></td>
+ 	                      <td class="overflow"><a href="admin_selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}" >${notice.nbtitle}</a></td>
+<%--
+	                      <td class="overflow"><a href="#" onclick="makeQuery('${notice.nbcode}')">${notice.nbtitle}</a></td>
+ --%>
+
 	                      <td class="overflow">${notice.nbnickname}</td>
 	                      <td class="overflow">${notice.nbdate}</td>
 	                      <td>${notice.nbhits}</td>
@@ -209,12 +213,14 @@
 	</script>
 	
 	<script type="text/javascript">
-		console.log("요청 페이지 : " + ${param.page});
-	
-		// onsubmit. 페이징 넘버를 누르지 않고 검색 버튼으로 controller를 호출할 때 페이지값 넘겨주기 위한 함수
-		function pageCheck(){
-			console.log("pageInput() 실행");
-			$("#pageInput").attr("name", "page").val("1");
+		// ajax로 목록을 출력하는 경우 paging 객체가 넘어오는 것이 아니기 때문에, function으로 상세페이지 이동
+		function makeQuery(codeIdx){
+			console.log("makeQuery() 실행");
+			console.log("codeIdx : " + codeIdx);
+			var param = "admin_selectNoticeBoardView${paging.makeQueryPage(codeIdx, paging.page)}";
+			// codeIdx=
+			console.log(param);
+			//location.href=param;
 		}
 	</script>
 	
@@ -264,7 +270,13 @@
 					for (var i = 0; i < result.length; i++){
 						output += "<tr style='border-bottom: solid gray 1px;'>";
 						output += "<td class='overflow'>" + result[i].nbcode + "</td>";
-						output += "<td class='overflow'><a href='admin_selectNoticeBoardView?nbcode=" + result[i].nbcode + "'>" + result[i].nbtitle + "</a></td>";
+						// <a href="admin_selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}" >
+						// ajax에선 paging이 아니라 result(json 타입의 String)으로 온다.
+						// java 코드를 먼저 읽고 html은 나중이기 때문에 onclick 이벤트를 부여해도 codeIdx값을 넘겨줄 수가 없음
+						// makeQuery를 사용할 수가 없다... 매개변수 직접 붙여주는 수 밖에..
+						output += "<td class='overflow'><a href='admin_selectNoticeBoardView?codeIdx=" + result[i].nbcode 
+								+"&page=1&perPageNum=10&searchVal=" + searchVal + "&searchType=" + searchType + "&keyword=" + searchText + "'>" 
+								+ result[i].nbtitle + "</a></td>";
 						output += "<td class='overflow'>" + result[i].nbmid + "</td>";
 						output += "<td class='overflow'>" + result[i].nbdate + "</td>";
 						output += "<td>" + result[i].nbhits + "</td>";

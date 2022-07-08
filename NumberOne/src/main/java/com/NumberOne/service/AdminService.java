@@ -142,7 +142,7 @@ public class AdminService {
 		if(paging.getKeyword() == null) { // dao 조건문이 keyword에 null값이 들어가면 오류가 나기 때문에 ""로 변경
 			paging.setKeyword("");
 		}
-		int totalCount = adao.admin_selectNoticeTotalCount(paging); // 전체 회원수 조회
+		int totalCount = adao.admin_selectNoticeTotalCount(paging); // 전체 공지수 조회
 		paging.setTotalCount(totalCount);
 		paging.calc(); // 페이지 처리 계산 실행
 		System.out.println(paging);
@@ -203,14 +203,16 @@ public class AdminService {
 	}
 	
 	//공지 상세페이지 이동 
-	public ModelAndView admin_selectNoticeBoardView(String nbcode) {
+	public ModelAndView admin_selectNoticeBoardView(String nbcode,  Paging paging) {
 		System.out.println("AdminService.admin_selectNoticeBoardView() 호출");
 		System.out.println("nbcode:" +  nbcode);
+		System.out.println("paging : " + paging);
 		
 		NoticeDto noticeBoard = bdao.selectNoticeBoardView(nbcode);
 		System.out.println(noticeBoard);
 		mav = new ModelAndView();
 		mav.addObject("noticeBoard", noticeBoard);
+		mav.addObject("paging", paging);
 		mav.setViewName("admin/Admin_NoticeBoardView");
 		
 		return mav;
@@ -289,9 +291,11 @@ public class AdminService {
 	}
 
 	// 공지 수정페이지 이동
-	public ModelAndView admin_selectNoticeModify(String nbcode) {
+	public ModelAndView admin_selectNoticeModify(String nbcode, Paging paging) {
 		System.out.println("AdminService.admin_selectNoticeModify() 호출");
 		System.out.println("nbcode : " + nbcode);
+		System.out.println("paging : " + paging);
+		
 		mav = new ModelAndView();
 		
 		String mnickname = bdao.selectRoomWriterMnickname( (String)session.getAttribute("loginId") );
@@ -300,15 +304,17 @@ public class AdminService {
 		NoticeDto noticeBoard = bdao.selectNoticeBoardView(nbcode);
 		System.out.println(noticeBoard);
 		mav.addObject("noticeBoard", noticeBoard);
+		mav.addObject("paging", paging);
 		mav.setViewName("admin/Admin_NoticeModifyForm");
 		
 		return mav;
 	}
 	
-	// 작성 공지 DB에 입력
-	public ModelAndView admin_updateNoticeModify(NoticeDto modiNotice, String originImg, RedirectAttributes ra) throws IllegalStateException, IOException {
+	// 수정 공지 DB에 입력
+	public ModelAndView admin_updateNoticeModify(NoticeDto modiNotice, Paging paging, RedirectAttributes ra) throws IllegalStateException, IOException {
 		System.out.println("AdminService.admin_updateNoticeModify() 호출");
-		System.out.println("originImg : " + originImg);
+		System.out.println("originImg : " + modiNotice.getOriginImg());
+		System.out.println("paging : " + paging);
 		// 파일 등록
 		MultipartFile nbimgfile = modiNotice.getNbimgfile();
 		String nbimg = ""; // 파일명 저장할 변수명
@@ -319,8 +325,8 @@ public class AdminService {
 			nbimgfile.transferTo( new File(nbImgSavePath, nbimg) );
 			modiNotice.setNbimg(nbimg); // 생성한 파일명 set
 		} else { // 파일 수정 X
-			if(originImg.length() > 0) { // 기존 첨부파일이 있으면
-				modiNotice.setNbimg(originImg);
+			if(modiNotice.getOriginImg().length() > 0) { // 기존 첨부파일이 있으면
+				modiNotice.setNbimg(modiNotice.getOriginImg());
 			} else { // 기존 첨부파일이 없으면
 				modiNotice.setNbimg(nbimg); // 생성한 파일명 set
 			}
@@ -332,12 +338,12 @@ public class AdminService {
 		
 		mav = new ModelAndView();
 		if(updateresult > 0) {
-			if(!nbimgfile.isEmpty() && originImg.length() > 0) { // 파일을 수정하고 기존 첨부파일이 있었으면
-					File delFile = new File(nbImgSavePath, originImg);
+			if(!nbimgfile.isEmpty() && modiNotice.getOriginImg().length() > 0) { // 파일을 수정하고 기존 첨부파일이 있었으면
+					File delFile = new File(nbImgSavePath, modiNotice.getOriginImg());
 					delFile.delete();
 			}
 			ra.addFlashAttribute("msg", modiNotice.getNbcode()+ " 공지가 수정되었습니다.");
-			mav.setViewName("redirect:/admin_selectNoticeBoardView?nbcode="+modiNotice.getNbcode());
+			mav.setViewName("redirect:/admin_selectNoticeBoardView"+paging.makeQueryPage(modiNotice.getNbcode(), paging.getPage()));
 		} else {
 			ra.addFlashAttribute("msg", "공지 수정에 실패했습니다.");
 			mav.setViewName("redirect:/loadToFail");
@@ -581,6 +587,58 @@ public class AdminService {
 		int updateResult = adao.admin_updateQuestionAns_ajax(ctcode, ctans);
 		return updateResult;
 	}
+
+	/* 게시글/댓글 정지 */
+	// 일반게시글 정지
+	public ModelAndView admin_updateBoardStop(String bdcode, RedirectAttributes ra) {
+		System.out.println("AdminService.admin_updateBoardStop() 호출");
+		System.out.println("bdcode : " + bdcode);
+		mav = new ModelAndView();
+		int updateResult = adao.admin_updateBoardStop(bdcode);
+		if (updateResult > 0) {
+			ra.addFlashAttribute(bdcode + " 글이 정지 처리되었습니다.");
+			// 글목록으로 돌아가는 url 만들어서 매개변수 생기면 수정 필요
+			mav.setViewName("redirect:/selectBoardList");
+		}
+		return mav;
+	}
+
+	//자랑글 정지
+	public int admin_updateRoomStop_ajax(String bdcode) {
+		System.out.println("AdminService.admin_updateRoomStop_ajax() 호출");
+		System.out.println("bdcode : " + bdcode);
+		int updateResult = adao.admin_updateBoardStop(bdcode);
+		return updateResult;
+		// 스크립트단에서 updateResult > 0 이면 "정지처리되었습니다" 모달 띄우고, 정지버튼 d_none
+		// 가능하면 자랑목록페이지 새로 받아오고, 보던 스크롤 위치로 이동하고 싶다
+	}
+	
+	//중고거래 글 정지
+	public ModelAndView admin_updateResellStop(String ubcode, Paging paging, RedirectAttributes ra) {
+		System.out.println("AdminService.admin_updateResellStop() 호출");
+		System.out.println("ubcode : " + ubcode);
+		System.out.println("paging : " + paging);
+		mav = new ModelAndView();
+		int updateResult = adao.admin_updateResellStop(ubcode);
+		if (updateResult > 0) {
+			ra.addFlashAttribute(ubcode + " 글이 정지 처리되었습니다.");
+			ra.addAttribute("paging", paging);
+			// 글목록으로 돌아가는 url 만들어서 매개변수 생기면 수정 필요
+			mav.setViewName("redirect:/selectResellPageList");
+		}
+		return mav;
+	}
+
+	// 댓글 정지
+	public int admin_updateReplyStop_ajax(String rpcode) {
+		System.out.println("AdminService.admin_updateReplyStop_ajax() 호출");
+		System.out.println("rpcode : " + rpcode);
+		int updateResult = adao.admin_updateReplyStop(rpcode);
+		return updateResult;
+		// 호출한 ajax success에서
+		// updateResult > 0 이면 댓글 목록 새로 출력하는 ajax 실행하기
+	}
+	
 	
 
 }

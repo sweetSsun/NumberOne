@@ -17,7 +17,8 @@ public class NoticeDto {
 	private int nbhits;			//조회수
 	
 	// 파일 처리를 위한 필드
-	private MultipartFile nbimgfile;
+	private MultipartFile nbimgfile;//공지글 작성 시 파일 저장
+	private String originImg;		//공지글 수정 시 수정 전의 기존 파일명
 
 	// 글 출력시 필요한 필드
 	private String nbnickname;      //작성자 닉네임

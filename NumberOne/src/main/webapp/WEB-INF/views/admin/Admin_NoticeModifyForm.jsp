@@ -68,7 +68,7 @@
 			<div class="container">
 				<h1 class="text-center">공지 수정페이지 : Admin_NoticeModifyForm.jsp</h1>
 				<div>
- 				<form action="admin_updateNoticeModify" method="post" enctype="multipart/form-data">
+ 				<form action="admin_updateNoticeModify${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}" method="post" enctype="multipart/form-data">
  				<!-- 수정 불가능한 값 숨기고 submit에는 데이터 넘겨주는 변수 -->
  				<input type="hidden" name="nbcode" value="${noticeBoard.nbcode }">
  				<input type="hidden" name="originImg" value="${noticeBoard.nbimg }">
@@ -135,8 +135,10 @@
 	
 	function withdraw(){
 		console.log("취소 버튼 클릭");
-		location.href="admin_selectNoticeBoardView?nbcode=${noticeBoard.nbcode}";
+		//location.href="admin_selectNoticeBoardView?nbcode=${noticeBoard.nbcode}";
+		location.href="admin_selectNoticeBoardView${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}";
 	}
+	
 </script>
 
 </body>

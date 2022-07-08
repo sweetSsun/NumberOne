@@ -104,12 +104,12 @@
                </thead>
                <tbody id="bdListTbody">
 	               <c:forEach items="${boardList }" var="board">
-	                   <!-- 회원관리 목록 -->
+	                   <!-- 일반게시글 관리 목록 -->
 	                   <tr style="border-bottom: solid gray 1px;">
 	                      <td class="overflow">${board.bdcode}</td>
 	                      <td>${board.bdcategory }
 	                      <%-- makeQueryPage 쓰는거 왜 안될까.... admin_selectBoardView${Paging.makeQueryPage(board.bdcode, paging.page) }/>  --%>
-	                      <td class="overflow"><a href="#">
+	                      <td class="overflow"><a href="#" onclick="test('${board.bdcode}')">
 	                      ${board.bdtitle}</a></td>
 	                      <td class="overflow">${board.bdnickname}</td>
 	                      <td class="overflow">${board.bddate}</td>
@@ -213,14 +213,11 @@
 	
 	<script type="text/javascript">
 	/*
-		console.log("요청 페이지 : " + ${param.page});
-	
-		// onsubmit. 페이징 넘버를 누르지 않고 검색 버튼으로 controller를 호출할 때 페이지값 넘겨주기 위한 함수
-		function pageCheck(){
-			console.log("pageInput() 실행");
-			$("#pageInput").attr("name", "page").val("1");
+		function test(codeIdx) {
+			var param = "admin_selectBoardView"+'${paging.makeQueryPage(codeIdx, paging.page)}'+"/";
+			console.log(param);
 		}
-		*/
+	*/
 	</script>
 	
 	

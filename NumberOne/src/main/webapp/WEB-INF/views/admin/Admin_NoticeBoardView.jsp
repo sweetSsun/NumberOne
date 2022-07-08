@@ -108,7 +108,9 @@
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
 				<div class="row">
 					<div class="col-2">
-						<a href="#"><input type="button" style="left:0;" class="middelBtn btn btn-lg bg-success fw-bold text-white" value="글목록"></a> 
+						<a href="admin_selectNoticeList${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}">
+						<input type="button" style="left:0;" class="middelBtn btn btn-lg bg-success fw-bold text-white" value="글목록">
+						</a> 
 					</div>
 					<div class="col-4 offset-md-6" >
 						<input type="button" style="float:right;" class="btn btn-lg bg-success fw-bold text-white" 
@@ -140,9 +142,12 @@
 		console.log("공지 수정 요청");
 		var nbcode = '${noticeBoard.nbcode}';
 		console.log("nbcode : " + nbcode);
-		location.href="admin_selectNoticeModify?nbcode="+nbcode;
+		//console.log("paging : " + ${paging});
+		var url = "admin_selectNoticeModify${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}";
+		console.log(url);
+		location.href="admin_selectNoticeModify${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}";
 	});
-
+	
 </script>
 
 </body>
