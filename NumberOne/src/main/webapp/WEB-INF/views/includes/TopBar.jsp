@@ -51,23 +51,23 @@
 					<span style="float:right; margin-top: 5%;">				
 						<c:choose>
 							<c:when test="${sessionScope.loginId == null}">
-								<h5><a href="loadToLogin">로그인 해주세요</a></h5>
+								<p style="font-size: 12.5px"><a href="loadToLogin">로그인 해주세요</a></p>
 								
 			                </c:when>
 							<c:otherwise>
-								<!-- <li class="nav-item active"> -->
-								<h5>${sessionScope.loginId} 님 &nbsp;&nbsp;
 							
 								<c:choose>
 									<c:when test="${sessionScope.loginProfile == null}">
-										<a href="selectMyInfoMemberView"><img class="img-profile rounded-circle" style="width:50px" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png"></a>
+										<p style="font-size: 12.5px"><a href="selectMyInfoMemberView">${sessionScope.loginId} 님 &nbsp;&nbsp;
+										<img class="img-profile rounded-circle" style="width:50px" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png">
+										</a></p>
 									</c:when>
 									<c:otherwise>
-										<a href="selectMyInfoMemberView"><img class="img-profile rounded-circle" style="width:50px" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/${sessionScope.loginProfile }"></a>
+										<p style="font-size: 12.5px"><a href="selectMyInfoMemberView">${sessionScope.loginId} 님 &nbsp;&nbsp;
+										<img class="img-profile rounded-circle" style="width:50px" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/${sessionScope.loginProfile }">
+										</a></p>
 									</c:otherwise>
 								</c:choose>
-								
-								</h5>
 								
 							</c:otherwise>
 						</c:choose>

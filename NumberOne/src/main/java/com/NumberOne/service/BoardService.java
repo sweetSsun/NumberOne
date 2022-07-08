@@ -308,26 +308,6 @@ public class BoardService {
 		return mav;
 	}
 
-	//아이디로 닉네임 찾기
-	public ModelAndView selectRoomWriterMnickname(RedirectAttributes ra) {
-		System.out.println("BoardService.selectRoomWriterMnickname() 호출");
-		String mid = (String) session.getAttribute("loginId");
-		ModelAndView mav = new ModelAndView();
-		
-		if(mid == null) {
-			System.out.println("비로그인 상태!");
-			ra.addFlashAttribute("msg", "로그인 후 이용할 수 있습니다.");
-			//로그인 폼으로 돌아가기
-			mav.setViewName("redirect:/loadToLogin");
-			return mav;
-		}
-		
-		String mnickname = bdao.selectRoomWriterMnickname(mid);
-		mav.addObject("mnickname", mnickname);
-		mav.setViewName("board/WriteRoomForm");
-		return mav;
-	}
-
 	//자취방 자랑글 상세 보기
 	public String selectRoomView(String bdcode) {
 		System.out.println("BoardService.selectRoomView() 호출");
