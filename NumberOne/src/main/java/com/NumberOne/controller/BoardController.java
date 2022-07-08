@@ -252,10 +252,9 @@ public class BoardController {
 	 
 	 //게시글 수정 페이지 이동 
 	 @RequestMapping ( value = "/loadToBoardModify")
-	 public ModelAndView loadToBoardModify(String bdcode) {
+	 public ModelAndView loadToBoardModify(String bdcode, String bdcategory) {
 		 System.out.println("게시글 수정페이지 이동 요청");
-		 
-		 ModelAndView mav = bsvc.loadToBoardModify(bdcode);
+		 ModelAndView mav = bsvc.loadToBoardModify(bdcode, bdcategory);
 		 
 		 return mav;
 	 }
@@ -341,5 +340,9 @@ public class BoardController {
 
 		 return currnetState;
 	 }
+	 
+	 //자랑글 수정 페이지 요청
+	 
+
 
 }

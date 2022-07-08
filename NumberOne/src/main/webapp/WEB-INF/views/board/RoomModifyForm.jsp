@@ -49,6 +49,8 @@
     }
 	
 	.title{ width : 13%; }
+	
+	img{ height : 180px; width: 250px; }
 </style>
 
 </head>
@@ -67,7 +69,7 @@
 		<!-- 본문 -->
 			<div class="container-fluid" >
 			<br>
-				<h1 class="text-center">자취방 자랑 글작성 페이지</h1>
+				<h1 class="text-center">자취방 자랑 글수정 페이지</h1>
 				<div>
 				<form action="insertRoomWrite" method="post" enctype="multipart/form-data" onsubmit="return roomRegisterCh()">
 				<table id="roomWriteTable">
@@ -78,25 +80,29 @@
 					</tr>
 					
 					<tr>
-						<!-- th, td에 패딩, 마진을 주고 싶은데 먹히지 않아서 tableHead 클래스로 여백 줬슴당 -->
+						<!-- th, td에 패딩, 마진을 주고 싶은데 먹히지 않아서 tableHead 클래스로 여백 설정 -->
 						<th class="tableHead title">제목</th>
 						<td colspan="5">
-							<input name="bdtitle" id="bdtitle" type="text" placeholder="제목을 입력하세요" style="width:90%">
+							<input name="bdtitle" id="bdtitle" type="text" placeholder="제목을 입력하세요" style="width:90%" 
+								value="${board.bdtitle }">
 						</td>
 					</tr>
 					<tr>
 						<th class="tableHead title">내용</th>
 						<td colspan="5">
-							<textarea id="bdcontents" style="width:90%; height:300px;" name="bdcontents" placeholder="내용을 입력하세요"></textarea>
+							<textarea id="bdcontents" style="width:90%; height:300px;" name="bdcontents" placeholder="내용을 입력하세요">${board.bdcontents }</textarea>
 						</td>
 					</tr>
 					<tr>
 						<th class="tableHead title">대표사진</th>
 						<td colspan="5">
-							<!--  
-							<input type="text" id="mainImgScreen"> <span class="mainfile"><label for="mainImg">대표사진 선택</label></span>
-							-->
-							<input type="file" id="mainImg" name="bdimgfile" class=""> 
+							<img alt="대표사진" src="${pageContext.request.contextPath }/resources/img/room/${board.bdimg }">
+						</td>
+					</tr>
+					<tr>
+						<th class="tableHead title" style="font-size:20px;">대표사진<br>수정</th>
+						<td colspan="5">
+							<input type="file" id="mainImg" name="bdimgfile"> 
 						</td>
 					</tr>
 					<tr>
@@ -105,8 +111,19 @@
 							<!--  
 							<input type="text" id="detailImgScreen"> <span class="mainfile"><label for="detailImg">상세사진 선택</label></span>
 							-->
-							<input type="file" multiple="multiple" id="detailImg" name="bddetailimgfile" onclick="return mainimgCh()">
-							<div id="detailImgList"></div>
+							
+							<%-- 
+							<c:forEach items="${roomdetailimgs } var="detail">
+								detail
+							</c:forEach> 
+							--%>
+							<div id="detailImgs"></div>
+						</td>
+					</tr>
+					<tr>
+						<th class="tableHead title" style="font-size:20px;">상세사진<br>수정</th>
+						<td colspan="5">
+							<input type="file" multiple="multiple" id="detailImg" name="bddetailimgfile" onclick="return mainimgCh()"> 
 						</td>
 					</tr>
 					<tr>
@@ -129,6 +146,20 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 <script type="text/javascript">
+
+	$(document).ready(function(){
+		console.log("상세사진출력");
+		var detailImgs = '${board.bddetailimg}'.split("___");
+		//console.log(detailImgs);
+		detailImgs.pop();
+		console.log(detailImgs);
+		var detailImgOutput = ""
+		for(var i=0; i<detailImgs.length; i++){
+			detailImgOutput += "<img alt='상세사진' src='${pageContext.request.contextPath }/resources/img/room/"+detailImgs[i]+"'>";
+		}
+		console.log(detailImgOutput);
+		$("#detailImgs").html(detailImgOutput);
+	})
 
 	if('${sessionScope.loginId}'==null){
 		console.log("로그인 후 이용가능합니다.");
