@@ -56,16 +56,18 @@ public class BoardController {
 	    return mav;
 	}
 	
-	//게시판 글목록 페이지 
+	//전체글목록 페이지 
 	@RequestMapping ( value = "/selectBoardList")
 	public ModelAndView boardListPage() {
 	    System.out.println("게시판 글목록 페이지 요청");
 	    ModelAndView mav = bsvc.boardListPage();
 	    return mav;
 	}
-	   
+	
+	
+	
 	//카테고리별 글목록 조회 ( ajax )
-	@RequestMapping ( value = "/getBoardCategoryList")
+	@RequestMapping ( value = "/getBoardCategoryList_ajax")
 	@ResponseBody public String boardCategoryList_ajax( String bdcategory) {
 		System.out.println("카테고리별 글목록 요청_ajax");
 	      
@@ -77,10 +79,10 @@ public class BoardController {
 	   
 	 //글검색 
 	 @RequestMapping ( value = "/selectBoardSearchList")
-	 public ModelAndView selectBoardSearchList( String searchType, String searchText) {
+	 public ModelAndView selectBoardSearchList( String bdcategory, String searchType, String searchText) {
 	     System.out.println("글검색 목록 요청");
 	      
-	     ModelAndView mav = bsvc.selectBoardSearchList(searchType, searchText);
+	     ModelAndView mav = bsvc.selectBoardSearchList(bdcategory, searchType, searchText);
 	      
 	     return mav;
 	 }
@@ -300,6 +302,15 @@ public class BoardController {
 		 System.out.println("게시글 작성 요청");
 		 
 		 ModelAndView mav = bsvc.insertBoardWrite(board, ra);
+		 
+		 return mav;
+	 }
+	 //공지게시판 이동
+	 @RequestMapping ( value = "/selectNoticeBoardList")
+	 public ModelAndView selectNoticeBoardList() {
+		 System.out.println("공지게시판 이동 요청");
+		 
+		 ModelAndView mav = bsvc.selecNoticeBoardList();
 		 
 		 return mav;
 	 }

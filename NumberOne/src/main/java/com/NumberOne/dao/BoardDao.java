@@ -29,17 +29,33 @@ public interface BoardDao {
 	//공지게시판 글목록 조회 
 	ArrayList<NoticeDto> selectNoticeList();
 	 
-	//카테고리별 글목록 조회 
-	@Select("SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, TO_CHAR(BDDATE,'YY-MM-DD') AS BDDATE, "
-	      + "       BDIMG, BDDETAILIMG, BDSTATE, BDHITS, MB.MNICKNAME AS BDNICKNAME "
-	      + "FROM BOARDS BD, MEMBERS MB "
-	      + "WHERE BD.BDMID = MB.MID "
-	      + "AND BD.BDCATEGORY = #{bdcategory} "
-	      + "ORDER BY BDCODE DESC ")
+	//말머리별(카테고리별) 글목록 조회 
+	@Select("SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, "
+			+ "	   TO_CHAR(BDDATE,'YY-MM-DD') AS BDDATE, "
+			+ "	   BDIMG, BDDETAILIMG, BDSTATE, BDHITS, "
+			+ "       MB.MNICKNAME AS BDNICKNAME, "
+			+ "       NVL(RPCOUNT.BDRPCOUNT, 0) AS BDRPCOUNT, "
+			+ "       NVL(RCCOUNT.BDRCCOUNT, 0) AS BDRCCOUNT "
+			+ "FROM BOARDS BD "
+			+ "LEFT OUTER JOIN MEMBERS MB "
+			+ "ON BD.BDMID = MB.MID "
+			+ "LEFT OUTER JOIN (SELECT BD.BDCODE AS RPBDCODE, COUNT(*) AS BDRPCOUNT "
+			+ "                        FROM BOARDS BD LEFT OUTER JOIN REPLY RP "
+			+ "                        ON BD.BDCODE = RP.RPBDCODE "
+			+ "                        WHERE RP.RPSTATE = 1 "
+			+ "                        GROUP BY BD.BDCODE "
+			+ "                        ORDER BY BD.BDCODE) RPCOUNT "
+			+ "ON BD.BDCODE = RPCOUNT.RPBDCODE "
+			+ "LEFT OUTER JOIN (SELECT RCBDCODE, COUNT(*) AS BDRCCOUNT "
+			+ "                        FROM RECOMMEND "
+			+ "                        GROUP BY RCBDCODE ) RCCOUNT "
+			+ "ON BD.BDCODE = RCCOUNT.RCBDCODE "
+			+ "WHERE BDCATEGORY = #{bdcategory} "
+			+ "ORDER BY BDCODE DESC ")
 	ArrayList<BoardDto> selectBoardCategoryList_ajax(String bdcategory);
 	   
 	//글검색 목록 조회 
-	ArrayList<BoardDto> selectBoardSearchList( @Param("searchType")String searchType, @Param("searchText")String searchText);
+	ArrayList<BoardDto> selectBoardSearchList( @Param("bdcategory") String bdcategory, @Param("searchType") String searchType, @Param("searchText") String searchText);
 	
 	//게시판 공지글 상세페이지 이동 
 	NoticeDto selectNoticeBoardView(String nbcode);

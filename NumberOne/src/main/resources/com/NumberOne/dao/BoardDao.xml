@@ -118,6 +118,11 @@
 		                        GROUP BY RCBDCODE ) RCCOUNT
 		ON BD.BDCODE = RCCOUNT.RCBDCODE
 		WHERE BDCATEGORY NOT IN ( '자랑' )
+		
+		<if test="bdcategory != null">
+		AND BDCATEGORY = #{bdcategory}
+		</if>
+		
  		<if test="searchType == 'bdtitle' ">
  		<!-- 제목으로 검색 -->
  		AND BDTITLE LIKE '%'||#{searchText}||'%'

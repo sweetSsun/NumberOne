@@ -14,7 +14,7 @@
 
 <style type="text/css">
 	section{
-		max-width: 80%;
+		max-width: 70%;
 		margin: auto;
 		margin-top: 0%;
 	}
@@ -117,7 +117,7 @@
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h1 class="text-center">게시판 글상세페이지 : BoardView.jsp</h1>
+				<h2 class="text-center">게시판 글상세페이지 : BoardView.jsp</h2>
 				<form action="">
 					<div class="row">
 						<div class="col">
@@ -172,8 +172,8 @@
 							<!-- 추천,신고 : 로그인 한 아이디  -->
 							<!-- <i onclick="insertBoardWarning()" class="fa-solid fa-triangle-exclamation text-danger fa-2x icon" style="float:right;"></i>신고 -->
 							<!-- <input type="button" style="float:right;" class="btn btn-lg bg-success fw-bold text-white" value="신고"> -->
-							<i id="bdRecommend" onclick="insertBoardRecommend()" class="fa-regular fa-thumbs-up  fa-2x icon"  style="margin-right: 2px; font-size:40px"></i>
-							<i id="bdWarning" onclick="bdWarningCheckModal()" class='fa-solid fa-land-mine-on  fa-2x icon' style="margin-right: 2px; font-size:40px"></i>
+							<i id="bdRecommend" onclick="insertBoardRecommend()" class="fa-regular fa-thumbs-up  fa-2x icon"  style="margin-right: 2px; font-size:30px"></i>
+							<i id="bdWarning" onclick="bdWarningCheckModal()" class='fa-solid fa-land-mine-on  fa-2x icon' style="margin-right: 2px; font-size:30px"></i>
 							<!-- <input type="button" style="float:right; margin-right: 5px;" class="btn btn-lg bg-success fw-bold text-white" value="추천"> -->
 							
 						</div>
@@ -590,7 +590,7 @@
 				for( var i=0; i < replyList.length; i++ ){
 					if( replyList[i].rpmid == '${sessionScope.loginId}' ){//동일한 아이디
 						
-						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;\' >" /* 프로필영역 */
+						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;\ margin-right:-20px;' >" /* 프로필영역 */
 						if( replyList[i].rpprofile != null ){
 							output += "<img class=\"img-profile rounded-circle \" style=\"height:55px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
 						}else{
@@ -612,7 +612,7 @@
 						
 					}else{
 						
-						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;\'>" /* 프로필영역 */
+						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px; margin-right:-20px;'>" /* 프로필영역 */
 						if( replyList[i].rpprofile != null ){
 							output += "<img class=\"img-profile rounded-circle \" style=\"height:55px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
 						}else{

@@ -19,7 +19,7 @@
                             <h4><a href="${pageContext.request.contextPath}/selectRoomList">자랑</a></h4>
                         </div>
                         <div class="sidebar-item" >
-                            <h4><a href="#">공지</a></h4>
+                            <h4><a href="selectNoticeBoardList">공지</a></h4>
                         </div>
                         <div class="sidebar-item" >
                             <h4><a href="selectFreeBoardList">자유</a></h4>
