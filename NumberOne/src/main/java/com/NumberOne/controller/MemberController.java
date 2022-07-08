@@ -248,6 +248,16 @@ public class MemberController {
 			
 		}
 		
+		//작성자 상세페이지 _ Board
+		@RequestMapping(value = "/insertWriteMemberInfo_Board")
+		public ModelAndView insertWriteMemberInfo_Board(String nickname) {
+			System.out.println("작성자 상세페이지 _ Board");
+			mav = new ModelAndView();
+			System.out.println("nickname : " + nickname);
+			mav = msvc.insertWriteMemberInfo_Board(nickname);
+			return mav;
+	
+		}		
 
 }
 

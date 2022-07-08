@@ -103,7 +103,7 @@
 	.listArea{
 	    min-height: 410px;
 	    max-height: 410px;
-	    overflow: scroll;
+	    overflow-y: scroll;
 		width:-webkit-fill-available;
 		padding-right: 10px;
 	}
