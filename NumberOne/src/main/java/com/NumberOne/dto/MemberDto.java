@@ -36,6 +36,9 @@ public class MemberDto {
 	
 	private String memailId; //이메일아이디 
 	private String memailDomain;  //이메일도메인
+	
+	private String bdtitle; //마이페이지 - 작성자 상세페이지 (작성글)
+	
 	public String getMid() {
 		return mid;
 	}

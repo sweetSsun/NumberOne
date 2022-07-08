@@ -144,10 +144,6 @@ p {
 .msgTextarea::-webkit-scrollbar-track {
     background: #EAEAEA;  /*스크롤바 뒷 배경 색상*/
 }
-
-ul li a {
-	
-}
  
 </style>
 
@@ -176,7 +172,7 @@ ul li a {
 	
 	<!-- 닉네임 -->
 	<th><p style="text-align: right;"> 닉네임&nbsp;&nbsp;| </p></th>
-	<td colspan="2"><input type="text" class="inputText" value="${memberInfo.mnickname }" ></td>
+	<td colspan="2"><input type="text" class="inputText" value="${memberInfo.mnickname }"></td>
 	
 	<!-- 채팅 버튼 -->
 	<td rowspan="2"><input type="button" class="btn" style="width: 90px; margin-right: 30px;" value="채팅"></td>		
@@ -201,9 +197,9 @@ ul li a {
 <!-- 메뉴 시작 -->	
 	<div class="row" style="width: 640px; margin-left: 11px;">
 		<div class="col-lg-6 col-md-6 col-sm-6" 
-		style="border: 3px solid; border-radius: 20px 20px 0px 0px; height: 50px; border-bottom: 0px; background-color: #F2F2FF">
+		style="border: 3px solid; border-radius: 20px 20px 0px 0px; height: 50px;">
 			<input value="활 동 내 역" 
-			style="width:280px; border: 0px; margin-top: 7px; text-align: center; font-weight: bold; outline:none;  background-color: #F2F2FF" readonly="readonly">
+			style="width:280px; border: 0px; margin-top: 7px; text-align: center; font-weight: bold; outline:none;" readonly="readonly">
 		</div>
 		<div class="col-lg-6 col-md-6 col-sm-6" 
 		style="border: 3px solid; border-radius: 20px 20px 0px 0px; height: 50px;">
@@ -212,13 +208,11 @@ ul li a {
 		</div>
 	</div>
 	
-	<div class="row"  style="width: 650px; margin-left: 9px; background-color: #F2F2FF;">
-			<div class = "msgTextarea col-lg-12 col-md-6 col-sm-6" style="border-top:0px; padding-top: 20px;" >
+	<div class="row"  style="width: 650px; margin-left: 9px;">
+			<div class = "msgTextarea col-lg-12 col-md-6 col-sm-6" style="border-top:0px;" >
 				<c:forEach items="${Board }" var="Board">			
 					<ul>
-						<li><a href="selectBoardView?bdcode=${Board.bdcode }" target="_blank">
-						<input type="text" class="inputText" style="background-color: #F2F2FF; border-bottom: 1px solid #D2D2D2; outline:none; width: 540px; " 
-						readonly="readonly" value="${Board.bdtitle }"></a></li>
+						<li><input type="text" class="inputText" value="${Board.bdtitle }">
 					</ul>					
 				</c:forEach>
 			 </div>
