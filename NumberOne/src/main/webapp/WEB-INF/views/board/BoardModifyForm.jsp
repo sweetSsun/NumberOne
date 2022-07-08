@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@ include file="/resources/css/CommonCss.jsp" %>
+<%@ include file="/resources/css/BarCss.jsp" %>
 <!-- 폰트어썸 -->
 <script src="https://kit.fontawesome.com/86a85cd392.js" crossorigin="anonymous"></script>
 <title>1인자 - 게시글 수정페이지</title>
@@ -14,7 +14,7 @@
 
 <style type="text/css">
 	section{
-		max-width: 80%;
+		max-width: 70%;
 		margin: auto;
 		margin-top: 0%;
 	}
@@ -22,21 +22,23 @@
 		width: 200px;
 		text-align : center;
 		border : none;
-		color : #004804;
+		color : #00bcd4;
 	}
 	option{
-		color : #004804;
+		color :#00bcd4;
 		font-weight: bold;
 	}
 	.bdtitle{
 		border: none;
 		font-weight: bold;
-		font-size: 35px;
+		font-size: 20px;
+		height: 22px;
 		margin: auto;
 	}
 	.bdcontents{
 		border-radius: 5px;
 		border: solid gray 2px;
+		font-size: 19px;
 	}
 	.btn-wrapper{
 		width: 100%;
@@ -50,6 +52,22 @@
 	}
 	.selectPlaceHolder{
 		display: none;
+	}
+	textarea:focus {
+ 	   outline: none;
+	}
+	input:focus{
+	   outline: none;	
+	}
+	.bdCategoryList{
+		color : #00bcd4;
+		border: none;
+		font-size: 20px;
+	}
+	.bdRegionSel{
+		color : #00bcd4;
+		border: none;
+		font-size: 20px;
 	}
 </style>
 </head>
@@ -72,18 +90,19 @@
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h1 class="text-center">게시판 글수정페이지 : BoardModifyForm.jsp</h1>
+				<h2 class="text-center">게시판 글수정페이지 : BoardModifyForm.jsp</h2>
 				<form action="updateBoardModify" method="post" enctype="multipart/form-data">
 				<div class="row">
 					<input type="hidden" name="bdmid" value="${board.bdmid }">
 					<input type="hidden" name="bdcode" value="${board.bdcode }">
-					<span class="fw-bold" name="bdnickname">${board.bdnickname }</span>
+					<input type="hidden" class="fw-bold" name="bdnickname" value="${board.bdnickname }">
 					<hr>
 				</div>
+				
 				<div class="row">
 					<div class="col-6">
-						게시판<span class="text-danger">*</span>
-						<select name="bdcategory">
+						 <span style="font-size:20px;">게시판</span><span class="text-danger">*</span>
+						<select name="bdcategory"  class="bdCategoryList" required="required">
 							<option value="${board.bdcategory}"  class="selectPlaceHolder">${board.bdcategory }</option>
 							<option value="자유">자유</option>
 							<option value="질문">질문</option>
@@ -92,8 +111,8 @@
 						</select>
 					</div>
 					<div class="col-6">
-						지역
-						<select name="bdrgcode">
+						<span style="font-size:20px;">지역</span>
+						<select name="bdrgcode" class="bdRegionSel">
 							<option value="${board.bdrgcode }"  class="selectPlaceHolder">${board.bdrgname }</option>
 							<option value="ALL">전국</option>
 							<option value="SEL">서울</option>
@@ -113,7 +132,7 @@
 				</div>
 				<hr>
 				<div class="row">
-					<textarea class="bdcontents" rows="15" name="bdcontents">${board.bdcontents }</textarea>
+					<textarea class="bdcontents" rows="17" cols="80" name="bdcontents">${board.bdcontents }</textarea>
 				</div>
 				<div class="row mt-4">
 					<!-- 첨부파일! 나중에 경로 및 name 수정  -->
@@ -121,8 +140,8 @@
 				</div>
 				<div class="row mt-4">
 					<div class="col btn-wrapper">
-						<input class="btn btn-lg buttons bg-success fw-bold text-white" type="submit" value="수정">
-						<input onclick="bdWriteCancelCheckModal()" class="btn btn-lg buttons bg-success fw-bold text-white" type="button" value="취소">
+						<input class="btn btn-lg buttons fw-bold text-white" style="background-color:#00bcd4;" type="submit" value="수정">
+						<input onclick="bdWriteCancelCheckModal()" class="btn btn-lg buttons fw-bold text-white" style="background-color:#00bcd4;" type="button" value="취소">
 					</div>
 				</div>
 			</form>

@@ -114,6 +114,7 @@ body {
 
 </head>
 <body>
+
 	<div id="sidebar-toggle">
 		<a class="sideOnImg" alt="open"><i class="fa fa-bars"></i></a>
 		<a class="sideOffImg" alt="close"><i class="fa fa-bars"></i></a>
@@ -122,69 +123,82 @@ body {
 		<div id="sideList">
 			<div class="listLeft">
 				<div class="row">
-                <div class="col sidemenu">
-                	<div class="sidetitle">
-						<h3 class="text-center font-weight-bold">커뮤니티</h3>
-                    </div>
-			
-               </div>
-                  <div class="sideroom" >
-                      <h4><a href="#">자랑방</a></h4>
-                  </div>
-                  <div class="sideroom" >
-                      <h4><a href="selectFreeBoardList">자유방</a></h4>
-                  </div>
-                  <div class="sideroom" >
-                      <h4><a href="#">질문방</a></h4>
-                  </div>
-                  <div class="sideroom" >
-                      <h4><a href="#">정보방</a></h4>
-                  </div>
-                  <div class="sideroom" >
-                      <h4><a href="#">후기방</a></h4>
-                  </div>
-                  <div class="sideroom" >
-                      <h4><a href="#">공지방</a></h4>
-                  </div>
-               </div>
-                   
-                   
-               <div class="sideregion">
-                   <h4><a href="#">지역</a></h4>
-                   <div class="blog__sidebar__item__tags">
-                       <table id="region_cate">
-                       	<tr>
-                       		<td><a href="#">전체</a></td>
-                       		<td><a href="#">서울</a></td>
-                       		<td><a href="#">인천</a></td>
-                       	</tr>
-                       	<tr>
-                       		<td><a href="#">경기</a></td>
-                       		<td><a href="#">경상</a></td>
-                       		<td><a href="#">전라</a></td>
-                       	</tr>
-                       	<tr>
-                       		<td><a href="#">충청</a></td>
-                       		<td><a href="#">강원</a></td>
-                       		<td><a href="#">제주</a></td>
-                       	</tr>
-                       </table>
-                   </div>
-                </div> 
-				
-				<p style="width:70px; line-height:100px; text-align:center;">
-				안녕하세요 컬러감별사입
-				
-				</p>
+					<div class="col sidemenu">
+						<div class="sidetitle">
+							<h3 class="text-center font-weight-bold">커뮤니티</h3>
+						</div>
+
+					</div>
+					<div class="sideroom">
+						<h4>
+							<a href="#">자랑방</a>
+						</h4>
+					</div>
+					<div class="sideroom">
+						<h4>
+							<a href="selectFreeBoardList">자유방</a>
+						</h4>
+					</div>
+					<div class="sideroom">
+						<h4>
+							<a href="#">질문방</a>
+						</h4>
+					</div>
+					<div class="sideroom">
+						<h4>
+							<a href="#">정보방</a>
+						</h4>
+					</div>
+					<div class="sideroom">
+						<h4>
+							<a href="#">후기방</a>
+						</h4>
+					</div>
+					<div class="sideroom">
+						<h4>
+							<a href="#">공지방</a>
+						</h4>
+					</div>
+				</div>
+
+
+				<div class="sideregion">
+					<h4>
+						<a href="#">지역</a>
+					</h4>
+					<div class="blog__sidebar__item__tags">
+						<table id="region_cate">
+							<tr>
+								<td><a href="#">전체</a></td>
+								<td><a href="#">서울</a></td>
+								<td><a href="#">인천</a></td>
+							</tr>
+							<tr>
+								<td><a href="#">경기</a></td>
+								<td><a href="#">경상</a></td>
+								<td><a href="#">전라</a></td>
+							</tr>
+							<tr>
+								<td><a href="#">충청</a></td>
+								<td><a href="#">강원</a></td>
+								<td><a href="#">제주</a></td>
+							</tr>
+						</table>
+					</div>
+
+				</div>
+
+				<p style="width: 70px; line-height: 100px; text-align: center;">
+					안녕하세요 컬러감별사입</p>
 			</div>
 			<div class="listRight">
-				<p style="font-size:40px; color:#000; width:200px; line-height:100px; text-align:center;">B</p>
+				<p
+					style="font-size: 40px; color: #000; width: 200px; line-height: 100px; text-align: center;">B</p>
 			</div>
-		</div>
-	
-	</div>
 
-	
+		</div>
+	</div>
+		
 </body>
 
 <script type="text/javascript">

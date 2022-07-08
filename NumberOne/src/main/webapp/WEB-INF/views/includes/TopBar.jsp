@@ -84,7 +84,7 @@
 							<a href="loadToBoardMainPage">커뮤니티</a>
 						</li>
 						<li>
-							<a href="loadToResellMainPage">중고거래</a>
+							<a href="selectResellMainPage">중고거래</a>
 						</li>
 					</ul>
 				</div>

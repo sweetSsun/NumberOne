@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -9,12 +8,9 @@
 
 <%@ include file="/resources/css/BarCss.jsp"%>
 <!-- 부트스트랩 -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-	crossorigin="anonymous">
- <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/resell.css" type="text/css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/resell.css" type="text/css">
 
 
 </head>
@@ -34,13 +30,11 @@
 			<div class="container">
 				<h1 class="text-center" id="titleMsg"></h1>
 
-				<form action="insertResellWrite" method="post"
-					enctype="multipart/form-data" onsubmit="return checkFormData()">
+				<form action="insertResellWrite" method="post" enctype="multipart/form-data" onsubmit="return checkFormData()">
 					<div class="container-header">
 						<div class="container-flex_1 flex_between">
 							<div class="item_start">
-								<span> <select class="select-size"
-									onchange="selectSB()" id="boardTitle" name="ubsellbuy">
+								<span> <select class="select-size" onchange="selectSB()" id="boardTitle" name="ubsellbuy">
 										<option value="S">팔구</option>
 										<option value="B">사구</option>
 								</select>
@@ -58,13 +52,12 @@
 								</span>
 							</div>
 
-							<div class="item_end">작성자 :  ${mNickname }</div>
+							<div class="item_end">작성자 : ${mNickname }</div>
 
 						</div>
 
 						<div>
-							글제목 <input type="text" size="60" style="margin-left: 40px;"
-								id="titleCheck" name="ubtitle">
+							글제목 <input type="text" size="60" style="margin-left: 40px;" id="titleCheck" name="ubtitle">
 						</div>
 
 
@@ -72,12 +65,10 @@
 
 							<div class="container-card_goods_2">
 								<div class="item-basis_7 flex-shrink">
-									<input type="text" name="gd_names" size="60" placeholder="품목명"
-										class="gdcheck_n">
+									<input type="text" name="gd_names" size="60" placeholder="품목명" class="gdcheck_n">
 								</div>
 								<div class="item-basis_3 flex-shrink">
-									<input type="text" size="20" placeholder="가격" name="gd_price"
-										class="gdcheck_p">
+									<input type="text" size="20" placeholder="가격" name="gd_price" class="gdcheck_p">
 								</div>
 
 							</div>
@@ -88,12 +79,10 @@
 							<div class="d_none btn_d-none">
 								<div class="container-card_goods_2">
 									<div class="item-basis_7 flex-shrink">
-										<input type="text" size="60" placeholder="품목명"
-											class="gdcheck_n">
+										<input type="text" size="60" placeholder="품목명" class="gdcheck_n">
 									</div>
 									<div class="item-basis_3 flex-shrink">
-										<input type="text" size="20" placeholder="가격"
-											class="gdcheck_p">
+										<input type="text" size="20" placeholder="가격" class="gdcheck_p">
 									</div>
 
 								</div>
@@ -107,12 +96,10 @@
 							<div class="d_none btn_d-none">
 								<div class="container-card_goods_2">
 									<div class="item-basis_7 flex-shrink">
-										<input type="text" size="60" placeholder="품목명"
-											class="gdcheck_n">
+										<input type="text" size="60" placeholder="품목명" class="gdcheck_n">
 									</div>
 									<div class="item-basis_3 flex-shrink">
-										<input type="text" size="20" placeholder="가격"
-											class="gdcheck_p">
+										<input type="text" size="20" placeholder="가격" class="gdcheck_p">
 									</div>
 
 
@@ -127,12 +114,10 @@
 
 								<div class="container-card_goods_2">
 									<div class="item-basis_7 flex-shrink">
-										<input type="text" size="60" placeholder="품목명"
-											class="gdcheck_n">
+										<input type="text" size="60" placeholder="품목명" class="gdcheck_n">
 									</div>
 									<div class="item-basis_3 flex-shrink">
-										<input type="text" size="20" placeholder="가격"
-											class="gdcheck_p">
+										<input type="text" size="20" placeholder="가격" class="gdcheck_p">
 									</div>
 								</div>
 								<div class="container-flex_1 flex-end">
@@ -144,12 +129,10 @@
 							<div class="d_none btn_d-none">
 								<div class="container-card_goods_2">
 									<div class="item-basis_7 flex-shrink">
-										<input type="text" size="60" placeholder="품목명"
-											class="gdcheck_n">
+										<input type="text" size="60" placeholder="품목명" class="gdcheck_n">
 									</div>
 									<div class="item-basis_3 flex-shrink">
-										<input type="text" size="20" placeholder="가격"
-											class="gdcheck_p">
+										<input type="text" size="20" placeholder="가격" class="gdcheck_p">
 									</div>
 								</div>
 
@@ -169,8 +152,7 @@
 
 						<!-- 상품 설명  -->
 						<div class="container-flex_1">
-							<textarea rows="4" cols="80" style="resize: none"
-								name="ubcontents" id="contentsCheck">상품상세설명</textarea>
+							<textarea rows="4" cols="80" style="resize: none" name="ubcontents" id="contentsCheck">상품상세설명</textarea>
 
 						</div>
 
@@ -182,8 +164,7 @@
 						<div>
 							<div>사진첨부</div>
 							<div class="">
-								<input type="file" placeholder="메인사진 1개" name="ubmainimgfile"
-									id="mainImgCheck">
+								<input type="file" placeholder="메인사진 1개" name="ubmainimgfile" id="mainImgCheck">
 							</div>
 
 							<div class="">
@@ -206,10 +187,8 @@
 
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp"%>
 
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 <script type="text/javascript">
 	/* 로그인회원인지 체크 */
@@ -328,21 +307,30 @@
 
 	/* 폼태그 데이터 공백 체크  */
 
-	/*  contentsCheck
-	mainImgCheck
-	gd_check
-	
-	 */
-
 	function checkFormData() {
 		let checkForm = true;
 		console.log("폼데이터 핸들러 호출");
 		if (document.getElementById("titleCheck").value == '') {
 			alert("글 제목을 입력해주세요");
 			document.getElementById("titleCheck").focus();
-			checkForm = false;
+			checkForm = false;			
 		}
-		;
+		else if(document.getElementById("mainImgCheck").value == ''){
+			document.getElementById("mainImgCheck").focus();
+			checkForm = false;	
+		}
+		else if(document.getElementsByClassName("gdcheck_n")[0].value == ''){
+			document.getElementsByClassName("gdcheck_n")[0].focus();
+			checkForm = false;	
+		}
+		else if(document.getElementsByClassName("gdcheck_p")[0].value == ''){
+			document.getElementsByClassName("gdcheck_p")[0].focus();
+			checkForm = false;	
+		}
+		else if(document.getElementById("contentsCheck").value == ''){
+			document.getElementById("contentsCheck").focus();
+			checkForm = false;	
+		}
 		return checkForm;
 	}
 </script>

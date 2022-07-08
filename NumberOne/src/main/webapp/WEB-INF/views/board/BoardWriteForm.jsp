@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@ include file="/resources/css/CommonCss.jsp" %>
+<%@ include file="/resources/css/BarCss.jsp" %>
 <!-- 폰트어썸 -->
 <script src="https://kit.fontawesome.com/86a85cd392.js" crossorigin="anonymous"></script>
 <title>1인자 - 게시글 작성페이지</title>
@@ -25,18 +25,20 @@
 		color : #004804;
 	}
 	option{
-		color : #004804;
+		color : #00bcd4;
 		font-weight: bold;
 	}
 	.bdtitle{
 		border: none;
 		font-weight: bold;
-		font-size: 35px;
+		font-size: 20px;
 		margin: auto;
+		height: 22px;
 	}
 	.bdcontents{
 		border-radius: 5px;
 		border: solid gray 2px;
+		font-size: 19px;
 	}
 	.btn-wrapper{
 		width: 100%;
@@ -53,6 +55,24 @@
 	}
 	textarea{
 		spellcheck: false;
+		resize: none;
+		
+	}
+	textarea:focus {
+ 	   outline: none;
+	}
+	input:focus{
+	   outline: none;	
+	}
+	.bdCategoryList{
+		color : #00bcd4;
+		border: none;
+		font-size: 20px;
+	}
+	.bdRegionSel{
+		color : #00bcd4;
+		border: none;
+		font-size: 20px;
 	}
 </style>
 </head>
@@ -75,13 +95,13 @@
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h1 class="text-center">게시판 글작성페이지 : BoardWriteForm.jsp</h1>
+				<h2 class="text-center">게시판 글작성페이지 : BoardWriteForm.jsp</h2>
 				<form action="insertBoardWrite" method="post" enctype="multipart/form-data" >
 					<input type="hidden" name="bdmid" value="${sessionScope.loginId }">
 				<div class="row">
 					<div class="col-6">
-						게시판<span class="text-danger">*</span>
-						<select name="bdcategory" required>
+						<span style="font-size:20px;">게시판</span><span class="text-danger">*</span>
+						<select name="bdcategory" class="bdCategoryList" required="required">
 							<option value="" disabled selected class="selectPlaceHolder">필수</option>
 							<option value="자유">자유</option>
 							<option value="질문">질문</option>
@@ -90,8 +110,8 @@
 						</select>
 					</div>
 					<div class="col-6">
-						지역
-						<select name="bdrgcode">
+						<span style="font-size:20px;">지역</span>
+						<select name="bdrgcode" class="bdRegionSel">
 							<option value="" disabled selected class="selectPlaceHolder">선택</option>
 							<option value="ALL">전국</option>
 							<option value="SEL">서울</option>
@@ -111,15 +131,15 @@
 				</div>
 				<hr>
 				<div class="row">
-					<textarea class="bdcontents" rows="15" name="bdcontents"></textarea>
+					<textarea class="bdcontents" rows="17" cols="80" name="bdcontents"></textarea>
 				</div>
 				<div class="row mt-4">
-					<input type="file" name="bdimgfile">
+					<input type="file" name="bdimgfile" >
 				</div>
 				<div class="row mt-4">
 					<div class="col btn-wrapper">
-						<input class="btn btn-lg buttons bg-success fw-bold text-white" type="submit" value="작성">
-						<input onclick="bdWriteCancelCheckModal()" class="btn btn-lg buttons bg-success fw-bold text-white" type="button" value="취소">
+						<input class="btn btn-lg buttons fw-bold text-white" style="background-color:#00bcd4;" type="submit" value="작성">
+						<input onclick="bdWriteCancelCheckModal()" style="background-color:#00bcd4;" class="btn btn-lg buttons fw-bold text-white" type="button" value="취소">
 					</div>
 				</div>
 			</form>
