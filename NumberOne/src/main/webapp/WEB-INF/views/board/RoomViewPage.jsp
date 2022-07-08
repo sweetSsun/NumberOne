@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 자취방 자랑 메인</title>
+<title>1인자 - 게시판 글목록 페이지</title>
 
 
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
@@ -375,7 +375,7 @@ section{
 					<div class="col-2">
 						<!-- 글쓰기 버튼 -->
 						<c:if test="${sessionScope.loginId != null}">
-							<button class="btn btn-primary btm-sm" onclick="location.href='${pageContext.request.contextPath }/loadToWriteRoom'">글쓰기</button>
+							<button class="btn btn-primary btm-sm" onclick="location.href='${pageContext.request.contextPath }/loadTowriteRoom'">글쓰기</button>
 						</c:if>
 					</div>
 					

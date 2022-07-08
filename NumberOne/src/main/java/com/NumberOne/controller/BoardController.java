@@ -30,12 +30,10 @@ public class BoardController {
 	}
 
 	//자취방 자랑글 작성 페이지 이동
-	@RequestMapping(value="/loadTowriteRoom")
-	public ModelAndView loadTowriteRoom(RedirectAttributes ra) {
+	@RequestMapping(value="/loadToWriteRoom")
+	public String loadTowriteRoom(RedirectAttributes ra) {
 		System.out.println("자쥐방 자랑 Form 요청");
-		ModelAndView mav = new ModelAndView();
-		mav = bsvc.selectRoomWriterMnickname(ra);
-		return mav;
+		return "board/RoomWriteForm";
 	}
 
 	//자취방 자랑글 등록
