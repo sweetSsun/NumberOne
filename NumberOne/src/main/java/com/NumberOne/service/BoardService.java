@@ -587,16 +587,30 @@ public class BoardService {
 	}
 	
 	//게시글 수정 페이지 이동 요청 
-	public ModelAndView loadToBoardModify(String bdcode) {
+	public ModelAndView loadToBoardModify(String bdcode, String bdcategory) {
 		System.out.println("BoardService.loadToBoardModify() 호출");
 		ModelAndView mav = new ModelAndView();
+		System.out.println(bdcode+", "+bdcategory);
 		
 		//수정할 게시글 정보 
-		BoardDto board = bdao.selectBoardView(bdcode);
-		System.out.println(board);
+		BoardDto board=null;
+		if(bdcategory == null){
+			//일반글
+			board = bdao.selectBoardView(bdcode);
+		} else {	
+			//자랑글
+			board = bdao.selectRoomModify(bdcode);
+			String[] roomdetailimgs= board.getBddetailimg().split("___");
+			System.out.println(roomdetailimgs.length);
+			mav.addObject("roomdetailimgs", roomdetailimgs);
+		}
 		
 		mav.addObject("board", board);
-		mav.setViewName("board/BoardModifyForm");
+		if(bdcategory != null){					
+			mav.setViewName("board/RoomModifyForm");
+		} else {			
+			mav.setViewName("board/BoardModifyForm");
+		}
 		
 		return mav;
 	}

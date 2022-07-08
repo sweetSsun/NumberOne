@@ -168,7 +168,11 @@ public interface BoardDao {
 	ReplyDto selectRpContents_ajax(String rpcode);
 	
 	//댓글 수정
-	int updateRpcontents_ajax(@Param("rpcode") String rpcode, @Param("rpcontents") String rpcontents); 
+	int updateRpcontents_ajax(@Param("rpcode") String rpcode, @Param("rpcontents") String rpcontents);
+
+	//자랑글 수정용 select
+	@Select("select * from boards where bdcode=#{bdcode}")
+	BoardDto selectRoomModify(String bdcode); 
 
 	
 	
