@@ -226,10 +226,10 @@ div {
 							<div class="d_none btn_d-none">
 								<div class="container-card_goods_2">
 									<div class="item-basis_7 flex-shrink">
-									<input type="text" name="gd_names" size="60" placeholder="품목명" class="gdcheck_n">
+									<input type="text" size="60" placeholder="품목명" class="gdcheck_n">
 								</div>
 								<div class="item-basis_3 flex-shrink">
-									<input type="text" size="20" placeholder="가격" name="gd_price" class="gdcheck_p">
+									<input type="text" size="20" placeholder="가격" class="gdcheck_p">
 								</div>
 
 								</div>
@@ -243,10 +243,10 @@ div {
 							<div class="d_none btn_d-none">
 								<div class="container-card_goods_2">
 									<div class="item-basis_7 flex-shrink">
-									<input type="text" name="gd_names" size="60" placeholder="품목명" class="gdcheck_n">
+									<input type="text" size="60" placeholder="품목명" class="gdcheck_n">
 								</div>
 								<div class="item-basis_3 flex-shrink">
-									<input type="text" size="20" placeholder="가격" name="gd_price" class="gdcheck_p">
+									<input type="text" size="20" placeholder="가격" class="gdcheck_p">
 								</div>
 
 
@@ -261,10 +261,10 @@ div {
 
 								<div class="container-card_goods_2">
 									<div class="item-basis_7 flex-shrink">
-									<input type="text" name="gd_names" size="60" placeholder="품목명" class="gdcheck_n">
+									<input type="text" size="60" placeholder="품목명" class="gdcheck_n">
 								</div>
 								<div class="item-basis_3 flex-shrink">
-									<input type="text" size="20" placeholder="가격" name="gd_price" class="gdcheck_p">
+									<input type="text" size="20" placeholder="가격"  class="gdcheck_p">
 								</div>
 								</div>
 								<div class="container-flex_1 flex-end">
@@ -276,10 +276,10 @@ div {
 							<div class="d_none btn_d-none">
 	<div class="container-card_goods_2">
 								<div class="item-basis_7 flex-shrink">
-									<input type="text" name="gd_names" size="60" placeholder="품목명" class="gdcheck_n">
+									<input type="text" size="60" placeholder="품목명" class="gdcheck_n">
 								</div>
 								<div class="item-basis_3 flex-shrink">
-									<input type="text" size="20" placeholder="가격" name="gd_price" class="gdcheck_p">
+									<input type="text" size="20" placeholder="가격" class="gdcheck_p">
 								</div>
 								</div>
 					
