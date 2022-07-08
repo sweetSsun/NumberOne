@@ -74,16 +74,23 @@
 		height: 200px;
 		background-color: gray;
 	}
+	/*
+	header.sideon{
+		padding-left: 20%;
+	}*/
 	
-	.sidebar{
+	/* .sidebar{
 		font-family: 'Jal_Onuel';
-		position: sticky;
-		margin-top: -2%;
-		height: auto;
-		min-width: 200px;
+		background: #F2F2FF;
+		position: fixed;
+		width: 250px;
+		height: 100vh;
+		top: 0;
+		left: 0;
 		z-index: 1;
+		margin-top: -2%;
 		white-space: nowrap;
-	}
+	} */
 	
 	
 </style>

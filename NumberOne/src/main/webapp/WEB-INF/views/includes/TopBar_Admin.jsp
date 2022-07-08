@@ -52,7 +52,7 @@
 					<div>					
 						<p style="float: left; font-size: 15px;">						
 							<a href="admin_loadToAdminMainPage">
-							<img class="img-profile rounded-circle" style="width:50px" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png">&nbsp;&nbsp;${sessionScope.loginId}</a>
+							<img class="img-profile rounded-circle" style="height:50px; width:50px" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png">&nbsp;&nbsp;${sessionScope.loginNickname}</a>
 						</p>
 			
 					 	<!-- 살아남은 미니박수^^~! -->
