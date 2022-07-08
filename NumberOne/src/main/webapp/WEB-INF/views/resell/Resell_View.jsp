@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -8,12 +7,9 @@
 
 <%@ include file="/resources/css/BarCss.jsp"%>
 <!-- 부트스트랩 -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-	crossorigin="anonymous">
- <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/resell.css" type="text/css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/resell.css" type="text/css">
 
 
 </head>
@@ -35,15 +31,15 @@
 
 
 				<div class="container-header container-card_w100 slider">
-				
-<div class="w3-content w3-display-container">
-  <img class="mySlides" src="${pageContext.request.contextPath }/resources/img/banner/slide-1.jpg" style="width:100%">
-  <img class="mySlides" src="${pageContext.request.contextPath }/resources/img/banner/slide-2.jpg" style="width:100%">
-  <img class="mySlides" src="${pageContext.request.contextPath }/resources/img/banner/slide-3.jpg" style="width:100%">
-    <div class="w3-left position-left" onclick="plusDivs(-1)">&#10094;</div>
-    <div class="w3-right position-right" onclick="plusDivs(1)">&#10095;</div>
 
-</div>
+					<div class="w3-content w3-display-container">
+						<img class="mySlides" src="${pageContext.request.contextPath }/resources/img/banner/slide-1.jpg" style="width: 100%"> <img
+							class="mySlides" src="${pageContext.request.contextPath }/resources/img/banner/slide-2.jpg" style="width: 100%"> <img class="mySlides"
+							src="${pageContext.request.contextPath }/resources/img/banner/slide-3.jpg" style="width: 100%">
+						<div class="w3-left position-left" onclick="plusDivs(-1)">&#10094;</div>
+						<div class="w3-right position-right" onclick="plusDivs(1)">&#10095;</div>
+
+					</div>
 
 
 				</div>
@@ -117,16 +113,13 @@
 				</div>
 
 
-<!-- 판매자의 다른품목 리스트  -->
+				<!-- 판매자의 다른품목 리스트  -->
 				<div class="container-footer container-flex_1 container-card_w100 wrap-vertical">
 					<div class="col_2-m container-card_goods item-basis_6">
 						<div class="card_top">
-							<a href="#"><img alt=""
-								src="${pageContext.request.contextPath }/resources/img/logo.jpg"
-								class="img_size"></a>
+							<a href="#"><img alt="" src="${pageContext.request.contextPath }/resources/img/logo.jpg" class="img_size"></a>
 							<!--찜 기본  -->
-							<i
-								class="fa-solid fa-heart-circle-plus zzim_size position_absolute"></i>
+							<i class="fa-solid fa-heart-circle-plus zzim_size position_absolute"></i>
 							<!--찜하면 show  -->
 							<!-- <i class="fa-solid fa-heart-circle-check zzim_size position_absolute"></i> -->
 						</div>
@@ -136,12 +129,9 @@
 					</div>
 					<div class="col_2-m container-card_goods item-basis_6">
 						<div class="card_top">
-							<a href="#"><img alt=""
-								src="${pageContext.request.contextPath }/resources/img/logo.jpg"
-								class="img_size"></a>
+							<a href="#"><img alt="" src="${pageContext.request.contextPath }/resources/img/logo.jpg" class="img_size"></a>
 							<!--찜 기본  -->
-							<i
-								class="fa-solid fa-heart-circle-plus zzim_size position_absolute"></i>
+							<i class="fa-solid fa-heart-circle-plus zzim_size position_absolute"></i>
 							<!--찜하면 show  -->
 							<!-- <i class="fa-solid fa-heart-circle-check zzim_size position_absolute"></i> -->
 						</div>
@@ -151,12 +141,9 @@
 					</div>
 					<div class="col_2-m container-card_goods item-basis_6">
 						<div class="card_top">
-							<a href="#"><img alt=""
-								src="${pageContext.request.contextPath }/resources/img/logo.jpg"
-								class="img_size"></a>
+							<a href="#"><img alt="" src="${pageContext.request.contextPath }/resources/img/logo.jpg" class="img_size"></a>
 							<!--찜 기본  -->
-							<i
-								class="fa-solid fa-heart-circle-plus zzim_size position_absolute"></i>
+							<i class="fa-solid fa-heart-circle-plus zzim_size position_absolute"></i>
 							<!--찜하면 show  -->
 							<!-- <i class="fa-solid fa-heart-circle-check zzim_size position_absolute"></i> -->
 						</div>
@@ -166,12 +153,9 @@
 					</div>
 					<div class="col_2-m container-card_goods item-basis_6">
 						<div class="card_top">
-							<a href="#"><img alt=""
-								src="${pageContext.request.contextPath }/resources/img/logo.jpg"
-								class="img_size"></a>
+							<a href="#"><img alt="" src="${pageContext.request.contextPath }/resources/img/logo.jpg" class="img_size"></a>
 							<!--찜 기본  -->
-							<i
-								class="fa-solid fa-heart-circle-plus zzim_size position_absolute"></i>
+							<i class="fa-solid fa-heart-circle-plus zzim_size position_absolute"></i>
 							<!--찜하면 show  -->
 							<!-- <i class="fa-solid fa-heart-circle-check zzim_size position_absolute"></i> -->
 						</div>
@@ -180,31 +164,13 @@
 
 					</div>
 
-<!-- 스크롤확인용 추가  -->
+					<!-- 스크롤확인용 추가  -->
 
 					<div class="col_2-m container-card_goods item-basis_6">
 						<div class="card_top">
-							<a href="#"><img alt=""
-								src="${pageContext.request.contextPath }/resources/img/logo.jpg"
-								class="img_size"></a>
+							<a href="#"><img alt="" src="${pageContext.request.contextPath }/resources/img/logo.jpg" class="img_size"></a>
 							<!--찜 기본  -->
-							<i
-								class="fa-solid fa-heart-circle-plus zzim_size position_absolute"></i>
-							<!--찜하면 show  -->
-							<!-- <i class="fa-solid fa-heart-circle-check zzim_size position_absolute"></i> -->
-						</div>
-						<div class="card_body font-s text-right padding-right text-bold">제목</div>
-						<div class="card_footer font-s text-right padding-right">가격</div>
-
-					</div>
-					<div class="col_2-m container-card_goods item-basis_6">
-						<div class="card_top">
-							<a href="#"><img alt=""
-								src="${pageContext.request.contextPath }/resources/img/logo.jpg"
-								class="img_size"></a>
-							<!--찜 기본  -->
-							<i
-								class="fa-solid fa-heart-circle-plus zzim_size position_absolute"></i>
+							<i class="fa-solid fa-heart-circle-plus zzim_size position_absolute"></i>
 							<!--찜하면 show  -->
 							<!-- <i class="fa-solid fa-heart-circle-check zzim_size position_absolute"></i> -->
 						</div>
@@ -214,12 +180,9 @@
 					</div>
 					<div class="col_2-m container-card_goods item-basis_6">
 						<div class="card_top">
-							<a href="#"><img alt=""
-								src="${pageContext.request.contextPath }/resources/img/logo.jpg"
-								class="img_size"></a>
+							<a href="#"><img alt="" src="${pageContext.request.contextPath }/resources/img/logo.jpg" class="img_size"></a>
 							<!--찜 기본  -->
-							<i
-								class="fa-solid fa-heart-circle-plus zzim_size position_absolute"></i>
+							<i class="fa-solid fa-heart-circle-plus zzim_size position_absolute"></i>
 							<!--찜하면 show  -->
 							<!-- <i class="fa-solid fa-heart-circle-check zzim_size position_absolute"></i> -->
 						</div>
@@ -229,12 +192,21 @@
 					</div>
 					<div class="col_2-m container-card_goods item-basis_6">
 						<div class="card_top">
-							<a href="#"><img alt=""
-								src="${pageContext.request.contextPath }/resources/img/logo.jpg"
-								class="img_size"></a>
+							<a href="#"><img alt="" src="${pageContext.request.contextPath }/resources/img/logo.jpg" class="img_size"></a>
 							<!--찜 기본  -->
-							<i
-								class="fa-solid fa-heart-circle-plus zzim_size position_absolute"></i>
+							<i class="fa-solid fa-heart-circle-plus zzim_size position_absolute"></i>
+							<!--찜하면 show  -->
+							<!-- <i class="fa-solid fa-heart-circle-check zzim_size position_absolute"></i> -->
+						</div>
+						<div class="card_body font-s text-right padding-right text-bold">제목</div>
+						<div class="card_footer font-s text-right padding-right">가격</div>
+
+					</div>
+					<div class="col_2-m container-card_goods item-basis_6">
+						<div class="card_top">
+							<a href="#"><img alt="" src="${pageContext.request.contextPath }/resources/img/logo.jpg" class="img_size"></a>
+							<!--찜 기본  -->
+							<i class="fa-solid fa-heart-circle-plus zzim_size position_absolute"></i>
 							<!--찜하면 show  -->
 							<!-- <i class="fa-solid fa-heart-circle-check zzim_size position_absolute"></i> -->
 						</div>
@@ -255,28 +227,23 @@
 
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp"%>
 
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 
 <script type="text/javascript">
-var zzim = '${zzimCheck}';
+var zzim_Check = '${zzimCheck}';
 if(zzim == null){
-	zzimBtn.classList.add("");
+	zzimBtn.classList.add("blue");
 }
 else{
-	zzimBtn.classList.remove("");
+	zzimBtn.classList.remove("blue");
 }
 
 var zzimBtn = document.getElementById("zzimBtn");
 var zzim_class = document.getElementsByClassName("zzim_class");
 var zzim_num = '';
    
-	
-
-
 zzimBtn.onclick = function(zzubcode,zzmid){
 	
 	zzim_class.length == 0 ? zzim_num = 0 : zzim_num = 1;

@@ -32,9 +32,42 @@ public class ResellService {
 
 	@Autowired
 	ResellDao rdao;
-
+	
+	public ModelAndView selectResellMainPage(Paging paging) {
+		System.out.println("selectResellMainPage 서비스 호출");
+		ModelAndView mav = new ModelAndView();
+		
+		String checkMethod = "Main";
+		
+		if((String) session.getAttribute("loginRegion") != null) {
+			paging.setSearchVal(rdao.selectRegionCode((String) session.getAttribute("loginRegion")));				
+		}
+		
+		paging.setSellBuy("S");		
+//		팔구리스트
+		ArrayList<UsedBoardDto> SellList = rdao.selectResellPageList(paging, checkMethod);
+		System.out.println("팔구DTO : " + paging);
+		paging.setSellBuy("B");
+		
+//		사구리스트
+		ArrayList<UsedBoardDto> buyList = rdao.selectResellPageList(paging, checkMethod);
+		System.out.println("사구DTO : " + paging);
+		
+		mav.addObject("SellList", SellList);
+		mav.addObject("buyList", buyList);
+		System.out.println("팔구목록 : " +SellList);
+		System.out.println("사구목록 : " + buyList);
+		
+		mav.setViewName("resell/Resell_Main");
+				
+		return mav;
+		
+	}
+	
+	
 	public ModelAndView insertResellWrite(GoodsDto gdDto, UsedBoardDto ubDto, RedirectAttributes ra)
 			throws IllegalStateException, IOException {
+				
 		ModelAndView mav = new ModelAndView();
 		System.out.println("insertResellWrite 서비스호출");
 
@@ -171,12 +204,16 @@ public class ResellService {
 
 		if (insertResult_ub > 0 && insertResult_gd > 0) {
 			System.out.println("insert성공");
+			System.out.println(ubDto.getUbsellbuy());
 			ra.addFlashAttribute("msg", "글이 작성되었습니다.");
-			if (ubDto.getUbsellbuy() == "B") {
+			if (ubDto.getUbsellbuy().equals("B")) {
 
-				mav.setViewName("redirect:/selectResellBuyList?sell_buy=B");
+				mav.setViewName("redirect:/selectResellPageList?sellBuy=B");
+				
 			} else {
-				mav.setViewName("redirect:/selectResellSellList?sell_buy=S");
+				
+				mav.setViewName("redirect:/selectResellPageList?sellBuy=S");
+								
 			}
 		} else {
 			ra.addFlashAttribute("msg", "글 작성에 실패하였습니다.");
@@ -187,22 +224,56 @@ public class ResellService {
 
 	}
 
+//  사구 팔구 통합
+public ModelAndView selectResellPageList(Paging paging) {
+
+	System.out.println("selectResellPageList 서비스 호출");
+	ModelAndView mav = new ModelAndView();
+	
+	
+	String checkMethod = "NO";
+	if(paging.getSearchType()!=null) {
+		checkMethod = "OK";
+	}
+	System.out.println("검색타입(searchType) : "+ paging.getSearchType());
+	System.out.println("검색어(keyword) : " + paging.getKeyword());
+	System.out.println(paging);
+	
+		
+		if((String) session.getAttribute("loginRegion") != null) {
+			paging.setSearchVal(rdao.selectRegionCode((String) session.getAttribute("loginRegion")));				
+		}
+
+	int totalCaount = rdao.selectPageTotalCount(paging);
+	paging.setTotalCount(totalCaount);
+	paging.calc();
+	
+	ArrayList<UsedBoardDto> sell_buyList = rdao.selectResellPageList(paging, checkMethod);
+	
+	System.out.println(sell_buyList);
+	System.out.println(paging);
+	mav.addObject("sell_buyList", sell_buyList);
+	mav.addObject("paging", paging);
+	mav.addObject("checkSearch", checkMethod);
+	if (paging.getSellBuy().equals("S")) {
+		System.out.println("조건문S");
+		mav.setViewName("resell/Resell_SellList");
+		
+	} else if (paging.getSellBuy().equals("B")) {
+		System.out.println("조건문B");
+		mav.setViewName("resell/Resell_BuyList");
+	}
+	return mav;
+
+}
 
 //   중고거래리스트 selected 지역으로 조회
 	public String selectResellRegionList_ajax(Paging paging) {
 		System.out.println("selectResellRegionList_ajax 서비스 호출");
 		
-		System.out.println("검색타입 : "+ paging.getSearchType());
-		System.out.println("검색어 : " + paging.getKeyword());
-		if(paging.getSearchType()!=null) {
-					
-		if(paging.getSearchType().equals("ubmid")) {
-					
-		String mid = rdao.selectMemberId(paging.getKeyword());
-		
-		paging.setKeyword(mid);
-		}
-		}
+		System.out.println("검색타입(searchType) : "+ paging.getSearchType());
+		System.out.println("검색어(keyword) : " + paging.getKeyword());
+				
 		String mregion = rdao.selectRegionCode(paging.getSearchVal());
 		System.out.println("파라메터지역코드 : " + mregion);
 		paging.setSearchVal(mregion);
@@ -229,25 +300,39 @@ public class ResellService {
 		
 	}
 
-	public ModelAndView selectResellView(String ubcode, String ubsellbuy) {
+	public ModelAndView selectResellView(UsedBoardDto ubDto) {
 		System.out.println("selectResellView 서비스 호출");
 		ModelAndView mav = new ModelAndView();
 
-		String loginId = (String) session.getAttribute("loginId");
+		String loginId = (String)session.getAttribute("loginId");
+		ubDto.setUbmid(loginId);
+		UsedBoardDto ub_resellView = rdao.selectResellView(ubDto);
 
-		UsedBoardDto ub_resellView = rdao.selectResellView(ubcode, ubsellbuy);
+		ArrayList<GoodsDto> gd_resellView = rdao.selectResellView_goods(ubDto);
 
-		GoodsDto gd_resellView = rdao.selectResellView_goods(ubcode);
-
-		String zzimCheck = rdao.selectZzimCheck(loginId, ubcode);
-
-//		String[] ubDetailImg = ub_resellView.getUbdetailimg().split("__");
-//		
-//		ub_resellView.setUbdetailimgfile(ub_resellView.getUbdetailimg().split("__"));
+		String zzimCheck = rdao.selectZzimCheck(loginId, ubDto.getUbcode());
+		String zzim_Check;
+		if(zzimCheck!=null) {
+			zzim_Check = "CHECK";
+		}
+		else {
+			zzim_Check = "UNCHECK";
+		}
+		String[] ubDetailImg;
+		
+		if(ub_resellView.getUbdetailimg()!=null) {
+		ubDetailImg = ub_resellView.getUbdetailimg().split("__");
+		System.out.println("ubDetailImg" + ubDetailImg);
+		ub_resellView.setUbdetailimg_list(ubDetailImg);
+					}
+				System.out.println(zzimCheck);
+				System.out.println(ub_resellView);
+				System.out.println(gd_resellView);
+				
 
 		mav.addObject("zzimCheck", zzimCheck);
-		mav.addObject("ub_resellView", ub_resellView);
 		mav.addObject("gd_resellView", gd_resellView);
+		mav.addObject("ub_resellView", ub_resellView);
 		mav.setViewName("resell/Resell_View");
 
 		return mav;
@@ -275,6 +360,9 @@ public class ResellService {
 		System.out.println("loadToResellWriteForm 서비스 호출");
 		ModelAndView mav = new ModelAndView();
 
+		if((String) session.getAttribute("loginId")==null) {
+			
+		}
 		String loginId = (String) session.getAttribute("loginId");
 
 		String mNickname = rdao.loadToResellWriteForm(loginId);
@@ -286,48 +374,10 @@ public class ResellService {
 		return mav;
 	}
 
-//         사구 팔구 통합
-	public ModelAndView selectResellPageList(Paging paging) {
-	
-		System.out.println("selectResellPageList 서비스 호출");
-		ModelAndView mav = new ModelAndView();
-		
-		System.out.println(paging);
-		
-	
-		
-			if((String) session.getAttribute("loginRegion") != null) {
-				paging.setSearchVal(rdao.selectRegionCode((String) session.getAttribute("loginRegion")));				
-			}
-	
-		int totalCaount = rdao.selectPageTotalCount(paging);
-		paging.setTotalCount(totalCaount);
-		paging.calc();
-		
-		ArrayList<UsedBoardDto> sell_buyList = rdao.selectResellPageList(paging);
-		
-		System.out.println(sell_buyList);
-
-		mav.addObject("sell_buyList", sell_buyList);
-		mav.addObject("paging", paging);
-		if (paging.getSellBuy().equals("S")) {
-			System.out.println("조건문S");
-			mav.setViewName("resell/Resell_SellList");
-			
-		} else if (paging.getSellBuy().equals("B")) {
-			System.out.println("조건문B");
-			mav.setViewName("resell/Resell_BuyList");
-		}
-		return mav;
-
-	}
 
 
-	public String selectSearchList_ajax(String searchVal, String sell_buy, String selectRegion, String searchOp) {
-		System.out.println("selectSearchList_ajax 서비스 호출");
-		
-		String searchResult = rdao.selectSearchList_ajax(searchVal, sell_buy, selectRegion, searchOp);
-				
-		return searchResult;
-	}
+
+
+
+
 }
