@@ -10,6 +10,8 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <%@ include file="/resources/css/BarCss.jsp" %>
+<!-- Css Styles -->
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 
 <style type="text/css">
     #board_column{
@@ -88,29 +90,29 @@
             
             <!-- 게시글 목록 -->
             <div class="row">
-            <table >
+            <table style="table-layout: fixed;" >
                <thead >
                   <tr class="fw-bold" id="board_column">
-                     <td style="width:130px;">글번호</td>
-                     <td style="width:70px;">말머리</td>
-                     <td style="min-width:200px;">제목</td>
-                     <td>작성자</td>
-                     <td>작성일</td>
-                     <td style="width:50px;">조회</td>
-                     <td style="width:80px;">상태</td>
+                     <td style="width:10%;">글번호</td>
+                     <td style="width:4.5rem;">말머리</td>
+                     <td style="">제목</td>
+                     <td style="width:15%;">작성자</td>
+                     <td style="width:15%;">작성일</td>
+                     <td style="width:3rem;">조회</td>
+                     <td style="width:4rem;">상태</td>
                   </tr>
                </thead>
                <tbody id="bdListTbody">
 	               <c:forEach items="${boardList }" var="board">
 	                   <!-- 회원관리 목록 -->
 	                   <tr style="border-bottom: solid gray 1px;">
-	                      <td>${board.bdcode}</td>
+	                      <td class="overflow">${board.bdcode}</td>
 	                      <td>${board.bdcategory }
 	                      <%-- makeQueryPage 쓰는거 왜 안될까.... admin_selectBoardView${Paging.makeQueryPage(board.bdcode, paging.page) }/>  --%>
-	                      <td><a href="#">
+	                      <td class="overflow"><a href="#">
 	                      ${board.bdtitle}</a></td>
-	                      <td>${board.bdnickname}</td>
-	                      <td>${board.bddate}</td>
+	                      <td class="overflow">${board.bdnickname}</td>
+	                      <td class="overflow">${board.bddate}</td>
 	                      <td>${board.bdhits}</td>
 	                      <td>
 	                      	<c:choose>
@@ -268,11 +270,11 @@
 					console.log(result);					
 					for (var i = 0; i < result.length; i++){
 						output += "<tr style='border-bottom: solid gray 1px;'>";
-						output += "<td>" + result[i].bdcode + "</td>";
+						output += "<td class='overflow'>" + result[i].bdcode + "</td>";
 						output += "<td>" + result[i].bdcategory + "</td>";
-						output += "<td class=''><a href='admin_selectBoardView?bdcode=" + result[i].bdcode + "'>" + result[i].bdtitle + "</a></td>";
-						output += "<td>" + result[i].bdnickname + "</td>";
-						output += "<td>" + result[i].bddate + "</td>";
+						output += "<td class='overflow'><a href='admin_selectBoardView?bdcode=" + result[i].bdcode + "'>" + result[i].bdtitle + "</a></td>";
+						output += "<td class='overflow'>" + result[i].bdnickname + "</td>";
+						output += "<td class='overflow'>" + result[i].bddate + "</td>";
 						output += "<td>" + result[i].bdhits + "</td>";
 						output += "<td>"
 						if (result[i].bdstate == 1){

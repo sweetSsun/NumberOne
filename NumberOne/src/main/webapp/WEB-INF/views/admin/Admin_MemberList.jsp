@@ -10,8 +10,23 @@
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <%@ include file="/resources/css/BarCss.jsp" %>
+<!-- Css Styles -->
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 
 <style type="text/css">
+	.textarea-MbList{
+		border: 1px solid #ced4da;
+		resize: none;
+		width: -webkit-fill-available;
+		height: 230px;
+		background-color:#fff;
+		padding: 0.375rem 0.75rem;
+    	font-size: 1rem;
+    	font-weight: 400;
+	}
+	textarea:focus {
+    	outline: none;
+	}
     #board_column{
        border-bottom: solid gray 3px;
     }
@@ -84,16 +99,16 @@
             
             <!-- 회원 목록 -->
             <div class="row">
-            <table >
+            <table style="table-layout: fixed;" >
                <thead >
                   <tr class="fw-bold" id="board_column">
-                     <td style="width:150px;">아이디</td>
-                     <td style="width:130px;">이름</td>
-                     <td style="width:200px;">닉네임</td>
+                     <td style="max-width:6rem;">아이디</td>
+                     <td style="max-width:5rem;">이름</td>
+                     <td style="max-width:6rem;">닉네임</td>
                      <td>연락처</td>
                      <td>이메일</td>
                      <td>가입일</td>
-                     <td style="width:70px;">상태</td>
+                     <td style="width:4rem;">상태</td>
                   </tr>
                </thead>
                <tbody id="mbListTbody">
@@ -103,9 +118,9 @@
 	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;" class="overflow">${member.mid}</td>
 	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;" class="overflow">${member.mname}</td>
 	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;" class="overflow">${member.mnickname}</td>
-	                      <td>${member.mphone}</td>
-	                      <td>${member.memail}</td>
-	                      <td>${member.mjoindate}</td>
+	                      <td class="overflow">${member.mphone}</td>
+	                      <td class="overflow">${member.memail}</td>
+	                      <td class="overflow">${member.mjoindate}</td>
 	                      <td>
 	                      	<c:choose>
 	                      		<c:when test="${member.mwarning > 0}">
@@ -211,7 +226,7 @@
                                     </div>
                                     <div>
                                     	<label class="small cursor_auto">상태메세지</label>
-		                                <textarea readonly class="form-control" id="mI_mmessage" style="min-height:230px; max-height:230px; background-color:#fff"></textarea>
+		                                <textarea readonly class=" textarea-MbList" id="mI_mmessage" style=""></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -364,21 +379,21 @@
 					console.log(result);					
 					for (var i = 0; i < result.length; i++){
 						output += "<tr style='border-bottom: solid gray 1px;'>";
-						output += "<td onclick='showMemberInfoModal( \"" + result[i].mid + "\")' style='cursor: pointer;'>" + result[i].mid + "</td>";
-						output += "<td onclick='showMemberInfoModal( \"" + result[i].mid + "\")' style='cursor: pointer;'>" + result[i].mname + "</td>";
-						output += "<td onclick='showMemberInfoModal( \"" + result[i].mid + "\")' style='cursor: pointer;'>" + result[i].mnickname + "</td>";
-						output += "<td>" + result[i].mphone + "</td>";
-						output += "<td>" + result[i].memail + "</td>";
-						output += "<td>" + result[i].mjoindate + "</td>";
+						output += "<td onclick='showMemberInfoModal( \"" + result[i].mid + "\")' class='singleline-ellipsis' style='cursor: pointer; max-width:6rem;'>" + result[i].mid + "</td>";
+						output += "<td onclick='showMemberInfoModal( \"" + result[i].mid + "\")' class='singleline-ellipsis' style='cursor: pointer; max-width:5rem;'>" + result[i].mname + "</td>";
+						output += "<td onclick='showMemberInfoModal( \"" + result[i].mid + "\")' class='singleline-ellipsis' style='cursor: pointer; max-width:6rem;'>" + result[i].mnickname + "</td>";
+						output += "<td class='singleline-ellipsis' >" + result[i].mphone + "</td>";
+						output += "<td class='singleline-ellipsis' >" + result[i].memail + "</td>";
+						output += "<td class='singleline-ellipsis' >" + result[i].mjoindate + "</td>";
 						output += "<td>"
 						if (result[i].mwarning > 0){
-							output += "<button class='btn btn-warning' onclick='showMstateModal(this, \""+result[i].mid+"\")'>경고</button>";
+							output += "<button class='btn btn-warning' onclick='showMstateModal(this, \""+result[i].mid+"\")' style='width:4rem;'>경고</button>";
 						} else if (result[i].mstate == 0){
-							output += "<button class='btn btn-danger' onclick='showMstateModal(this, \""+result[i].mid+"\")'>정지</button>";
+							output += "<button class='btn btn-danger' onclick='showMstateModal(this, \""+result[i].mid+"\")' style='width:4rem;'>정지</button>";
 						} else if (result[i].mstate == 1){
-							output += "<button class='btn btn-primary' onclick='showMstateModal(this, \""+result[i].mid+"\")'>활동</button>";
+							output += "<button class='btn btn-primary' onclick='showMstateModal(this, \""+result[i].mid+"\")' style='width:4rem;'>활동</button>";
 						} else {
-							output += "<button class='btn btn-secondary' style='cursor:default;'>탈퇴</button>";
+							output += "<button class='btn btn-secondary' style='cursor:default; style='width:4rem;''>탈퇴</button>";
 						}
 						output += "</td>";
 						output += "</tr>";

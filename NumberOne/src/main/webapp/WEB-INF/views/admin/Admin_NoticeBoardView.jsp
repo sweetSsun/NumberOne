@@ -5,16 +5,24 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@ include file="/resources/css/BarCss.jsp" %>
+
 <!-- jquery -->
 <script type="text/javascript" src="resources/js/jquery-3.3.1.min.js"></script>
+<!-- Css Styles -->
+<%@ include file="/resources/css/BarCss.jsp" %>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 
 <title>${noticeBoard.nbtitle} - 1인자:관리자 공지게시판</title>
 
 <style type="text/css">
-	textarea{
+	.textarea-NbView{
 		border: none;
-		height: auto;
+		resize: none;
+		width: -webkit-fill-available;
+		min-height: 25em;
+	}
+	textarea:focus {
+    	outline: none;
 	}
 	.idDateHits{
 		border-bottom: solid #E0E0E0 3px;
@@ -92,7 +100,7 @@
 							<c:if test="${noticeBoard.nbimg != null }">
 								<img alt="" src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg}" style="max-width:100%; max-height:500px;">
 							</c:if>
-							<textarea rows="10%" cols="100%" readonly>${noticeBoard.nbcontents }</textarea>
+							<textarea rows="10%" class="textarea-NbView" readonly>${noticeBoard.nbcontents }</textarea>
 						</div>
 					</div>
 				</form>

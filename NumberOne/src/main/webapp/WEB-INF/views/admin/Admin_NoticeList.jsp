@@ -9,7 +9,9 @@
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- Css Styles -->
 <%@ include file="/resources/css/BarCss.jsp" %>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 
 <style type="text/css">
     #board_column{
@@ -89,25 +91,25 @@
             
             <!-- 게시글 목록 -->
             <div class="row">
-            <table >
+            <table style="table-layout: fixed;">
                <thead >
                   <tr class="fw-bold" id="board_column">
-                     <td style="width:130px;">글번호</td>
-                     <td style="min-width:200px;">제목</td>
-                     <td>작성자</td>
-                     <td>작성일</td>
-                     <td style="width:50px;">조회</td>
-                     <td style="width:80px;">상태</td>
+                     <td style="width:10%;">글번호</td>
+                     <td>제목</td>
+                     <td style="width:15%;">작성자</td>
+                     <td style="width:15%;">작성일</td>
+                     <td style="width:3rem;">조회</td>
+                     <td style="width:4rem;">상태</td>
                   </tr>
                </thead>
                <tbody id="nbListTbody">
 	               <c:forEach items="${noticeList }" var="notice">
 	                   <!-- 회원관리 목록 -->
 	                   <tr style="border-bottom: solid gray 1px;">
-	                      <td>${notice.nbcode}</td>
-	                      <td><a href="admin_selectNoticeBoardView?nbcode=${notice.nbcode}">${notice.nbtitle}</a></td>
-	                      <td>${notice.nbnickname}</td>
-	                      <td>${notice.nbdate}</td>
+	                      <td class="overflow">${notice.nbcode}</td>
+	                      <td class="overflow"><a href="admin_selectNoticeBoardView?nbcode=${notice.nbcode}">${notice.nbtitle}</a></td>
+	                      <td class="overflow">${notice.nbnickname}</td>
+	                      <td class="overflow">${notice.nbdate}</td>
 	                      <td>${notice.nbhits}</td>
 	                      <td>
 	                      	<c:choose>
@@ -261,10 +263,10 @@
 					console.log(result);					
 					for (var i = 0; i < result.length; i++){
 						output += "<tr style='border-bottom: solid gray 1px;'>";
-						output += "<td>" + result[i].nbcode + "</td>";
-						output += "<td><a href='admin_selectNoticeBoardView?nbcode=" + result[i].nbcode + "'>" + result[i].nbtitle + "</a></td>";
-						output += "<td>" + result[i].nbmid + "</td>";
-						output += "<td>" + result[i].nbdate + "</td>";
+						output += "<td class='overflow'>" + result[i].nbcode + "</td>";
+						output += "<td class='overflow'><a href='admin_selectNoticeBoardView?nbcode=" + result[i].nbcode + "'>" + result[i].nbtitle + "</a></td>";
+						output += "<td class='overflow'>" + result[i].nbmid + "</td>";
+						output += "<td class='overflow'>" + result[i].nbdate + "</td>";
 						output += "<td>" + result[i].nbhits + "</td>";
 						output += "<td>"
 						if (result[i].nbstate == 1){
