@@ -52,7 +52,7 @@
 		
 		<section>
 		<!-- 본문 -->
-         <form action="admin_selectNoticeList" method="get">
+         <form action="admin_selectNoticeList" method="get" id="actionForm">
 			<div class="container">
 	            <div class="row" style="margin:auto;">
 	                <h1 class="text-center">공지 관리페이지 : Admin_NoticeList.jsp</h1>
@@ -69,7 +69,7 @@
 	                <div class="col-5 input-group">
                    		<input type="text" style="width:100px;" class="form-control" name="keyword" id="searchText" placeholder="검색 키워드를 입력하세요!" value="${paging.keyword}">
                     	<span class="input-group-btn">
-	                      	<button class="btn btn-secondary" type="submit" name="page" value="1">찾기</button>
+	                      	<button class="btn btn-secondary" type="submit">찾기</button>
                     	</span>
 	            	</div>
 		            <div class="col-2">
@@ -130,40 +130,31 @@
                 </tbody>
             </table>
             
-   			<!-- 페이징 -->
+   			<!-- 페이징 시작 -->
+   			<input type="hidden" id="pageNum" name="page" value="1">
   			<div class="block text-center" id="pageList">
-               	<c:choose>
-               		<c:when test="${paging.prev }">
-               			<button type="submit" name="page" value="${paging.page -1 }" id="btn0"></button>
-               			<label for="btn0">[이전]</label>
-               		</c:when>
-               		<c:otherwise>
-               			[이전]
-               		</c:otherwise>
-               	</c:choose>
-               	
-               	<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="num" step="1">
-                	<c:choose>
-                		<c:when test="${paging.page == num }">
-                			<span style="color:#00bcd4;">${num }</span>
-                		</c:when>
-                		<c:otherwise>
-                			<button type="submit" name="page" value="${num }" id="btn${num }"></button>
-               				<label for="btn${num }">${num }</label>
-                		</c:otherwise>
-                	</c:choose>
-               	</c:forEach>
-
-               	<c:choose>
-               		<c:when test="${paging.next }">
-               			<button type="submit" name="page" value="${paging.page +1 }" id="btn6"></button>
-               			<label for="btn6">[다음]</label>
-               		</c:when>
-               		<c:otherwise>
-               			[다음]
-               		</c:otherwise>
-               	</c:choose>
+  				<ul class="pagination">
+	           		<c:if test="${paging.prev }">
+	           			<li class="paginate_button"><a href="${paging.page -1 }" >이전</a></li>
+	           		</c:if>
+	               	
+	               	<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="num" step="1">
+	                	<c:choose>
+	                		<c:when test="${paging.page == num }">
+	                			<li class=""><a class="active">${num }</a></li>
+	                		</c:when>
+	                		<c:otherwise>
+	                			<li class="paginate_button "><a href="${num }" >${num }</a></li>
+	                		</c:otherwise>
+	                	</c:choose>
+	               	</c:forEach>
+	               	
+					<c:if test="${paging.next }">
+	                	<li class="paginate_button"><a href="${paging.page +1 }" >다음</a></li>
+	               	</c:if>
+	            </ul>
             </div>
+            <!-- 페이징 끝 -->
             
             </div>
             
@@ -213,15 +204,15 @@
 	</script>
 	
 	<script type="text/javascript">
-		// ajax로 목록을 출력하는 경우 paging 객체가 넘어오는 것이 아니기 때문에, function으로 상세페이지 이동
-		function makeQuery(codeIdx){
-			console.log("makeQuery() 실행");
-			console.log("codeIdx : " + codeIdx);
-			var param = "admin_selectNoticeBoardView${paging.makeQueryPage(codeIdx, paging.page)}";
-			// codeIdx=
-			console.log(param);
-			//location.href=param;
-		}
+		// 페이지 넘버 a태그를 클릭하면 hidden input태그에 페이지 넘버 값을 넣고 submit 진행
+		var actionForm = $("#actionForm");
+		$(".paginate_button a").click(function(e){
+			e.preventDefault();
+			console.log("pageNum click");
+			$("#pageNum").val($(this).attr("href"));
+			console.log($("#pageNum").val());
+			actionForm.submit();
+		});
 	</script>
 	
 	
@@ -302,26 +293,19 @@
 					console.log("요청 페이지 : " + result.page);
 					$("#pageList").text("");
 					// 페이징 번호 출력
-					var pageList = "";
+					var pageList = "<ul class='pagination'>";
 					if (result.prev) {
-						pageList += "<button type='submit' name='page' value='" + (result.page - 1) + "' id='btn0'></button>";
-						pageList += "<label for='btn0'>[이전]</label>";
-					} else {
-						pageList += "[이전] ";
+						pageList += "<li class='paginate_button'><a href='"+ (result.page - 1) + "' >이전</a></li>";
 					}
 					for (var i = result.startPage; i <= result.endPage; i++){
 						if (result.page == i){
-							pageList += "<span style='color:#00bcd4'>" + i + "</span>";
+							pageList += "<li><a class='active'>"+ i + "</a></li>";
 						} else {
-							pageList += "<button type='submit' name='page' value='" + i + "' id='btn" + i + "'></button>";
-							pageList += "<label for='btn" + i + "'>" + i + "</label>";
+							pageList += "<li class='paginate_button'><a href='"+ i + "' >" + i + "</a></li>";
 						}
 					}
 					if (result.next){
-						pageList += "<button type='submit' name='page' value='" + (result.page + 1) + "' id='btn6'></button>";
-						pageList += "<label for='btn6'>[다음]</label>";
-					} else {
-						pageList += "[다음]";
+						pageList += "<li class='paginate_button'><a href='"+ (result.page + 1) + "' >다음</a></li>";
 					}
 					$("#pageList").html(pageList);
 				},
