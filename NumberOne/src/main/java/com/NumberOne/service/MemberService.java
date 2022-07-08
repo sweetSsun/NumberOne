@@ -21,6 +21,7 @@ import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.ReplyDto;
 import com.NumberOne.dto.ScrapDto;
 import com.NumberOne.dto.UsedBoardDto;
+import com.NumberOne.dto.ZzimDto;
 
 @Service
 public class MemberService {
@@ -146,23 +147,30 @@ public class MemberService {
 				ra.addFlashAttribute("msg", "이용 정지 된 계정 입니다.");
 				mav.setViewName("redirect:/loadToLogin");
 
+
 			}else if(loginMember.getMid().equals("admin")) {
+
+
 				session.setAttribute("loginId", loginMember.getMid());
 				mav.setViewName("redirect:/admin_loadToAdminMainPage");
-			} else if(loginMember .getMstate() == 2){
+			
+			}else if(loginMember .getMstate() == 2){
 				ra.addFlashAttribute("msg", "탈퇴 처리 된 회원입니다.");
 				mav.setViewName("redirect:/loadToLogin");				
+			
 			}else {
 
 				//로그인 성공
 				session.setAttribute("loginId", loginMember.getMid());
 				session.setAttribute("loginProfile", loginMember.getMprofile());
 				session.setAttribute("loginRegion", loginMember.getMregion());
+				session.setAttribute("loginNickname", loginMember.getMnickname());
 				
 				System.out.println((String) session.getAttribute("loginId"));
 			    System.out.println((String) session.getAttribute("loginRegion"));
 			    System.out.println((String) session.getAttribute("loginProfile"));
-				
+			    System.out.println((String) session.getAttribute("loginNickname"));
+			    
 				ra.addFlashAttribute("msg", "로그인 되었습니다.");
 				
 				String afterUrl = (String) session.getAttribute("afterUrl");
@@ -425,8 +433,15 @@ public class MemberService {
 		ArrayList<UsedBoardDto> buyBoard = mdao.selectMyInfoResellView_Buy(loginId);
 		System.out.println(buyBoard);	
 		
+		//찜목록
+		ArrayList<ZzimDto> zzimBoard = mdao.selectMyInfoResellView_Zzim(loginId);
+		System.out.println(zzimBoard);	
+		
+		
 		mav.addObject("sellBoard", sellBoard);
-		mav.addObject("buyBoard", buyBoard);	
+		mav.addObject("buyBoard", buyBoard);
+		mav.addObject("zzimBoard", zzimBoard);
+		
 		if(sellBoard.size() > buyBoard.size()) {			
 			mav.addObject("sellbuySize", sellBoard.size());
 		} else {
@@ -516,11 +531,39 @@ public class MemberService {
 	}
 
 
+	public ModelAndView selectWriteMemberInfo(String nickname) {
+			ModelAndView mav = new ModelAndView();
+			System.out.println("MemberService.selectWriteMemberInfo() 호출");
+			String loginId = (String) session.getAttribute("loginId");
+			System.out.println("로그인 된 아이디 : " + loginId);
+			
+			
+			System.out.println("service.nickname : " + nickname);
+			//닉네임 회원정보
+			MemberDto memberInfo = mdao.selectWriteMemberInfo_member(nickname);
+			System.out.println(memberInfo);
+			
+			
+			//닉네임 별 작성 글 제목 출력
+			ArrayList<BoardDto> Board = mdao.insertWriteMemberInfo_Board(nickname);
+			System.out.println(Board);
+			
+			mav.addObject("memberInfo", memberInfo);
+			mav.addObject("Board",Board);
+			
+			mav.setViewName("member/WriteMemberInfoPage_Board");
+			
+			return mav;
+
+
 
 	}
 
 
 
+
+
+}
 
 
 

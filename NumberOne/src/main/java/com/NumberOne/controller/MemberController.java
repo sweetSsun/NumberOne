@@ -248,6 +248,16 @@ public class MemberController {
 			
 		}
 		
+		//작성자 상세페이지 _ Board
+		@RequestMapping(value = "/selectWriteMemberInfo")
+		public ModelAndView selectWriteMemberInfo(String nickname) {
+			System.out.println("작성자 상세페이지 _ Board");
+			mav = new ModelAndView();
+			System.out.println("controller.nickname : " + nickname);
+			mav = msvc.selectWriteMemberInfo(nickname);
+			return mav;
+	
+		}		
 
 }
 

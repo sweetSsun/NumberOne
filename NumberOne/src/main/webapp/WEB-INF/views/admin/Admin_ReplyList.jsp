@@ -235,7 +235,7 @@
 			console.log("검색 키워드 : " + searchText);
 			$.ajax({
 				type: "get",
-				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText},
+				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "ajaxCheck":"list"},
 				url: "admin_selectReplyList_ajax",
 				dataType: "json",
 				success: function(result){
@@ -260,8 +260,8 @@
 			// 페이지에서 출력할 페이지번호 받아오기
 			$.ajax({
 				type: "get",
-				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText},
-				url: "admin_selectReplyPagingNumber_ajax",
+				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "ajaxCheck":"page"},
+				url: "admin_selectReplyList_ajax",
 				dataType: "json",
 				success: function(result){
 					console.log("요청 페이지 : " + result.page);

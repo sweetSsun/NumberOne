@@ -314,26 +314,6 @@ public class BoardService {
 		return mav;
 	}
 
-	//아이디로 닉네임 찾기
-	public ModelAndView selectRoomWriterMnickname(RedirectAttributes ra) {
-		System.out.println("BoardService.selectRoomWriterMnickname() 호출");
-		String mid = (String) session.getAttribute("loginId");
-		ModelAndView mav = new ModelAndView();
-		
-		if(mid == null) {
-			System.out.println("비로그인 상태!");
-			ra.addFlashAttribute("msg", "로그인 후 이용할 수 있습니다.");
-			//로그인 폼으로 돌아가기
-			mav.setViewName("redirect:/loadToLogin");
-			return mav;
-		}
-		
-		String mnickname = bdao.selectRoomWriterMnickname(mid);
-		mav.addObject("mnickname", mnickname);
-		mav.setViewName("board/WriteRoomForm");
-		return mav;
-	}
-
 	//자취방 자랑글 상세 보기
 	public String selectRoomView(String bdcode) {
 		System.out.println("BoardService.selectRoomView() 호출");
@@ -480,7 +460,14 @@ public class BoardService {
 		System.out.println("BoardService.selectBoardReplyList_ajax() 호출");
 		
 		ArrayList<ReplyDto> replyList = bdao.selectBoardReplyList(bdcode);
-		System.out.println(replyList);
+		//System.out.println(replyList);
+	
+		//프로필 사진 없는 경우 rpmprofile에 nomprofile 저장
+		for (int i = 0; i < replyList.size(); i++) {
+			if(replyList.get(i).getRpmprofile()==null) {
+				replyList.get(i).setRpmprofile("nomprofile");
+			}
+		}
 		
 		for ( int i=0; i< replyList.size(); i++) {
 			String rpcontents = replyList.get(i).getRpcontents().replace("<br>", "\r\n");
@@ -597,7 +584,7 @@ public class BoardService {
 	
 
 	//게시글 삭제 
-	public ModelAndView updateBoardDelete(String bdcode, RedirectAttributes ra) {
+	public ModelAndView updateBoardDelete(String bdcode, String bdcategory, RedirectAttributes ra) {
 		System.out.println("BoardService.updateBoardDelete() 호출");
 		ModelAndView mav = new ModelAndView();
 		System.out.println("삭제할 글번호 : " + bdcode );
@@ -608,25 +595,50 @@ public class BoardService {
 		}
 		
 		//삭제 후 전체 글목록 페이지로 이동
-		mav.setViewName("redirect:/selectBoardList");
+		if(bdcategory.equals("자랑")) {
+			System.out.println("자랑글 삭제 성공");
+			mav.setViewName("redirect:/selectRoomList");			
+		} else {
+			System.out.println("일반글 삭제 성공");
+			mav.setViewName("redirect:/selectBoardList");			
+		}
 		
 		return mav;
 	}
 	
 	//게시글 수정 페이지 이동 요청 
-	public ModelAndView loadToBoardModify(String bdcode) {
+	public ModelAndView loadToBoardModify(String bdcode, String bdcategory) {
 		System.out.println("BoardService.loadToBoardModify() 호출");
 		ModelAndView mav = new ModelAndView();
+		System.out.println(bdcode+", "+bdcategory);
 		
 		//수정할 게시글 정보 
+<<<<<<< HEAD
 		BoardDto board = bdao.selectBoardView(bdcode);
 		String bdcontents = board.getBdcontents().replace("&nbsp;","");
 		bdcontents = board.getBdcontents().replace("<br>","\r\n");
 		board.setBdcontents(bdcontents);
 		System.out.println(board);
+=======
+		BoardDto board=null;
+		if(bdcategory == null){
+			//일반글
+			board = bdao.selectBoardView(bdcode);
+		} else {	
+			//자랑글
+			board = bdao.selectRoomModify(bdcode);
+			String[] roomdetailimgs= board.getBddetailimg().split("___");
+			System.out.println(roomdetailimgs.length);
+			mav.addObject("roomdetailimgs", roomdetailimgs);
+		}
+>>>>>>> 94f0cf8a49a2eda8dfab80e076f0675f7be07c59
 		
 		mav.addObject("board", board);
-		mav.setViewName("board/BoardModifyForm");
+		if(bdcategory != null){					
+			mav.setViewName("board/RoomModifyForm");
+		} else {			
+			mav.setViewName("board/BoardModifyForm");
+		}
 		
 		return mav;
 	}

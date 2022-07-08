@@ -79,48 +79,6 @@ public class AdminService {
 		mav.setViewName("admin/Admin_MemberList");
 		return mav;
 	}
-//	public ModelAndView admin_selectMemberList(int page, RedirectAttributes ra) {
-//		System.out.println("AdminService.admin_selectMemberList() 호출");
-//		mav = new ModelAndView();
-//		// 관리자 로그인 여부 체크
-//		String loginId = (String)session.getAttribute("loginId");
-//		if (loginId == null) {
-//			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
-//			mav.setViewName("redirect:/loadToLogin");	
-//			return mav;
-//		}
-//		
-//		String searchVal = "all";
-//		// 페이징
-//		System.out.println("요청 페이지 : " + page);
-//		int memberTotalCount = adao.admin_selectMemberTotalCount(searchVal); // 전체 회원수 조회
-//		int startRow = (page-1) * viewCount + 1;
-//		int endRow = page * viewCount;
-//		
-//		ArrayList<MemberDto> memberList = adao.admin_selectMemberList(searchVal, startRow, endRow);
-//		System.out.println(memberList);
-//		
-//		// 페이지에서 출력할 페이지번호 생성
-//		PageDto paging = new PageDto();
-//		// 글 최대값에 따라 페이지 번호 최대값
-//		int maxPage = (int) (Math.ceil( (double)memberTotalCount/viewCount ) );
-//		// 출력될 페이지 번호 시작값
-//		int startPage = (int) ( (Math.ceil( (double)page/pageNumCount )) -1 ) * pageNumCount + 1;
-//		// 출력될 페이지 번호 마지막값
-//		int endPage = startPage + pageNumCount - 1; 			
-//		if(endPage > maxPage) { 	
-//			endPage = maxPage;
-//		}			
-//		paging.setPage(page);
-//		paging.setMaxPage(maxPage);
-//		paging.setStartPage(startPage);
-//		paging.setEndPage(endPage);
-//		
-//		mav.addObject("memberList", memberList);
-//		mav.addObject("paging", paging);
-//		mav.setViewName("admin/Admin_MemberList");
-//		return mav;
-//	}
 	
 	// 선택한 상태값에 따른 회원목록 ajax
 	public String admin_selectMemberList_ajax(Paging paging) {
@@ -136,68 +94,14 @@ public class AdminService {
 		System.out.println("memberList : " + memberList);
 		
 		gson = new Gson();
-		String memberList_json = gson.toJson(memberList);
-		System.out.println("memberList_json : " + memberList_json);
-		return memberList_json;
+		if (paging.getAjaxCheck().equals("list")) { // memberList ajax일 경우
+			String memberList_json = gson.toJson(memberList);
+			return memberList_json;
+		} else { // paging ajax일 경우
+			String paging_json = gson.toJson(paging);
+			return paging_json;
+		}
 	}
-	// 선택한 상태값에 따른 회원목록 ajax
-//	public String admin_selectMemberList_ajax(String searchVal, int page) {
-//		System.out.println("AdminService.admin_selectMemberList_ajax() 호출");
-//		mav = new ModelAndView();
-//		System.out.println("searchVal : " + searchVal);
-//		System.out.println("요청 페이지 : " + page);
-//
-//		int startRow = (page-1) * viewCount + 1;
-//		int endRow = page * viewCount;
-//		
-//		ArrayList<MemberDto> memberList = adao.admin_selectMemberList(searchVal, startRow, endRow);
-//		System.out.println(memberList);
-//		
-//		gson = new Gson();
-//		String memberList_ajax = gson.toJson(memberList);
-//		System.out.println("memberList_ajax : " + memberList_ajax);
-//		return memberList_ajax;
-//	}
-	
-	// 회원목록 ajax 페이징 넘버 조회
-	public String admin_selectMemberPagingNumber_ajax(Paging paging) {
-		System.out.println("AdminServiceadmin.admin_selectMemberPagingNumber_ajax() 호출");
-		
-		int totalCount = adao.admin_selectMemberTotalCount(paging); // 전체 회원수 조회
-		paging.setTotalCount(totalCount);
-		paging.calc(); // 페이지 처리 계산 실행
-		
-		gson = new Gson();
-		String paging_json = gson.toJson(paging);
-		System.out.println(paging_json);
-		return paging_json;
-	}
-	// 회원목록 ajax 페이징 넘버 조회
-//	public String admin_selectMemberPagingNumber_ajax(String searchVal, int page) {
-//		System.out.println("AdminServiceadmin.admin_selectMemberPagingNumber_ajax() 호출");
-//		
-//		int memberTotalCount = adao.admin_selectMemberTotalCount(searchVal); // 전체 회원수 조회
-//		// 페이지에서 출력할 페이지번호 생성
-//		PageDto paging = new PageDto();
-//		// 글 최대값에 따라 페이지 번호 최대값
-//		int maxPage = (int) (Math.ceil( (double)memberTotalCount/viewCount ) );
-//		// 출력될 페이지 번호 시작값
-//		int startPage = (int) ( (Math.ceil( (double)page/pageNumCount )) -1 ) * pageNumCount + 1;
-//		// 출력될 페이지 번호 마지막값
-//		int endPage = startPage + pageNumCount - 1; 			
-//		if(endPage > maxPage) { 	
-//			endPage = maxPage;
-//		}			
-//		paging.setPage(page);
-//		paging.setMaxPage(maxPage);
-//		paging.setStartPage(startPage);
-//		paging.setEndPage(endPage);
-//		
-//		gson = new Gson();
-//		String paging_json = gson.toJson(paging);
-//		System.out.println(paging_json);
-//		return paging_json;
-//	}
 
 	// 회원상태 변경 ajax
 	public String admin_updateMstate_ajax(String mid, String mstate) {
@@ -227,7 +131,7 @@ public class AdminService {
 	
 	/* 공지 관리*/
 	// 공지 관리페이지 이동
-	public ModelAndView admin_selectNoticeList(String searchVal, String searchType, String keyword, int page, RedirectAttributes ra) {
+	public ModelAndView admin_selectNoticeList(Paging paging, RedirectAttributes ra) {
 		System.out.println("AdminService.admin_selectNoticeList() 호출");
 		mav = new ModelAndView();
 		// 관리자 로그인 여부 체크
@@ -237,94 +141,46 @@ public class AdminService {
 			mav.setViewName("redirect:/loadToLogin");	
 			return mav;
 		}
-		
-		System.out.println("정렬 val : " + searchVal);
-		System.out.println("검색 type : " + searchType);
-		System.out.println("검색 keyword : " + keyword);
-		
+
 		// 페이징
-		if (page < 0) {
-			page = 1;
+		if(paging.getKeyword() == null) { // dao 조건문이 keyword에 null값이 들어가면 오류가 나기 때문에 ""로 변경
+			paging.setKeyword("");
 		}
-		System.out.println("이동요청 페이지 : " + page);
-		int noticeTotalCount = adao.admin_selectNoticeTotalCount(searchVal, searchType, keyword); // 전체 공지수 조회
-		System.out.println("공지총갯수 : " + noticeTotalCount);
-		int startRow = (page-1) * viewCount + 1;
-		int endRow = page * viewCount;
+		int totalCount = adao.admin_selectNoticeTotalCount(paging); // 전체 회원수 조회
+		paging.setTotalCount(totalCount);
+		paging.calc(); // 페이지 처리 계산 실행
+		System.out.println(paging);
 		
-		ArrayList<NoticeDto> noticeList = adao.admin_selectNoticeList(searchVal, searchType, keyword, startRow, endRow);
+		ArrayList<NoticeDto> noticeList = adao.admin_selectNoticeList(paging);
 		System.out.println(noticeList);
 		
-		// 페이지에서 출력할 페이지번호 생성
-		PageDto paging = new PageDto();
-		// 글 최대값에 따라 페이지 번호 최대값
-		int maxPage = (int) (Math.ceil( (double)noticeTotalCount/viewCount ) );
-		// 출력될 페이지 번호 시작값
-		int startPage = (int) ( (Math.ceil( (double)page/pageNumCount )) -1 ) * pageNumCount + 1;
-		// 출력될 페이지 번호 마지막값
-		int endPage = startPage + pageNumCount - 1; 			
-		if(endPage > maxPage) { 	
-			endPage = maxPage;
-		}			
-		paging.setPage(page);
-		paging.setMaxPage(maxPage);
-		paging.setStartPage(startPage);
-		paging.setEndPage(endPage);
-
-		mav.addObject("paging", paging);
 		mav.addObject("noticeList", noticeList);
-		mav.addObject("searchVal", searchVal);
-		mav.addObject("searchText", keyword);
-		mav.addObject("searchType", searchType);
+		mav.addObject("paging", paging);
 		mav.setViewName("admin/Admin_NoticeList");
 		return mav;
 	}
 
 	// 선택한 상태값에 따른 공지목록 ajax
-	public String admin_selectNoticeList_ajax(String searchVal, String searchType, String keyword, int page) {
+	public String admin_selectNoticeList_ajax(Paging paging) {
 		System.out.println("AdminService.admin_selectNoticeList_ajax() 호출");
-		System.out.println("정렬 val : " + searchVal);
-		System.out.println("검색 type : " + searchType);
-		System.out.println("검색 keyword : " + keyword);
-		System.out.println("요청 페이지 : " + page);
-
-		int startRow = (page-1) * viewCount + 1;
-		int endRow = page * viewCount;
+		System.out.println("searchVal : " + paging.getSearchVal());
 		
-		ArrayList<NoticeDto> noticeList = adao.admin_selectNoticeList(searchVal, searchType, keyword, startRow, endRow);
-		System.out.println(noticeList);
-		System.out.println("noticeList.size() : " + noticeList.size());
-		gson = new Gson();
-		String noticeList_json = gson.toJson(noticeList);
-		return noticeList_json;
-	}
-	
-	// 공지목록 ajax 페이징 넘버 조회
-	public String admin_selectNoticePagingNumber_ajax(String searchVal, String searchType, String keyword, int page) {
-		System.out.println("AdminService.admin_selectNoticePagingNumber_ajax() 호출");
+		int totalCount = adao.admin_selectNoticeTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
+		paging.setTotalCount(totalCount);
+		paging.calc(); // 페이지 처리 계산 실행
+		System.out.println("paging : " + paging);
 		
-		int noticeTotalCount = adao.admin_selectNoticeTotalCount(searchVal, searchType, keyword); // 전체 회원수 조회
-		
-		// 페이지에서 출력할 페이지번호 생성
-		PageDto paging = new PageDto();
-		// 글 최대값에 따라 페이지 번호 최대값
-		int maxPage = (int) (Math.ceil( (double)noticeTotalCount/viewCount ) );
-		// 출력될 페이지 번호 시작값
-		int startPage = (int) ( (Math.ceil( (double)page/pageNumCount )) -1 ) * pageNumCount + 1;
-		// 출력될 페이지 번호 마지막값
-		int endPage = startPage + pageNumCount - 1; 			
-		if(endPage > maxPage) { 	
-			endPage = maxPage;
-		}			
-		paging.setPage(page);
-		paging.setMaxPage(maxPage);
-		paging.setStartPage(startPage);
-		paging.setEndPage(endPage);
+		ArrayList<NoticeDto> noticeList = adao.admin_selectNoticeList(paging);
+		System.out.println("noticeList : " + noticeList);
 		
 		gson = new Gson();
-		String paging_json = gson.toJson(paging);
-		System.out.println(paging_json);
-		return paging_json;
+		if (paging.getAjaxCheck().equals("list")) { // memberList ajax일 경우
+			String noticeList_json = gson.toJson(noticeList);
+			return noticeList_json;
+		} else { // paging ajax일 경우
+			String paging_json = gson.toJson(paging);
+			return paging_json;
+		}
 	}
 
 	// 공지상태 변경
@@ -535,22 +391,14 @@ public class AdminService {
 		ArrayList<UsedBoardDto> usedBoardList = adao.admin_selectResellList(paging);
 		System.out.println("usedBoardLis : " + usedBoardList);
 		gson = new Gson();
-		String usedBoardList_json = gson.toJson(usedBoardList); 
-		return usedBoardList_json;
+		if (paging.getAjaxCheck().equals("list")) { // usedBoardLis ajax일 경우
+			String usedBoardList_json = gson.toJson(usedBoardList); 
+			return usedBoardList_json;
+		} else { // paging ajax일 경우
+			String paging_json = gson.toJson(paging);
+			return paging_json;
+		}
 	}	
-	
-	// 중고거래 목록 ajax 페이징 넘버 조회
-	public String admin_selectResellPagingNumber_ajax(Paging paging) {
-		System.out.println("AdminService.admin_selectResellPagingNumber_ajax() 호출");
-	
-		int totalCount = adao.admin_selectResellTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
-		paging.setTotalCount(totalCount);
-		paging.calc(); // 페이지 처리 계산 실행
-		System.out.println("paging : " + paging);
-		gson = new Gson();
-		String paging_json = gson.toJson(paging);
-		return paging_json;
-	}
 
 	// 중고거래 글상태 변경 요청
 	public int admin_updateUbstate_ajax(String ubcode, String ubstate) {
@@ -612,22 +460,14 @@ public class AdminService {
 		ArrayList<BoardDto> boardList = adao.admin_selectBoardList(paging);
 		System.out.println("boardList : " + boardList);
 		gson = new Gson();
-		String boardList_json = gson.toJson(boardList); 
-		return boardList_json;
+		if (paging.getAjaxCheck().equals("list")) { // boardList ajax일 경우
+			String boardList_json = gson.toJson(boardList); 
+			return boardList_json;
+		} else { // paging ajax일 경우
+			String paging_json = gson.toJson(paging);
+			return paging_json;
+		}
 	}	
-
-	// 커뮤니티 목록 ajax 페이징 넘버 조회
-	public String admin_selectBoardPagingNumber_ajax(Paging paging) {
-		System.out.println("AdminService.admin_selectBoardPagingNumber_ajax() 호출");
-	
-		int totalCount = adao.admin_selectBoardTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
-		paging.setTotalCount(totalCount);
-		paging.calc(); // 페이지 처리 계산 실행
-		System.out.println("paging : " + paging);
-		gson = new Gson();
-		String paging_json = gson.toJson(paging);
-		return paging_json;
-	}
 
 	/* 댓글 관리 */
 	// 댓글 관리페이지 이동
@@ -670,21 +510,13 @@ public class AdminService {
 		ArrayList<ReplyDto> replyList = adao.admin_selectReplyList(paging);
 		System.out.println("replyList : " + replyList);
 		gson = new Gson();
-		String replyList_json = gson.toJson(replyList); 
-		return replyList_json;
-	}
-	
-	// 댓글 목록 ajax 페이징 넘버 조회
-	public String admin_selectReplyPagingNumber_ajax(Paging paging) {
-		System.out.println("AdminService.admin_selectReplyPagingNumber_ajax() 호출");
-		
-		int totalCount = adao.admin_selectReplyTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
-		paging.setTotalCount(totalCount);
-		paging.calc(); // 페이지 처리 계산 실행
-		System.out.println("paging : " + paging);
-		gson = new Gson();
-		String paging_json = gson.toJson(paging);
-		return paging_json;
+		if (paging.getAjaxCheck().equals("list")) { // replyList ajax일 경우
+			String replyList_json = gson.toJson(replyList); 
+			return replyList_json;
+		} else { // paging ajax일 경우
+			String paging_json = gson.toJson(paging);
+			return paging_json;
+		}
 	}
 
 	// 댓글 상태 변경 요청

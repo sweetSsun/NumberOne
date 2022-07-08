@@ -545,7 +545,7 @@
 	function updateBoardDelete(){
 		/* 게시글 삭제(상태변경) */
 		//모달창에서 "네" 버튼 클릭 시 삭제
-		location.href="updateBoardDelete?bdcode="+bdcode;
+		location.href="updateBoardDelete?bdcode="+bdcode+"&bdcategory="+'${board.bdcategory }';
 	}
 	
 </script>

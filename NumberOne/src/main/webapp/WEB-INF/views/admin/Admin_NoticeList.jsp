@@ -65,7 +65,7 @@
 						</select>
 					</div>
 	                <div class="col-5 input-group">
-                    	<input type="text" style="width:100px;" class="form-control" name="keyword" id="searchText" placeholder="검색 키워드를 입력하세요!" value="${searchText}">
+                   		<input type="text" style="width:100px;" class="form-control" name="keyword" id="searchText" placeholder="검색 키워드를 입력하세요!" value="${paging.keyword}">
                     	<span class="input-group-btn">
 	                      	<button class="btn btn-secondary" type="submit" name="page" value="1">찾기</button>
                     	</span>
@@ -124,24 +124,22 @@
                 </tbody>
             </table>
             
-  			<!-- 페이징 -->
-	  		<input type="hidden" id="pageInput" name="">
-	  		
+   			<!-- 페이징 -->
   			<div class="block text-center" id="pageList">
                	<c:choose>
-               		<c:when test="${paging.page <= 1 }">
-               			[이전]
-               		</c:when>
-               		<c:otherwise>
+               		<c:when test="${paging.prev }">
                			<button type="submit" name="page" value="${paging.page -1 }" id="btn0"></button>
                			<label for="btn0">[이전]</label>
+               		</c:when>
+               		<c:otherwise>
+               			[이전]
                		</c:otherwise>
                	</c:choose>
                	
                	<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="num" step="1">
                 	<c:choose>
                 		<c:when test="${paging.page == num }">
-                			<span>${num }</span>
+                			<span style="color:#00bcd4;">${num }</span>
                 		</c:when>
                 		<c:otherwise>
                 			<button type="submit" name="page" value="${num }" id="btn${num }"></button>
@@ -151,12 +149,12 @@
                	</c:forEach>
 
                	<c:choose>
-               		<c:when test="${paging.page >= paging.maxPage }">
-               			[다음]
-               		</c:when>
-               		<c:otherwise>
+               		<c:when test="${paging.next }">
                			<button type="submit" name="page" value="${paging.page +1 }" id="btn6"></button>
                			<label for="btn6">[다음]</label>
+               		</c:when>
+               		<c:otherwise>
+               			[다음]
                		</c:otherwise>
                	</c:choose>
             </div>
@@ -220,10 +218,10 @@
 	
 	
 	<script type="text/javascript">
-		// 선택한 검색 select option으로 선택되도록 하기
+	// 선택한 검색 select option으로 선택되도록 하기
 		var searchOption = $("#searchTypeSel option");
 		console.log("searchOption.length : " + searchOption.length);
-		var searchType = "${searchType}";
+		var searchType = "${paging.searchType}";
 		console.log("searchType : " + searchType);
 		if (searchType.length > 0) {
 			for (var i = 0; i < searchOption.length; i++){
@@ -235,7 +233,7 @@
 		
 		// 선택한 정렬 select option으로 선택되도록 하기
 		var searchValOption = $("#searchValSel option");
-		var searchVal = "${searchVal}";
+		var searchVal = "${paging.searchVal}";
 		if (searchVal.length > 0) {
 			for (var i = 0; i < searchValOption.length; i++){
 				if (searchValOption.eq(i).val() == searchVal){
@@ -248,16 +246,14 @@
 		// 정렬 select하면 ajax로 공지목록 받고 출력을 바꿔주는 함수
 		function nbSearchState(searchVal){
 			console.log("nbSearchState() 실행");
-			console.log("정렬 선택 : " + searchVal);
-			//var searchType = $("#searchType option:selected").val();
 			var searchType = $("#searchTypeSel").val();
 			var searchText = $("#searchText").val();
-			var page = 1; // 정렬 시 요청페이지
-			console.log(searchType);
-			console.log(searchText);
+			console.log("정렬 선택 : " + searchVal);
+			console.log("검색 종류 : " + searchType);
+			console.log("검색 키워드 : " + searchText);
 			$.ajax({
 				type: "get",
-				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "page":page},
+				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "ajaxCheck":"list"},
 				url: "admin_selectNoticeList_ajax",
 				dataType: "json",
 				success: function(result){
@@ -285,34 +281,35 @@
 			// 페이지에서 출력할 페이지번호 받아오기
 			$.ajax({
 				type: "get",
-				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "page":page},
-				url: "admin_selectNoticePagingNumber_ajax",
+				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "ajaxCheck":"page"},
+				url: "admin_selectNoticeList_ajax",
 				dataType: "json",
 				success: function(result){
 					console.log("요청 페이지 : " + result.page);
 					$("#pageList").text("");
-					var output = "";
-    					if (result.page == 1) {
-    	    				output += "[이전]";
-        				} else {
-                   			output += "<button type='submit' name='page' value='" + (result.page - 1) + "' id='btn0'></button>";
-                   			output += "<label for='btn0'>[이전]</label>";
-        				}
-        				for (var i = result.startPage; i <= result.endPage; i++){
-        					if (page == i){
-        	    				output += "<span>" + i + "</span>";
-        					} else {
-	                   			output += "<button type='submit' name='page' value='" + i + "' id='btn" + i + "'></button>";
-	                   			output += "<label for='btn" + i + "'>" + i + "</label>";
-        					}
-        				}
-        				if (result.page == result.maxPage){
-    	    				output += "[다음]";
-        				} else {
-                   			output += "<button type='submit' name='page' value='" + (result.page + 1) + "' id='btn6'></button>";
-                   			output += "<label for='btn6'>[다음]</label>";
-        				}
-					$("#pageList").html(output);
+					// 페이징 번호 출력
+					var pageList = "";
+					if (result.prev) {
+						pageList += "<button type='submit' name='page' value='" + (result.page - 1) + "' id='btn0'></button>";
+						pageList += "<label for='btn0'>[이전]</label>";
+					} else {
+						pageList += "[이전] ";
+					}
+					for (var i = result.startPage; i <= result.endPage; i++){
+						if (result.page == i){
+							pageList += "<span style='color:#00bcd4'>" + i + "</span>";
+						} else {
+							pageList += "<button type='submit' name='page' value='" + i + "' id='btn" + i + "'></button>";
+							pageList += "<label for='btn" + i + "'>" + i + "</label>";
+						}
+					}
+					if (result.next){
+						pageList += "<button type='submit' name='page' value='" + (result.page + 1) + "' id='btn6'></button>";
+						pageList += "<label for='btn6'>[다음]</label>";
+					} else {
+						pageList += "[다음]";
+					}
+					$("#pageList").html(pageList);
 				},
 				error: function(){
 					alert("페이징넘버링 실패");

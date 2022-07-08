@@ -30,12 +30,10 @@ public class BoardController {
 	}
 
 	//자취방 자랑글 작성 페이지 이동
-	@RequestMapping(value="/loadTowriteRoom")
-	public ModelAndView loadTowriteRoom(RedirectAttributes ra) {
+	@RequestMapping(value="/loadToWriteRoom")
+	public String loadTowriteRoom(RedirectAttributes ra) {
 		System.out.println("자쥐방 자랑 Form 요청");
-		ModelAndView mav = new ModelAndView();
-		mav = bsvc.selectRoomWriterMnickname(ra);
-		return mav;
+		return "board/RoomWriteForm";
 	}
 
 	//자취방 자랑글 등록
@@ -256,10 +254,9 @@ public class BoardController {
 	 
 	 //게시글 수정 페이지 이동 
 	 @RequestMapping ( value = "/loadToBoardModify")
-	 public ModelAndView loadToBoardModify(String bdcode) {
+	 public ModelAndView loadToBoardModify(String bdcode, String bdcategory) {
 		 System.out.println("게시글 수정페이지 이동 요청");
-		 
-		 ModelAndView mav = bsvc.loadToBoardModify(bdcode);
+		 ModelAndView mav = bsvc.loadToBoardModify(bdcode, bdcategory);
 		 
 		 return mav;
 	 }
@@ -277,10 +274,10 @@ public class BoardController {
 	 
 	 //게시글 삭제
 	 @RequestMapping ( value = "/updateBoardDelete")
-	 public ModelAndView updateBoardDelete (String bdcode, RedirectAttributes ra) {
+	 public ModelAndView updateBoardDelete (String bdcode, String bdcategory, RedirectAttributes ra) {
 		 System.out.println("게시글 삭제 요청");
 		 
-		 ModelAndView mav = bsvc.updateBoardDelete(bdcode, ra);
+		 ModelAndView mav = bsvc.updateBoardDelete(bdcode, bdcategory ,ra);
 		 
 		 return mav;
 		 
@@ -354,5 +351,9 @@ public class BoardController {
 
 		 return currnetState;
 	 }
+	 
+	 //자랑글 수정 페이지 요청
+	 
+
 
 }

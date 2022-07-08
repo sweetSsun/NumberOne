@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
@@ -9,21 +8,14 @@
 <title>1인자 - 중고거래 팔구게시판</title>
 
 <%@ include file="/resources/css/BarCss.jsp"%>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-	integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-	crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+	integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"
+	referrerpolicy="no-referrer"></script>
 <!-- 부트스트랩 -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-	crossorigin="anonymous">
-<script src="https://kit.fontawesome.com/dadeda074b.js"
-	crossorigin="anonymous"></script>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath }/resources/css/resell.css"
-	type="text/css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<script src="https://kit.fontawesome.com/dadeda074b.js" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/resell.css" type="text/css">
 
 
 </head>
@@ -44,8 +36,7 @@
 
 					<div class="flex_div flex-p0 flex_between">
 						<div class="item_start">
-							<select class="select-size" onchange="selectRegion(1)"
-								id="regionInfo">
+							<select class="select-size" onchange="selectRegion(1)" id="regionInfo">
 								<option value="전국">전국</option>
 								<option value="서울">서울</option>
 								<option value="인천">인천</option>
@@ -67,17 +58,20 @@
 
 					<div class="flex_div flex-p0 flex_center">
 						<div class="search-bar">
-							<div class="row_9">
-								<select id="searchType">
-									<option value="total">제목+내용</option>
-									<option value="title">제목</option>
-									<option value="writer">작성자</option>
+							<div class="flex_div flex-p0 flex_between">
+								<div class="item_start">
+									<select id="searchType">
+										<option value="ubtitle">제목</option>
+										<option value="ubmid">작성자</option>
+										<option value="total">제목+내용</option>
 
-								</select> <input class="search-bar_input" type="search" placeholder="검색"
-									id="keyword">
-
+									</select>
+								</div>
+								<div>
+									<input class="search-bar_input" type="search" placeholder="검색" id="keyword">
+								</div>
 							</div>
-							<div class="row_1">
+							<div class="">
 								<button onclick="searchKeyword(1)">
 									<i class="fas fa-search"></i>
 								</button>
@@ -102,14 +96,10 @@
 
 								<div class="flex_div flex-p2 ">
 									<div class="position_relative">
-										<a
-											href="selectResellView?ubcode=${sell_List.ubcode }&ubsellbuy=${sell_List.ubsellbuy }"><img
-											alt=""
-											src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/${sell_List.ubmainimg }"
-											class="img_size"></a>
+										<a href="selectResellView?ubcode=${sell_List.ubcode }&ubsellbuy=${sell_List.ubsellbuy }"><img alt=""
+											src="${pageContext.request.contextPath }/resources/img/resell/${sell_List.ubmainimg }" class="img_size"></a>
 										<!--찜 기본  -->
-										<i
-											class="fa-solid fa-heart-circle-plus zzim_size position_absolute"></i>
+										<i class="fa-solid fa-heart-circle-plus zzim_size position_absolute"></i>
 										<!--찜하면 show  -->
 										<!-- <i class="fa-solid fa-heart-circle-check zzim_size position_absolute"></i> -->
 									</div>
@@ -118,12 +108,10 @@
 
 								<div class="flex_card ">
 									<div class="card_top position_relative">
-										<a
-											href="selectResellView?ubcode=${sell_List.ubcode }&ubsellbuy=${sell_List.ubsellbuy }">${sell_List.ubtitle }</a>
+										<a href="selectResellView?ubcode=${sell_List.ubcode }&ubsellbuy=${sell_List.ubsellbuy }">${sell_List.ubtitle }</a>
 									</div>
 
-									<div
-										class="card_body font-s text-right padding-right text-bold">${sell_List.ubnickname }</div>
+									<div class="card_body font-s text-right padding-right text-bold">${sell_List.ubnickname }</div>
 
 
 									<div class="card_footer font-s text-right padding-right">${sell_List.ubdate }</div>
@@ -142,12 +130,10 @@
                    [이전]
                    </c:when>
 								<c:otherwise>
-									<a href="selectResellPageList?page=${paging.page-1 }&sellBuy=S">
-										[이전]</a>
+									<a href="selectResellPageList?page=${paging.page-1 }&sellBuy=S"> [이전]</a>
 								</c:otherwise>
 							</c:choose>
-							<c:forEach begin="${paging.startPage }" end="${paging.endPage }"
-								var="num" step="1">
+							<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="num" step="1">
 								<c:choose>
 									<c:when test="${paging.page == num }">
 										<span style="font-size: 20px">&nbsp;${num }&nbsp;</span>
@@ -182,22 +168,49 @@
 
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp"%>
 
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
-<script type="text/javascript">
-	
-</script>
+
 
 <script type="text/javascript">
+var checkMsg = '${msg}';
+if(checkMsg.length >0){
+	alert(checkMsg);
+}
+var checkSearch = '${checkSearch}';
+	var loginRegion = '${sessionScope.loginRegion}';
 	var regionInfo = document.getElementById("regionInfo");
-	console.log(regionInfo);
-	var selRegion = regionInfo.options[regionInfo.selectedIndex].value;
-	console.log(selRegion);
+var selRegion = regionInfo.options[regionInfo.selectedIndex].value;
+
+if(checkSearch=='OK'){
+	console.log("checkSearch : "+checkSearch );
+	console.log("checkSearch길이 : "+checkSearch.length );
 	document.getElementById("mregion").innerText = "[" + selRegion
-			+ "] 지역 목록입니다.";
+	+ "] 지역 목록입니다.";
+	
+}
+else{
+	
+	selRegion = loginRegion;
+	document.getElementById("mregion").innerText = "[" + selRegion
+	+ "] 지역 목록입니다.";
+	for(var i =0; i<regionInfo.options.length; i++){
+		console.log("for문확인");
+		if(regionInfo.options[i].value==loginRegion){
+			
+		console.log("regionInfo.options[i].value : " + regionInfo.options[i].value);
+		
+			regionInfo.options[i].selected = "true";
+		}			
+	}
+}	
+	console.log("loginRegion :" +loginRegion);
+	console.log("regionInfo : " +regionInfo);
+	console.log("loginRegion.length : "+ loginRegion.length);
+	console.log("selRegion : " +selRegion);
+
+		
 	var output_page = '';
 	var output_pagerNum = '';
 	/* 조회  */
@@ -283,7 +296,7 @@
 		output_page += '<div class=\"flex_div\">'
 			+ '<div class=\"flex_div flex-p2\">'
 			+ '<div class=\"position_relative\">'
-			+ '<img alt=\"메인사진\" src=\"${pageContext.request.contextPath }/resources/img/mprofileUpLoad/'+result[i].ubmainimg+'\"'
+			+ '<img alt=\"메인사진\" src=\"${pageContext.request.contextPath }/resources/img/resell/'+result[i].ubmainimg+'\"'
 	+'class=\"img_size\">'
 			+ '<i class=\"fa-solid fa-heart-circle-plus zzim_size position_absolute\"></i>'
 			+ '</div>'
@@ -304,16 +317,17 @@
 
 <script type="text/javascript">
  /* 검색 */
-	var keyword = document.getElementById("keyword").value;
-	var searchType = document.getElementById("searchType").value;
-
+	 
 	function searchKeyword(page){
-		
+		var searchType = document.getElementById("searchType").value;
+		console.log(searchType);
+		var keyword = document.getElementById("keyword").value;
+		console.log(keyword);
 	$.ajax({
 			type : "get",
 			url : "selectResellRegionList_ajax",
 			dataType : "json",
-			data : {"keyword" : keyword, "sellBuy" : "S", "searchVal" : selRegion, "searchType" : searchType},
+			data : {"keyword" : keyword, "sellBuy" : "S", "ajaxCheck" : 'REGION', "searchVal" : selRegion, "searchType" : searchType},
 			success : function(result){
 				console.log("결과 : "+result);
 				output_page = '';
@@ -328,10 +342,12 @@
 					url : "selectResellRegionList_ajax",
 					dataType : "json",
 					data : {
+						"keyword" : keyword,
 						"searchVal" : selRegion,
 						"sellBuy" : 'S',
 						"ajaxCheck" : 'PAGE',
-						"page" : page
+						"page" : page,
+						 "searchType" : searchType
 					},
 					success : function(result) {
 						output_pagerNum = '';
