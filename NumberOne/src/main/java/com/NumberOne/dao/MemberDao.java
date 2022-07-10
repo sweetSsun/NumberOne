@@ -1,6 +1,7 @@
 package com.NumberOne.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
@@ -43,7 +44,7 @@ public interface MemberDao {
 	MemberDto selectMyInfoMemberView(String loginId);
 
 	//회원정보수정
-	@Update("UPDATE MEMBERS SET MPW = #{mpw}, MNAME = #{mname}, MNICKNAME = #{mnickname}, MPHONE = #{mphone}, MEMAIL = #{memail}, MADDR = #{maddr}, "
+	@Update("UPDATE MEMBERS SET MPW = #{mpw}, MNAME = #{mname}, MNICKNAME = #{mnickname}, MPHONE = #{mphone}, MEMAIL = #{memail}, MREGION = #{mregion}, MADDR = #{maddr}, "
 			+ "MPROFILE = #{mprofile}, MMESSAGE = #{mmessage} WHERE MID = #{mid}")	
 	int updateMyInfoMemberModify(MemberDto member);
 	
@@ -83,18 +84,6 @@ public interface MemberDao {
 	//카카오 가입확인
 	@Select("SELECT MID, MPROFILE FROM MEMBERS WHERE MID = #{mid}")
 		MemberDto selectMemberKakao(String mid);
-	
-	//카카오 회원가입 처리
-/*	@Insert("INSERT INTO MEMBERS(MID, MPW, MNAME, MNICKNAME, MPHONE, MEMAIL, MREGION ,MPROFILE, MSTATE) "
-			+ "VALUES(#{mid}, #{mpw},#{mname} ,#{mnickname},#{mphone}, #{memail},#{mregion}, #{mprofile}, 5 )")
-		    int insertMemberKakao(MemberDto member);	
-*/
-	 
-
- 	//카카오 회원가입 처리
-	@Insert("INSERT INTO MEMBERS(MID, MPW, MNAME, MNICKNAME, MPHONE, MEMAIL, MREGION ,MPROFILE, MSTATE) "
-			+ "VALUES(#{mid}, #{mpw},'kakaoLogin' ,#{mnickname},'000-0000-0000', #{memail},'인천', #{mprofile}, 5 )")
-		    int insertMemberKakao(MemberDto member);
 
 	//팔구 목록
 	@Select("SELECT UBTITLE FROM USEDBOARDS WHERE UBSELLBUY = 'S' AND UBMID = #{loginId}")
@@ -124,8 +113,18 @@ public interface MemberDao {
 	//닉네임 별 작성 글 출력
 	@Select("SELECT BD.BDTITLE FROM BOARDS BD, MEMBERS M WHERE BD.BDMID = M.MID AND M.MNICKNAME = #{nickname} ORDER BY BDCODE DESC")
 	ArrayList<BoardDto> insertWriteMemberInfo_Board(String nickname);
+
+	//비밀번호 찾기
 	
+	//MemberDto selectByUserID(HashMap<String, String> map);
+	//임시 비밀번호 업데이트
 	
+	//void updatePassword(HashMap<String, String> map2);
+	
+	//카카오 회원가입 처리
+	@Insert("INSERT INTO MEMBERS(MID, MPW, MNAME, MNICKNAME, MPHONE, MEMAIL, MREGION, MPROFILE, MJOINDATE ) "
+			+ "VALUES(#{mid}, #{mpw}, #{mname}, #{mnickname}, #{mphone}, #{memail}, #{mregion}, #{mprofile}, SYSDATE )")
+	int insertKakaoRegister(MemberDto member);
 	 	
 
 

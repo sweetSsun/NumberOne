@@ -63,35 +63,20 @@ background-color: #00BCD4;
 
 }
 
-.msgTextarea {
-	height: 100%;
-	width: 100%;
-	border-radius: 5px; 
-	padding:10px 10px;
-	resize: none;
-	font-weight: bold;
-  	overflow-y: scroll;
-  	cursor: default;
-  	
-
-}
-
-
-.msgTextarea::-webkit-scrollbar {
-    width: 10px;  /* 스크롤바의 너비 */
-    
-}
-
-.msgTextarea::-webkit-scrollbar-thumb {
-    height: 30%; /* 스크롤바의 길이 */
-    background: #00BCD4; /* 스크롤바의 색상 */
-    
-    border-radius: 10px;
-}
-
-.msgTextarea::-webkit-scrollbar-track {
-    background: #EAEAEA;  /*스크롤바 뒷 배경 색상*/
-}
+.textarea {
+  display:block; 
+  overflow:hidden; 
+  width:100%; 
+  height:2rem; 
+  padding-left:1rem;
+  padding-top:0.8rem;
+  font-size:1rem; 
+  font-weight:bold;
+  color:#000; 
+  border:1px solid #808080; 
+  resize:none;
+  border-radius : 4px;
+ }
 
 
 </style>
@@ -150,10 +135,10 @@ background-color: #00BCD4;
                                     </div>                                    
                                     <div class="checkout__input ">
                                         <p class="fw-bold" style="color: #808080;">상태메세지</p>
-                                			<textarea class="msgTextarea" id="inputMmessage" name="mmessage" readonly="readonly">${memberInfo.mmessage }</textarea>                                                               
+                                			<textarea class="textarea" id="inputMmessage" name="mmessage" readonly="readonly">${memberInfo.mmessage }</textarea>                                                               
                                     </div>
                                 </div>
-                            </div>
+                            </div>                   
                         
                         
                         
@@ -275,11 +260,18 @@ background-color: #00BCD4;
 	<!-- 스크립트 시작 -->
 	<script type="text/javascript" src="resources/js/jquery-3.3.1.min.js"></script>
 	
-	<!-- textarea -->
-	<script type="text/javascript">
-
-
+	<!-- textarea 길이 조절 -->
+<script>
+    var txtArea = $(".textarea");
+    if (txtArea) {
+        txtArea.each(function(){
+            $(this).height(this.scrollHeight);
+        });
+    }
 </script>
+
+
+
 	
 	<!-- 다음 우편번호 서비스 -->
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
