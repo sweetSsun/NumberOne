@@ -87,7 +87,7 @@ background-color: #00BCD4;
             <div class="checkout__form">
                 <h4>비밀번호 찾기</h4>
                 <br>
-                
+                <form class="user" action="LookforPw" method="post">
                     <div class="row">
                         <div class="col-lg-12 col-md-6">
                         <!-- 아이디 -->
@@ -125,7 +125,7 @@ background-color: #00BCD4;
                             </div>
                             
                         <!-- 찾기버튼 -->    
-                        <center><button class="site-btn" style="border-radius: 4px;" onclick="searchPw()">찾기</button></center>
+                        <button class="site-btn" style="border-radius: 4px; margin-left: 400px;" onclick="searchPw()">찾기</button>
                         <br>
                         <!-- 결과 span Msg-->
                              <div class="row">
@@ -138,7 +138,7 @@ background-color: #00BCD4;
    							
                          </div>                            
   					</div> 
-                
+                </form>
             </div>
         </div>
     </section>

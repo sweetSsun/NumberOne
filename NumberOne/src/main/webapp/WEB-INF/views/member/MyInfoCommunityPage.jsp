@@ -64,14 +64,14 @@ background-color: #00BCD4;
 		<section>
 		<!-- 본문 -->
 			<div class="container">
+				<div class="checkout__form" style="margin-top: 40px;"><h4>마이페이지 커뮤니티</h4></div>
 				<br>
-				<div class="checkout__form"><h4>마이페이지 커뮤니티</h4></div>
 				<br>
 				<!-- 작성글 목록 -->
-				<div class="row" style="margin:20px;">
-					<br><h4 class="checkout__form" style="color: #00BCD4;">작성글 목록</h4>
+				<div class="row" style="">				
+					<h4 class="checkout__form" style="color: #00BCD4; margin-left: 30px;">작성글 목록</h4>
 				</div>
-				<div class="row"  style="margin:20px;">
+				<div class="row"  style="margin:20px; ">
 				<table>
 						<tr class="text-center" id="board_column">
 							<td>글번호</td>
@@ -89,15 +89,21 @@ background-color: #00BCD4;
 							</tr>
 						</c:forEach>
 				</table>
+				<!-- 여백 -->				
+					<div style="min-height: 500px;"></div><hr>
 				</div>
 			
-				<br><hr><br>
+				
 				
 				
 				<!-- 댓글작성글 목록 -->
-				<div class="row" style="margin:20px;">
-					<br><h4 class="checkout__form" style="color: #00BCD4;"> 댓글 작성 글 목록</h4>
+				<!-- 여백 -->
+				<div style="min-height: 50px;" id="reply"></div>
+				<div class="row" style="margin-top:20px;" >
+					<br><h4 class="checkout__form" style="color: #00BCD4; margin-left: 30px;" > 댓글 작성 글 목록</h4>
 				</div>
+				<!-- 여백 -->				
+				<div style="min-height: 50px;"></div>
 				<div class="row"  style="margin:20px;">
 				<table >
 						<tr class="text-center" id="board_column">
@@ -116,14 +122,19 @@ background-color: #00BCD4;
 							</tr>
 						</c:forEach>
 				</table>
+				<!-- 여백 -->				
+				<div style="min-height: 800px;"></div><hr>
 				</div>
-
-				<br><hr><br>				
+				
 				
 				<!-- 스크랩 목록 -->
-				<div class="row" style="margin:20px;">
-					<br><h4 class="checkout__form" style="color: #00BCD4;">스크랩 목록 (작성자 상세보기 test 중)</h4>
+				<!-- 여백 -->
+				<div style="min-height: 50px;" id="scrap"></div>				
+				<div class="row" style="margin:20px;" >
+					<br><h4 class="checkout__form" style="color: #00BCD4; margin-left: 30px;">스크랩 목록 (작성자 상세보기 test 중)</h4>
 				</div>
+				<!-- 여백 -->
+				<div style="min-height: 50px;" ></div>				
 				<div class="row"  style="margin:20px;">
 				<table >
 						<tr class="text-center" id="board_column">
@@ -147,7 +158,7 @@ background-color: #00BCD4;
 						</c:forEach>
 				
 				</table>
-				<br>
+				<div style="min-height: 600px;"></div><hr>
 				</div>
 
 
