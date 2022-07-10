@@ -969,7 +969,7 @@ function adminRpBan(){
 			} else if( loginId == nowBdmid){ //글작성자
 				//console.log("작성자");
 				//수정 메소드 아직 안 만들었음
-				menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick=''>수정</div>";
+				menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick='modifyRoomView()'>수정</div>";
 				menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick='deleteRoomView()'>삭제</div>";
 				menuOutput += "<div class='menu' onclick='closeMenuModal()'>취소</div>";
 			} else {
@@ -977,7 +977,7 @@ function adminRpBan(){
 				menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick='log(\"wbhistory\")'>신고</div>";
 				menuOutput += "<div class='menu' onclick='closeMenuModal()'>취소</div>";			
 			}
-		} else {onclick=
+		} else {
 			console.log("댓글(Rp) 메뉴 요청")
 			nowRpcode = objcode;
 			console.log(loginId);
@@ -997,6 +997,10 @@ function adminRpBan(){
 		$("#menuModal").css("display", "block") ;
 	}
 
+	function modifyRoomView(){
+		console.log("글 수정 버튼 클릭");
+		location.href = "${pageContext.request.contextPath}/loadToBoardModify?bdcode="+nowBdcode+"&bdcategory=자랑";
+	}
 </script>
 
 </html>

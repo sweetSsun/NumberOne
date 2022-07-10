@@ -60,4 +60,10 @@ public interface AdminDao {
 
 	int admin_updateQuestionAns_ajax(@Param("ctcode") String ctcode, @Param("ctans") String ctans);
 
+	int admin_updateBoardStop(String bdcode);
+
+	int admin_updateResellStop(String ubcode);
+
+	int admin_updateReplyStop(String rpcode);
+
 }

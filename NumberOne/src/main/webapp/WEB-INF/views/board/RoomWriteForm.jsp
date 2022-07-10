@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 자취방 자랑 글작성</title>
+<title>1인자 - 자취방 자랑 글수정</title>
 
 <%@ include file="/resources/css/BarCss.jsp" %>
 <!-- 부트스트랩 

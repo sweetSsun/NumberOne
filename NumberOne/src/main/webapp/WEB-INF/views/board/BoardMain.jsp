@@ -6,6 +6,8 @@
 <head>
 <meta charset="UTF-8">
 <title>1인자 - 커뮤니티 메인</title>
+<!-- 부트스트랩 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <%@ include file="/resources/css/BarCss.jsp" %>
 <style type="text/css">
 	section{
@@ -29,7 +31,11 @@
 		border: solid #00bcd4 2px;
 		border-radius: 5px;
 	}
-	.square{
+	.img-container{
+	  overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 	  width: 250px;
 	  height: 250px;
 	  border: solid #E0E0E0 2px;
@@ -75,7 +81,7 @@
 		<!-- 본문 -->
 			<section>
 			<div class="container-fluid">
-				<h1 class="text-center">게시판 메인 : BoardMain.jsp</h1>
+				<h2 class="text-center">게시판 메인 : BoardMain.jsp</h2>
 				<div class="row">
 					<div class="col mb-2">
 						<h3>자취방자랑</h3>
@@ -84,14 +90,18 @@
 						<span style="font-size:17px;"> <a href="selectRoomList"><i class="fa-solid fa-square-plus"></i>&nbsp;더보기</a></span>
 					</div>
 				</div>
-				<!-- 자취방자랑 Best 목록 -->
+				<!-- 자취방자랑 최신순 목록 -->
 				<div class="row mb-5" id="BestRoomList">
-					<div class="col-3" >
-						<div class="square" >
-							박스1
+					
+					<c:forEach items="${roomList }" var="room">
+						<div class="col-3" >
+							<div class="img-container" >
+								<a href="#"><img alt="" src="${pageContext.request.contextPath }/resources/img/room/${room.bdimg }"></a>
+							</div>
 						</div>
-					</div>
-					<div class="col-3" >
+					</c:forEach>
+					
+				<!-- 	<div class="col-3" >
 						<div class="square">
 							박스2
 						</div>
@@ -105,7 +115,8 @@
 						<div class="square">
 							박스4
 						</div>
-					</div>
+					</div> -->
+					
 				</div>
 				<hr>
 				<!-- 자취방자랑 Best 목록 끝 -->

@@ -80,9 +80,10 @@
 		<!-- 본문 -->
 			<div class="container">
 				<div class="row" style="margin:auto;">
-					<h1 class="text-center">게시판 글목록 페이지 : BoardListPage.jsp</h1>
+					<h2 class="text-center">게시판 글목록 페이지 : BoardListPage.jsp</h2>
 				</div>
 				<form action="selectBoardSearchList" method="get">
+				<input type="hidden" name="bdcategory" value="" >
 					<div class="row ">
 						<!-- 검색기능 -->
 						<div class="col-5" align="right">
@@ -128,7 +129,7 @@
 				<table >
 					<thead >
 						<tr class="text-center" id="board_column">
-							<!-- <td>글번호</td> -->
+							<td style="font-size: 17px;">글번호</td>
 							<td style="font-size: 17px;">말머리</td>
 							<td style="font-size: 17px;">제목</td>
 							<td style="font-size: 17px;">작성자</td>
@@ -140,7 +141,7 @@
 						<c:forEach items="${noticeList }" end="2" var="notice">
 							<!-- 공지게시판 -->
 							<tr class="fw-bold" style="border-bottom: solid #E0E0E0 1px;">
-								<%-- <td>${notice.nbcode}</td> --%>
+								<td class="text-center">${notice.nbcode}</td>
 								<td></td>
 								<td>
 									<a href="selectNoticeBoardView?nbcode=${notice.nbcode }">${notice.nbtitle}</a>
@@ -159,7 +160,7 @@
 					<c:forEach items="${boardList }" var="board">
 						<c:if test="${board.bdcategory != '자랑' }">
 						<tr style="border-bottom: solid #E0E0E0 1px;">
-							<%-- <td>${board.bdcode}</td> --%>
+							<td class="text-center">${board.bdcode}</td>
 							<td class="bdcategory text-center">${board.bdcategory}</td>
 							<td>
 							 	<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
@@ -206,14 +207,14 @@
 		location.href= "loadToBoardWrite";
 	}
 
-	/* 게시판 카테고리 선택 */
+	/* 게시판 말머리 선택 */
 	function bdCategorySel(categorySel){
 		console.log("categorySel: " + categorySel);
 		
 		var output = "";
 		$.ajax({
 			type : "get",
-			url : "getBoardCategoryList",
+			url : "getBoardCategoryList_ajax",
 			data : { "bdcategory" : categorySel},
 			dataType : "json",
 			async : false,
@@ -222,9 +223,10 @@
 				
 				for(var i = 0; i< bdCategoryList.length; i++ ){
 					output += "<tr style=\"border-bottom: solid #E0E0E0 1px;\">";
-					/* output += "<td>" + bdCategoryList[i].bdcode + "</td>"; */
+					output += "<td class=\"text-center\">" + bdCategoryList[i].bdcode + "</td>";
 					output += "<td class=\"bdcategory text-center\">" + bdCategoryList[i].bdcategory + "</td>";
-					output += "<td><a href='selectBoardView?bdcode=" + bdCategoryList[i].bdcode + "'>" + bdCategoryList[i].bdtitle + "</a></td>";
+					output += "<td><a href='selectBoardView?bdcode=" + bdCategoryList[i].bdcode + "'>" + bdCategoryList[i].bdtitle + "</a>"
+					output += "<span class=\"fw-bold\" style=\"font-size:15px; color:#00bcd4;\">&nbsp;" + bdCategoryList[i].bdrpcount + "</span></td>"
 					output += "<td class=\"text-center\"><a href=\"#\">" + bdCategoryList[i].bdnickname + "</a></td>";
 					output += "<td class=\"text-center\">" + bdCategoryList[i].bddate + "</td>";
 					output += "<td class=\"text-center\">" + bdCategoryList[i].bdhits + "</td>";
@@ -233,7 +235,6 @@
 				}
 			}
 		});
-		console.log(output);
 		$("#bdCategoryList").html(output);
 	}
 	

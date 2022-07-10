@@ -9,7 +9,9 @@
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- Css Styles -->
 <%@ include file="/resources/css/BarCss.jsp" %>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 
 <style type="text/css">
     #board_column{
@@ -88,15 +90,15 @@
             
             <!-- 게시글 목록 -->
             <div class="row">
-            <table >
+            <table style="table-layout: fixed;">
                <thead >
                   <tr class="fw-bold" id="board_column">
                      <td style="width:100px;">대표사진</td>
-                     <td style="width:130px;">글번호</td>
-                     <td style="min-width:200px;">제목</td>
-                     <td>작성자</td>
-                     <td>작성일</td>
-                     <td style="width:80px;">상태</td>
+                     <td style="width:10%;">글번호</td>
+                     <td>제목</td>
+                     <td style="width:15%;">작성자</td>
+                     <td style="width:15%;">작성일</td>
+                     <td style="width:4rem;">상태</td>
                   </tr>
                </thead>
                <tbody id="bdListTbody">
@@ -105,12 +107,12 @@
 	                   <tr style="border-bottom: solid gray 1px;">
 	                      <td><img src="${pageContext.request.contextPath }/resources/img/resell/${usedBoard.ubmainimg }"
 	                      		class="img-fluid" style="width:100px; height:100px; object-fit:fill;"></td>
-	                      <td>${usedBoard.ubcode}</td>
+	                      <td class="overflow">${usedBoard.ubcode}</td>
 	                      <%-- makeQueryPage 쓰는거 왜 안될까.... admin_selectBoardView${Paging.makeQueryPage(board.bdcode, paging.page) }/>  --%>
 	                      <td class="overflow"><a href="#">
 	                      ${usedBoard.ubtitle}</a></td>
-	                      <td>${usedBoard.ubnickname}</td>
-	                      <td>${usedBoard.ubdate}</td>
+	                      <td class="overflow">${usedBoard.ubnickname}</td>
+	                      <td class="overflow">${usedBoard.ubdate}</td>
 	                      <td>
 	                      	<c:choose>
 	                      		<c:when test="${usedBoard.ubstate == 1}">
@@ -255,10 +257,10 @@
 						output += "<tr style='border-bottom: solid gray 1px;'>";
 						output += "<td><img src='${pageContext.request.contextPath }/resources/img/resell/" + result[i].ubmainimg
 								+ "' class='img-fluid' style='width:100px; height:100px;  object-fit:fill;'></td>";
-						output += "<td>" + result[i].ubcode + "</td>";
+						output += "<td class='overflow'>" + result[i].ubcode + "</td>";
 						output += "<td class='overflow'><a href='admin_selectResellView?ubcode=" + result[i].ubcode + "'>" + result[i].ubtitle + "</a></td>";
-						output += "<td>" + result[i].ubnickname + "</td>";
-						output += "<td>" + result[i].ubdate + "</td>";
+						output += "<td class='overflow'>" + result[i].ubnickname + "</td>";
+						output += "<td class='overflow'>" + result[i].ubdate + "</td>";
 						output += "<td>"
 						if (result[i].ubstate == 1){
 							output += "<button class='btn btn-warning' type='button' onclick='showBdstateModal(this, \""+result[i].ubcode+"\")'>경고</button>";
