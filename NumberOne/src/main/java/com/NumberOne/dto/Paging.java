@@ -1,5 +1,8 @@
 package com.NumberOne.dto;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -45,7 +48,7 @@ public class Paging {
 	public Paging() {
 		// 초기값 설정
 		page = 1;
-		perPageNum = 3;
+		perPageNum = 10;
 		startRow = 1;
 		endRow = 10;
 		
@@ -89,17 +92,27 @@ public class Paging {
 		UriComponents uri = UriComponentsBuilder.newInstance()
 				.queryParam("page", page)
 				.queryParam("perPageNum", perPageNum)
+				.queryParam("searchVal", searchVal)
+				.queryParam("searchType", searchType)
+				.queryParam("keyword", keyword)
+				.encode()
 				.build();
+		System.out.println("생성된 파라미터 : " + uri.toUriString());
 		return uri.toUriString();
 	}
 	// 인덱스 있는 버전(상세페이지에서 수정, 삭제시)
-	public String makeQueryPage(int idx, int page) {
+	public String makeQueryPage(String codeIdx, int page) {
+		System.out.println(codeIdx);
 		UriComponents uri = UriComponentsBuilder.newInstance()
-				.queryParam("idx", idx)
+				.queryParam("codeIdx", codeIdx)
 				.queryParam("page", page)
 				.queryParam("perPageNum", perPageNum)
+				.queryParam("searchVal", searchVal)
+				.queryParam("searchType", searchType)
+				.queryParam("keyword", keyword)
+				.encode()
 				.build();
-		System.out.println(uri.toUriString());
+		System.out.println("생성된 파라미터 : " + uri.toUriString());
 		return uri.toUriString();
 	}
 

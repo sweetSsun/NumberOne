@@ -5,16 +5,24 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@ include file="/resources/css/BarCss.jsp" %>
+
 <!-- jquery -->
 <script type="text/javascript" src="resources/js/jquery-3.3.1.min.js"></script>
+<!-- Css Styles -->
+<%@ include file="/resources/css/BarCss.jsp" %>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 
 <title>${noticeBoard.nbtitle} - 1인자:관리자 공지게시판</title>
 
 <style type="text/css">
-	textarea{
+	.textarea-NbView{
 		border: none;
-		height: auto;
+		resize: none;
+		width: -webkit-fill-available;
+		min-height: 25em;
+	}
+	textarea:focus {
+    	outline: none;
 	}
 	.idDateHits{
 		border-bottom: solid #E0E0E0 3px;
@@ -92,7 +100,7 @@
 							<c:if test="${noticeBoard.nbimg != null }">
 								<img alt="" src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg}" style="max-width:100%; max-height:500px;">
 							</c:if>
-							<textarea rows="10%" cols="100%" readonly>${noticeBoard.nbcontents }</textarea>
+							<textarea rows="10%" class="textarea-NbView" readonly>${noticeBoard.nbcontents }</textarea>
 						</div>
 					</div>
 				</form>
@@ -100,7 +108,9 @@
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
 				<div class="row">
 					<div class="col-2">
-						<a href="#"><input type="button" style="left:0;" class="middelBtn btn btn-lg bg-success fw-bold text-white" value="글목록"></a> 
+						<a href="admin_selectNoticeList${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}">
+						<input type="button" style="left:0;" class="middelBtn btn btn-lg bg-success fw-bold text-white" value="글목록">
+						</a> 
 					</div>
 					<div class="col-4 offset-md-6" >
 						<input type="button" style="float:right;" class="btn btn-lg bg-success fw-bold text-white" 
@@ -132,9 +142,12 @@
 		console.log("공지 수정 요청");
 		var nbcode = '${noticeBoard.nbcode}';
 		console.log("nbcode : " + nbcode);
-		location.href="admin_selectNoticeModify?nbcode="+nbcode;
+		//console.log("paging : " + ${paging});
+		var url = "admin_selectNoticeModify${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}";
+		console.log(url);
+		location.href="admin_selectNoticeModify${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}";
 	});
-
+	
 </script>
 
 </body>

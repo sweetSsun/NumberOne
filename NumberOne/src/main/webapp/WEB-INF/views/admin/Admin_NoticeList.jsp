@@ -9,7 +9,9 @@
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- Css Styles -->
 <%@ include file="/resources/css/BarCss.jsp" %>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 
 <style type="text/css">
     #board_column{
@@ -50,7 +52,7 @@
 		
 		<section>
 		<!-- 본문 -->
-         <form action="admin_selectNoticeList" method="get">
+         <form action="admin_selectNoticeList" method="get" id="actionForm">
 			<div class="container">
 	            <div class="row" style="margin:auto;">
 	                <h1 class="text-center">공지 관리페이지 : Admin_NoticeList.jsp</h1>
@@ -67,7 +69,7 @@
 	                <div class="col-5 input-group">
                    		<input type="text" style="width:100px;" class="form-control" name="keyword" id="searchText" placeholder="검색 키워드를 입력하세요!" value="${paging.keyword}">
                     	<span class="input-group-btn">
-	                      	<button class="btn btn-secondary" type="submit" name="page" value="1">찾기</button>
+	                      	<button class="btn btn-secondary" type="submit">찾기</button>
                     	</span>
 	            	</div>
 		            <div class="col-2">
@@ -89,25 +91,29 @@
             
             <!-- 게시글 목록 -->
             <div class="row">
-            <table >
+            <table style="table-layout: fixed;">
                <thead >
                   <tr class="fw-bold" id="board_column">
-                     <td style="width:130px;">글번호</td>
-                     <td style="min-width:200px;">제목</td>
-                     <td>작성자</td>
-                     <td>작성일</td>
-                     <td style="width:50px;">조회</td>
-                     <td style="width:80px;">상태</td>
+                     <td style="width:10%;">글번호</td>
+                     <td>제목</td>
+				     <td style="width:15%;">작성자</td>
+                     <td style="width:15%;">작성일</td>
+                     <td style="width:3rem;">조회</td>
+                     <td style="width:4rem;">상태</td>
                   </tr>
                </thead>
                <tbody id="nbListTbody">
 	               <c:forEach items="${noticeList }" var="notice">
 	                   <!-- 회원관리 목록 -->
 	                   <tr style="border-bottom: solid gray 1px;">
-	                      <td>${notice.nbcode}</td>
-	                      <td><a href="admin_selectNoticeBoardView?nbcode=${notice.nbcode}">${notice.nbtitle}</a></td>
-	                      <td>${notice.nbnickname}</td>
-	                      <td>${notice.nbdate}</td>
+	                      <td class="overflow">${notice.nbcode}</td>
+ 	                      <td class="overflow"><a href="admin_selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}" >${notice.nbtitle}</a></td>
+<%--
+	                      <td class="overflow"><a href="#" onclick="makeQuery('${notice.nbcode}')">${notice.nbtitle}</a></td>
+ --%>
+
+	                      <td class="overflow">${notice.nbnickname}</td>
+	                      <td class="overflow">${notice.nbdate}</td>
 	                      <td>${notice.nbhits}</td>
 	                      <td>
 	                      	<c:choose>
@@ -124,40 +130,31 @@
                 </tbody>
             </table>
             
-   			<!-- 페이징 -->
+   			<!-- 페이징 시작 -->
+   			<input type="hidden" id="pageNum" name="page" value="1">
   			<div class="block text-center" id="pageList">
-               	<c:choose>
-               		<c:when test="${paging.prev }">
-               			<button type="submit" name="page" value="${paging.page -1 }" id="btn0"></button>
-               			<label for="btn0">[이전]</label>
-               		</c:when>
-               		<c:otherwise>
-               			[이전]
-               		</c:otherwise>
-               	</c:choose>
-               	
-               	<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="num" step="1">
-                	<c:choose>
-                		<c:when test="${paging.page == num }">
-                			<span style="color:#00bcd4;">${num }</span>
-                		</c:when>
-                		<c:otherwise>
-                			<button type="submit" name="page" value="${num }" id="btn${num }"></button>
-               				<label for="btn${num }">${num }</label>
-                		</c:otherwise>
-                	</c:choose>
-               	</c:forEach>
-
-               	<c:choose>
-               		<c:when test="${paging.next }">
-               			<button type="submit" name="page" value="${paging.page +1 }" id="btn6"></button>
-               			<label for="btn6">[다음]</label>
-               		</c:when>
-               		<c:otherwise>
-               			[다음]
-               		</c:otherwise>
-               	</c:choose>
+  				<ul class="pagination">
+	           		<c:if test="${paging.prev }">
+	           			<li class="paginate_button"><a href="${paging.page -1 }" >이전</a></li>
+	           		</c:if>
+	               	
+	               	<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="num" step="1">
+	                	<c:choose>
+	                		<c:when test="${paging.page == num }">
+	                			<li class=""><a class="active">${num }</a></li>
+	                		</c:when>
+	                		<c:otherwise>
+	                			<li class="paginate_button "><a href="${num }" >${num }</a></li>
+	                		</c:otherwise>
+	                	</c:choose>
+	               	</c:forEach>
+	               	
+					<c:if test="${paging.next }">
+	                	<li class="paginate_button"><a href="${paging.page +1 }" >다음</a></li>
+	               	</c:if>
+	            </ul>
             </div>
+            <!-- 페이징 끝 -->
             
             </div>
             
@@ -207,13 +204,15 @@
 	</script>
 	
 	<script type="text/javascript">
-		console.log("요청 페이지 : " + ${param.page});
-	
-		// onsubmit. 페이징 넘버를 누르지 않고 검색 버튼으로 controller를 호출할 때 페이지값 넘겨주기 위한 함수
-		function pageCheck(){
-			console.log("pageInput() 실행");
-			$("#pageInput").attr("name", "page").val("1");
-		}
+		// 페이지 넘버 a태그를 클릭하면 hidden input태그에 페이지 넘버 값을 넣고 submit 진행
+		var actionForm = $("#actionForm");
+		$(".paginate_button a").click(function(e){
+			e.preventDefault();
+			console.log("pageNum click");
+			$("#pageNum").val($(this).attr("href"));
+			console.log($("#pageNum").val());
+			actionForm.submit();
+		});
 	</script>
 	
 	
@@ -261,10 +260,16 @@
 					console.log(result);					
 					for (var i = 0; i < result.length; i++){
 						output += "<tr style='border-bottom: solid gray 1px;'>";
-						output += "<td>" + result[i].nbcode + "</td>";
-						output += "<td><a href='admin_selectNoticeBoardView?nbcode=" + result[i].nbcode + "'>" + result[i].nbtitle + "</a></td>";
-						output += "<td>" + result[i].nbmid + "</td>";
-						output += "<td>" + result[i].nbdate + "</td>";
+						output += "<td class='overflow'>" + result[i].nbcode + "</td>";
+						// <a href="admin_selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}" >
+						// ajax에선 paging이 아니라 result(json 타입의 String)으로 온다.
+						// java 코드를 먼저 읽고 html은 나중이기 때문에 onclick 이벤트를 부여해도 codeIdx값을 넘겨줄 수가 없음
+						// makeQuery를 사용할 수가 없다... 매개변수 직접 붙여주는 수 밖에..
+						output += "<td class='overflow'><a href='admin_selectNoticeBoardView?codeIdx=" + result[i].nbcode 
+								+"&page=1&perPageNum=10&searchVal=" + searchVal + "&searchType=" + searchType + "&keyword=" + searchText + "'>" 
+								+ result[i].nbtitle + "</a></td>";
+						output += "<td class='overflow'>" + result[i].nbmid + "</td>";
+						output += "<td class='overflow'>" + result[i].nbdate + "</td>";
 						output += "<td>" + result[i].nbhits + "</td>";
 						output += "<td>"
 						if (result[i].nbstate == 1){
@@ -288,26 +293,19 @@
 					console.log("요청 페이지 : " + result.page);
 					$("#pageList").text("");
 					// 페이징 번호 출력
-					var pageList = "";
+					var pageList = "<ul class='pagination'>";
 					if (result.prev) {
-						pageList += "<button type='submit' name='page' value='" + (result.page - 1) + "' id='btn0'></button>";
-						pageList += "<label for='btn0'>[이전]</label>";
-					} else {
-						pageList += "[이전] ";
+						pageList += "<li class='paginate_button'><a href='"+ (result.page - 1) + "' >이전</a></li>";
 					}
 					for (var i = result.startPage; i <= result.endPage; i++){
 						if (result.page == i){
-							pageList += "<span style='color:#00bcd4'>" + i + "</span>";
+							pageList += "<li><a class='active'>"+ i + "</a></li>";
 						} else {
-							pageList += "<button type='submit' name='page' value='" + i + "' id='btn" + i + "'></button>";
-							pageList += "<label for='btn" + i + "'>" + i + "</label>";
+							pageList += "<li class='paginate_button'><a href='"+ i + "' >" + i + "</a></li>";
 						}
 					}
 					if (result.next){
-						pageList += "<button type='submit' name='page' value='" + (result.page + 1) + "' id='btn6'></button>";
-						pageList += "<label for='btn6'>[다음]</label>";
-					} else {
-						pageList += "[다음]";
+						pageList += "<li class='paginate_button'><a href='"+ (result.page + 1) + "' >다음</a></li>";
 					}
 					$("#pageList").html(pageList);
 				},

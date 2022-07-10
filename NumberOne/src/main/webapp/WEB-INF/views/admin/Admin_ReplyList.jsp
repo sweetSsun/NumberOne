@@ -9,7 +9,9 @@
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- Css Styles -->
 <%@ include file="/resources/css/BarCss.jsp" %>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 
 <style type="text/css">
     #board_column{
@@ -87,28 +89,28 @@
             
             <!-- 게시글 목록 -->
             <div class="row">
-            <table >
+            <table style="table-layout: fixed;">
                <thead >
                   <tr class="fw-bold" id="board_column">
-                     <td style="width:130px;">댓글번호</td>
-                     <td style="width:70px;">말머리</td>
-                     <td style="min-width:200px;">내용</td>
-                     <td>작성자</td>
-                     <td>작성일</td>
-                     <td style="width:80px;">상태</td>
+                     <td style="width:10%;">댓글번호</td>
+                     <td style="width:4.5rem;">말머리</td>
+                     <td style="width:50%;">내용</td>
+                     <td style="width:15%;">작성자</td>
+                     <td style="width:20%;">작성일</td>
+                     <td style="width:4rem;">상태</td>
                   </tr>
                </thead>
                <tbody id="rpListTbody">
 	               <c:forEach items="${replyList }" var="reply">
 	                   <!-- 회원관리 목록 -->
 	                   <tr style="border-bottom: solid gray 1px;">
-	                      <td>${reply.rpcode}</td>
+	                      <td class="overflow">${reply.rpcode}</td>
 	                      <td>${reply.rpbdcategory}</td>
 	                      <%-- makeQueryPage 쓰는거 왜 안될까.... admin_selectBoardView${Paging.makeQueryPage(board.bdcode, paging.page) }/>  --%>
 	                      <td class="overflow"><a href="#">
 	                      ${reply.rpcontents}</a></td>
-	                      <td>${reply.rpnickname}</td>
-	                      <td>${reply.rpdate}</td>
+	                      <td class="overflow">${reply.rpnickname}</td>
+	                      <td class="overflow">${reply.rpdate}</td>
 	                      <td>
                    			  <button class="btn btn-danger" type="button" onclick="showRpstateModal(this, '${reply.rpcode }')">정지</button>
 	                      </td>
@@ -244,11 +246,11 @@
 					console.log(result);					
 					for (var i = 0; i < result.length; i++){
 						output += "<tr style='border-bottom: solid gray 1px;'>";
-						output += "<td>" + result[i].rpcode + "</td>";
+						output += "<td class='overflow'>" + result[i].rpcode + "</td>";
 						output += "<td>" + result[i].rpbdcategory + "</td>";
 						output += "<td class='overflow'><a href='admin_selectResellView?bdcode=" + result[i].bdcode + "'>" + result[i].rpcontents + "</a></td>";
-						output += "<td>" + result[i].rpnickname + "</td>";
-						output += "<td>" + result[i].rpdate + "</td>";
+						output += "<td class='overflow'>" + result[i].rpnickname + "</td>";
+						output += "<td class='overflow'>" + result[i].rpdate + "</td>";
 						output += "<td>"
 						output += "<button class='btn btn-danger' type='button' onclick='showRpstateModal(this,\""+result[i].rpcode+"\")'>정지</button>";
 						output += "</td>";

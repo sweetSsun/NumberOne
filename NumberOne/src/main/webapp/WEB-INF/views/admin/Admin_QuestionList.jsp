@@ -9,13 +9,11 @@
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- Css Styles -->
 <%@ include file="/resources/css/BarCss.jsp" %>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 <!-- 부트스트랩 -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-	crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
 <!-- ogani css -->
     <%-- <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/bootstrap.min.css" type="text/css">  --%>
@@ -44,6 +42,8 @@
 		border: solid #E0E0E0 1px;
 		margin: 20px;
 		padding: 10px;
+		resize: none;
+		width: -webkit-fill-available;
 	}	
 	.site-btn {
 		background-color: #00BCD4;
@@ -105,24 +105,24 @@
 	            </div>
 	            
 				<div class="row"  style="margin:20px;">
-				<table >
+				<table style="table-layout: fixed;">
 					<thead>
 						<tr class="text-center" id="board_column">
-							<td style="width: 200px;">글번호</td>
+							<td style="width: 10%;">글번호</td>
 							<td>제목</td>
-							<td style="width: 250px;">작성자</td>
-							<td style="width: 200px;">날짜</td>
-							<td style="width: 50px;">답변</td>
+							<td style="width: 15%;">작성자</td>
+							<td style="width: 15%;">날짜</td>
+							<td style="width: 4rem;">답변</td>
 						</tr>												
 					</thead>					
 					<tbody id="ctListTbody">
 			 			<c:forEach items="${contactList }" var="contact">
 							<!-- 문의 목록 -->
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center; height: 50px;">
-								<td>${contact.ctcode }</td>
-								<td onclick="showContents('${contact.ctcode }')" class="buttonPoint">${contact.cttitle }</td>
-								<td>${contact.ctnickname }</td>
-								<td>${contact.ctdate }</td>
+								<td class="overflow">${contact.ctcode }</td>
+								<td onclick="showContents('${contact.ctcode }')" class="buttonPoint overflow">${contact.cttitle }</td>
+								<td class="overflow">${contact.ctnickname }</td>
+								<td class="overflow">${contact.ctdate }</td>
 								<c:choose>
 									<c:when test="${contact.ctans != null}">
 										<td>완료</td>								
@@ -149,10 +149,10 @@
 									<c:when test="${contact.ctans == null }">
 										<td colspan="4">
 											<div class="commentWriteForm">
-												<textarea id="${contact.ctcode }_ctans" class="textareaSt" rows="3" cols="80" style="width:100%;" placeholder="문의글에 대한 답변을 작성해주세요."></textarea>
+												<textarea id="${contact.ctcode }_ctans" class="textareaSt" rows="3" cols="80" placeholder="문의글에 대한 답변을 작성해주세요."></textarea>
 											</div>	
 										</td>
-										<td  style="padding-left: 50px;">
+										<td>
 											<input type="button" onclick="insertReply('${contact.ctcode}')" value="등록" 
 											class="site-btn" style="width: 130px; border-radius: 4px;">
 										</td>
@@ -291,10 +291,10 @@
 				console.log(result);					
 				for (var i = 0; i < result.length; i++){
 					output += "<tr style='border-bottom: solid #E0E0E0 1px; text-align: center; height: 50px;'>";
-					output += "<td>" + result[i].ctcode + "</td>";
-					output += "<td onclick='showContents(\"" + result[i].ctcode + "\")' class='buttonPoint'>" + result[i].cttitle + "</td>";
-					output += "<td>" + result[i].ctnickname + "</td>";
-					output += "<td>" + result[i].ctdate + "</td>";
+					output += "<td class='overflow'>" + result[i].ctcode + "</td>";
+					output += "<td onclick='showContents(\"" + result[i].ctcode + "\")' class='buttonPoint overflow'>" + result[i].cttitle + "</td>";
+					output += "<td class='overflow'>" + result[i].ctnickname + "</td>";
+					output += "<td class='overflow'>" + result[i].ctdate + "</td>";
 					if (result[i].ctans != null){
 						output += "<td>완료</td>";
 					} else {
@@ -311,11 +311,11 @@
 					if (result[i].ctans == null){
 						output += "<td colspan='4' class='p-4'>"
 								+ "<div class='commentWriteForm'>"
-								+ "<textarea id='" + result[i].ctcode + "_ctans' class='textareaSt' rows='3' cols='80' style='width:100%;' placeholder='문의글에 대한 답변을 작성해주세요.'></textarea>"
+								+ "<textarea id='" + result[i].ctcode + "_ctans' class='textareaSt' rows='3' cols='80' placeholder='문의글에 대한 답변을 작성해주세요.'></textarea>"
 								+ "</div>"
 								+ "</td>";
-						output += "<td style='padding-left: 50px;'>";
-						output += "<input type='button' onclick='insertReply(\'" + result[i].ctcode + "\')' value='등록' class='site-btn' style='width: 130px; border-radius: 4px;'>";
+						output += "<td>";
+						output += "<input type='button' onclick='insertReply(\"" + result[i].ctcode + "\")' value='등록' class='site-btn' style='width: 130px; border-radius: 4px;'>";
 						output += "</td>";
 					} else {
 						output += "<td colspan='5' class='p-4'>" + result[i].ctans + "</td>";
