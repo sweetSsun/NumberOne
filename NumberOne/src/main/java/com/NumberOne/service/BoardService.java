@@ -613,14 +613,12 @@ public class BoardService {
 		System.out.println(bdcode+", "+bdcategory);
 		
 		//수정할 게시글 정보 
-<<<<<<< HEAD
 		BoardDto board = bdao.selectBoardView(bdcode);
 		String bdcontents = board.getBdcontents().replace("&nbsp;","");
 		bdcontents = board.getBdcontents().replace("<br>","\r\n");
 		board.setBdcontents(bdcontents);
 		System.out.println(board);
-=======
-		BoardDto board=null;
+
 		if(bdcategory == null){
 			//일반글
 			board = bdao.selectBoardView(bdcode);
@@ -631,7 +629,6 @@ public class BoardService {
 			System.out.println(roomdetailimgs.length);
 			mav.addObject("roomdetailimgs", roomdetailimgs);
 		}
->>>>>>> 94f0cf8a49a2eda8dfab80e076f0675f7be07c59
 		
 		mav.addObject("board", board);
 		if(bdcategory != null){					
