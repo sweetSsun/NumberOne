@@ -606,6 +606,7 @@ public class BoardService {
 	}
 	
 
+
 	 //게시글 수정 페이지 이동 요청 
 	   public ModelAndView loadToBoardModify(String bdcode, String bdcategory) {
 	      System.out.println("BoardService.loadToBoardModify() 호출");
@@ -639,6 +640,7 @@ public class BoardService {
 	      
 	      return mav;
 	   }
+
 	
 	//게시글 수정
 	public ModelAndView updateBoardModify(BoardDto board, RedirectAttributes ra) throws IllegalStateException, IOException {

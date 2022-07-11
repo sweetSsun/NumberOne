@@ -9,55 +9,57 @@
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <%@ include file="/resources/css/BarCss.jsp" %>
+
 <style type="text/css">
-	section{
-		max-width: 70%;
-		margin: auto;
-		margin-top: 0%;
-	}
-	
-	.boardList{
-		width: 100%;
-		
-	}
-	div h3{
-		color: #00bcd4;
-	}
-	.tdTitle{
-	    border-bottom-width: 3px! important;
-   		border-color: white! important;
-   		font-size: 20px;
-		background-color: #eaf8ff;
-		
-	}
-	#BestRoomList{
-		min-height: 200px;
-		display: flex;
-		border: solid #00bcd4 2px;
-		border-radius: 5px;
-	}
-	.img-container{
-	  overflow: hidden;
+
+section{
+      max-width: 70%;
+      margin: auto;
+      margin-top: 0%;
+   }
+   
+   .boardList{
+      width: 100%;
+      
+   }
+   div h3{
+      color: #00bcd4;
+   }
+   .tdTitle{
+       border-bottom-width: 3px! important;
+         border-color: white! important;
+         font-size: 20px;
+      background-color: #eaf8ff;
+      
+   }
+   #BestRoomList{
+      min-height: 200px;
+      display: flex;
+      border: solid #00bcd4 2px;
+      border-radius: 5px;
+   }
+   .img-container{
+     overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-	  width: 250px;
-	  height: 250px;
-	  border: solid #E0E0E0 2px;
-	  margin-top: 5%;
-	  margin-bottom: 5%;
-	}
-	.board_category{
-	  height: 100px;
-	  width: 100px;
-	  font-weight: bold;
-	  line-height: 100px;
-	  text-align: center;
-	  background-color:#00bcd4;
-	  border-radius: 5px;
-	  height: auto;
-	  font-size: 24px;
-	}
+     width: 250px;
+     height: 250px;
+     border: solid #E0E0E0 2px;
+     margin-top: 5%;
+     margin-bottom: 5%;
+   }
+   .board_category{
+     height: 100px;
+     width: 100px;
+     font-weight: bold;
+     line-height: 100px;
+     text-align: center;
+     background-color:#00bcd4;
+     border-radius: 5px;
+     height: auto;
+     font-size: 24px;
+   }
 
 </style>
 
