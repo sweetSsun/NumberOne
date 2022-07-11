@@ -9,13 +9,13 @@
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- Css Styles -->
 <%@ include file="/resources/css/BarCss.jsp" %>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/listCss.css" type="text/css">
+
 <!-- 부트스트랩 -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-	crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
 <!-- ogani css -->
     <%-- <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/bootstrap.min.css" type="text/css">  --%>
@@ -23,13 +23,6 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 
 <style type="text/css">
-	#board_column{
-		border-bottom: solid gray 3px;
-	}
-	table{
-		margin: 20px;
-		font-size: 20px;
-	}
   	.d_none{
   		display : none;
   		}
@@ -44,6 +37,8 @@
 		border: solid #E0E0E0 1px;
 		margin: 20px;
 		padding: 10px;
+		resize: none;
+		width: -webkit-fill-available;
 	}	
 	.site-btn {
 		background-color: #00BCD4;
@@ -82,7 +77,7 @@
 		
 		<section>
 		<!-- 본문 -->
-		<form action="admin_selectQuestionList" method="get">
+		<form action="admin_selectQuestionList" method="get" id="actionForm">
 			<div class="container">
 				<br>
 				<div class="checkout__form"><h4>문의 관리페이지 - Admin_QuestionList.jsp</h4></div>
@@ -105,24 +100,24 @@
 	            </div>
 	            
 				<div class="row"  style="margin:20px;">
-				<table >
+				<table style="table-layout: fixed;">
 					<thead>
 						<tr class="text-center" id="board_column">
-							<td style="width: 200px;">글번호</td>
+							<td style="width: 10%;">글번호</td>
 							<td>제목</td>
-							<td style="width: 250px;">작성자</td>
-							<td style="width: 200px;">날짜</td>
-							<td style="width: 50px;">답변</td>
+							<td style="width: 15%;">작성자</td>
+							<td style="width: 15%;">날짜</td>
+							<td style="width: 4rem;">답변</td>
 						</tr>												
 					</thead>					
 					<tbody id="ctListTbody">
 			 			<c:forEach items="${contactList }" var="contact">
 							<!-- 문의 목록 -->
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center; height: 50px;">
-								<td>${contact.ctcode }</td>
-								<td onclick="showContents('${contact.ctcode }')" class="buttonPoint">${contact.cttitle }</td>
-								<td>${contact.ctnickname }</td>
-								<td>${contact.ctdate }</td>
+								<td class="overflow">${contact.ctcode }</td>
+								<td onclick="showContents('${contact.ctcode }')" class="buttonPoint overflow">${contact.cttitle }</td>
+								<td class="overflow">${contact.ctnickname }</td>
+								<td class="overflow">${contact.ctdate }</td>
 								<c:choose>
 									<c:when test="${contact.ctans != null}">
 										<td>완료</td>								
@@ -149,10 +144,10 @@
 									<c:when test="${contact.ctans == null }">
 										<td colspan="4">
 											<div class="commentWriteForm">
-												<textarea id="${contact.ctcode }_ctans" class="textareaSt" rows="3" cols="80" style="width:100%;" placeholder="문의글에 대한 답변을 작성해주세요."></textarea>
+												<textarea id="${contact.ctcode }_ctans" class="textareaSt" rows="3" cols="80" placeholder="문의글에 대한 답변을 작성해주세요."></textarea>
 											</div>	
 										</td>
-										<td  style="padding-left: 50px;">
+										<td>
 											<input type="button" onclick="insertReply('${contact.ctcode}')" value="등록" 
 											class="site-btn" style="width: 130px; border-radius: 4px;">
 										</td>
@@ -170,40 +165,42 @@
 				</div>			
 
 				<br>
-				<!-- 페이징 -->
+				
+	   			<!-- 페이징 시작 -->
+	   			<input type="hidden" id="pageNum" name="page" value="1">
 	  			<div class="block text-center" id="pageList">
-	               	<c:choose>
-	               		<c:when test="${paging.prev }">
-	               			<button type="submit" name="page" value="${paging.page -1 }" id="btn0"></button>
-	               			<label for="btn0">[이전]</label>
-	               		</c:when>
-	               		<c:otherwise>
-	               			[이전]
-	               		</c:otherwise>
-	               	</c:choose>
-	               	
-	               	<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="num" step="1">
-	                	<c:choose>
-	                		<c:when test="${paging.page == num }">
-	                			<span style="color:#00bcd4;">${num }</span>
-	                		</c:when>
-	                		<c:otherwise>
-	                			<button type="submit" name="page" value="${num }" id="btn${num }"></button>
-	               				<label for="btn${num }">${num }</label>
-	                		</c:otherwise>
-	                	</c:choose>
-	               	</c:forEach>
-	
-	               	<c:choose>
-	               		<c:when test="${paging.next }">
-	               			<button type="submit" name="page" value="${paging.page +1 }" id="btn6"></button>
-	               			<label for="btn6">[다음]</label>
-	               		</c:when>
-	               		<c:otherwise>
-	               			[다음]
-	               		</c:otherwise>
-	               	</c:choose>
+	  				<ul class="pagination">
+	  					<c:choose>
+			           		<c:when test="${paging.prev }">
+			           			<li class="paginate_button"><a href="${paging.page -1 }" >이전</a></li>
+			           		</c:when>
+			           		<c:otherwise>
+		           				<li class="paginate_button"><span>이전</span></li>
+			           		</c:otherwise>
+	  					</c:choose>
+		               	
+		               	<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="num" step="1">
+		                	<c:choose>
+		                		<c:when test="${paging.page == num }">
+		                			<li class=""><a class="active">${num }</a></li>
+		                		</c:when>
+		                		<c:otherwise>
+		                			<li class="paginate_button "><a href="${num }" >${num }</a></li>
+		                		</c:otherwise>
+		                	</c:choose>
+		               	</c:forEach>
+		               	
+		               	<c:choose>
+			           		<c:when test="${paging.next }">
+			                	<li class="paginate_button"><a href="${paging.page +1 }" >다음</a></li>
+			           		</c:when>
+			           		<c:otherwise>
+		           				<li class="paginate_button"><span>다음</span></li>
+			           		</c:otherwise>
+	  					</c:choose>
+		            </ul>
 	            </div>
+	            <!-- 페이징 끝 -->
             
 				<hr><br>
 
@@ -266,6 +263,22 @@
 </script>
 
 <script type="text/javascript">
+$(document).ready(function () {
+	// 페이지 넘버 a태그를 클릭하면 hidden input태그에 페이지 넘버 값을 넣고 submit 진행
+	var actionForm = $("#actionForm");
+	
+	$(document).on("click", ".paginate_button a", function(e){ // on 이벤트로 변경
+		e.preventDefault();
+		console.log("pageNum click");
+		$("#pageNum").val($(this).attr("href"));
+		console.log($("#pageNum").val());
+		actionForm.submit();
+	});
+});
+</script>
+	
+	
+<script type="text/javascript">
 	// 선택한 정렬 select option으로 선택되도록 하기
 	var searchValOption = $("#searchValSel option");
 	var searchVal = "${paging.searchVal}";
@@ -291,10 +304,10 @@
 				console.log(result);					
 				for (var i = 0; i < result.length; i++){
 					output += "<tr style='border-bottom: solid #E0E0E0 1px; text-align: center; height: 50px;'>";
-					output += "<td>" + result[i].ctcode + "</td>";
-					output += "<td onclick='showContents(\"" + result[i].ctcode + "\")' class='buttonPoint'>" + result[i].cttitle + "</td>";
-					output += "<td>" + result[i].ctnickname + "</td>";
-					output += "<td>" + result[i].ctdate + "</td>";
+					output += "<td class='overflow'>" + result[i].ctcode + "</td>";
+					output += "<td onclick='showContents(\"" + result[i].ctcode + "\")' class='buttonPoint overflow'>" + result[i].cttitle + "</td>";
+					output += "<td class='overflow'>" + result[i].ctnickname + "</td>";
+					output += "<td class='overflow'>" + result[i].ctdate + "</td>";
 					if (result[i].ctans != null){
 						output += "<td>완료</td>";
 					} else {
@@ -311,11 +324,11 @@
 					if (result[i].ctans == null){
 						output += "<td colspan='4' class='p-4'>"
 								+ "<div class='commentWriteForm'>"
-								+ "<textarea id='" + result[i].ctcode + "_ctans' class='textareaSt' rows='3' cols='80' style='width:100%;' placeholder='문의글에 대한 답변을 작성해주세요.'></textarea>"
+								+ "<textarea id='" + result[i].ctcode + "_ctans' class='textareaSt' rows='3' cols='80' placeholder='문의글에 대한 답변을 작성해주세요.'></textarea>"
 								+ "</div>"
 								+ "</td>";
-						output += "<td style='padding-left: 50px;'>";
-						output += "<input type='button' onclick='insertReply(\'" + result[i].ctcode + "\')' value='등록' class='site-btn' style='width: 130px; border-radius: 4px;'>";
+						output += "<td>";
+						output += "<input type='button' onclick='insertReply(\"" + result[i].ctcode + "\")' value='등록' class='site-btn' style='width: 130px; border-radius: 4px;'>";
 						output += "</td>";
 					} else {
 						output += "<td colspan='5' class='p-4'>" + result[i].ctans + "</td>";
@@ -335,26 +348,23 @@
 				console.log("요청 페이지 : " + result.page);
 				$("#pageList").text("");
 				// 페이징 번호 출력
-				var pageList = "";
+				var pageList = "<ul class='pagination'>";
 				if (result.prev) {
-					pageList += "<button type='submit' name='page' value='" + (result.page - 1) + "' id='btn0'></button>";
-					pageList += "<label for='btn0'>[이전]</label>";
+					pageList += "<li class='paginate_button'><a href='"+ (result.page - 1) + "' >이전</a></li>";
 				} else {
-					pageList += "[이전] ";
+					pageList += "<li class='paginate_button'><span>이전</span></li>"
 				}
 				for (var i = result.startPage; i <= result.endPage; i++){
 					if (result.page == i){
-						pageList += "<span style='color:#00bcd4'>" + i + "</span>";
+						pageList += "<li><a class='active'>"+ i + "</a></li>";
 					} else {
-						pageList += "<button type='submit' name='page' value='" + i + "' id='btn" + i + "'></button>";
-						pageList += "<label for='btn" + i + "'>" + i + "</label>";
+						pageList += "<li class='paginate_button'><a href='"+ i + "' >" + i + "</a></li>";
 					}
 				}
 				if (result.next){
-					pageList += "<button type='submit' name='page' value='" + (result.page + 1) + "' id='btn6'></button>";
-					pageList += "<label for='btn6'>[다음]</label>";
+					pageList += "<li class='paginate_button'><a href='"+ (result.page + 1) + "' >다음</a></li>";
 				} else {
-					pageList += "[다음]";
+					pageList += "<li class='paginate_button'><span>다음</span></li>"
 				}
 				$("#pageList").html(pageList);
 			},

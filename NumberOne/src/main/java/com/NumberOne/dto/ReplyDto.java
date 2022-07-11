@@ -18,6 +18,8 @@ public class ReplyDto {
 	private String rpnickname;	//작성자 닉네임
 	private String rpmprofile;  //작성자 프로필 사진
 	
+	private String rpprofile;	//작성자 프로필
+	
 	public String getRpcode() {
 		return rpcode;
 	}
@@ -67,13 +69,35 @@ public class ReplyDto {
 	public void setRpbdtitle(String rpbdtitle) {
 		this.rpbdtitle = rpbdtitle;
 	}
-	
+	public String getRpbdcategory() {
+		return rpbdcategory;
+	}
+	public void setRpbdcategory(String rpbdcategory) {
+		this.rpbdcategory = rpbdcategory;
+	}
+	public String getRpprofile() {
+		return rpprofile;
+	}
+	public void setRpprofile(String rpprofile) {
+		this.rpprofile = rpprofile;
+	}
+	public String getRpmprofile() {
+		return rpmprofile;
+	}
+	public void setRpmprofile(String rpmprofile) {
+		this.rpmprofile = rpmprofile;
+	}
 	@Override
 	public String toString() {
 		return "ReplyDto [rpcode=" + rpcode + ", rpbdcode=" + rpbdcode + ", rpcontents=" + rpcontents + ", rpmid="
-				+ rpmid + ", rpdate=" + rpdate + ", rpstate=" + rpstate + ", rpbdtitle=" + rpbdtitle + ", rpnickname="
-				+ rpnickname + "]";
+				+ rpmid + ", rpdate=" + rpdate + ", rpstate=" + rpstate + ", rpbdtitle=" + rpbdtitle + ", rpbdcategory="
+				+ rpbdcategory + ", rpnickname=" + rpnickname + ", rpmprofile=" + rpmprofile + ", rpprofile="
+				+ rpprofile + "]";
 	}
+	
+	
+	
+	
 	
 	
 	

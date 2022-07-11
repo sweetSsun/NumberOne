@@ -23,6 +23,7 @@ public class BoardDto {
 	private String bddetailimg;		//상세사진
 	private int bdstate;			//글상태
 	private int bdhits;				//조회수
+	private int bdfix;				//배너고정상태
 	
 	private String bdrecommend;        //추천수-자취방 자랑, 일반게시글 (recommend 테이블 조인)
 	private String bdwarning;			//신고수-자취방 자랑, 일반게시글 (warning 테이블 조인)

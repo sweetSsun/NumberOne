@@ -30,12 +30,10 @@ public class BoardController {
 	}
 
 	//자취방 자랑글 작성 페이지 이동
-	@RequestMapping(value="/loadTowriteRoom")
-	public ModelAndView loadTowriteRoom(RedirectAttributes ra) {
+	@RequestMapping(value="/loadToWriteRoom")
+	public String loadTowriteRoom(RedirectAttributes ra) {
 		System.out.println("자쥐방 자랑 Form 요청");
-		ModelAndView mav = new ModelAndView();
-		mav = bsvc.selectRoomWriterMnickname(ra);
-		return mav;
+		return "board/RoomWriteForm";
 	}
 
 	//자취방 자랑글 등록
@@ -56,16 +54,18 @@ public class BoardController {
 	    return mav;
 	}
 	
-	//게시판 글목록 페이지 
+	//전체글목록 페이지 
 	@RequestMapping ( value = "/selectBoardList")
 	public ModelAndView boardListPage() {
 	    System.out.println("게시판 글목록 페이지 요청");
 	    ModelAndView mav = bsvc.boardListPage();
 	    return mav;
 	}
-	   
+	
+	
+	
 	//카테고리별 글목록 조회 ( ajax )
-	@RequestMapping ( value = "/getBoardCategoryList")
+	@RequestMapping ( value = "/getBoardCategoryList_ajax")
 	@ResponseBody public String boardCategoryList_ajax( String bdcategory) {
 		System.out.println("카테고리별 글목록 요청_ajax");
 	      
@@ -77,10 +77,10 @@ public class BoardController {
 	   
 	 //글검색 
 	 @RequestMapping ( value = "/selectBoardSearchList")
-	 public ModelAndView selectBoardSearchList( String searchType, String searchText) {
+	 public ModelAndView selectBoardSearchList( String bdcategory, String searchType, String searchText) {
 	     System.out.println("글검색 목록 요청");
 	      
-	     ModelAndView mav = bsvc.selectBoardSearchList(searchType, searchText);
+	     ModelAndView mav = bsvc.selectBoardSearchList(bdcategory, searchType, searchText);
 	      
 	     return mav;
 	 }
@@ -254,10 +254,9 @@ public class BoardController {
 	 
 	 //게시글 수정 페이지 이동 
 	 @RequestMapping ( value = "/loadToBoardModify")
-	 public ModelAndView loadToBoardModify(String bdcode) {
+	 public ModelAndView loadToBoardModify(String bdcode, String bdcategory) {
 		 System.out.println("게시글 수정페이지 이동 요청");
-		 
-		 ModelAndView mav = bsvc.loadToBoardModify(bdcode);
+		 ModelAndView mav = bsvc.loadToBoardModify(bdcode, bdcategory);
 		 
 		 return mav;
 	 }
@@ -286,10 +285,10 @@ public class BoardController {
 	 
 	 //게시글 작성 페이지 이동 
 	 @RequestMapping ( value = "/loadToBoardWrite")
-	 public ModelAndView loadToBoardWrite() {
+	 public ModelAndView loadToBoardWrite(String bdcategory) {
 		 System.out.println("게시글 작성페이지 이동 요청");
 		 
-		 ModelAndView mav = bsvc.loadToBoardWrite();
+		 ModelAndView mav = bsvc.loadToBoardWrite(bdcategory);
 		 
 		 return mav;
 	 }
@@ -300,6 +299,15 @@ public class BoardController {
 		 System.out.println("게시글 작성 요청");
 		 
 		 ModelAndView mav = bsvc.insertBoardWrite(board, ra);
+		 
+		 return mav;
+	 }
+	 //공지게시판 이동
+	 @RequestMapping ( value = "/selectNoticeBoardList")
+	 public ModelAndView selectNoticeBoardList() {
+		 System.out.println("공지게시판 이동 요청");
+		 
+		 ModelAndView mav = bsvc.selecNoticeBoardList();
 		 
 		 return mav;
 	 }
@@ -314,6 +322,37 @@ public class BoardController {
 		 return mav;
 		 
 	 }
+	 
+	 //질문게시판 이동 
+	 @RequestMapping ( value = "/selectQuestionBoardList")
+	 public ModelAndView selectQuestionBoardList() {
+		 System.out.println("질문게시판 이동 요청");
+		 
+		 ModelAndView mav =bsvc.selectQuestionBoardList();
+		 
+		 return mav;
+		 
+	 }
+	 //정보게시판 이동 
+	 @RequestMapping ( value = "/selectInfoBoardList")
+	 public ModelAndView selectInfoBoardList() {
+		 System.out.println("정보게시판 이동");
+		 
+		 ModelAndView mav = bsvc.selectInfoBoardList();
+		 
+		 return mav;
+	 }
+	 //후기게시판 이동 
+	 @RequestMapping ( value = "/selectReviewBoardList")
+	 public ModelAndView selectReviewBoardList() {
+		 System.out.println("후기게시판 이동");
+		 
+		 ModelAndView mav = bsvc.selectReviewBoardList();
+		 
+		 return mav;
+	 }
+	 
+	 
 	 
 	 //자취방 자랑글 상세 페이지 이동
 	 @RequestMapping ( value = "/selectRoomView")
@@ -343,5 +382,9 @@ public class BoardController {
 
 		 return currnetState;
 	 }
+	 
+	 //자랑글 수정 페이지 요청
+	 
+
 
 }

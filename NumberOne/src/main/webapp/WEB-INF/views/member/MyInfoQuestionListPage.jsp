@@ -148,6 +148,7 @@ background-color: #00BCD4;
 							</c:choose>																												
 						</c:forEach>				
 					</table>
+					<div style="min-height: 500px;"></div><hr>
 				</div>				
 				<br><br>
 			</div>

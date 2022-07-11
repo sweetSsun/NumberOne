@@ -24,22 +24,24 @@
 	    white-space: nowrap;	
 	    
 	}
-	header,nav,aside,section,footer{
+	
+	aside, footer{
 		/* border: solid 1px black; */
 		margin-bottom: 5px;
 		font-size: 24px;
 	}
+	
 	header{
+		margin-bottom: 0px;
+		font-size: 24px;
 		position: sticky;
 		top: 0px;
 		z-index:10;
 		padding: tpx;
 		border-bottom: solid 5px #F2F2FF;
-	    margin-bottom: 10px;
 
-
-		
 	}
+	
 	#header_menu ul li{
 		overflow: auto;
 		display: inline;
@@ -58,20 +60,13 @@
 	main{
 		display: flex;
 	}
+	
 	aside, section{
 		flex-grow: 1;
 		height:100%;
 	}
-	.sidebar{
-		position: sticky;
-		top: 0px;
-		height: 1200px;
-		width: 200px;
-		margin-bottom: 5px;
-		z-index: 1;
-	}
 	
-	li a:hover, ul i:hover {
+	li a:hover, ul i:hover, p a:hover {
 	color: #00bcd4;
 	text-decoration: none; 
 	}
@@ -80,4 +75,20 @@
 		height: 200px;
 		background-color: gray;
 	}
+
+	
+	/* .sidebar{
+		font-family: 'Jal_Onuel';
+		background: #F2F2FF;
+		position: fixed;
+		width: 250px;
+		height: 100vh;
+		top: 0;
+		left: 0;
+		z-index: 1;
+		margin-top: -2%;
+		white-space: nowrap;
+	} */
+	
+	
 </style>

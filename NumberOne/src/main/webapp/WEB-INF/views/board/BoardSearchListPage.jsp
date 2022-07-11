@@ -5,24 +5,34 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 게시판 글목록 페이지</title>
+<title>1인자 - 검색결과 페이지</title>
 <!-- Jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<%@ include file="/resources/css/CommonCss.jsp" %>
+<%@ include file="/resources/css/BarCss.jsp" %>
 <style type="text/css">
-	#board_column{
-		border-bottom: solid gray 3px;
-	}
-	table{
+	section{
+		max-width: 70%;
 		margin: auto;
+		margin-top: 0%;
+		background-color: white;
+	}
+	
+	#board_column{
+		border-bottom: solid #E0E0E0 2px;
+	}
+	.boardList{
+		margin: auto;
+	}
+	.tableCell{
+		font-size: 20px;
 	}
 	.bdcategory{
 		color : #00bcd4;
 	}
 	.bdCategoryList{
-		
 		color : #00bcd4;
 		border: none;
+		font-size: 18px;
 	}
 	.bdcategorySel{
 		font-weight: bold;
@@ -30,32 +40,35 @@
 		color : #00bcd4;
 	}
 	input{
-		border-radius:5px;
-		border: solid #E0E0E0 3px;
-		height: 32px;
+		border-radius:3px;
+		border: solid #E0E0E0 2px;
+		height: 28px;
 		font-size: 20px;
 	}
 	.searchType{
 		text-align: center;
 		border-radius: 5px;
+		font-size: 18px;
+		border: solid 1px #00bcd4;
+	}
+	#inputSearchText{
+		font-size: 18px;
 	}
 	.community{
 		background-color: #00bcd4;
 	}
-	.malmeori{
-		display: none;
-	}
+
 </style>
 </head>
 <body>
 	    <!-- TopBar -->
         <c:choose>
-                <c:when test="${sessionScope.loginId != 'admin'}">
-                        <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
-                </c:when>
-                <c:otherwise>
-                        <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
-                </c:otherwise>
+            <c:when test="${sessionScope.loginId != 'admin'}">
+                  <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
+            </c:when>
+            <c:otherwise>
+                  <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
+            </c:otherwise>
         </c:choose>
         <!-- End of TopBar -->
 	
@@ -68,9 +81,18 @@
 		<!-- 본문 -->
 			<div class="container">
 				<div class="row" style="margin:auto;">
-					<h1 class="text-center">게시판 검색결과 페이지 : BoardSearchListPage.jsp</h1>
+					<h2 class="text-center">검색결과 페이지 : BoardSearchListPage.jsp</h2>
 				</div>
-				<form action="selectBoardSearchList" method="get">
+				<form action="selectBoardSearchList" method="get" onsubmit="return searchTextCheck();">
+					<c:choose>
+						<c:when test="${bdcategory != null }">
+							<input type="hidden" name="bdcategory" value="${bdcategory }">
+						</c:when>
+						<c:otherwise>
+							<input type="hidden" name="bdcategory" value="">
+						</c:otherwise>
+					</c:choose>
+					
 					<div class="row ">
 						<!-- 검색기능 -->
 						<div class="col-5" align="right">
@@ -82,65 +104,66 @@
 								</select>
 						</div>
 						<div class="col-7 ">
-							<input type="text" name="searchText" placeholder="검색어를 입력하세요">
+							<input type="text" name="searchText" placeholder="검색어를 입력하세요" id="inputSearchText">
 							<button class="btn btn-sm btn-secondary">검색</button>
 						</div>
 					</div>		
 				</form>
+						
 				</div>
 				
-				<div class="row mt-5 mb-5">
+				<div class="row mt-3 mb-3">
 					<!-- 검색결과 안내  -->
 					<h3 class="text-center">[ <span class="text-info">${param.searchText}</span> ] 로 검색한 결과 입니다.</h3>  
 				</div>
 				
-				<div class="community" style="text-align:center;">
-					<span class="fw-bold text-white">커뮤니티 검색 결과</span>
+				<div class=" community" style="text-align:center;">
+					<span style="font-size:21px;" class="fw-bold text-white">커뮤니티 검색 결과</span>
 				</div>
 				
 				<!-- 게시글 목록 -->
 				<div class="row">
-				<table >
-					<thead>
-						<tr class="text-center fw-bold" id="board_column">
-								<td>글번호</td>
-								<td>말머리</td>
-								<td>제목</td>
-								<td>작성자</td>
-								<td>날짜</td>
-								<td>조회</td>
-								<td>추천</td>
+				<table class="boardList">
+					<thead >
+						<tr class="text-center" id="board_column">
+							<td style="font-size: 17px;">글번호</td>
+							<td style="font-size: 17px;">말머리</td>
+							<td style="font-size: 17px;">제목</td>
+							<td style="font-size: 17px;">작성자</td>
+							<td style="font-size: 17px;">날짜</td>
+							<td style="font-size: 17px;">조회</td>
+							<td style="font-size: 17px;">추천</td>
 						</tr>
+						
 					</thead>
-					<tbody >
-					<c:forEach items="${searchBdList}" var="searchBd">
+					
+					<tbody id="bdCategoryList">
 					<!-- 일반게시판 목록 -->
-						<tr style="border-bottom: solid gray 1px;">
-							<td>${searchBd.bdcode}</td>
-							<td class="bdcategory">${searchBd.bdcategory}</td>
-							<td>
-							 	<a href="selectBoardView?bdcode=${searchBd.bdcode }" >${searchBd.bdtitle}</a>
+					<c:forEach items="${searchBdList }" var="searchBd">
+						<tr style="border-bottom: solid #E0E0E0 1px;">
+							<td class="text-center tableCell">${searchBd.bdcode}</td>
+							<td class="bdcategory text-center tableCell">${searchBd.bdcategory}</td>
+							<td class="tableCell">
+							 	<a href="selectBoardView?bdcode=${searchBd.bdcode }">${searchBd.bdtitle} 
+							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${searchBd.bdrpcount }</span> </a>
 							 </td>
-							<td>
-								<a>${searchBd.bdnickname}</a>
+							<td class="text-center tableCell">
+								<a href="#">${searchBd.bdnickname}</a>
 							</td>
-							<td>${searchBd.bddate}</td>
-							<td>${searchBd.bdhits }</td>
-							<td class="text-info">${searchBd.bdrccount }</td>
+							<td class="text-center tableCell">${searchBd.bddate}</td>
+							<td class="text-center tableCell">${searchBd.bdhits }</td>
+							<td class="fw-bold text-center tableCell" style="color: #00bcd4;">${searchBd.bdrccount}</td>
 						</tr>
+						
 					</c:forEach>
 					</tbody>
 				</table>
-				<div align="right" class="row">
-					<div class="col">
-						<c:if test="${sessionScope.loginId != null }">
-								<button  onclick="loadToBoardWrite()" class="btn btn-info btm-sm fw-bold text-white">글작성</button>
-						</c:if>
-					</div>
+				<div align="right" class="col mt-2">
+					<c:if test="${sessionScope.loginId != null }">
+						<button  onclick="loadToBoardWrite()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">글작성</button>
+					</c:if>
 				</div>
 				</div>
-						
-			</div>
 		</section>
 	</main>
 	
@@ -149,8 +172,66 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 
+<script type="text/javascript">
+	var checkMsg = '${msg}';
+	if ( checkMsg.length > 0 ){
+		alert(checkMsg);
+	}
 	
+</script>
+
+<script type="text/javascript">
+
+	/* 글쓰기 버튼 클릭 */
+	function loadToBoardWrite(){
+		//글작성 페이지로 이동 
+		var bdcategory = "";
+		location.href= "loadToBoardWrite?bdcategory="+bdcategory;
+	}
+
+	/* 게시판 말머리 선택 */
+	function bdCategorySel(categorySel){
+		console.log("categorySel: " + categorySel);
+		
+		var output = "";
+		$.ajax({
+			type : "get",
+			url : "getBoardCategoryList_ajax",
+			data : { "bdcategory" : categorySel},
+			dataType : "json",
+			async : false,
+			success : function(bdCategoryList){
+				console.log(bdCategoryList);
+				
+				for(var i = 0; i< bdCategoryList.length; i++ ){
+					output += "<tr style=\"border-bottom: solid #E0E0E0 1px;\">";
+					output += "<td class=\"text-center\">" + bdCategoryList[i].bdcode + "</td>";
+					output += "<td class=\"bdcategory text-center\">" + bdCategoryList[i].bdcategory + "</td>";
+					output += "<td><a href='selectBoardView?bdcode=" + bdCategoryList[i].bdcode + "'>" + bdCategoryList[i].bdtitle + "</a>"
+					output += "<span class=\"fw-bold\" style=\"font-size:15px; color:#00bcd4;\">&nbsp;" + bdCategoryList[i].bdrpcount + "</span></td>"
+					output += "<td class=\"text-center\"><a href=\"#\">" + bdCategoryList[i].bdnickname + "</a></td>";
+					output += "<td class=\"text-center\">" + bdCategoryList[i].bddate + "</td>";
+					output += "<td class=\"text-center\">" + bdCategoryList[i].bdhits + "</td>";
+					output += "<td class=\"text-center text-info fw-bold\">" + bdCategoryList[i].bdrccount + "</td>";
+					output += "</tr>";
+				}
+			}
+		});
+		$("#bdCategoryList").html(output);
+	}
 	
+</script>
+<script type="text/javascript">
+	function searchTextCheck(){
+		/* 검색어 입력유무 확인 */
+		var inputSearchText = $("#inputSearchText").val();
+		
+		if( inputSearchText.length == 0 ){//검색어를 입력하지 않았으면 
+			alert("검색어를 입력해주세요!");
+		
+			return false;
+		}
+	}
 </script>
 
 </html>

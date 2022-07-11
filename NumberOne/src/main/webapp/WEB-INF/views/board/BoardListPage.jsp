@@ -19,10 +19,10 @@
 	#board_column{
 		border-bottom: solid #E0E0E0 2px;
 	}
-	table{
+	.boardList{
 		margin: auto;
 	}
-	td{
+	.tableCell{
 		font-size: 20px;
 	}
 	.bdcategory{
@@ -31,7 +31,7 @@
 	.bdCategoryList{
 		color : #00bcd4;
 		border: none;
-		font-size: 20px;
+		font-size: 18px;
 	}
 	.bdcategorySel{
 		font-weight: bold;
@@ -47,8 +47,11 @@
 	.searchType{
 		text-align: center;
 		border-radius: 5px;
-		font-size: 20px;
+		font-size: 18px;
 		border: solid 1px #00bcd4;
+	}
+	#inputSearchText{
+		font-size: 18px;
 	}
 	.community{
 		background-color: #00bcd4;
@@ -80,9 +83,10 @@
 		<!-- 본문 -->
 			<div class="container">
 				<div class="row" style="margin:auto;">
-					<h1 class="text-center">게시판 글목록 페이지 : BoardListPage.jsp</h1>
+					<h2 class="text-center">게시판 글목록 페이지 : BoardListPage.jsp</h2>
 				</div>
-				<form action="selectBoardSearchList" method="get">
+				<form action="selectBoardSearchList" method="get" onsubmit="return searchTextCheck();">
+					<input type="hidden" name="bdcategory" value="" >
 					<div class="row ">
 						<!-- 검색기능 -->
 						<div class="col-5" align="right">
@@ -94,7 +98,7 @@
 								</select>
 						</div>
 						<div class="col-7 ">
-							<input type="text" name="searchText" placeholder="검색어를 입력하세요">
+							<input type="text" name="searchText" placeholder="검색어를 입력하세요" id="inputSearchText">
 							<button class="btn btn-sm btn-secondary">검색</button>
 						</div>
 					</div>		
@@ -120,15 +124,15 @@
 				</div>
 				
 				<div class=" community" style="text-align:center;">
-					<span style="font-size:21px;" class="fw-bold text-white">게시판</span>
+					<span style="font-size:21px;" class="fw-bold text-white">전체게시판</span>
 				</div>
 				
 				<!-- 게시글 목록 -->
 				<div class="row">
-				<table >
+				<table class="boardList">
 					<thead >
 						<tr class="text-center" id="board_column">
-							<!-- <td>글번호</td> -->
+							<td style="font-size: 17px;">글번호</td>
 							<td style="font-size: 17px;">말머리</td>
 							<td style="font-size: 17px;">제목</td>
 							<td style="font-size: 17px;">작성자</td>
@@ -140,14 +144,14 @@
 						<c:forEach items="${noticeList }" end="2" var="notice">
 							<!-- 공지게시판 -->
 							<tr class="fw-bold" style="border-bottom: solid #E0E0E0 1px;">
-								<%-- <td>${notice.nbcode}</td> --%>
+								<td class="text-center tableCell">${notice.nbcode}</td>
 								<td></td>
-								<td>
+								<td class="tableCell">
 									<a href="selectNoticeBoardView?nbcode=${notice.nbcode }">${notice.nbtitle}</a>
 								</td>
-								<td class="text-center">관리자</td>
-								<td class="text-center">${notice.nbdate}</td>
-								<td class="text-center">${notice.nbhits }</td>
+								<td class="text-center tableCell">관리자</td>
+								<td class="text-center tableCell">${notice.nbdate}</td>
+								<td class="text-center tableCell">${notice.nbhits }</td>
 								<td></td>
 							</tr>
 						</c:forEach>
@@ -159,18 +163,18 @@
 					<c:forEach items="${boardList }" var="board">
 						<c:if test="${board.bdcategory != '자랑' }">
 						<tr style="border-bottom: solid #E0E0E0 1px;">
-							<%-- <td>${board.bdcode}</td> --%>
-							<td class="bdcategory text-center">${board.bdcategory}</td>
-							<td>
+							<td class="text-center tableCell">${board.bdcode}</td>
+							<td class="bdcategory text-center tableCell">${board.bdcategory}</td>
+							<td class="tableCell">
 							 	<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
 							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
 							 </td>
-							<td class="text-center">
+							<td class="text-center tableCell">
 								<a href="#">${board.bdnickname}</a>
 							</td>
-							<td class="text-center">${board.bddate}</td>
-							<td class="text-center">${board.bdhits }</td>
-							<td class="fw-bold text-center" style="color: #00bcd4;">${board.bdrccount}</td>
+							<td class="text-center tableCell">${board.bddate}</td>
+							<td class="text-center tableCell">${board.bdhits }</td>
+							<td class="fw-bold text-center tableCell" style="color: #00bcd4;">${board.bdrccount}</td>
 						</tr>
 						</c:if>
 					</c:forEach>
@@ -203,17 +207,18 @@
 	/* 글쓰기 버튼 클릭 */
 	function loadToBoardWrite(){
 		//글작성 페이지로 이동 
-		location.href= "loadToBoardWrite";
+		var bdcategory =  "";
+		location.href= "loadToBoardWrite?bdcategory="+bdcategory;
 	}
 
-	/* 게시판 카테고리 선택 */
+	/* 게시판 말머리 선택 */
 	function bdCategorySel(categorySel){
 		console.log("categorySel: " + categorySel);
 		
 		var output = "";
 		$.ajax({
 			type : "get",
-			url : "getBoardCategoryList",
+			url : "getBoardCategoryList_ajax",
 			data : { "bdcategory" : categorySel},
 			dataType : "json",
 			async : false,
@@ -222,9 +227,10 @@
 				
 				for(var i = 0; i< bdCategoryList.length; i++ ){
 					output += "<tr style=\"border-bottom: solid #E0E0E0 1px;\">";
-					/* output += "<td>" + bdCategoryList[i].bdcode + "</td>"; */
+					output += "<td class=\"text-center\">" + bdCategoryList[i].bdcode + "</td>";
 					output += "<td class=\"bdcategory text-center\">" + bdCategoryList[i].bdcategory + "</td>";
-					output += "<td><a href='selectBoardView?bdcode=" + bdCategoryList[i].bdcode + "'>" + bdCategoryList[i].bdtitle + "</a></td>";
+					output += "<td><a href='selectBoardView?bdcode=" + bdCategoryList[i].bdcode + "'>" + bdCategoryList[i].bdtitle + "</a>"
+					output += "<span class=\"fw-bold\" style=\"font-size:15px; color:#00bcd4;\">&nbsp;" + bdCategoryList[i].bdrpcount + "</span></td>"
 					output += "<td class=\"text-center\"><a href=\"#\">" + bdCategoryList[i].bdnickname + "</a></td>";
 					output += "<td class=\"text-center\">" + bdCategoryList[i].bddate + "</td>";
 					output += "<td class=\"text-center\">" + bdCategoryList[i].bdhits + "</td>";
@@ -233,11 +239,26 @@
 				}
 			}
 		});
-		console.log(output);
 		$("#bdCategoryList").html(output);
 	}
 	
 	
 </script>
+
+<script type="text/javascript">
+	function searchTextCheck(){
+		/* 검색어 입력유무 확인 */
+		var inputSearchText = $("#inputSearchText").val();
+		
+		if( inputSearchText.length == 0 ){//검색어를 입력하지 않았으면 
+			alert("검색어를 입력해주세요!");
+		
+			return false;
+		}
+		
+	}
+</script>
+
+
 
 </html>

@@ -20,6 +20,11 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/nice-select.css" type="text/css">         
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 
+<!-- Jquery -->
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+ -->
+
+
 <style type="text/css">
 	#board_column{
 		border-bottom: solid gray 3px;
@@ -59,14 +64,14 @@ background-color: #00BCD4;
 		<section>
 		<!-- 본문 -->
 			<div class="container">
+				<div class="checkout__form" style="margin-top: 40px;"><h4>마이페이지 커뮤니티</h4></div>
 				<br>
-				<div class="checkout__form"><h4>마이페이지 커뮤니티</h4></div>
 				<br>
 				<!-- 작성글 목록 -->
-				<div class="row" style="margin:20px;">
-					<br><h4 class="checkout__form" style="color: #00BCD4;">작성글 목록</h4>
+				<div class="row" style="">				
+					<h4 class="checkout__form" style="color: #00BCD4; margin-left: 30px;">작성글 목록</h4>
 				</div>
-				<div class="row"  style="margin:20px;">
+				<div class="row"  style="margin:20px; ">
 				<table>
 						<tr class="text-center" id="board_column">
 							<td>글번호</td>
@@ -84,15 +89,21 @@ background-color: #00BCD4;
 							</tr>
 						</c:forEach>
 				</table>
+				<!-- 여백 -->				
+					<div style="min-height: 500px;"></div><hr>
 				</div>
 			
-				<br><hr><br>
+				
 				
 				
 				<!-- 댓글작성글 목록 -->
-				<div class="row" style="margin:20px;">
-					<br><h4 class="checkout__form" style="color: #00BCD4;"> 댓글 작성 글 목록</h4>
+				<!-- 여백 -->
+				<div style="min-height: 50px;" id="reply"></div>
+				<div class="row" style="margin-top:20px;" >
+					<br><h4 class="checkout__form" style="color: #00BCD4; margin-left: 30px;" > 댓글 작성 글 목록</h4>
 				</div>
+				<!-- 여백 -->				
+				<div style="min-height: 50px;"></div>
 				<div class="row"  style="margin:20px;">
 				<table >
 						<tr class="text-center" id="board_column">
@@ -111,14 +122,19 @@ background-color: #00BCD4;
 							</tr>
 						</c:forEach>
 				</table>
+				<!-- 여백 -->				
+				<div style="min-height: 800px;"></div><hr>
 				</div>
-
-				<br><hr><br>				
+				
 				
 				<!-- 스크랩 목록 -->
-				<div class="row" style="margin:20px;">
-					<br><h4 class="checkout__form" style="color: #00BCD4;">스크랩 목록</h4>
+				<!-- 여백 -->
+				<div style="min-height: 50px;" id="scrap"></div>				
+				<div class="row" style="margin:20px;" >
+					<br><h4 class="checkout__form" style="color: #00BCD4; margin-left: 30px;">스크랩 목록 (작성자 상세보기 test 중)</h4>
 				</div>
+				<!-- 여백 -->
+				<div style="min-height: 50px;" ></div>				
 				<div class="row"  style="margin:20px;">
 				<table >
 						<tr class="text-center" id="board_column">
@@ -134,14 +150,15 @@ background-color: #00BCD4;
 								<td>${scrap.scbdcode }</td>
 								<td><a href="selectBoardView?bdcode=${scrap.scbdcode }">${scrap.bdtitle }</a></td>
 								<td>${scrap.bdreply }</td>
-								<td>${scrap.mnickname }</td>
+								<td><input type="text" value="${scrap.mnickname }" readonly="readonly" onclick="writeMember('${scrap.mnickname }');"
+								style="border: 0px; text-align: center; cursor: pointer;"></td>
 								<td>${scrap.bddate }</td>								
 							</tr>
 														
 						</c:forEach>
 				
 				</table>
-				<br>
+				<div style="min-height: 600px;"></div><hr>
 				</div>
 
 
@@ -152,8 +169,19 @@ background-color: #00BCD4;
 	</main>
 	
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
+>
+<!-- 팝업 -->
+ <script type="text/javascript">
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  function writeMember(nickname) { 
+	  var url = 'selectWriteMemberInfo?nickname='+nickname;
+	  window.open(url, 'memberInfo', 'width=600%, height=650%, left=500, top=50 '); 
+	  console.log("nickname : " + nickname);
+	  }
+  </script>
+
+
+
 </body>
 
 

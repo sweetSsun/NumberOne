@@ -8,57 +8,54 @@ import org.springframework.web.servlet.ModelAndView;
 import com.NumberOne.dto.GoodsDto;
 import com.NumberOne.dto.Paging;
 import com.NumberOne.dto.UsedBoardDto;
+import com.NumberOne.dto.ZzimDto;
 
 public interface ResellDao {
 
-
-
 	String selectMaxNumber_ub();
-	
-	
-	String selectMaxNumber_gd();
 
+	String selectMaxNumber_gd();
 
 	int insertResellWrite_gd(GoodsDto gdDto);
 
-
 	int insertResellWrite_ub(UsedBoardDto ubDto);
 
-
-	UsedBoardDto selectResellView(@Param("ubcode") String ubcode, @Param("ubsellbuy") String ubsellbuy);
-
+	UsedBoardDto selectResellView(UsedBoardDto ubDto);
 
 	int selectPageTotalCount(Paging paging);
 
+	ArrayList<GoodsDto> selectResellView_goods(UsedBoardDto ubDto);
 
-	GoodsDto selectResellView_goods(String ubcode);
+	int zzimClick_ajax_delete(ZzimDto zzim);
 
-
-	int zzimClick_ajax_delete(@Param("zzubcode") String zzubcode, @Param("zzmid") String zzmid);
-
-
-	int zzimClick_ajax_insert(@Param("zzubcode") String zzubcode, @Param("zzmid") String zzmid);
-
+	int zzimClick_ajax_insert(ZzimDto zzim);
 
 	String selectZzimCheck(@Param("loginId") String loginId, @Param("ubcode") String ubcode);
 
-
 	String selectRegionCode(String mregion);
-
 
 	String loadToResellWriteForm(String loginId);
 
-
-	ArrayList<UsedBoardDto> selectResellPageList(Paging paging);
-
+	ArrayList<UsedBoardDto> selectResellPageList(@Param("paging") Paging paging,
+			@Param("checkMethod") String checkMethod);
 
 	ArrayList<UsedBoardDto> selectResellRegionList_ajax(Paging paging);
 
+	String selectSearchList_ajax(@Param("searchVal") String searchVal, @Param("sell_buy") String sell_buy,
+			@Param("selectRegion") String selectRegion, @Param("searchOp") String searchOp);
 
+	String selectMemberId(String keyword);
 
-	String selectSearchList_ajax(@Param("searchVal") String searchVal, @Param("sell_buy") String sell_buy, @Param("selectRegion") String selectRegion, @Param("searchOp") String searchOp);
+	ArrayList<UsedBoardDto> selectResellView_List(String ubmid);
 
+	String checkResellWarning_ajax(String loginId, String ubcode);
+
+	int insertResellWarning_ajax(String loginId, String ubcode);
+
+	int deleteResellWarning_ajax(String loginId, String ubcode);
+
+	int updateResellDelete_gd(UsedBoardDto ubDto);
+
+	int updateResellDelete_ub(UsedBoardDto ubDto);
 
 }
-
-	

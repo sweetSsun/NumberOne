@@ -16,16 +16,20 @@
 							<hr>
                         </div>
                         <div class="sidebar-item">
-                            <h4><a href="admin_selectMemberList?page=1">회원 관리</a></h4>
+                            <h4><a href="admin_selectMemberList">회원 관리</a></h4>
                         </div>
                         <div class="sidebar-item" >
-                            <h4><a href="admin_selectNoticeList?searchVal=all&keyword=&page=1">공지 관리</a></h4>
+                            <h4><a href="admin_selectNoticeList">공지 관리</a></h4>
                         </div>
                        	<div class="sidebar-item">
                             <h4><a href="admin_selectResellList">중고거래 관리</a></h4>
                         </div>
                         <div class="sidebar-item">
-                            <h4><a href="admin_selectBoardList">커뮤니티 관리</a></h4>
+                            <h4>커뮤니티 관리</h4>
+                            <ul class="list-unstyled">
+                                <li><a href="admin_selectBoardList">경고/정지 관리</a></li>
+                                <li><a href="admin_selectBdfixList">배너 관리</a></li>
+                            </ul>
                         </div>
                         <div class="sidebar-item">
                             <h4><a href="admin_selectReplyList">댓글 관리</a></h4>
