@@ -18,6 +18,7 @@ public class ReplyDto {
 	private String rpnickname;	//작성자 닉네임
 	
 	private String rpprofile;	//작성자 프로필
+	private String rpmprofile;
 	
 	public String getRpcode() {
 		return rpcode;
@@ -80,13 +81,20 @@ public class ReplyDto {
 	public void setRpprofile(String rpprofile) {
 		this.rpprofile = rpprofile;
 	}
-	
+	public String getRpmprofile() {
+		return rpmprofile;
+	}
+	public void setRpmprofile(String rpmprofile) {
+		this.rpmprofile = rpmprofile;
+	}
 	@Override
 	public String toString() {
 		return "ReplyDto [rpcode=" + rpcode + ", rpbdcode=" + rpbdcode + ", rpcontents=" + rpcontents + ", rpmid="
 				+ rpmid + ", rpdate=" + rpdate + ", rpstate=" + rpstate + ", rpbdtitle=" + rpbdtitle + ", rpbdcategory="
-				+ rpbdcategory + ", rpnickname=" + rpnickname + ", rpprofile=" + rpprofile + "]";
+				+ rpbdcategory + ", rpnickname=" + rpnickname + ", rpmprofile=" + rpmprofile + ", rpprofile="
+				+ rpprofile + "]";
 	}
+	
 	
 	
 	

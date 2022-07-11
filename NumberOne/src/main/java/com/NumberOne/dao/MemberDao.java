@@ -1,6 +1,7 @@
 package com.NumberOne.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
@@ -43,7 +44,7 @@ public interface MemberDao {
 	MemberDto selectMyInfoMemberView(String loginId);
 
 	//회원정보수정
-	@Update("UPDATE MEMBERS SET MPW = #{mpw}, MNAME = #{mname}, MNICKNAME = #{mnickname}, MPHONE = #{mphone}, MEMAIL = #{memail}, MADDR = #{maddr}, "
+	@Update("UPDATE MEMBERS SET MPW = #{mpw}, MNAME = #{mname}, MNICKNAME = #{mnickname}, MPHONE = #{mphone}, MEMAIL = #{memail}, MREGION = #{mregion}, MADDR = #{maddr}, "
 			+ "MPROFILE = #{mprofile}, MMESSAGE = #{mmessage} WHERE MID = #{mid}")	
 	int updateMyInfoMemberModify(MemberDto member);
 	
@@ -81,27 +82,15 @@ public interface MemberDao {
 
 	
 	//카카오 가입확인
-	@Select("SELECT MID, MPROFILE FROM MEMBERS WHERE MID = #{mid}")
+	@Select("SELECT MID, MPROFILE, MNICKNAME, MREGION, MSTATE FROM MEMBERS WHERE MID = #{mid}")
 		MemberDto selectMemberKakao(String mid);
-	
-	//카카오 회원가입 처리
-/*	@Insert("INSERT INTO MEMBERS(MID, MPW, MNAME, MNICKNAME, MPHONE, MEMAIL, MREGION ,MPROFILE, MSTATE) "
-			+ "VALUES(#{mid}, #{mpw},#{mname} ,#{mnickname},#{mphone}, #{memail},#{mregion}, #{mprofile}, 5 )")
-		    int insertMemberKakao(MemberDto member);	
-*/
-	 
-
- 	//카카오 회원가입 처리
-	@Insert("INSERT INTO MEMBERS(MID, MPW, MNAME, MNICKNAME, MPHONE, MEMAIL, MREGION ,MPROFILE, MSTATE) "
-			+ "VALUES(#{mid}, #{mpw},'kakaoLogin' ,#{mnickname},'000-0000-0000', #{memail},'인천', #{mprofile}, 5 )")
-		    int insertMemberKakao(MemberDto member);
 
 	//팔구 목록
-	@Select("SELECT UBTITLE FROM USEDBOARDS WHERE UBSELLBUY = 'S' AND UBMID = #{loginId}")
+	@Select("SELECT UBTITLE,UBCODE FROM USEDBOARDS WHERE UBSELLBUY = 'S' AND UBMID = #{loginId}")
 	ArrayList<UsedBoardDto> selectMyInfoResellView_Sell(String loginId);
 	
 	//사구 목록
-	@Select("SELECT UBTITLE FROM USEDBOARDS WHERE UBSELLBUY = 'B' AND UBMID = #{loginId} ")	
+	@Select("SELECT UBTITLE,UBCODE FROM USEDBOARDS WHERE UBSELLBUY = 'B' AND UBMID = #{loginId} ")	
 	ArrayList<UsedBoardDto> selectMyInfoResellView_Buy(String loginId);
  	
 	//마이페이지 스크랩 목록
@@ -114,7 +103,7 @@ public interface MemberDao {
 	ArrayList<ScrapDto> selectMyInfoMemberView_scrap(String loginId);
 
 	//찜목록
-	@Select("SELECT UB.UBTITLE, M.MNICKNAME, UB.UBDATE FROM ZZIM ZZ LEFT OUTER JOIN USEDBOARDS UB ON ZZ.ZZUBCODE =  UB.UBCODE LEFT OUTER JOIN MEMBERS M ON UB.UBMID = M.MID WHERE ZZ.ZZMID = #{loginId} ORDER BY UB.UBCODE DESC")
+	@Select("SELECT ZZ.ZZUBCODE, UB.UBTITLE, UB.UBSELLBUY, M.MNICKNAME, UB.UBDATE FROM ZZIM ZZ LEFT OUTER JOIN USEDBOARDS UB ON ZZ.ZZUBCODE =  UB.UBCODE LEFT OUTER JOIN MEMBERS M ON UB.UBMID = M.MID WHERE ZZ.ZZMID = #{loginId} ORDER BY UB.UBCODE DESC")
 	ArrayList<ZzimDto> selectMyInfoResellView_Zzim(String loginId);
 
 	//닉네임으로 회원정보 가져오기
@@ -125,8 +114,15 @@ public interface MemberDao {
 	@Select("SELECT BD.BDTITLE FROM BOARDS BD, MEMBERS M WHERE BD.BDMID = M.MID AND M.MNICKNAME = #{nickname} ORDER BY BDCODE DESC")
 	ArrayList<BoardDto> insertWriteMemberInfo_Board(String nickname);
 	
-	
-	 	
+	//카카오 회원가입 처리
+	@Insert("INSERT INTO MEMBERS(MID, MPW, MNAME, MNICKNAME, MPHONE, MEMAIL, MREGION, MPROFILE, MJOINDATE ) "
+			+ "VALUES(#{mid}, #{mpw}, #{mname}, #{mnickname}, #{mphone}, #{memail}, #{mregion}, #{mprofile}, SYSDATE )")
+	int insertKakaoRegister(MemberDto member);
+
+	//비밀번호 찾기
+	@Select("SELECT MPW FROM MEMBERS WHERE MID = #{mid} AND MEMAIL = #{memail}")
+	String selectLookforPw_ajax(@Param("mid")String checkMid, @Param("memail")String checkMemail);
+
 
 
 	

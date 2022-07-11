@@ -66,7 +66,7 @@
 			<div class="container">
 				<h1 class="text-center">공지 작성페이지 : Admin_NoticeWriteForm.jsp</h1>
 				<div>
- 				<form action="admin_insertNoticeWrite" method="post" enctype="multipart/form-data">
+ 				<form action="admin_insertNoticeWrite" method="post" enctype="multipart/form-data" onsubmit="return inputCheck()">
 				<table>
 					<tr class="tableRow">
 						<th class="tableHead">작성자</th>
@@ -77,22 +77,19 @@
 						<!-- th, td에 패딩, 마진을 주고 싶은데 먹히지 않아서 tableHead 클래스로 여백 줬슴당 -->
 						<th class="tableHead">제목</th>
 						<td colspan="3">
-							<input name="nbtitle" type="text" placeholder="제목을 입력하세요" size="35%">
+							<input type="text" id="title" name="nbtitle" placeholder="제목을 입력하세요" size="35%">
 						</td>
 					</tr>
 					<tr class="tableRow">
 						<th class="tableHead">내용</th>
 						<td colspan="3">
-							<textarea rows="15" cols="40" name="nbcontents" placeholder="내용을 입력하세요"></textarea>
+							<textarea rows="15" cols="40" id="contents" name="nbcontents" placeholder="내용을 입력하세요"></textarea>
 						</td>
 					</tr>
 					<tr class="tableRow">
 						<th class="tableHead">대표사진</th>
 						<td colspan="3">
-							<!--  
-							<input type="text" id="mainImgScreen"> <span class="mainfile"><label for="mainImg">대표사진 선택</label></span>
-							-->
-							<input type="file" id="nbImg" name="nbimgfile" class=""> 
+							<input type="file" id="nbImg" name="nbimgfile" class="" accept="image/*" onchange="checkFileType(this)"> 
 						</td>
 					</tr>
 					<tr class="tableRow">
@@ -118,16 +115,44 @@
 
 <script type="text/javascript">
 	
-	$("#nbImg").change(function(){
-		var nbImg = $("#nbImg").val().split("path")[1];
-		nbImg = nbImg.substring(1);
-		console.log("선택된메인이미지: "+nbImg);
-		$("#mainImgScreen").val(nbImg);
-	})
-	
 	function withdraw(){
 		console.log("취소 버튼 클릭");
-		location.href="admin_selectNoticeList?searchVal=all&searchType=&keyword=&page=1";
+		location.href="admin_selectNoticeList${paging.makeQueryPage(paging.page)}";
+	}
+	
+	// 제목, 내용 입력됐는지 확인
+	function inputCheck(){
+		var titleObj = $("#title");
+		var contentsObj = $("#contents");
+		console.log(titleObj.val());
+		console.log(contentsObj.val());
+		if (titleObj.val().length == 0){
+			alert("제목을 입력해주세요.");
+			titleObj.focus();
+			return false;
+		}
+		if (contentsObj.val().length == 0){
+			alert("내용을 입력해주세요.");
+			contentsObj.focus();
+			return false;
+		}
+	}
+	
+	// 이미지 파일을 업로드 했는지 확인
+	function checkFileType(obj) {
+		var file_kind = obj.value.lastIndexOf('.');
+		var file_name = obj.value.substring(file_kind+1, obj.length);
+		var file_type = file_name.toLowerCase();
+
+		var checkType = new Array();
+		checkType = ['jpg','gif','png','jpeg','bmp'];
+		
+		if(checkType.indexOf(file_type) == -1){
+			alert('이미지 파일만 선택할 수 있습니다.');
+			$("#nbImg").val("");
+			$("#nbImg").replaceWith($("#nbImg").clone(true));
+			return false;
+		}
 	}
 </script>
 

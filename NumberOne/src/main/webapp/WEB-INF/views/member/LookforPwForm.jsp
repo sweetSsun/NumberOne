@@ -78,7 +78,7 @@ background-color: #00BCD4;
 
 	<main>
 		<!-- 사이드바 -->
-		<%@ include file="/WEB-INF/views/includes/SideBar_Mypage.jsp"%>
+		<%-- <%@ include file="/WEB-INF/views/includes/SideBar_Mypage.jsp"%> --%>
 
 		<section>
 			<!-- 본문 -->
@@ -125,8 +125,8 @@ background-color: #00BCD4;
                             </div>
                             
                         <!-- 찾기버튼 -->    
-                        <center><button class="site-btn" style="border-radius: 4px;" onclick="searchPw()">찾기</button></center>
-                        <br>
+                        <button class="site-btn" style="border-radius: 4px; margin-left: 400px;" onclick="searchPw()">찾기</button>
+                        <br><br>
                         <!-- 결과 span Msg-->
                              <div class="row">
                              	<div class="col-lg-12 col-md-6">
@@ -134,11 +134,9 @@ background-color: #00BCD4;
                                  		<span id="resultLookforPwMsg" style="width: 400px;"></span> 
                              		</div>
                              	</div>
-                            </div>                                            							
-   							
+                            </div>                                            							   							
                          </div>                            
-  					</div> 
-                
+  					</div>              
             </div>
         </div>
     </section>
@@ -152,10 +150,42 @@ background-color: #00BCD4;
 	<script type="text/javascript">
 
 		
-	
-	}
+	   
+		function searchPw() {
+			console.log("비밀번호 찾기 함수 연결!")
+		
+			var checkMid=$("#checkMid").val();
+			var checkMemail=$("#checkMemail").val();
+			console.log(checkMid+checkMemail);
+			
+			 if(checkMid.length == 0) {
+				$("#idCheckMsg").text("아이디를 입력 해주세요.").css("color" , "red");
+			}else if(checkMemail.length == 0) {
+				$("#emailCheckMsg").text("이메일을 입력 해주세요.").css("color" , "red");				
+			}else {
+				console.log("ajax");
+				$.ajax({
+					type : "get",
+					url : "selectLookforPw_ajax",
+					data : {"checkMid" : checkMid , "checkMemail" : checkMemail },
+				
+					success : function(result){
+						if(result.length != 0) {
+						$("#resultLookforPwMsg").text("메일로 임시비밀번호를 발송하였습니다.").css("color" , "green");    
+						
+						}else {
+						$("#resultLookforPwMsg").text("일치하는 회원정보가 없습니다.").css("color" , "red");  		
+						}
+				} 
 
-}
+			});		
+				
+			}
+			
+			
+			
+			
+		}
 	
 	</script>
 

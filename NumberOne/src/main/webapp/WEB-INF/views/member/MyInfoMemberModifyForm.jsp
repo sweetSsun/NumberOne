@@ -178,6 +178,7 @@ background-color: #00BCD4;
                                 </div>
                             </div>
                         <!-- 비번 , 비번확인 -->
+                        <c:if test="${memberInfo.mpw != 12121212}">
                             <div class="row">
                                 <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="checkout__input">
@@ -193,7 +194,26 @@ background-color: #00BCD4;
 									<span id="pwReCheckMsg" class="msg"></span>                                    
                                     </div>
                                 </div>
-                            </div>                            
+                            </div>
+                           </c:if>
+                           <c:if test="${memberInfo.mpw == 12121212}">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-12 col-sm-12">
+                                    <div class="checkout__input">
+                                        <!-- <p>비밀번호<span>*</span></p> -->
+                                        <input type="hidden" placeholder="영문&숫자 6~20자로 입력해주세요." id="inputMpw" name="mpw"  value="${memberInfo.mpw }">
+									<span id="pwCheckMsg" class="msg"></span>                                      
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-12 col-sm-12">
+                                    <div class="checkout__input">
+                                        <!-- <p>비밀번호확인<span>*</span></p> -->
+                                        <input type="hidden" placeholder="비밀번호를 확인해주세요." id="checkMpw" value="${memberInfo.mpw }">
+									<span id="pwReCheckMsg" class="msg"></span>                                    
+                                    </div>
+                                </div>
+                            </div>                           
+                           </c:if>                             
                         <!-- 닉네임 , 성별 -->
                             <div class="row">
                                 <div class="col-lg-6 col-md-12 col-sm-12">
@@ -278,7 +298,7 @@ background-color: #00BCD4;
                                                                                      
                             <!-- 주소 -->
                            <div class="checkout__input">
-                                <p>주소<span>*</span></p>
+                                <p>주소</p>
                             <div class="row">
                                 <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="checkout__input">

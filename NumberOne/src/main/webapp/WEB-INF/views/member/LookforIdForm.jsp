@@ -53,6 +53,11 @@
 	font-size: 15px;
 }
 
+.site-btn {
+
+background-color: #00BCD4;
+
+}
 
 
 
@@ -74,7 +79,7 @@
 
 	<main>
 		<!-- 사이드바 -->
-		<%@ include file="/WEB-INF/views/includes/SideBar_Mypage.jsp"%>
+		<%-- <%@ include file="/WEB-INF/views/includes/SideBar_Mypage.jsp"%> --%>
 
 		<section>
 			<!-- 본문 -->
@@ -85,17 +90,17 @@
                 <br>
                 
                     <div class="row">
-                        <div class="col-lg-12 col-md-6">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
                         <!-- 이름 -->
                              <div class="row">
-                             	<div class="col-lg-12 col-md-6">
+                             	<div class="col-lg-12 col-md-12 col-sm-12">
                              		<div class="checkout__input"  style="text-align: center;">
-                                 		<input type="text" style="width: 420px; height:16px; border:1px;" value="이름"  readonly="readonly">
+                                 		<input type="text" style="width: 420px; height:16px; border:1px;" value="이름"  readonly="readonly"  tabindex="-1">
                              		</div>
                              	</div>
                             </div>
                              <div class="row">
-                             	<div class="col-lg-12 col-md-6">
+                             	<div class="col-lg-12 col-md-12 col-sm-12">
                              		<div class="checkout__input" style="text-align: center;">
                                  		<input type="text" id="checkMname" name="mname" style="width: 400px;"><br> 
                              		<span id="nameCheckMsg" class="msg" style="text-align: left;"></span> 
@@ -105,14 +110,14 @@
                             
                         <!-- 메일주소 -->
                              <div class="row">
-                             	<div class="col-lg-12 col-md-6">
+                             	<div class="col-lg-12 col-md-12 col-sm-12">
                              		<div class="checkout__input"  style="text-align: center;">
-                                 		<input type="text" style="width: 420px; height:15px; border:1px;" value="메일주소"  readonly="readonly">
+                                 		<input type="text" style="width: 420px; height:15px; border:1px;" value="메일주소"  readonly="readonly"  tabindex="-1">
                              		</div>
                              	</div>
                             </div>
                              <div class="row">
-                             	<div class="col-lg-12 col-md-6">
+                             	<div class="col-lg-12 col-md-12 col-sm-12">
                              		<div class="checkout__input" style="text-align: center;">
                                  		<input type="text" id="checkMemail" name="memail" style="width: 400px;"><br>  
                              		<span id="emailCheckMsg" class="msg"></span> 
@@ -121,11 +126,17 @@
                             </div>
                             
                         <!-- 찾기버튼 -->    
-                        <center><button class="site-btn" style="border-radius: 4px;" onclick="searchId()">찾기</button></center>
+                             <div class="row">
+                             	<div class="col-lg-12 col-md-12 col-sm-12">
+                             		<div class="checkout__input"  style="text-align: center;">                        
+                        <button class="site-btn" style="border-radius: 4px;" onclick="searchId()">찾기</button>
+                             		</div>
+                             	</div>
+                            </div>                        
                         <br>
                         <!-- 결과 span Msg-->
                              <div class="row">
-                             	<div class="col-lg-12 col-md-6">
+                             	<div class="col-lg-12 col-md-12 col-sm-12">
                              		<div class="checkout__input" style="text-align: center;">
                                  		<span id="resultLookforIdMsg" style="width: 400px;"></span> 
                              		</div>

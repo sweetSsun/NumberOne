@@ -23,4 +23,8 @@
 	</bean>
 	
 	<mybatis-spring:scan base-package="com.NumberOne.dao"/>
+
+
+
+
 </beans>
