@@ -103,6 +103,13 @@
 						<span style="font-size:20px;">게시판</span><span class="text-danger">*</span>
 						<select name="bdcategory" class="bdCategoryList" required="required">
 							<option value="" disabled selected class="selectPlaceHolder">필수</option>
+								
+							<c:if test="${bdcategory != null }">
+								<option value="${bdcategory }" disabled selected class="selectPlaceHolder">${bdcategory}</option>
+							</c:if>
+												
+							
+							
 							<option value="자유">자유</option>
 							<option value="질문">질문</option>
 							<option value="정보">정보</option>

@@ -96,7 +96,9 @@
 	.icon:hover{
 		cursor: pointer;
 	}
-	
+	#inputSearchText{
+		font-size: 18px;
+	}
 </style>
 </head>
 <body>

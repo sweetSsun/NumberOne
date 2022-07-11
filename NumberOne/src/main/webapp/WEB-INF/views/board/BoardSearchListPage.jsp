@@ -16,22 +16,14 @@
 		margin-top: 0%;
 		background-color: white;
 	}
-	.sidebar{
-		position: sticky;
-		top: 0px;
-		height: 100%;
-		width: 200px;
-		margin-bottom: 5px;
-		z-index: 1;
-	}
 	
 	#board_column{
 		border-bottom: solid #E0E0E0 2px;
 	}
-	table{
+	.boardList{
 		margin: auto;
 	}
-	td{
+	.tableCell{
 		font-size: 20px;
 	}
 	.bdcategory{
@@ -40,7 +32,7 @@
 	.bdCategoryList{
 		color : #00bcd4;
 		border: none;
-		font-size: 20px;
+		font-size: 18px;
 	}
 	.bdcategorySel{
 		font-weight: bold;
@@ -56,16 +48,16 @@
 	.searchType{
 		text-align: center;
 		border-radius: 5px;
-		font-size: 20px;
+		font-size: 18px;
 		border: solid 1px #00bcd4;
+	}
+	#inputSearchText{
+		font-size: 18px;
 	}
 	.community{
 		background-color: #00bcd4;
 	}
-	.malmeori{
-		display: none;
-	}
-	
+
 </style>
 </head>
 <body>
@@ -92,7 +84,15 @@
 					<h2 class="text-center">검색결과 페이지 : BoardSearchListPage.jsp</h2>
 				</div>
 				<form action="selectBoardSearchList" method="get" onsubmit="return searchTextCheck();">
-				<input type="hidden" name="bdcategory" value="자유">
+					<c:choose>
+						<c:when test="${bdcategory != null }">
+							<input type="hidden" name="bdcategory" value="${bdcategory }">
+						</c:when>
+						<c:otherwise>
+							<input type="hidden" name="bdcategory" value="">
+						</c:otherwise>
+					</c:choose>
+					
 					<div class="row ">
 						<!-- 검색기능 -->
 						<div class="col-5" align="right">
@@ -123,7 +123,7 @@
 				
 				<!-- 게시글 목록 -->
 				<div class="row">
-				<table >
+				<table class="boardList">
 					<thead >
 						<tr class="text-center" id="board_column">
 							<td style="font-size: 17px;">글번호</td>
@@ -141,18 +141,18 @@
 					<!-- 일반게시판 목록 -->
 					<c:forEach items="${searchBdList }" var="searchBd">
 						<tr style="border-bottom: solid #E0E0E0 1px;">
-							<td class="text-center">${searchBd.bdcode}</td>
-							<td class="bdcategory text-center">${searchBd.bdcategory}</td>
-							<td>
+							<td class="text-center tableCell">${searchBd.bdcode}</td>
+							<td class="bdcategory text-center tableCell">${searchBd.bdcategory}</td>
+							<td class="tableCell">
 							 	<a href="selectBoardView?bdcode=${searchBd.bdcode }">${searchBd.bdtitle} 
 							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${searchBd.bdrpcount }</span> </a>
 							 </td>
-							<td class="text-center">
+							<td class="text-center tableCell">
 								<a href="#">${searchBd.bdnickname}</a>
 							</td>
-							<td class="text-center">${searchBd.bddate}</td>
-							<td class="text-center">${searchBd.bdhits }</td>
-							<td class="fw-bold text-center" style="color: #00bcd4;">${searchBd.bdrccount}</td>
+							<td class="text-center tableCell">${searchBd.bddate}</td>
+							<td class="text-center tableCell">${searchBd.bdhits }</td>
+							<td class="fw-bold text-center tableCell" style="color: #00bcd4;">${searchBd.bdrccount}</td>
 						</tr>
 						
 					</c:forEach>

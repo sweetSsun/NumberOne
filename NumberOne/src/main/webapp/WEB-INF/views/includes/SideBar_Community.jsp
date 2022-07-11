@@ -141,12 +141,12 @@ body {
 					</div>
 					<div class="sideroom">
 						<h4>
-							<a href="#">질문방</a>
+							<a href="selectQuestionBoardList">질문방</a>
 						</h4>
 					</div>
 					<div class="sideroom">
 						<h4>
-							<a href="#">정보방</a>
+							<a href="selectInfoBoardList">정보방</a>
 						</h4>
 					</div>
 					<div class="sideroom">
@@ -156,7 +156,7 @@ body {
 					</div>
 					<div class="sideroom">
 						<h4>
-							<a href="#">공지방</a>
+							<a href="selectNoticeBoardList">공지방</a>
 						</h4>
 					</div>
 				</div>

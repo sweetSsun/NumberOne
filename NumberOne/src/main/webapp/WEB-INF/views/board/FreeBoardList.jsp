@@ -16,22 +16,20 @@
 		margin-top: 0%;
 		background-color: white;
 	}
-	.sidebar{
-		position: sticky;
-		top: 0px;
-		height: 100%;
-		width: 200px;
-		margin-bottom: 5px;
-		z-index: 1;
-	}
 	
+	.boardList{
+		margin: auto;
+	}
+	.tableCell{
+		font-size: 20px;
+	}
 	#board_column{
 		border-bottom: solid #E0E0E0 2px;
 	}
-	table{
+	.boardList{
 		margin: auto;
 	}
-	td{
+	.tableCell{
 		font-size: 20px;
 	}
 	.bdcategory{
@@ -62,10 +60,9 @@
 	.community{
 		background-color: #00bcd4;
 	}
-	.malmeori{
-		display: none;
+	#inputSearchText{
+		font-size: 18px;
 	}
-	
 </style>
 </head>
 <body>
@@ -121,7 +118,7 @@
 				
 				<!-- 게시글 목록 -->
 				<div class="row">
-				<table >
+				<table class="boardList">
 					<thead >
 						<tr class="text-center" id="board_column">
 							<td style="font-size: 17px;">글번호</td>
@@ -136,14 +133,14 @@
 						<c:forEach items="${noticeList }" end="2" var="notice">
 							<!-- 공지게시판 -->
 							<tr class="fw-bold" style="border-bottom: solid #E0E0E0 1px;">
-								<td class="text-center">${notice.nbcode}</td>
+								<td class="text-center tableCell">${notice.nbcode}</td>
 								<td></td>
-								<td>
+								<td class="tableCell">
 									<a href="selectNoticeBoardView?nbcode=${notice.nbcode }">${notice.nbtitle}</a>
 								</td>
-								<td class="text-center">관리자</td>
-								<td class="text-center">${notice.nbdate}</td>
-								<td class="text-center">${notice.nbhits }</td>
+								<td class="text-center tableCell">관리자</td>
+								<td class="text-center tableCell">${notice.nbdate}</td>
+								<td class="text-center tableCell">${notice.nbhits }</td>
 								<td></td>
 							</tr>
 						</c:forEach>
@@ -153,22 +150,20 @@
 					<!-- 일반게시판 목록 -->
 					
 					<c:forEach items="${boardList }" var="board">
-						<c:if test="${board.bdcategory != '자랑' }">
 						<tr style="border-bottom: solid #E0E0E0 1px;">
-							<td class="text-center">${board.bdcode}</td>
-							<td class="bdcategory text-center">${board.bdcategory}</td>
-							<td>
+							<td class="text-center tableCell">${board.bdcode}</td>
+							<td class="bdcategory text-center tableCell">${board.bdcategory}</td>
+							<td class="tableCell">
 							 	<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
 							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
 							 </td>
-							<td class="text-center">
+							<td class="text-center tableCell">
 								<a href="#">${board.bdnickname}</a>
 							</td>
-							<td class="text-center">${board.bddate}</td>
-							<td class="text-center">${board.bdhits }</td>
-							<td class="fw-bold text-center" style="color: #00bcd4;">${board.bdrccount}</td>
+							<td class="text-center tableCell">${board.bddate}</td>
+							<td class="text-center tableCell">${board.bdhits }</td>
+							<td class="fw-bold text-center tableCell" style="color: #00bcd4;">${board.bdrccount}</td>
 						</tr>
-						</c:if>
 					</c:forEach>
 					</tbody>
 				</table>
@@ -199,39 +194,11 @@
 	/* 글쓰기 버튼 클릭 */
 	function loadToBoardWrite(){
 		//글작성 페이지로 이동 
-		location.href= "loadToBoardWrite";
+		var bdcategory = "자유";
+		location.href= "loadToBoardWrite?bdcategory="+bdcategory;
 	}
 
-	/* 게시판 말머리 선택 */
-	function bdCategorySel(categorySel){
-		console.log("categorySel: " + categorySel);
-		
-		var output = "";
-		$.ajax({
-			type : "get",
-			url : "getBoardCategoryList_ajax",
-			data : { "bdcategory" : categorySel},
-			dataType : "json",
-			async : false,
-			success : function(bdCategoryList){
-				console.log(bdCategoryList);
-				
-				for(var i = 0; i< bdCategoryList.length; i++ ){
-					output += "<tr style=\"border-bottom: solid #E0E0E0 1px;\">";
-					output += "<td class=\"text-center\">" + bdCategoryList[i].bdcode + "</td>";
-					output += "<td class=\"bdcategory text-center\">" + bdCategoryList[i].bdcategory + "</td>";
-					output += "<td><a href='selectBoardView?bdcode=" + bdCategoryList[i].bdcode + "'>" + bdCategoryList[i].bdtitle + "</a>"
-					output += "<span class=\"fw-bold\" style=\"font-size:15px; color:#00bcd4;\">&nbsp;" + bdCategoryList[i].bdrpcount + "</span></td>"
-					output += "<td class=\"text-center\"><a href=\"#\">" + bdCategoryList[i].bdnickname + "</a></td>";
-					output += "<td class=\"text-center\">" + bdCategoryList[i].bddate + "</td>";
-					output += "<td class=\"text-center\">" + bdCategoryList[i].bdhits + "</td>";
-					output += "<td class=\"text-center text-info fw-bold\">" + bdCategoryList[i].bdrccount + "</td>";
-					output += "</tr>";
-				}
-			}
-		});
-		$("#bdCategoryList").html(output);
-	}
+	
 	
 </script>
 <script type="text/javascript">

@@ -690,10 +690,12 @@ public class BoardService {
 	}
 	
 	//글작성 페이지 이동 
-	public ModelAndView loadToBoardWrite() {
+	public ModelAndView loadToBoardWrite(String bdcategory) {
 		System.out.println("BoardService.loadToBoardWrite() 호출");
 		ModelAndView mav = new ModelAndView();
-		
+		System.out.println("bdcategory : " + bdcategory);
+
+		mav.addObject("bdcategory", bdcategory);
 		mav.setViewName("board/BoardWriteForm");
 		
 		return mav;
@@ -821,6 +823,40 @@ public class BoardService {
 		
 		mav.addObject("noticeList", noticeList);
 		mav.setViewName("board/NoticeBoardList");
+		
+		return mav;
+	}
+	
+	//질문게시판 이동 
+	public ModelAndView selectQuestionBoardList() {
+		System.out.println("BoardService.selectQuestionBoardList() 호출");
+		ModelAndView mav = new ModelAndView();
+		
+		//질문글 목록 조회
+		String bdcategory = "질문";
+		ArrayList<BoardDto> boardList = bdao.selectBoardList_Question(bdcategory);
+		ArrayList<NoticeDto> noticeList = bdao.selectNoticeList();
+		
+		mav.addObject("noticeList", noticeList);
+		mav.addObject("boardList", boardList);
+		mav.setViewName("board/QuestionBoardList");
+		
+		return mav;
+	}
+	
+	//정보게시판 이동 
+	public ModelAndView selectInfoBoardList() {
+		System.out.println("BoardService.selectInfoBoardList() 호출");
+		ModelAndView mav = new ModelAndView();
+		
+		//정보글 목록 조회 
+		String bdcategory = "정보";
+		ArrayList<BoardDto> boardList = bdao.selectBoardList_Information(bdcategory);
+		ArrayList<NoticeDto> noticeList = bdao.selectNoticeList();
+		
+		mav.addObject("noticeList", noticeList);
+		mav.addObject("boardList", boardList);
+		mav.setViewName("board/InfomationBoardList");
 		
 		return mav;
 	} 
