@@ -72,17 +72,24 @@ public class AdminController {
 	}	
 	
 	@RequestMapping (value="admin_updateNbstate_ajax")
-	public @ResponseBody int admin_updateNbstate_ajax(String nbcode, String nbstate) {
+	public @ResponseBody int admin_updateNbstate_ajax(String nbcode, int nbstate) {
 		System.out.println("공지상태 변경 요청");
 		int updateResult = asvc.admin_updateNbstate_ajax(nbcode, nbstate);
 		return updateResult;
 	}
 	
 	@RequestMapping (value="admin_updateNbstate")
-	public ModelAndView admin_updateNbstate(String nbcode, String nbstate, RedirectAttributes ra) {
+	public ModelAndView admin_updateNbstate(String nbcode, int nbstate, RedirectAttributes ra) {
 		System.out.println("공지상태 변경 요청_공지글 삭제");
 		mav = asvc.admin_updateNbstate(nbcode, nbstate, ra);
 		return mav;
+	}
+	
+	@RequestMapping (value="admin_updateNbfix_ajax")
+	public @ResponseBody int admin_updateNbfix_ajax(String nbcode, int nbfix) {
+		System.out.println("고정공지 변경 요청");
+		int updateResult = asvc.admin_updateNbfix_ajax(nbcode, nbfix);
+		return updateResult;
 	}
 	
 	@RequestMapping (value="admin_selectNoticeBoardView")
@@ -143,6 +150,13 @@ public class AdminController {
 		return usedBoardList_json;
 	}
 	
+	@RequestMapping (value="admin_selectResellView")
+	public ModelAndView admin_selectResellView(Paging paging, String codeIdx) {
+		System.out.println("중고거래 상세페이지 이동 요청_관리자");
+		// 상세 이동 코드 생성 필요
+		return null;
+	}
+	
 	/* 커뮤니티 관리 */
 	@RequestMapping (value="admin_selectBoardList")
 	public ModelAndView admin_selectBoardList(Paging paging, RedirectAttributes ra) {
@@ -166,9 +180,9 @@ public class AdminController {
 	}
 	
 	@RequestMapping (value="admin_selectBoardView")
-	public ModelAndView admin_selectBoardView(Paging paging, String bdcode) {
+	public ModelAndView admin_selectBoardView(Paging paging, String codeIdx) {
 		System.out.println("커뮤니티 상세페이지 이동 요청_관리자");
-		
+		// 상세 이동 코드 생성 필요
 		return null;
 	}
 	

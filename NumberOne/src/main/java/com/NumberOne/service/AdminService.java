@@ -180,7 +180,7 @@ public class AdminService {
 	}
 
 	// 공지상태 변경
-	public int admin_updateNbstate_ajax(String nbcode, String nbstate) {
+	public int admin_updateNbstate_ajax(String nbcode, int nbstate) {
 		System.out.println("AdminService.admin_updateNbstate_ajax() 호출");
 		System.out.println("상태변경할 nbcode : " + nbcode);
 		System.out.println("상태변경할 nbstate : " + nbstate);
@@ -189,7 +189,7 @@ public class AdminService {
 	}
 
 	// 공지상태 변경_공지글 삭제
-	public ModelAndView admin_updateNbstate(String nbcode, String nbstate, RedirectAttributes ra) {
+	public ModelAndView admin_updateNbstate(String nbcode, int nbstate, RedirectAttributes ra) {
 		System.out.println("AdminService.admin_updateNbstate() 호출");
 		System.out.println("상태변경할 nbcode : " + nbcode);
 		System.out.println("상태변경할 nbstate : " + nbstate);
@@ -201,6 +201,16 @@ public class AdminService {
 		}
 		return mav;
 	}
+
+	// 고정공지 변경
+	public int admin_updateNbfix_ajax(String nbcode, int nbfix) {
+		System.out.println("AdminService.admin_updateNbfix_ajax() 호출");
+		System.out.println("변경할 nbcode : " + nbcode);
+		System.out.println("변경할 nbfix : " + nbfix);
+		int updateResult = adao.admin_updateNbfix_ajax(nbcode, nbfix);
+		return updateResult;
+	}
+	
 	
 	//공지 상세페이지 이동 
 	public ModelAndView admin_selectNoticeBoardView(String nbcode,  Paging paging) {
@@ -638,7 +648,7 @@ public class AdminService {
 		// 호출한 ajax success에서
 		// updateResult > 0 이면 댓글 목록 새로 출력하는 ajax 실행하기
 	}
-	
+
 	
 
 }

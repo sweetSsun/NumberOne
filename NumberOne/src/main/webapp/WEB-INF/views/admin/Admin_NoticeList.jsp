@@ -26,6 +26,11 @@
 	label{
 		cursor: pointer;
 	}
+	.btn-numberone{
+		color: #ffffff;
+		background-color: #00bcd4;
+		border-color: #00bcd4;
+	}
 	
 </style>
 
@@ -98,9 +103,10 @@
                      <td style="width:10%;">글번호</td>
                      <td>제목</td>
 				     <td style="width:15%;">작성자</td>
-                     <td style="width:15%;">작성일</td>
-                     <td style="width:3rem;">조회</td>
-                     <td style="width:4rem;">상태</td>
+                     <td style="width:10%;">작성일</td>
+                     <td style="width:4rem;" class="text-center">조회</td>
+                     <td style="width:4rem;" class="text-center">상태</td>
+                     <td style="width:4rem;" class="text-center">고정</td>
                   </tr>
                </thead>
                <tbody id="nbListTbody">
@@ -109,13 +115,9 @@
 	                   <tr style="border-bottom: solid gray 1px;">
 	                      <td class="overflow">${notice.nbcode}</td>
  	                      <td class="overflow"><a href="admin_selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}" >${notice.nbtitle}</a></td>
-<%--
-	                      <td class="overflow"><a href="#" onclick="makeQuery('${notice.nbcode}')">${notice.nbtitle}</a></td>
- --%>
-
 	                      <td class="overflow">${notice.nbnickname}</td>
 	                      <td class="overflow">${notice.nbdate}</td>
-	                      <td>${notice.nbhits}</td>
+	                      <td class="text-center">${notice.nbhits}</td>	
 	                      <td>
 	                      	<c:choose>
 	                      		<c:when test="${notice.nbstate == 1}">
@@ -125,6 +127,18 @@
 	                      			<button class="btn btn-secondary" type="button" onclick="showNbstateModal(this, '${notice.nbcode }')">삭제</button>
 	                      		</c:otherwise>
 	                      	</c:choose>
+	                      </td>
+	                      <td id="fixBtn_${notice.nbcode }">
+	                      	<c:if test="${notice.nbstate == 1 }">
+		                      	<c:choose>
+		                      		<c:when test="${notice.nbfix == 1}">
+		                      			<button class="btn-numberone" type="button" onclick="showNbfixModal(this,'${notice.nbcode }')">고정</button>
+		                      		</c:when>
+		                      		<c:otherwise>
+		                      			<button class="btn btn-secondary" type="button" onclick="showNbfixModal(this,'${notice.nbcode }')">기본</button>
+		                      		</c:otherwise>
+		                      	</c:choose>
+	                      	</c:if>
 	                      </td>
 	                   </tr>
 	                </c:forEach>                 
@@ -189,8 +203,29 @@
                 </div>
                 <div class="modal-body" id="updateNbstateModalBody"> </div>
                 <div class="modal-footer">
-                	<input type="hidden" id="nbcode">
+                	<input type="hidden" id="nbcode_state">
                     <button class="btn btn-primary" onclick="updateNbstate()">네</button>
+                    <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
+                </div>
+            </div>
+        </div>
+    </div>
+	
+	<!-- 고정공지 변경 모달 -->
+	<div class="modal fade" id="updateNbfixModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateNbfixModalLabel"> 고정공지 변경 확인 </h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="updateNbfixModalBody"> </div>
+                <div class="modal-footer">
+                	<input type="hidden" id="nbcode_fix">
+                    <button class="btn btn-primary" onclick="updateNbfix()">네</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
             </div>
@@ -210,22 +245,130 @@
 		for (var i = 0; i < close.length; i++){
 			close[i].addEventListener("click", function(){
 				$("#updateNbstateModal").modal("hide");
+				$("#updateNbfixModal").modal("hide");
+			});
+		}
+				
+		// 공지상태 변경 확인 모달창 출력
+		var btnObj_state;
+		function showNbstateModal(obj, nbcode){
+			console.log("showNbstateModal() 실행");
+			btnObj_state = $(obj);
+			var btnObj_stateText = btnObj_state.text();
+			console.log("btnObj_stateText:"+btnObj_stateText);
+			if (btnObj_stateText == "활성"){
+				$("#updateNbstateModalBody").text(nbcode + "번 공지를 삭제 처리하시겠습니까?");
+			} else {
+				$("#updateNbstateModalBody").text(nbcode + "번 공지를 활성화 처리하시겠습니까?");
+			}
+			$("#nbcode_state").val(nbcode);
+			$("#updateNbstateModal").modal("show");
+		}
+		
+		// 공지상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
+		function updateNbstate(){
+			console.log("updateNbstate() 실행");
+			var nbcode_state = $("#nbcode_state").val();
+			console.log(btnObj_state.text());
+			console.log($("#fixBtn_"+nbcode_state+" button").text());
+			if (btnObj_state.text() == "활성"){
+				// 고정공지일 때 바로 삭제 불가능
+				if( $("#fixBtn_"+nbcode_state+" button").text() == "고정" ){
+					alert("해당 공지의 고정을 취소 후 삭제해주세요.");
+					$("#updateNbstateModal").modal("hide");
+					return false;
+				}
+				var nbstate = 2;				
+			} else {
+				var nbstate = 1;				
+			}
+			$.ajax({
+				type: "get",
+				data: {"nbcode":nbcode_state, "nbstate":nbstate},
+				url: "admin_updateNbstate_ajax",
+				dataType: "json",
+				success: function(result){
+					if(result > 0){
+						if (nbstate == 2){
+							btnObj_state.text("삭제").addClass("btn-secondary").removeClass("btn-primary");
+							$("#fixBtn_"+nbcode_state).text("");
+						} else {
+							btnObj_state.text("활성").addClass("btn-primary").removeClass("btn-secondary");
+							$("#fixBtn_"+nbcode_state).html("<button class='btn btn-secondary' type='button' onclick='showNbfixModal(this,\"" + nbcode_state + "\")'>기본</button>");
+						}
+					}
+					$("#updateNbstateModal").modal("hide");
+				},
+				error: function(){
+					$("#updateNbstateModal").modal("hide");
+					alert("공지상태 변경에 실패했습니다.");
+				}
+			});
+		}
+				
+		// 고정공지 변경 확인 모달창 출력
+		var btnObj_fix;
+		function showNbfixModal(obj, nbcode){
+			console.log("showNbfixModal() 실행");
+			btnObj_fix = $(obj);
+			var btnObj_fixText = btnObj_fix.text();
+			console.log("btnObj_fixText:"+btnObj_fixText);
+			if (btnObj_fixText == "고정"){
+				$("#updateNbfixModalBody").text(nbcode + "번 공지 고정을 취소하시겠습니까?");
+			} else {
+				$("#updateNbfixModalBody").text(nbcode + "번 공지를 고정 처리하시겠습니까?");
+			}
+			$("#nbcode_fix").val(nbcode);
+			$("#updateNbfixModal").modal("show");
+		}
+		
+		// 고정공지 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
+		function updateNbfix(){
+			console.log("updateNbfix() 실행");
+			var nbcode_fix = $("#nbcode_fix").val();
+			console.log(btnObj_fix.text());
+			if (btnObj_fix.text() == "고정"){
+				var nbfix = 0;				
+			} else {
+				var nbfix = 1;				
+			}
+			$.ajax({
+				type: "get",
+				data: {"nbcode":nbcode_fix, "nbfix":nbfix},
+				url: "admin_updateNbfix_ajax",
+				dataType: "json",
+				success: function(result){
+					if(result > 0){
+						if (nbfix == 0){
+							btnObj_fix.text("기본").addClass("btn-secondary").removeClass("btn-numberone").toggleClass("btn");
+						} else {
+							btnObj_fix.text("고정").addClass("btn-numberone").removeClass("btn-secondary").toggleClass("btn");
+						}
+					}
+					$("#updateNbfixModal").modal("hide");
+				},
+				error: function(){
+					$("#updateNbfixModal").modal("hide");
+					alert("공지상태 변경에 실패했습니다.");
+				}
 			});
 		}
 	</script>
 	
 	<script type="text/javascript">
+	$(document).ready(function () {
 		// 페이지 넘버 a태그를 클릭하면 hidden input태그에 페이지 넘버 값을 넣고 submit 진행
 		var actionForm = $("#actionForm");
-		$(".paginate_button a").click(function(e){
+		
+		$(document).on("click", ".paginate_button a", function(e){ // on 이벤트로 변경
 			e.preventDefault();
 			console.log("pageNum click");
 			$("#pageNum").val($(this).attr("href"));
 			console.log($("#pageNum").val());
 			actionForm.submit();
 		});
+	});
 	</script>
-	
 	
 	<script type="text/javascript">
 	// 선택한 검색 select option으로 선택되도록 하기
@@ -281,7 +424,7 @@
 								+ result[i].nbtitle + "</a></td>";
 						output += "<td class='overflow'>" + result[i].nbmid + "</td>";
 						output += "<td class='overflow'>" + result[i].nbdate + "</td>";
-						output += "<td>" + result[i].nbhits + "</td>";
+						output += "<td class='text-center'>" + result[i].nbhits + "</td>";
 						output += "<td>"
 						if (result[i].nbstate == 1){
 							output += "<button class='btn btn-primary' type='button' onclick='showNbstateModal(this, \""+result[i].nbcode+"\")'>활성</button>";
@@ -289,6 +432,15 @@
 							output += "<button class='btn btn-secondary' type='button' onclick='showNbstateModal(this,\""+result[i].nbcode+"\")'>삭제</button>";
 						}
 						output += "</td>";
+						output += "<td id='fixBtn_"+result[i].nbcode+"'>"
+							if (result[i].nbstate == 1){
+								if (result[i].nbfix == 1){
+									output += "<button class='btn-numberone' type='button' onclick='showNbfixModal(this, \""+result[i].nbcode+"\")'>고정</button>";
+								} else {
+									output += "<button class='btn btn-secondary' type='button' onclick='showNbfixModal(this, \""+result[i].nbcode+"\")'>기본</button>";
+								}
+							}
+							output += "</td>";
 						output += "</tr>";
 					}
 					$("#nbListTbody").html(output);
@@ -307,6 +459,8 @@
 					var pageList = "<ul class='pagination'>";
 					if (result.prev) {
 						pageList += "<li class='paginate_button'><a href='"+ (result.page - 1) + "' >이전</a></li>";
+					} else {
+						pageList += "<li class='paginate_button'><span>이전</span></li>"
 					}
 					for (var i = result.startPage; i <= result.endPage; i++){
 						if (result.page == i){
@@ -317,6 +471,8 @@
 					}
 					if (result.next){
 						pageList += "<li class='paginate_button'><a href='"+ (result.page + 1) + "' >다음</a></li>";
+					} else {
+						pageList += "<li class='paginate_button'><span>다음</span></li>"
 					}
 					$("#pageList").html(pageList);
 				},
@@ -325,55 +481,6 @@
 				}
 			})
 		}	
-		
-		// 공지상태 변경 확인 모달창 출력
-		var btnObj;
-		function showNbstateModal(obj, nbcode){
-			console.log("showNbstateModal() 실행");
-			btnObj = $(obj);
-			var btnObjText = btnObj.text();
-			console.log("btnObjText:"+btnObjText);
-			if (btnObjText == "활성"){
-				$("#updateNbstateModalBody").text(nbcode + "번 공지를 삭제 처리하시겠습니까?");
-			} else {
-				$("#updateNbstateModalBody").text(nbcode + "번 공지를 활성화 처리하시겠습니까?");
-			}
-			$("#nbcode").val(nbcode);
-			$("#updateNbstateModal").modal("show");
-		}
-		
-		// 공지상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
-		function updateNbstate(){
-			console.log("updateNbstate() 실행");
-			var nbcode = $("#nbcode").val();
-			console.log(btnObj.text());
-			if (btnObj.text() == "활성"){
-				var nbstate = 0;				
-			} else {
-				var nbstate = 1;				
-			}
-			$.ajax({
-				type: "get",
-				data: {"nbcode":nbcode, "nbstate":nbstate},
-				url: "admin_updateNbstate_ajax",
-				dataType: "json",
-				success: function(result){
-					if(result > 0){
-						if (nbstate == 0){
-							btnObj.text("삭제").addClass("btn-secondary").removeClass("btn-primary");
-						} else {
-							btnObj.text("활성").addClass("btn-primary").removeClass("btn-secondary");
-						}
-					}
-					$("#updateNbstateModal").modal("hide");
-				},
-				error: function(){
-					$("#updateNbstateModal").modal("hide");
-					alert("공지상태 변경에 실패했습니다.");
-				}
-			});
-			
-		}
 	</script>
 	
 	

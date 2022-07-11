@@ -89,9 +89,6 @@
 					<tr class="tableRow">
 						<th class="tableHead">대표사진</th>
 						<td colspan="3">
-							<!--  
-							<input type="text" id="mainImgScreen"> <span class="mainfile"><label for="mainImg">대표사진 선택</label></span>
-							-->
 							<input type="file" id="nbImg" name="nbimgfile" class="" accept="image/*" onchange="checkFileType(this)"> 
 						</td>
 					</tr>
@@ -117,13 +114,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
 <script type="text/javascript">
-	
-	$("#nbImg").change(function(){
-		var nbImg = $("#nbImg").val().split("path")[1];
-		nbImg = nbImg.substring(1);
-		console.log("선택된메인이미지: "+nbImg);
-		$("#mainImgScreen").val(nbImg);
-	})
 	
 	function withdraw(){
 		console.log("취소 버튼 클릭");
@@ -161,10 +151,6 @@
 			alert('이미지 파일만 선택할 수 있습니다.');
 			$("#nbImg").val("");
 			$("#nbImg").replaceWith($("#nbImg").clone(true));
-			/*
-			var parent_Obj = obj.parentNode
-			var node = parent_Obj.replaceChild(obj.cloneNode(true),obj);
-			*/
 			return false;
 		}
 	}

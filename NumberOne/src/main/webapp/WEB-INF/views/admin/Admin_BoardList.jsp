@@ -50,7 +50,7 @@
 		
 		<section>
 		<!-- 본문 -->
-         <form action="admin_selectBoardList" method="get">
+         <form action="admin_selectBoardList" method="get" id="actionForm">
 			<div class="container">
 	            <div class="row" style="margin:auto;">
 	                <h1 class="text-center">커뮤니티 관리페이지 : Admin_BoardList.jsp</h1>
@@ -108,8 +108,7 @@
 	                   <tr style="border-bottom: solid gray 1px;">
 	                      <td class="overflow">${board.bdcode}</td>
 	                      <td>${board.bdcategory }
-	                      <%-- makeQueryPage 쓰는거 왜 안될까.... admin_selectBoardView${Paging.makeQueryPage(board.bdcode, paging.page) }/>  --%>
-	                      <td class="overflow"><a href="#" onclick="test('${board.bdcode}')">
+	                      <td class="overflow"><a href="admin_selectBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}">
 	                      ${board.bdtitle}</a></td>
 	                      <td class="overflow">${board.bdnickname}</td>
 	                      <td class="overflow">${board.bddate}</td>
@@ -129,40 +128,41 @@
                 </tbody>
             </table>
             
-  			<!-- 페이징 -->
+   			<!-- 페이징 시작 -->
+   			<input type="hidden" id="pageNum" name="page" value="1">
   			<div class="block text-center" id="pageList">
-               	<c:choose>
-               		<c:when test="${paging.prev }">
-               			<button type="submit" name="page" value="${paging.page -1 }" id="btn0"></button>
-               			<label for="btn0">[이전]</label>
-               		</c:when>
-               		<c:otherwise>
-               			[이전]
-               		</c:otherwise>
-               	</c:choose>
-               	
-               	<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="num" step="1">
-                	<c:choose>
-                		<c:when test="${paging.page == num }">
-                			<span style="color:#00bcd4;">${num }</span>
-                		</c:when>
-                		<c:otherwise>
-                			<button type="submit" name="page" value="${num }" id="btn${num }"></button>
-               				<label for="btn${num }">${num }</label>
-                		</c:otherwise>
-                	</c:choose>
-               	</c:forEach>
-
-               	<c:choose>
-               		<c:when test="${paging.next }">
-               			<button type="submit" name="page" value="${paging.page +1 }" id="btn6"></button>
-               			<label for="btn6">[다음]</label>
-               		</c:when>
-               		<c:otherwise>
-               			[다음]
-               		</c:otherwise>
-               	</c:choose>
+  				<ul class="pagination">
+  					<c:choose>
+		           		<c:when test="${paging.prev }">
+		           			<li class="paginate_button"><a href="${paging.page -1 }" >이전</a></li>
+		           		</c:when>
+		           		<c:otherwise>
+	           				<li class="paginate_button"><span>이전</span></li>
+		           		</c:otherwise>
+  					</c:choose>
+	               	
+	               	<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="num" step="1">
+	                	<c:choose>
+	                		<c:when test="${paging.page == num }">
+	                			<li class=""><a class="active">${num }</a></li>
+	                		</c:when>
+	                		<c:otherwise>
+	                			<li class="paginate_button "><a href="${num }" >${num }</a></li>
+	                		</c:otherwise>
+	                	</c:choose>
+	               	</c:forEach>
+	               	
+	               	<c:choose>
+		           		<c:when test="${paging.next }">
+		                	<li class="paginate_button"><a href="${paging.page +1 }" >다음</a></li>
+		           		</c:when>
+		           		<c:otherwise>
+	           				<li class="paginate_button"><span>다음</span></li>
+		           		</c:otherwise>
+  					</c:choose>
+	            </ul>
             </div>
+            <!-- 페이징 끝 -->
             
             </div>
             
@@ -212,12 +212,18 @@
 	</script>
 	
 	<script type="text/javascript">
-	/*
-		function test(codeIdx) {
-			var param = "admin_selectBoardView"+'${paging.makeQueryPage(codeIdx, paging.page)}'+"/";
-			console.log(param);
-		}
-	*/
+	$(document).ready(function () {
+		// 페이지 넘버 a태그를 클릭하면 hidden input태그에 페이지 넘버 값을 넣고 submit 진행
+		var actionForm = $("#actionForm");
+		
+		$(document).on("click", ".paginate_button a", function(e){ // on 이벤트로 변경
+			e.preventDefault();
+			console.log("pageNum click");
+			$("#pageNum").val($(this).attr("href"));
+			console.log($("#pageNum").val());
+			actionForm.submit();
+		});
+	});
 	</script>
 	
 	
@@ -269,7 +275,9 @@
 						output += "<tr style='border-bottom: solid gray 1px;'>";
 						output += "<td class='overflow'>" + result[i].bdcode + "</td>";
 						output += "<td>" + result[i].bdcategory + "</td>";
-						output += "<td class='overflow'><a href='admin_selectBoardView?bdcode=" + result[i].bdcode + "'>" + result[i].bdtitle + "</a></td>";
+						output += "<td class='overflow'><a href='admin_selectBoardView?codeIdx=" + result[i].bdcode
+								+"&page=1&perPageNum=10&searchVal=" + searchVal + "&searchType=" + searchType + "&keyword=" + searchText + "'>"
+								+ result[i].bdtitle + "</a></td>";
 						output += "<td class='overflow'>" + result[i].bdnickname + "</td>";
 						output += "<td class='overflow'>" + result[i].bddate + "</td>";
 						output += "<td>" + result[i].bdhits + "</td>";
@@ -295,26 +303,23 @@
 					console.log("요청 페이지 : " + result.page);
 					$("#pageList").text("");
 					// 페이징 번호 출력
-					var pageList = "";
+					var pageList = "<ul class='pagination'>";
 					if (result.prev) {
-						pageList += "<button type='submit' name='page' value='" + (result.page - 1) + "' id='btn0'></button>";
-						pageList += "<label for='btn0'>[이전]</label>";
+						pageList += "<li class='paginate_button'><a href='"+ (result.page - 1) + "'>이전</a></li>";
 					} else {
-						pageList += "[이전] ";
+						pageList += "<li class='paginate_button'><span>이전</span></li>"
 					}
 					for (var i = result.startPage; i <= result.endPage; i++){
 						if (result.page == i){
-							pageList += "<span style='color:#00bcd4'>" + i + "</span>";
+							pageList += "<li><a class='active'>"+ i + "</a></li>";
 						} else {
-							pageList += "<button type='submit' name='page' value='" + i + "' id='btn" + i + "'></button>";
-							pageList += "<label for='btn" + i + "'>" + i + "</label>";
+							pageList += "<li class='paginate_button'><a href='"+ i + "' >" + i + "</a></li>";
 						}
 					}
 					if (result.next){
-						pageList += "<button type='submit' name='page' value='" + (result.page + 1) + "' id='btn6'></button>";
-						pageList += "<label for='btn6'>[다음]</label>";
+						pageList += "<li class='paginate_button'><a href='"+ (result.page + 1) + "' >다음</a></li>";
 					} else {
-						pageList += "[다음]";
+						pageList += "<li class='paginate_button'><span>다음</span></li>"
 					}
 					$("#pageList").html(pageList);
 				},

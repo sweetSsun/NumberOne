@@ -26,8 +26,10 @@ public interface AdminDao {
 
 	ArrayList<NoticeDto> admin_selectNoticeList(Paging paging);
 
-	int admin_updateNbstate_ajax(@Param("nbcode") String nbcode, @Param("nbstate") String nbstate);
+	int admin_updateNbstate_ajax(@Param("nbcode") String nbcode, @Param("nbstate") int nbstate);
 
+	int admin_updateNbfix_ajax(@Param("nbcode") String nbcode, @Param("nbfix") int nbfix);
+	
 	String admin_selectMaxNbcode();
 
 	int admin_insertNoticeWrite(NoticeDto notice);
