@@ -82,15 +82,15 @@ public interface MemberDao {
 
 	
 	//카카오 가입확인
-	@Select("SELECT MID, MPROFILE FROM MEMBERS WHERE MID = #{mid}")
+	@Select("SELECT MID, MPROFILE, MNICKNAME, MREGION, MSTATE FROM MEMBERS WHERE MID = #{mid}")
 		MemberDto selectMemberKakao(String mid);
 
 	//팔구 목록
-	@Select("SELECT UBTITLE FROM USEDBOARDS WHERE UBSELLBUY = 'S' AND UBMID = #{loginId}")
+	@Select("SELECT UBTITLE,UBCODE FROM USEDBOARDS WHERE UBSELLBUY = 'S' AND UBMID = #{loginId}")
 	ArrayList<UsedBoardDto> selectMyInfoResellView_Sell(String loginId);
 	
 	//사구 목록
-	@Select("SELECT UBTITLE FROM USEDBOARDS WHERE UBSELLBUY = 'B' AND UBMID = #{loginId} ")	
+	@Select("SELECT UBTITLE,UBCODE FROM USEDBOARDS WHERE UBSELLBUY = 'B' AND UBMID = #{loginId} ")	
 	ArrayList<UsedBoardDto> selectMyInfoResellView_Buy(String loginId);
  	
 	//마이페이지 스크랩 목록
@@ -103,7 +103,7 @@ public interface MemberDao {
 	ArrayList<ScrapDto> selectMyInfoMemberView_scrap(String loginId);
 
 	//찜목록
-	@Select("SELECT UB.UBTITLE, M.MNICKNAME, UB.UBDATE FROM ZZIM ZZ LEFT OUTER JOIN USEDBOARDS UB ON ZZ.ZZUBCODE =  UB.UBCODE LEFT OUTER JOIN MEMBERS M ON UB.UBMID = M.MID WHERE ZZ.ZZMID = #{loginId} ORDER BY UB.UBCODE DESC")
+	@Select("SELECT ZZ.ZZUBCODE, UB.UBTITLE, UB.UBSELLBUY, M.MNICKNAME, UB.UBDATE FROM ZZIM ZZ LEFT OUTER JOIN USEDBOARDS UB ON ZZ.ZZUBCODE =  UB.UBCODE LEFT OUTER JOIN MEMBERS M ON UB.UBMID = M.MID WHERE ZZ.ZZMID = #{loginId} ORDER BY UB.UBCODE DESC")
 	ArrayList<ZzimDto> selectMyInfoResellView_Zzim(String loginId);
 
 	//닉네임으로 회원정보 가져오기
@@ -113,19 +113,19 @@ public interface MemberDao {
 	//닉네임 별 작성 글 출력
 	@Select("SELECT BD.BDTITLE FROM BOARDS BD, MEMBERS M WHERE BD.BDMID = M.MID AND M.MNICKNAME = #{nickname} ORDER BY BDCODE DESC")
 	ArrayList<BoardDto> insertWriteMemberInfo_Board(String nickname);
-
-	//비밀번호 찾기
-	
-	//MemberDto selectByUserID(HashMap<String, String> map);
-	//임시 비밀번호 업데이트
-	
-	//void updatePassword(HashMap<String, String> map2);
 	
 	//카카오 회원가입 처리
 	@Insert("INSERT INTO MEMBERS(MID, MPW, MNAME, MNICKNAME, MPHONE, MEMAIL, MREGION, MPROFILE, MJOINDATE ) "
 			+ "VALUES(#{mid}, #{mpw}, #{mname}, #{mnickname}, #{mphone}, #{memail}, #{mregion}, #{mprofile}, SYSDATE )")
 	int insertKakaoRegister(MemberDto member);
 	 	
+	
+	//비밀번호 찾기
+	
+	//MemberDto selectByUserID(HashMap<String, String> map);
+	//임시 비밀번호 업데이트
+	
+	//void updatePassword(HashMap<String, String> map2);
 
 
 	

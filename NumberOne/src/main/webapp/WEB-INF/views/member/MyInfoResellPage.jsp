@@ -70,16 +70,15 @@
                             <div class="row">
                                 <div class="col-lg-6" >
                                     <div>
-										<h4 class="" style="color: #00BCD4; margin-left: 30px;" class ="blank">팔구 (제목링크필요)</h4>  
+										<h4 class="" style="color: #00BCD4; margin-left: 30px;" class ="blank">팔구</h4>  
 										<table style="width: 600px;">
 											<tr class="text-center" id="board_column">
 											<td>글제목</td>
 											</tr>
 										<c:forEach items="${sellBoard }" var="sell" varStatus="index">
 										<!-- 팔구 목록 -->
-											<tr style="border-bottom: solid #E0E0E0 1px; text-align: center;">
-											<td>${sell.ubtitle}</td>							
-											<%-- <td><a href="selectBoardView?bdcode=${board.bdcode }">${sell.udtitle}</a></td>		 --%>					
+											<tr style="border-bottom: solid #E0E0E0 1px; text-align: center;">						
+											<td><a href="selectResellView?ubcode=${sell.ubcode }&ubsellbuy=S">${sell.ubtitle}</a></td>					
 											</tr>
 										</c:forEach> 
 										</table>										                                  
@@ -87,7 +86,7 @@
                                 </div>    
                                 <div class="col-lg-6" >
                                     <div>
-										<h4 class="checkout__form" style="color: #00BCD4; margin-left: 30px;">사구 (제목링크필요)</h4>
+										<h4 class="checkout__form" style="color: #00BCD4; margin-left: 30px;">사구</h4>
 										<table style="width: 600px;">
 											<tr class="text-center" id="board_column">
 											<td>글제목</td>
@@ -95,8 +94,7 @@
 										<c:forEach items="${buyBoard }" var="buy">
 										<!-- 사구 목록 -->
 											<tr style="border-bottom: solid #E0E0E0 1px; text-align: center;">
-											<td>${buy.ubtitle}</td>
-											<%-- <td><a href="selectBoardView?bdcode=${board.bdcode }">${sell.udtitle}</a></td>		 --%>					
+											<td><a href="selectResellView?ubcode=${buy.ubcode }&ubsellbuy=B">${buy.ubtitle}</a></td>					
 											</tr>
 										</c:forEach>
 										</table>
@@ -153,7 +151,7 @@
 				<!-- 여백 -->
 				<div style="min-height: 50px;" id="scroll-zzim"></div>				
 				<div class="row" style="margin:20px;">
-					<br><h4 class="checkout__form" style="color: #00BCD4;">찜목록 (제목링크필요)</h4>
+					<br><h4 class="checkout__form" style="color: #00BCD4;">찜목록</h4>
 				</div>
 				<!-- 여백 -->
 				<div style="min-height: 50px;"></div>				
@@ -167,7 +165,14 @@
 						<c:forEach items="${zzimBoard }" var="zzim"> 
 							<!-- 찜한 목록 -->
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center; ">
-								<td>${zzim.ubtitle }</td>
+							<c:choose>
+							<c:when test="${zzim.ubsellbuy == 'S' }">
+								<td><a href="selectResellView?ubcode=${zzim.zzubcode }&ubsellbuy=S">${zzim.ubtitle }</a></td>
+							</c:when>
+							<c:otherwise>
+								<td><a href="selectResellView?ubcode=${zzim.zzubcode }&ubsellbuy=B">${zzim.ubtitle }</a></td>						
+							</c:otherwise>
+							</c:choose> 
 								<td>${zzim.mnickname }</td>
 								<td>${zzim.ubdate }</td>
 							</tr>

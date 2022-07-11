@@ -114,18 +114,27 @@ background-color: #00BCD4;
                                 <div class="col-lg-3 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p class="fw-bold" style="color: #808080;">프로필사진</p>
-                                         <c:choose>
-                                         <c:when test="${memberInfo.mprofile != null}">
-                                        <img style="height: 200px; width: 200px; border: 1px solid #808080; padding: 10px;" 
+                            <c:choose> 
+                            	<c:when test="${memberInfo.mprofile != null}">
+                            		<c:choose>
+                        				<c:when test="${sessionScope.loginId != null && sessionScope.kakaoId == null}">
+                                	 		<img style="height: 200px; width: 200px; border: 1px solid #808080; padding: 10px;" 
+                                        	class="img-account-profile rounded-circle col-md-12 col-sm-12"
+                                    		src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/${sessionScope.loginProfile }">                        	
+                            			</c:when>
+                         				<c:when test="${sessionScope.kakaoId != null }">
+                                	 		<img style="height: 200px; width: 200px; border: 1px solid #808080; padding: 10px;" 
+                                        	class="img-account-profile rounded-circle col-md-12 col-sm-12"
+                                    		src="${sessionScope.loginProfile }"> 
+                                    	</c:when>  	
+                            		</c:choose>
+                            	</c:when>                          	
+                           		<c:otherwise>
+                                	 <img style="height: 200px; width: 200px; border: 1px solid #808080; padding: 10px;" 
                                         class="img-account-profile rounded-circle col-md-12 col-sm-12"
-                                        src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/${memberInfo.mprofile }" alt="">    
-                                    </c:when>
-                                    <c:otherwise>
-                                        <img style="height: 200px; width: 200px; border: 1px solid #808080; padding: 10px;" 
-                                        class="img-account-profile rounded-circle col-md-12 col-sm-12"
-                                        src="${pageContext.request.contextPath }/resources/img/logo.jpg" alt="">                                    
-                                    </c:otherwise>
-                                    </c:choose>
+                                    src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png">
+                             	</c:otherwise>   
+                            </c:choose>                                         
                                     </div>
                                 </div>
                                 <div class="col-lg-9 col-md-12 col-sm-12">

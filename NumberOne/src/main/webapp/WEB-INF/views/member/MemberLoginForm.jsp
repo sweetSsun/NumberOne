@@ -78,8 +78,8 @@ background-color: #00BCD4;
 
 	<main>
 		<!-- 사이드바 -->
-		<%@ include file="/WEB-INF/views/includes/SideBar_Mypage.jsp"%>
-
+		<%-- <%@ include file="/WEB-INF/views/includes/SideBar_Mypage.jsp"%>--%>
+ 
 		<section>
 			<!-- 본문 -->
         <div class="container">
@@ -163,39 +163,7 @@ background-color: #00BCD4;
 
 
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp"%>
-   <!--  Modal-->
-   <!--  <div class="modal fade" id="kakaoModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document" style="max-width: 800px;" >
-            <div class="modal-content">
-            	<form class="user" action="kakao" method="post"  >
-                <div class="modal-header">
-                    <h5 class="modal-title text-gray-900 text-primary font-weight-bold" id="">필수 작성</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                	<div class="row">
-						<div class="col-12">
-                        	<div class="p-1">
-                            	<div class="form-group">        
-                            		<input type="text" name="mname" id="mname" placeholder="이름을 입력해주세요.">
-                            		<input type="text" name="mphone" id="mphone" placeholder="전화번호를 '-'포함하여 입력해주세요.">
-                            		<input type="text" name="mregion" id="mregion">
-                                </div>
-                        	</div>
-						</div>												
-					</div>
-                </div>
-                <div class="modal-footer">
-                    <input type="submit" class="btn btn-primary"  value="작성하기">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-                </div>
-                </form>
-            </div>
-        </div>
-    </div>	 -->
+
 	
 	<!-- 스크립트 시작 -->
 	<script type="text/javascript" src="resources/js/jquery-3.3.1.min.js"></script>
