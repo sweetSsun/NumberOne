@@ -94,7 +94,7 @@
 	<!-- 페이징 위한 공지 총 갯수 조회 -->
 	<select id="admin_selectNoticeTotalCount" resultType="int">
 		SELECT COUNT(*)
-		FROM NOTICEBOARDS
+		FROM ADMIN_NBLIST_VIEW
 		<if test="keyword.length > 0 or searchVal == 'active' or searchVal == 'inactive'">
 			WHERE
 			<!-- 검색한 키워드 정렬 -->
@@ -123,15 +123,14 @@
 	
 	<!-- 페이징처리 후 공지 목록 조회 -->
  	<select id="admin_selectNoticeList" resultType="com.NumberOne.dto.NoticeDto">
-		SELECT NBCODE, NBMID, NBTITLE, NBCONTENTS, TO_CHAR(NBDATE, 'YY-MM-DD') NBDATE, NBIMG, NBSTATE, NBHITS, NBNICKNAME
+		SELECT NBCODE, NBMID, NBTITLE, NBCONTENTS, TO_CHAR(NBDATE, 'MM-DD') NBDATE, NBIMG, NBSTATE, NBHITS, NBNICKNAME, NBFIX
 		FROM
-			(SELECT ROWNUM RN, NBCODE, NBMID, NBTITLE, NBCONTENTS, NBDATE, NBIMG, NBSTATE, NBHITS, MB.MNICKNAME AS NBNICKNAME
-			FROM NOTICEBOARDS NB, MEMBERS MB
-			WHERE NB.NBMID=MB.MID
-			<if test="keyword.length > 0 or searchVal == 'active' or searchVal or 'inactive'">
+			(SELECT ROWNUM RN, ADMIN_NBLIST_VIEW.*
+			FROM ADMIN_NBLIST_VIEW
+			<if test="keyword.length > 0 or searchVal == 'active' or searchVal == 'inactive'">
+				WHERE
 				<!-- 검색한 키워드 정렬 -->
 				<if test="keyword.length > 0">
-					AND
 					<choose>
 						<when test="searchType == 'nbTitleContents'">
 							(NBTITLE LIKE '%'||#{keyword}||'%' OR NBCONTENTS LIKE '%'||#{keyword}||'%')
@@ -140,9 +139,9 @@
 							${searchType} LIKE '%'||#{keyword}||'%'
 						</otherwise>				
 					</choose>
-				</if>
-				<if test="searchVal == 'active' or searchVal == 'inactive'">
-						AND
+					<if test="searchVal == 'active' or searchVal == 'inactive'">
+							AND
+					</if>
 				</if>
 			</if>
 			<!-- 상태값에 따른 정렬 -->
@@ -152,7 +151,7 @@
 			<if test="searchVal == 'inactive'">
 				NBSTATE=2
 			</if>
-			ORDER BY NBCODE)
+			)
 		WHERE RN BETWEEN ${startRow} AND ${endRow}
 			
 	</select>
@@ -161,6 +160,13 @@
 	<update id="admin_updateNbstate_ajax">
 		UPDATE NOTICEBOARDS 
 		SET NBSTATE=${nbstate}
+		WHERE NBCODE=#{nbcode}
+	</update>
+
+	 <!-- 공지 상태 변경 -->
+	<update id="admin_updateNbfix_ajax">
+		UPDATE NOTICEBOARDS 
+		SET NBFIX=${nbfix}
 		WHERE NBCODE=#{nbcode}
 	</update>
 	
@@ -267,7 +273,7 @@
 	<select id="admin_selectBoardTotalCount" resultType="int">
 		SELECT COUNT(*)
 		FROM
-			(SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, BDDATE, BDIMG, BDDETAILIMG, BDSTATE, BDHITS, BDWARNING, BDNICKNAME
+			(SELECT ADMIN_BDLIST_VIEW.*
 			FROM ADMIN_BDLIST_VIEW
 		<choose>
 			<when test="searchVal == 'warning'">
@@ -301,9 +307,10 @@
 	
 		<!-- 일반게시판 목록 조회 -->
 	<select id="admin_selectBoardList" resultType="com.NumberOne.dto.BoardDto">
-		SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, TO_CHAR(BDDATE, 'YY-MM-DD') BDDATE, BDIMG, BDDETAILIMG, BDSTATE, BDHITS, BDWARNING, BDNICKNAME
+		SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, TO_CHAR(BDDATE, 'YY-MM-DD') BDDATE,
+				BDIMG, BDDETAILIMG, BDSTATE, BDHITS, BDWARNING, BDNICKNAME, BDRPCOUNT, BDRCCOUNT
 		FROM
-			(SELECT ROWNUM RN, BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, BDDATE, BDIMG, BDDETAILIMG, BDSTATE, BDHITS, BDWARNING, BDNICKNAME
+			(SELECT ROWNUM RN, ADMIN_BDLIST_VIEW.*
 			FROM ADMIN_BDLIST_VIEW
 		<choose>
 			<when test="searchVal == 'warning'">
@@ -340,6 +347,83 @@
 	<update id="admin_updateBdstate_ajax">
 		UPDATE BOARDS 
 		SET BDSTATE=${bdstate}
+		WHERE BDCODE=#{bdcode}
+	</update>
+	
+	<!-- 자랑게시판 게시글 수 조회 -->
+	<select id="admin_selectBdfixTotalCount" resultType="int">
+		SELECT COUNT(*)
+		FROM ADMIN_BDFIXLIST_VIEW
+		<choose>
+			<when test="searchVal == 'fixed'">
+				WHERE BDFIX = 1
+			</when>
+			<when test="searchVal == 'unfixed'">
+				WHERE BDFIX = 0
+			</when>
+		</choose>
+		<choose>
+			<when test="keyword.length > 0 and searchVal != 'all'">
+				AND
+			</when>
+			<when test="keyword.length > 0 and searchVal == 'all'">
+				WHERE
+			</when>
+		</choose>
+		<!-- 검색한 키워드 정렬 -->
+		<if test="keyword.length > 0">
+		<choose>
+			<when test="searchType == 'bdTitleContents'">
+				(BDTITLE LIKE '%'||#{keyword}||'%' OR BDCONTENTS LIKE '%'||#{keyword}||'%')
+			</when>
+			<otherwise>
+				${searchType} LIKE '%'||#{keyword}||'%'
+			</otherwise>
+		</choose>
+		</if>
+	</select>
+	
+	<!-- 자랑게시판 목록 조회 -->
+	<select id="admin_selectBdfixList" resultType="com.NumberOne.dto.BoardDto">
+		SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, TO_CHAR(BDDATE, 'MM-DD') AS BDDATE, 
+				BDIMG, BDDETAILIMG, BDSTATE, BDHITS, BDFIX, BDWARNING, BDNICKNAME, BDRPCOUNT,BDRCCOUNT
+		FROM 
+			(SELECT ROWNUM RN, ADMIN_BDFIXLIST_VIEW.*
+			FROM ADMIN_BDFIXLIST_VIEW
+		<choose>
+			<when test="searchVal == 'fixed'">
+				WHERE BDFIX = 1
+			</when>
+			<when test="searchVal == 'unfixed'">
+				WHERE BDFIX = 0
+			</when>
+		</choose>
+		<choose>
+			<when test="keyword.length > 0 and searchVal != 'all'">
+				AND
+			</when>
+			<when test="keyword.length > 0 and searchVal == 'all'">
+				WHERE
+			</when>
+		</choose>
+			<!-- 검색한 키워드 정렬 -->
+			<if test="keyword.length > 0">
+			<choose>
+				<when test="searchType == 'bdTitleContents'">
+					(BDTITLE LIKE '%'||#{keyword}||'%' OR BDCONTENTS LIKE '%'||#{keyword}||'%')
+				</when>
+				<otherwise>
+					${searchType} LIKE '%'||#{keyword}||'%'
+				</otherwise>
+			</choose>
+			</if>
+		)
+		WHERE RN BETWEEN ${startRow} AND ${endRow}
+	</select>
+	
+	<!-- 자랑게시판 배너 고정 변경 -->
+	<update id="admin_updateBdfix_ajax">
+		UPDATE BOARDS SET BDFIX=${bdfix}
 		WHERE BDCODE=#{bdcode}
 	</update>
 	
