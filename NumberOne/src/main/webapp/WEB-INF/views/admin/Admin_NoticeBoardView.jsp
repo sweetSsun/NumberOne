@@ -109,7 +109,7 @@
 				<div class="row">
 					<div class="col-2">
 						<a href="admin_selectNoticeList${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}">
-						<input type="button" style="left:0;" class="middelBtn btn btn-lg bg-success fw-bold text-white" value="글목록">
+						<input type="button" style="left:0;" class="middleBtn btn btn-lg bg-success fw-bold text-white" value="글목록">
 						</a> 
 					</div>
 					<div class="col-4 offset-md-6" >

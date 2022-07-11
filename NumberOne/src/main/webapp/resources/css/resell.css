@@ -14,7 +14,7 @@
 .container-card_goods {
 	display: flex;
 	flex-direction: column;
-	flex-wrap: nowrap;
+flex-wrap: wrap;
 	justify-content: space-evenly;
 }
 
@@ -24,7 +24,7 @@
 
 .container-card_goods_2 {
 	display: flex;
-	flex-flow: row nowrap;
+	flex-wrap: wrap;
 	justify-content: space-evenly;
 }
 
@@ -35,18 +35,18 @@
 
 .container-flex_1 {
 	display: flex;
-	flex-flow: row nowrap;
+	flex-wrap: wrap;
 }
 
 .container-flex_2 {
 	display: flex;
-	flex-flow: row nowrap;
+flex-wrap: wrap;
 	justify-content: space-evenly;
 }
 
 .container-flex_3 {
 	display: flex;
-	flex-flow: row nowrap;
+	flex-wrap: wrap;
 	justify-content: space-evenly;
 }
 
@@ -177,7 +177,7 @@ div {
 .flex_div {
 
 	display: flex;
-	flex-flow: row nowrap;
+flex-wrap: wrap;
 
 }
 .flex-p2{
@@ -342,7 +342,7 @@ z-index: 1;
 .container-card_goods {
 	display: flex;
 	flex-direction: column;
-	flex-wrap: nowrap;
+	flex-wrap: wrap;
 	justify-content: space-evenly;
 }
 
@@ -352,7 +352,7 @@ z-index: 1;
 
 .container-card_goods_2 {
 	display: flex;
-	flex-flow: row nowrap;
+	flex-wrap: wrap;
 	justify-content: space-evenly;
 }
 
@@ -363,18 +363,18 @@ z-index: 1;
 
 .container-flex_1 {
 	display: flex;
-	flex-flow: row nowrap;
+flex-wrap: wrap;
 }
 
 .container-flex_2 {
 	display: flex;
-	flex-flow: row nowrap;
+flex-wrap: wrap;
 	justify-content: space-evenly;
 }
 
 .container-flex_3 {
 	display: flex;
-	flex-flow: row nowrap;
+	flex-wrap: wrap;
 	justify-content: space-evenly;
 }
 
@@ -463,7 +463,9 @@ z-index: 1;
 }
 
 .red{
-	color: red;	
+	color: red;
+	font-size: 15px;
+	font-weight: bold;	
 }
 .blue{
 	color: blue;

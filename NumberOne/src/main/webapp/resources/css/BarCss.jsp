@@ -25,19 +25,20 @@
 	    
 	}
 	
-	header,nav,aside,section,footer{
+	aside, footer{
 		/* border: solid 1px black; */
 		margin-bottom: 5px;
 		font-size: 24px;
 	}
 	
 	header{
+		margin-bottom: 0px;
+		font-size: 24px;
 		position: sticky;
 		top: 0px;
 		z-index:10;
 		padding: tpx;
 		border-bottom: solid 5px #F2F2FF;
-	    margin-bottom: 10px;
 
 	}
 	
@@ -74,10 +75,7 @@
 		height: 200px;
 		background-color: gray;
 	}
-	/*
-	header.sideon{
-		padding-left: 20%;
-	}*/
+
 	
 	/* .sidebar{
 		font-family: 'Jal_Onuel';

@@ -50,7 +50,7 @@
 				
 					<span style="float:right; margin-top: 5%;">				
 						<c:choose>
-							<c:when test="${sessionScope.loginId == null}">
+							<c:when test="${sessionScope.loginId == null && sessionScope.kakaoId == null }">
 								<p style="font-size: 12.5px"><a href="loadToLogin">로그인 해주세요</a></p>
 								
 			                </c:when>
@@ -58,14 +58,24 @@
 							
 								<c:choose>
 									<c:when test="${sessionScope.loginProfile == null}">
-										<p style="font-size: 12.5px"><a href="selectMyInfoMemberView">${sessionScope.loginId} 님 &nbsp;&nbsp;
+										<p style="font-size: 12.5px"><a href="selectMyInfoMemberView">${sessionScope.loginNickname} 님 &nbsp;&nbsp;
 										<img class="img-profile rounded-circle" style="height: 50px; width:50px;" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png">
+		
 										</a></p>
 									</c:when>
+									<c:when test="${sessionScope.loginId != null && sessionScope.kakaoId == null }">
+										<p style="font-size: 12.5px">
+											<a href="selectMyInfoMemberView">${sessionScope.loginNickname} 님 &nbsp;&nbsp;
+												<img class="img-profile rounded-circle" style="height: 50px; width:50px;" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/${sessionScope.loginProfile }">
+											</a>
+										</p>
+									</c:when>									
 									<c:otherwise>
-										<p style="font-size: 12.5px"><a href="selectMyInfoMemberView">${sessionScope.loginId} 님 &nbsp;&nbsp;
-										<img class="img-profile rounded-circle" style="height: 50px; width:50px;" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/${sessionScope.loginProfile }">
-										</a></p>
+										<p style="font-size: 12.5px">
+											<a href="selectMyInfoMemberView">${sessionScope.loginNickname} 님 &nbsp;&nbsp;
+												<img class="img-profile rounded-circle" style="height: 50px; width:50px;" src="${sessionScope.loginProfile }">
+											</a>
+										</p>
 									</c:otherwise>
 								</c:choose>
 								
@@ -94,7 +104,7 @@
 				<div class="col-lg-7 col-md-6 col-sm-12 menubar_right">
 					<ul>
 						<c:choose>
-	                    <c:when test="${sessionScope.loginId == null}">
+	                    <c:when test="${sessionScope.loginId == null && sessionScope.kakaoId == null}">
 							<li style="margin-right: 15px;" ><a href="loadToRegister">회원가입</a></li>
 							<li style="margin-right: 15px;" ><a href="loadToLogin">로그인</a></li>
 	                    </c:when>
@@ -107,7 +117,7 @@
 							<li style="margin-right: 15px;"><a href="selectMemberLogout">로그아웃</a></li>					
 						</c:otherwise>
 						</c:choose>
-							<li ><a href="#">고객센터</a></li>
+							<li ><a href="selectMyInfoQuestionListView">고객센터</a></li>
 					</ul>
 				</div>
 			</div>
