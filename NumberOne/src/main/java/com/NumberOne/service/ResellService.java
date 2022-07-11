@@ -19,6 +19,7 @@ import com.NumberOne.dto.GoodsDto;
 import com.NumberOne.dto.PageDto;
 import com.NumberOne.dto.Paging;
 import com.NumberOne.dto.UsedBoardDto;
+import com.NumberOne.dto.ZzimDto;
 import com.google.gson.Gson;
 
 @Service
@@ -300,7 +301,7 @@ public ModelAndView selectResellPageList(Paging paging) {
 		
 	}
 
-	public ModelAndView selectResellView(UsedBoardDto ubDto) {
+	public ModelAndView selectResellView(UsedBoardDto ubDto, String modifyCheck) {
 		System.out.println("selectResellView 서비스 호출");
 		ModelAndView mav = new ModelAndView();
 
@@ -310,7 +311,10 @@ public ModelAndView selectResellPageList(Paging paging) {
 
 		ArrayList<GoodsDto> gd_resellView = rdao.selectResellView_goods(ubDto);
 
+		ArrayList<UsedBoardDto> memberSellList = rdao.selectResellView_List(ubDto.getUbmid());
+		
 		String zzimCheck = rdao.selectZzimCheck(loginId, ubDto.getUbcode());
+		
 		String zzim_Check;
 		if(zzimCheck!=null) {
 			zzim_Check = "CHECK";
@@ -321,38 +325,58 @@ public ModelAndView selectResellPageList(Paging paging) {
 		String[] ubDetailImg;
 		
 		if(ub_resellView.getUbdetailimg()!=null) {
-		ubDetailImg = ub_resellView.getUbdetailimg().split("__");
-		System.out.println("ubDetailImg" + ubDetailImg);
+		ubDetailImg = ub_resellView.getUbdetailimg().split("___");
+		
+		for(String dimg : ubDetailImg	) {
+			System.out.println("디테일이미지들 : " +dimg);
+						
+		}
 		ub_resellView.setUbdetailimg_list(ubDetailImg);
+		
 					}
-				System.out.println(zzimCheck);
-				System.out.println(ub_resellView);
-				System.out.println(gd_resellView);
+		
+				System.out.println("찜체크 : " +zzim_Check);   //찜한 글인지 확인
+				System.out.println("글 정보 : " +ub_resellView);  //글 정보
+				System.out.println("상품목록 : "+ gd_resellView);     // 글의 상품목록
+				System.out.println("판매자의 다른상품 : " +memberSellList);  	//작성자의 다른 판매글목록
 				
-
-		mav.addObject("zzimCheck", zzimCheck);
+				
+		mav.addObject("zzim_Check", zzim_Check);  
 		mav.addObject("gd_resellView", gd_resellView);
-		mav.addObject("ub_resellView", ub_resellView);
-		mav.setViewName("resell/Resell_View");
+		mav.addObject("ub_resellView", ub_resellView);	
+		mav.addObject("memberSellList", memberSellList);	
+		
+		if(modifyCheck.equals("LIST")) {
+			mav.setViewName("resell/Resell_View");
+		}
+	
+		else {
+			mav.setViewName("resell/Resell_ModifyForm");
+		}
 
 		return mav;
 
 	}
 
 
-	public String zzimClick_ajax(String zzubcode, String zzmid, int zzim_num) {
+	public String zzimClick_ajax(ZzimDto zzim) {
 		System.out.println("zzimClick_ajax 서비스 호출");
 		int zzimResult = 0;
 		String zzimCheck = null;
-		if (zzim_num == 0) {
-			zzimResult = rdao.zzimClick_ajax_delete(zzubcode, zzmid);
-		} else if (zzim_num == 1) {
-			zzimResult = rdao.zzimClick_ajax_insert(zzubcode, zzmid);
+		if (zzim.getZzim_Check().equals("CHECK") ) {
+			zzimResult = rdao.zzimClick_ajax_delete(zzim);
+			System.out.println("딜리트결과 : " +zzimResult );
+			if (zzimResult > 0) {
+				zzimCheck = "UNCHECK";
+				}
+		} else if(zzim.getZzim_Check().equals("UNCHECK")){
+			zzimResult = rdao.zzimClick_ajax_insert(zzim);
+			System.out.println("인서트결과 : " +zzimResult );
+			if (zzimResult > 0) {
+				zzimCheck = "CHECK";
+			}
 		}
-		if (zzimResult > 0) {
-			zzimCheck = rdao.selectZzimCheck(zzmid, zzubcode);
-		}
-
+	
 		return zzimCheck;
 	}
 
@@ -375,9 +399,67 @@ public ModelAndView selectResellPageList(Paging paging) {
 	}
 
 
+	public String checkResellWarning_ajax(String loginId, String ubcode) {
+		System.out.println("checkResellWarning_ajax() 호출");
+		
+		String wnCheck ="";
+		String warning = rdao.checkResellWarning_ajax(loginId, ubcode);
+		if( warning != null ) {
+			//이미 신고한 게시물
+			wnCheck = "Yes";
+		}
+		return wnCheck;
+	}
 
 
+	public int insertResellWarning_ajax(String loginId, String ubcode) {
+	System.out.println("insertResellWarning_ajax 호출");
+		
+		int insertResult = rdao.insertResellWarning_ajax(loginId, ubcode);
+		return insertResult;
+	}
 
+
+	public int deleteResellWarning_ajax(String loginId, String ubcode) {
+	System.out.println("deleteResellWarning_ajax() 호출");
+		
+		int insertResult = rdao.deleteResellWarning_ajax(loginId, ubcode);
+		
+		return insertResult;
+	}
+
+
+	public ModelAndView updateResellDelete(UsedBoardDto ubDto, RedirectAttributes ra) {
+		System.out.println("updateResellDelete() 호출");
+		ModelAndView mav = new ModelAndView();
+		
+		int gd_deleteResult = rdao.updateResellDelete_gd(ubDto);	//상품목록삭제
+
+		int ub_deleteResult = rdao.updateResellDelete_ub(ubDto);  // 글삭제
+		
+		if (gd_deleteResult > 0 && ub_deleteResult > 0) {
+			System.out.println("delete성공");
+			ra.addFlashAttribute("msg", "글이 삭제되었습니다.");
+			
+			if (ubDto.getUbsellbuy().equals("B")) {
+
+				mav.setViewName("redirect:/selectResellPageList?sellBuy=B");
+				
+			} else {
+				
+				mav.setViewName("redirect:/selectResellPageList?sellBuy=S");
+								
+			}
+		} else {
+			ra.addFlashAttribute("msg", "글 작성에 실패하였습니다.");
+			mav.setViewName("redirect:/");
+		}
+
+		return mav;
+		
+	}
+
+	
 
 
 }

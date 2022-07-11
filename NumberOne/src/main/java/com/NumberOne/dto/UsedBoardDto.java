@@ -20,16 +20,19 @@ public class UsedBoardDto {
 	private String ubdetailimg;	//상세사진
 	private int ubstate;		//글상태
 	
+	
 	private int ubrecommend;	//추천수 (recommend 테이블 조인)
 	private int ubwarning;		//경고수 (warningBoards 테이블 조인)
 	private int ubzzim;			//찜수 (zzim 테이블 조인)
 	
 	private String ubnickname;	//작성자 닉네임 (members 테이블 조인) 
-
-	private MultipartFile ubmainimgfile;	//대표사진
-	private MultipartFile[] ubdetailimgfile;	//상세사진
+	private String ubprofile;	//상세페이지 출력용 작성자 프로필사진
 	
-	private String[] ubdetailimg_list;
+	private MultipartFile ubmainimgfile;	//대표사진파일
+	private MultipartFile[] ubdetailimgfile;	//상세사진파일
+	
+	private String[] ubdetailimg_list;			//출력용 상세사진목록
+
 	
 	public String getUbcode() {
 		return ubcode;
@@ -133,9 +136,10 @@ public class UsedBoardDto {
 	public String toString() {
 		return "UsedBoardDto [ubcode=" + ubcode + ", ubrgcode=" + ubrgcode + ", ubsellbuy=" + ubsellbuy + ", ubmid="
 				+ ubmid + ", ubtitle=" + ubtitle + ", ubcontents=" + ubcontents + ", ubdate=" + ubdate + ", ubmainimg="
-				+ ubmainimg + ", ubdetailimg=" + ubdetailimg + ", ubstate=" + ubstate + ", ubrecommend=" + ubrecommend
-				+ ", ubwarning=" + ubwarning + ", ubzzim=" + ubzzim + ", ubmainimgfile=" + ubmainimgfile
-				+ ", ubdetailimgfile=" + Arrays.toString(ubdetailimgfile) + ", ubnickname=" + ubnickname + "]";
+				+ ubmainimg + ", ubdetailimg=" + ubdetailimg + ", ubstate=" + ubstate + ", ubdetailimg_list="
+				+ Arrays.toString(ubdetailimg_list) + ", ubrecommend=" + ubrecommend + ", ubwarning=" + ubwarning
+				+ ", ubzzim=" + ubzzim + ", ubnickname=" + ubnickname + ", ubmainimgfile=" + ubmainimgfile
+				+ ", ubdetailimgfile=" + Arrays.toString(ubdetailimgfile) + "]";
 	}
 	
 	

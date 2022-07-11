@@ -12,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.NumberOne.dto.GoodsDto;
 import com.NumberOne.dto.Paging;
 import com.NumberOne.dto.UsedBoardDto;
+import com.NumberOne.dto.ZzimDto;
 import com.NumberOne.service.ResellService;
 
 @Controller
@@ -33,12 +34,12 @@ public class ResellController {
 	}
 	
 	@RequestMapping (value="/selectResellView")
-	public ModelAndView selectResellView(UsedBoardDto ubDto) {
+	public ModelAndView selectResellView(UsedBoardDto ubDto, String modifyCheck) {
 		System.out.println("selectResellView 호출");
 		System.out.println("ubDto : "+ubDto);
 		ModelAndView mav = new ModelAndView();
 		
-		mav = rsvc.selectResellView(ubDto);
+		mav = rsvc.selectResellView(ubDto, modifyCheck);
 		
 		return mav;
 	}
@@ -46,6 +47,7 @@ public class ResellController {
 	
 	@RequestMapping (value="/loadToResellWriteForm")
 	public ModelAndView loadToResellWriteForm(String sell_buy) {
+		System.out.println("loadToResellWriteForm 호출");
 		ModelAndView mav = new ModelAndView();
 		System.out.println("타이틀체크 : " + sell_buy);
 		
@@ -54,12 +56,30 @@ public class ResellController {
 		
 		return mav;
 	}	
-	@RequestMapping (value="/selectResellModify")
-	public String selectResellModify() {
-		return "resell/Resell_ModifyForm";
+	
+	@RequestMapping (value="/loadToResellModifyForm")
+	public ModelAndView loadToResellModifyForm(UsedBoardDto ubDto, String modifyCheck) {
+		System.out.println("loadToResellModifyForm 호출");
+		ModelAndView mav = new ModelAndView();
+		
+		mav = rsvc.selectResellView(ubDto, modifyCheck);
+		
+		return mav;
+		
 	}
 	
-
+	@RequestMapping (value="/updateResellDelete")
+	public ModelAndView updateResellDelete(UsedBoardDto ubDto, RedirectAttributes ra) {
+		System.out.println("updateResellDelete 호출");
+		ModelAndView mav = new ModelAndView();
+		
+		mav = rsvc.updateResellDelete(ubDto, ra);
+		
+		return mav;
+		
+	}
+	
+	
 	@RequestMapping (value="/insertResellWrite")
 	public ModelAndView insertResellWrite(GoodsDto gdDto, UsedBoardDto ubDto, RedirectAttributes ra) throws IllegalStateException, IOException {
 		System.out.println("insertResellWrite 호출");
@@ -78,8 +98,7 @@ public class ResellController {
 		System.out.println("selectResellRegionList_ajax 요청");
 		System.out.println("파라메터확인 : "+ paging);
 		String sell_buyList = rsvc.selectResellRegionList_ajax(paging);
-		
-		
+				
 		return sell_buyList;
 		
 	}
@@ -87,14 +106,14 @@ public class ResellController {
 
 	
 	@RequestMapping(value="/zzimClick_ajax")
-	public @ResponseBody String zzimClick_ajax(String zzubcode, String zzmid, int zzim_num) {
+	public @ResponseBody String zzimClick_ajax(ZzimDto zzim) {
 		System.out.println("zzimClick_ajax 요청");
-		System.out.println("파라메터확인 : "+ zzubcode);
-		System.out.println("파라메터확인 : "+ zzmid);
-		System.out.println("파라메터확인 : "+ zzim_num);
+		System.out.println("파라메터확인 : "+ zzim.getZzubcode());
+		System.out.println("파라메터확인 : "+ zzim.getZzmid());
+		System.out.println("파라메터확인 : "+ zzim.getZzim_Check());
 		
-		String zzimCheck = rsvc.zzimClick_ajax(zzubcode, zzmid, zzim_num);
-				
+		String zzimCheck = rsvc.zzimClick_ajax(zzim);
+				System.out.println("ajax-zzimCheck : " + zzimCheck);
 		return zzimCheck;
 	}
 	
@@ -108,6 +127,41 @@ public class ResellController {
 				
 		return mav;
 	}
+	
+	 /* 게시글 신고  */
+	 //게시글 신고 유무 확인
+	 @RequestMapping ( value = "/checkResellWarning_ajax")
+	 @ResponseBody
+	 public String checkResellWarning_ajax(String loginId, String ubcode ) {
+		 System.out.println("게시글 신고 유무 확인 요청_ajax");
+		 
+		 String wnCheck = rsvc.checkResellWarning_ajax(loginId, ubcode);
+		 
+		 return wnCheck;
+	 }
+	 
+	 //게시글 신고 
+	 @RequestMapping ( value = "/insertResellWarning_ajax")
+	 @ResponseBody
+	 public int insertResellWarning_ajax(String loginId, String ubcode) {
+		 System.out.println("게시글 신고 요청_ajax");
+		 
+		 int insertResult = rsvc.insertResellWarning_ajax(loginId, ubcode);
+		 
+		 return insertResult;
+	 }
+	 //게시글 신고 취소 (신고 중복 클릭 시 )
+	 @RequestMapping ( value = "/deleteResellWarning_ajax")
+	 @ResponseBody 
+	 public int deleteResellWarning_ajax(String loginId, String ubcode ) {
+		 System.out.println("게시글 신고 취소 요청_ajax");
+		 
+		 int deleteResult = rsvc.deleteResellWarning_ajax(loginId, ubcode);
+		 
+		 return deleteResult;		 
+	 }
+	 
+	 
 
 	
 }

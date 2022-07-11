@@ -8,6 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.NumberOne.dto.GoodsDto;
 import com.NumberOne.dto.Paging;
 import com.NumberOne.dto.UsedBoardDto;
+import com.NumberOne.dto.ZzimDto;
 
 public interface ResellDao {
 
@@ -25,9 +26,9 @@ public interface ResellDao {
 
 	ArrayList<GoodsDto> selectResellView_goods(UsedBoardDto ubDto);
 
-	int zzimClick_ajax_delete(@Param("zzubcode") String zzubcode, @Param("zzmid") String zzmid);
+	int zzimClick_ajax_delete(ZzimDto zzim);
 
-	int zzimClick_ajax_insert(@Param("zzubcode") String zzubcode, @Param("zzmid") String zzmid);
+	int zzimClick_ajax_insert(ZzimDto zzim);
 
 	String selectZzimCheck(@Param("loginId") String loginId, @Param("ubcode") String ubcode);
 
@@ -44,5 +45,17 @@ public interface ResellDao {
 			@Param("selectRegion") String selectRegion, @Param("searchOp") String searchOp);
 
 	String selectMemberId(String keyword);
+
+	ArrayList<UsedBoardDto> selectResellView_List(String ubmid);
+
+	String checkResellWarning_ajax(String loginId, String ubcode);
+
+	int insertResellWarning_ajax(String loginId, String ubcode);
+
+	int deleteResellWarning_ajax(String loginId, String ubcode);
+
+	int updateResellDelete_gd(UsedBoardDto ubDto);
+
+	int updateResellDelete_ub(UsedBoardDto ubDto);
 
 }
