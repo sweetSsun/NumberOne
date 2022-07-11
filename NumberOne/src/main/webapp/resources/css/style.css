@@ -126,13 +126,24 @@ ol {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-
 .pagination {
-		 display: inline-block;
+	width: 20rem;
+	display: inline-block;
+	margin-left: auto;
+	margin-right: auto;	 
+	margin-top: 1rem;
+	font-size: 18px;
 }
+
 .pagination a {
   color: black;
-  padding: 8px 16px;
+  padding: 6px 12px;
+  text-decoration: none;
+  border-radius: 5px;
+}
+.pagination span {
+  color: black;
+  padding: 6px 12px;
   text-decoration: none;
     border-radius: 5px;
 }
@@ -194,6 +205,24 @@ ol {
 }
 
 /* buttons */
+.btn-numberone{
+    display: inline-block;
+    font-weight: 400;
+    line-height: 1.5;
+    color: #ffffff;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    background-color: #00bcd4;
+    border: 1px solid #00bcd4;
+    padding: .375rem .75rem;
+    font-size: 1rem;
+    border-radius: .25rem;
+}
 
 .primary-btn {
 	display: inline-block;

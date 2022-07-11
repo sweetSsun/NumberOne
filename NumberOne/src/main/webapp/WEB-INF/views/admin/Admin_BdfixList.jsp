@@ -5,12 +5,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 댓글관리</title>
+<title>1인자 - 커뮤니티 배너관리</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<!-- Css Styles -->
 <%@ include file="/resources/css/BarCss.jsp" %>
+<!-- Css Styles -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/listCss.css" type="text/css">
 
@@ -45,64 +45,83 @@
 		
 		<section>
 		<!-- 본문 -->
-         <form action="admin_selectReplyList" method="get" id="actionForm">
+         <form action="admin_selectBdfixList" method="get" id="actionForm">
 			<div class="container">
 	            <div class="row" style="margin:auto;">
-	                <h1 class="text-center">댓글 관리페이지 : Admin_ReplyList.jsp</h1>
+	                <h1 class="text-center">커뮤니티-배너 관리페이지 : Admin_BdfixList.jsp</h1>
 	            </div>
 	            <!-- 검색 -->
 	            <div class="row">
 					<div class="col-5" align="right">
 						<select name="searchType" id="searchTypeSel" class="searchType">
-							<option value="rpContents">내용</option>
-							<option value="rpnickname">작성자</option>
+							<option value="bdTitle">제목</option>
+							<option value="bdContents">내용</option>
+							<option value="bdTitleContents">제목+내용</option>
+							<option value="bdnickname">작성자</option>
 						</select>
 					</div>
 	                <div class="col-7">
-                    	<input type="text" class="" name="keyword" id="searchText" placeholder="검색 키워드를 입력하세요!" value="${paging.keyword}">
+                    	<input type="text" name="keyword" id="searchText" placeholder="검색 키워드를 입력하세요!" value="${paging.keyword}"
+                    			class="">
 	                    <button class="btn btn-sm btn-secondary" type="submit">검색</button>
 	            	</div>
                	</div>
            
             <div class="row" style="margin-top: 20px;">
                <div class="col">
-                   <!-- 상태값 정렬 -->
-                   <select class="categoryList" name="searchVal" id="searchValSel" onchange="rpSearchState(this.value)">
+                  <!-- 상태값 정렬 -->
+                   <select class="categoryList" name="searchVal" id="searchValSel" onchange="bdSearchFix(this.value)">
                      <option class="categorySel" value="all">전체</option>
-                     <option class="categorySel" value="자랑">자랑</option>
-                     <option class="categorySel" value="자유">자유</option>
-                     <option class="categorySel" value="질문">질문</option>
-                     <option class="categorySel" value="정보">정보</option>
-                     <option class="categorySel" value="후기">후기</option>
+                     <option class="categorySel" value="fixed">고정</option>
+                     <option class="categorySel" value="unfixed">일반</option>
                   </select>
                </div>
             </div>
             
             <!-- 게시글 목록 -->
             <div class="row">
-            <table style="table-layout: fixed;">
+            <table style="table-layout: fixed;" >
                <thead >
                   <tr class="text-center fw-bold" id="board_column">
-                     <td style="width:10%;">댓글번호</td>
-                     <td style="width:4rem;">말머리</td>
-                     <td style="width:50%;">내용</td>
+                     <td style="width:10%;">글번호</td>
+                     <td style="width:4.5rem;">말머리</td>
+                     <td style="">제목</td>
                      <td style="width:15%;">작성자</td>
-                     <td style="width:15%;">작성일</td>
-                     <td style="width:3rem;">상태</td>
+                     <td style="width:10%;">작성일</td>
+                     <td style="width:4rem;" class="text-center">조회</td>
+                     <td style="width:3rem;" class="text-center">추천</td>
+                     <td style="width:3rem;" class="text-center">신고</td>
+                     <td style="width:3rem;" class="text-center">고정</td>
                   </tr>
                </thead>
-               <tbody id="rpListTbody">
-	               <c:forEach items="${replyList }" var="reply">
-	                   <!-- 회원관리 목록 -->
+               <tbody id="bdListTbody">
+	               <c:forEach items="${bdfixList }" var="board">
+	                   <!-- 일반게시글 관리 목록 -->
 	                   <tr style="border-bottom: solid #E0E0E0 1px;">
-	                      <td class="overflow text-center">${reply.rpcode}</td>
-	                      <td class="category text-center">${reply.rpbdcategory}</td>
-	                      <td class="overflow"><a href="#">
-	                      ${reply.rpcontents}</a></td>
-	                      <td class="overflow text-center">${reply.rpnickname}</td>
-	                      <td class="overflow text-center">${reply.rpdate}</td>
+	                      <td class="overflow text-center">${board.bdcode}</td>
+	                      <td class="category text-center">${board.bdcategory }
+	                      <td class="overflow">
+	                      	<a href="admin_selectBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}">
+	                      	<span class="overflow">
+	                      	${board.bdtitle}
+	                      	</span>
+	                      	</a>
+	                      	<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span>
+	                      </td>
+	                      <td class="text-center overflow">${board.bdnickname}</td>
+	                      <td class="text-center overflow">${board.bddate}</td>
+	                      <td class="text-center">${board.bdhits}</td>
+	                      <td class="text-center">${board.bdrccount}</td>
+	                      <td class="text-center">${board.bdwarning}</td>
 	                      <td>
-                   			  <button class="btn btn-sm btn-danger" type="button" onclick="showRpstateModal(this, '${reply.rpcode }')">정지</button>
+	                      	<c:choose>
+	                      		<c:when test="${board.bdfix == 1}">
+	                      			<button class="btn-sm btn-numberone" type="button" onclick="showBdfixModal(this,'${board.bdcode }')">배너</button>
+	                      		</c:when>
+	                      		<c:otherwise>
+	                      			<button class="btn btn-sm btn-secondary" type="button" onclick="showBdfixModal(this, '${board.bdcode }')">일반</button>
+	                      		</c:otherwise>
+	                      	</c:choose>
 	                      </td>
 	                   </tr>
 	                </c:forEach>                 
@@ -154,21 +173,21 @@
 	</main>
 	
 	
-	<!-- 공지상태 변경 모달 -->
-	<div class="modal fade" id="updateRpstateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+	<!-- 배너상태 변경 모달 -->
+	<div class="modal fade" id="updateBdfixModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="updateRpstateModalLabel"> 댓글상태 변경 확인 </h5>
+                    <h5 class="modal-title" id="updateBdfixModalLabel"> 배너고정 변경 확인 </h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
-                <div class="modal-body" id="updateRpstateModalBody"> </div>
+                <div class="modal-body" id="updateBdfixModalBody"> </div>
                 <div class="modal-footer">
-                	<input type="hidden" id="rpcode">
-                    <button class="btn btn-primary" onclick="updateRpstate()">네</button>
+                	<input type="hidden" id="bdcode">
+                    <button class="btn btn-primary" onclick="updateBdfix()">네</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
             </div>
@@ -187,60 +206,58 @@
 		var close = $(".close");
 		for (var i = 0; i < close.length; i++){
 			close[i].addEventListener("click", function(){
-				$("#updateRpstateModal").modal("hide");
+				$("#updateBdfixModal").modal("hide");
 			});
-		}		
+		}
 		
-		// 댓글상태 변경 확인 모달창 출력
+		// 배너고정 변경 확인 모달창 출력
 		var btnObj;
-		function showRpstateModal(obj, rpcode){
-			console.log("showRpstateModal() 실행");
+		function showBdfixModal(obj, bdcode){
+			console.log("showBdfixModal() 실행");
 			btnObj = $(obj);
 			var btnObjText = btnObj.text();
 			console.log("btnObjText:"+btnObjText);
-			if (btnObjText == "활성"){
-				$("#updateRpstateModalBody").text(rpcode + "번 게시글을 정지 처리하시겠습니까?");
+			if (btnObjText == "고정"){
+				$("#updateBdfixModalBody").text(bdcode + "번 게시글의 배너 고정을 취소하시겠습니까?");
 			} else {
-				$("#updateRpstateModalBody").text(rpcode + "번 게시글의 정지를 취소하시겠습니까?");
+				$("#updateBdfixModalBody").text(bdcode + "번 게시글을 배너로 고정하시겠습니까?");
 			}
-			$("#rpcode").val(rpcode);
-			$("#updateRpstateModal").modal("show");
+			$("#bdcode").val(bdcode);
+			$("#updateBdfixModal").modal("show");
 		}
 		
-		// 댓글상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
-		function updateRpstate(){
-			console.log("updateRpstate() 실행");
-			var rpcode = $("#rpcode").val();
+		// 배너고정 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
+		function updateBdfix(){
+			console.log("updateBdfix() 실행");
+			var bdcode = $("#bdcode").val();
 			console.log(btnObj.text());
-			if (btnObj.text() == "활성"){
-				var rpstate = 0;				
+			if (btnObj.text() == "고정"){
+				var bdfix = 0;				
 			} else {
-				var rpstate = 1;				
+				var bdfix = 1;				
 			}
 			$.ajax({
 				type: "get",
-				data: {"rpcode":rpcode, "rpstate":rpstate},
-				url: "admin_updateRpstate_ajax",
+				data: {"bdcode":bdcode, "bdfix":bdfix},
+				url: "admin_updateBdfix_ajax",
 				dataType: "json",
 				success: function(result){
 					if(result > 0){
-						if (rpstate == 0){
-							btnObj.text("정지").addClass("btn-danger").removeClass("btn-primary");
+						if (bdfix == 0){
+							btnObj.text("일반").addClass("btn-secondary").removeClass("btn-numberone").toggleClass("btn");
 						} else {
-							btnObj.text("활성").addClass("btn-primary").removeClass("btn-danger");
+							btnObj.text("고정").addClass("btn-numberone").removeClass("btn-secondary").toggleClass("btn");
 						}
 					}
-					$("#updateRpstateModal").modal("hide");
+					$("#updateBdfixModal").modal("hide");
 				},
 				error: function(){
-					$("#updateRpstateModal").modal("hide");
-					alert("댓글상태 변경에 실패했습니다.");
+					$("#updateBdfixModal").modal("hide");
+					alert("글상태 변경에 실패했습니다.");
 				}
 			});
-			
-		}
 	</script>
-		
+	
 	<script type="text/javascript">
 	$(document).ready(function () {
 		// 페이지 넘버 a태그를 클릭하면 hidden input태그에 페이지 넘버 값을 넣고 submit 진행
@@ -255,6 +272,7 @@
 		});
 	});
 	</script>
+	
 	
 	<script type="text/javascript">
 		// 선택한 검색 select option으로 선택되도록 하기
@@ -282,18 +300,18 @@
 		}
 	</script>
 	<script type="text/javascript">
-		// 정렬 select하면 ajax로 공지목록 받고 출력을 바꿔주는 함수
-		function rpSearchState(searchVal){
-			console.log("rpSearchState() 실행");
+		// 정렬 select하면 ajax로 게시글목록 받고 출력을 바꿔주는 함수
+		function bdSearchFix(searchVal){
+			console.log("bdSearchFix() 실행");
+			console.log("정렬 선택 : " + searchVal);
 			var searchType = $("#searchTypeSel").val();
 			var searchText = $("#searchText").val();
-			console.log("정렬 선택 : " + searchVal);
-			console.log("검색 종류 : " + searchType);
-			console.log("검색 키워드 : " + searchText);
+			console.log(searchType);
+			console.log(searchText);
 			$.ajax({
 				type: "get",
 				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "ajaxCheck":"list"},
-				url: "admin_selectReplyList_ajax",
+				url: "admin_selectBdfixList_ajax",
 				dataType: "json",
 				success: function(result){
 					// 정렬 목록 출력
@@ -301,24 +319,35 @@
 					console.log(result);					
 					for (var i = 0; i < result.length; i++){
 						output += "<tr style='border-bottom: solid #E0E0E0 1px;'>";
-						output += "<td class='text-center overflow'>" + result[i].rpcode + "</td>";
-						output += "<td class='category text-center'>" + result[i].rpbdcategory + "</td>";
-						output += "<td class='overflow'><a href='admin_selectResellView?bdcode=" + result[i].bdcode + "'>" + result[i].rpcontents + "</a></td>";
-						output += "<td class='text-center overflow'>" + result[i].rpnickname + "</td>";
-						output += "<td class='text-center overflow'>" + result[i].rpdate + "</td>";
+						output += "<td class='text-center overflow'>" + result[i].bdcode + "</td>";
+						output += "<td class='category text-center'>" + result[i].bdcategory + "</td>";
+						output += "<td class='overflow'><a href='admin_selectBoardView?codeIdx=" + result[i].bdcode
+								+"&page=1&perPageNum=10&searchVal=" + searchVal + "&searchType=" + searchType + "&keyword=" + searchText + "'>"
+								+"<span class='overflow'>" + result[i].bdtitle + "</span>"
+								+"<span class='fw-bold' style='font-size:15px; color:#00bcd4;'>&nbsp;" + result[i].bdrpcount + "</span>"			
+								+"</a></td>";
+						output += "<td class='text-center overflow'>" + result[i].bdnickname + "</td>";
+						output += "<td class='text-center overflow'>" + result[i].bddate + "</td>";
+						output += "<td class='text-center'>" + result[i].bdhits + "</td>";
+						output += "<td class='text-center'>" + result[i].bdrccount + "</td>";
+						output += "<td class='text-center'>" + result[i].bdwarning + "</td>";
 						output += "<td class='text-center'>"
-						output += "<button class='btn btn-sm btn-danger' type='button' onclick='showRpstateModal(this,\""+result[i].rpcode+"\")'>정지</button>";
+						if (result[i].bdfix == 1){
+							output += "<button class='btn-sm btn-numberone' type='button' onclick='showBdfixModal(this, \""+result[i].bdcode+"\")'>고정</button>";
+						} else {
+							output += "<button class='btn btn-sm btn-secondary' type='button' onclick='showBdfixModal(this,\""+result[i].bdcode+"\")'>일반</button>";
+						}
 						output += "</td>";
 						output += "</tr>";
 					}
-					$("#rpListTbody").html(output);
+					$("#bdListTbody").html(output);
 				}
 			});
 			// 페이지에서 출력할 페이지번호 받아오기
 			$.ajax({
 				type: "get",
 				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "ajaxCheck":"page"},
-				url: "admin_selectReplyList_ajax",
+				url: "admin_selectBdfixList_ajax",
 				dataType: "json",
 				success: function(result){
 					console.log("요청 페이지 : " + result.page);
@@ -326,7 +355,7 @@
 					// 페이징 번호 출력
 					var pageList = "<ul class='pagination'>";
 					if (result.prev) {
-						pageList += "<li class='paginate_button'><a href='"+ (result.page - 1) + "' >이전</a></li>";
+						pageList += "<li class='paginate_button'><a href='"+ (result.page - 1) + "'>이전</a></li>";
 					} else {
 						pageList += "<li class='paginate_button'><span>이전</span></li>"
 					}
@@ -351,6 +380,8 @@
 			
 		}	
 
+			
+		}
 	</script>
 	
 	

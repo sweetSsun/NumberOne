@@ -188,7 +188,9 @@ public interface BoardDao {
 
 	//자랑글 수정용 select
 	@Select("select * from boards where bdcode=#{bdcode}")
-	BoardDto selectRoomModify(String bdcode); 
+	BoardDto selectRoomModify(String bdcode);
+	
+	
 
 	
 	
