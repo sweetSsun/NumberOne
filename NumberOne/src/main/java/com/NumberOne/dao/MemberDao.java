@@ -49,14 +49,14 @@ public interface MemberDao {
 	int updateMyInfoMemberModify(MemberDto member);
 	
 	//마이페이지 회원정보 _ 작성글
-	@Select("SELECT BD.BDCODE, BD.BDTITLE, BD.BDMID, BD.BDDATE, RP.BDREPLY FROM BOARDS BD left outer join (SELECT RPBDCODE, COUNT (RPBDCODE) AS BDREPLY FROM REPLY GROUP BY RPBDCODE) RP "
+	@Select("SELECT BD.BDCODE, BD.BDTITLE, BD.BDMID, BD.BDDATE, BD.BDCATEGORY, RP.BDREPLY FROM BOARDS BD left outer join (SELECT RPBDCODE, COUNT (RPBDCODE) AS BDREPLY FROM REPLY GROUP BY RPBDCODE) RP "
 			+ "on BD.BDCODE = RP.RPBDCODE "
 			+ "where bdmid= #{loginId} "
 			+ "ORDER BY BD.BDCODE DESC" )
 	ArrayList<BoardDto> selectMyInfoMemberView_Boards(String loginId);
 
 	//마이페이지 회원정보 _ 댓글 작성한 글	
-	@Select("SELECT RP.RPBDCODE, RP.RPCODE, BD.BDTITLE as rpbdtitle, RP.RPCONTENTS, RP.RPDATE "
+	@Select("SELECT RP.RPBDCODE, RP.RPCODE, BD.BDTITLE as rpbdtitle, RP.RPCONTENTS, RP.RPDATE, BD.BDCATEGORY AS RPBDCATEGORY "
 			+ "FROM BOARDS BD, REPLY RP "
 			+ "WHERE BDCODE = RPBDCODE AND RPMID = #{loginId} "
 			+ "ORDER BY RP.RPCODE DESC")

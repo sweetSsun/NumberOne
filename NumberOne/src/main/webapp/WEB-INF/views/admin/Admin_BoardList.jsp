@@ -99,12 +99,21 @@
 	                      <td class="overflow text-center">${board.bdcode}</td>
 	                      <td class="category text-center">${board.bdcategory }
 	                      <td class="overflow">
-	                      	<a href="admin_selectBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}">
-	                      	<span class="overflow">
-	                      	${board.bdtitle}
-	                      	</span>
-	                      	</a>
-	                      	<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span>
+                        <c:choose>
+								          <c:when test="${board.bdcategory.equals('자랑') }">
+									          <!-- 자랑글 상세 -->
+									          <a href="loadToRoomViewPage?bdcode=${board.bdcode }">${board.bdtitle}</a>
+								          </c:when>
+								          <c:otherwise>
+									          <!-- 일반글 상세 -->										
+	                      	  <a href="admin_selectBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}">
+	                      	  <span class="overflow">
+	                      	  ${board.bdtitle}
+	                      	  </span>
+	                      	  </a>
+	                      	  <span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span>
+								          </c:otherwise>
+							          </c:choose>
 	                      </td>
 	                      <td class="text-center overflow">${board.bdnickname}</td>
 	                      <td class="text-center overflow">${board.bddate}</td>

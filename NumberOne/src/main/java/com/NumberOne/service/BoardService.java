@@ -254,25 +254,11 @@ public class BoardService {
 	    ArrayList<BoardDto> roomList = bdao.selectRoomList();	
 	    System.out.println("자취방 자랑글 개수: "+roomList.size());
 	    
-	    /*
-	    for (int i = 0; i < roomList.size(); i++) {
-			if(roomList.get(i).getBdimg().equals("")){
-				
-			}
-		}
-	    */
-	    
+ 
 	    mav.addObject("roomList", roomList);
 	    
-	    /* 확인용 출력
-	    for(int i=0; i<roomList.size(); i++) {
-	    	System.out.println(roomList.get(i));
-	    }
-	    */
-	    
-
-	    
 	    mav.setViewName("board/RoomListPage");
+
 		return mav;
 	}
 
@@ -460,10 +446,10 @@ public class BoardService {
 		ArrayList<ReplyDto> replyList = bdao.selectBoardReplyList(bdcode);
 		//System.out.println(replyList);
 	
-		//프로필 사진 없는 경우 rpmprofile에 nomprofile 저장
+		//프로필 사진 없는 경우 rpprofile에 nomprofile 저장
 		for (int i = 0; i < replyList.size(); i++) {
-			if(replyList.get(i).getRpmprofile()==null) {
-				replyList.get(i).setRpmprofile("nomprofile");
+			if(replyList.get(i).getRpprofile()==null) {
+				replyList.get(i).setRpprofile("nomprofile");
 			}
 		}
 		
@@ -471,6 +457,13 @@ public class BoardService {
 		for ( int i=0; i< replyList.size(); i++) {
 			String rpcontents = replyList.get(i).getRpcontents().replace("<br>", "\r\n");
 			rpcontents = replyList.get(i).getRpcontents().replace("&nbsp;", " ");
+			
+			//자취방 자랑글 보기에서 댓글의 첫번째 글자가 공백인 경우 이상하게 출력되는 것을 발견하여 공백을 없애는 과정을 추가함
+			String firstletter = rpcontents.substring(0, 1);
+			
+			if(firstletter.equals(" ")) {
+				rpcontents = rpcontents.substring(1);
+			}
 			replyList.get(i).setRpcontents(rpcontents);
 		}
 		System.out.println("댓글목록 조회 ");
@@ -605,8 +598,6 @@ public class BoardService {
 		return mav;
 	}
 	
-
-
 	 //게시글 수정 페이지 이동 요청 
 	   public ModelAndView loadToBoardModify(String bdcode, String bdcategory) {
 	      System.out.println("BoardService.loadToBoardModify() 호출");
@@ -619,7 +610,7 @@ public class BoardService {
 	      if(bdcategory == null){
 	         //일반글
 	         board = bdao.selectBoardView(bdcode);
-	         String bdcontents = board.getBdcontents().replace("&nbsp;","");
+	         String bdcontents = board.getBdcontents().replace("&nbsp;"," ");
 	         bdcontents = board.getBdcontents().replace("<br>","\r\n");
 	         board.setBdcontents(bdcontents);
 	         //System.out.println(board);
@@ -640,7 +631,6 @@ public class BoardService {
 	      
 	      return mav;
 	   }
-
 	
 	//게시글 수정
 	public ModelAndView updateBoardModify(BoardDto board, RedirectAttributes ra) throws IllegalStateException, IOException {

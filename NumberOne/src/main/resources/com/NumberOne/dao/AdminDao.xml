@@ -532,6 +532,6 @@
 	
 	<!-- 댓글 정지 -->
 	<update id="admin_updateReplyStop">
-		UPDATE REPLY SET RPSTATE=0 WHERE RPCODE= #{rpcode}
+		UPDATE REPLY SET RPSTATE=0 WHERE RPCODE=#{rpcode}
 	</update>
 </mapper>

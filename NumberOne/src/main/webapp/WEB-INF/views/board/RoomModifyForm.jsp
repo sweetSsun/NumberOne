@@ -123,14 +123,14 @@
 					<tr>
 						<th class="tableHead title" style="font-size:20px;">상세사진<br>수정</th>
 						<td colspan="5">
-							<input type="file" multiple="multiple" id="detailImg" name="bddetailimgfile" onclick="return mainimgCh()"> 
+							<input type="file" multiple="multiple" id="detailImg" name="bddetailimgfile" accept="image/*" onclick="return mainimgCh()"> 
 						</td>
 					</tr>
 					<tr>
 						<th colspan="6" class="tableHead">
 						<center>
 							<input type="submit" value="등록">
-							<input type="button" onclick="location.href='${pageContext.request.contextPath}/selectRoomList'" value="취소">
+							<input type="button" onclick="location.href='${pageContext.request.contextPath}/selectRoomList'" accept="image/*" value="취소">
 						</center>
 						</th>
 					</tr>
