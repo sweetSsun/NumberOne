@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 회원정보수정</title>
+<title>1인자 - 필수정보입력</title>
 
 <%@ include file="/resources/css/CommonCss.jsp"%>
 <!-- 부트스트랩 -->
@@ -148,7 +148,7 @@ background-color: #00BCD4;
 
 	<main>
 		<!-- 사이드바 -->
-		<%@ include file="/WEB-INF/views/includes/SideBar_Mypage.jsp"%>
+		<%-- <%@ include file="/WEB-INF/views/includes/SideBar_Mypage.jsp"%> --%>
 
 		<section>
 			<!-- 본문 -->
