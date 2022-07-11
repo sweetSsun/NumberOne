@@ -149,7 +149,7 @@ background-color: #00BCD4;
 
 	<main>
 		<!-- 사이드바 -->
-		<%@ include file="/WEB-INF/views/includes/SideBar_Mypage.jsp"%>
+		<%-- <%@ include file="/WEB-INF/views/includes/SideBar_Mypage.jsp"%> --%>
 
 		<section>
 			<!-- 본문 -->
@@ -359,6 +359,7 @@ background-color: #00BCD4;
 	<!-- 다음 우편번호 서비스 -->
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="${pageContext.request.contextPath }/resources/MemberJs/daumPostCode.js"></script>
+    
     
 	<!-- 아이디 중복 체크 -->
     <script type="text/javascript">

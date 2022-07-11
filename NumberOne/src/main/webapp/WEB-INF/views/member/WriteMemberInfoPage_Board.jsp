@@ -216,7 +216,7 @@ ul li a {
 			<div class = "msgTextarea col-lg-12 col-md-6 col-sm-6" style="border-top:0px; padding-top: 20px;" >
 				<c:forEach items="${Board }" var="Board">			
 					<ul>
-						<li><a href="selectBoardView?bdcode=${Board.bdcode }" target="_blank">
+						<li><a href="selectBoardView?bdcode=${Board.bdcode }" target="_blank"><!-- 새창 띄우면 내용이 안나와서 다시 확인해봐야함!!!! -->
 						<input type="text" class="inputText" style="background-color: #F2F2FF; border-bottom: 1px solid #D2D2D2; outline:none; width: 540px; " 
 						readonly="readonly" value="${Board.bdtitle }"></a></li>
 					</ul>					

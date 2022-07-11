@@ -78,8 +78,8 @@ background-color: #00BCD4;
 
 	<main>
 		<!-- 사이드바 -->
-		<%@ include file="/WEB-INF/views/includes/SideBar_Mypage.jsp"%>
-
+		<%-- <%@ include file="/WEB-INF/views/includes/SideBar_Mypage.jsp"%>--%>
+ 
 		<section>
 			<!-- 본문 -->
         <div class="container">
@@ -89,17 +89,17 @@ background-color: #00BCD4;
                 <br>
                 <form class="user" action="selectMemberLogin" method="post">
                     <div class="row">
-                        <div class="col-lg-12 col-md-6">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
                         <!-- ID , 이름 -->
                              <div class="row">
-                             	<div class="col-lg-12 col-md-6">
+                             	<div class="col-lg-12 col-md-12 col-sm-12">
                              		<div class="checkout__input"  style="text-align: center;">
                                  		<input type="text" style="width: 420px; height:15px; border:1px;" value="아이디" readonly="readonly" tabindex="-1">
                              		</div>
                              	</div>
                             </div>
                              <div class="row">
-                             	<div class="col-lg-12 col-md-6">
+                             	<div class="col-lg-12 col-md-12 col-sm-12">
                              		<div class="checkout__input" style="text-align: center;">
                                  		<input type="text" id="userMid" name="mid" style="width: 400px;"> 
                              		</div>
@@ -107,37 +107,45 @@ background-color: #00BCD4;
                             </div>
                         <!-- 비번 , 비번확인 -->
                              <div class="row">
-                             	<div class="col-lg-12 col-md-6">
+                             	<div class="col-lg-12 col-md-12 col-sm-12">
                              		<div class="checkout__input"  style="text-align: center;">
                                  		<input type="text" style="width: 420px; height:15px; border:1px;" value="비밀번호" readonly="readonly" tabindex="-1">
                              		</div>
                              	</div>
                             </div>
                              <div class="row">
-                             	<div class="col-lg-12 col-md-6">
+                             	<div class="col-lg-12 col-md-12 col-sm-12">
                              		<div class="checkout__input" style="text-align: center;">
                                  		<input type="text" id="userMpw" name="mpw" style="width: 400px;"> 
                              		</div>
                              	</div>
                             </div>
-                            
-                        <!-- 로그인 버튼 -->    
-                        <center><button type="submit" class="site-btn" style="border-radius: 4px;">로그인</button></center>
-                       <br>
-                        <!-- 카카오 로그인 -->
+                        <!-- 카카오 -->
+                             <div class="row">
+                             <!-- 로그인 버튼 -->   
+                             	<div class="col-lg-12 col-md-12 col-sm-12">
+                             		<div class="checkout__input"  style="text-align: center;">
+                                 		<button type="submit" class="site-btn" style="border-radius: 4px;">로그인</button>
+                             		</div>
+                             	</div>
+                            </div>
+                            <!-- 카카오 로그인 -->
+                             <div class="row">
+                             	<div class="col-lg-12 col-md-12 col-sm-12">
                             <div class="text-center">
                                 <a class="small" id="kakaoLoginBtn"></a>
                             </div>
-                        
-                        <br>
+                             	</div>
+                            </div>                            
+                       <br>
                         <!-- 아이디찾기 , 비밀번호찾기 -->
                             <div class="row">
-                            	<div class="col-lg-6 col-md-1">
+                            	<div class="col-lg-6 col-md-6 col-sm-6">
                                 	<div class="checkout__input" style="text-align: right;">
                                  		<a class="small" href="loadToLookforId">아이디 찾기</a>
                                 	</div>
                               	</div>                             	
-                             	<div class="col-lg-6 col-md-1">
+                             	<div class="col-lg-6 col-md-6 col-sm-6">
                              		<div class="checkout__input" style="text-align: left;">
                                  		<a class="small" href="loadToLookforPw">비밀번호 찾기</a>
                              		</div>
@@ -155,6 +163,7 @@ background-color: #00BCD4;
 
 
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp"%>
+
 	
 	<!-- 스크립트 시작 -->
 	<script type="text/javascript" src="resources/js/jquery-3.3.1.min.js"></script>
@@ -186,8 +195,10 @@ background-color: #00BCD4;
 		    	    console.log("res.kakao_account.email : "+ res.kakao_account.email);
 		    	    console.log("res.kakao_account.profile.nickname : "+ res.kakao_account.profile.nickname);
 		    	    console.log("res.kakao_account.profile.profile_image_url : "+ res.kakao_account.profile.profile_image_url);
+		    	   
+		    	    //이름 전화번호 지역 필요!!
 		    	    
-
+		    	    
 		    	    // 아이디, 이메일, 닉네임, 프로필
 		    	     memberKakaoLogin(res.id, res.kakao_account.email, res.kakao_account.profile.nickname, res.kakao_account.profile.profile_image_url);
 		    	    // controller >> service 아이디로 회원정보 조회

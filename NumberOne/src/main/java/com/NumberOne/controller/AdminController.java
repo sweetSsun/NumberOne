@@ -22,7 +22,7 @@ public class AdminController {
 	private AdminService asvc;
 	
 	@RequestMapping (value="/admin_loadToAdminMainPage")
-	public String admin_loadToAdminMainPage() {
+	public String admin_loadToAdminMainPage(RedirectAttributes ra) {
 		System.out.println("관리자 메인페이지 이동 요청");
 		return "admin/Admin_Main";
 	}
@@ -86,9 +86,9 @@ public class AdminController {
 	}
 	
 	@RequestMapping (value="admin_selectNoticeBoardView")
-	public ModelAndView admin_selectNoticeBoardView(String nbcode) {
+	public ModelAndView admin_selectNoticeBoardView(String codeIdx, Paging paging) {
 		System.out.println("공지 상세페이지 이동 요청");
-		mav = asvc.admin_selectNoticeBoardView(nbcode);
+		mav = asvc.admin_selectNoticeBoardView(codeIdx, paging);
 		return mav;
 	}
 	
@@ -107,16 +107,17 @@ public class AdminController {
 	}
 	
 	@RequestMapping (value="admin_selectNoticeModify")
-	public ModelAndView admin_selectNoticeModify(String nbcode) {
+	public ModelAndView admin_selectNoticeModify(String codeIdx, Paging paging) {
 		System.out.println("공지 수정페이지 이동 요청");
-		mav = asvc.admin_selectNoticeModify(nbcode);
+		System.out.println("codeIdx : " + codeIdx);
+		mav = asvc.admin_selectNoticeModify(codeIdx, paging);
 		return mav;
 	}
 	
 	@RequestMapping (value="admin_updateNoticeModify")
-	public ModelAndView admin_updateNoticeModify(NoticeDto modiNotice, String originImg, RedirectAttributes ra) throws IllegalStateException, IOException {
+	public ModelAndView admin_updateNoticeModify(NoticeDto modiNotice, Paging paging, RedirectAttributes ra) throws IllegalStateException, IOException {
 		System.out.println("공지 수정 요청");
-		mav = asvc.admin_updateNoticeModify(modiNotice, originImg, ra);
+		mav = asvc.admin_updateNoticeModify(modiNotice, paging, ra);
 		return mav;
 	}
 	
@@ -214,4 +215,41 @@ public class AdminController {
 		int updateResult = asvc.admin_updateQuestionAns_ajax(ctcode, ctans);
 		return updateResult;
 	}
+	
+	
+	/* 게시글/댓글 정지 */
+	@RequestMapping (value="admin_updateBoardStop")
+	public ModelAndView admin_updateBoardStop(String bdcode, RedirectAttributes ra) {
+		System.out.println("커뮤니티 게시글 정지 요청");
+		mav = asvc.admin_updateBoardStop(bdcode, ra);
+		return mav;
+		// 글목록으로 돌아가는 url 만들어서 매개변수 생기면 수정 필요
+	}
+	
+	@RequestMapping (value="admin_updateRoomStop_ajax")
+	public @ResponseBody int admin_updateRoomStop_ajax(String bdcode) {
+		System.out.println("자랑 게시글 정지 요청");
+		int updateResult = asvc.admin_updateRoomStop_ajax(bdcode);
+		return updateResult;
+		// 스크립트단에서 updateResult > 0 이면 "정지처리되었습니다" 모달 띄우고, 정지버튼 d_none
+		// 가능하면 자랑목록페이지 새로 받아오고, 보던 스크롤 위치로 이동하고 싶다
+	}
+	
+	@RequestMapping (value="admin_updateResellStop")
+	public ModelAndView admin_updateResellStop(String ubcode, Paging paging, RedirectAttributes ra) {
+		System.out.println("중고거래 글 정지 요청");
+		mav = asvc.admin_updateResellStop(ubcode, paging, ra);
+		return mav;
+		// 글목록으로 돌아가는 url 만들어서 매개변수 생기면 수정 필요
+	}
+	
+	@RequestMapping (value="admin_updateReplyStop_ajax")
+	public @ResponseBody int admin_updateReplyStop_ajax(String rpcode) {
+		System.out.println("댓글 정지 요청");
+		int updateResult = asvc.admin_updateReplyStop_ajax(rpcode);
+		return updateResult;
+	}
+	
+	
+	
 }

@@ -235,6 +235,7 @@
 		
 		<!-- 사이드바 열었을 때 -->
 		<div id="sideList">
+
 			<div class="sidemenu">
 			
 				<div class="sidetitle">
