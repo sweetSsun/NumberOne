@@ -181,19 +181,19 @@
 	<!-- 글상세의 상품불러오기 -->
 	<select id="selectResellView_goods"
 		resultType="com.NumberOne.dto.GoodsDto">
-		SELECT GDUBCODE, GDNAME AS GD_NAMES, GDPRICE AS GD_PRICE
+		SELECT GDCODE, GDUBCODE, GDNAME, GDPRICE, GDSTATE
 		FROM GOODS
 		GD, USEDBOARDS UB
 		WHERE GDUBCODE = UBCODE AND UBCODE = #{ubcode}
 		AND
-		UBSELLBUY = #{ubsellbuy} AND UBSTATE = 1
+		UBSELLBUY = #{ubsellbuy}
         ORDER BY GDUBCODE 
 	</select>
 
 	<!-- 글 상세정보 -->
 	<select id="selectResellView"
 		resultType="com.NumberOne.dto.UsedBoardDto">
-		SELECT UBNICKNAME, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE,
+		SELECT UBNICKNAME, UBPROFILE, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE,
 		UBCONTENTS,
 		TO_CHAR(UBDATE, 'YYYY-MM-DD HH24:MI') UBDATE, UBMAINIMG,
 		UBDETAILIMG, UBSTATE,
@@ -220,8 +220,30 @@
 		WHERE ZZMID =#{loginId} AND ZZUBCODE= #{ubcode}
 	</select>
 
+	<select id="selectResellView_List" resultType="com.NumberOne.dto.UsedBoardDto">
+	SELECT UBCODE, UBSELLBUY, UBTITLE, TO_CHAR(UBDATE, 'YYYY-MM-DD HH24:MI') AS UBDATE, UBMAINIMG
+	FROM USEDBOARDS
+	WHERE UBMID = #{ubmid}
+	
+	</select>
 
 
+	<select id="checkResellWarning_ajax" resultType = "String">
+		<!-- 게시글 신고 유무 확인 --> 		
+ 		SELECT WUEDUBCODE
+ 		FROM WARNINGUSEDBOARDS
+ 		WHERE WUMID = #{loginId}
+ 		AND WUEDUBCODE = #{ubcode}
+ 	</select>
+
+
+
+	<insert id="insertResellWarning_ajax">
+ 		<!-- 게시글 신고 -->
+ 		INSERT INTO WARNINGUSEDBOARDS
+ 		VALUES ( #{loginId}, #{ubcode} )
+ 	</insert>
+ 	 
 	<!-- 중고거래 글작성 상품 insert -->
 	<insert id="insertResellWrite_gd">
 		INSERT INTO GOODS(GDCODE, GDUBCODE, GDNAME, GDPRICE,
@@ -239,8 +261,34 @@
 		SYSDATE, #{ubmainimg}, #{ubdetailimg}, 1)
 	</insert>
 
+	<insert id="zzimClick_ajax_insert">
+	INSERT INTO ZZIM(ZZMID, ZZUBCODE) VALUES(#{zzmid}, #{zzubcode})
+	</insert>
+	
+	<delete id="zzimClick_ajax_delete">
+	DELETE FROM ZZIM
+	WHERE ZZMID = #{zzmid} AND ZZUBCODE = #{zzubcode}
+	</delete>
 
-	<!-- <insert id="zzimClick_ajax"> INSERT INTO ZZIM(ZZMID, ZZUBCODE) VALUSE() 
-		</insert> -->
+		<delete id="deleteResellWarning_ajax">
+ 		<!-- 게시글 신고 취소 -->
+ 		DELETE FROM WARNINGUSEDBOARDS
+ 		WHERE WUMID = #{loginId}
+ 		AND WUEDUBCODE = #{ubcode}
+ 	</delete>
+ 	 
+ 	 <update id="updateResellDelete_ub">
+ 	 	UPDATE USEDBOARDS
+ 	 	SET UBSTATE = 2
+ 	 	WHERE UBCODE = #{ubcode} AND UBSELLBUY = #{ubsellbuy} 
+ 	 </update>
+ 	 
+ 	 <update id="updateResellDelete_gd">
+ 	 UPDATE GOODS
+ 	 SET GDSTATE = 2
+ 	 WHERE GDUBCODE = #{ubcode}
+ 	 </update>
+ 	
 
+			
 </mapper>

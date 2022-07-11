@@ -44,7 +44,7 @@
 								<input class="search-bar_input" type="search" placeholder="검색" id="keyword">
 
 							</div>
-							<div class="">
+							<div class="row_1">
 								<button onclick="searchKeyword()">
 									<i class="fas fa-search"></i>
 								</button>
@@ -53,6 +53,7 @@
 
 						</div>
 					</div>
+					
 					<div class="d_body">
 						<div class="flex_div flex_between flex-p0">
 							<div class="item_start font-l">팔구</div>
@@ -62,6 +63,7 @@
 							</div>
 
 						</div>
+						
 						<div class="flex_div flex_space-even flex-p2">
 
 							<c:forEach items="${SellList }" var="sList">
@@ -128,13 +130,7 @@
 		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 <script type="text/javascript">
-	/*session에서 로그인한 회원의 지역정보 가져오기 */
-<%--		var loginRegion = '${sessionScope.loginRegion}';
-	if(loginRegion.length >0){
-	document.getElementById("my_region").innerText = "[" + loginRegion
-	+ "] 지역 목록입니다.";
-			}
---%>
+
 	function searchKeyword() {
 		var searchType = document.getElementById("searchType").value;
 		console.log(searchType);
