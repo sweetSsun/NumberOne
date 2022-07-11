@@ -19,8 +19,9 @@
                         <div class="sidebar-item">
                             <h4><a href="selectMyInfoCommunityView">커뮤니티</a></h4>
                             <ul class="list-unstyled">
-                                <li><a href="selectMyInfoCommunityView">글/댓글</a></li>
-                                <li><a href="selectMyInfoCommunityView">스크랩</a></li>
+                                <li><a href="selectMyInfoCommunityView">글</a></li>
+                                <li><a href="selectMyInfoCommunityView#reply">댓글</a></li>                                
+                                <li><a href="selectMyInfoCommunityView#scrap">스크랩</a></li>
                             </ul>
                         </div>
                         <div class="sidebar-item" >
