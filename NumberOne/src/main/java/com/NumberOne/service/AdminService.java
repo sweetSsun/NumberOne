@@ -596,7 +596,7 @@ public class AdminService {
 		mav = new ModelAndView();
 		int updateResult = adao.admin_updateBoardStop(bdcode);
 		if (updateResult > 0) {
-			ra.addFlashAttribute(bdcode + " 글이 정지 처리되었습니다.");
+			ra.addFlashAttribute("msg",bdcode + " 글이 정지 처리되었습니다.");
 			// 글목록으로 돌아가는 url 만들어서 매개변수 생기면 수정 필요
 			mav.setViewName("redirect:/selectBoardList");
 		}

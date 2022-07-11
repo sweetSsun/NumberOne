@@ -95,12 +95,29 @@ public class NoticeDto {
 		this.nbimgfile = nbimgfile;
 	}
 
+	public String getOriginImg() {
+		return originImg;
+	}
+
+	public void setOriginImg(String originImg) {
+		this.originImg = originImg;
+	}
+
+	public String getNbnickname() {
+		return nbnickname;
+	}
+
+	public void setNbnickname(String nbnickname) {
+		this.nbnickname = nbnickname;
+	}
+
 	@Override
 	public String toString() {
 		return "NoticeDto [nbcode=" + nbcode + ", nbmid=" + nbmid + ", nbtitle=" + nbtitle + ", nbcontents="
 				+ nbcontents + ", nbdate=" + nbdate + ", nbimg=" + nbimg + ", nbstate=" + nbstate + ", nbhits=" + nbhits
-				+ ", nbimgfile=" + nbimgfile + "]";
+				+ ", nbimgfile=" + nbimgfile + ", originImg=" + originImg + ", nbnickname=" + nbnickname + "]";
 	}
+
 	
 	
 	

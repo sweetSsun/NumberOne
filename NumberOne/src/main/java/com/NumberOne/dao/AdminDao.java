@@ -63,7 +63,8 @@ public interface AdminDao {
 	int admin_updateBoardStop(String bdcode);
 
 	int admin_updateResellStop(String ubcode);
-
+	
+	//관리자 - 댓글정지 
 	int admin_updateReplyStop(String rpcode);
 
 }
