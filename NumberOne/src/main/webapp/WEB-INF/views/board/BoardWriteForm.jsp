@@ -134,7 +134,7 @@
 					<textarea class="bdcontents" rows="17" cols="80" name="bdcontents"></textarea>
 				</div>
 				<div class="row mt-4">
-					<input type="file" name="bdimgfile" >
+					<input type="file" name="bdimgfile" accept="image/*" >
 				</div>
 				<div class="row mt-4">
 					<div class="col btn-wrapper">

@@ -125,7 +125,7 @@ body {
 				<div class="row">
 					<div class="col sidemenu">
 						<div class="sidetitle">
-							<h3 class="text-center font-weight-bold">커뮤니티</h3>
+							<h3 class="text-center font-weight-bold"><a href="selectBoardList">커뮤니티</a></h3>
 						</div>
 
 					</div>

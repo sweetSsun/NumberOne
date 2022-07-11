@@ -82,7 +82,7 @@
 				<div class="row" style="margin:auto;">
 					<h2 class="text-center">게시판 글목록 페이지 : BoardListPage.jsp</h2>
 				</div>
-				<form action="selectBoardSearchList" method="get">
+				<form action="selectBoardSearchList" method="get" onsubmit="return searchTextCheck();">
 				<input type="hidden" name="bdcategory" value="" >
 					<div class="row ">
 						<!-- 검색기능 -->
@@ -95,7 +95,7 @@
 								</select>
 						</div>
 						<div class="col-7 ">
-							<input type="text" name="searchText" placeholder="검색어를 입력하세요">
+							<input type="text" name="searchText" placeholder="검색어를 입력하세요" id="inputSearchText">
 							<button class="btn btn-sm btn-secondary">검색</button>
 						</div>
 					</div>		
@@ -240,5 +240,21 @@
 	
 	
 </script>
+
+<script type="text/javascript">
+	function searchTextCheck(){
+		/* 검색어 입력유무 확인 */
+		var inputSearchText = $("#inputSearchText").val();
+		
+		if( inputSearchText.length == 0 ){//검색어를 입력하지 않았으면 
+			alert("검색어를 입력해주세요!");
+		
+			return false;
+		}
+		
+	}
+</script>
+
+
 
 </html>

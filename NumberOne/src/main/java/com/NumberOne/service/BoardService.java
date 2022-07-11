@@ -239,6 +239,7 @@ public class BoardService {
 	      ArrayList<BoardDto> searchBdList = bdao.selectBoardSearchList(bdcategory, searchType, searchText);
 	      System.out.println(searchBdList);
 	      
+	      mav.addObject("bdcategory", bdcategory);
 	      mav.addObject("searchBdList", searchBdList);
 	      mav.setViewName("board/BoardSearchListPage");
 	      

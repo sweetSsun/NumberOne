@@ -448,6 +448,6 @@
 	
 	<!-- 댓글 정지 -->
 	<update id="admin_updateReplyStop">
-		UPDATE USEDBOARDS SET BDSTATE=0 WHERE BDCODE=#{bdcode}
+		UPDATE REPLY SET RPSTATE=0 WHERE RPCODE= #{rpcode}
 	</update>
 </mapper>
