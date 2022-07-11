@@ -26,6 +26,7 @@
 	label{
 		cursor: pointer;
 	}
+	
 </style>
 
 <script type="text/javascript">
@@ -134,9 +135,14 @@
    			<input type="hidden" id="pageNum" name="page" value="1">
   			<div class="block text-center" id="pageList">
   				<ul class="pagination">
-	           		<c:if test="${paging.prev }">
-	           			<li class="paginate_button"><a href="${paging.page -1 }" >이전</a></li>
-	           		</c:if>
+  					<c:choose>
+		           		<c:when test="${paging.prev }">
+		           			<li class="paginate_button"><a href="${paging.page -1 }" >이전</a></li>
+		           		</c:when>
+		           		<c:otherwise>
+	           				<li class="paginate_button"><span>이전</span></li>
+		           		</c:otherwise>
+  					</c:choose>
 	               	
 	               	<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="num" step="1">
 	                	<c:choose>
@@ -149,9 +155,14 @@
 	                	</c:choose>
 	               	</c:forEach>
 	               	
-					<c:if test="${paging.next }">
-	                	<li class="paginate_button"><a href="${paging.page +1 }" >다음</a></li>
-	               	</c:if>
+	               	<c:choose>
+		           		<c:when test="${paging.next }">
+		                	<li class="paginate_button"><a href="${paging.page +1 }" >다음</a></li>
+		           		</c:when>
+		           		<c:otherwise>
+	           				<li class="paginate_button"><span>다음</span></li>
+		           		</c:otherwise>
+  					</c:choose>
 	            </ul>
             </div>
             <!-- 페이징 끝 -->
