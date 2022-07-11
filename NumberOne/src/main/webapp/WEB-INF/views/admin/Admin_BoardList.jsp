@@ -109,8 +109,19 @@
 	                      <td class="overflow">${board.bdcode}</td>
 	                      <td>${board.bdcategory }
 	                      <%-- makeQueryPage 쓰는거 왜 안될까.... admin_selectBoardView${Paging.makeQueryPage(board.bdcode, paging.page) }/>  --%>
-	                      <td class="overflow"><a href="#" onclick="test('${board.bdcode}')">
-	                      ${board.bdtitle}</a></td>
+	                      <td class="overflow">
+	                      	<c:choose>
+								<c:when test="${board.bdcategory.equals('자랑') }">
+									<!-- 자랑글 상세 -->
+									<a href="loadToRoomViewPage?bdcode=${board.bdcode }">${board.bdtitle}</a>
+								</c:when>
+								<c:otherwise>
+									<!-- 일반글 상세 -->										
+									<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a>
+								</c:otherwise>
+							</c:choose>
+	                      	<%-- <a href="" onclick="test('${board.bdcode}')">${board.bdtitle}</a> --%>
+	                      </td>
 	                      <td class="overflow">${board.bdnickname}</td>
 	                      <td class="overflow">${board.bddate}</td>
 	                      <td>${board.bdhits}</td>

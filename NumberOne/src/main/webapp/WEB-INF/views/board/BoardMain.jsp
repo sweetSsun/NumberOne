@@ -96,7 +96,7 @@
 					<c:forEach items="${roomList }" var="room">
 						<div class="col-3" >
 							<div class="img-container" >
-								<a href="#"><img alt="" src="${pageContext.request.contextPath }/resources/img/room/${room.bdimg }"></a>
+								<a href="loadToRoomViewPage?bdcode=${room.bdcode }"><img alt="" src="${pageContext.request.contextPath }/resources/img/room/${room.bdimg }"></a>
 							</div>
 						</div>
 					</c:forEach>

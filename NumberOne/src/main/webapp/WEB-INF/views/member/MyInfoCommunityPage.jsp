@@ -83,7 +83,18 @@ background-color: #00BCD4;
 							<!-- 작성글 목록 -->
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center;">
 								<td>${board.bdcode }</td>
-								<td><a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a></td>
+								<td>
+									<c:choose>
+										<c:when test="${board.bdcategory.equals('자랑') }">
+											<!-- 자랑글 상세 -->
+											<a href="loadToRoomViewPage?bdcode=${board.bdcode }">${board.bdtitle}</a>
+										</c:when>
+										<c:otherwise>
+											<!-- 일반글 상세 -->										
+											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a>
+										</c:otherwise>
+									</c:choose>
+								</td>	
 								<td>${board.bdreply }</td>
 								<td>${board.bddate }</td>								
 							</tr>
@@ -110,8 +121,30 @@ background-color: #00BCD4;
 							<!-- 작성글 목록 -->
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center;">
 								<td>${reply.rpcode }</td>
-								<td><a href="selectBoardView?bdcode=${reply.rpbdcode }">${reply.rpbdtitle}</a></td>
-								<td><a href="selectBoardView?bdcode=${reply.rpbdcode }">${reply.rpcontents }</a></td>
+								<td>
+									<c:choose>
+										<c:when test="${reply.rpbdcategory.equals('자랑') }">
+											<!-- 자랑글 상세 -->
+											<a href="loadToRoomViewPage?bdcode=${reply.rpbdcode }">${reply.rpbdtitle}</a>
+										</c:when>
+										<c:otherwise>
+											<!-- 일반글 상세 -->										
+											<a href="selectBoardView?bdcode=${reply.rpbdcode }">${reply.rpbdtitle}</a>
+										</c:otherwise>
+									</c:choose>
+								</td>
+								<td>
+									<c:choose>
+										<c:when test="${reply.rpbdcategory.equals('자랑') }">
+											<!-- 자랑글 상세 -->
+											<a href="loadToRoomViewPage?bdcode=${reply.rpbdcode }">${reply.rpcontents }</a>
+										</c:when>
+										<c:otherwise>
+											<!-- 일반글 상세 -->										
+											<a href="selectBoardView?bdcode=${reply.rpbdcode }">${reply.rpcontents }</a>
+										</c:otherwise>
+									</c:choose>
+								</td>
 								<td>${reply.rpdate }</td>								
 							</tr>
 						</c:forEach>
@@ -134,10 +167,10 @@ background-color: #00BCD4;
 							<td>날짜</td>
 						</tr>
 						<c:forEach items="${scrap }" var="scrap">
-							<!-- 작성글 목록 -->
+							<!-- 스크랩 목록(스크랩은 자랑글만 가능함 -->
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center; ">
 								<td>${scrap.scbdcode }</td>
-								<td><a href="selectBoardView?bdcode=${scrap.scbdcode }">${scrap.bdtitle }</a></td>
+								<td><a href="loadToRoomViewPage?bdcode=${scrap.scbdcode }">${scrap.bdtitle }</a></td>
 								<td>${scrap.bdreply }</td>
 								<td><input type="text" value="${scrap.mnickname }" readonly="readonly" onclick="writeMember('${scrap.mnickname }');"
 								style="border: 0px; text-align: center; cursor: pointer;"></td>
