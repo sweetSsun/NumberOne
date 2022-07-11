@@ -4,27 +4,16 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Random;
 import java.util.UUID;
 
-import javax.mail.Address;
-import javax.mail.Message;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.MailException;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.mail.javamail.MimeMessageHelper;
 
 import com.NumberOne.dao.MemberDao;
 import com.NumberOne.dto.BoardDto;
@@ -47,8 +36,7 @@ public class MemberService {
 	 @Autowired private HttpServletRequest request;
 	 @Autowired private HttpSession session;
 	 
-	 @Autowired
-	 private JavaMailSender mailSender;
+
 	
 	
 	//프로필 이미지 저장 경로 설정
@@ -748,72 +736,27 @@ public class MemberService {
 		      
 		   }
 
-		
-	//비밀번호 찾기
-	/*public MemberDto LookforPw(MemberDto memberVO) {
-		MemberDto vo = null;
-		HashMap<String, String> map = new HashMap<String, String>();
-    	map.put("userId", memberVO.getMid());
-    	map.put("userEmail", memberVO.getMemail());
-		vo = mdao.selectByUserID(map);
-		
-		if(!(vo!=null && vo.getMid().equals(memberVO.getMid()) && vo.getMemail().equals(memberVO.getMemail()))) {
-			vo = null;
-		} else {
-			// 임시 비밀번호를 만들어서 사용자에게 메일로 보내줌
-			// 1. 임시 비밀번호 생성
-			StringBuilder sb = new StringBuilder();
-			Random rnd = new Random();
-			for(int i=0; i<4; i++) {
-				sb.append((char)(rnd.nextInt(26)+'A')+""); // 대문자
-				sb.append((char)(rnd.nextInt(26)+'a')+""); // 소문자
-				sb.append((char)(rnd.nextInt(10)+'0')+""); // 숫자
+		//비밀번호 찾기 요청
+		public String selectLookforPw_ajax(String checkMid, String checkMemail) {
+			System.out.println("MemberService.selectLookforPw_ajax() 호출");
+			
+			String pwCheckResult = mdao.selectLookforPw_ajax(checkMid, checkMemail);
+			
+			System.out.println(pwCheckResult);
+			
+			if(pwCheckResult !=null) {
+				
+				System.out.println("회원정보 있음");
+				
+				return pwCheckResult;
+			
+			}else {
+				
+				return null;
+				
 			}
 			
-			final String password = sb.toString();
-			
-			// 2. 임시 비밀번호로 DB를 업데이트
-			HashMap<String, String> map2 = new HashMap<String, String>();
-	    	map2.put("userid", memberVO.getMid());
-	    	map2.put("password", password);
-	    	mdao.updatePassword(map2);
-			
-			// 3. 메일 발송
-	         try {
-	        	 
-	 	    	final MemberDto vo2 = vo;
-		    	 MimeMessagePreparator preparator = new MimeMessagePreparator() {
-					
-		    		
-		    		 
-					@Override
-					public void prepare(MimeMessage mimeMessage) throws Exception {
-						 mimeMessage.setFrom();
-						 	mimeMessage.setSubject("임시 비밀번호 입니다.");
-			                mimeMessage.setRecipient(Message.RecipientType.TO,
-			                        new InternetAddress(vo2.getMid()));
-			                mimeMessage.setText("반갑습니다. " + vo2.getMnickname() + "님!!! \n"
-			                        + "임시 비밀번호 입니다. \n"
-			                		+ password + "\n 재로그인 후에 반드시 비밀번호를 변경해주세요.");
-						
-					}
-				}; // {} 안의 부분은 MimeMessagePreparator 쓰면 자동완성됨 => try 안으로 옮겼다.
-	        	 
-	             mailSender.send(preparator);
-	             System.out.println("메일 보내기 성공 ***************************************************");
-	         } catch (MailException ex) {
-	             System.err.println(ex.getMessage());
-	         }
-			
 		}
-		return vo;
-	}*/
-
-
-
-
-
-
 
 
 }

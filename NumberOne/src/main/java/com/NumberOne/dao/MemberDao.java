@@ -118,14 +118,11 @@ public interface MemberDao {
 	@Insert("INSERT INTO MEMBERS(MID, MPW, MNAME, MNICKNAME, MPHONE, MEMAIL, MREGION, MPROFILE, MJOINDATE ) "
 			+ "VALUES(#{mid}, #{mpw}, #{mname}, #{mnickname}, #{mphone}, #{memail}, #{mregion}, #{mprofile}, SYSDATE )")
 	int insertKakaoRegister(MemberDto member);
-	 	
-	
+
 	//비밀번호 찾기
-	
-	//MemberDto selectByUserID(HashMap<String, String> map);
-	//임시 비밀번호 업데이트
-	
-	//void updatePassword(HashMap<String, String> map2);
+	@Select("SELECT MPW FROM MEMBERS WHERE MID = #{mid} AND MEMAIL = #{memail}")
+	String selectLookforPw_ajax(@Param("mid")String checkMid, @Param("memail")String checkMemail);
+
 
 
 	
