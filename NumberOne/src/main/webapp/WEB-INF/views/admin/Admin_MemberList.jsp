@@ -12,6 +12,7 @@
 <%@ include file="/resources/css/BarCss.jsp" %>
 <!-- Css Styles -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/listCss.css" type="text/css">
 
 <style type="text/css">
 	.textarea-MbList{
@@ -27,12 +28,6 @@
 	textarea:focus {
     	outline: none;
 	}
-    #board_column{
-       border-bottom: solid gray 3px;
-    }
-    table{
-       margin: 20px;
-    }
   	#pageList button{
  		display: none;
 	}
@@ -67,32 +62,27 @@
             </div>
             <!-- 검색 -->
             <div class="row">
-				<div class="col-5">
-					<select name="searchType" id="searchTypeSel">
+				<div class="col-5" align="right">
+					<select name="searchType" id="searchTypeSel" class="searchType">
 						<option value="mid">아이디</option>
 						<option value="mname">이름</option>
 						<option value="mnickname">닉네임</option>
 					</select>
 				</div>
-                <div class="col-5 input-group">
-                   	<input type="text" style="width:100px;" class="form-control" name="keyword" id="searchText" placeholder="검색 키워드를 입력하세요!" value="${paging.keyword}">
-                   	<span class="input-group-btn">
-                      	<button class="btn btn-secondary" type="submit" name="page" value="1">찾기</button>
-                   	</span>
-            	</div>
-	            <div class="col-2">
-				</div>
+                <div class="col-7">
+                   	<input type="text" class="" name="keyword" id="searchText" placeholder="검색 키워드를 입력하세요!" value="${paging.keyword}">
+                    <button class="btn btn-sm btn-secondary" type="submit">검색</button>
            	</div>
            
             <div class="row" style="margin-top: 20px;">
                <div class="col">
                   <!-- 상태값 정렬 -->
-                   <select name="searchVal" id="searchValSel" onchange="mbSearchState(this.value)">
-                     <option value="all">전체</option>
-                     <option value="active">활동</option>
-                     <option value="warning">경고</option>
-                     <option value="inactive">정지</option>
-                     <option value="withdraw">탈퇴</option>
+                   <select class="categoryList" name="searchVal" id="searchValSel" onchange="mbSearchState(this.value)">
+                     <option class="categorySel" value="all">전체</option>
+                     <option class="categorySel" value="active">활동</option>
+                     <option class="categorySel" value="warning">경고</option>
+                     <option class="categorySel" value="inactive">정지</option>
+                     <option class="categorySel" value="withdraw">탈퇴</option>
                   </select>
                </div>
             </div>
@@ -101,39 +91,39 @@
             <div class="row">
             <table style="table-layout: fixed;" >
                <thead >
-                  <tr class="fw-bold" id="board_column">
+                  <tr class="text-center fw-bold" id="board_column">
                      <td style="max-width:6rem;">아이디</td>
                      <td style="max-width:5rem;">이름</td>
                      <td style="max-width:6rem;">닉네임</td>
                      <td>연락처</td>
                      <td>이메일</td>
-                     <td>가입일</td>
-                     <td style="width:4rem;">상태</td>
+                     <td style="width:10%">가입일</td>
+                     <td style="width:3rem;">상태</td>
                   </tr>
                </thead>
                <tbody id="mbListTbody">
 	               <c:forEach items="${memberList }" var="member">
 	                   <!-- 회원관리 목록 -->
-	                   <tr style="border-bottom: solid gray 1px;">
-	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;" class="overflow">${member.mid}</td>
-	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;" class="overflow">${member.mname}</td>
-	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;" class="overflow">${member.mnickname}</td>
-	                      <td class="overflow">${member.mphone}</td>
-	                      <td class="overflow">${member.memail}</td>
-	                      <td class="overflow">${member.mjoindate}</td>
+	                   <tr style="border-bottom: solid #E0E0E0 1px;">
+	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;" class="overflow text-center">${member.mid}</td>
+	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;" class="overflow text-center">${member.mname}</td>
+	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;" class="overflow text-center">${member.mnickname}</td>
+	                      <td class="overflow text-center">${member.mphone}</td>
+	                      <td class="overflow text-center">${member.memail}</td>
+	                      <td class="overflow text-center">${member.mjoindate}</td>
 	                      <td>
 	                      	<c:choose>
 	                      		<c:when test="${member.mwarning > 0}">
-	                      			<button class="btn btn-warning" type="button" onclick="showMstateModal(this,'${member.mid }')">경고</button>
+	                      			<button class="btn btn-sm btn-warning" type="button" onclick="showMstateModal(this,'${member.mid }')">경고</button>
 	                      		</c:when>
 	                      		<c:when test="${member.mstate == 0}">
-	                      			<button class="btn btn-danger"  type="button" onclick="showMstateModal(this, '${member.mid }')">정지</button>
+	                      			<button class="btn btn-sm btn-danger"  type="button" onclick="showMstateModal(this, '${member.mid }')">정지</button>
 	                      		</c:when>
 	                      		<c:when test="${member.mstate == 1}">
-	                      			<button class="btn btn-primary"  type="button" onclick="showMstateModal(this,'${member.mid }')">활동</button>
+	                      			<button class="btn btn-sm btn-primary"  type="button" onclick="showMstateModal(this,'${member.mid }')">활동</button>
 	                      		</c:when>
 	                      		<c:when test="${member.mstate == 2}">
-	                      			<button class="btn btn-secondary" type="button"  style="cursor:default;">탈퇴</button>
+	                      			<button class="btn btn-sm btn-secondary" type="button"  style="cursor:default;">탈퇴</button>
 	                      		</c:when>
 	                      	</c:choose>
 	                      </td>
@@ -298,6 +288,55 @@
 				$("#memberInfoModal").modal("hide");
 			});
 		}
+		
+		// 회원상태 변경 확인 모달창 출력
+		var btnObj;
+		function showMstateModal(obj, mid){
+			console.log("showMstateModal() 실행");
+			btnObj = $(obj);
+			var btnObjText = btnObj.text();
+			console.log("btnObjText:"+btnObjText);
+			if (btnObjText == "활동" || btnObjText == "경고"){
+				$("#updateMstateModalBody").text(mid + " 회원을 정지 처리하시겠습니까?");
+			} else {
+				$("#updateMstateModalBody").text(mid + " 회원을 활동 처리하시겠습니까?");
+			}
+			$("#mid").val(mid);
+			$("#updateMstateModal").modal("show");
+		}
+		
+		// 회원상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
+		function updateMstate(){
+			console.log("updateMstate() 실행");
+			var mid = $("#mid").val();
+			console.log(btnObj.text());
+			if (btnObj.text() == "활동" || btnObj.text() == "경고" ){
+				var mstate = 0;				
+			} else {
+				var mstate = 1;				
+			}
+			$.ajax({
+				type: "get",
+				data: {"mid":mid, "mstate":mstate},
+				url: "admin_updateMstate_ajax",
+				dataType: "json",
+				success: function(result){
+					console.log(result);
+						if (result.mstate == 0){
+							btnObj.text("정지").addClass("btn-danger").removeClass("btn-primary").removeClass("btn-warning");
+						} else if (result.mwarning > 0){
+							btnObj.text("경고").addClass("btn-warning").removeClass("btn-primary").removeClass("btn-secondary");
+						} else {
+							btnObj.text("활동").addClass("btn-primary").removeClass("btn-secondary").removeClass("btn-warning");
+						}
+					$("#updateMstateModal").modal("hide");
+				},
+				error: function(){
+					$("#updateMstateModal").modal("hide");
+					alert("회원상태 변경에 실패했습니다.");
+				}
+			});
+		}
 	</script>
 		
 	<script type="text/javascript">
@@ -394,22 +433,22 @@
 					var output = "";
 					console.log(result);					
 					for (var i = 0; i < result.length; i++){
-						output += "<tr style='border-bottom: solid gray 1px;'>";
-						output += "<td onclick='showMemberInfoModal( \"" + result[i].mid + "\")' class='overflow' style='cursor: pointer; max-width:6rem;'>" + result[i].mid + "</td>";
-						output += "<td onclick='showMemberInfoModal( \"" + result[i].mid + "\")' class='overflow' style='cursor: pointer; max-width:5rem;'>" + result[i].mname + "</td>";
-						output += "<td onclick='showMemberInfoModal( \"" + result[i].mid + "\")' class='overflow' style='cursor: pointer; max-width:6rem;'>" + result[i].mnickname + "</td>";
-						output += "<td class='overflow' >" + result[i].mphone + "</td>";
-						output += "<td class='overflow' >" + result[i].memail + "</td>";
-						output += "<td class='overflow' >" + result[i].mjoindate + "</td>";
-						output += "<td>"
+						output += "<tr style='border-bottom: solid #E0E0E0 1px;'>";
+						output += "<td onclick='showMemberInfoModal( \"" + result[i].mid + "\")' class='text-center overflow' style='cursor: pointer; max-width:6rem;'>" + result[i].mid + "</td>";
+						output += "<td onclick='showMemberInfoModal( \"" + result[i].mid + "\")' class='text-center overflow' style='cursor: pointer; max-width:5rem;'>" + result[i].mname + "</td>";
+						output += "<td onclick='showMemberInfoModal( \"" + result[i].mid + "\")' class='text-center overflow' style='cursor: pointer; max-width:6rem;'>" + result[i].mnickname + "</td>";
+						output += "<td class='text-center overflow' >" + result[i].mphone + "</td>";
+						output += "<td class='text-center overflow' >" + result[i].memail + "</td>";
+						output += "<td class='text-center overflow' >" + result[i].mjoindate + "</td>";
+						output += "<td class='text-center'>"
 						if (result[i].mwarning > 0){
-							output += "<button class='btn btn-warning' onclick='showMstateModal(this, \""+result[i].mid+"\")' style='width:4rem;'>경고</button>";
+							output += "<button class='btn btn-sm btn-warning' onclick='showMstateModal(this, \""+result[i].mid+"\")' style='width:4rem;'>경고</button>";
 						} else if (result[i].mstate == 0){
-							output += "<button class='btn btn-danger' onclick='showMstateModal(this, \""+result[i].mid+"\")' style='width:4rem;'>정지</button>";
+							output += "<button class='btn btn-sm btn-danger' onclick='showMstateModal(this, \""+result[i].mid+"\")' style='width:4rem;'>정지</button>";
 						} else if (result[i].mstate == 1){
-							output += "<button class='btn btn-primary' onclick='showMstateModal(this, \""+result[i].mid+"\")' style='width:4rem;'>활동</button>";
+							output += "<button class='btn btn-sm btn-primary' onclick='showMstateModal(this, \""+result[i].mid+"\")' style='width:4rem;'>활동</button>";
 						} else {
-							output += "<button class='btn btn-secondary' style='cursor:default; style='width:4rem;''>탈퇴</button>";
+							output += "<button class='btn btn-sm btn-secondary' style='cursor:default; style='width:4rem;''>탈퇴</button>";
 						}
 						output += "</td>";
 						output += "</tr>";
@@ -452,55 +491,7 @@
 				}
 			})
 		}	
-		
-		// 회원상태 변경 확인 모달창 출력
-		var btnObj;
-		function showMstateModal(obj, mid){
-			console.log("showMstateModal() 실행");
-			btnObj = $(obj);
-			var btnObjText = btnObj.text();
-			console.log("btnObjText:"+btnObjText);
-			if (btnObjText == "활동" || btnObjText == "경고"){
-				$("#updateMstateModalBody").text(mid + " 회원을 정지 처리하시겠습니까?");
-			} else {
-				$("#updateMstateModalBody").text(mid + " 회원을 활동 처리하시겠습니까?");
-			}
-			$("#mid").val(mid);
-			$("#updateMstateModal").modal("show");
-		}
-		
-		// 회원상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
-		function updateMstate(){
-			console.log("updateMstate() 실행");
-			var mid = $("#mid").val();
-			console.log(btnObj.text());
-			if (btnObj.text() == "활동" || btnObj.text() == "경고" ){
-				var mstate = 0;				
-			} else {
-				var mstate = 1;				
-			}
-			$.ajax({
-				type: "get",
-				data: {"mid":mid, "mstate":mstate},
-				url: "admin_updateMstate_ajax",
-				dataType: "json",
-				success: function(result){
-					console.log(result);
-						if (result.mstate == 0){
-							btnObj.text("정지").addClass("btn-danger").removeClass("btn-primary").removeClass("btn-warning");
-						} else if (result.mwarning > 0){
-							btnObj.text("경고").addClass("btn-warning").removeClass("btn-primary").removeClass("btn-secondary");
-						} else {
-							btnObj.text("활동").addClass("btn-primary").removeClass("btn-secondary").removeClass("btn-warning");
-						}
-					$("#updateMstateModal").modal("hide");
-				},
-				error: function(){
-					$("#updateMstateModal").modal("hide");
-					alert("회원상태 변경에 실패했습니다.");
-				}
-			});
-		}
+
 	
 	</script>
 </body>

@@ -12,24 +12,15 @@
 <!-- Css Styles -->
 <%@ include file="/resources/css/BarCss.jsp" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/listCss.css" type="text/css">
 
 <style type="text/css">
-    #board_column{
-       border-bottom: solid gray 3px;
-    }
-    table{
-       margin: 20px;
-    }
+
   	#pageList button{
  		display: none;
 	}
 	label{
 		cursor: pointer;
-	}
-	.btn-numberone{
-		color: #ffffff;
-		background-color: #00bcd4;
-		border-color: #00bcd4;
 	}
 	
 </style>
@@ -65,32 +56,26 @@
 	            </div>
 	            <!-- 검색 -->
 	            <div class="row">
-					<div class="col-5">
-						<select name="searchType" id="searchTypeSel">
+					<div class="col-5" align="right">
+						<select name="searchType" id="searchTypeSel" class="searchType">
 							<option value="nbTitle">제목</option>
 							<option value="nbContents">내용</option>
 							<option value="nbTitleContents">제목+내용</option>
 						</select>
 					</div>
-	                <div class="col-5 input-group">
-                   		<input type="text" style="width:100px;" class="form-control" name="keyword" id="searchText" placeholder="검색 키워드를 입력하세요!" value="${paging.keyword}">
-                    	<span class="input-group-btn">
-	                      	<button class="btn btn-secondary" type="submit">찾기</button>
-                    	</span>
+	                <div class="col-7">
+                   		<input type="text" class="" name="keyword" id="searchText" placeholder="검색 키워드를 입력하세요!" value="${paging.keyword}">
+	                    <button class="btn btn-sm btn-secondary" type="submit">검색</button>
 	            	</div>
-		            <div class="col-2">
-						<!-- 공지작성 버튼 -->
-						<button class="btn btn-primary btm-sm" type="button" onclick="location.href='admin_loadToNoticeWrite'">글쓰기</button>
-					</div>
                	</div>
            
             <div class="row" style="margin-top: 20px;">
                <div class="col">
                   <!-- 상태값 정렬 -->
-                   <select name="searchVal" id="searchValSel" onchange="nbSearchState(this.value)">
-                     <option value="all">전체</option>
-                     <option value="active">활성</option>
-                     <option value="inactive">삭제</option>
+                   <select class="categoryList" name="searchVal" id="searchValSel" onchange="nbSearchState(this.value)">
+                     <option class="categorySel" value="all">전체</option>
+                     <option class="categorySel" value="active">활성</option>
+                     <option class="categorySel" value="inactive">삭제</option>
                   </select>
                </div>
             </div>
@@ -99,21 +84,21 @@
             <div class="row">
             <table style="table-layout: fixed;">
                <thead >
-                  <tr class="fw-bold" id="board_column">
+                  <tr class="text-center fw-bold" id="board_column">
                      <td style="width:10%;">글번호</td>
                      <td>제목</td>
 				     <td style="width:15%;">작성자</td>
                      <td style="width:10%;">작성일</td>
                      <td style="width:4rem;" class="text-center">조회</td>
-                     <td style="width:4rem;" class="text-center">상태</td>
-                     <td style="width:4rem;" class="text-center">고정</td>
+                     <td style="width:3rem;" class="text-center">상태</td>
+                     <td style="width:3rem;" class="text-center">고정</td>
                   </tr>
                </thead>
                <tbody id="nbListTbody">
 	               <c:forEach items="${noticeList }" var="notice">
 	                   <!-- 회원관리 목록 -->
-	                   <tr style="border-bottom: solid gray 1px;">
-	                      <td class="overflow">${notice.nbcode}</td>
+	                   <tr style="border-bottom: solid #E0E0E0 1px;">
+	                      <td class="overflow text-center">${notice.nbcode}</td>
  	                      <td class="overflow"><a href="admin_selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}" >${notice.nbtitle}</a></td>
 	                      <td class="overflow">${notice.nbnickname}</td>
 	                      <td class="overflow">${notice.nbdate}</td>
@@ -121,10 +106,10 @@
 	                      <td>
 	                      	<c:choose>
 	                      		<c:when test="${notice.nbstate == 1}">
-	                      			<button class="btn btn-primary" type="button" onclick="showNbstateModal(this,'${notice.nbcode }')">활성</button>
+	                      			<button class="btn btn-sm btn-primary" type="button" onclick="showNbstateModal(this,'${notice.nbcode }')">활성</button>
 	                      		</c:when>
 	                      		<c:otherwise>
-	                      			<button class="btn btn-secondary" type="button" onclick="showNbstateModal(this, '${notice.nbcode }')">삭제</button>
+	                      			<button class="btn btn-sm btn-secondary" type="button" onclick="showNbstateModal(this, '${notice.nbcode }')">삭제</button>
 	                      		</c:otherwise>
 	                      	</c:choose>
 	                      </td>
@@ -132,10 +117,10 @@
 	                      	<c:if test="${notice.nbstate == 1 }">
 		                      	<c:choose>
 		                      		<c:when test="${notice.nbfix == 1}">
-		                      			<button class="btn-numberone" type="button" onclick="showNbfixModal(this,'${notice.nbcode }')">고정</button>
+		                      			<button class="btn-numberone btn-sm" type="button" onclick="showNbfixModal(this,'${notice.nbcode }')">고정</button>
 		                      		</c:when>
 		                      		<c:otherwise>
-		                      			<button class="btn btn-secondary" type="button" onclick="showNbfixModal(this,'${notice.nbcode }')">일반</button>
+		                      			<button class="btn btn-sm btn-secondary" type="button" onclick="showNbfixModal(this,'${notice.nbcode }')">일반</button>
 		                      		</c:otherwise>
 		                      	</c:choose>
 	                      	</c:if>
@@ -144,6 +129,10 @@
 	                </c:forEach>                 
                 </tbody>
             </table>
+            <!-- 공지작성 버튼 -->
+            <div align="right" class="col mt-2">
+				<button class="btn-numberone btm-sm fw-bold" type="button" onclick="location.href='admin_loadToNoticeWrite'">글작성</button>
+            </div>
             
    			<!-- 페이징 시작 -->
    			<input type="hidden" id="pageNum" name="page" value="1">
@@ -413,8 +402,8 @@
 					var output = "";
 					console.log(result);					
 					for (var i = 0; i < result.length; i++){
-						output += "<tr style='border-bottom: solid gray 1px;'>";
-						output += "<td class='overflow'>" + result[i].nbcode + "</td>";
+						output += "<tr style='border-bottom: solid #E0E0E0 1px;'>";
+						output += "<td class='text-center overflow'>" + result[i].nbcode + "</td>";
 						// <a href="admin_selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}" >
 						// ajax에선 paging이 아니라 result(json 타입의 String)으로 온다.
 						// java 코드를 먼저 읽고 html은 나중이기 때문에 onclick 이벤트를 부여해도 codeIdx값을 넘겨줄 수가 없음
@@ -423,21 +412,21 @@
 								+"&page=1&perPageNum=10&searchVal=" + searchVal + "&searchType=" + searchType + "&keyword=" + searchText + "'>" 
 								+ result[i].nbtitle + "</a></td>";
 						output += "<td class='overflow'>" + result[i].nbmid + "</td>";
-						output += "<td class='overflow'>" + result[i].nbdate + "</td>";
+						output += "<td class='text-center overflow'>" + result[i].nbdate + "</td>";
 						output += "<td class='text-center'>" + result[i].nbhits + "</td>";
-						output += "<td>"
+						output += "<td class='text-center'>"
 						if (result[i].nbstate == 1){
-							output += "<button class='btn btn-primary' type='button' onclick='showNbstateModal(this, \""+result[i].nbcode+"\")'>활성</button>";
+							output += "<button class='btn btn-sm btn-primary' type='button' onclick='showNbstateModal(this, \""+result[i].nbcode+"\")'>활성</button>";
 						} else {
-							output += "<button class='btn btn-secondary' type='button' onclick='showNbstateModal(this,\""+result[i].nbcode+"\")'>삭제</button>";
+							output += "<button class='btn btn-sm btn-secondary' type='button' onclick='showNbstateModal(this,\""+result[i].nbcode+"\")'>삭제</button>";
 						}
 						output += "</td>";
-						output += "<td id='fixBtn_"+result[i].nbcode+"'>"
+						output += "<td id='fixBtn_"+result[i].nbcode+"' class='text-center'>"
 							if (result[i].nbstate == 1){
 								if (result[i].nbfix == 1){
-									output += "<button class='btn-numberone' type='button' onclick='showNbfixModal(this, \""+result[i].nbcode+"\")'>고정</button>";
+									output += "<button class='btn-sm btn-numberone' type='button' onclick='showNbfixModal(this, \""+result[i].nbcode+"\")'>고정</button>";
 								} else {
-									output += "<button class='btn btn-secondary' type='button' onclick='showNbfixModal(this, \""+result[i].nbcode+"\")'>기본</button>";
+									output += "<button class='btn btn-sm btn-secondary' type='button' onclick='showNbfixModal(this, \""+result[i].nbcode+"\")'>기본</button>";
 								}
 							}
 							output += "</td>";

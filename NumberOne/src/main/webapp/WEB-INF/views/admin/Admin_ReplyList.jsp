@@ -12,14 +12,9 @@
 <!-- Css Styles -->
 <%@ include file="/resources/css/BarCss.jsp" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/listCss.css" type="text/css">
 
 <style type="text/css">
-    #board_column{
-       border-bottom: solid gray 3px;
-    }
-    table{
-       margin: 20px;
-    }
   	#pageList button{
  		display: none;
 	}
@@ -57,32 +52,28 @@
 	            </div>
 	            <!-- 검색 -->
 	            <div class="row">
-					<div class="col-5">
-						<select name="searchType" id="searchTypeSel">
+					<div class="col-5" align="right">
+						<select name="searchType" id="searchTypeSel" class="searchType">
 							<option value="rpContents">내용</option>
 							<option value="rpnickname">작성자</option>
 						</select>
 					</div>
-	                <div class="col-5 input-group">
-                    	<input type="text" style="width:100px;" class="form-control" name="keyword" id="searchText" placeholder="검색 키워드를 입력하세요!" value="${paging.keyword}">
-                    	<span class="input-group-btn">
-	                      	<button class="btn btn-secondary" type="submit" name="page" value="1">찾기</button>
-                    	</span>
+	                <div class="col-7">
+                    	<input type="text" class="" name="keyword" id="searchText" placeholder="검색 키워드를 입력하세요!" value="${paging.keyword}">
+	                    <button class="btn btn-sm btn-secondary" type="submit">검색</button>
 	            	</div>
-		            <div class="col-2">
-					</div>
                	</div>
            
             <div class="row" style="margin-top: 20px;">
                <div class="col">
                    <!-- 상태값 정렬 -->
-                   <select name="searchVal" id="searchValSel" onchange="rpSearchState(this.value)">
-                     <option value="all">전체</option>
-                     <option value="자랑">자랑</option>
-                     <option value="자유">자유</option>
-                     <option value="질문">질문</option>
-                     <option value="정보">정보</option>
-                     <option value="후기">후기</option>
+                   <select class="categoryList" name="searchVal" id="searchValSel" onchange="rpSearchState(this.value)">
+                     <option class="categorySel" value="all">전체</option>
+                     <option class="categorySel" value="자랑">자랑</option>
+                     <option class="categorySel" value="자유">자유</option>
+                     <option class="categorySel" value="질문">질문</option>
+                     <option class="categorySel" value="정보">정보</option>
+                     <option class="categorySel" value="후기">후기</option>
                   </select>
                </div>
             </div>
@@ -91,28 +82,27 @@
             <div class="row">
             <table style="table-layout: fixed;">
                <thead >
-                  <tr class="fw-bold" id="board_column">
+                  <tr class="text-center fw-bold" id="board_column">
                      <td style="width:10%;">댓글번호</td>
-                     <td style="width:4.5rem;">말머리</td>
+                     <td style="width:4rem;">말머리</td>
                      <td style="width:50%;">내용</td>
                      <td style="width:15%;">작성자</td>
-                     <td style="width:20%;">작성일</td>
-                     <td style="width:4rem;">상태</td>
+                     <td style="width:15%;">작성일</td>
+                     <td style="width:3rem;">상태</td>
                   </tr>
                </thead>
                <tbody id="rpListTbody">
 	               <c:forEach items="${replyList }" var="reply">
 	                   <!-- 회원관리 목록 -->
-	                   <tr style="border-bottom: solid gray 1px;">
-	                      <td class="overflow">${reply.rpcode}</td>
-	                      <td>${reply.rpbdcategory}</td>
-	                      <%-- makeQueryPage 쓰는거 왜 안될까.... admin_selectBoardView${Paging.makeQueryPage(board.bdcode, paging.page) }/>  --%>
+	                   <tr style="border-bottom: solid #E0E0E0 1px;">
+	                      <td class="overflow text-center">${reply.rpcode}</td>
+	                      <td class="category text-center">${reply.rpbdcategory}</td>
 	                      <td class="overflow"><a href="#">
 	                      ${reply.rpcontents}</a></td>
-	                      <td class="overflow">${reply.rpnickname}</td>
-	                      <td class="overflow">${reply.rpdate}</td>
+	                      <td class="overflow text-center">${reply.rpnickname}</td>
+	                      <td class="overflow text-center">${reply.rpdate}</td>
 	                      <td>
-                   			  <button class="btn btn-danger" type="button" onclick="showRpstateModal(this, '${reply.rpcode }')">정지</button>
+                   			  <button class="btn btn-sm btn-danger" type="button" onclick="showRpstateModal(this, '${reply.rpcode }')">정지</button>
 	                      </td>
 	                   </tr>
 	                </c:forEach>                 
@@ -170,7 +160,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="updateRpstateModalLabel"> 게시글상태 변경 확인 </h5>
+                    <h5 class="modal-title" id="updateRpstateModalLabel"> 댓글상태 변경 확인 </h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -199,6 +189,55 @@
 			close[i].addEventListener("click", function(){
 				$("#updateRpstateModal").modal("hide");
 			});
+		}		
+		
+		// 댓글상태 변경 확인 모달창 출력
+		var btnObj;
+		function showRpstateModal(obj, rpcode){
+			console.log("showRpstateModal() 실행");
+			btnObj = $(obj);
+			var btnObjText = btnObj.text();
+			console.log("btnObjText:"+btnObjText);
+			if (btnObjText == "활성"){
+				$("#updateRpstateModalBody").text(rpcode + "번 게시글을 정지 처리하시겠습니까?");
+			} else {
+				$("#updateRpstateModalBody").text(rpcode + "번 게시글의 정지를 취소하시겠습니까?");
+			}
+			$("#rpcode").val(rpcode);
+			$("#updateRpstateModal").modal("show");
+		}
+		
+		// 댓글상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
+		function updateRpstate(){
+			console.log("updateRpstate() 실행");
+			var rpcode = $("#rpcode").val();
+			console.log(btnObj.text());
+			if (btnObj.text() == "활성"){
+				var rpstate = 0;				
+			} else {
+				var rpstate = 1;				
+			}
+			$.ajax({
+				type: "get",
+				data: {"rpcode":rpcode, "rpstate":rpstate},
+				url: "admin_updateRpstate_ajax",
+				dataType: "json",
+				success: function(result){
+					if(result > 0){
+						if (rpstate == 0){
+							btnObj.text("정지").addClass("btn-danger").removeClass("btn-primary");
+						} else {
+							btnObj.text("활성").addClass("btn-primary").removeClass("btn-danger");
+						}
+					}
+					$("#updateRpstateModal").modal("hide");
+				},
+				error: function(){
+					$("#updateRpstateModal").modal("hide");
+					alert("댓글상태 변경에 실패했습니다.");
+				}
+			});
+			
 		}
 	</script>
 		
@@ -261,14 +300,14 @@
 					var output = "";
 					console.log(result);					
 					for (var i = 0; i < result.length; i++){
-						output += "<tr style='border-bottom: solid gray 1px;'>";
-						output += "<td class='overflow'>" + result[i].rpcode + "</td>";
-						output += "<td>" + result[i].rpbdcategory + "</td>";
+						output += "<tr style='border-bottom: solid #E0E0E0 1px;'>";
+						output += "<td class='text-center overflow'>" + result[i].rpcode + "</td>";
+						output += "<td class='category text-center'>" + result[i].rpbdcategory + "</td>";
 						output += "<td class='overflow'><a href='admin_selectResellView?bdcode=" + result[i].bdcode + "'>" + result[i].rpcontents + "</a></td>";
-						output += "<td class='overflow'>" + result[i].rpnickname + "</td>";
-						output += "<td class='overflow'>" + result[i].rpdate + "</td>";
-						output += "<td>"
-						output += "<button class='btn btn-danger' type='button' onclick='showRpstateModal(this,\""+result[i].rpcode+"\")'>정지</button>";
+						output += "<td class='text-center overflow'>" + result[i].rpnickname + "</td>";
+						output += "<td class='text-center overflow'>" + result[i].rpdate + "</td>";
+						output += "<td class='text-center'>"
+						output += "<button class='btn btn-sm btn-danger' type='button' onclick='showRpstateModal(this,\""+result[i].rpcode+"\")'>정지</button>";
 						output += "</td>";
 						output += "</tr>";
 					}
@@ -311,55 +350,7 @@
 			})
 			
 		}	
-		
-		// 공지상태 변경 확인 모달창 출력
-		var btnObj;
-		function showRpstateModal(obj, rpcode){
-			console.log("showRpstateModal() 실행");
-			btnObj = $(obj);
-			var btnObjText = btnObj.text();
-			console.log("btnObjText:"+btnObjText);
-			if (btnObjText == "활성"){
-				$("#updateRpstateModalBody").text(rpcode + "번 게시글을 정지 처리하시겠습니까?");
-			} else {
-				$("#updateRpstateModalBody").text(rpcode + "번 게시글의 정지를 취소하시겠습니까?");
-			}
-			$("#rpcode").val(rpcode);
-			$("#updateRpstateModal").modal("show");
-		}
-		
-		// 공지상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
-		function updateRpstate(){
-			console.log("updateRpstate() 실행");
-			var rpcode = $("#rpcode").val();
-			console.log(btnObj.text());
-			if (btnObj.text() == "활성"){
-				var rpstate = 0;				
-			} else {
-				var rpstate = 1;				
-			}
-			$.ajax({
-				type: "get",
-				data: {"rpcode":rpcode, "rpstate":rpstate},
-				url: "admin_updateRpstate_ajax",
-				dataType: "json",
-				success: function(result){
-					if(result > 0){
-						if (rpstate == 0){
-							btnObj.text("정지").addClass("btn-danger").removeClass("btn-primary");
-						} else {
-							btnObj.text("활성").addClass("btn-primary").removeClass("btn-danger");
-						}
-					}
-					$("#updateRpstateModal").modal("hide");
-				},
-				error: function(){
-					$("#updateRpstateModal").modal("hide");
-					alert("글상태 변경에 실패했습니다.");
-				}
-			});
-			
-		}
+
 	</script>
 	
 	

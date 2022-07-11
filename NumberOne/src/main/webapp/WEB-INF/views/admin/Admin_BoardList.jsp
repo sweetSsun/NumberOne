@@ -12,14 +12,9 @@
 <%@ include file="/resources/css/BarCss.jsp" %>
 <!-- Css Styles -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/listCss.css" type="text/css">
 
 <style type="text/css">
-    #board_column{
-       border-bottom: solid gray 3px;
-    }
-    table{
-       margin: 20px;
-    }
   	#pageList button{
  		display: none;
 	}
@@ -57,33 +52,27 @@
 	            </div>
 	            <!-- 검색 -->
 	            <div class="row">
-					<div class="col-5">
-						<select name="searchType" id="searchTypeSel">
+					<div class="col-5" align="right">
+						<select name="searchType" id="searchTypeSel" class="searchType">
 							<option value="bdTitle">제목</option>
 							<option value="bdContents">내용</option>
 							<option value="bdTitleContents">제목+내용</option>
 							<option value="bdnickname">작성자</option>
 						</select>
 					</div>
-	                <div class="col-5 input-group">
-                    	<input type="text" style="width:100px;" class="" name="keyword" id="searchText" placeholder="검색 키워드를 입력하세요!" value="${paging.keyword}">
-                    	<span class="input-group-btn">
-	                      	<button class="btn btn-secondary" type="submit" name="page" value="1">찾기</button>
-                    	</span>
+	                <div class="col-7">
+                    	<input type="text" class="" name="keyword" id="searchText" placeholder="검색 키워드를 입력하세요!" value="${paging.keyword}">
+	                    <button class="btn btn-sm btn-secondary" type="submit">검색</button>
 	            	</div>
-		            <div class="col-2">
-						<!-- 공지작성 버튼 -->
-						<!-- <button class="btn btn-primary btm-sm" type="button" onclick="location.href='admin_loadToNoticeWrite'">글쓰기</button> -->
-					</div>
                	</div>
            
             <div class="row" style="margin-top: 20px;">
                <div class="col">
                   <!-- 상태값 정렬 -->
-                   <select name="searchVal" id="searchValSel" onchange="bdSearchState(this.value)">
-                     <option value="all">전체</option>
-                     <option value="warning">경고</option>
-                     <option value="inactive">정지</option>
+                   <select class="categoryList" name="searchVal" id="searchValSel" onchange="bdSearchState(this.value)">
+                     <option class="categorySel" value="all">전체</option>
+                     <option class="categorySel" value="warning">경고</option>
+                     <option class="categorySel" value="inactive">정지</option>
                   </select>
                </div>
             </div>
@@ -92,36 +81,42 @@
             <div class="row">
             <table style="table-layout: fixed;" >
                <thead >
-                  <tr class="fw-bold" id="board_column">
+                  <tr class="text-center fw-bold" id="board_column">
                      <td style="width:10%;">글번호</td>
                      <td style="width:4.5rem;">말머리</td>
                      <td style="">제목</td>
                      <td style="width:15%;">작성자</td>
                      <td style="width:10%;">작성일</td>
                      <td style="width:4rem;">조회</td>
-                     <td style="width:4rem;">추천</td>
-                     <td style="width:4rem;">상태</td>
+                     <td style="width:3rem;">추천</td>
+                     <td style="width:3rem;">상태</td>
                   </tr>
                </thead>
                <tbody id="bdListTbody">
 	               <c:forEach items="${boardList }" var="board">
 	                   <!-- 일반게시글 관리 목록 -->
-	                   <tr style="border-bottom: solid gray 1px;">
-	                      <td class="overflow">${board.bdcode}</td>
-	                      <td>${board.bdcategory }
-	                      <td class="overflow"><a href="admin_selectBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}">
-	                      ${board.bdtitle}</a></td>
-	                      <td class="overflow">${board.bdnickname}</td>
-	                      <td class="overflow">${board.bddate}</td>
+	                   <tr style="border-bottom: solid #E0E0E0 1px;">
+	                      <td class="overflow text-center">${board.bdcode}</td>
+	                      <td class="category text-center">${board.bdcategory }
+	                      <td class="overflow">
+	                      	<a href="admin_selectBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}">
+	                      	<span class="overflow">
+	                      	${board.bdtitle}
+	                      	</span>
+	                      	</a>
+	                      	<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span>
+	                      </td>
+	                      <td class="text-center overflow">${board.bdnickname}</td>
+	                      <td class="text-center overflow">${board.bddate}</td>
 	                      <td class="text-center">${board.bdhits}</td>
 	                      <td class="text-center">${board.bdrccount}</td>
 	                      <td class="text-center">
 	                      	<c:choose>
 	                      		<c:when test="${board.bdstate == 1}">
-	                      			<button class="btn btn-warning" type="button" onclick="showBdstateModal(this,'${board.bdcode }')">경고</button>
+	                      			<button class="btn btn-sm btn-warning" type="button" onclick="showBdstateModal(this,'${board.bdcode }')">경고</button>
 	                      		</c:when>
 	                      		<c:otherwise>
-	                      			<button class="btn btn-danger" type="button" onclick="showBdstateModal(this, '${board.bdcode }')">정지</button>
+	                      			<button class="btn btn-sm btn-danger" type="button" onclick="showBdstateModal(this, '${board.bdcode }')">정지</button>
 	                      		</c:otherwise>
 	                      	</c:choose>
 	                      </td>
@@ -210,6 +205,54 @@
 			close[i].addEventListener("click", function(){
 				$("#updateBdstateModal").modal("hide");
 			});
+		}		
+		
+		// 공지상태 변경 확인 모달창 출력
+		var btnObj;
+		function showBdstateModal(obj, bdcode){
+			console.log("showBdstateModal() 실행");
+			btnObj = $(obj);
+			var btnObjText = btnObj.text();
+			console.log("btnObjText:"+btnObjText);
+			if (btnObjText == "경고"){
+				$("#updateBdstateModalBody").text(bdcode + "번 게시글을 정지 처리하시겠습니까?");
+			} else {
+				$("#updateBdstateModalBody").text(bdcode + "번 게시글의 정지를 취소하시겠습니까?");
+			}
+			$("#bdcode").val(bdcode);
+			$("#updateBdstateModal").modal("show");
+		}
+		
+		// 공지상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
+		function updateBdstate(){
+			console.log("updateBdstate() 실행");
+			var bdcode = $("#bdcode").val();
+			console.log(btnObj.text());
+			if (btnObj.text() == "경고"){
+				var bdstate = 0;				
+			} else {
+				var bdstate = 1;				
+			}
+			$.ajax({
+				type: "get",
+				data: {"bdcode":bdcode, "bdstate":bdstate},
+				url: "admin_updateBdstate_ajax",
+				dataType: "json",
+				success: function(result){
+					if(result > 0){
+						if (bdstate == 0){
+							btnObj.text("정지").addClass("btn-danger").removeClass("btn-warning");
+						} else {
+							btnObj.text("경고").addClass("btn-warning").removeClass("btn-danger");
+						}
+					}
+					$("#updateBdstateModal").modal("hide");
+				},
+				error: function(){
+					$("#updateBdstateModal").modal("hide");
+					alert("글상태 변경에 실패했습니다.");
+				}
+			});
 		}
 	</script>
 	
@@ -274,21 +317,23 @@
 					var output = "";
 					console.log(result);					
 					for (var i = 0; i < result.length; i++){
-						output += "<tr style='border-bottom: solid gray 1px;'>";
-						output += "<td class='overflow'>" + result[i].bdcode + "</td>";
-						output += "<td>" + result[i].bdcategory + "</td>";
+						output += "<tr style='border-bottom: solid #E0E0E0 1px;'>";
+						output += "<td class='text-center overflow'>" + result[i].bdcode + "</td>";
+						output += "<td class='category text-center'>" + result[i].bdcategory + "</td>";
 						output += "<td class='overflow'><a href='admin_selectBoardView?codeIdx=" + result[i].bdcode
 								+"&page=1&perPageNum=10&searchVal=" + searchVal + "&searchType=" + searchType + "&keyword=" + searchText + "'>"
-								+ result[i].bdtitle + "</a></td>";
-						output += "<td class='overflow'>" + result[i].bdnickname + "</td>";
-						output += "<td class='overflow'>" + result[i].bddate + "</td>";
+								+"<span class='overflow'>" + result[i].bdtitle + "</span>"
+								+"<span class='fw-bold' style='font-size:15px; color:#00bcd4;'>&nbsp;" + result[i].bdrpcount + "</span>"			
+								+"</a></td>";
+						output += "<td class='text-center overflow'>" + result[i].bdnickname + "</td>";
+						output += "<td class='text-center overflow'>" + result[i].bddate + "</td>";
 						output += "<td class='text-center'>" + result[i].bdhits + "</td>";
 						output += "<td class='text-center'>" + result[i].bdrccount + "</td>";
 						output += "<td class='text-center'>"
 						if (result[i].bdstate == 1){
-							output += "<button class='btn btn-warning' type='button' onclick='showBdstateModal(this, \""+result[i].bdcode+"\")'>경고</button>";
+							output += "<button class='btn btn-sm btn-warning' type='button' onclick='showBdstateModal(this, \""+result[i].bdcode+"\")'>경고</button>";
 						} else {
-							output += "<button class='btn btn-danger' type='button' onclick='showBdstateModal(this,\""+result[i].bdcode+"\")'>정지</button>";
+							output += "<button class='btn btn-sm btn-danger' type='button' onclick='showBdstateModal(this,\""+result[i].bdcode+"\")'>정지</button>";
 						}
 						output += "</td>";
 						output += "</tr>";
@@ -332,55 +377,7 @@
 			})
 			
 		}	
-		
-		// 공지상태 변경 확인 모달창 출력
-		var btnObj;
-		function showBdstateModal(obj, bdcode){
-			console.log("showBdstateModal() 실행");
-			btnObj = $(obj);
-			var btnObjText = btnObj.text();
-			console.log("btnObjText:"+btnObjText);
-			if (btnObjText == "경고"){
-				$("#updateBdstateModalBody").text(bdcode + "번 게시글을 정지 처리하시겠습니까?");
-			} else {
-				$("#updateBdstateModalBody").text(bdcode + "번 게시글의 정지를 취소하시겠습니까?");
-			}
-			$("#bdcode").val(bdcode);
-			$("#updateBdstateModal").modal("show");
-		}
-		
-		// 공지상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
-		function updateBdstate(){
-			console.log("updateBdstate() 실행");
-			var bdcode = $("#bdcode").val();
-			console.log(btnObj.text());
-			if (btnObj.text() == "경고"){
-				var bdstate = 0;				
-			} else {
-				var bdstate = 1;				
-			}
-			$.ajax({
-				type: "get",
-				data: {"bdcode":bdcode, "bdstate":bdstate},
-				url: "admin_updateBdstate_ajax",
-				dataType: "json",
-				success: function(result){
-					if(result > 0){
-						if (bdstate == 0){
-							btnObj.text("정지").addClass("btn-danger").removeClass("btn-warning");
-						} else {
-							btnObj.text("경고").addClass("btn-warning").removeClass("btn-danger");
-						}
-					}
-					$("#updateBdstateModal").modal("hide");
-				},
-				error: function(){
-					$("#updateBdstateModal").modal("hide");
-					alert("글상태 변경에 실패했습니다.");
-				}
-			});
-			
-		}
+
 	</script>
 	
 	

@@ -12,14 +12,9 @@
 <!-- Css Styles -->
 <%@ include file="/resources/css/BarCss.jsp" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/listCss.css" type="text/css">
 
 <style type="text/css">
-    #board_column{
-       border-bottom: solid gray 3px;
-    }
-    table{
-       margin: 20px;
-    }
   	#pageList button{
  		display: none;
 	}
@@ -57,19 +52,17 @@
 	            </div>
 	            <!-- 검색 -->
 	            <div class="row">
-					<div class="col-5">
-						<select name="searchType" id="searchTypeSel">
+					<div class="col-5" align="right">
+						<select name="searchType" id="searchTypeSel" class="searchType">
 							<option value="ubTitle">제목</option>
 							<option value="ubContents">내용</option>
 							<option value="ubTitleContents">제목+내용</option>
 							<option value="ubnickname">작성자</option>
 						</select>
 					</div>
-	                <div class="col-5 input-group">
-                    	<input type="text" style="width:100px;" class="form-control" name="keyword" id="searchText" placeholder="검색 키워드를 입력하세요!" value="${paging.keyword}">
-                    	<span class="input-group-btn">
-	                      	<button class="btn btn-secondary" type="submit" name="page" value="1">찾기</button>
-                    	</span>
+	                <div class="col-7">
+                    	<input type="text" class="" name="keyword" id="searchText" placeholder="검색 키워드를 입력하세요!" value="${paging.keyword}">
+	                    <button class="btn btn-sm btn-secondary" type="submit">검색</button>
 	            	</div>
 		            <div class="col-2">
 						<!-- 공지작성 버튼 -->
@@ -80,10 +73,10 @@
             <div class="row" style="margin-top: 20px;">
                <div class="col">
                   <!-- 상태값 정렬 -->
-                   <select name="searchVal" id="searchValSel" onchange="ubSearchState(this.value)">
-                     <option value="all">전체</option>
-                     <option value="warning">경고</option>
-                     <option value="inactive">정지</option>
+                   <select class="categoryList" name="searchVal" id="searchValSel" onchange="ubSearchState(this.value)">
+                     <option class="categorySel" value="all">전체</option>
+                     <option class="categorySel" value="warning">경고</option>
+                     <option class="categorySel" value="inactive">정지</option>
                   </select>
                </div>
             </div>
@@ -92,34 +85,33 @@
             <div class="row">
             <table style="table-layout: fixed;">
                <thead >
-                  <tr class="fw-bold" id="board_column">
+                  <tr class="text-center fw-bold" id="board_column">
                      <td style="width:100px;">대표사진</td>
                      <td style="width:10%;">글번호</td>
                      <td>제목</td>
                      <td style="width:15%;">작성자</td>
-                     <td style="width:15%;">작성일</td>
-                     <td style="width:4rem;">상태</td>
+                     <td style="width:10%;">작성일</td>
+                     <td style="width:3rem;" class="text-center">상태</td>
                   </tr>
                </thead>
                <tbody id="bdListTbody">
 	               <c:forEach items="${usedBoardList }" var="usedBoard">
 	                   <!-- 회원관리 목록 -->
-	                   <tr style="border-bottom: solid gray 1px;">
+	                   <tr style="border-bottom: solid #E0E0E0 1px;">
 	                      <td><img src="${pageContext.request.contextPath }/resources/img/resell/${usedBoard.ubmainimg }"
 	                      		class="img-fluid" style="width:100px; height:100px; object-fit:fill;"></td>
-	                      <td class="overflow">${usedBoard.ubcode}</td>
-	                      <%-- makeQueryPage 쓰는거 왜 안될까.... admin_selectBoardView${Paging.makeQueryPage(board.bdcode, paging.page) }/>  --%>
+	                      <td class="text-center overflow">${usedBoard.ubcode}</td>
 	                      <td class="overflow"><a href="#">
 	                      ${usedBoard.ubtitle}</a></td>
-	                      <td class="overflow">${usedBoard.ubnickname}</td>
-	                      <td class="overflow">${usedBoard.ubdate}</td>
+	                      <td class="text-center overflow">${usedBoard.ubnickname}</td>
+	                      <td class="text-center overflow">${usedBoard.ubdate}</td>
 	                      <td>
 	                      	<c:choose>
 	                      		<c:when test="${usedBoard.ubstate == 1}">
-	                      			<button class="btn btn-warning" type="button" onclick="showUbstateModal(this,'${usedBoard.ubcode }')">경고</button>
+	                      			<button class="btn btn-sm btn-warning" type="button" onclick="showUbstateModal(this,'${usedBoard.ubcode }')">경고</button>
 	                      		</c:when>
 	                      		<c:otherwise>
-	                      			<button class="btn btn-danger" type="button" onclick="showUbstateModal(this, '${usedBoard.ubcode }')">정지</button>
+	                      			<button class="btn btn-sm btn-danger" type="button" onclick="showUbstateModal(this, '${usedBoard.ubcode }')">정지</button>
 	                      		</c:otherwise>
 	                      	</c:choose>
 	                      </td>
@@ -179,7 +171,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="updateUbstateModalLabel"> 게시글상태 변경 확인 </h5>
+                    <h5 class="modal-title" id="updateUbstateModalLabel"> 거래글상태 변경 확인 </h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -208,6 +200,55 @@
 			close[i].addEventListener("click", function(){
 				$("#updateUbstateModal").modal("hide");
 			});
+		}
+		
+		// 거래글 상태 변경 확인 모달창 출력
+		var btnObj;
+		function showUbstateModal(obj, ubcode){
+			console.log("showUbstateModal() 실행");
+			btnObj = $(obj);
+			var btnObjText = btnObj.text();
+			console.log("btnObjText:"+btnObjText);
+			if (btnObjText == "경고"){
+				$("#updateUbstateModalBody").text(ubcode + "번 게시글을 정지 처리하시겠습니까?");
+			} else {
+				$("#updateUbstateModalBody").text(ubcode + "번 게시글의 정지를 취소하시겠습니까?");
+			}
+			$("#ubcode").val(ubcode);
+			$("#updateUbstateModal").modal("show");
+		}
+		
+		// 거래글 상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
+		function updateUbstate(){
+			console.log("updateUbstate() 실행");
+			var ubcode = $("#ubcode").val();
+			console.log(btnObj.text());
+			if (btnObj.text() == "경고"){
+				var ubstate = 0;				
+			} else {
+				var ubstate = 1;				
+			}
+			$.ajax({
+				type: "get",
+				data: {"ubcode":ubcode, "ubstate":ubstate},
+				url: "admin_updateUbstate_ajax",
+				dataType: "json",
+				success: function(result){
+					if(result > 0){
+						if (ubstate == 0){
+							btnObj.text("정지").addClass("btn-danger").removeClass("btn-warning");
+						} else {
+							btnObj.text("경고").addClass("btn-warning").removeClass("btn-danger");
+						}
+					}
+					$("#updateUbstateModal").modal("hide");
+				},
+				error: function(){
+					$("#updateUbstateModal").modal("hide");
+					alert("글상태 변경에 실패했습니다.");
+				}
+			});
+			
 		}
 	</script>
 		
@@ -270,18 +311,18 @@
 					var output = "";
 					console.log(result);					
 					for (var i = 0; i < result.length; i++){
-						output += "<tr style='border-bottom: solid gray 1px;'>";
+						output += "<tr style='border-bottom: solid #E0E0E0 1px;'>";
 						output += "<td><img src='${pageContext.request.contextPath }/resources/img/resell/" + result[i].ubmainimg
 								+ "' class='img-fluid' style='width:100px; height:100px;  object-fit:fill;'></td>";
-						output += "<td class='overflow'>" + result[i].ubcode + "</td>";
+						output += "<td class='text-center overflow'>" + result[i].ubcode + "</td>";
 						output += "<td class='overflow'><a href='admin_selectResellView?ubcode=" + result[i].ubcode + "'>" + result[i].ubtitle + "</a></td>";
-						output += "<td class='overflow'>" + result[i].ubnickname + "</td>";
-						output += "<td class='overflow'>" + result[i].ubdate + "</td>";
-						output += "<td>"
+						output += "<td class='text-center overflow'>" + result[i].ubnickname + "</td>";
+						output += "<td class='text-center overflow'>" + result[i].ubdate + "</td>";
+						output += "<td class='text-center'>"
 						if (result[i].ubstate == 1){
-							output += "<button class='btn btn-warning' type='button' onclick='showBdstateModal(this, \""+result[i].ubcode+"\")'>경고</button>";
+							output += "<button class='btn btn-sm btn-warning' type='button' onclick='showBdstateModal(this, \""+result[i].ubcode+"\")'>경고</button>";
 						} else {
-							output += "<button class='btn btn-danger' type='button' onclick='showBdstateModal(this,\""+result[i].ubcode+"\")'>정지</button>";
+							output += "<button class='btn btn-sm btn-danger' type='button' onclick='showBdstateModal(this,\""+result[i].ubcode+"\")'>정지</button>";
 						}
 						output += "</td>";
 						output += "</tr>";
@@ -325,55 +366,7 @@
 			})
 			
 		}	
-		
-		// 공지상태 변경 확인 모달창 출력
-		var btnObj;
-		function showUbstateModal(obj, ubcode){
-			console.log("showUbstateModal() 실행");
-			btnObj = $(obj);
-			var btnObjText = btnObj.text();
-			console.log("btnObjText:"+btnObjText);
-			if (btnObjText == "경고"){
-				$("#updateUbstateModalBody").text(ubcode + "번 게시글을 정지 처리하시겠습니까?");
-			} else {
-				$("#updateUbstateModalBody").text(ubcode + "번 게시글의 정지를 취소하시겠습니까?");
-			}
-			$("#ubcode").val(ubcode);
-			$("#updateUbstateModal").modal("show");
-		}
-		
-		// 공지상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
-		function updateUbstate(){
-			console.log("updateUbstate() 실행");
-			var ubcode = $("#ubcode").val();
-			console.log(btnObj.text());
-			if (btnObj.text() == "경고"){
-				var ubstate = 0;				
-			} else {
-				var ubstate = 1;				
-			}
-			$.ajax({
-				type: "get",
-				data: {"ubcode":ubcode, "ubstate":ubstate},
-				url: "admin_updateUbstate_ajax",
-				dataType: "json",
-				success: function(result){
-					if(result > 0){
-						if (ubstate == 0){
-							btnObj.text("정지").addClass("btn-danger").removeClass("btn-warning");
-						} else {
-							btnObj.text("경고").addClass("btn-warning").removeClass("btn-danger");
-						}
-					}
-					$("#updateUbstateModal").modal("hide");
-				},
-				error: function(){
-					$("#updateUbstateModal").modal("hide");
-					alert("글상태 변경에 실패했습니다.");
-				}
-			});
-			
-		}
+
 	</script>
 	
 	

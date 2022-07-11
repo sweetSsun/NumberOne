@@ -61,8 +61,9 @@
 						</select>
 					</div>
 	                <div class="col-7">
-                    	<input type="text" name="keyword" id="searchText" placeholder="검색 키워드를 입력하세요!" value="${paging.keyword}">
-	                    <button class="btn btn-sm btn-secondary" type="submit" name="page" value="1">검색</button>
+                    	<input type="text" name="keyword" id="searchText" placeholder="검색 키워드를 입력하세요!" value="${paging.keyword}"
+                    			class="">
+	                    <button class="btn btn-sm btn-secondary" type="submit">검색</button>
 	            	</div>
                	</div>
            
@@ -81,23 +82,23 @@
             <div class="row">
             <table style="table-layout: fixed;" >
                <thead >
-                  <tr class="text-center" id="board_column">
+                  <tr class="text-center fw-bold" id="board_column">
                      <td style="width:10%;">글번호</td>
                      <td style="width:4.5rem;">말머리</td>
                      <td style="">제목</td>
                      <td style="width:15%;">작성자</td>
                      <td style="width:10%;">작성일</td>
-                     <td style="width:4rem;">조회</td>
-                     <td style="width:3rem;">추천</td>
-                     <td style="width:3rem;">신고</td>
-                     <td style="width:3rem;">고정</td>
+                     <td style="width:4rem;" class="text-center">조회</td>
+                     <td style="width:3rem;" class="text-center">추천</td>
+                     <td style="width:3rem;" class="text-center">신고</td>
+                     <td style="width:3rem;" class="text-center">고정</td>
                   </tr>
                </thead>
                <tbody id="bdListTbody">
 	               <c:forEach items="${bdfixList }" var="board">
 	                   <!-- 일반게시글 관리 목록 -->
 	                   <tr style="border-bottom: solid #E0E0E0 1px;">
-	                      <td class="text-center">${board.bdcode}</td>
+	                      <td class="overflow text-center">${board.bdcode}</td>
 	                      <td class="category text-center">${board.bdcategory }
 	                      <td class="overflow">
 	                      	<a href="admin_selectBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}">
@@ -208,6 +209,53 @@
 				$("#updateBdfixModal").modal("hide");
 			});
 		}
+		
+		// 배너고정 변경 확인 모달창 출력
+		var btnObj;
+		function showBdfixModal(obj, bdcode){
+			console.log("showBdfixModal() 실행");
+			btnObj = $(obj);
+			var btnObjText = btnObj.text();
+			console.log("btnObjText:"+btnObjText);
+			if (btnObjText == "고정"){
+				$("#updateBdfixModalBody").text(bdcode + "번 게시글의 배너 고정을 취소하시겠습니까?");
+			} else {
+				$("#updateBdfixModalBody").text(bdcode + "번 게시글을 배너로 고정하시겠습니까?");
+			}
+			$("#bdcode").val(bdcode);
+			$("#updateBdfixModal").modal("show");
+		}
+		
+		// 배너고정 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
+		function updateBdfix(){
+			console.log("updateBdfix() 실행");
+			var bdcode = $("#bdcode").val();
+			console.log(btnObj.text());
+			if (btnObj.text() == "고정"){
+				var bdfix = 0;				
+			} else {
+				var bdfix = 1;				
+			}
+			$.ajax({
+				type: "get",
+				data: {"bdcode":bdcode, "bdfix":bdfix},
+				url: "admin_updateBdfix_ajax",
+				dataType: "json",
+				success: function(result){
+					if(result > 0){
+						if (bdfix == 0){
+							btnObj.text("일반").addClass("btn-secondary").removeClass("btn-numberone").toggleClass("btn");
+						} else {
+							btnObj.text("고정").addClass("btn-numberone").removeClass("btn-secondary").toggleClass("btn");
+						}
+					}
+					$("#updateBdfixModal").modal("hide");
+				},
+				error: function(){
+					$("#updateBdfixModal").modal("hide");
+					alert("글상태 변경에 실패했습니다.");
+				}
+			});
 	</script>
 	
 	<script type="text/javascript">
@@ -270,18 +318,20 @@
 					var output = "";
 					console.log(result);					
 					for (var i = 0; i < result.length; i++){
-						output += "<tr style='border-bottom: solid gray 1px;'>";
+						output += "<tr style='border-bottom: solid #E0E0E0 1px;'>";
 						output += "<td class='text-center overflow'>" + result[i].bdcode + "</td>";
 						output += "<td class='category text-center'>" + result[i].bdcategory + "</td>";
 						output += "<td class='overflow'><a href='admin_selectBoardView?codeIdx=" + result[i].bdcode
 								+"&page=1&perPageNum=10&searchVal=" + searchVal + "&searchType=" + searchType + "&keyword=" + searchText + "'>"
-								+ result[i].bdtitle + "</a></td>";
+								+"<span class='overflow'>" + result[i].bdtitle + "</span>"
+								+"<span class='fw-bold' style='font-size:15px; color:#00bcd4;'>&nbsp;" + result[i].bdrpcount + "</span>"			
+								+"</a></td>";
 						output += "<td class='text-center overflow'>" + result[i].bdnickname + "</td>";
 						output += "<td class='text-center overflow'>" + result[i].bddate + "</td>";
 						output += "<td class='text-center'>" + result[i].bdhits + "</td>";
 						output += "<td class='text-center'>" + result[i].bdrccount + "</td>";
 						output += "<td class='text-center'>" + result[i].bdwarning + "</td>";
-						output += "<td>"
+						output += "<td class='text-center'>"
 						if (result[i].bdfix == 1){
 							output += "<button class='btn-sm btn-numberone' type='button' onclick='showBdfixModal(this, \""+result[i].bdcode+"\")'>고정</button>";
 						} else {
@@ -329,54 +379,7 @@
 			})
 			
 		}	
-		
-		// 공지상태 변경 확인 모달창 출력
-		var btnObj;
-		function showBdfixModal(obj, bdcode){
-			console.log("showBdfixModal() 실행");
-			btnObj = $(obj);
-			var btnObjText = btnObj.text();
-			console.log("btnObjText:"+btnObjText);
-			if (btnObjText == "고정"){
-				$("#updateBdfixModalBody").text(bdcode + "번 게시글의 배너 고정을 취소하시겠습니까?");
-			} else {
-				$("#updateBdfixModalBody").text(bdcode + "번 게시글을 배너로 고정하시겠습니까?");
-			}
-			$("#bdcode").val(bdcode);
-			$("#updateBdfixModal").modal("show");
-		}
-		
-		// 공지상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
-		// 여기 수정~~~~~~~~~~~~~~~~~~~~~~~~
-		function updateBdfix(){
-			console.log("updateBdfix() 실행");
-			var bdcode = $("#bdcode").val();
-			console.log(btnObj.text());
-			if (btnObj.text() == "고정"){
-				var bdfix = 0;				
-			} else {
-				var bdfix = 1;				
-			}
-			$.ajax({
-				type: "get",
-				data: {"bdcode":bdcode, "bdfix":bdfix},
-				url: "admin_updateBdfix_ajax",
-				dataType: "json",
-				success: function(result){
-					if(result > 0){
-						if (bdfix == 0){
-							btnObj.text("일반").addClass("btn-secondary").removeClass("btn-numberone").toggleClass("btn");
-						} else {
-							btnObj.text("고정").addClass("btn-numberone").removeClass("btn-secondary").toggleClass("btn");
-						}
-					}
-					$("#updateBdfixModal").modal("hide");
-				},
-				error: function(){
-					$("#updateBdfixModal").modal("hide");
-					alert("글상태 변경에 실패했습니다.");
-				}
-			});
+
 			
 		}
 	</script>
