@@ -57,7 +57,7 @@
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h1 class="text-center">공지글 상세페이지 : NoticeBoardView.jsp</h1>
+				<h2 class="text-center">공지글 상세페이지 : NoticeBoardView.jsp</h2>
 				
 				<form action="">
 					<div class="row">
@@ -72,7 +72,7 @@
 					</div>
 					<div class="row idDateHits">
 						<div class="col-6">
-							<a href="#"><span class="">${noticeBoard.nbmid }</span></a> 
+							<span class="">관리자</span>
 						</div>
 						
 						<div align="right" class="col-3 offset-md-3">
@@ -97,7 +97,7 @@
 					<div class="col-4 offset-md-6" >
 						<!-- 관리자계정으로만 로그인 시 보이도록 설정하기! -->
 						<c:if test="${sessionScope.loginId == 'admin'}">
-							<input type="button" style="float:right;" class="btn btn-lg bg-success fw-bold text-white" value="삭제">
+							<input type="button" style="float:right;" class="btn btn-lg bg-success fw-bold text-white" onclick="deleteNoticeModal('${noticeBoard.nbcode}')" value="삭제">
 							<input type="button" style="float:right; margin-right: 5px;" class="btn btn-lg bg-success fw-bold text-white" value="수정">
 						</c:if>
 					</div>
@@ -109,7 +109,26 @@
 	</main>
 	
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
-
+	
+	
+	
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
+<script type="text/javascript">
+	function rpRemoveModal(rpcode){
+		/* 댓글삭제 버튼 클릭 시 모달창 띄우기  */
+		console.log(rpcode);
+		
+		$("#deleteRpcode").val(rpcode);
+		$("#rpDeleteCheckModal").modal('show');
+		
+	}
+</script>
+<script type="text/javascript">
+	function deleteNoticeModal(nbcode){
+		
+	}
+
+</script>
+
 </html>

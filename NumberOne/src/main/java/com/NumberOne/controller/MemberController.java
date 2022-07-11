@@ -6,7 +6,10 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -236,18 +239,6 @@ public class MemberController {
 			return mav;
 	
 		}		
-		
-		//카카오아이디 중복 확인
-		@RequestMapping(value = "/memberKakaoLogin")
-		public ModelAndView memberKakaoLogin(MemberDto member, RedirectAttributes ra) {
-			System.out.println("카카오로 로그인 요청");
-			System.out.println(member);
-			//ModelAndView mav = msvc.memberKakaoLogin(member, ra);
-			
-			return mav;
-			
-		}
-		
 		//작성자 상세페이지 _ Board
 		@RequestMapping(value = "/selectWriteMemberInfo")
 		public ModelAndView selectWriteMemberInfo(String nickname) {
@@ -256,8 +247,48 @@ public class MemberController {
 			System.out.println("controller.nickname : " + nickname);
 			mav = msvc.selectWriteMemberInfo(nickname);
 			return mav;
+			
+		}
+		
+		//카카오아이디 중복 확인
+		@RequestMapping(value = "/memberKakaoLogin")
+		public ModelAndView memberKakaoLogin(MemberDto member, RedirectAttributes ra) {
+			System.out.println("카카오로 로그인 요청");
+			System.out.println(member);
+			ModelAndView mav = msvc.memberKakaoLogin(member, ra);
+			
+			return mav;
+			
+		}
+		
+		//카카오 회원가입
+
+		@RequestMapping(value="/insertKakaoRegister")
+		public ModelAndView insertKakaoRegister(RedirectAttributes ra, MemberDto member) throws IllegalStateException, IOException {
+			System.out.println("카카오 가입");
+			mav = new ModelAndView();
+			mav = msvc.insertKakaoRegister(ra, member);
+			
+			return mav;
+		}
+		
+		
+		
+		//비밀번호 찾기
+		/*@RequestMapping(value = "/LookforPw", method = RequestMethod.POST)
+		public String LookforPw(@ModelAttribute MemberDto memberVO, Model model) {
+			System.out.println("비밀번호 찾기 controller : " + memberVO);
+			// 서비스를 호출해서 로그인 확인
+			MemberDto vo = msvc.LookforPw(memberVO);
+			if(vo==null) {
+				return "redirect:/member/LookforPwForm"; // 비밀번호 찾기 페이지
+			}else {
+				model.addAttribute("vo", vo);
+				return "viewPassword"; //비밀번호찾기 결과 페이지
+			}
+				
+		}*/
 	
-		}		
 
 }
 

@@ -15,6 +15,7 @@ public class NoticeDto {
 	private String nbimg;		//사진	
 	private int nbstate;		//글상태	
 	private int nbhits;			//조회수
+	private int nbfix;			//고정공지
 	
 	// 파일 처리를 위한 필드
 	private MultipartFile nbimgfile;//공지글 작성 시 파일 저장
@@ -95,14 +96,28 @@ public class NoticeDto {
 		this.nbimgfile = nbimgfile;
 	}
 
+	public String getOriginImg() {
+		return originImg;
+	}
+
+	public void setOriginImg(String originImg) {
+		this.originImg = originImg;
+	}
+
+	public String getNbnickname() {
+		return nbnickname;
+	}
+
+	public void setNbnickname(String nbnickname) {
+		this.nbnickname = nbnickname;
+	}
+
 	@Override
 	public String toString() {
 		return "NoticeDto [nbcode=" + nbcode + ", nbmid=" + nbmid + ", nbtitle=" + nbtitle + ", nbcontents="
 				+ nbcontents + ", nbdate=" + nbdate + ", nbimg=" + nbimg + ", nbstate=" + nbstate + ", nbhits=" + nbhits
-				+ ", nbimgfile=" + nbimgfile + "]";
+				+ ", nbfix=" + nbfix + ", nbimgfile=" + nbimgfile + ", originImg=" + originImg + ", nbnickname="
+				+ nbnickname + "]";
 	}
-	
-	
-	
-	
+
 }
