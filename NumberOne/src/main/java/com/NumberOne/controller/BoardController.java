@@ -355,6 +355,7 @@ public class BoardController {
 	@RequestMapping( value="/loadToRoomViewPage")
 	public ModelAndView loadToRoomViewPage(String bdcode) {
 		System.out.println(bdcode+"번 자랑글 상세 페이지 이동 요청");
+		//상세 보기 하단에 나올 자랑글 목록 받아오기(상세글은 ajax로)
 		ModelAndView mav = roomListPage();
 	    mav.addObject("bdcode", bdcode);
 		mav.setViewName("board/RoomViewPage");
