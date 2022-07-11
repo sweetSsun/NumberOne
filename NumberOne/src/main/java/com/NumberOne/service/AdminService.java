@@ -100,7 +100,7 @@ public class AdminService {
 	}
 
 	// 회원상태 변경 ajax
-	public String admin_updateMstate_ajax(String mid, String mstate) {
+	public String admin_updateMstate_ajax(String mid, int mstate) {
 		System.out.println("AdminService.admin_updateMstate_ajax() 호출");
 		System.out.println("상태변경할 mid : " + mid);
 		System.out.println("상태변경할 mstate : " + mstate);
@@ -210,7 +210,6 @@ public class AdminService {
 		int updateResult = adao.admin_updateNbfix_ajax(nbcode, nbfix);
 		return updateResult;
 	}
-	
 	
 	//공지 상세페이지 이동 
 	public ModelAndView admin_selectNoticeBoardView(String nbcode,  Paging paging) {
@@ -413,7 +412,7 @@ public class AdminService {
 	}	
 
 	// 중고거래 글상태 변경 요청
-	public int admin_updateUbstate_ajax(String ubcode, String ubstate) {
+	public int admin_updateUbstate_ajax(String ubcode, int ubstate) {
 		System.out.println("AdminService.admin_updateUbstate_ajax() 호출");
 		System.out.println("상태변경할 ubcode : " + ubcode);
 		System.out.println("상태변경할 ubstate : " + ubstate);
@@ -423,7 +422,8 @@ public class AdminService {
 	
 	
 	/* 커뮤니티 관리 */
-	// 커뮤니티 관리페이지 이동
+	/* 경고/정지 관리 */
+	// 경고/정지 관리페이지 이동
 	public ModelAndView admin_selectBoardList(Paging paging, RedirectAttributes ra) {
 		System.out.println("AdminService.admin_selectBoardList() 호출");
 		mav = new ModelAndView();
@@ -451,8 +451,8 @@ public class AdminService {
 		return mav;
 	}
 
-	// 커뮤니티 글 상태 변경 요청
-	public int admin_updateBdstate_ajax(String bdcode, String bdstate) {
+	// 경고/정지 글 상태 변경 요청
+	public int admin_updateBdstate_ajax(String bdcode, int bdstate) {
 		System.out.println("AdminService.admin_updateBdstate_ajax() 호출");
 		System.out.println("상태변경할 bdcode : " + bdcode);
 		System.out.println("상태변경할 bdstate : " + bdstate);
@@ -480,6 +480,64 @@ public class AdminService {
 			return paging_json;
 		}
 	}	
+	/* 배너 관리 */
+	// 배너 관리페이지 이동
+	public ModelAndView admin_selectBdfixList(Paging paging, RedirectAttributes ra) {
+		System.out.println("AdminService.admin_selectBdfixList() 호출");
+		mav = new ModelAndView();
+		// 관리자 로그인 여부 체크
+		String loginId = (String)session.getAttribute("loginId");
+		if (loginId == null) {
+			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
+			mav.setViewName("redirect:/loadToLogin");	
+			return mav;
+		}
+		
+		if(paging.getKeyword() == null) {
+			paging.setKeyword("");
+		}
+		int totalCount = adao.admin_selectBdfixTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
+		paging.setTotalCount(totalCount);
+		paging.calc(); // 페이지 처리 계산 실행
+		
+		System.out.println(paging);
+		ArrayList<BoardDto> bdfixList = adao.admin_selectBdfixList(paging);
+		System.out.println("bdfixList : " + bdfixList);
+		mav.addObject("paging", paging);
+		mav.addObject("bdfixList", bdfixList);
+		mav.setViewName("admin/Admin_BdfixList");
+		return mav;
+	}
+	
+	// 선택한 상태값에 따른 배너관리 목록 ajax
+	public String admin_selectBdfixList_ajax(Paging paging) {
+		System.out.println("AdminService.admin_selectBdfixList_ajax() 호출");
+		System.out.println("searchVal : " + paging.getSearchVal());
+		int totalCount = adao.admin_selectBdfixTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
+		paging.setTotalCount(totalCount);
+		paging.calc(); // 페이지 처리 계산 실행
+		System.out.println("paging : " + paging);
+		
+		ArrayList<BoardDto> bdfixList = adao.admin_selectBdfixList(paging);
+		System.out.println("bdfixList : " + bdfixList);
+		gson = new Gson();
+		if (paging.getAjaxCheck().equals("list")) { // boardList ajax일 경우
+			String bdfixList_json = gson.toJson(bdfixList); 
+			return bdfixList_json;
+		} else { // paging ajax일 경우
+			String paging_json = gson.toJson(paging);
+			return paging_json;
+		}
+	}	
+
+	// 배너 고정상태 변경 요청
+	public int admin_updateBdfix_ajax(String bdcode, int bdfix) {
+		System.out.println("AdminService.admin_updateBdstate_ajax() 호출");
+		System.out.println("배너 고정할 bdcode : " + bdcode);
+		System.out.println("배너 고정할 bdfix : " + bdfix);
+		int updateResult = adao.admin_updateBdfix_ajax(bdcode, bdfix);
+		return updateResult;
+	}
 
 	/* 댓글 관리 */
 	// 댓글 관리페이지 이동
@@ -532,7 +590,7 @@ public class AdminService {
 	}
 
 	// 댓글 상태 변경 요청
-	public int admin_updateRpstate_ajax(String rpcode, String rpstate) {
+	public int admin_updateRpstate_ajax(String rpcode, int rpstate) {
 		System.out.println("AdminService.admin_updateRpstate_ajax() 호출");
 		System.out.println("상태변경할 rpcode : " + rpcode);
 		System.out.println("상태변경할 rpstate : " + rpstate);

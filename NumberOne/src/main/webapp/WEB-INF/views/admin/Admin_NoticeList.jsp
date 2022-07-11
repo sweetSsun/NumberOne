@@ -135,7 +135,7 @@
 		                      			<button class="btn-numberone" type="button" onclick="showNbfixModal(this,'${notice.nbcode }')">고정</button>
 		                      		</c:when>
 		                      		<c:otherwise>
-		                      			<button class="btn btn-secondary" type="button" onclick="showNbfixModal(this,'${notice.nbcode }')">기본</button>
+		                      			<button class="btn btn-secondary" type="button" onclick="showNbfixModal(this,'${notice.nbcode }')">일반</button>
 		                      		</c:otherwise>
 		                      	</c:choose>
 	                      	</c:if>

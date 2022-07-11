@@ -43,7 +43,7 @@ public class AdminController {
 	}
 	
 	@RequestMapping (value= "/admin_updateMstate_ajax")
-	public @ResponseBody String admin_updateMstate_ajax(String mid, String mstate) {
+	public @ResponseBody String admin_updateMstate_ajax(String mid, int mstate) {
 		System.out.println("회원상태 변경 요청");
 		String memberInfo_json = asvc.admin_updateMstate_ajax(mid, mstate);
 		return memberInfo_json;
@@ -137,7 +137,7 @@ public class AdminController {
 	}
 	
 	@RequestMapping (value="admin_updateUbstate_ajax")
-	public @ResponseBody int admin_updateUbstate_ajax(String ubcode, String ubstate) {
+	public @ResponseBody int admin_updateUbstate_ajax(String ubcode, int ubstate) {
 		System.out.println("중고거래 글상태 변경 요청");
 		int updateResult = asvc.admin_updateUbstate_ajax(ubcode, ubstate);
 		return updateResult;
@@ -160,23 +160,44 @@ public class AdminController {
 	/* 커뮤니티 관리 */
 	@RequestMapping (value="admin_selectBoardList")
 	public ModelAndView admin_selectBoardList(Paging paging, RedirectAttributes ra) {
-		System.out.println("커뮤니티 관리페이지 이동 요청");
+		System.out.println("경고/정지 관리페이지 이동 요청");
 		mav = asvc.admin_selectBoardList(paging, ra);
 		return mav;
 	}
 	
 	@RequestMapping (value="admin_updateBdstate_ajax")
-	public @ResponseBody int admin_updateBdstate_ajax(String bdcode, String bdstate) {
-		System.out.println("커뮤니티 글상태 변경 요청");
+	public @ResponseBody int admin_updateBdstate_ajax(String bdcode, int bdstate) {
+		System.out.println("경고/정지 글상태 변경 요청");
 		int updateResult = asvc.admin_updateBdstate_ajax(bdcode, bdstate);
 		return updateResult;
 	}
 	
 	@RequestMapping (value="admin_selectBoardList_ajax")
 	public @ResponseBody String admin_selectBoardList_ajax(Paging paging) {
-		System.out.println("커뮤니티 관리페이지 정렬 요청");
+		System.out.println("경고/정지 관리페이지 정렬 요청");
 		String boardList_json = asvc.admin_selectBoardList_ajax(paging);
 		return boardList_json;
+	}
+	
+	@RequestMapping (value="admin_selectBdfixList")
+	public ModelAndView admin_selectBdfixList(Paging paging, RedirectAttributes ra) {
+		System.out.println("배너 관리페이지 이동 요청");
+		mav = asvc.admin_selectBdfixList(paging, ra);
+		return mav;
+	}
+	
+	@RequestMapping (value="admin_selectBdfixList_ajax")
+	public @ResponseBody String admin_selectBdfixList_ajax(Paging paging) {
+		System.out.println("배너 관리페이지 정렬 요청");
+		String bdfixList_json = asvc.admin_selectBdfixList_ajax(paging);
+		return bdfixList_json;
+	}
+	
+	@RequestMapping (value="admin_updateBdfix_ajax")
+	public @ResponseBody int admin_updateBdfix_ajax(String bdcode, int	bdfix) {
+		System.out.println("배너 고정 변경 요청");
+		int updateResult = asvc.admin_updateBdfix_ajax(bdcode, bdfix);
+		return updateResult;
 	}
 	
 	@RequestMapping (value="admin_selectBoardView")
@@ -202,7 +223,7 @@ public class AdminController {
 	}
 	
 	@RequestMapping (value="admin_updateRpstate_ajax")
-	public @ResponseBody int admin_updateRpstate_ajax(String rpcode, String rpstate) {
+	public @ResponseBody int admin_updateRpstate_ajax(String rpcode, int rpstate) {
 		System.out.println("댓글상태 변경 요청");
 		int updateResult = asvc.admin_updateRpstate_ajax(rpcode, rpstate);
 		return updateResult;
