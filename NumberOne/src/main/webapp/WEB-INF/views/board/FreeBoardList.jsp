@@ -94,10 +94,10 @@
 						<!-- 검색기능 -->
 						<div class="col-5" align="right">
 								<select name="searchType" class="searchType">
-									<option value="bdtitle">제목</option>
-									<option value="bdcontents">내용</option>
-									<option value="bdtitlecontents">제목+내용</option>
-									<option value="bdnickname">작성자</option>
+									<option value="bdtitle" >제목</option>
+									<option value="bdcontents" >내용</option>
+									<option value="bdtitlecontents" >제목+내용</option>
+									<option value="bdnickname" >작성자</option>
 								</select>
 						</div>
 						<div class="col-7 ">

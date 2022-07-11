@@ -342,6 +342,16 @@ public class BoardController {
 		 
 		 return mav;
 	 }
+	 //후기게시판 이동 
+	 @RequestMapping ( value = "/selectReviewBoardList")
+	 public ModelAndView selectReviewBoardList() {
+		 System.out.println("후기게시판 이동");
+		 
+		 ModelAndView mav = bsvc.selectReviewBoardList();
+		 
+		 return mav;
+	 }
+	 
 	 
 	 
 	 //자취방 자랑글 상세 페이지 이동

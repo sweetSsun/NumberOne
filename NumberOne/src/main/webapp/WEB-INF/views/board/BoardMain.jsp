@@ -92,8 +92,8 @@
 				</div>
 				<!-- 자취방자랑 최신순 목록 -->
 				<div class="row mb-5" id="BestRoomList">
-					<c:forEach items="${roomList }" var="room">
-						<div class="col-3" >
+					<c:forEach items="${roomList }" end="3" var="room">
+						<div class="col-3" style="width:auto;">
 							<div class="img-container" >
 								<a href="#"><img alt="" src="${pageContext.request.contextPath }/resources/img/room/${room.bdimg }"></a>
 							</div>
@@ -223,7 +223,7 @@
 				<!-- 후기게시판 -->
 				<div class="row mb-5" >
 					<div class="col-1 board_category">
-						<a href="#"><span class="text-white">후기</span></a>
+						<a href="selectReviewBoardList"><span class="text-white">후기</span></a>
 					</div>
 					<div class="col-5 bg-white">
 						<table class="boardList">

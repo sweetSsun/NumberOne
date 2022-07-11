@@ -56,7 +56,9 @@
 	.community{
 		background-color: #00bcd4;
 	}
-	
+	.malmeori{
+		display: none;
+	}
 	
 </style>
 </head>

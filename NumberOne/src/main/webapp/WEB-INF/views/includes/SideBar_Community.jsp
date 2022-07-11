@@ -151,7 +151,7 @@ body {
 					</div>
 					<div class="sideroom">
 						<h4>
-							<a href="#">후기방</a>
+							<a href="selectReviewBoardList">후기방</a>
 						</h4>
 					</div>
 					<div class="sideroom">

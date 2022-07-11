@@ -414,11 +414,8 @@ public class BoardService {
 		System.out.println("댓글작성할 글번호 : " + bdcode); 
 		System.out.println("작성할 댓글 내용 : " + rpcontents);
 		
-		//댓글 줄바꿈, 띄어쓰기 적용
-		rpcontents.replace("", "&nbsp;");
-		rpcontents.replace("\r\n", "<br>");//?
-		System.out.println(rpcontents);
-		reply.setRpcontents(rpcontents);
+		//댓글 줄바꿈
+		reply.setRpcontents(rpcontents.replace("\n", "<br>"));
 		
 		//댓글번호 생성 
 		String maxRpcode = bdao.selectReplyMaxNumber();
@@ -470,9 +467,10 @@ public class BoardService {
 			}
 		}
 		
+		//줄바꿈
 		for ( int i=0; i< replyList.size(); i++) {
 			String rpcontents = replyList.get(i).getRpcontents().replace("<br>", "\r\n");
-			rpcontents = replyList.get(i).getRpcontents().replace("&nbsp;", "");
+			rpcontents = replyList.get(i).getRpcontents().replace("&nbsp;", " ");
 			replyList.get(i).setRpcontents(rpcontents);
 		}
 		System.out.println("댓글목록 조회 ");
@@ -615,15 +613,15 @@ public class BoardService {
 		
 		//수정할 게시글 정보 
 		BoardDto board = bdao.selectBoardView(bdcode);
-		String bdcontents = board.getBdcontents().replace("&nbsp;","");
-		bdcontents = board.getBdcontents().replace("<br>","\r\n");
+		String bdcontents = board.getBdcontents().replace("&nbsp;", " ");
+		bdcontents = board.getBdcontents().replace("<br>", "\r\n");
 		board.setBdcontents(bdcontents);
 		System.out.println(board);
 
 		if(bdcategory == null){
 			//일반글
 			board = bdao.selectBoardView(bdcode);
-		} else {	
+		} else {
 			//자랑글
 			board = bdao.selectRoomModify(bdcode);
 			String[] roomdetailimgs= board.getBddetailimg().split("___");
@@ -647,8 +645,8 @@ public class BoardService {
 		ModelAndView mav = new ModelAndView();
 		System.out.println(board);
 		
-		//게시글 띄어쓰기, 줄바꿈 
-		String bdcontents = board.getBdcontents().replace("", "&nbsp;");
+		//게시글 띄어쓰기, 줄바꿈
+		String bdcontents = board.getBdcontents().replace(" ", "&nbsp;");
 		bdcontents = board.getBdcontents().replace("\r\n", "<br>");
 		board.setBdcontents(bdcontents);
 		
@@ -798,6 +796,9 @@ public class BoardService {
 		System.out.println("수정할 댓글번호 : " + rpcode);
 		
 		ReplyDto reply = bdao.selectRpContents_ajax(rpcode);
+		reply.getRpcontents().replace("<br>", "\r\n");
+		reply.setRpcontents(reply.getRpcontents().replace("<br>", "\r\n"));
+		
 		System.out.println(reply);
 		
 		return reply;
@@ -809,6 +810,7 @@ public class BoardService {
 		System.out.println("rpcontents : " + rpcontents);
 		
 		int updateResult = bdao.updateRpcontents_ajax(rpcode, rpcontents);
+		
 		
 		return updateResult;
 	}
@@ -861,6 +863,24 @@ public class BoardService {
 		return mav;
 	} 
 	
+	//후기게시판 이동 
+	public ModelAndView selectReviewBoardList() {
+		System.out.println("BoardService.selectReviewBoardList() 호출");
+		ModelAndView mav = new ModelAndView();
+		
+		//후기글 목록 조회 
+		String bdcategory = "후기";
+		ArrayList<BoardDto> boardList = bdao.selectBoardList_Review(bdcategory);
+		ArrayList<NoticeDto> noticeList = bdao.selectNoticeList();
+		
+		mav.addObject("noticeList", noticeList);
+		mav.addObject("boardList", boardList);
+		mav.setViewName("board/ReviewBoardList");
+		
+		return mav;
+		
+	}
 
+	
 
 }
