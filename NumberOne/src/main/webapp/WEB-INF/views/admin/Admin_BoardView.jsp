@@ -154,7 +154,7 @@
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
 				<div class="row mb-2">
 					<div class="col-2">
-						<input onclick="location.href='admin_selectBoardList${paging.makeQueryPage(paging.page)}'" 
+						<input onclick="history.back();" 
 							type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록"> 
 					</div>
 					<div align="right" class="col">

@@ -88,10 +88,10 @@
                      <td style="">제목</td>
                      <td style="width:15%;">작성자</td>
                      <td style="width:10%;">작성일</td>
-                     <td style="width:4rem;" class="text-center">조회</td>
-                     <td style="width:3rem;" class="text-center">추천</td>
-                     <td style="width:3rem;" class="text-center">신고</td>
-                     <td style="width:3rem;" class="text-center">고정</td>
+                     <td style="width:4rem;">조회</td>
+                     <td style="width:3rem;">추천</td>
+                     <td style="width:3rem;">경고</td>
+                     <td style="width:3rem;">고정</td>
                   </tr>
                </thead>
                <tbody id="bdListTbody">

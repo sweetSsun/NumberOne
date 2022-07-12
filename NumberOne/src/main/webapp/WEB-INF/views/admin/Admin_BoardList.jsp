@@ -89,6 +89,7 @@
                      <td style="width:10%;">작성일</td>
                      <td style="width:4rem;">조회</td>
                      <td style="width:3rem;">추천</td>
+                     <td style="width:3rem;">경고</td>
                      <td style="width:3rem;">상태</td>
                   </tr>
                </thead>
@@ -105,21 +106,21 @@
 						        	<a href="loadToRoomViewPage?bdcode=${board.bdcode }">
 						        		<span class="overflow">${board.bdtitle}</span>
 						        	</a>
-						        	<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span>
 					        	</c:when>
 					        	<c:otherwise>
 						        	<!-- 일반글 상세 -->										
 		                      		<a href="admin_selectBoardView${paging.makeQueryPage(board.bdcode, paging.page)}">
 			                      		<span class="overflow">${board.bdtitle}</span>
 			                      	</a>
-			                      	<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span>
 								</c:otherwise>
 							</c:choose>
+	                      	<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span>
 	                      </td>
 	                      <td class="text-center overflow">${board.bdnickname}</td>
 	                      <td class="text-center overflow">${board.bddate}</td>
 	                      <td class="text-center">${board.bdhits}</td>
 	                      <td class="text-center">${board.bdrccount}</td>
+	                      <td class="text-center">${board.bdwarning}</td>
 	                      <td class="text-center">
 	                      	<c:choose>
 	                      		<c:when test="${board.bdstate == 1}">
@@ -347,6 +348,7 @@
 						output += "<td class='text-center overflow'>" + result[i].bddate + "</td>";
 						output += "<td class='text-center'>" + result[i].bdhits + "</td>";
 						output += "<td class='text-center'>" + result[i].bdrccount + "</td>";
+						output += "<td class='text-center'>" + result[i].bdwarning + "</td>";
 						output += "<td class='text-center'>"
 						if (result[i].bdstate == 1){
 							output += "<button class='btn btn-sm btn-warning' type='button' onclick='showBdstateModal(this, \""+result[i].bdcode+"\")'>경고</button>";

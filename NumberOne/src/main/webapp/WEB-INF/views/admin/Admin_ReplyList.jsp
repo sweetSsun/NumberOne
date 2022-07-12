@@ -97,8 +97,23 @@
 	                   <tr style="border-bottom: solid #E0E0E0 1px;">
 	                      <td class="overflow text-center">${reply.rpcode}</td>
 	                      <td class="category text-center">${reply.rpbdcategory}</td>
-	                      <td class="overflow"><a href="#">
-	                      ${reply.rpcontents}</a></td>
+	                      <td class="overflow">
+	                      	<c:choose>
+					        	<c:when test="${board.bdcategory.equals('자랑') }">
+						       		<!-- 자랑글 상세 -->
+						       		<!-- 수정 필요~~~~~~~~~~~ -->
+						        	<a href="loadToRoomViewPage?bdcode=${reply.rpbdcode }">
+						        		${reply.rpcontents}
+						        	</a>
+					        	</c:when>
+					        	<c:otherwise>
+						        	<!-- 일반글 상세 -->										
+		                      		<a href="admin_selectBoardView${paging.makeQueryPage(reply.rpbdcode, paging.page)}">
+			                      		${reply.rpcontents}
+			                      	</a>
+								</c:otherwise>
+							</c:choose>
+	                      </td>
 	                      <td class="overflow text-center">${reply.rpnickname}</td>
 	                      <td class="overflow text-center">${reply.rpdate}</td>
 	                      <td>
