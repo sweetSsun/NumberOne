@@ -103,7 +103,7 @@
 	                        <c:choose>
 					        	<c:when test="${board.bdcategory.equals('자랑') }">
 						       		<!-- 자랑글 상세 -->
-						        	<a href="loadToRoomViewPage?bdcode=${board.bdcode }">
+						        	<a href="selectRoomList?bdcode=${board.bdcode }&jsp=view">
 						        		<span class="overflow">${board.bdtitle}</span>
 						        	</a>
 					        	</c:when>

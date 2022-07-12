@@ -31,11 +31,13 @@ public class BoardController {
 		if(bdcode != "") {
 			//bdcode 추가
 			mav.addObject("bdcode", bdcode);
-			
-			if(jsp.equals("view")) {
-				//상세보기 페이지로 이동
-				mav.setViewName("board/RoomViewPage");
+			if(jsp !=null) {
+				if(jsp.equals("view")) {
+					//상세보기 페이지로 이동
+					mav.setViewName("board/RoomViewPage");
+				}
 			}
+			
 		}
 		
 		
@@ -398,15 +400,25 @@ public class BoardController {
 		 return currnetState;
 	 }
 	 
-	 //자취방 자랑글 상세 페이지 요청(마이페이지, 게시판메인. 관리자 연결용) 
-	@RequestMapping( value="/loadToRoomViewPage")
-	public ModelAndView loadToRoomViewPage(String bdcode) {
-		System.out.println(bdcode+"번 자랑글 상세 페이지 이동 요청");
-		//상세 보기 하단에 나올 자랑글 목록 받아오기(상세글은 ajax로)
-		ModelAndView mav = bsvc.selectRoomList();
-	    mav.addObject("bdcode", bdcode);
-		mav.setViewName("board/RoomViewPage");
-		return mav;
-	}
-
+		/*
+		 * //자취방 자랑글 상세 페이지 요청(마이페이지, 게시판메인. 관리자 연결용)
+		 * 
+		 * @RequestMapping( value="/loadToRoomViewPage") public ModelAndView
+		 * loadToRoomViewPage(String bdcode) {
+		 * System.out.println(bdcode+"번 자랑글 상세 페이지 이동 요청"); //상세 보기 하단에 나올 자랑글 목록
+		 * 받아오기(상세글은 ajax로) ModelAndView mav = bsvc.selectRoomList();
+		 * mav.addObject("bdcode", bdcode); mav.setViewName("board/RoomViewPage");
+		 * return mav; }
+		 */
+	 
+	 
+	 @RequestMapping ( value = "/updateRoomView")
+	 public ModelAndView updateRoomView(BoardDto board, RedirectAttributes ra) throws IllegalStateException, IOException {
+		 System.out.println("자랑글 수정 요청");
+		 
+		 ModelAndView mav = bsvc.updateRoomView(board, ra);
+		 
+		 return mav;
+		 
+	 }
 }

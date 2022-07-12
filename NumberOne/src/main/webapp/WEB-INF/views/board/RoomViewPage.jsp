@@ -543,7 +543,6 @@ function adminRpBan(){
 
 <script type="text/javascript">
 console.log("roomViewPage 접속!");
-console.log('${bdcode}');
 nowBdcode = ('${bdcode}');
 roomView_ajax(nowBdcode)
 

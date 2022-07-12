@@ -425,5 +425,14 @@
 		WHERE RPCODE = #{rpcode}
 	</update>
 	
+	<update id="updateRoomView">
+		<!-- 자랑글 수정 -->
+		UPDATE BOARDS
+		SET BDTITLE = #{bdtitle},
+		BDCONTENTS = #{bdcontents},
+		BDIMG = #{bdimg},
+		BDDETAILIMG = #{bddetailimg}
+		WHERE BDCODE = #{bdcode}
+	</update>
 	
  </mapper>
