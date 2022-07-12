@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.UUID;
 
-import javax.mail.Address;
-import javax.mail.Message.RecipientType;
-import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -675,11 +672,10 @@ public class MemberService {
 					mav.setViewName("redirect:/loadToLogin");	
 				
 				}else {
-				
 					//로그인 처리
 					session.setAttribute("loginId", kakaoMember.getMid());
 					session.setAttribute("kakaoId", kakaoMember.getMid());
-					session.setAttribute("loginProfile", kakaoMember.getMprofile());
+					session.setAttribute("loginProfile", member.getMprofile());
 					session.setAttribute("loginRegion", kakaoMember.getMregion());
 					session.setAttribute("loginNickname", kakaoMember.getMnickname());
 				
@@ -758,6 +754,39 @@ public class MemberService {
 				System.out.println("회원정보 있음");
 				
 				//임시 비밀번호 생성
+<<<<<<< HEAD
+				String subject = "임시비밀번호가 발급되었습니다.";
+				String content = "";
+				String from = "pj220810@naver.com";
+				String to = checkMemail;
+				String temporaryPw= "임시비번";
+
+		       // 임시번호
+		        content += "<div style='margin: 50px;'>";
+		        content += "<div style='height: 30px; width:800px; padding: 15px; font-size: 20px; font-family : pretendard; border-bottom : 1px solid gray; '>";
+		        content += "<span style='color:gray;'>임시비밀번호가 발급되었습니다!</span></div>";		       
+		        content += "<div style='width:800px; border-radius: 4px; padding: 20px 20px 20px 10px;'>";
+		        content += "<div style='color:#747474; font-size: 14px; padding: 10px; font-family : pretendard;'>안녕하세요,&nbsp;<span style='font-weight: bold;'>"+ checkMid + " 님 </span></div>";
+		        content += "<div style='color:#747474; font-size: 14px; padding: 10px; font-family : pretendard;'>회원님의 임시 비밀번호를 보내드립니다.</div>";
+		        content += "<div style='color:#747474; font-size: 14px; padding: 10px; font-family : pretendard;'>임시 비밀번호 : <span style='font-weight: bold;'>" +temporaryPw+ "</span></div>";
+		        content += "</div>";
+		        content += "<div style='color:#747474; font-size: 13px; padding: 10px;font-family : pretendard;'>";
+		        content += "임시비밀번호로 로그인 후 반드시 <span style='color: #00bcd4; font-weight: bold;font-family : pretendard;'>마이페이지 회원정보 > 수정</span> 에서 비밀번호를 재설정하여 주시기 바랍니다.</div>";
+		        content += "<br>";
+		        content += "<button style='text-align:center; border:0px; border-radius: 4px; height:50px; width: 250px; margin:20px;";
+		        content += "margin-left: 10px; background-color: #00bcd4; color: white; font-weight: bold;font-family : pretendard;'>";
+		        content += "일인자사이트로 바로가기</button>";
+		        content += "</div>";
+				
+				
+				
+				
+				
+				
+				
+				
+				
+=======
 				String temporaryPw= "임시 번호";
 				
 				
@@ -769,6 +798,7 @@ public class MemberService {
 				String from = "pj220810@naver.com";
 				//받는 사람 주소(매개변수)
 				String to = checkMemail;
+>>>>>>> 2d534449312f720d530c0b591cccd2b7dc0052b1
 				
 				try {
 					//Helper객체 생성
@@ -779,7 +809,7 @@ public class MemberService {
 					mailHelper.setFrom(from);
 					mailHelper.setTo(to);
 					mailHelper.setSubject(subject);
-					mailHelper.setText(content);
+					mailHelper.setText(content, true);
 					
 					//메일 전송
 					mailSender.send(mail);
@@ -800,6 +830,8 @@ public class MemberService {
 		}
 
 
+<<<<<<< HEAD
+=======
 		//비밀번호 찾기 - 임시 비밀번호 보내기
 		public String updatePw(String checkMid, String checkMemail) {
 			//비밀번호 찾기
@@ -830,6 +862,7 @@ public class MemberService {
 			System.out.println("성공?");
 			return null;
 		}
+>>>>>>> 2d534449312f720d530c0b591cccd2b7dc0052b1
 
 
 }

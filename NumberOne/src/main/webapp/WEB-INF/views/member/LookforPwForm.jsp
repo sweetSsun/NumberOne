@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>1인자 - 비밀번호찾기페이지</title>
 
-<%@ include file="/resources/css/CommonCss.jsp"%>
+<%@ include file="/resources/css/BarCss.jsp"%>
 <!-- 부트스트랩 -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
@@ -139,6 +139,7 @@ background-color: #00BCD4;
   					</div>              
             </div>
         </div>
+
     </section>
 	</main>
 
