@@ -28,15 +28,20 @@ text-decoration: line-through;
 
 
 <body>
-	<!-- TobBar -->
-	<%@ include file="/WEB-INF/views/includes/TopBar.jsp"%>
-	<!-- End of TobBar -->
-
+        <!-- TopBar -->
+        <c:choose>
+                <c:when test="${sessionScope.loginId != 'admin'}">
+                        <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
+                </c:when>
+                <c:otherwise>
+                        <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
+                </c:otherwise>
+        </c:choose>
+        <!-- End of TopBar -->
 	<main>
 		<!-- 사이드바 -->
 
-		<%@ include file="/WEB-INF/views/includes/SideBar_Mypage.jsp"%>
-
+		<%@ include file="/WEB-INF/views/includes/SideBar_Resell.jsp"%>
 		<section>
 			<!-- 본문 -->
 			<div class="container">
@@ -313,7 +318,7 @@ for(var i = 0; i < select_gdstate.length; i++){
 		}
 	
 	
-	<%--	
+		
 	selectStates.forEach(function(selectState){
 		selectState.addEventListener('change', changeOp)
 		
