@@ -48,7 +48,7 @@
          <form action="admin_selectBoardList" method="get" id="actionForm">
 			<div class="container">
 	            <div class="row" style="margin:auto;">
-	                <h1 class="text-center">커뮤니티-경고/정지 관리페이지 : Admin_BoardList.jsp</h1>
+	                <h4 class="text-center">커뮤니티-경고/정지 관리페이지 : Admin_BoardList.jsp</h4>
 	            </div>
 	            <!-- 검색 -->
 	            <div class="row">
@@ -78,7 +78,7 @@
             </div>
             
             <!-- 게시글 목록 -->
-            <div class="row">
+            <div class="row" style="margin-top: 20px;">
             <table style="table-layout: fixed;" >
                <thead >
                   <tr class="text-center fw-bold" id="board_column">
@@ -97,23 +97,24 @@
 	                   <!-- 일반게시글 관리 목록 -->
 	                   <tr style="border-bottom: solid #E0E0E0 1px;">
 	                      <td class="overflow text-center">${board.bdcode}</td>
-	                      <td class="category text-center">${board.bdcategory }
+	                      <td class="category text-center">${board.bdcategory }</td>
 	                      <td class="overflow">
-                        <c:choose>
-								          <c:when test="${board.bdcategory.equals('자랑') }">
-									          <!-- 자랑글 상세 -->
-									          <a href="loadToRoomViewPage?bdcode=${board.bdcode }">${board.bdtitle}</a>
-								          </c:when>
-								          <c:otherwise>
-									          <!-- 일반글 상세 -->										
-	                      	  <a href="admin_selectBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}">
-	                      	  <span class="overflow">
-	                      	  ${board.bdtitle}
-	                      	  </span>
-	                      	  </a>
-	                      	  <span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span>
-								          </c:otherwise>
-							          </c:choose>
+	                        <c:choose>
+					        	<c:when test="${board.bdcategory.equals('자랑') }">
+						       		<!-- 자랑글 상세 -->
+						        	<a href="loadToRoomViewPage?bdcode=${board.bdcode }">
+						        		<span class="overflow">${board.bdtitle}</span>
+						        	</a>
+						        	<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span>
+					        	</c:when>
+					        	<c:otherwise>
+						        	<!-- 일반글 상세 -->										
+		                      		<a href="admin_selectBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}">
+			                      		<span class="overflow">${board.bdtitle}</span>
+			                      	</a>
+			                      	<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span>
+								</c:otherwise>
+							</c:choose>
 	                      </td>
 	                      <td class="text-center overflow">${board.bdnickname}</td>
 	                      <td class="text-center overflow">${board.bddate}</td>
@@ -216,7 +217,7 @@
 			});
 		}		
 		
-		// 공지상태 변경 확인 모달창 출력
+		// 글상태 변경 확인 모달창 출력
 		var btnObj;
 		function showBdstateModal(obj, bdcode){
 			console.log("showBdstateModal() 실행");
@@ -232,7 +233,7 @@
 			$("#updateBdstateModal").modal("show");
 		}
 		
-		// 공지상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
+		// 글상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
 		function updateBdstate(){
 			console.log("updateBdstate() 실행");
 			var bdcode = $("#bdcode").val();
@@ -307,11 +308,10 @@
 		}
 	</script>
 	<script type="text/javascript">
-		// 정렬 select하면 ajax로 공지목록 받고 출력을 바꿔주는 함수
+		// 정렬 select하면 ajax로 글목록 받고 출력을 바꿔주는 함수
 		function bdSearchState(searchVal){
 			console.log("bdSearchState() 실행");
 			console.log("정렬 선택 : " + searchVal);
-			//var searchType = $("#searchType option:selected").val();
 			var searchType = $("#searchTypeSel").val();
 			var searchText = $("#searchText").val();
 			console.log(searchType);
@@ -329,11 +329,20 @@
 						output += "<tr style='border-bottom: solid #E0E0E0 1px;'>";
 						output += "<td class='text-center overflow'>" + result[i].bdcode + "</td>";
 						output += "<td class='category text-center'>" + result[i].bdcategory + "</td>";
-						output += "<td class='overflow'><a href='admin_selectBoardView?codeIdx=" + result[i].bdcode
-								+"&page=1&perPageNum=10&searchVal=" + searchVal + "&searchType=" + searchType + "&keyword=" + searchText + "'>"
-								+"<span class='overflow'>" + result[i].bdtitle + "</span>"
-								+"<span class='fw-bold' style='font-size:15px; color:#00bcd4;'>&nbsp;" + result[i].bdrpcount + "</span>"			
-								+"</a></td>";
+						output += "<td class='overflow'>"
+						if(result[i].bdcategory == '자랑'){
+							output +="<a href='loadToRoomViewPage?bdcode=" + result[i].bdcode + "'>"
+									+"<span class='overflow'>" + result[i].bdtitle + "</span>"
+									+"<span class='fw-bold' style='font-size:15px; color:#00bcd4;'>&nbsp;" + result[i].bdrpcount + "</span>"			
+									+"</a>";
+						} else {
+							output +="<a href='admin_selectBoardView?codeIdx=" + result[i].bdcode
+									+"&page=1&perPageNum=10&searchVal=" + searchVal + "&searchType=" + searchType + "&keyword=" + searchText + "'>"
+									+"<span class='overflow'>" + result[i].bdtitle + "</span>"
+									+"<span class='fw-bold' style='font-size:15px; color:#00bcd4;'>&nbsp;" + result[i].bdrpcount + "</span>"			
+									+"</a>";
+						}
+						output += "</td>";
 						output += "<td class='text-center overflow'>" + result[i].bdnickname + "</td>";
 						output += "<td class='text-center overflow'>" + result[i].bddate + "</td>";
 						output += "<td class='text-center'>" + result[i].bdhits + "</td>";

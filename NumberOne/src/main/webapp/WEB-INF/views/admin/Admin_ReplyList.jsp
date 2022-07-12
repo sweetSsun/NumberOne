@@ -48,7 +48,7 @@
          <form action="admin_selectReplyList" method="get" id="actionForm">
 			<div class="container">
 	            <div class="row" style="margin:auto;">
-	                <h1 class="text-center">댓글 관리페이지 : Admin_ReplyList.jsp</h1>
+	                <h4 class="text-center">댓글 관리페이지 : Admin_ReplyList.jsp</h4>
 	            </div>
 	            <!-- 검색 -->
 	            <div class="row">
@@ -79,7 +79,7 @@
             </div>
             
             <!-- 게시글 목록 -->
-            <div class="row">
+            <div class="row" style="margin-top: 20px;">
             <table style="table-layout: fixed;">
                <thead >
                   <tr class="text-center fw-bold" id="board_column">
