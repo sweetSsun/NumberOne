@@ -22,10 +22,23 @@ public class BoardController {
 	
 	//자취방 자랑 메인 페이지 이동
 	@RequestMapping(value="/selectRoomList")
-	public ModelAndView roomListPage() {
+	public ModelAndView selectRoomList(String bdcode, String jsp) {
 		System.out.println("자쥐방 자랑 메인 요청(목록페이지)");	
+		System.out.println(bdcode+"/"+jsp);
 		ModelAndView mav = new ModelAndView();
 		mav=bsvc.selectRoomList();
+		
+		if(bdcode != "") {
+			//bdcode 추가
+			mav.addObject("bdcode", bdcode);
+			
+			if(jsp.equals("view")) {
+				//상세보기 페이지로 이동
+				mav.setViewName("board/RoomViewPage");
+			}
+		}
+		
+		
 		return mav;
 	}
 
@@ -390,7 +403,7 @@ public class BoardController {
 	public ModelAndView loadToRoomViewPage(String bdcode) {
 		System.out.println(bdcode+"번 자랑글 상세 페이지 이동 요청");
 		//상세 보기 하단에 나올 자랑글 목록 받아오기(상세글은 ajax로)
-		ModelAndView mav = roomListPage();
+		ModelAndView mav = bsvc.selectRoomList();
 	    mav.addObject("bdcode", bdcode);
 		mav.setViewName("board/RoomViewPage");
 		return mav;

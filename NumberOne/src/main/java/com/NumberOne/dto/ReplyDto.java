@@ -20,6 +20,8 @@ public class ReplyDto {
 	private String rpprofile;	//작성자 프로필
 	private String rpmprofile;
 	
+	private String rpmstate;
+	
 	public String getRpcode() {
 		return rpcode;
 	}

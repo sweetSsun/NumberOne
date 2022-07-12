@@ -87,7 +87,7 @@ background-color: #00BCD4;
 									<c:choose>
 										<c:when test="${board.bdcategory.equals('자랑') }">
 											<!-- 자랑글 상세 -->
-											<a href="loadToRoomViewPage?bdcode=${board.bdcode }">${board.bdtitle}</a>
+											<a href="selectRoomList?bdcode=${board.bdcode }&jsp=view">${board.bdtitle}</a>
 										</c:when>
 										<c:otherwise>
 											<!-- 일반글 상세 -->										

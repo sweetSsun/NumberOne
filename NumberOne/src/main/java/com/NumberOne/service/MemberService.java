@@ -756,11 +756,17 @@ public class MemberService {
 				System.out.println("회원정보 있음");
 				
 				//임시 비밀번호 생성
+				String temporaryPw= "임시 번호";
+				
+				
+				//메일 제목
 				String subject = "test 메일";
+				//메일 내용(temporaryPw 포함)
 				String content = "<p>메일 테스트 내용</p>";
-				String from = "seunggi418@naver.com";
+				//보내는 사람 주소
+				String from = "pj220810@naver.com";
+				//받는 사람 주소(매개변수)
 				String to = checkMemail;
-				String temporaryPw= "테스트 메세지";
 				
 				try {
 					//Helper객체 생성
@@ -775,19 +781,17 @@ public class MemberService {
 					
 					//메일 전송
 					mailSender.send(mail);
-					System.out.println("성공?");
+					pwCheckResult = "2";
 					
 				} catch (Exception e) {
 					 e.printStackTrace();
 				}
 				
-				
-
 				return pwCheckResult;
 			
 			}else {
 				
-				return null;
+				return pwCheckResult;
 				
 			}
 			
@@ -799,7 +803,7 @@ public class MemberService {
 			//비밀번호 찾기
 			String subject = "test 메일";
 			String content = "<p>메일 테스트 내용</p>";
-			String from = "seunggi418@naver.com";
+			String from = "pj220810@naver.com";
 			String to = checkMemail;
 			String temporaryPw= "테스트 메세지";
 			

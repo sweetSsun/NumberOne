@@ -344,7 +344,14 @@ section{
 	<main>
 		
 		<!-- 사이드바 -->
-		<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
+		<c:choose>
+			<c:when test="${loginId.equals(\"admin\") }">
+				<%@ include file="/WEB-INF/views/includes/SideBar_Admin.jsp" %>				
+			</c:when>
+			<c:otherwise>
+				<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
+			</c:otherwise>
+		</c:choose>
 		
 		<section>
 		<!-- 본문 -->
@@ -725,8 +732,13 @@ function adminRpBan(){
 				//작성자 프로필	
 				var mprofileOutput = "<img class='product-img' style='width:30px; height:30px; border-radius:50%;'";
 				if(roomView.bdmprofile != 'nomprofile'){
-					console.log()
-					mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+roomView.bdmprofile+"'>";
+					if(roomView.bdmstate == 1){
+						//일반 로그인
+						mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+roomView.bdmprofile+"'>";
+					} else if(roomView.bdmstate == 9) {
+						//카카오 로그인
+						mprofileOutput += "src='"+roomView.bdmprofile+"'>";							
+					}
 				} else {
 					mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png'>"; 
 				}
@@ -949,7 +961,14 @@ function adminRpBan(){
 					replyOutput += "<img class='product-img' style='width:20px; height:20px; border-radius:50%;'";
 					if(replys[i].rpprofile != 'nomprofile'){
 						console.log("프로필 있음")
-						replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+replys[i].rpprofile+"'>";
+						if(replys[i].rpmstate == 1){
+							//일반 로그인
+							replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+replys[i].rpprofile+"'>";
+						} else if(replys[i].rpmstate == 9) {
+							//카카오 로그인
+							console.log(replys[i].rpprofile);
+							replyOutput += "src='"+replys[i].rpprofile+"'>";							
+						}
 					} else {
 						replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png'>"; 
 					}
