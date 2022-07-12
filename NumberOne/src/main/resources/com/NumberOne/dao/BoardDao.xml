@@ -211,7 +211,7 @@
  	 <select id="selectRoomView" resultType="com.NumberOne.dto.BoardDto">
  	 	<!-- 자랑글 상세 -->
  	 	select bdcode, bdmid, bdtitle, bddate, bdimg, bdstate, bdhits, bdcontents, bddetailimg,
-		bdscrap, bdrecommend, bdreply, m.mnickname as bdnickname, m.mprofile as bdmprofile,
+		bdscrap, bdrecommend, bdreply, m.mnickname as bdnickname, m.mprofile as bdmprofile, m.mstate as bdmstate,
         sh.scmid as schistory, rch.rcmid as rchistory, wbh.wbmid as wbhistory
 		from boards b
 		left outer join (select scbdcode, count(*) as bdscrap from scrap group by scbdcode) sc
@@ -247,7 +247,7 @@
  	<select id="selectBoardReplyList" resultType="com.NumberOne.dto.ReplyDto">
  		<!-- 댓글목록 조회 -->
 
- 		SELECT RP.*, MB.MNICKNAME AS RPNICKNAME, MB.MPROFILE AS RPPROFILE
+ 		SELECT RP.*, MB.MNICKNAME AS RPNICKNAME, MB.MPROFILE AS RPPROFILE, MB.MSTATE AS RPMSTATE
 		FROM REPLY RP, MEMBERS MB 
 		WHERE RP.RPMID = MB.MID
 		AND RPBDCODE = #{bdcode}
@@ -425,5 +425,14 @@
 		WHERE RPCODE = #{rpcode}
 	</update>
 	
+	<update id="updateRoomView">
+		<!-- 자랑글 수정 -->
+		UPDATE BOARDS
+		SET BDTITLE = #{bdtitle},
+		BDCONTENTS = #{bdcontents},
+		BDIMG = #{bdimg},
+		BDDETAILIMG = #{bddetailimg}
+		WHERE BDCODE = #{bdcode}
+	</update>
 	
  </mapper>

@@ -52,7 +52,7 @@
          <form action="admin_selectNoticeList" method="get" id="actionForm">
 			<div class="container">
 	            <div class="row" style="margin:auto;">
-	                <h1 class="text-center">공지 관리페이지 : Admin_NoticeList.jsp</h1>
+	                <h4 class="text-center">공지 관리페이지 : Admin_NoticeList.jsp</h4>
 	            </div>
 	            <!-- 검색 -->
 	            <div class="row">
@@ -81,7 +81,7 @@
             </div>
             
             <!-- 게시글 목록 -->
-            <div class="row">
+            <div class="row" style="margin-top: 20px;">
             <table style="table-layout: fixed;">
                <thead >
                   <tr class="text-center fw-bold" id="board_column">
@@ -89,9 +89,9 @@
                      <td>제목</td>
 				     <td style="width:15%;">작성자</td>
                      <td style="width:10%;">작성일</td>
-                     <td style="width:4rem;" class="text-center">조회</td>
-                     <td style="width:3rem;" class="text-center">상태</td>
-                     <td style="width:3rem;" class="text-center">고정</td>
+                     <td style="width:4rem;">조회</td>
+                     <td style="width:3rem;">상태</td>
+                     <td style="width:3rem;">고정</td>
                   </tr>
                </thead>
                <tbody id="nbListTbody">
@@ -100,8 +100,8 @@
 	                   <tr style="border-bottom: solid #E0E0E0 1px;">
 	                      <td class="overflow text-center">${notice.nbcode}</td>
  	                      <td class="overflow"><a href="admin_selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}" >${notice.nbtitle}</a></td>
-	                      <td class="overflow">${notice.nbnickname}</td>
-	                      <td class="overflow">${notice.nbdate}</td>
+	                      <td class="text-center overflow">${notice.nbnickname}</td>
+	                      <td class="text-center overflow">${notice.nbdate}</td>
 	                      <td class="text-center">${notice.nbhits}</td>	
 	                      <td>
 	                      	<c:choose>
@@ -283,7 +283,7 @@
 							$("#fixBtn_"+nbcode_state).text("");
 						} else {
 							btnObj_state.text("활성").addClass("btn-primary").removeClass("btn-secondary");
-							$("#fixBtn_"+nbcode_state).html("<button class='btn btn-secondary' type='button' onclick='showNbfixModal(this,\"" + nbcode_state + "\")'>기본</button>");
+							$("#fixBtn_"+nbcode_state).html("<button class='btn btn-sm btn-secondary' type='button' onclick='showNbfixModal(this,\"" + nbcode_state + "\")'>일반</button>");
 						}
 					}
 					$("#updateNbstateModal").modal("hide");
@@ -329,7 +329,7 @@
 				success: function(result){
 					if(result > 0){
 						if (nbfix == 0){
-							btnObj_fix.text("기본").addClass("btn-secondary").removeClass("btn-numberone").toggleClass("btn");
+							btnObj_fix.text("일반").addClass("btn-secondary").removeClass("btn-numberone").toggleClass("btn");
 						} else {
 							btnObj_fix.text("고정").addClass("btn-numberone").removeClass("btn-secondary").toggleClass("btn");
 						}
@@ -411,7 +411,7 @@
 						output += "<td class='overflow'><a href='admin_selectNoticeBoardView?codeIdx=" + result[i].nbcode 
 								+"&page=1&perPageNum=10&searchVal=" + searchVal + "&searchType=" + searchType + "&keyword=" + searchText + "'>" 
 								+ result[i].nbtitle + "</a></td>";
-						output += "<td class='overflow'>" + result[i].nbmid + "</td>";
+						output += "<td class='text-center overflow'>" + result[i].nbnickname + "</td>";
 						output += "<td class='text-center overflow'>" + result[i].nbdate + "</td>";
 						output += "<td class='text-center'>" + result[i].nbhits + "</td>";
 						output += "<td class='text-center'>"
@@ -426,7 +426,7 @@
 								if (result[i].nbfix == 1){
 									output += "<button class='btn-sm btn-numberone' type='button' onclick='showNbfixModal(this, \""+result[i].nbcode+"\")'>고정</button>";
 								} else {
-									output += "<button class='btn btn-sm btn-secondary' type='button' onclick='showNbfixModal(this, \""+result[i].nbcode+"\")'>기본</button>";
+									output += "<button class='btn btn-sm btn-secondary' type='button' onclick='showNbfixModal(this, \""+result[i].nbcode+"\")'>일반</button>";
 								}
 							}
 							output += "</td>";
