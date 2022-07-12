@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 게시판 글목록 페이지</title>
+<title>1인자 - 지역게시판 전체글목록 페이지</title>
 <!-- Jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <%@ include file="/resources/css/BarCss.jsp" %>
@@ -83,10 +83,9 @@
 		<!-- 본문 -->
 			<div class="container">
 				<div class="row" style="margin:auto;">
-					<h2 class="text-center">게시판 글목록 페이지 : BoardListPage.jsp</h2>
+					<h2 class="text-center">지역게시판 전체글목록 페이지 : RegionBoardListPage.jsp</h2>
 				</div>
 				<form action="selectBoardSearchList" method="get" onsubmit="return searchTextCheck();">
-					<input type="hidden" name="bdcategory" value="" >
 					<div class="row ">
 						<!-- 검색기능 -->
 						<div class="col-5" align="right">
@@ -107,13 +106,18 @@
 				</div>
 				<div class="row" style="margin-top: 20px;">
 					<div class="col">
-						<!-- 말머리 정렬 -->
-						<select class="bdCategoryList" onchange="bdCategorySel(this.value)">
-							<option class="bdcategorySel malmeori" value="" disabled selected >카테고리 선택</option>
-							<option class="bdcategorySel" value="자유">자유</option>
-							<option class="bdcategorySel" value="질문">질문</option>
-							<option class="bdcategorySel" value="정보">정보</option>
-							<option class="bdcategorySel" value="후기">후기</option>
+						<!--  말머리 정렬  -->
+						<select class="bdCategoryList" onchange="">
+							<option class="bdcategorySel malmeori" value="" disabled selected >지역선택</option>
+							<option class="bdcategorySel" value="ALL">전국</option>
+							<option class="bdcategorySel" value="SEL">서울</option>
+							<option class="bdcategorySel" value="ICN">인천</option>
+							<option class="bdcategorySel" value="GGD">경기</option>
+							<option class="bdcategorySel" value="GSD">경상</option>
+							<option class="bdcategorySel" value="JLD">전라</option>
+							<option class="bdcategorySel" value="CCD">충청</option>
+							<option class="bdcategorySel" value="GWD">강원</option>
+							<option class="bdcategorySel" value="JJD">제주</option>
 						</select>
 					</div>
 					<%-- <div align="right" class="col">
@@ -124,7 +128,7 @@
 				</div>
 				
 				<div class=" community" style="text-align:center;">
-					<span style="font-size:21px;" class="fw-bold text-white">전체게시판</span>
+					<span style="font-size:21px;" class="fw-bold text-white">지역게시판</span>
 				</div>
 				
 				<!-- 게시글 목록 -->
@@ -133,7 +137,7 @@
 					<thead >
 						<tr class="text-center" id="board_column">
 							<td style="font-size: 17px;">글번호</td>
-							<td style="font-size: 17px;">카테고리</td>
+							<td style="font-size: 17px;">지역</td>
 							<td style="font-size: 17px;">제목</td>
 							<td style="font-size: 17px;">작성자</td>
 							<td style="font-size: 17px;">날짜</td>
@@ -159,11 +163,13 @@
 					
 					<tbody id="bdCategoryList">
 					<!-- 일반게시판 목록 -->
-					<c:forEach items="${boardList }" var="board">
+					<c:forEach items="${regionList }" var="board">
 						<c:if test="${board.bdcategory != '자랑' }">
 						<tr style="border-bottom: solid #E0E0E0 1px;">
 							<td class="text-center tableCell">${board.bdcode}</td>
-							<td class="bdcategory text-center tableCell">${board.bdcategory}</td>
+							<td class="bdcategory text-center tableCell">
+								${board.bdrgname }
+							</td>
 							<td class="tableCell">
 							 	<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
 							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
@@ -210,37 +216,6 @@
 		location.href= "loadToBoardWrite?bdcategory="+bdcategory;
 	}
 
-	/* 게시판 카테고리 선택 */
-	function bdCategorySel(categorySel){
-		console.log("categorySel: " + categorySel);
-		
-		var output = "";
-		$.ajax({
-			type : "get",
-			url : "getBoardCategoryList_ajax",
-			data : { "bdcategory" : categorySel},
-			dataType : "json",
-			async : false,
-			success : function(bdCategoryList){
-				console.log(bdCategoryList);
-				
-				for(var i = 0; i< bdCategoryList.length; i++ ){
-					output += "<tr style=\"border-bottom: solid #E0E0E0 1px;\">";
-					output += "<td class=\"text-center tableCell\">" + bdCategoryList[i].bdcode + "</td>";
-					output += "<td class=\"bdcategory text-center tableCell \">" + bdCategoryList[i].bdcategory + "</td>";
-					output += "<td class=\"tableCell\"><a href='selectBoardView?bdcode=" + bdCategoryList[i].bdcode + "'>" + bdCategoryList[i].bdtitle + "</a>"
-					output += "<span class=\"fw-bold tableCell \" style=\"font-size:15px; color:#00bcd4;\">&nbsp;" + bdCategoryList[i].bdrpcount + "</span></td>"
-					output += "<td class=\"text-center tableCell\"><a href=\"#\">" + bdCategoryList[i].bdnickname + "</a></td>";
-					output += "<td class=\"text-center tableCell\">" + bdCategoryList[i].bddate + "</td>";
-					output += "<td class=\"text-center tableCell\">" + bdCategoryList[i].bdhits + "</td>";
-					output += "<td class=\"text-center text-info fw-bold\">" + bdCategoryList[i].bdrccount + "</td>";
-					output += "</tr>";
-				}
-			}
-		});
-		$("#bdCategoryList").html(output);
-	}
-	
 	
 </script>
 

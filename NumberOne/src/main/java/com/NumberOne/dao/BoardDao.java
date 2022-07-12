@@ -190,6 +190,11 @@ public interface BoardDao {
 	@Select("select * from boards where bdcode=#{bdcode}")
 	BoardDto selectRoomModify(String bdcode);
 	
+	//지역글 목록
+	ArrayList<BoardDto> selectRegionBoardList(String bdrgcode);
+
+	
+	
 	
 
 	

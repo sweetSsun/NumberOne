@@ -881,7 +881,7 @@ function adminRpBan(){
 	}
 	
 	function deleteRoomView(){
-		console.log(nowRdcode+"글 삭제 요청");
+		console.log(nowBdcode+"글 삭제 요청");
 		var confirmCh = confirm("해당 글을 삭제하시겠습니까?");
 		if(confirmCh == false){
 			return;

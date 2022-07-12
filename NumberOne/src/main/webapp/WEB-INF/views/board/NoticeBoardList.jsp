@@ -92,7 +92,6 @@
 					<h2 class="text-center">공지게시판 : NoticeBoardList.jsp</h2>
 				</div>
 				<form action="selectBoardSearchList" method="get" onsubmit="return searchTextCheck();">
-				<input type="hidden" name="bdcategory" value="">
 					<div class="row ">
 						<!-- 검색기능 -->
 						<div class="col-5" align="right">
@@ -115,7 +114,7 @@
 					
 				</div>
 				
-				<div class="community bg-secondary" style="text-align:center;">
+				<div class="community" style="text-align:center;">
 					<span style="font-size:21px;" class="fw-bold text-white">공지게시판</span>
 				</div>
 				
@@ -165,11 +164,11 @@
 					</c:forEach>
 					</tbody>
 				</table>
-				<div align="right" class="col mt-2">
+				<%-- <div align="right" class="col mt-2">
 					<c:if test="${sessionScope.loginId == 'admin' }">
 						<button  onclick="loadToBoardWrite()" style="background-color:gray;" class="btn btm-sm fw-bold text-white writeButton">글작성</button>
 					</c:if>
-				</div>
+				</div> --%>
 				</div>
 		</section>
 	</main>
