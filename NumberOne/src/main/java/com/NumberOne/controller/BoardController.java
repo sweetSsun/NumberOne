@@ -22,16 +22,31 @@ public class BoardController {
 	
 	//자취방 자랑 메인 페이지 이동
 	@RequestMapping(value="/selectRoomList")
-	public ModelAndView roomListPage() {
+	public ModelAndView selectRoomList(String bdcode, String jsp) {
 		System.out.println("자쥐방 자랑 메인 요청(목록페이지)");	
+		System.out.println(bdcode+"/"+jsp);
 		ModelAndView mav = new ModelAndView();
 		mav=bsvc.selectRoomList();
+		
+		if(bdcode != "") {
+			//bdcode 추가
+			mav.addObject("bdcode", bdcode);
+			if(jsp !=null) {
+				if(jsp.equals("view")) {
+					//상세보기 페이지로 이동
+					mav.setViewName("board/RoomViewPage");
+				}
+			}
+			
+		}
+		
+		
 		return mav;
 	}
 
 	//자취방 자랑글 작성 페이지 이동
 	@RequestMapping(value="/loadToWriteRoom")
-	public String loadTowriteRoom(RedirectAttributes ra) {
+	public String loadToWriteRoom(RedirectAttributes ra) {
 		System.out.println("자쥐방 자랑 Form 요청");
 		return "board/RoomWriteForm";
 	}
@@ -334,6 +349,7 @@ public class BoardController {
 		 
 	 }
 	 
+   
 	 //질문게시판 이동 
 	 @RequestMapping ( value = "/selectQuestionBoardList")
 	 public ModelAndView selectQuestionBoardList() {
@@ -344,6 +360,7 @@ public class BoardController {
 		 return mav;
 		 
 	 }
+   
 	 //정보게시판 이동 
 	 @RequestMapping ( value = "/selectInfoBoardList")
 	 public ModelAndView selectInfoBoardList() {
@@ -456,20 +473,20 @@ public class BoardController {
 	 }
 	 
 	 
-	 //자취방 자랑글 상세 페이지 이동
+	 //자취방 자랑글 상세 모달 요청
 	 @RequestMapping ( value = "/selectRoomView")
 	 public @ResponseBody String selectRoomView(String bdcode) {
-		 System.out.println("자취방 자랑글 상세페이지 이동 요청");
-		 System.out.println(bdcode+"번글 상세보기 요청");
+		 System.out.println(bdcode+"번 자강글 상세모달 요청");
 		 String roomView_json = bsvc.selectRoomView(bdcode);
 		 
 		 return roomView_json;
 	 }
 	 
-	 //자취방 자랑글 추천
+	 
+	 //자취방 자랑글 추천/스크랩/신고 요청
 	 @RequestMapping ( value = "/updateLog")
 	 public @ResponseBody String updateRbrecommend(String bdcode, String history, String currentState ) {
-		 System.out.println(bdcode+"번글 "+history+"업데이트 요청 현재상태: "+currentState);
+		 System.out.println(bdcode+"번 자랑글 "+history+"업데이트 요청 현재상태: "+currentState);
 		 int updateResult = bsvc.updateLog(bdcode, history, currentState);
 		 
 		 return updateResult+"";
@@ -485,8 +502,25 @@ public class BoardController {
 		 return currnetState;
 	 }
 	 
-	 //자랑글 수정 페이지 요청
+		/*
+		 * //자취방 자랑글 상세 페이지 요청(마이페이지, 게시판메인. 관리자 연결용)
+		 * 
+		 * @RequestMapping( value="/loadToRoomViewPage") public ModelAndView
+		 * loadToRoomViewPage(String bdcode) {
+		 * System.out.println(bdcode+"번 자랑글 상세 페이지 이동 요청"); //상세 보기 하단에 나올 자랑글 목록
+		 * 받아오기(상세글은 ajax로) ModelAndView mav = bsvc.selectRoomList();
+		 * mav.addObject("bdcode", bdcode); mav.setViewName("board/RoomViewPage");
+		 * return mav; }
+		 */
 	 
-
-
+	 
+	 @RequestMapping ( value = "/updateRoomView")
+	 public ModelAndView updateRoomView(BoardDto board, RedirectAttributes ra) throws IllegalStateException, IOException {
+		 System.out.println("자랑글 수정 요청");
+		 
+		 ModelAndView mav = bsvc.updateRoomView(board, ra);
+		 
+		 return mav;
+		 
+	 }
 }

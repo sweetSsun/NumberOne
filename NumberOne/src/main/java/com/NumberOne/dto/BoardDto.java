@@ -25,8 +25,6 @@ public class BoardDto {
 	private int bdhits;				//조회수
 	private int bdfix;				//배너고정상태
 	
-	private int bdmstate;
-	
 	private String bdrecommend;        //추천수-자취방 자랑, 일반게시글 (recommend 테이블 조인)
 	private String bdwarning;			//신고수-자취방 자랑, 일반게시글 (warning 테이블 조인)
 	private String bdreply;			//댓글수-자취방 자랑, 일반게시글 (reply 테이블 조인)
@@ -39,6 +37,7 @@ public class BoardDto {
 	//검색할 때 필요한 필드
 	private String bdnickname;      //작성자 닉네임
 	private String bdmprofile;      //작성자 프로필
+	private int bdmstate;			//작성자의 mstate
 	
 	//로그인 아이디의 추천, 스크랩, 신고 기록
 	private String rchistory;   //추천 기록
@@ -50,6 +49,7 @@ public class BoardDto {
 	//게시글 별 추천수 저장 
 	private int bdrccount;		//추천수
 	
+
 	public String getBdcode() {
 		return bdcode;
 	}

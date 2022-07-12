@@ -488,11 +488,21 @@
 		ON BD.BDCODE = RCCOUNT.RCBDCODE
 		WHERE BDSTATE = 1
 		AND BDCATEGORY NOT IN ('자랑')
+		
 		<if test="bdrgcode != null ">
 			AND RG.RGCODE = #{bdrgcode}
 		</if>
 		ORDER BY BDCODE DESC
 	</select>
 	
+	<update id="updateRoomView">
+		<!-- 자랑글 수정 -->
+		UPDATE BOARDS
+		SET BDTITLE = #{bdtitle},
+		BDCONTENTS = #{bdcontents},
+		BDIMG = #{bdimg},
+		BDDETAILIMG = #{bddetailimg}
+		WHERE BDCODE = #{bdcode}
+	</update>
 	
  </mapper>

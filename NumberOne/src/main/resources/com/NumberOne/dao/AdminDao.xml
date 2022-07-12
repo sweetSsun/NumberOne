@@ -213,7 +213,7 @@
 		<!-- 검색한 키워드 정렬 -->
 		<if test="keyword.length > 0">
 		<choose>
-			<when test="searchType == 'bdTitleContents'">
+			<when test="searchType == 'ubTitleContents'">
 				(UBTITLE LIKE '%'||#{keyword}||'%' OR UBCONTENTS LIKE '%'||#{keyword}||'%')
 			</when>
 			<otherwise>
@@ -249,7 +249,7 @@
 		<!-- 검색한 키워드 정렬 -->
 		<if test="keyword.length > 0">
 		<choose>
-			<when test="searchType == 'bdTitleContents'">
+			<when test="searchType == 'ubTitleContents'">
 				(UBTITLE LIKE '%'||#{keyword}||'%' OR UBCONTENTS LIKE '%'||#{keyword}||'%')
 			</when>
 			<otherwise>
@@ -532,6 +532,6 @@
 	
 	<!-- 댓글 정지 -->
 	<update id="admin_updateReplyStop">
-		UPDATE REPLY SET RPSTATE=0 WHERE RPCODE= #{rpcode}
+		UPDATE REPLY SET RPSTATE=0 WHERE RPCODE=#{rpcode}
 	</update>
 </mapper>

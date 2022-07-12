@@ -211,7 +211,7 @@
 		    <version>2.13.3</version>
 		</dependency>
 
-		<!-- mail -->
+		<!-- 자바 메일 -->
 		<!-- https://mvnrepository.com/artifact/javax.mail/mail -->
 		<dependency>
     		<groupId>javax.mail</groupId>
@@ -219,16 +219,16 @@
     		<version>1.4.7</version>
 		</dependency>
 		
+		<!-- spring-context-support -->
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context-support -->
 		<dependency>
     		<groupId>org.springframework</groupId>
     		<artifactId>spring-context-support</artifactId>
-    		<version>5.2.22.RELEASE</version>
-		</dependency>
-		
-		
-		
+    		<version>${org.springframework-version}</version>
+		</dependency>		
 	</dependencies>
+	
+	
     <build>
         <plugins>
             <plugin>

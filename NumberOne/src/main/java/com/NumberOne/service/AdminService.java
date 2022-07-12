@@ -480,6 +480,22 @@ public class AdminService {
 			return paging_json;
 		}
 	}	
+	
+	// 경고/정지 상세페이지 이동 
+	public ModelAndView admin_selectBoardView(Paging paging, String codeIdx) {
+		System.out.println("AdminService.admin_selectBoardView() 호출");
+		mav = new ModelAndView();
+		System.out.println("bdcode : " + codeIdx);
+		
+		//글상세정보 조회 
+		BoardDto board = bdao.selectBoardView(codeIdx);
+		System.out.println(board);
+		
+		mav.addObject("board", board);
+		mav.setViewName("admin/Admin_BoardView");
+		
+		return mav;
+	}
 	/* 배너 관리 */
 	// 배너 관리페이지 이동
 	public ModelAndView admin_selectBdfixList(Paging paging, RedirectAttributes ra) {
@@ -658,15 +674,20 @@ public class AdminService {
 
 	/* 게시글/댓글 정지 */
 	// 일반게시글 정지
-	public ModelAndView admin_updateBoardStop(String bdcode, RedirectAttributes ra) {
+	public ModelAndView admin_updateBoardStop(String bdcode, Paging paging, String check, RedirectAttributes ra) {
 		System.out.println("AdminService.admin_updateBoardStop() 호출");
 		System.out.println("bdcode : " + bdcode);
+		System.out.println("check : " + check);
 		mav = new ModelAndView();
 		int updateResult = adao.admin_updateBoardStop(bdcode);
 		if (updateResult > 0) {
 			ra.addFlashAttribute("msg",bdcode + " 글이 정지 처리되었습니다.");
-			// 글목록으로 돌아가는 url 만들어서 매개변수 생기면 수정 필요
-			mav.setViewName("redirect:/selectBoardList");
+			if(check.equals("adminPage")) {
+				mav.setViewName("redirect:/admin_selectBoardList");
+			} else {
+				// 글목록으로 돌아가는 url 만들어서 매개변수 생기면 수정 필요
+				mav.setViewName("redirect:/selectBoardList");
+			}
 		}
 		return mav;
 	}

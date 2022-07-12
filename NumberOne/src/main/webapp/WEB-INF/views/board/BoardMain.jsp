@@ -105,7 +105,7 @@ section{
 					<c:forEach items="${roomList }" end="4" var="room">
 						<div class="col-3" style="width:auto;">
 							<div class="img-container" >
-								<a href="#"><img alt="" src="${pageContext.request.contextPath }/resources/img/room/${room.bdimg }"></a>
+								<a href="selectRoomList?bdcode=${room.bdcode }&jsp=modal"><img alt="" src="${pageContext.request.contextPath }/resources/img/room/${room.bdimg }"></a>
 							</div>
 						</div>
 					</c:forEach>
