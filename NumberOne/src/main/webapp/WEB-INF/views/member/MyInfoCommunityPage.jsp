@@ -208,7 +208,7 @@ background-color: #00BCD4;
 
   function writeMember(nickname) { 
 	  var url = 'selectWriteMemberInfo?nickname='+nickname;
-	  window.open(url, 'memberInfo', 'width=600%, height=650%, left=500, top=50 '); 
+	  window.open(url, 'memberInfo', 'width=700px, height=800px'); 
 	  console.log("nickname : " + nickname);
 	  }
   </script>
