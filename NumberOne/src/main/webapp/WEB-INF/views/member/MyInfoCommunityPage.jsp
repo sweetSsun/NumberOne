@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>1인자 - 마이페이지 커뮤니티</title>
 
-<%@ include file="/resources/css/CommonCss.jsp"%>
+<%@ include file="/resources/css/BarCss.jsp"%>
 <!-- 부트스트랩 -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
@@ -64,14 +64,14 @@ background-color: #00BCD4;
 		<section>
 		<!-- 본문 -->
 			<div class="container">
+				<div class="checkout__form" style="margin-top: 40px;"><h4>마이페이지 커뮤니티</h4></div>
 				<br>
-				<div class="checkout__form"><h4>마이페이지 커뮤니티</h4></div>
 				<br>
 				<!-- 작성글 목록 -->
-				<div class="row" style="margin:20px;">
-					<br><h4 class="checkout__form" style="color: #00BCD4;">작성글 목록</h4>
+				<div class="row" style="">				
+					<h4 class="checkout__form" style="color: #00BCD4; margin-left: 30px;">작성글 목록</h4>
 				</div>
-				<div class="row"  style="margin:20px;">
+				<div class="row"  style="margin:20px; ">
 				<table>
 						<tr class="text-center" id="board_column">
 							<td>글번호</td>
@@ -83,21 +83,38 @@ background-color: #00BCD4;
 							<!-- 작성글 목록 -->
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center;">
 								<td>${board.bdcode }</td>
-								<td><a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a></td>
+								<td>
+									<c:choose>
+										<c:when test="${board.bdcategory.equals('자랑') }">
+											<!-- 자랑글 상세 -->
+											<a href="selectRoomList?bdcode=${board.bdcode }&jsp=view">${board.bdtitle}</a>
+										</c:when>
+										<c:otherwise>
+											<!-- 일반글 상세 -->										
+											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a>
+										</c:otherwise>
+									</c:choose>
+								</td>	
 								<td>${board.bdreply }</td>
 								<td>${board.bddate }</td>								
 							</tr>
 						</c:forEach>
 				</table>
+				<!-- 여백 -->				
+					<div style="min-height: 500px;"></div><hr>
 				</div>
 			
-				<br><hr><br>
+				
 				
 				
 				<!-- 댓글작성글 목록 -->
-				<div class="row" style="margin:20px;">
-					<br><h4 class="checkout__form" style="color: #00BCD4;"> 댓글 작성 글 목록</h4>
+				<!-- 여백 -->
+				<div style="min-height: 50px;" id="reply"></div>
+				<div class="row" style="margin-top:20px;" >
+					<br><h4 class="checkout__form" style="color: #00BCD4; margin-left: 30px;" > 댓글 작성 글 목록</h4>
 				</div>
+				<!-- 여백 -->				
+				<div style="min-height: 50px;"></div>
 				<div class="row"  style="margin:20px;">
 				<table >
 						<tr class="text-center" id="board_column">
@@ -110,20 +127,47 @@ background-color: #00BCD4;
 							<!-- 작성글 목록 -->
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center;">
 								<td>${reply.rpcode }</td>
-								<td><a href="selectBoardView?bdcode=${reply.rpbdcode }">${reply.rpbdtitle}</a></td>
-								<td><a href="selectBoardView?bdcode=${reply.rpbdcode }">${reply.rpcontents }</a></td>
+								<td>
+									<c:choose>
+										<c:when test="${reply.rpbdcategory.equals('자랑') }">
+											<!-- 자랑글 상세 -->
+											<a href="loadToRoomViewPage?bdcode=${reply.rpbdcode }">${reply.rpbdtitle}</a>
+										</c:when>
+										<c:otherwise>
+											<!-- 일반글 상세 -->										
+											<a href="selectBoardView?bdcode=${reply.rpbdcode }">${reply.rpbdtitle}</a>
+										</c:otherwise>
+									</c:choose>
+								</td>
+								<td>
+									<c:choose>
+										<c:when test="${reply.rpbdcategory.equals('자랑') }">
+											<!-- 자랑글 상세 -->
+											<a href="loadToRoomViewPage?bdcode=${reply.rpbdcode }">${reply.rpcontents }</a>
+										</c:when>
+										<c:otherwise>
+											<!-- 일반글 상세 -->										
+											<a href="selectBoardView?bdcode=${reply.rpbdcode }">${reply.rpcontents }</a>
+										</c:otherwise>
+									</c:choose>
+								</td>
 								<td>${reply.rpdate }</td>								
 							</tr>
 						</c:forEach>
 				</table>
+				<!-- 여백 -->				
+				<div style="min-height: 800px;"></div><hr>
 				</div>
-
-				<br><hr><br>				
+				
 				
 				<!-- 스크랩 목록 -->
-				<div class="row" style="margin:20px;">
-					<br><h4 class="checkout__form" style="color: #00BCD4;">스크랩 목록 (작성자 상세보기 test 중)</h4>
+				<!-- 여백 -->
+				<div style="min-height: 50px;" id="scrap"></div>				
+				<div class="row" style="margin:20px;" >
+					<br><h4 class="checkout__form" style="color: #00BCD4; margin-left: 30px;">스크랩 목록 (작성자 상세보기 test 중)</h4>
 				</div>
+				<!-- 여백 -->
+				<div style="min-height: 50px;" ></div>				
 				<div class="row"  style="margin:20px;">
 				<table >
 						<tr class="text-center" id="board_column">
@@ -134,12 +178,12 @@ background-color: #00BCD4;
 							<td>날짜</td>
 						</tr>
 						<c:forEach items="${scrap }" var="scrap">
-							<!-- 작성글 목록 -->
+							<!-- 스크랩 목록(스크랩은 자랑글만 가능함 -->
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center; ">
 								<td>${scrap.scbdcode }</td>
-								<td><a href="selectBoardView?bdcode=${scrap.scbdcode }">${scrap.bdtitle }</a></td>
+								<td><a href="loadToRoomViewPage?bdcode=${scrap.scbdcode }">${scrap.bdtitle }</a></td>
 								<td>${scrap.bdreply }</td>
-								<td><input type="text" value="${scrap.mnickname }" readonly="readonly" onclick="showPopup('${scrap.mnickname }');"
+								<td><input type="text" value="${scrap.mnickname }" readonly="readonly" onclick="writeMember('${scrap.mnickname }');"
 								style="border: 0px; text-align: center; cursor: pointer;"></td>
 								<td>${scrap.bddate }</td>								
 							</tr>
@@ -147,7 +191,7 @@ background-color: #00BCD4;
 						</c:forEach>
 				
 				</table>
-				<br>
+				<div style="min-height: 600px;"></div><hr>
 				</div>
 
 
@@ -162,9 +206,9 @@ background-color: #00BCD4;
 <!-- 팝업 -->
  <script type="text/javascript">
 
-  function showPopup(nickname) { 
-	  var url = 'insertWriteMemberInfo_Board?nickname='+nickname;
-	  window.open(url, 'memberInfo', 'width=560, height=510, left=500, top=250 '); 
+  function writeMember(nickname) { 
+	  var url = 'selectWriteMemberInfo?nickname='+nickname;
+	  window.open(url, 'memberInfo', 'width=700px, height=800px'); 
 	  console.log("nickname : " + nickname);
 	  }
   </script>

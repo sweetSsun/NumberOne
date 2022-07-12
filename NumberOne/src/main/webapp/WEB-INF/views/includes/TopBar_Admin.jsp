@@ -50,13 +50,13 @@
 					<a class="logoimg" href="${pageContext.request.contextPath }/"><img style="height:100px; min-width:140px;"src="${pageContext.request.contextPath }/resources/img/logo_bada.png"></a>
 					
 					<div>					
-						<p style="float: left; font-size: 15px;">						
+						<p style="float: left; font-size: 15px; margin-left: 20px;">						
 							<a href="admin_loadToAdminMainPage">
-							<img class="img-profile rounded-circle" style="width:50px" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png">&nbsp;&nbsp;${sessionScope.loginId}</a>
+							<img class="img-profile rounded-circle" style="height:50px; width:50px" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png">&nbsp;&nbsp;관리자님</a>
 						</p>
 			
 					 	<!-- 살아남은 미니박수^^~! -->
-						 <p style="float: right; font-size: 12.5px;">
+						 <p style="float: right; font-size: 12.5px; margin-right: 20px;">
 							수고해주시는 관리자님께 박수 &nbsp;<img class="img-profile rounded-circle" style="width:50px" src="${pageContext.request.contextPath }/resources/img/clap.png">
 						 </p>
 					 </div>				 

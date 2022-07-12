@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>1인자 - 마이페이지 회원정보</title>
 
-<%@ include file="/resources/css/CommonCss.jsp"%>
+<%@ include file="/resources/css/BarCss.jsp"%>
 <!-- 부트스트랩 -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
@@ -23,7 +23,8 @@
 <style type="text/css">
 
 	.checkout__form {
-	  padding: 100px 200px;
+	  padding: 100px 100px;
+	  cursor: default;
 	}
 
 	#domainSelect{
@@ -40,6 +41,7 @@
 	.checkout__input input {
 	border: 1px solid #808080;
 	font-weight: bold; 
+	cursor: default;
 	/* background-color: #EAEAEA; */
 }
 
@@ -61,14 +63,20 @@ background-color: #00BCD4;
 
 }
 
-.msgTextarea {
-	height: 50px; 
-	width: 670px;
-	border-radius: 5px; 
-	padding:10px 10px;
-	resize: none;
-	font-weight: bold;
-}
+.textarea {
+  display:block; 
+  overflow:hidden; 
+  width:100%; 
+  height:2rem; 
+  padding-left:1rem;
+  padding-top:0.8rem;
+  font-size:1rem; 
+  font-weight:bold;
+  color:#000; 
+  border:1px solid #808080; 
+  resize:none;
+  border-radius : 4px;
+ }
 
 
 </style>
@@ -99,50 +107,59 @@ background-color: #00BCD4;
                 <h4>마이페이지 회원정보</h4>
                 <!-- <form> -->
                     <div class="row">
-                        <div class="col-lg-12 col-md-6">
+                        <div class="col-lg-12 col-md-12 col-sm-12">
                         
                         <!-- 프로필 사진 , 상태메세지 -->
                             <div class="row">
-                                <div class="col-lg-3">
+                                <div class="col-lg-3 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p class="fw-bold" style="color: #808080;">프로필사진</p>
-                                         <c:choose>
-                                         <c:when test="${memberInfo.mprofile != null}">
-                                        <img style="height: 200px; width: 200px; border: 1px solid #808080; padding: 10px;" 
-                                        class="img-account-profile rounded-circle mb-2"
-                                        src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/${memberInfo.mprofile }" alt="">    
-                                    </c:when>
-                                    <c:otherwise>
-                                        <img style="height: 200px; width: 200px; border: 1px solid #808080; padding: 10px;" 
-                                        class="img-account-profile rounded-circle mb-2"
-                                        src="${pageContext.request.contextPath }/resources/img/logo.jpg" alt="">                                    
-                                    </c:otherwise>
-                                    </c:choose>
+                            <c:choose> 
+                            	<c:when test="${memberInfo.mprofile != null}">
+                            		<c:choose>
+                        				<c:when test="${sessionScope.loginId != null && sessionScope.kakaoId == null}">
+                                	 		<img style="height: 200px; width: 200px; border: 1px solid #808080; padding: 10px;" 
+                                        	class="img-account-profile rounded-circle col-md-12 col-sm-12"
+                                    		src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/${sessionScope.loginProfile }">                        	
+                            			</c:when>
+                         				<c:when test="${sessionScope.kakaoId != null }">
+                                	 		<img style="height: 200px; width: 200px; border: 1px solid #808080; padding: 10px;" 
+                                        	class="img-account-profile rounded-circle col-md-12 col-sm-12"
+                                    		src="${sessionScope.loginProfile }"> 
+                                    	</c:when>  	
+                            		</c:choose>
+                            	</c:when>                          	
+                           		<c:otherwise>
+                                	 <img style="height: 200px; width: 200px; border: 1px solid #808080; padding: 10px;" 
+                                        class="img-account-profile rounded-circle col-md-12 col-sm-12"
+                                    src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png">
+                             	</c:otherwise>   
+                            </c:choose>                                         
                                     </div>
                                 </div>
-                                <div class="col-lg-9">
+                                <div class="col-lg-9 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p class="fw-bold" style="color: #808080;">아이디</p>
                                         <input type="text" id="inputMid" name="mid" readonly="readonly" value="${memberInfo.mid }">   
                                     </div>                                    
-                                    <div class="checkout__input">
+                                    <div class="checkout__input ">
                                         <p class="fw-bold" style="color: #808080;">상태메세지</p>
-                                			<textarea class="msgTextarea" id="inputMmessage" name="mmessage" readonly="readonly">${memberInfo.mmessage }</textarea>                                                               
+                                			<textarea class="textarea" id="inputMmessage" name="mmessage" readonly="readonly">${memberInfo.mmessage }</textarea>                                                               
                                     </div>
                                 </div>
-                            </div>
+                            </div>                   
                         
                         
                         
                         <!-- 이름,닉네임 -->
                             <div class="row">
-                                <div class="col-lg-6">
+                                <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p class="fw-bold" style="color: #808080;">이름</p>
                                         <input type="text" id="inputMname" name="mname" readonly="readonly" value="${memberInfo.mname }">                                    
                                     </div>
                                 </div>    
-                                <div class="col-lg-6">
+                                <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p class="fw-bold" style="color: #808080;">닉네임</p>
                                         <input type="text"id="inputMnickname" name="mnickname" readonly="readonly" value="${memberInfo.mnickname }">                                  
@@ -152,7 +169,7 @@ background-color: #00BCD4;
                         
                         <!-- 비번 -->
                             <div class="row">
-                                <div class="col-lg-6">
+                                <div class="col-lg-6 col-md-12 col-sm-12" >
                                     <div class="checkout__input" style="display:none">
                                         <p class="fw-bold" style="color: #808080;">비밀번호</p>
                                         <input type="hidden" id="inputMpw" name="mpw" readonly="readonly" value="${memberInfo.mpw }">                                     
@@ -162,14 +179,14 @@ background-color: #00BCD4;
 
                         <!-- 이메일,전화번호 -->
                             <div class="row">
-                                <div class="col-lg-6">
+                                <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p class="fw-bold" style="color: #808080;">이메일</p>
                                         <input type="text"  id="inputEmail" name="memail" readonly="readonly" value="${memberInfo.memail }">                                       
                                     </div> 
                                 </div>                                    
                       <!-- 전화번호 -->
-                                <div class="col-lg-6">
+                                <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p class="fw-bold" style="color: #808080;">전화번호</p>
                                         <input type="text" id="inputMphone" name="mphone" readonly="readonly" value="${memberInfo.mphone }">
@@ -182,7 +199,7 @@ background-color: #00BCD4;
                            <div class="checkout__input">
                                 <p class="fw-bold" style="color: #808080;">관심지역</p>
                             <div class="row">
-                                <div class="col-lg-6">
+                                <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <input type="text" id="inputmregion" name="mregion"
                                          readonly="readonly" value="${memberInfo.mregion }">                                  
@@ -195,7 +212,7 @@ background-color: #00BCD4;
                            <div class="checkout__input">
                                 <p class="fw-bold" style="color: #808080;">주소</p>
                             <div class="row">
-                                <div class="col-lg-6">
+                                <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <input type="text" id="sample6_postcode" name="mpostcode"
                                          readonly="readonly" value="${memberInfo.mpostcode }">                                  
@@ -204,7 +221,7 @@ background-color: #00BCD4;
                             </div>
                             <!-- 기본 주소 -->
                             <div class="row">
-                                <div class="col-lg-12">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <input type="text" id="sample6_address" name="maddress" 
                                         readonly="readonly" value="${memberInfo.maddress }">                                 
@@ -213,13 +230,13 @@ background-color: #00BCD4;
                             </div> 
                             <!-- 상세 주소 -->
                             <div class="row">
-                                <div class="col-lg-6">
+                                <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <input type="text" id="sample6_detailAddress" name="mdetailAddr" 
                                         readonly="readonly" value="${memberInfo.mdetailAddr }">
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <input type="text" id="sample6_extraAddress" name="mextraAddr" 
                                         readonly="readonly" value="${memberInfo.mextraAddr }">
@@ -231,7 +248,7 @@ background-color: #00BCD4;
 						
 						<br>
                         <div class="row">
-                        	<div class="col-lg-12">						
+                        	<div class="col-lg-12 col-md-12 col-sm-12">						
                         		<button type="submit" class="site-btn" style="width: 130px; border-radius: 4px;"
                         		onclick = "location.href = 'loadToMyInfoModifyForm' " >
                         		수정</button>
@@ -251,6 +268,19 @@ background-color: #00BCD4;
 	
 	<!-- 스크립트 시작 -->
 	<script type="text/javascript" src="resources/js/jquery-3.3.1.min.js"></script>
+	
+	<!-- textarea 길이 조절 -->
+<script>
+    var txtArea = $(".textarea");
+    if (txtArea) {
+        txtArea.each(function(){
+            $(this).height(this.scrollHeight);
+        });
+    }
+</script>
+
+
+
 	
 	<!-- 다음 우편번호 서비스 -->
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>

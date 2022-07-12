@@ -9,21 +9,20 @@
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- Css Styles -->
 <%@ include file="/resources/css/BarCss.jsp" %>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/listCss.css" type="text/css">
 
 <style type="text/css">
-    #board_column{
-       border-bottom: solid gray 3px;
-    }
-    table{
-       margin: 20px;
-    }
+
   	#pageList button{
  		display: none;
 	}
 	label{
 		cursor: pointer;
 	}
+	
 </style>
 
 <script type="text/javascript">
@@ -50,114 +49,126 @@
 		
 		<section>
 		<!-- 본문 -->
-         <form action="admin_selectNoticeList" method="get">
+         <form action="admin_selectNoticeList" method="get" id="actionForm">
 			<div class="container">
 	            <div class="row" style="margin:auto;">
-	                <h1 class="text-center">공지 관리페이지 : Admin_NoticeList.jsp</h1>
+	                <h4 class="text-center">공지 관리페이지 : Admin_NoticeList.jsp</h4>
 	            </div>
 	            <!-- 검색 -->
 	            <div class="row">
-					<div class="col-5">
-						<select name="searchType" id="searchTypeSel">
+					<div class="col-5" align="right">
+						<select name="searchType" id="searchTypeSel" class="searchType">
 							<option value="nbTitle">제목</option>
 							<option value="nbContents">내용</option>
 							<option value="nbTitleContents">제목+내용</option>
 						</select>
 					</div>
-	                <div class="col-5 input-group">
-                   		<input type="text" style="width:100px;" class="form-control" name="keyword" id="searchText" placeholder="검색 키워드를 입력하세요!" value="${paging.keyword}">
-                    	<span class="input-group-btn">
-	                      	<button class="btn btn-secondary" type="submit" name="page" value="1">찾기</button>
-                    	</span>
+	                <div class="col-7">
+                   		<input type="text" class="" name="keyword" id="searchText" placeholder="검색 키워드를 입력하세요!" value="${paging.keyword}">
+	                    <button class="btn btn-sm btn-secondary" type="submit">검색</button>
 	            	</div>
-		            <div class="col-2">
-						<!-- 공지작성 버튼 -->
-						<button class="btn btn-primary btm-sm" type="button" onclick="location.href='admin_loadToNoticeWrite'">글쓰기</button>
-					</div>
                	</div>
            
             <div class="row" style="margin-top: 20px;">
                <div class="col">
                   <!-- 상태값 정렬 -->
-                   <select name="searchVal" id="searchValSel" onchange="nbSearchState(this.value)">
-                     <option value="all">전체</option>
-                     <option value="active">활성</option>
-                     <option value="inactive">삭제</option>
+                   <select class="categoryList" name="searchVal" id="searchValSel" onchange="nbSearchState(this.value)">
+                     <option class="categorySel" value="all">전체</option>
+                     <option class="categorySel" value="active">활성</option>
+                     <option class="categorySel" value="inactive">삭제</option>
                   </select>
                </div>
             </div>
             
             <!-- 게시글 목록 -->
-            <div class="row">
-            <table >
+            <div class="row" style="margin-top: 20px;">
+            <table style="table-layout: fixed;">
                <thead >
-                  <tr class="fw-bold" id="board_column">
-                     <td style="width:130px;">글번호</td>
-                     <td style="min-width:200px;">제목</td>
-                     <td>작성자</td>
-                     <td>작성일</td>
-                     <td style="width:50px;">조회</td>
-                     <td style="width:80px;">상태</td>
+                  <tr class="text-center fw-bold" id="board_column">
+                     <td style="width:10%;">글번호</td>
+                     <td>제목</td>
+				     <td style="width:15%;">작성자</td>
+                     <td style="width:10%;">작성일</td>
+                     <td style="width:4rem;">조회</td>
+                     <td style="width:3rem;">상태</td>
+                     <td style="width:3rem;">고정</td>
                   </tr>
                </thead>
                <tbody id="nbListTbody">
 	               <c:forEach items="${noticeList }" var="notice">
 	                   <!-- 회원관리 목록 -->
-	                   <tr style="border-bottom: solid gray 1px;">
-	                      <td>${notice.nbcode}</td>
-	                      <td><a href="admin_selectNoticeBoardView?nbcode=${notice.nbcode}">${notice.nbtitle}</a></td>
-	                      <td>${notice.nbnickname}</td>
-	                      <td>${notice.nbdate}</td>
-	                      <td>${notice.nbhits}</td>
+	                   <tr style="border-bottom: solid #E0E0E0 1px;">
+	                      <td class="overflow text-center">${notice.nbcode}</td>
+ 	                      <td class="overflow"><a href="admin_selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}" >${notice.nbtitle}</a></td>
+	                      <td class="text-center overflow">${notice.nbnickname}</td>
+	                      <td class="text-center overflow">${notice.nbdate}</td>
+	                      <td class="text-center">${notice.nbhits}</td>	
 	                      <td>
 	                      	<c:choose>
 	                      		<c:when test="${notice.nbstate == 1}">
-	                      			<button class="btn btn-primary" type="button" onclick="showNbstateModal(this,'${notice.nbcode }')">활성</button>
+	                      			<button class="btn btn-sm btn-primary" type="button" onclick="showNbstateModal(this,'${notice.nbcode }')">활성</button>
 	                      		</c:when>
 	                      		<c:otherwise>
-	                      			<button class="btn btn-secondary" type="button" onclick="showNbstateModal(this, '${notice.nbcode }')">삭제</button>
+	                      			<button class="btn btn-sm btn-secondary" type="button" onclick="showNbstateModal(this, '${notice.nbcode }')">삭제</button>
 	                      		</c:otherwise>
 	                      	</c:choose>
+	                      </td>
+	                      <td id="fixBtn_${notice.nbcode }">
+	                      	<c:if test="${notice.nbstate == 1 }">
+		                      	<c:choose>
+		                      		<c:when test="${notice.nbfix == 1}">
+		                      			<button class="btn-numberone btn-sm" type="button" onclick="showNbfixModal(this,'${notice.nbcode }')">고정</button>
+		                      		</c:when>
+		                      		<c:otherwise>
+		                      			<button class="btn btn-sm btn-secondary" type="button" onclick="showNbfixModal(this,'${notice.nbcode }')">일반</button>
+		                      		</c:otherwise>
+		                      	</c:choose>
+	                      	</c:if>
 	                      </td>
 	                   </tr>
 	                </c:forEach>                 
                 </tbody>
             </table>
-            
-   			<!-- 페이징 -->
-  			<div class="block text-center" id="pageList">
-               	<c:choose>
-               		<c:when test="${paging.prev }">
-               			<button type="submit" name="page" value="${paging.page -1 }" id="btn0"></button>
-               			<label for="btn0">[이전]</label>
-               		</c:when>
-               		<c:otherwise>
-               			[이전]
-               		</c:otherwise>
-               	</c:choose>
-               	
-               	<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="num" step="1">
-                	<c:choose>
-                		<c:when test="${paging.page == num }">
-                			<span style="color:#00bcd4;">${num }</span>
-                		</c:when>
-                		<c:otherwise>
-                			<button type="submit" name="page" value="${num }" id="btn${num }"></button>
-               				<label for="btn${num }">${num }</label>
-                		</c:otherwise>
-                	</c:choose>
-               	</c:forEach>
-
-               	<c:choose>
-               		<c:when test="${paging.next }">
-               			<button type="submit" name="page" value="${paging.page +1 }" id="btn6"></button>
-               			<label for="btn6">[다음]</label>
-               		</c:when>
-               		<c:otherwise>
-               			[다음]
-               		</c:otherwise>
-               	</c:choose>
+            <!-- 공지작성 버튼 -->
+            <div align="right" class="col mt-2">
+				<button class="btn-numberone btm-sm fw-bold" type="button" onclick="location.href='admin_loadToNoticeWrite'">글작성</button>
             </div>
+            
+   			<!-- 페이징 시작 -->
+   			<input type="hidden" id="pageNum" name="page" value="1">
+  			<div class="block text-center" id="pageList">
+  				<ul class="pagination">
+  					<c:choose>
+		           		<c:when test="${paging.prev }">
+		           			<li class="paginate_button"><a href="${paging.page -1 }" >이전</a></li>
+		           		</c:when>
+		           		<c:otherwise>
+	           				<li class="paginate_button"><span>이전</span></li>
+		           		</c:otherwise>
+  					</c:choose>
+	               	
+	               	<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="num" step="1">
+	                	<c:choose>
+	                		<c:when test="${paging.page == num }">
+	                			<li class=""><a class="active">${num }</a></li>
+	                		</c:when>
+	                		<c:otherwise>
+	                			<li class="paginate_button "><a href="${num }" >${num }</a></li>
+	                		</c:otherwise>
+	                	</c:choose>
+	               	</c:forEach>
+	               	
+	               	<c:choose>
+		           		<c:when test="${paging.next }">
+		                	<li class="paginate_button"><a href="${paging.page +1 }" >다음</a></li>
+		           		</c:when>
+		           		<c:otherwise>
+	           				<li class="paginate_button"><span>다음</span></li>
+		           		</c:otherwise>
+  					</c:choose>
+	            </ul>
+            </div>
+            <!-- 페이징 끝 -->
             
             </div>
             
@@ -181,8 +192,29 @@
                 </div>
                 <div class="modal-body" id="updateNbstateModalBody"> </div>
                 <div class="modal-footer">
-                	<input type="hidden" id="nbcode">
+                	<input type="hidden" id="nbcode_state">
                     <button class="btn btn-primary" onclick="updateNbstate()">네</button>
+                    <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
+                </div>
+            </div>
+        </div>
+    </div>
+	
+	<!-- 고정공지 변경 모달 -->
+	<div class="modal fade" id="updateNbfixModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateNbfixModalLabel"> 고정공지 변경 확인 </h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="updateNbfixModalBody"> </div>
+                <div class="modal-footer">
+                	<input type="hidden" id="nbcode_fix">
+                    <button class="btn btn-primary" onclick="updateNbfix()">네</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
             </div>
@@ -202,20 +234,130 @@
 		for (var i = 0; i < close.length; i++){
 			close[i].addEventListener("click", function(){
 				$("#updateNbstateModal").modal("hide");
+				$("#updateNbfixModal").modal("hide");
+			});
+		}
+				
+		// 공지상태 변경 확인 모달창 출력
+		var btnObj_state;
+		function showNbstateModal(obj, nbcode){
+			console.log("showNbstateModal() 실행");
+			btnObj_state = $(obj);
+			var btnObj_stateText = btnObj_state.text();
+			console.log("btnObj_stateText:"+btnObj_stateText);
+			if (btnObj_stateText == "활성"){
+				$("#updateNbstateModalBody").text(nbcode + "번 공지를 삭제 처리하시겠습니까?");
+			} else {
+				$("#updateNbstateModalBody").text(nbcode + "번 공지를 활성화 처리하시겠습니까?");
+			}
+			$("#nbcode_state").val(nbcode);
+			$("#updateNbstateModal").modal("show");
+		}
+		
+		// 공지상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
+		function updateNbstate(){
+			console.log("updateNbstate() 실행");
+			var nbcode_state = $("#nbcode_state").val();
+			console.log(btnObj_state.text());
+			console.log($("#fixBtn_"+nbcode_state+" button").text());
+			if (btnObj_state.text() == "활성"){
+				// 고정공지일 때 바로 삭제 불가능
+				if( $("#fixBtn_"+nbcode_state+" button").text() == "고정" ){
+					alert("해당 공지의 고정을 취소 후 삭제해주세요.");
+					$("#updateNbstateModal").modal("hide");
+					return false;
+				}
+				var nbstate = 2;				
+			} else {
+				var nbstate = 1;				
+			}
+			$.ajax({
+				type: "get",
+				data: {"nbcode":nbcode_state, "nbstate":nbstate},
+				url: "admin_updateNbstate_ajax",
+				dataType: "json",
+				success: function(result){
+					if(result > 0){
+						if (nbstate == 2){
+							btnObj_state.text("삭제").addClass("btn-secondary").removeClass("btn-primary");
+							$("#fixBtn_"+nbcode_state).text("");
+						} else {
+							btnObj_state.text("활성").addClass("btn-primary").removeClass("btn-secondary");
+							$("#fixBtn_"+nbcode_state).html("<button class='btn btn-sm btn-secondary' type='button' onclick='showNbfixModal(this,\"" + nbcode_state + "\")'>일반</button>");
+						}
+					}
+					$("#updateNbstateModal").modal("hide");
+				},
+				error: function(){
+					$("#updateNbstateModal").modal("hide");
+					alert("공지상태 변경에 실패했습니다.");
+				}
+			});
+		}
+				
+		// 고정공지 변경 확인 모달창 출력
+		var btnObj_fix;
+		function showNbfixModal(obj, nbcode){
+			console.log("showNbfixModal() 실행");
+			btnObj_fix = $(obj);
+			var btnObj_fixText = btnObj_fix.text();
+			console.log("btnObj_fixText:"+btnObj_fixText);
+			if (btnObj_fixText == "고정"){
+				$("#updateNbfixModalBody").text(nbcode + "번 공지 고정을 취소하시겠습니까?");
+			} else {
+				$("#updateNbfixModalBody").text(nbcode + "번 공지를 고정 처리하시겠습니까?");
+			}
+			$("#nbcode_fix").val(nbcode);
+			$("#updateNbfixModal").modal("show");
+		}
+		
+		// 고정공지 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
+		function updateNbfix(){
+			console.log("updateNbfix() 실행");
+			var nbcode_fix = $("#nbcode_fix").val();
+			console.log(btnObj_fix.text());
+			if (btnObj_fix.text() == "고정"){
+				var nbfix = 0;				
+			} else {
+				var nbfix = 1;				
+			}
+			$.ajax({
+				type: "get",
+				data: {"nbcode":nbcode_fix, "nbfix":nbfix},
+				url: "admin_updateNbfix_ajax",
+				dataType: "json",
+				success: function(result){
+					if(result > 0){
+						if (nbfix == 0){
+							btnObj_fix.text("일반").addClass("btn-secondary").removeClass("btn-numberone").toggleClass("btn");
+						} else {
+							btnObj_fix.text("고정").addClass("btn-numberone").removeClass("btn-secondary").toggleClass("btn");
+						}
+					}
+					$("#updateNbfixModal").modal("hide");
+				},
+				error: function(){
+					$("#updateNbfixModal").modal("hide");
+					alert("공지상태 변경에 실패했습니다.");
+				}
 			});
 		}
 	</script>
 	
 	<script type="text/javascript">
-		console.log("요청 페이지 : " + ${param.page});
-	
-		// onsubmit. 페이징 넘버를 누르지 않고 검색 버튼으로 controller를 호출할 때 페이지값 넘겨주기 위한 함수
-		function pageCheck(){
-			console.log("pageInput() 실행");
-			$("#pageInput").attr("name", "page").val("1");
-		}
+	$(document).ready(function () {
+		// 페이지 넘버 a태그를 클릭하면 hidden input태그에 페이지 넘버 값을 넣고 submit 진행
+		var actionForm = $("#actionForm");
+		
+		$(document).on("click", ".paginate_button a", function(e){ // on 이벤트로 변경
+			e.preventDefault();
+			console.log("pageNum click");
+			$("#pageNum").val($(this).attr("href"));
+			console.log($("#pageNum").val());
+			actionForm.submit();
+		});
+	});
 	</script>
-	
 	
 	<script type="text/javascript">
 	// 선택한 검색 select option으로 선택되도록 하기
@@ -260,19 +402,34 @@
 					var output = "";
 					console.log(result);					
 					for (var i = 0; i < result.length; i++){
-						output += "<tr style='border-bottom: solid gray 1px;'>";
-						output += "<td>" + result[i].nbcode + "</td>";
-						output += "<td><a href='admin_selectNoticeBoardView?nbcode=" + result[i].nbcode + "'>" + result[i].nbtitle + "</a></td>";
-						output += "<td>" + result[i].nbmid + "</td>";
-						output += "<td>" + result[i].nbdate + "</td>";
-						output += "<td>" + result[i].nbhits + "</td>";
-						output += "<td>"
+						output += "<tr style='border-bottom: solid #E0E0E0 1px;'>";
+						output += "<td class='text-center overflow'>" + result[i].nbcode + "</td>";
+						// <a href="admin_selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}" >
+						// ajax에선 paging이 아니라 result(json 타입의 String)으로 온다.
+						// java 코드를 먼저 읽고 html은 나중이기 때문에 onclick 이벤트를 부여해도 codeIdx값을 넘겨줄 수가 없음
+						// makeQuery를 사용할 수가 없다... 매개변수 직접 붙여주는 수 밖에..
+						output += "<td class='overflow'><a href='admin_selectNoticeBoardView?codeIdx=" + result[i].nbcode 
+								+"&page=1&perPageNum=10&searchVal=" + searchVal + "&searchType=" + searchType + "&keyword=" + searchText + "'>" 
+								+ result[i].nbtitle + "</a></td>";
+						output += "<td class='text-center overflow'>" + result[i].nbnickname + "</td>";
+						output += "<td class='text-center overflow'>" + result[i].nbdate + "</td>";
+						output += "<td class='text-center'>" + result[i].nbhits + "</td>";
+						output += "<td class='text-center'>"
 						if (result[i].nbstate == 1){
-							output += "<button class='btn btn-primary' type='button' onclick='showNbstateModal(this, \""+result[i].nbcode+"\")'>활성</button>";
+							output += "<button class='btn btn-sm btn-primary' type='button' onclick='showNbstateModal(this, \""+result[i].nbcode+"\")'>활성</button>";
 						} else {
-							output += "<button class='btn btn-secondary' type='button' onclick='showNbstateModal(this,\""+result[i].nbcode+"\")'>삭제</button>";
+							output += "<button class='btn btn-sm btn-secondary' type='button' onclick='showNbstateModal(this,\""+result[i].nbcode+"\")'>삭제</button>";
 						}
 						output += "</td>";
+						output += "<td id='fixBtn_"+result[i].nbcode+"' class='text-center'>"
+							if (result[i].nbstate == 1){
+								if (result[i].nbfix == 1){
+									output += "<button class='btn-sm btn-numberone' type='button' onclick='showNbfixModal(this, \""+result[i].nbcode+"\")'>고정</button>";
+								} else {
+									output += "<button class='btn btn-sm btn-secondary' type='button' onclick='showNbfixModal(this, \""+result[i].nbcode+"\")'>일반</button>";
+								}
+							}
+							output += "</td>";
 						output += "</tr>";
 					}
 					$("#nbListTbody").html(output);
@@ -288,26 +445,23 @@
 					console.log("요청 페이지 : " + result.page);
 					$("#pageList").text("");
 					// 페이징 번호 출력
-					var pageList = "";
+					var pageList = "<ul class='pagination'>";
 					if (result.prev) {
-						pageList += "<button type='submit' name='page' value='" + (result.page - 1) + "' id='btn0'></button>";
-						pageList += "<label for='btn0'>[이전]</label>";
+						pageList += "<li class='paginate_button'><a href='"+ (result.page - 1) + "' >이전</a></li>";
 					} else {
-						pageList += "[이전] ";
+						pageList += "<li class='paginate_button'><span>이전</span></li>"
 					}
 					for (var i = result.startPage; i <= result.endPage; i++){
 						if (result.page == i){
-							pageList += "<span style='color:#00bcd4'>" + i + "</span>";
+							pageList += "<li><a class='active'>"+ i + "</a></li>";
 						} else {
-							pageList += "<button type='submit' name='page' value='" + i + "' id='btn" + i + "'></button>";
-							pageList += "<label for='btn" + i + "'>" + i + "</label>";
+							pageList += "<li class='paginate_button'><a href='"+ i + "' >" + i + "</a></li>";
 						}
 					}
 					if (result.next){
-						pageList += "<button type='submit' name='page' value='" + (result.page + 1) + "' id='btn6'></button>";
-						pageList += "<label for='btn6'>[다음]</label>";
+						pageList += "<li class='paginate_button'><a href='"+ (result.page + 1) + "' >다음</a></li>";
 					} else {
-						pageList += "[다음]";
+						pageList += "<li class='paginate_button'><span>다음</span></li>"
 					}
 					$("#pageList").html(pageList);
 				},
@@ -316,55 +470,6 @@
 				}
 			})
 		}	
-		
-		// 공지상태 변경 확인 모달창 출력
-		var btnObj;
-		function showNbstateModal(obj, nbcode){
-			console.log("showNbstateModal() 실행");
-			btnObj = $(obj);
-			var btnObjText = btnObj.text();
-			console.log("btnObjText:"+btnObjText);
-			if (btnObjText == "활성"){
-				$("#updateNbstateModalBody").text(nbcode + "번 공지를 삭제 처리하시겠습니까?");
-			} else {
-				$("#updateNbstateModalBody").text(nbcode + "번 공지를 활성화 처리하시겠습니까?");
-			}
-			$("#nbcode").val(nbcode);
-			$("#updateNbstateModal").modal("show");
-		}
-		
-		// 공지상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
-		function updateNbstate(){
-			console.log("updateNbstate() 실행");
-			var nbcode = $("#nbcode").val();
-			console.log(btnObj.text());
-			if (btnObj.text() == "활성"){
-				var nbstate = 0;				
-			} else {
-				var nbstate = 1;				
-			}
-			$.ajax({
-				type: "get",
-				data: {"nbcode":nbcode, "nbstate":nbstate},
-				url: "admin_updateNbstate_ajax",
-				dataType: "json",
-				success: function(result){
-					if(result > 0){
-						if (nbstate == 0){
-							btnObj.text("삭제").addClass("btn-secondary").removeClass("btn-primary");
-						} else {
-							btnObj.text("활성").addClass("btn-primary").removeClass("btn-secondary");
-						}
-					}
-					$("#updateNbstateModal").modal("hide");
-				},
-				error: function(){
-					$("#updateNbstateModal").modal("hide");
-					alert("공지상태 변경에 실패했습니다.");
-				}
-			});
-			
-		}
 	</script>
 	
 	

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 자취방 자랑 글작성</title>
+<title>1인자 - 자취방 자랑 글수정</title>
 
 <%@ include file="/resources/css/BarCss.jsp" %>
 <!-- 부트스트랩 
@@ -96,7 +96,7 @@
 							<!--  
 							<input type="text" id="mainImgScreen"> <span class="mainfile"><label for="mainImg">대표사진 선택</label></span>
 							-->
-							<input type="file" id="mainImg" name="bdimgfile" class=""> 
+							<input type="file" id="mainImg" name="bdimgfile" accept="image/*"> 
 						</td>
 					</tr>
 					<tr>
@@ -105,7 +105,7 @@
 							<!--  
 							<input type="text" id="detailImgScreen"> <span class="mainfile"><label for="detailImg">상세사진 선택</label></span>
 							-->
-							<input type="file" multiple="multiple" id="detailImg" name="bddetailimgfile" onclick="return mainimgCh()">
+							<input type="file" multiple="multiple" id="detailImg" name="bddetailimgfile" onclick="return mainimgCh()" accept="image/*">
 							<div id="detailImgList"></div>
 						</td>
 					</tr>

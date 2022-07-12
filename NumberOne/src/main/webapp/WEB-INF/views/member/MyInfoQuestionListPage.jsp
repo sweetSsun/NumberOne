@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>1인자 - 1:1 문의 내역 페이지</title>
 
-<%@ include file="/resources/css/CommonCss.jsp"%>
+<%@ include file="/resources/css/BarCss.jsp"%>
 <!-- 부트스트랩 -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
@@ -148,6 +148,7 @@ background-color: #00BCD4;
 							</c:choose>																												
 						</c:forEach>				
 					</table>
+					<div style="min-height: 500px;"></div><hr>
 				</div>				
 				<br><br>
 			</div>

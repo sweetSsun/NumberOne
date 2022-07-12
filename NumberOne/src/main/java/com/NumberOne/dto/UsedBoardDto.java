@@ -131,16 +131,29 @@ public class UsedBoardDto {
 	public void setUbnickname(String ubnickname) {
 		this.ubnickname = ubnickname;
 	}
-	
+	public String[] getUbdetailimg_list() {
+		return ubdetailimg_list;
+	}
+	public void setUbdetailimg_list(String[] ubdetailimg_list) {
+		this.ubdetailimg_list = ubdetailimg_list;
+	}
+	public String getUbprofile() {
+		return ubprofile;
+	}
+	public void setUbprofile(String ubprofile) {
+		this.ubprofile = ubprofile;
+	}
 	@Override
 	public String toString() {
 		return "UsedBoardDto [ubcode=" + ubcode + ", ubrgcode=" + ubrgcode + ", ubsellbuy=" + ubsellbuy + ", ubmid="
 				+ ubmid + ", ubtitle=" + ubtitle + ", ubcontents=" + ubcontents + ", ubdate=" + ubdate + ", ubmainimg="
-				+ ubmainimg + ", ubdetailimg=" + ubdetailimg + ", ubstate=" + ubstate + ", ubdetailimg_list="
-				+ Arrays.toString(ubdetailimg_list) + ", ubrecommend=" + ubrecommend + ", ubwarning=" + ubwarning
-				+ ", ubzzim=" + ubzzim + ", ubnickname=" + ubnickname + ", ubmainimgfile=" + ubmainimgfile
-				+ ", ubdetailimgfile=" + Arrays.toString(ubdetailimgfile) + "]";
+				+ ubmainimg + ", ubdetailimg=" + ubdetailimg + ", ubstate=" + ubstate + ", ubrecommend=" + ubrecommend
+				+ ", ubwarning=" + ubwarning + ", ubzzim=" + ubzzim + ", ubnickname=" + ubnickname + ", ubprofile="
+				+ ubprofile + ", ubmainimgfile=" + ubmainimgfile + ", ubdetailimgfile="
+				+ Arrays.toString(ubdetailimgfile) + ", ubdetailimg_list=" + Arrays.toString(ubdetailimg_list) + "]";
 	}
+	
+	
 	
 	
 	

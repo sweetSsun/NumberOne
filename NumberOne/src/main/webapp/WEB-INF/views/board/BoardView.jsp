@@ -5,22 +5,37 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@ include file="/resources/css/CommonCss.jsp" %>
+<%@ include file="/resources/css/BarCss.jsp" %>
 <!-- 폰트어썸 -->
 <script src="https://kit.fontawesome.com/86a85cd392.js" crossorigin="anonymous"></script>
-<title>${board.bdtitle } - 1인자:게시판 게시판 글상세 페이지</title>
+<title>${board.bdtitle } - 1인자:게시판 글상세 페이지</title>
 <!-- Jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <style type="text/css">
 	section{
-		max-width: 80%;
+		max-width: 70%;
 		margin: auto;
 		margin-top: 0%;
 	}
-	textarea{
+	textarea:focus {
+    	outline: none;
+	}
+	.row .col-1{
+		width: auto;
+	}
+	#inputReply{
 		border: none;
+		width: -webkit-fill-available;
+		resize: none;
 		height: auto;
+	}
+	#inputComment{
+		resize: none;
+		height: auto;
+		width: -webkit-fill-available; 
+		padding: 10px 0px; 
+		font-size:20px;
 	}
 	.commentDate{
 		color: gray;
@@ -62,8 +77,7 @@
 		border-bottom : solid #E0E0E0 3px;
 		font-size:20px;
 	}
-	.commentContents{
-		border-bottom : solid #E0E0E0 2px;
+	.inputRpcontents{
 		font-size:20px;
 	}
 	.outerCmtBox{
@@ -91,6 +105,9 @@
 	.icon:hover{
 		cursor: pointer;
 	}
+	#inputSearchText{
+		font-size: 18px;
+	}
 </style>
 </head>
 <body>
@@ -112,7 +129,7 @@
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h1 class="text-center">게시판 글상세페이지 : BoardView.jsp</h1>
+				<h2 class="text-center">게시판 글상세페이지 : BoardView.jsp</h2>
 				<form action="">
 					<div class="row">
 						<div class="col">
@@ -127,6 +144,19 @@
 					</div>
 					<div class="row idDateHits">
 						<div class="col-6">
+							<c:choose>
+								<c:when test="${board.bdmprofile != null && board.bdmstate == 1 }">
+									<img class="img-profile rounded-circle" style="height: 45px; width:45px;" src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/${board.bdmprofile}">
+								</c:when>
+								
+								<c:when test="${board.bdmprofile != null && board.bdmstate == 9 }">
+									<img class="img-profile rounded-circle" style="height: 40px; width:40px;" src="${board.bdmprofile}">
+								</c:when>
+								
+								<c:otherwise>
+									<img class="img-profile rounded-circle" style="height: 45px; width:45px;" src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png">
+								</c:otherwise>
+							</c:choose>
 							<a href="#"><span class="fw-bold bdnickname">${board.bdnickname }</span></a> 
 						</div>
 						
@@ -142,8 +172,8 @@
 					<!-- 본문 글 내용-->
 					<div class="row mt-3 mb-1 boardContents">
 						<div class="col">
-							<%-- <textarea rows="10%" cols="100%" readonly>${board.bdcontents }</textarea> --%>
-							<div style="min-height:270px;">${board.bdcontents }</div>
+							<textarea id="inputReply" rows="10%" cols="100%" readonly>${board.bdcontents }</textarea>
+							<%-- <text style="min-height:270px;">${board.bdcontents }</div> --%>
 						</div>
 					</div>
 				</form>
@@ -154,7 +184,7 @@
 						<input onclick="boardList()" type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록"> 
 					</div>
 				<c:choose>
-					<c:when test="${sessionScope.loginId == board.bdmid }">
+					<c:when test="${sessionScope.loginId == board.bdmid && sessionScope.loginId != 'admin' }">
 						<div align="right" class="col" >
 							<!-- 수정,삭제 : 로그인 아이디 = 글작성자 -->
 							<input onclick="loadToBoardModify()" type="button" style="margin-right: 2px; background-color: #00bcd4;" class="btn btn-sm fw-bold text-white" value="수정">
@@ -162,19 +192,22 @@
 						</div>
 					</c:when>
 					
-					<c:when test="${sessionScope.loginId != null }">
+					<c:when test="${sessionScope.loginId != null && sessionScope.loginId != 'admin' }">
 						<div align="right" class="col" >
 							<!-- 추천,신고 : 로그인 한 아이디  -->
-							<!-- <i onclick="insertBoardWarning()" class="fa-solid fa-triangle-exclamation text-danger fa-2x icon" style="float:right;"></i>신고 -->
-							<!-- <input type="button" style="float:right;" class="btn btn-lg bg-success fw-bold text-white" value="신고"> -->
-							<i id="bdRecommend" onclick="insertBoardRecommend()" class="fa-regular fa-thumbs-up  fa-2x icon"  style="margin-right: 2px; font-size:40px"></i>
-							<i id="bdWarning" onclick="bdWarningCheckModal()" class='fa-solid fa-land-mine-on  fa-2x icon' style="margin-right: 2px; font-size:40px"></i>
-							<!-- <input type="button" style="float:right; margin-right: 5px;" class="btn btn-lg bg-success fw-bold text-white" value="추천"> -->
-							
+							<i id="bdRecommend" onclick="insertBoardRecommend()" class="fa-regular fa-thumbs-up  fa-2x icon"  style="margin-right: 2px; font-size:30px"></i>
+							<i id="bdWarning" onclick="bdWarningCheckModal()" class='fa-solid fa-land-mine-on  fa-2x icon' style="margin-right: 2px; font-size:30px"></i>
 						</div>
 					</c:when>
-				
+					
+					<c:when test="${sessionScope.loginId == 'admin' }">
+						<div align="right" class="col">
+							<input onclick="adminBoardStop('${board.bdcode}')" type="button" style="left:0;" class="middleBtn btn btn-sm bg-secondary fw-bold text-white" value="정지">
+						</div>
+					</c:when>
+					
 				</c:choose>
+					
 				</div>
 				
 				
@@ -186,6 +219,7 @@
 							<i class="fa-regular fa-comment"></i> 댓글 <span class="text-info fw-bold" id="ReplyCount"></span>개
 						</div>
 					</div>
+					
 					
 					<!-- 댓글목록_ajax -->
 					<div class="row" id="replyList_ajax">
@@ -235,7 +269,7 @@
                 </div>
                 <div class="modal-footer">
                 	<input type="hidden" >
-                    <button class="close btn text-white " onclick="rpModify()">등록</button>
+                    <button class="close btn text-white" style="background-color:#00bcd4" onclick="rpModify()">등록</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">취소</button>
                 </div>
             </div>
@@ -243,7 +277,7 @@
     </div>
 	
 	
-	<!-- 신고 확인 모달 -->
+	<!-- 게시글 신고 확인 모달 -->
 	<div class="modal fade" id="bdWarningCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -259,14 +293,14 @@
                 	<br> <span class="text-danger fw-bold">(※한번 신고한 게시글은 신고취소가 불가능합니다.)</span></div>
                 <div class="modal-footer">
                 	<input type="hidden" >
-                    <button class="close btn btn-info text-white" onclick="insertBoardWarning()" >네</button>
+                    <button class="close btn text-white" style="background-color:#00bcd4" onclick="insertBoardWarning()" >네</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
             </div>
         </div>
     </div>
     
-    <!--  --><!-- 삭제 확인 모달 -->
+    <!--  --><!-- 게시글 삭제 확인 모달 -->
 	<div class="modal fade" id="bdDeleteCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -282,13 +316,36 @@
                 </div>	
                 <div class="modal-footer">
                 	<input type="hidden" >
-                    <button class="close btn btn-info text-white" onclick="updateBoardDelete()" >네</button>
+                    <button class="close btn text-white" style="background-color:#00bcd4" onclick="updateBoardDelete()" >네</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
             </div>
         </div>
     </div>
-	
+    
+    <!--  --><!-- 댓글 삭제 확인 모달 -->
+	<div class="modal fade" id="rpDeleteCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" > 댓글 삭제 </h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" >
+                	<span class="fw-bold">댓글을 삭제하시겠습니까?</span>
+                </div>	
+                <div class="modal-footer">
+                	<input type="hidden" value="rpcode" id="deleteRpcode">
+                    <button class="close btn text-white" style="background-color:#00bcd4" onclick="replyRemove()" >네</button>
+                    <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
@@ -353,6 +410,17 @@
 		for (var i = 0; i < close.length; i++){
 			close[i].addEventListener("click", function(){
 				$("#bdRpModifyModal").modal("hide");
+			});
+		}
+</script>
+
+<script type="text/javascript">
+		// 댓글 삭제 모달창 close 하는 스크립트
+ 		var modal = $(".modal");
+		var close = $(".close");
+		for (var i = 0; i < close.length; i++){
+			close[i].addEventListener("click", function(){
+				$("#rpDeleteCheckModal").modal("hide");
 			});
 		}
 </script>
@@ -546,34 +614,65 @@
 			async : false,
 			success : function(replyList){
 				console.log(replyList);
+				output += "<div class=\"row\">"
 				for( var i=0; i < replyList.length; i++ ){
 					
 					if( replyList[i].rpmid == '${sessionScope.loginId}' ){//동일한 아이디
-						output += "<div class=\"col\">"
-						output += "<span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span>"
-						output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span>"
+						
+						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;\ margin-right:-20px;' >" /* 프로필영역 */
+						if( replyList[i].rpprofile != null ){
+							output += "<img class=\"img-profile rounded-circle \" style=\"height:50px; width:50px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+						}else{
+							output += "<img class=\"img-profile rounded-circle \" style=\"height:40px; width:40px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
+						}
 						output += "</div>"
-						output += "<div align=\"right\" class=\"col\">"
-						output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"replyRemove('"+ replyList[i].rpcode +"')\" value=\"삭제\">"
+						
+						output += "<div class=\"col-11\" style='border-bottom: solid #E0E0E0 1px;\'>"
+						/* 닉네임, 시간 */
+						output += "<span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span>"
+						output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span> "
+						
+						/* 수정, 삭제 버튼 */
+						output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"rpRemoveModal('"+ replyList[i].rpcode +"')\" value=\"삭제\">"
 						output += "<input style=\"margin-right:5px; border:solid gray 1px\" type=\"button\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"rpModifyModal('"+ replyList[i].rpcode +"')\" value=\"수정\">"
+						output += "<br>"
+						
+						if( '${sessionScope.loginId}' == 'admin'){
+							/* 관리자 - 댓글 정지 버튼 */
+							output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton bg-secondary text-white fw-bold mt-2\" onclick=\"adminReplyStop('"+ replyList[i].rpcode +"')\" value=\"정지\">"
+						}
+						/* 댓글내용 */
+						output += "<span class=\"inputRpcontents\">" + replyList[i].rpcontents + "</span>"
 						output += "</div>"
-						output += "<div class=\"row commentContents \">"
-						output += "<span>" + replyList[i].rpcontents + "</span>"
-						output += "</div>"
-					
+						
 					}else{
-						output += "<div class=\"col \">"
+						
+						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px; margin-right:-20px;'>" /* 프로필영역 */
+						if( replyList[i].rpprofile != null ){
+							output += "<img class=\"img-profile rounded-circle \" style=\"height:50px; width:50px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+						}else{
+							output += "<img class=\"img-profile rounded-circle\" style=\"height:40px; width:40px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
+						}
+						output += "</div>"
+							
+						output += "<div class=\"col-11\" style='border-bottom: solid #E0E0E0 1px;\'>"
+						/* 닉네임, 시간 */
 						output += "<span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span>"
-						output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span>"
-						output += "</div>"
-						output += "<div align=\"right\" class=\"col\">"
-						output += "</div>"
-						output += "<div class=\"row commentContents \">"
-						output += "<span>" + replyList[i].rpcontents + "</span>"
+						output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span> "
+						
+						if( '${sessionScope.loginId}' == 'admin'){
+							/* 관리자 - 댓글 정지 버튼 */
+							output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton bg-secondary text-white fw-bold mt-2\" onclick=\"adminReplyStop('"+ replyList[i].rpcode +"')\" value=\"정지\">"
+						}
+						
+						output += "<br>"
+						/* 댓글내용 */
+						output += "<span class=\"inputRpcontents\">" + replyList[i].rpcontents + "</span>"
 						output += "</div>"
 					}
 
 				}
+				output += "</div>"
 			}
 		});
 		$("#replyList_ajax").html(output);
@@ -636,12 +735,23 @@
 		
 	}
 	
-	function replyRemove(rpcode){
+	function rpRemoveModal(rpcode){
+		/* 댓글삭제 버튼 클릭 시 모달창 띄우기  */
+		console.log(rpcode);
+		
+		$("#deleteRpcode").val(rpcode);
+		$("#rpDeleteCheckModal").modal('show');
+		
+	}
+	
+	function replyRemove(){
 		/* 댓글삭제(update 상태변경) */
+		var deleteRpcode = $("#deleteRpcode").val();
+		
 		$.ajax({
 			type : "get",
 			url : "updateReplyState_ajax",
-			data : { "rpcode" : rpcode },
+			data : { "rpcode" : deleteRpcode },
 			async : false,
 			success : function(removeResult){
 				console.log(removeResult);
@@ -655,6 +765,49 @@
 			
 		});
 	}
+</script>
+
+<!-- 관리자용 -->
+<script type="text/javascript">
+	function adminBoardStop(bdcode){
+		/* 관리자 - 게시글 정지  */
+		console.log(bdcode);
+		location.href="admin_updateBoardStop?bdcode="+bdcode;
+	}
+
+	function adminReplyStop(rpcode){
+		/* 관리자 - 댓글 정지 */
+		console.log(rpcode);
+		
+		//ajax
+		$.ajax({
+			type : "get",
+			url : "admin_updateReplyStop_ajax",
+			data : { "rpcode" : rpcode },
+			async : false,
+			success : function(adminRpStop){
+				if ( adminRpStop > 0 ){
+					//댓글목록 및 댓글 개수 새로 출력 
+					alert(rpcode + "번 댓글이 정지되었습니다.");
+					selectReplyList();
+					selectReplyCount();	
+				}
+			}
+		});
+		
+	}
+	
+</script>
+<script type="text/javascript">
+
+/* Textarea 높이 자동 조절 ( 스크롤바 없애기 ) */
+$("#inputReply").each(function () {
+	this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
+	}).on('input', function () {
+	this.style.height = 'auto';
+	this.style.height = (this.scrollHeight) + 'px';
+	});
+
 </script>
 
 </html>

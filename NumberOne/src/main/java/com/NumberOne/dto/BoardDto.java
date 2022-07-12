@@ -23,6 +23,7 @@ public class BoardDto {
 	private String bddetailimg;		//상세사진
 	private int bdstate;			//글상태
 	private int bdhits;				//조회수
+	private int bdfix;				//배너고정상태
 	
 	private String bdrecommend;        //추천수-자취방 자랑, 일반게시글 (recommend 테이블 조인)
 	private String bdwarning;			//신고수-자취방 자랑, 일반게시글 (warning 테이블 조인)
@@ -36,6 +37,7 @@ public class BoardDto {
 	//검색할 때 필요한 필드
 	private String bdnickname;      //작성자 닉네임
 	private String bdmprofile;      //작성자 프로필
+	private int bdmstate;			//작성자의 mstate
 	
 	//로그인 아이디의 추천, 스크랩, 신고 기록
 	private String rchistory;   //추천 기록
@@ -47,6 +49,7 @@ public class BoardDto {
 	//게시글 별 추천수 저장 
 	private int bdrccount;		//추천수
 	
+
 	public String getBdcode() {
 		return bdcode;
 	}
@@ -199,17 +202,31 @@ public class BoardDto {
 	public void setBdrccount(int bdrccount) {
 		this.bdrccount = bdrccount;
 	}
+	public int getBdfix() {
+		return bdfix;
+	}
+	public void setBdfix(int bdfix) {
+		this.bdfix = bdfix;
+	}
+	public int getBdmstate() {
+		return bdmstate;
+	}
+	public void setBdmstate(int bdmstate) {
+		this.bdmstate = bdmstate;
+	}
 	@Override
 	public String toString() {
 		return "BoardDto [bdcode=" + bdcode + ", bdrgcode=" + bdrgcode + ", bdrgname=" + bdrgname + ", bdcategory="
 				+ bdcategory + ", bdmid=" + bdmid + ", bdtitle=" + bdtitle + ", bdcontents=" + bdcontents + ", bddate="
 				+ bddate + ", bdimg=" + bdimg + ", bddetailimg=" + bddetailimg + ", bdstate=" + bdstate + ", bdhits="
-				+ bdhits + ", bdrecommend=" + bdrecommend + ", bdwarning=" + bdwarning + ", bdreply=" + bdreply
-				+ ", bdscrap=" + bdscrap + ", bdimgfile=" + bdimgfile + ", bddetailimgfile="
-				+ Arrays.toString(bddetailimgfile) + ", bdnickname=" + bdnickname + ", bdmprofile=" + bdmprofile
-				+ ", rchistory=" + rchistory + ", schistory=" + schistory + ", wbhistory=" + wbhistory + ", bdrpcount="
-				+ bdrpcount + ", bdrccount=" + bdrccount + "]";
+				+ bdhits + ", bdfix=" + bdfix + ", bdmstate=" + bdmstate + ", bdrecommend=" + bdrecommend
+				+ ", bdwarning=" + bdwarning + ", bdreply=" + bdreply + ", bdscrap=" + bdscrap + ", bdimgfile="
+				+ bdimgfile + ", bddetailimgfile=" + Arrays.toString(bddetailimgfile) + ", bdnickname=" + bdnickname
+				+ ", bdmprofile=" + bdmprofile + ", rchistory=" + rchistory + ", schistory=" + schistory
+				+ ", wbhistory=" + wbhistory + ", bdrpcount=" + bdrpcount + ", bdrccount=" + bdrccount + "]";
 	}
+	
+	
 	
 	
 	
