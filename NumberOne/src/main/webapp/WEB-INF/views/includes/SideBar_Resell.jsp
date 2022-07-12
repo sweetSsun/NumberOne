@@ -46,53 +46,11 @@
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="selectFreeBoardList"><i class="fa-solid fa-comments"></i></a>
+						<a href="selectRoomList"><i class="fa-solid fa-house-user"></i></a>
 					</span>
 				</div>
-				<div class="sideroom">
-					<span>
-						<a href="#"><i class="fa-solid fa-circle-question"></i></a>
-					</span>
-				</div>
-				<div class="sideroom">
-					<span>
-						<a href="#"><i class="fa-solid fa-head-side-virus"></i></a>
-					</span>
-				</div>
-				<div class="sideroom">
-					<span>
-						<a href="#"><i class="fa-solid fa-pen-to-square"></i></a>
-					</span>
-				</div>
+				
 			</div>
-			
-			<!-- 지역 드래그앤드롭 넣고싶어용 -->
-			<!-- <div class="sideregion">
-				<div class="sideregion_title">
-					<span>지역</span>
-				</div>
-						
-				<div>
-					<table class="sideregion_tags">
-						<tr>
-							<td><a href="#">전체</a></td>
-							<td><a href="#">서울</a></td>
-							<td><a href="#">인천</a></td>
-						</tr>
-						<tr>
-							<td><a href="#">경기</a></td>
-							<td><a href="#">경상</a></td>
-							<td><a href="#">전라</a></td>
-						</tr>
-						<tr>
-							<td><a href="#">충청</a></td>
-							<td><a href="#">강원</a></td>
-							<td><a href="#">제주</a></td>
-						</tr>
-					</table>
-				</div>
-			</div> -->
-			
 		</div>
 		
 		
@@ -102,37 +60,23 @@
 			<div class="sidemenu">
 			
 				<div class="sidetitle">
-					<span><a href="loadToBoardMainPage">커뮤니티</a></span>
+					<span><a href="selectResellMainPage">중고거래</a></span>
 				</div>
 				
 				<div class="sideroom">
 					<span>
-						<a href="selectNoticeBoardList"><i class="fa-solid fa-volume-low"></i>&nbsp;&nbsp;공지방</a>
+						<a href="selectResellPageList?sellBuy=S"><i class="fa-solid fa-volume-low"></i>&nbsp;&nbsp;팔구</a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="selectRoomList"><i class="fa-solid fa-house-user"></i>&nbsp;&nbsp;자랑방</a>
+						<a href="selectResellPageList?sellBuy=B"><i class="fa-solid fa-house-user"></i>&nbsp;&nbsp;사구</a>
 					</span>
 				</div>
+				
 				<div class="sideroom">
 					<span>
-						<a href="selectFreeBoardList"><i class="fa-solid fa-comments"></i>&nbsp;&nbsp;자유방</a>
-					</span>
-				</div>
-				<div class="sideroom">
-					<span>
-						<a href="#"><i class="fa-solid fa-circle-question"></i>&nbsp;&nbsp;질문방</a>
-					</span>
-				</div>
-				<div class="sideroom">
-					<span>
-						<a href="#"><i class="fa-solid fa-head-side-virus"></i>&nbsp;&nbsp;정보방</a>
-					</span>
-				</div>
-				<div class="sideroom">
-					<span>
-						<a href="#"><i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;후기방</a>
+						<a href="#"><i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;채팅</a>
 					</span>
 				</div>
 			</div>
