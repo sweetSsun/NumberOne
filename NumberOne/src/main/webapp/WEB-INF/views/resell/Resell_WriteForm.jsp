@@ -1,10 +1,5 @@
-<%@ page
-	language="java"
-	contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-<%@ taglib
-	prefix="c"
-	uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,15 +8,9 @@
 
 <%@ include file="/resources/css/BarCss.jsp"%>
 <!-- 부트스트랩 -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-	crossorigin="anonymous">
-<link
-	rel="stylesheet"
-	href="${pageContext.request.contextPath }/resources/css/resell.css"
-	type="text/css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/resell.css" type="text/css">
 
 
 </head>
@@ -34,35 +23,24 @@
 
 	<main>
 		<!-- 사이드바 -->
-		
+
 		<%@ include file="/WEB-INF/views/includes/SideBar_Mypage.jsp"%>
 
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h1
-					class="text-center"
-					id="titleMsg"></h1>
+				<h1 class="text-center" id="titleMsg"></h1>
 
-				<form
-					action="insertResellWrite"
-					method="post"
-					enctype="multipart/form-data"
-					onsubmit="return checkFormData()">
+				<form action="insertResellWrite" method="post" enctype="multipart/form-data" onsubmit="return checkFormData()">
 					<div class="container-header">
 						<div class="container-flex_1 flex_between">
 							<div class="item_start">
-								<span> <select
-									class="select-size"									
-									id="boardTitle"
-									name="ubsellbuy">
+								<span> <select class="select-size" id="boardTitle" name="ubsellbuy">
 										<option value="S">팔구</option>
 										<option value="B">사구</option>
 								</select>
-								</span> <span> <select
-									class="select-size"
-									name="ubrgcode">
-										<option value="ALL">전체</option>
+								</span> <span> <select class="select-size" name="ubrgcode">
+										<option value="ALL">전국</option>
 										<option value="SEL">서울</option>
 										<option value="ICN">인천</option>
 										<option value="GGD">경기</option>
@@ -80,12 +58,7 @@
 						</div>
 
 						<div>
-							글제목 <input
-								type="text"
-								size="60"
-								style="margin-left: 40px;"
-								id="titleCheck"
-								name="ubtitle">
+							글제목 <input type="text" size="60" style="margin-left: 40px;" id="titleCheck" name="ubtitle"> <span class="checkMsg"></span>
 						</div>
 
 
@@ -93,20 +66,10 @@
 
 							<div class="container-card_goods_2">
 								<div class="item-basis_7 flex-shrink">
-									<input
-										type="text"
-										name="gd_names"
-										size="60"
-										placeholder="품목명"
-										class="gdcheck_n">
+									<input type="text" name="gd_names" size="60" placeholder="품목명" class="gdcheck_n">
 								</div>
 								<div class="item-basis_3 flex-shrink">
-									<input
-										type="text"
-										size="20"
-										placeholder="가격"
-										name="gd_price"
-										class="gdcheck_p">
+									<input type="text" size="20" placeholder="가격" name="gd_price" class="gdcheck_p">
 								</div>
 
 							</div>
@@ -117,18 +80,10 @@
 							<div class="d_none btn_d-none">
 								<div class="container-card_goods_2">
 									<div class="item-basis_7 flex-shrink">
-										<input
-											type="text"
-											size="60"
-											placeholder="품목명"
-											class="gdcheck_n">
+										<input type="text" size="60" placeholder="품목명" class="gdcheck_n">
 									</div>
 									<div class="item-basis_3 flex-shrink">
-										<input
-											type="text"
-											size="20"
-											placeholder="가격"
-											class="gdcheck_p">
+										<input type="text" size="20" placeholder="가격" class="gdcheck_p">
 									</div>
 
 								</div>
@@ -142,18 +97,10 @@
 							<div class="d_none btn_d-none">
 								<div class="container-card_goods_2">
 									<div class="item-basis_7 flex-shrink">
-										<input
-											type="text"
-											size="60"
-											placeholder="품목명"
-											class="gdcheck_n">
+										<input type="text" size="60" placeholder="품목명" class="gdcheck_n">
 									</div>
 									<div class="item-basis_3 flex-shrink">
-										<input
-											type="text"
-											size="20"
-											placeholder="가격"
-											class="gdcheck_p">
+										<input type="text" size="20" placeholder="가격" class="gdcheck_p">
 									</div>
 
 
@@ -168,18 +115,10 @@
 
 								<div class="container-card_goods_2">
 									<div class="item-basis_7 flex-shrink">
-										<input
-											type="text"
-											size="60"
-											placeholder="품목명"
-											class="gdcheck_n">
+										<input type="text" size="60" placeholder="품목명" class="gdcheck_n">
 									</div>
 									<div class="item-basis_3 flex-shrink">
-										<input
-											type="text"
-											size="20"
-											placeholder="가격"
-											class="gdcheck_p">
+										<input type="text" size="20" placeholder="가격" class="gdcheck_p">
 									</div>
 								</div>
 								<div class="container-flex_1 flex-end">
@@ -191,18 +130,10 @@
 							<div class="d_none btn_d-none">
 								<div class="container-card_goods_2">
 									<div class="item-basis_7 flex-shrink">
-										<input
-											type="text"
-											size="60"
-											placeholder="품목명"
-											class="gdcheck_n">
+										<input type="text" size="60" placeholder="품목명" class="gdcheck_n">
 									</div>
 									<div class="item-basis_3 flex-shrink">
-										<input
-											type="text"
-											size="20"
-											placeholder="가격"
-											class="gdcheck_p">
+										<input type="text" size="20" placeholder="가격" class="gdcheck_p">
 									</div>
 								</div>
 
@@ -222,12 +153,7 @@
 
 						<!-- 상품 설명  -->
 						<div class="container-flex_1">
-							<textarea
-								rows="4"
-								cols="80"
-								style="resize: none"
-								name="ubcontents"
-								id="contentsCheck">상품상세설명</textarea>
+							<textarea rows="4" cols="80" style="resize: none" name="ubcontents" id="contentsCheck">상품상세설명</textarea>
 
 						</div>
 
@@ -239,18 +165,11 @@
 						<div>
 							<div>사진첨부</div>
 							<div class="">
-								<input
-									type="file"
-									placeholder="메인사진 1개"
-									name="ubmainimgfile"
-									id="mainImgCheck">
+								<input type="file" placeholder="메인사진 1개" name="ubmainimgfile" id="mainImgCheck"> <br> <span class="checkMsg"></span>
 							</div>
 
 							<div class="">
-								<input
-									type="file"
-									multiple="multiple"
-									name="ubdetailimgfile">
+								<input type="file" multiple="multiple" name="ubdetailimgfile">
 							</div>
 						</div>
 					</div>
@@ -269,10 +188,8 @@
 
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp"%>
 
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 <!-- 페이지로드시 실행할 코드 스크립트 -->
 <script type="text/javascript">
@@ -410,21 +327,26 @@ boardTitle.addEventListener('change', selectSB);
 function checkFormData() {
 	let checkForm = true;
 	console.log("폼데이터 핸들러 호출");
-	if (document.getElementById("titleCheck").value == '') {
-		alert("글 제목을 입력해주세요");
+	if (document.getElementById("titleCheck").value == '') {		
 		document.getElementById("titleCheck").focus();
+		alert("제목을 입력해주세요.");
 		checkForm = false;
-	} else if (document.getElementById("mainImgCheck").value == '') {
-		document.getElementById("mainImgCheck").focus();
-		checkForm = false;
-	} else if (document.getElementsByClassName("gdcheck_n")[0].value == '') {
+	}  else if (document.getElementsByClassName("gdcheck_n")[0].value == '') {
+		alert("품목이름을 작성해주세요.");
 		document.getElementsByClassName("gdcheck_n")[0].focus();
+		
 		checkForm = false;
 	} else if (document.getElementsByClassName("gdcheck_p")[0].value == '') {
+		alert("품목가격을 작성해주세요.");
 		document.getElementsByClassName("gdcheck_p")[0].focus();
 		checkForm = false;
 	} else if (document.getElementById("contentsCheck").value == '') {
 		document.getElementById("contentsCheck").focus();
+		alert("내용을 작성해주세요.");
+		checkForm = false;
+	}else if (document.getElementById("mainImgCheck").value == '') {
+		alert("메인사진을 선택해주세요.");
+		document.getElementById("mainImgCheck").focus();
 		checkForm = false;
 	}
 	return checkForm;

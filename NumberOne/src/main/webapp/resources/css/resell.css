@@ -157,6 +157,11 @@ white-space: nowrap;
 padding: 20px;
 
 }
+
+.w3-white{
+	
+}
+
 .wrap-vertical::-webkit-scrollbar{
 display: none;
 }

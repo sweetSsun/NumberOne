@@ -236,11 +236,16 @@
  		AND WUEDUBCODE = #{ubcode}
  	</select>
 
+	<select id="selectMaxChcode"  resultType="int">
+	SELECT NVL(MAX(CHCODE),0)
+	FROM CHAT
+	</select>
+
 
 
 	<insert id="insertResellWarning_ajax">
  		<!-- 게시글 신고 -->
- 		INSERT INTO WARNINGUSEDBOARDS
+ 		INSERT INTO WARNINGUSEDBOARDS (WUMID, WUEDUBCODE)
  		VALUES ( #{loginId}, #{ubcode} )
  	</insert>
  	 
@@ -264,6 +269,14 @@
 	<insert id="zzimClick_ajax_insert">
 	INSERT INTO ZZIM(ZZMID, ZZUBCODE) VALUES(#{zzmid}, #{zzubcode})
 	</insert>
+	
+	
+	<insert id="insertResellChat">
+	INSERT INTO CHAT(CHCODE, CHFRMID, CHTOMID, CHCONTENTS, CHDATE)
+	VALUES(#{chat.chcode}, #{chat.chfrmid}, #{chat.chtomid}, #{gdtitle}, SYSDATE)
+	
+			</insert>
+	
 	
 	<delete id="zzimClick_ajax_delete">
 	DELETE FROM ZZIM
@@ -289,6 +302,11 @@
  	 WHERE GDUBCODE = #{ubcode}
  	 </update>
  	
-
+	<update id="updateResellState_ajax">
+	UPDATE GOODS
+	SET GDSTATE = #{gdstate}
+	WHERE GDUBCODE = #{gdubcode} AND GDCODE = #{gdcode}  
+	
+	</update>
 			
 </mapper>
