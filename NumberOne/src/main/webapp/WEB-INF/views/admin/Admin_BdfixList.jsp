@@ -83,8 +83,8 @@
             <table style="table-layout: fixed;" >
                <thead >
                   <tr class="text-center fw-bold" id="board_column">
-                     <td style="width:60px;">사진</td>
                      <td style="width:10%;">글번호</td>
+                     <td style="width:70px;">사진</td>
                      <td style="">제목</td>
                      <td style="width:15%;">작성자</td>
                      <td style="width:10%;">작성일</td>
@@ -98,9 +98,9 @@
 	           		<c:forEach items="${bdfixList }" var="board">
 	                   <!-- 일반게시글 관리 목록 -->
 	                	<tr style="border-bottom: solid #E0E0E0 1px;">
+	                    	<td class="overflow text-center">${board.bdcode}</td>
 	                		<td class="text-center"><img src="${pageContext.request.contextPath }/resources/img/room/${board.bdimg }"
 	                      		class="img-fluid" style="width:60px; height:60px; object-fit:fill;"></td>
-	                    	<td class="overflow text-center">${board.bdcode}</td>
 	                    	<td class="overflow">
 					    	<a href="loadToRoomViewPage?bdcode=${board.bdcode }">
 					    			<span class="overflow">${board.bdtitle}</span>
@@ -319,9 +319,9 @@
 					console.log(result);					
 					for (var i = 0; i < result.length; i++){
 						output += "<tr style='border-bottom: solid #E0E0E0 1px;'>";
+						output += "<td class='text-center overflow'>" + result[i].bdcode + "</td>";
 						output += "<td class='text-center'><img src='${pageContext.request.contextPath }/resources/img/resell/" + result[i].ubmainimg
 								+ "' class='img-fluid' style='width:60px; height:60px;  object-fit:fill;'></td>";
-						output += "<td class='text-center overflow'>" + result[i].bdcode + "</td>";
 						output += "<td><a href='loadToRoomViewPage?bdcode=" + result[i].bdcode + "'>"
 								+"<span class='overflow'>" + result[i].bdtitle + "</span>"
 								+"<span class='fw-bold' style='font-size:15px; color:#00bcd4;'>&nbsp;" + result[i].bdrpcount + "</span>"			

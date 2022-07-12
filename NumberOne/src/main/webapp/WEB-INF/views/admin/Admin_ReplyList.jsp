@@ -99,7 +99,7 @@
 	                      <td class="category text-center">${reply.rpbdcategory}</td>
 	                      <td class="overflow">
 	                      	<c:choose>
-					        	<c:when test="${board.bdcategory.equals('자랑') }">
+					        	<c:when test="${reply.rpbdcategory.equals('자랑') }">
 						       		<!-- 자랑글 상세 -->
 						       		<!-- 수정 필요~~~~~~~~~~~ -->
 						        	<a href="loadToRoomViewPage?bdcode=${reply.rpbdcode }">
@@ -108,7 +108,7 @@
 					        	</c:when>
 					        	<c:otherwise>
 						        	<!-- 일반글 상세 -->										
-		                      		<a href="admin_selectBoardView${paging.makeQueryPage(reply.rpbdcode, paging.page)}">
+		                      		<a href="admin_selectBoardView${paging.makeQueryPage(reply.rpbdcode, paging.page)}&check=replyList">
 			                      		${reply.rpcontents}
 			                      	</a>
 								</c:otherwise>

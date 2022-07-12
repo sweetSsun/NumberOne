@@ -95,7 +95,7 @@
 	               </div>
 	            </div>
 	            
-				<div class="row"  style="margin:20px;">
+				<div class="row mt-2">
 				<table style="table-layout: fixed;">
 					<thead>
 						<tr class="text-center fw-bold" id="board_column">

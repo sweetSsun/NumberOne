@@ -218,6 +218,9 @@ public class AdminService {
 		System.out.println("paging : " + paging);
 		
 		NoticeDto noticeBoard = bdao.selectNoticeBoardView(nbcode);
+		
+
+		
 		System.out.println(noticeBoard);
 		mav = new ModelAndView();
 		mav.addObject("noticeBoard", noticeBoard);
@@ -230,22 +233,17 @@ public class AdminService {
 	// 공지 작성페이지 이동
 	public ModelAndView admin_loadToNoticeWrite(RedirectAttributes ra) {
 		System.out.println("AdminService.admin_loadToNoticeWrite() 호출");
-		
-		// 닉네임 찾기
-		String mid = (String) session.getAttribute("loginId");
 		mav = new ModelAndView();
-			
-		if(mid == null) {
-			System.out.println("비로그인 상태!");
-			ra.addFlashAttribute("msg", "로그인 후 이용할 수 있습니다.");
-			//로그인 폼으로 돌아가기
-			mav.setViewName("redirect:/loadToLogin");
+		
+		// 관리자 로그인 여부 체크
+		String loginId = (String)session.getAttribute("loginId");
+		if (loginId == null) {
+			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
+			mav.setViewName("redirect:/loadToLogin");	
 			return mav;
-		} else {
-			String mnickname = bdao.selectRoomWriterMnickname(mid);
-			mav.addObject("mnickname", mnickname);
-			mav.setViewName("admin/Admin_NoticeWriteForm");
 		}
+		mav.setViewName("admin/Admin_NoticeWriteForm");
+		
 		return mav;
 	}
 
@@ -291,7 +289,8 @@ public class AdminService {
 		mav = new ModelAndView();
 		if(insertresult > 0) {
 			ra.addFlashAttribute("msg", nbcode+" 공지가 작성되었습니다.");
-			mav.setViewName("redirect:/admin_selectNoticeBoardView?nbcode="+nbcode);
+			ra.addAttribute("codeIdx", nbcode);
+			mav.setViewName("redirect:/admin_selectNoticeBoardView");
 		} else {
 			ra.addFlashAttribute("msg", "공지 작성에 실패했습니다.");
 			mav.setViewName("redirect:/loadToFail");
@@ -307,11 +306,9 @@ public class AdminService {
 		
 		mav = new ModelAndView();
 		
-		String mnickname = bdao.selectRoomWriterMnickname( (String)session.getAttribute("loginId") );
-		mav.addObject("mnickname", mnickname);
-		
 		NoticeDto noticeBoard = bdao.selectNoticeBoardView(nbcode);
 		System.out.println(noticeBoard);
+        
 		mav.addObject("noticeBoard", noticeBoard);
 		mav.addObject("paging", paging);
 		mav.setViewName("admin/Admin_NoticeModifyForm");
@@ -324,6 +321,7 @@ public class AdminService {
 		System.out.println("AdminService.admin_updateNoticeModify() 호출");
 		System.out.println("originImg : " + modiNotice.getOriginImg());
 		System.out.println("paging : " + paging);
+		
 		// 파일 등록
 		MultipartFile nbimgfile = modiNotice.getNbimgfile();
 		String nbimg = ""; // 파일명 저장할 변수명
@@ -482,10 +480,11 @@ public class AdminService {
 	}	
 	
 	// 경고/정지 상세페이지 이동 
-	public ModelAndView admin_selectBoardView(Paging paging, String codeIdx) {
+	public ModelAndView admin_selectBoardView(Paging paging, String codeIdx, String check) {
 		System.out.println("AdminService.admin_selectBoardView() 호출");
 		mav = new ModelAndView();
 		System.out.println("bdcode : " + codeIdx);
+		System.out.println("check : " + check);
 		
 		//글상세정보 조회 
 		BoardDto board = bdao.selectBoardView(codeIdx);
@@ -682,11 +681,10 @@ public class AdminService {
 		int updateResult = adao.admin_updateBoardStop(bdcode);
 		if (updateResult > 0) {
 			ra.addFlashAttribute("msg",bdcode + " 글이 정지 처리되었습니다.");
-			if(check.equals("adminPage")) {
-				mav.setViewName("redirect:/admin_selectBoardList");
-			} else {
-				// 글목록으로 돌아가는 url 만들어서 매개변수 생기면 수정 필요
+			if(check == null) {
 				mav.setViewName("redirect:/selectBoardList");
+			} else {
+				mav.setViewName("redirect:/admin_selectBoardList");
 			}
 		}
 		return mav;

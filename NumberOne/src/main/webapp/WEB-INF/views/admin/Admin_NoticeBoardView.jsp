@@ -15,11 +15,16 @@
 <title>${noticeBoard.nbtitle} - 1인자:관리자 공지게시판</title>
 
 <style type="text/css">
+	section{
+		max-width: 70%;
+		margin: auto;
+		margin-top: 0%;
+	}
 	.textarea-NbView{
 		border: none;
 		resize: none;
 		width: -webkit-fill-available;
-		min-height: 25em;
+		min-height: 20rem;
 	}
 	textarea:focus {
     	outline: none;
@@ -29,21 +34,29 @@
 	}
 	.boardDate{
 		color: gray;
-		font-size: 20px;
+		font-size: 17px;
 		text-align: left;
 	}
 	.boardCategory{
-		color : #004804;
-		font-size: 25px;
+		color : #00a5ba;
+		font-size: 20px;
 	}
 	.boardTitle{
-		font-size: 35px;
+		font-size: 25px;
 	}
 	.boardContents{
 		border-bottom: solid #E0E0E0 3px;
+		font-size: 21px;
 	}
 	.commentDate{
 		color: gray;
+		font-size: 17px;
+	}
+	.bdhit{
+		color: gray;
+		font-size: 17px;
+	}
+	.bdnickname{
 		font-size: 20px;
 	}
 </style>
@@ -69,7 +82,7 @@
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h1 class="text-center">관리자 공지글 상세페이지 : Admin_NoticeBoardView.jsp</h1>
+				<h4 class="text-center">관리자 공지글 상세페이지 : Admin_NoticeBoardView.jsp</h4>
 				
 				<form action="">
 					<div class="row">
@@ -77,7 +90,7 @@
 							<a href="#"><span class="fw-bold boardCategory"> | 공지게시판</span></a> 
 						</div>
 					</div>
-					<div class="row mb-2" >
+					<div class="row" >
 						<div class="col">
 							<span class="fw-bold boardTitle">${noticeBoard.nbtitle }</span>  
 						</div>
@@ -85,38 +98,38 @@
 					<div class="row idDateHits">
 						<div class="col-6">
 							<!-- 닉네임 출력으로 바꾸기 -->
-							<a href="#"><span class="">${noticeBoard.nbnickname }</span></a> 
+							<a href="#"><span class="fw-bold bdnickname">${noticeBoard.nbnickname }</span></a> 
 						</div>
 						
-						<div class="col-3 offset-md-3">
+						<div align="right" class="col-3 offset-md-3">
 							<span class="boardDate">${noticeBoard.nbdate } | </span> 
-							<span class="commentDate" style="right:0;"><i class="fa-regular fa-eye"></i>${noticeBoard.nbhits}</span> 
+							<span class="bdhit" style="right:0;"><i class="fa-regular fa-eye"></i>${noticeBoard.nbhits}</span> 
 						</div>
 					</div>
 					
 					<!-- 본문 글 내용-->
-					<div class="row mt-3 mb-3 boardContents">
+					<div class="row mt-3 mb-1 boardContents">
 						<div class="col">
 							<c:if test="${noticeBoard.nbimg != null }">
 								<img alt="" src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg}" style="max-width:100%; max-height:500px;">
 							</c:if>
-							<textarea rows="10%" class="textarea-NbView" readonly>${noticeBoard.nbcontents }</textarea>
+							<textarea class="textarea-NbView" readonly>${noticeBoard.nbcontents }</textarea>
 						</div>
 					</div>
 				</form>
 				
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
-				<div class="row">
+				<div class="row mb-2">
 					<div class="col-2">
 						<a href="admin_selectNoticeList${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}">
-						<input type="button" style="left:0;" class="middleBtn btn btn-lg bg-success fw-bold text-white" value="글목록">
+						<input type="button" style="left:0;" class="middleBtn btn-numberone btn-sm fw-bold text-white" value="글목록">
 						</a> 
 					</div>
-					<div class="col-4 offset-md-6" >
-						<input type="button" style="float:right;" class="btn btn-lg bg-success fw-bold text-white" 
-							id="deleteBtn"  value="삭제">
-						<input type="button" style="float:right; margin-right: 5px;" class="btn btn-lg bg-success fw-bold text-white"
+					<div align="right" class="col" >
+						<input type="button" class="btn-numberone btn-sm fw-bold text-white"
 							id="modifyBtn" value="수정">
+						<input type="button" style="margin-right: 2px;" class="btn-numberone btn-sm fw-bold text-white" 
+							id="deleteBtn"  value="삭제">
 					</div>
 				</div>
 				
