@@ -98,6 +98,7 @@
                      <td>연락처</td>
                      <td>이메일</td>
                      <td style="width:10%">가입일</td>
+                     <td style="width:3rem;">경고</td>
                      <td style="width:3rem;">상태</td>
                   </tr>
                </thead>
@@ -111,6 +112,7 @@
 	                      <td class="overflow text-center">${member.mphone}</td>
 	                      <td class="overflow text-center">${member.memail}</td>
 	                      <td class="overflow text-center">${member.mjoindate}</td>
+	                      <td class="text-center">${member.mwarning}</td>
 	                      <td>
 	                      	<c:choose>
 	                      		<c:when test="${member.mwarning > 0}">
@@ -121,6 +123,9 @@
 	                      		</c:when>
 	                      		<c:when test="${member.mstate == 1}">
 	                      			<button class="btn btn-sm btn-primary"  type="button" onclick="showMstateModal(this,'${member.mid }')">활동</button>
+	                      		</c:when>
+	                      		<c:when test="${member.mstate == 9}">
+	                      			<button class="btn btn-sm btn-primary member-kakao"  type="button" onclick="showMstateModal(this,'${member.mid }')">활동</button>
 	                      		</c:when>
 	                      		<c:when test="${member.mstate == 2}">
 	                      			<button class="btn btn-sm btn-secondary" type="button"  style="cursor:default;">탈퇴</button>
@@ -440,6 +445,7 @@
 						output += "<td class='text-center overflow' >" + result[i].mphone + "</td>";
 						output += "<td class='text-center overflow' >" + result[i].memail + "</td>";
 						output += "<td class='text-center overflow' >" + result[i].mjoindate + "</td>";
+						output += "<td class='text-center' >" + result[i].mwarning + "</td>";
 						output += "<td class='text-center'>"
 						if (result[i].mwarning > 0){
 							output += "<button class='btn btn-sm btn-warning' onclick='showMstateModal(this, \""+result[i].mid+"\")'>경고</button>";

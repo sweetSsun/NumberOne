@@ -9,8 +9,8 @@
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<%@ include file="/resources/css/BarCss.jsp" %>
 <!-- Css Styles -->
+<%@ include file="/resources/css/BarCss.jsp" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/listCss.css" type="text/css">
 
@@ -332,13 +332,13 @@
 						output += "<td class='category text-center'>" + result[i].bdcategory + "</td>";
 						output += "<td class='overflow'>"
 						if(result[i].bdcategory == '자랑'){
-							output +="<a href='loadToRoomViewPage?bdcode=" + result[i].bdcode + "'>"
+							output +="<a href='selectRoomList?bdcode=" + result[i].bdcode + "&jsp=view'>"
 									+"<span class='overflow'>" + result[i].bdtitle + "</span>"
 									+"<span class='fw-bold' style='font-size:15px; color:#00bcd4;'>&nbsp;" + result[i].bdrpcount + "</span>"			
 									+"</a>";
 						} else {
-							output +="<a href='admin_selectBoardView?codeIdx=" + result[i].bdcode
-									+"&page=1&perPageNum=10&searchVal=" + searchVal + "&searchType=" + searchType + "&keyword=" + searchText + "'>"
+							output +="<a href='admin_selectBoardView${paging.makeQueryPage(paging.page)}&codeIdx=" + result[i].bdcode + "'>"
+									//+"&page=1&perPageNum=10&searchVal=" + searchVal + "&searchType=" + searchType + "&keyword=" + searchText + "'>"
 									+"<span class='overflow'>" + result[i].bdtitle + "</span>"
 									+"<span class='fw-bold' style='font-size:15px; color:#00bcd4;'>&nbsp;" + result[i].bdrpcount + "</span>"			
 									+"</a>";

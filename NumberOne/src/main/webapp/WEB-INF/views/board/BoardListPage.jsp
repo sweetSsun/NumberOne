@@ -109,7 +109,7 @@
 					<div class="col">
 						<!-- 말머리 정렬 -->
 						<select class="bdCategoryList" onchange="bdCategorySel(this.value)">
-							<option class="bdcategorySel malmeori" value="" disabled selected >말머리 선택</option>
+							<option class="bdcategorySel malmeori" value="" disabled selected >카테고리 선택</option>
 							<option class="bdcategorySel" value="자유">자유</option>
 							<option class="bdcategorySel" value="질문">질문</option>
 							<option class="bdcategorySel" value="정보">정보</option>
@@ -133,7 +133,7 @@
 					<thead >
 						<tr class="text-center" id="board_column">
 							<td style="font-size: 17px;">글번호</td>
-							<td style="font-size: 17px;">말머리</td>
+							<td style="font-size: 17px;">카테고리</td>
 							<td style="font-size: 17px;">제목</td>
 							<td style="font-size: 17px;">작성자</td>
 							<td style="font-size: 17px;">날짜</td>
@@ -159,7 +159,6 @@
 					
 					<tbody id="bdCategoryList">
 					<!-- 일반게시판 목록 -->
-					
 					<c:forEach items="${boardList }" var="board">
 						<c:if test="${board.bdcategory != '자랑' }">
 						<tr style="border-bottom: solid #E0E0E0 1px;">
@@ -211,7 +210,7 @@
 		location.href= "loadToBoardWrite?bdcategory="+bdcategory;
 	}
 
-	/* 게시판 말머리 선택 */
+	/* 게시판 카테고리 선택 */
 	function bdCategorySel(categorySel){
 		console.log("categorySel: " + categorySel);
 		
@@ -227,13 +226,13 @@
 				
 				for(var i = 0; i< bdCategoryList.length; i++ ){
 					output += "<tr style=\"border-bottom: solid #E0E0E0 1px;\">";
-					output += "<td class=\"text-center\">" + bdCategoryList[i].bdcode + "</td>";
-					output += "<td class=\"bdcategory text-center\">" + bdCategoryList[i].bdcategory + "</td>";
-					output += "<td><a href='selectBoardView?bdcode=" + bdCategoryList[i].bdcode + "'>" + bdCategoryList[i].bdtitle + "</a>"
-					output += "<span class=\"fw-bold\" style=\"font-size:15px; color:#00bcd4;\">&nbsp;" + bdCategoryList[i].bdrpcount + "</span></td>"
-					output += "<td class=\"text-center\"><a href=\"#\">" + bdCategoryList[i].bdnickname + "</a></td>";
-					output += "<td class=\"text-center\">" + bdCategoryList[i].bddate + "</td>";
-					output += "<td class=\"text-center\">" + bdCategoryList[i].bdhits + "</td>";
+					output += "<td class=\"text-center tableCell\">" + bdCategoryList[i].bdcode + "</td>";
+					output += "<td class=\"bdcategory text-center tableCell \">" + bdCategoryList[i].bdcategory + "</td>";
+					output += "<td class=\"tableCell\"><a href='selectBoardView?bdcode=" + bdCategoryList[i].bdcode + "'>" + bdCategoryList[i].bdtitle + "</a>"
+					output += "<span class=\"fw-bold tableCell \" style=\"font-size:15px; color:#00bcd4;\">&nbsp;" + bdCategoryList[i].bdrpcount + "</span></td>"
+					output += "<td class=\"text-center tableCell\"><a href=\"#\">" + bdCategoryList[i].bdnickname + "</a></td>";
+					output += "<td class=\"text-center tableCell\">" + bdCategoryList[i].bddate + "</td>";
+					output += "<td class=\"text-center tableCell\">" + bdCategoryList[i].bdhits + "</td>";
 					output += "<td class=\"text-center text-info fw-bold\">" + bdCategoryList[i].bdrccount + "</td>";
 					output += "</tr>";
 				}

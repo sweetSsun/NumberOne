@@ -201,9 +201,9 @@ public class AdminController {
 	}
 	
 	@RequestMapping (value="admin_selectBoardView")
-	public ModelAndView admin_selectBoardView(Paging paging, String codeIdx) {
+	public ModelAndView admin_selectBoardView(Paging paging, String codeIdx, String check) {
 		System.out.println("커뮤니티 상세페이지 이동 요청_관리자");
-		mav = asvc.admin_selectBoardView(paging, codeIdx);
+		mav = asvc.admin_selectBoardView(paging, codeIdx, check);
 		return mav;
 	}
 	

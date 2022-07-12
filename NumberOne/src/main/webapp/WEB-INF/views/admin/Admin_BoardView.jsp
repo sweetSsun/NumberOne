@@ -20,6 +20,12 @@
 		margin: auto;
 		margin-top: 0%;
 	}
+	.textarea-NbView{
+		border: none;
+		resize: none;
+		width: -webkit-fill-available;
+		min-height: 20rem;
+	}
 	textarea:focus {
     	outline: none;
 	}
@@ -145,8 +151,10 @@
 					<!-- 본문 글 내용-->
 					<div class="row mt-3 mb-1 boardContents">
 						<div class="col">
-							<%-- <textarea rows="10%" cols="100%" readonly>${board.bdcontents }</textarea> --%>
-							<div style="min-height:270px;">${board.bdcontents }</div>
+							<c:if test="${board.bdimg != null }">
+								<img alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg}" style="max-width:100%; max-height:500px;">
+							</c:if>
+							<textarea class="textarea-NbView" readonly>${board.bdcontents }</textarea>
 						</div>
 					</div>
 				</form>
@@ -154,11 +162,19 @@
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
 				<div class="row mb-2">
 					<div class="col-2">
-						<input onclick="history.back();" 
-							type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록"> 
+						<c:choose>
+							<c:when test="${param.check == 'replyList' }">
+								<input onclick="history.back()" 
+									type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록"> 
+							</c:when>
+							<c:otherwise>
+								<input onclick="location.href='admin_selectBoardList${paging.makeQueryPage(paging.page)}'" 
+									type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록"> 
+							</c:otherwise>
+						</c:choose>
 					</div>
 					<div align="right" class="col">
-						<c:if test="${board.bdstate == 1 }">
+						<c:if test="${board.bdstate == 1 && param.check != 'replyList'}">
 							<input onclick="adminBoardStop('${board.bdcode}')" type="button" style="left:0;" class="middleBtn btn btn-sm bg-secondary fw-bold text-white" value="정지">
 						</c:if>
 					</div>					

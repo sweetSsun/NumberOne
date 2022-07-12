@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>1인자 - 마이페이지 중고거래</title>
 
-<%@ include file="/resources/css/CommonCss.jsp"%>
+<%@ include file="/resources/css/BarCss.jsp"%>
 <!-- 부트스트랩 -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"

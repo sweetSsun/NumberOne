@@ -99,16 +99,16 @@
 	                      <td class="category text-center">${reply.rpbdcategory}</td>
 	                      <td class="overflow">
 	                      	<c:choose>
-					        	<c:when test="${board.bdcategory.equals('자랑') }">
+					        	<c:when test="${reply.rpbdcategory.equals('자랑') }">
 						       		<!-- 자랑글 상세 -->
 						       		<!-- 수정 필요~~~~~~~~~~~ -->
-						        	<a href="loadToRoomViewPage?bdcode=${reply.rpbdcode }">
+						        	<a href="selectRoomList?bdcode=${reply.rpbdcode }&jsp=view">
 						        		${reply.rpcontents}
 						        	</a>
 					        	</c:when>
 					        	<c:otherwise>
 						        	<!-- 일반글 상세 -->										
-		                      		<a href="admin_selectBoardView${paging.makeQueryPage(reply.rpbdcode, paging.page)}">
+		                      		<a href="admin_selectBoardView${paging.makeQueryPage(reply.rpbdcode, paging.page)}&check=replyList">
 			                      		${reply.rpcontents}
 			                      	</a>
 								</c:otherwise>
@@ -318,7 +318,17 @@
 						output += "<tr style='border-bottom: solid #E0E0E0 1px;'>";
 						output += "<td class='text-center overflow'>" + result[i].rpcode + "</td>";
 						output += "<td class='category text-center'>" + result[i].rpbdcategory + "</td>";
-						output += "<td class='overflow'><a href='admin_selectResellView?bdcode=" + result[i].bdcode + "'>" + result[i].rpcontents + "</a></td>";
+						output += "<td class='overflow'>"
+						if(result[i].bdcategory == '자랑'){
+							output += "<a href='selectRoomList?bdcode=" + result[i].rpbdcode + "&jsp=view'>"
+									+ result[i].rpcontents
+									+ "</a>";
+						} else {
+							output += "<a href='admin_selectBoardView${paging.makeQueryPage(paging.page)}&codeIdx=" + result[i].rpbdcode + "&check=replyList'>"
+									+ result[i].rpcontents
+									+ "</a>";
+						}
+						output += "</td>";
 						output += "<td class='text-center overflow'>" + result[i].rpnickname + "</td>";
 						output += "<td class='text-center overflow'>" + result[i].rpdate + "</td>";
 						output += "<td class='text-center'>"

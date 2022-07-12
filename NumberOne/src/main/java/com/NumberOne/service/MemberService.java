@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.UUID;
 
-import javax.mail.Address;
-import javax.mail.Message.RecipientType;
-import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -160,6 +157,7 @@ public class MemberService {
 
 
 				session.setAttribute("loginId", loginMember.getMid());
+				session.setAttribute("loginNickname", loginMember.getMnickname());
 				mav.setViewName("redirect:/admin_loadToAdminMainPage");
 			
 			}else if(loginMember .getMstate() == 2){
@@ -674,11 +672,10 @@ public class MemberService {
 					mav.setViewName("redirect:/loadToLogin");	
 				
 				}else {
-				
 					//로그인 처리
 					session.setAttribute("loginId", kakaoMember.getMid());
 					session.setAttribute("kakaoId", kakaoMember.getMid());
-					session.setAttribute("loginProfile", kakaoMember.getMprofile());
+					session.setAttribute("loginProfile", member.getMprofile());
 					session.setAttribute("loginRegion", kakaoMember.getMregion());
 					session.setAttribute("loginNickname", kakaoMember.getMnickname());
 				
@@ -744,6 +741,70 @@ public class MemberService {
 		      
 		   }
 
+		//비밀번호 찾기 요청
+		public String selectLookforPw_ajax(String checkMid, String checkMemail) {
+			System.out.println("MemberService.selectLookforPw_ajax() 호출");
+			
+			String pwCheckResult = mdao.selectLookforPw_ajax(checkMid, checkMemail);
+			
+			System.out.println(pwCheckResult);
+			
+			if(pwCheckResult !=null) {
+				
+				System.out.println("회원정보 있음");
+				
+				//임시 비밀번호 생성
+				String subject = "임시비밀번호가 발급되었습니다.";
+				String content = "";
+				String from = "pj220810@naver.com";
+				String to = checkMemail;
+				String temporaryPw= "임시비번";
+
+		       // 임시번호
+		        content += "<div style='margin: 50px;'>";
+		        content += "<div style='height: 30px; width:800px; padding: 15px; font-size: 20px; font-family : pretendard; border-bottom : 1px solid gray; '>";
+		        content += "<span style='color:gray;'>임시비밀번호가 발급되었습니다!</span></div>";		       
+		        content += "<div style='width:800px; border-radius: 4px; padding: 20px 20px 20px 10px;'>";
+		        content += "<div style='color:#747474; font-size: 14px; padding: 10px; font-family : pretendard;'>안녕하세요,&nbsp;<span style='font-weight: bold;'>"+ checkMid + " 님 </span></div>";
+		        content += "<div style='color:#747474; font-size: 14px; padding: 10px; font-family : pretendard;'>회원님의 임시 비밀번호를 보내드립니다.</div>";
+		        content += "<div style='color:#747474; font-size: 14px; padding: 10px; font-family : pretendard;'>임시 비밀번호 : <span style='font-weight: bold;'>" +temporaryPw+ "</span></div>";
+		        content += "</div>";
+		        content += "<div style='color:#747474; font-size: 13px; padding: 10px;font-family : pretendard;'>";
+		        content += "임시비밀번호로 로그인 후 반드시 <span style='color: #00bcd4; font-weight: bold;font-family : pretendard;'>마이페이지 회원정보 > 수정</span> 에서 비밀번호를 재설정하여 주시기 바랍니다.</div>";
+		        content += "<br>";
+		        content += "<button style='text-align:center; border:0px; border-radius: 4px; height:50px; width: 250px; margin:20px;";
+		        content += "margin-left: 10px; background-color: #00bcd4; color: white; font-weight: bold;font-family : pretendard;'>";
+		        content += "일인자사이트로 바로가기</button>";
+		        content += "</div>";
+								
+				try {
+					//Helper객체 생성
+					MimeMessage mail = mailSender.createMimeMessage();
+					MimeMessageHelper mailHelper = new MimeMessageHelper(mail, "UTF-8");
+					
+					//메일 내용 채우기	
+					mailHelper.setFrom(from);
+					mailHelper.setTo(to);
+					mailHelper.setSubject(subject);
+					mailHelper.setText(content, true);
+					
+					//메일 전송
+					mailSender.send(mail);
+					pwCheckResult = "2";
+					
+				} catch (Exception e) {
+					 e.printStackTrace();
+				}
+				
+				return pwCheckResult;
+			
+			}else {
+				
+				return pwCheckResult;
+				
+			}
+			
+		}
 
 
 }

@@ -252,7 +252,7 @@ public class MemberController {
 		@RequestMapping(value = "/memberKakaoLogin")
 		public ModelAndView memberKakaoLogin(MemberDto member, RedirectAttributes ra) {
 			System.out.println("카카오로 로그인 요청");
-			System.out.println(member);
+			//System.out.println(member);
 			ModelAndView mav = msvc.memberKakaoLogin(member, ra);
 			
 			return mav;
@@ -260,10 +260,10 @@ public class MemberController {
 		}
 		
 		//카카오 회원가입
-
 		@RequestMapping(value="/insertKakaoRegister")
 		public ModelAndView insertKakaoRegister(RedirectAttributes ra, MemberDto member) throws IllegalStateException, IOException {
 			System.out.println("카카오 가입");
+			System.out.println(member);
 			mav = new ModelAndView();
 			mav = msvc.insertKakaoRegister(ra, member);
 			

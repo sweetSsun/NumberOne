@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>1인자 - 마이페이지 커뮤니티</title>
 
-<%@ include file="/resources/css/CommonCss.jsp"%>
+<%@ include file="/resources/css/BarCss.jsp"%>
 <!-- 부트스트랩 -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
@@ -208,7 +208,7 @@ background-color: #00BCD4;
 
   function writeMember(nickname) { 
 	  var url = 'selectWriteMemberInfo?nickname='+nickname;
-	  window.open(url, 'memberInfo', 'width=600%, height=650%, left=500, top=50 '); 
+	  window.open(url, 'memberInfo', 'width=700px, height=800px'); 
 	  console.log("nickname : " + nickname);
 	  }
   </script>
