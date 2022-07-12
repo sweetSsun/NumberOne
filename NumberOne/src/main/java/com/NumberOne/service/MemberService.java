@@ -160,6 +160,7 @@ public class MemberService {
 
 
 				session.setAttribute("loginId", loginMember.getMid());
+				session.setAttribute("loginNickname", loginMember.getMnickname());
 				mav.setViewName("redirect:/admin_loadToAdminMainPage");
 			
 			}else if(loginMember .getMstate() == 2){

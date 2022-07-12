@@ -86,11 +86,12 @@
             <table style="table-layout: fixed;">
                <thead >
                   <tr class="text-center fw-bold" id="board_column">
-                     <td style="width:60px;">사진</td>
                      <td style="width:10%;">글번호</td>
+                     <td style="width:70px;">사진</td>
                      <td>제목</td>
                      <td style="width:15%;">작성자</td>
                      <td style="width:10%;">작성일</td>
+                     <td style="width:3rem;">경고</td>
                      <td style="width:3rem;" class="text-center">상태</td>
                   </tr>
                </thead>
@@ -98,13 +99,14 @@
 	               <c:forEach items="${usedBoardList }" var="usedBoard">
 	                   <!-- 회원관리 목록 -->
 	                   <tr style="border-bottom: solid #E0E0E0 1px;">
+	                      <td class="text-center overflow">${usedBoard.ubcode}</td>
 	                      <td class="text-center"><img src="${pageContext.request.contextPath }/resources/img/resell/${usedBoard.ubmainimg }"
 	                      		class="img-fluid" style="width:60px; height:60px; object-fit:fill;"></td>
-	                      <td class="text-center overflow">${usedBoard.ubcode}</td>
 	                      <td class="overflow"><a href="#">
 	                      ${usedBoard.ubtitle}</a></td>
 	                      <td class="text-center overflow">${usedBoard.ubnickname}</td>
 	                      <td class="text-center overflow">${usedBoard.ubdate}</td>
+	                      <td class="text-center">${usedBoard.ubwarning}</td>
 	                      <td>
 	                      	<c:choose>
 	                      		<c:when test="${usedBoard.ubstate == 1}">
@@ -312,11 +314,13 @@
 					console.log(result);					
 					for (var i = 0; i < result.length; i++){
 						output += "<tr style='border-bottom: solid #E0E0E0 1px;'>";
+						output += "<td class='text-center overflow'>" + result[i].ubcode + "</td>";
 						output += "<td class='text-center'><img src='${pageContext.request.contextPath }/resources/img/resell/" + result[i].ubmainimg
 						+ "' class='img-fluid' style='width:60px; height:60px;  object-fit:fill;'></td>";
 						output += "<td class='overflow'><a href='admin_selectResellView?ubcode=" + result[i].ubcode + "'>" + result[i].ubtitle + "</a></td>";
 						output += "<td class='text-center overflow'>" + result[i].ubnickname + "</td>";
 						output += "<td class='text-center overflow'>" + result[i].ubdate + "</td>";
+						output += "<td class='text-center'>" + result[i].ubwarning + "</td>";
 						output += "<td class='text-center'>"
 						if (result[i].ubstate == 1){
 							output += "<button class='btn btn-sm btn-warning' type='button' onclick='showBdstateModal(this, \""+result[i].ubcode+"\")'>경고</button>";
