@@ -246,6 +246,23 @@ public class BoardService {
 	      
 	      return mav;
 	   }
+	   
+	   //공지글 검색 목록 
+	   public ModelAndView selectNoticeSearchList(String searchType, String searchText) {
+		   System.out.println("BoardService.selectNoticeSearchList() 호출");
+		   ModelAndView mav = new ModelAndView();
+		   System.out.println("검색타입: " + searchType);
+		   System.out.println("검색어: " + searchText);
+		   
+		   
+		   ArrayList<NoticeDto> noticeList = bdao.selectNoticeSearchList(searchType, searchText);
+		   System.out.println(noticeList);
+		   
+		   mav.addObject("noticeList", noticeList);
+		   mav.setViewName("board/NoticeSearchList");
+		   
+		   return mav;
+	   }
 
 
 	//자취방 자랑 메인 페이지(목록)   
@@ -1043,6 +1060,7 @@ public class BoardService {
 		return mav;
 	}
 
+	
 	
 
 }

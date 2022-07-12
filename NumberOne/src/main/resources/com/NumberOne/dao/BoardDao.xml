@@ -172,6 +172,32 @@
  		ORDER BY BDCODE DESC
  	 </select>
  	 
+ 	 <select id="selectNoticeSearchList"  resultType="com.NumberOne.dto.NoticeDto">
+ 	 	<!-- 공지글 검색결과 조회 -->
+ 	 	SELECT NBCODE, NBMID, NBTITLE, NBCONTENTS, TO_CHAR(NBDATE,'YYYY-MM-DD HH24:MI'), NBIMG, NBSTATE, NBHITS, NBFIX
+		FROM NOTICEBOARDS
+		
+		<if test="searchType == 'nbtitle' ">
+ 		<!-- 제목으로 검색 -->
+ 		WHERE NBTITLE LIKE '%'||#{searchText}||'%'
+ 		</if>
+ 		
+ 		<if test="searchType == 'nbcontents'">
+ 		<!-- 내용으로 검색 -->
+ 		WHERE NBCONTENTS LIKE '%'||#{searchText}||'%'
+ 		</if>
+ 		
+ 		<if test="searchType == 'nbtitlecontents'">
+ 		<!-- 제목 + 내용으로 검색  -->
+ 		WHERE NBTITLE LIKE '%'||#{searchText}||'%'
+ 		OR NBCONTENTS LIKE '%'||#{searchText}||'%'
+ 		</if>
+ 		
+ 		AND NBSTATE = 1
+ 		ORDER BY NBCODE DESC
+		
+ 	 </select>
+ 	 
  	 
  	 <select id="selectRoomList" resultType="com.NumberOne.dto.BoardDto">
  	 	<!-- 자랑글 목록 -->

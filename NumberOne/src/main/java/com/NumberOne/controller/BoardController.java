@@ -85,6 +85,16 @@ public class BoardController {
 	     return mav;
 	 }
 	 
+	 //공지글검색
+	 @RequestMapping ( value = "/selectNoticeSearchList")
+	 public ModelAndView selectNoticeSearchList( String searchType, String searchText ) {
+		 System.out.println("공지글 검색 목록 요청");
+		 
+		 ModelAndView mav = bsvc.selectNoticeSearchList(searchType, searchText);
+		 
+		 return mav;
+	 }
+	 
 	 //공지글 상세페이지 이동 
 	 @RequestMapping ( value = "/selectNoticeBoardView" )
 	 public ModelAndView selectNoticeBoardView(String nbcode) {
