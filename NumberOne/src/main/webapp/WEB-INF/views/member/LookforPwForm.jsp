@@ -171,10 +171,12 @@ background-color: #00BCD4;
 				
 					success : function(result){
 						if(result.length != 0) {
-						$("#resultLookforPwMsg").text("메일로 임시비밀번호를 발송하였습니다.").css("color" , "green");    
-						
+							$("#resultLookforPwMsg").text("메일로 임시비밀번호를 발송하였습니다.").css("color" , "green");    
+							//임시 비밀번호 생성 메소드 연결
+							//location.href = "${pageContext.request.contextPath}/updatePw?mid="+checkMid+"&memail="+checkMemail;
+							
 						}else {
-						$("#resultLookforPwMsg").text("일치하는 회원정보가 없습니다.").css("color" , "red");  		
+							$("#resultLookforPwMsg").text("일치하는 회원정보가 없습니다.").css("color" , "red");  		
 						}
 				} 
 
