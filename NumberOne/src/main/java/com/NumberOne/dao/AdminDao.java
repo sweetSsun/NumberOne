@@ -18,7 +18,7 @@ public interface AdminDao {
 
 	ArrayList<MemberDto> admin_selectMemberList(Paging paging);
 
-	int admin_updateMstate_ajax(@Param("mid") String mid, @Param("mstate") String mstate);
+	int admin_updateMstate_ajax(@Param("mid") String mid, @Param("mstate") int mstate);
 
 	MemberDto admin_selectMemberInfo_ajax(String mid);
 
@@ -26,8 +26,10 @@ public interface AdminDao {
 
 	ArrayList<NoticeDto> admin_selectNoticeList(Paging paging);
 
-	int admin_updateNbstate_ajax(@Param("nbcode") String nbcode, @Param("nbstate") String nbstate);
+	int admin_updateNbstate_ajax(@Param("nbcode") String nbcode, @Param("nbstate") int nbstate);
 
+	int admin_updateNbfix_ajax(@Param("nbcode") String nbcode, @Param("nbfix") int nbfix);
+	
 	String admin_selectMaxNbcode();
 
 	int admin_insertNoticeWrite(NoticeDto notice);
@@ -38,21 +40,27 @@ public interface AdminDao {
 	
 	ArrayList<UsedBoardDto> admin_selectResellList(Paging paging);
 	
-	int admin_updateUbstate_ajax(@Param("ubcode") String ubcode, @Param("ubstate") String ubstate);
+	int admin_updateUbstate_ajax(@Param("ubcode") String ubcode, @Param("ubstate") int ubstate);
 
-	
-	
 	int admin_selectBoardTotalCount(Paging paging);
 
 	ArrayList<BoardDto> admin_selectBoardList(Paging paging);
+	
+	int admin_selectBdfixTotalCount(Paging paging);
 
-	int admin_updateBdstate_ajax(@Param("bdcode") String bdcode, @Param("bdstate") String bdstate);
+	ArrayList<BoardDto> admin_selectBdfixList(Paging paging);
+	
+	int admin_updateBdfix_ajax(@Param("bdcode") String bdcode, @Param("bdfix") int bdfix);
+	
+	
+	
+	int admin_updateBdstate_ajax(@Param("bdcode") String bdcode, @Param("bdstate") int bdstate);
 
 	int admin_selectReplyTotalCount(Paging paging);
 
 	ArrayList<ReplyDto> admin_selectReplyList(Paging paging);
 
-	int admin_updateRpstate_ajax(@Param("rpcode") String rpcode, @Param("rpstate") String rpstate);
+	int admin_updateRpstate_ajax(@Param("rpcode") String rpcode, @Param("rpstate") int rpstate);
 
 	int admin_selectContactTotalCount(Paging paging);
 

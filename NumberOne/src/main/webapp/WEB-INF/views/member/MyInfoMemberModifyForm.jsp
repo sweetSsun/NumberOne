@@ -344,6 +344,7 @@ background-color: #00BCD4;
                             </div>
 
                           <!-- 파일 업로드 -->
+                          <c:if test="${memberInfo.mpw != 12121212}">
  							<div class="filebox checkout__input col-lg-12 col-md-12 col-sm-12">
 							<p>프로필 사진</p>
 							<div class="row">
@@ -357,7 +358,22 @@ background-color: #00BCD4;
 									</div>
 								</div>	
 							</div>			
-									
+						</c:if>
+                          <!-- 파일 업로드 카카오 display: none -->
+                          <c:if test="${memberInfo.mpw == 12121212}">
+								<div class="row" style="display: none;">
+									<div class="col-lg-6 col-md-12 col-sm-12">
+    									<input class="upload-name" type="text"
+    									value="${memberInfo.mprofile }" placeholder="첨부파일" id="inputFile" >
+    								</div>	
+									<div class="col-lg-6 col-md-12 col-sm-12">    						
+    									<label for="inputMfile" >파일찾기</label> 
+    									<input type="file" id="inputMfile" name="mfile" value="" class="">
+									</div>
+								</div>	
+			
+						</c:if>
+														
                             <!-- 상태메세지 -->                            
                             <div class="checkout__input">
                                 <p>상태메세지</p>

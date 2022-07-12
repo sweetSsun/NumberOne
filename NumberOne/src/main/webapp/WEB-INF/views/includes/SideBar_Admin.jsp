@@ -117,10 +117,7 @@ body.sideon {
 					</span>
 				</div>
 			</div>
-			
-			
 		</div>
-		
 		
 		<!-- 사이드바 열었을 때 -->
 		<div id="sideList">
@@ -174,7 +171,6 @@ body.sideon {
 					</span>
 				</div>
 			</div>
-			
 		</div>
 	</div>
 		

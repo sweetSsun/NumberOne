@@ -57,6 +57,9 @@ public interface BoardDao {
 	//글검색 목록 조회 
 	ArrayList<BoardDto> selectBoardSearchList( @Param("bdcategory") String bdcategory, @Param("searchType") String searchType, @Param("searchText") String searchText);
 	
+	//공지글검색 목록 조회 
+	ArrayList<NoticeDto> selectNoticeSearchList( @Param("searchType") String searchType, @Param("searchText") String searchText );
+	
 	//게시판 공지글 상세페이지 이동 
 	NoticeDto selectNoticeBoardView(String nbcode);
 	
@@ -189,6 +192,16 @@ public interface BoardDao {
 	//자랑글 수정용 select
 	@Select("select * from boards where bdcode=#{bdcode}")
 	BoardDto selectRoomModify(String bdcode);
+
+	//자랑글 수정
+	int updateRoomView(BoardDto room);
+	
+	//지역글 목록
+	ArrayList<BoardDto> selectRegionBoardList(String bdrgcode);
+	
+	
+
+	
 	
 	
 

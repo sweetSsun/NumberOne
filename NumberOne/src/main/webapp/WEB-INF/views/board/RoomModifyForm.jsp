@@ -71,8 +71,11 @@
 			<br>
 				<h1 class="text-center">자취방 자랑 글수정 페이지</h1>
 				<div>
-				<form action="insertRoomWrite" method="post" enctype="multipart/form-data" onsubmit="return roomRegisterCh()">
+				<form action="updateRoomView" method="post" enctype="multipart/form-data" onsubmit="return roomModifyCh(${detailCount})">
 				<table id="roomWriteTable">
+					<tr style=''>
+						<th><input type="text" name="bdcode" value="${board.bdcode }"></th>
+					</tr>
 					<tr>
 						<th class="tableHead">작성자</th>
 						<!-- session의 로그인 닉네임로 출력 -->
@@ -96,7 +99,10 @@
 					<tr>
 						<th class="tableHead title">대표사진</th>
 						<td colspan="5">
-							<img alt="대표사진" src="${pageContext.request.contextPath }/resources/img/room/${board.bdimg }">
+							<div>
+								<img alt="대표사진" src="${pageContext.request.contextPath }/resources/img/room/${board.bdimg }" id="currentBdimg_screen"><br>
+								<input type="text" value="${board.bdimg }" id="currentBdimg" name="bdimg">
+							</div>
 						</td>
 					</tr>
 					<tr>
@@ -107,30 +113,29 @@
 					</tr>
 					<tr>
 						<th class="tableHead title">상세사진</th>
-						<td colspan="5">
-							<!--  
-							<input type="text" id="detailImgScreen"> <span class="mainfile"><label for="detailImg">상세사진 선택</label></span>
-							-->
-							
-							<%-- 
-							<c:forEach items="${roomdetailimgs } var="detail">
-								detail
+						<td colspan="5">			 
+							<c:forEach items="${roomdetailimgs }" var="detail" varStatus="status">
+								<div>
+									<img alt='상세사진' src='${pageContext.request.contextPath }/resources/img/room/${detail }' id="${status.index }_currentDetailimg_screen"><br>
+									<span onclick="currentImgStateUpdate('${status.index }_currentDetailimg')" style="background-color:black; border-radius:50%; color:white;">&nbsp;X&nbsp;</span>
+									<input type="text" id="${status.index }_currentDetailimg" value="${detail }">
+								</div>
 							</c:forEach> 
-							--%>
-							<div id="detailImgs"></div>
+							
+							<input type="text" id="bddetailimg" name="bddetailimg" placeholder="현재상세이미지 파일명을 모을 input">
 						</td>
 					</tr>
 					<tr>
 						<th class="tableHead title" style="font-size:20px;">상세사진<br>수정</th>
 						<td colspan="5">
-							<input type="file" multiple="multiple" id="detailImg" name="bddetailimgfile" onclick="return mainimgCh()"> 
+							<input type="file" multiple="multiple" id="detailImg" name="bddetailimgfile" accept="image/*" onclick="return mainimgCh()"> 
 						</td>
 					</tr>
 					<tr>
 						<th colspan="6" class="tableHead">
 						<center>
-							<input type="submit" value="등록">
-							<input type="button" onclick="location.href='${pageContext.request.contextPath}/selectRoomList'" value="취소">
+							<input type="submit" value="수정 완료">
+							<input type="button" onclick="location.href='${pageContext.request.contextPath}/selectRoomList'" accept="image/*" value="취소">
 						</center>
 						</th>
 					</tr>
@@ -147,19 +152,14 @@
 </body>
 <script type="text/javascript">
 
-	$(document).ready(function(){
-		console.log("상세사진출력");
-		var detailImgs = '${board.bddetailimg}'.split("___");
-		//console.log(detailImgs);
-		detailImgs.pop();
-		console.log(detailImgs);
-		var detailImgOutput = ""
-		for(var i=0; i<detailImgs.length; i++){
-			detailImgOutput += "<img alt='상세사진' src='${pageContext.request.contextPath }/resources/img/room/"+detailImgs[i]+"'>";
-		}
-		console.log(detailImgOutput);
-		$("#detailImgs").html(detailImgOutput);
-	})
+	function currentImgStateUpdate(id){
+		console.log(id+"현재 이미지 파일 변경 요청");
+		var imgname = $("#"+id).val();
+		console.log(imgname);
+		$("#"+id).val("del_"+imgname);
+		$("#"+id+"_screen").css("display", "none");
+		
+	}
 
 	if('${sessionScope.loginId}'==null){
 		console.log("로그인 후 이용가능합니다.");
@@ -198,8 +198,18 @@
 		}
 	} 
 	
-	function  roomRegisterCh(){
-		console.log("자취방 자랑글 등록 확인");
+	function  roomModifyCh(currentDetailCount){
+		console.log("자취방 자랑글 수정 확인");
+		console.log(currentDetailCount);
+		
+		var detailImg = "";
+		for(var i=0; i<currentDetailCount; i++){
+			detailImg += $("#"+i+"_currentDetailimg").val();
+			detailImg +="___";
+		}
+		//console.log(detailImg);
+		$("#bddetailimg").val(detailImg);
+		
 		if($("#bdtitle").val()==""){
 			alert("제목을 입력하세요");
 			return false;

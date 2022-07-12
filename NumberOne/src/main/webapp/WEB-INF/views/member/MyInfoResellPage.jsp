@@ -78,7 +78,7 @@
 										<c:forEach items="${sellBoard }" var="sell" varStatus="index">
 										<!-- 팔구 목록 -->
 											<tr style="border-bottom: solid #E0E0E0 1px; text-align: center;">						
-											<td><a href="selectResellView?ubcode=${sell.ubcode }&ubsellbuy=S">${sell.ubtitle}</a></td>					
+											<td><a href="selectResellView?ubcode=${sell.ubcode }&ubsellbuy=S&modifyCheck=LIST">${sell.ubtitle}</a></td>					
 											</tr>
 										</c:forEach> 
 										</table>										                                  
@@ -94,7 +94,7 @@
 										<c:forEach items="${buyBoard }" var="buy">
 										<!-- 사구 목록 -->
 											<tr style="border-bottom: solid #E0E0E0 1px; text-align: center;">
-											<td><a href="selectResellView?ubcode=${buy.ubcode }&ubsellbuy=B">${buy.ubtitle}</a></td>					
+											<td><a href="selectResellView?ubcode=${buy.ubcode }&ubsellbuy=B&modifyCheck=LIST">${buy.ubtitle}</a></td>					
 											</tr>
 										</c:forEach>
 										</table>
@@ -167,10 +167,10 @@
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center; ">
 							<c:choose>
 							<c:when test="${zzim.ubsellbuy == 'S' }">
-								<td><a href="selectResellView?ubcode=${zzim.zzubcode }&ubsellbuy=S">${zzim.ubtitle }</a></td>
+								<td><a href="selectResellView?ubcode=${zzim.zzubcode }&ubsellbuy=S&modifyCheck=LIST">${zzim.ubtitle }</a></td>
 							</c:when>
 							<c:otherwise>
-								<td><a href="selectResellView?ubcode=${zzim.zzubcode }&ubsellbuy=B">${zzim.ubtitle }</a></td>						
+								<td><a href="selectResellView?ubcode=${zzim.zzubcode }&ubsellbuy=B&modifyCheck=LIST">${zzim.ubtitle }</a></td>						
 							</c:otherwise>
 							</c:choose> 
 								<td>${zzim.mnickname }</td>

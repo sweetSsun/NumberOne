@@ -6,10 +6,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -128,6 +125,7 @@ public class MemberController {
 			System.out.println("비밀번호 찾기 페이지 요청");
 			mav = new ModelAndView();
 			mav.setViewName("member/LookforPwForm");
+			//mav.setViewName("LookforPwForm");
 			return mav;
 		}		
 		  
@@ -274,22 +272,18 @@ public class MemberController {
 		
 		
 		
-		//비밀번호 찾기
-		/*@RequestMapping(value = "/LookforPw", method = RequestMethod.POST)
-		public String LookforPw(@ModelAttribute MemberDto memberVO, Model model) {
-			System.out.println("비밀번호 찾기 controller : " + memberVO);
-			// 서비스를 호출해서 로그인 확인
-			MemberDto vo = msvc.LookforPw(memberVO);
-			if(vo==null) {
-				return "redirect:/member/LookforPwForm"; // 비밀번호 찾기 페이지
-			}else {
-				model.addAttribute("vo", vo);
-				return "viewPassword"; //비밀번호찾기 결과 페이지
-			}
-				
-		}*/
+		//비밀번호 찾기 - 회원 정보 확인
+		@RequestMapping(value = "/selectLookforPw_ajax")
+		public @ResponseBody String selectLookforPw_ajax(String checkMid , String checkMemail) {
+			System.out.println("비밀번호 찾기 요청");
+			System.out.println("입력한 아이디 : " + checkMid);
+			System.out.println("입력한 메일 : " + checkMemail);
+			String pwCheckResult = msvc.selectLookforPw_ajax(checkMid , checkMemail);
+			
+			return pwCheckResult;  
+		}	
 	
-
+		
 }
 
 

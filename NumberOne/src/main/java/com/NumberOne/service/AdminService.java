@@ -100,7 +100,7 @@ public class AdminService {
 	}
 
 	// 회원상태 변경 ajax
-	public String admin_updateMstate_ajax(String mid, String mstate) {
+	public String admin_updateMstate_ajax(String mid, int mstate) {
 		System.out.println("AdminService.admin_updateMstate_ajax() 호출");
 		System.out.println("상태변경할 mid : " + mid);
 		System.out.println("상태변경할 mstate : " + mstate);
@@ -180,7 +180,7 @@ public class AdminService {
 	}
 
 	// 공지상태 변경
-	public int admin_updateNbstate_ajax(String nbcode, String nbstate) {
+	public int admin_updateNbstate_ajax(String nbcode, int nbstate) {
 		System.out.println("AdminService.admin_updateNbstate_ajax() 호출");
 		System.out.println("상태변경할 nbcode : " + nbcode);
 		System.out.println("상태변경할 nbstate : " + nbstate);
@@ -189,7 +189,7 @@ public class AdminService {
 	}
 
 	// 공지상태 변경_공지글 삭제
-	public ModelAndView admin_updateNbstate(String nbcode, String nbstate, RedirectAttributes ra) {
+	public ModelAndView admin_updateNbstate(String nbcode, int nbstate, RedirectAttributes ra) {
 		System.out.println("AdminService.admin_updateNbstate() 호출");
 		System.out.println("상태변경할 nbcode : " + nbcode);
 		System.out.println("상태변경할 nbstate : " + nbstate);
@@ -201,6 +201,15 @@ public class AdminService {
 		}
 		return mav;
 	}
+
+	// 고정공지 변경
+	public int admin_updateNbfix_ajax(String nbcode, int nbfix) {
+		System.out.println("AdminService.admin_updateNbfix_ajax() 호출");
+		System.out.println("변경할 nbcode : " + nbcode);
+		System.out.println("변경할 nbfix : " + nbfix);
+		int updateResult = adao.admin_updateNbfix_ajax(nbcode, nbfix);
+		return updateResult;
+	}
 	
 	//공지 상세페이지 이동 
 	public ModelAndView admin_selectNoticeBoardView(String nbcode,  Paging paging) {
@@ -209,6 +218,9 @@ public class AdminService {
 		System.out.println("paging : " + paging);
 		
 		NoticeDto noticeBoard = bdao.selectNoticeBoardView(nbcode);
+		
+
+		
 		System.out.println(noticeBoard);
 		mav = new ModelAndView();
 		mav.addObject("noticeBoard", noticeBoard);
@@ -221,22 +233,17 @@ public class AdminService {
 	// 공지 작성페이지 이동
 	public ModelAndView admin_loadToNoticeWrite(RedirectAttributes ra) {
 		System.out.println("AdminService.admin_loadToNoticeWrite() 호출");
-		
-		// 닉네임 찾기
-		String mid = (String) session.getAttribute("loginId");
 		mav = new ModelAndView();
-			
-		if(mid == null) {
-			System.out.println("비로그인 상태!");
-			ra.addFlashAttribute("msg", "로그인 후 이용할 수 있습니다.");
-			//로그인 폼으로 돌아가기
-			mav.setViewName("redirect:/loadToLogin");
+		
+		// 관리자 로그인 여부 체크
+		String loginId = (String)session.getAttribute("loginId");
+		if (loginId == null) {
+			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
+			mav.setViewName("redirect:/loadToLogin");	
 			return mav;
-		} else {
-			String mnickname = bdao.selectRoomWriterMnickname(mid);
-			mav.addObject("mnickname", mnickname);
-			mav.setViewName("admin/Admin_NoticeWriteForm");
 		}
+		mav.setViewName("admin/Admin_NoticeWriteForm");
+		
 		return mav;
 	}
 
@@ -282,7 +289,8 @@ public class AdminService {
 		mav = new ModelAndView();
 		if(insertresult > 0) {
 			ra.addFlashAttribute("msg", nbcode+" 공지가 작성되었습니다.");
-			mav.setViewName("redirect:/admin_selectNoticeBoardView?nbcode="+nbcode);
+			ra.addAttribute("codeIdx", nbcode);
+			mav.setViewName("redirect:/admin_selectNoticeBoardView");
 		} else {
 			ra.addFlashAttribute("msg", "공지 작성에 실패했습니다.");
 			mav.setViewName("redirect:/loadToFail");
@@ -298,11 +306,9 @@ public class AdminService {
 		
 		mav = new ModelAndView();
 		
-		String mnickname = bdao.selectRoomWriterMnickname( (String)session.getAttribute("loginId") );
-		mav.addObject("mnickname", mnickname);
-		
 		NoticeDto noticeBoard = bdao.selectNoticeBoardView(nbcode);
 		System.out.println(noticeBoard);
+        
 		mav.addObject("noticeBoard", noticeBoard);
 		mav.addObject("paging", paging);
 		mav.setViewName("admin/Admin_NoticeModifyForm");
@@ -315,6 +321,7 @@ public class AdminService {
 		System.out.println("AdminService.admin_updateNoticeModify() 호출");
 		System.out.println("originImg : " + modiNotice.getOriginImg());
 		System.out.println("paging : " + paging);
+		
 		// 파일 등록
 		MultipartFile nbimgfile = modiNotice.getNbimgfile();
 		String nbimg = ""; // 파일명 저장할 변수명
@@ -403,7 +410,7 @@ public class AdminService {
 	}	
 
 	// 중고거래 글상태 변경 요청
-	public int admin_updateUbstate_ajax(String ubcode, String ubstate) {
+	public int admin_updateUbstate_ajax(String ubcode, int ubstate) {
 		System.out.println("AdminService.admin_updateUbstate_ajax() 호출");
 		System.out.println("상태변경할 ubcode : " + ubcode);
 		System.out.println("상태변경할 ubstate : " + ubstate);
@@ -413,7 +420,8 @@ public class AdminService {
 	
 	
 	/* 커뮤니티 관리 */
-	// 커뮤니티 관리페이지 이동
+	/* 경고/정지 관리 */
+	// 경고/정지 관리페이지 이동
 	public ModelAndView admin_selectBoardList(Paging paging, RedirectAttributes ra) {
 		System.out.println("AdminService.admin_selectBoardList() 호출");
 		mav = new ModelAndView();
@@ -441,8 +449,8 @@ public class AdminService {
 		return mav;
 	}
 
-	// 커뮤니티 글 상태 변경 요청
-	public int admin_updateBdstate_ajax(String bdcode, String bdstate) {
+	// 경고/정지 글 상태 변경 요청
+	public int admin_updateBdstate_ajax(String bdcode, int bdstate) {
 		System.out.println("AdminService.admin_updateBdstate_ajax() 호출");
 		System.out.println("상태변경할 bdcode : " + bdcode);
 		System.out.println("상태변경할 bdstate : " + bdstate);
@@ -470,6 +478,81 @@ public class AdminService {
 			return paging_json;
 		}
 	}	
+	
+	// 경고/정지 상세페이지 이동 
+	public ModelAndView admin_selectBoardView(Paging paging, String codeIdx, String check) {
+		System.out.println("AdminService.admin_selectBoardView() 호출");
+		mav = new ModelAndView();
+		System.out.println("bdcode : " + codeIdx);
+		System.out.println("check : " + check);
+		
+		//글상세정보 조회 
+		BoardDto board = bdao.selectBoardView(codeIdx);
+		System.out.println(board);
+		
+		mav.addObject("board", board);
+		mav.setViewName("admin/Admin_BoardView");
+		
+		return mav;
+	}
+	/* 배너 관리 */
+	// 배너 관리페이지 이동
+	public ModelAndView admin_selectBdfixList(Paging paging, RedirectAttributes ra) {
+		System.out.println("AdminService.admin_selectBdfixList() 호출");
+		mav = new ModelAndView();
+		// 관리자 로그인 여부 체크
+		String loginId = (String)session.getAttribute("loginId");
+		if (loginId == null) {
+			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
+			mav.setViewName("redirect:/loadToLogin");	
+			return mav;
+		}
+		
+		if(paging.getKeyword() == null) {
+			paging.setKeyword("");
+		}
+		int totalCount = adao.admin_selectBdfixTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
+		paging.setTotalCount(totalCount);
+		paging.calc(); // 페이지 처리 계산 실행
+		
+		System.out.println(paging);
+		ArrayList<BoardDto> bdfixList = adao.admin_selectBdfixList(paging);
+		System.out.println("bdfixList : " + bdfixList);
+		mav.addObject("paging", paging);
+		mav.addObject("bdfixList", bdfixList);
+		mav.setViewName("admin/Admin_BdfixList");
+		return mav;
+	}
+	
+	// 선택한 상태값에 따른 배너관리 목록 ajax
+	public String admin_selectBdfixList_ajax(Paging paging) {
+		System.out.println("AdminService.admin_selectBdfixList_ajax() 호출");
+		System.out.println("searchVal : " + paging.getSearchVal());
+		int totalCount = adao.admin_selectBdfixTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
+		paging.setTotalCount(totalCount);
+		paging.calc(); // 페이지 처리 계산 실행
+		System.out.println("paging : " + paging);
+		
+		ArrayList<BoardDto> bdfixList = adao.admin_selectBdfixList(paging);
+		System.out.println("bdfixList : " + bdfixList);
+		gson = new Gson();
+		if (paging.getAjaxCheck().equals("list")) { // boardList ajax일 경우
+			String bdfixList_json = gson.toJson(bdfixList); 
+			return bdfixList_json;
+		} else { // paging ajax일 경우
+			String paging_json = gson.toJson(paging);
+			return paging_json;
+		}
+	}	
+
+	// 배너 고정상태 변경 요청
+	public int admin_updateBdfix_ajax(String bdcode, int bdfix) {
+		System.out.println("AdminService.admin_updateBdstate_ajax() 호출");
+		System.out.println("배너 고정할 bdcode : " + bdcode);
+		System.out.println("배너 고정할 bdfix : " + bdfix);
+		int updateResult = adao.admin_updateBdfix_ajax(bdcode, bdfix);
+		return updateResult;
+	}
 
 	/* 댓글 관리 */
 	// 댓글 관리페이지 이동
@@ -522,7 +605,7 @@ public class AdminService {
 	}
 
 	// 댓글 상태 변경 요청
-	public int admin_updateRpstate_ajax(String rpcode, String rpstate) {
+	public int admin_updateRpstate_ajax(String rpcode, int rpstate) {
 		System.out.println("AdminService.admin_updateRpstate_ajax() 호출");
 		System.out.println("상태변경할 rpcode : " + rpcode);
 		System.out.println("상태변경할 rpstate : " + rpstate);
@@ -590,15 +673,19 @@ public class AdminService {
 
 	/* 게시글/댓글 정지 */
 	// 일반게시글 정지
-	public ModelAndView admin_updateBoardStop(String bdcode, RedirectAttributes ra) {
+	public ModelAndView admin_updateBoardStop(String bdcode, Paging paging, String check, RedirectAttributes ra) {
 		System.out.println("AdminService.admin_updateBoardStop() 호출");
 		System.out.println("bdcode : " + bdcode);
+		System.out.println("check : " + check);
 		mav = new ModelAndView();
 		int updateResult = adao.admin_updateBoardStop(bdcode);
 		if (updateResult > 0) {
 			ra.addFlashAttribute("msg",bdcode + " 글이 정지 처리되었습니다.");
-			// 글목록으로 돌아가는 url 만들어서 매개변수 생기면 수정 필요
-			mav.setViewName("redirect:/selectBoardList");
+			if(check == null) {
+				mav.setViewName("redirect:/selectBoardList");
+			} else {
+				mav.setViewName("redirect:/admin_selectBoardList");
+			}
 		}
 		return mav;
 	}
@@ -638,7 +725,7 @@ public class AdminService {
 		// 호출한 ajax success에서
 		// updateResult > 0 이면 댓글 목록 새로 출력하는 ajax 실행하기
 	}
-	
+
 	
 
 }
