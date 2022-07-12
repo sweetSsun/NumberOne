@@ -158,7 +158,7 @@
 					      	 <div class="hero__item set-bg" data-setbg="img/hero/banner.jpg">
 		                        <div class="hero__text">
 		                            <span>1인자</span>
-		                            <h2>7월 BEST<br />배너 위에 이미지/글 가능</h2>
+		                            <h2>제목</h2>
 		                            <p>클릭시 이동합니다</p>
 		                            <a href="#" class="primary-btn">임시 버튼</a>
 		                        </div>
@@ -247,15 +247,15 @@
                 
                 <!-- 자유보기 -->
                 <div class="row mix free" style="display:none;">
-            	<p><a href="#"  style="float: right; margin-bottom: 15px;">더보기</a></p>
-            	<c:forEach items="${boardList }" end="5" var="boardList">
+            	<p><a href="selectFreeBoardList"  style="float: right; margin-bottom: 15px;">더보기</a></p>
+            	<c:forEach items="${boardList_free }" end="5" var="boardList_free">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row">
                         	<div class="col-lg-8 col-md-8 col-sm-8 overflow">
-                        		<h3><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList.bdcode}">${boardList.bdtitle }</a></h3>
+                        		<h3><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList_free.bdcode}">${boardList_free.bdtitle }</a></h3>
                         	</div>
                         	<div class="col-lg-4 col-md-4 col-sm-4">	
-                        		<h4>${boardList.bddate }</h4>
+                        		<h4>${boardList_free.bddate }</h4>
                         	</div>
                         </div>
                     </div>
@@ -265,14 +265,14 @@
                 <!-- 질문보기 -->
                 <div class="row mix question" style="display:none;">
             	<p><a href="#"  style="float: right; margin-bottom: 15px;">더보기</a></p>
-            	<c:forEach items="${boardList }" end="5" var="boardList">
+            	<c:forEach items="${boardList_qa }" end="5" var="boardList_qa">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row">
                         	<div class="col-lg-8 col-md-8 col-sm-8 overflow">
-                        		<h3><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList.bdcode}">${boardList.bdtitle }</a></h3>
+                        		<h3><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList_qa.bdcode}">${boardList_qa.bdtitle }</a></h3>
                         	</div>
                         	<div class="col-lg-4 col-md-4 col-sm-4">	
-                        		<h4>${boardList.bddate }</h4>
+                        		<h4>${boardList_qa.bddate }</h4>
                         	</div>
                         </div>
                     </div>
@@ -282,14 +282,14 @@
                 <!-- 정보보기 -->
                 <div class="row mix information" style="display:none;">
 				<p><a href="#"  style="float: right; margin-bottom: 15px;">더보기</a></p>
-            	<c:forEach items="${boardList }" end="5" var="boardList">
+            	<c:forEach items="${boardList_info }" end="5" var="boardList_info">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row">
                         	<div class="col-lg-8 col-md-8 col-sm-8 overflow">
-                        		<h3><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList.bdcode}">${boardList.bdtitle }</a></h3>
+                        		<h3><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList_info.bdcode}">${boardList_info.bdtitle }</a></h3>
                         	</div>
                         	<div class="col-lg-4 col-md-4 col-sm-4">	
-                        		<h4>${boardList.bddate }</h4>
+                        		<h4>${boardList_info.bddate }</h4>
                         	</div>
                         </div>
                     </div>
@@ -299,14 +299,14 @@
                 <!-- 후기보기 -->
                 <div class="row mix review" style="display:none;">
             	<p><a href="#"  style="float: right; margin-bottom: 20px;">더보기</a></p>
-            	<c:forEach items="${boardList }" end="5" var="boardList">
+            	<c:forEach items="${boardList_review }" end="5" var="boardList_review">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row">
                         	<div class="col-lg-8 col-md-8 col-sm-8 overflow">
-                        		<h3><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList.bdcode}">${boardList.bdtitle }</a></h3>
+                        		<h3><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList_review.bdcode}">${boardList_review.bdtitle }</a></h3>
                         	</div>
                         	<div class="col-lg-4 col-md-4 col-sm-4">	
-                        		<h4>${boardList.bddate }</h4>
+                        		<h4>${boardList_review.bddate }</h4>
                         	</div>
                         </div>
                     </div>
@@ -315,7 +315,7 @@
                 
                 <!-- 공지보기 -->
                 <div class="row mix notice" style="display:none;">
-            	<p><a href="#"  style="float: right; margin-bottom: 20px;">더보기</a></p>
+            	<p><a href="selectNoticeBoardList"  style="float: right; margin-bottom: 20px;">더보기</a></p>
             	<c:forEach items="${noticeList }" end="5" var="noticeList">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row">
@@ -337,186 +337,82 @@
     <!-- 중고거래 -->	
 		<div class="container mainbox" style="width: 66%;">
 		    <div class="row section-title" style="margin-top: 5%;">
-		        <div class="col-lg-6">
+		        <div class="col-lg-5">
 		            <div>
-		                <span class="fontOn"><a href="#">중고거래</a></span>
+		                <span class="fontOn"><a href="selectResellMainPage">중고거래</a></span>
 		            </div>
 		        </div>
-		        <div class="col-lg-6" style="margin-bottom: 0;">
+		        <div class="col-lg-7" style="margin-bottom: 0;">
 		            <ul class="sellbuylist" style="font-size: 20px;">
                         <li id="selResell" class="title_color" style="float: left;" onclick="selectResell()">팔구</li>
-                        <li style="float: left; width: 50px;"></li>
+                        <li style="float: left; width: 100px;"></li>
                         <li id="selRebuy" style="float: right;" onclick="selectRebuy()">사구</li>
                     </ul>
                 </div>	            
             
-        <!-- 배너화살표 -->
-            <div class="owl-nav">
-           	</div>       	
-	       
-   		<!-- 팔구보기 -->
-	        <div id="resell" style="margin-left: 5%; margin-right: 5%; margin-bottom: 5%; min-height: 170px; width: 90%;">
-           		<div style="text-align: right;"><p><a href="#"  style="margin-bottom: 20px; font-size: 15px;">팔구보기</a></p>
-            	</div>
-            	
-            	<div id="owl-banner_resell" class="owl-carousel" style="margin-top: 50px;">
-           		
-	                <div class="item">
-	            	<%-- <c:forEach items="${resellList }" end="4" var="resellBuy"> --%>
-	                        <table>
-	                        	<tr>
-	                        		<td rowspan="3"> <img src="${pageContext.request.contextPath }/resources/img/latest-product/lp-2.jpg" alt="중고판매대표사진">
-	                        		</td>
-	                        		<td><h3>팔제목1</h3></td>
-	                        	</tr>
-	                        	<tr>
-	                        		<td><h3>팔상품명1</h3></td>
-	                       		</tr>
-	                       		<tr>
-	                        		<th><h3>팔가격1</h3></th>
-	                        	</tr>
-	                        </table>
-	                <%-- </c:forEach> --%>
-	                </div>
-	                
-	                <div class="item">
-	            	<%-- <c:forEach items="${resellList }" end="4" var="resellBuy"> --%>
-		                 <table>
-		                 	<tr>
-		                 		<td rowspan="3"> <img src="${pageContext.request.contextPath }/resources/img/latest-product/lp-2.jpg" alt="중고판매대표사진">
-		                 		</td>
-		                 		<td><h3>팔제목2</h3></td>
-		                 	</tr>
-		                 	<tr>
-		                 		<td><h3>팔상품명2</h3></td>
-		                		</tr>
-		                		<tr>
-		                 		<th><h3>팔가격2</h3></th>
-		                 	</tr>
-		                 </table>
-	                <%-- </c:forEach> --%>
-	                </div>
-		                
-	                <div class="item">
-	            	<%-- <c:forEach items="${resellList }" end="4" var="resellBuy"> --%>
-		                   <table>
-		                       	<tr>
-		                       		<td rowspan="3"> <img src="${pageContext.request.contextPath }/resources/img/latest-product/lp-2.jpg" alt="중고판매대표사진">
-		                       		</td>
-		                       		<td><h3>팔제목3</h3></td>
-		                       	</tr>
-		                       	<tr>
-		                       		<td><h3>팔상품명3</h3></td>
-		                      		</tr>
-		                      		<tr>
-		                       		<th><h3>팔가격3</h3></th>
-		                       	</tr>
-		                    </table>
-	                <%-- </c:forEach> --%>
-	                </div>
-		                
-	                <div class="item">
-	            	<%-- <c:forEach items="${resellList }" end="4" var="resellBuy"> --%>       
-		                   <table>
-		                       	<tr>
-		                       		<td rowspan="3"> <img src="${pageContext.request.contextPath }/resources/img/latest-product/lp-2.jpg" alt="중고판매대표사진">
-		                       		</td>
-		                       		<td><h3>팔제목4</h3></td>
-		                       	</tr>
-		                       	<tr>
-		                       		<td><h3>팔상품명4</h3></td>
-		                      		</tr>
-		                      		<tr>
-		                       		<th><h3>팔가격4</h3></th>
-		                       	</tr>
-		                    </table>
-		                <%-- </c:forEach> --%>
-	                </div>
-            	</div>
-           	</div>
-         
-       <!-- 사구보기 -->        
-	        <div id="rebuy" class="display_none" style="margin-left: 5%; margin-right: 5%; margin-bottom: 5%; min-height: 170px; width: 90%;">
-           		<div style="text-align: right;"><p><a href="#"  style="margin-bottom: 20px; font-size: 15px;">사구보기</a></p>
-            	</div>
-            	
-            	<div id="owl-banner_rebuy" class="owl-carousel" style="margin-top: 50px;">
-           		
-	                <div class="item">
-	            	<%-- <c:forEach items="${resellList }" end="4" var="resellBuy"> --%>
-	                        <table>
-	                        	<tr>
-	                        		<td rowspan="3"> <img src="${pageContext.request.contextPath }/resources/img/latest-product/lp-2.jpg" alt="중고판매대표사진">
-	                        		</td>
-	                        		<td><h3>살제목1</h3></td>
-	                        	</tr>
-	                        	<tr>
-	                        		<td><h3>살상품명1</h3></td>
-	                       		</tr>
-	                       		<tr>
-	                        		<th><h3>살가격1</h3></th>
-	                        	</tr>
-	                        </table>
-	                <%-- </c:forEach> --%>
-	                </div>
-	                
-	                <div class="item">
-	            	<%-- <c:forEach items="${resellList }" end="4" var="resellBuy"> --%>
-		                 <table>
-		                 	<tr>
-		                 		<td rowspan="3"> <img src="${pageContext.request.contextPath }/resources/img/latest-product/lp-2.jpg" alt="중고판매대표사진">
-		                 		</td>
-		                 		<td><h3>살제목2</h3></td>
-		                 	</tr>
-		                 	<tr>
-		                 		<td><h3>살상품명2</h3></td>
-		                		</tr>
-		                		<tr>
-		                 		<th><h3>살가격2</h3></th>
-		                 	</tr>
-		                 </table>
-	                <%-- </c:forEach> --%>
-	                </div>
-		                
-	                <div class="item">
-	            	<%-- <c:forEach items="${resellList }" end="4" var="resellBuy"> --%>
-		                   <table>
-		                       	<tr>
-		                       		<td rowspan="3"> <img src="${pageContext.request.contextPath }/resources/img/latest-product/lp-2.jpg" alt="중고판매대표사진">
-		                       		</td>
-		                       		<td><h3>살제목3</h3></td>
-		                       	</tr>
-		                       	<tr>
-		                       		<td><h3>살상품명3</h3></td>
-		                      		</tr>
-		                      		<tr>
-		                       		<th><h3>살가격3</h3></th>
-		                       	</tr>
-		                    </table>
-	                <%-- </c:forEach> --%>
-	                </div>
-		                
-	                <div class="item">
-	            	<%-- <c:forEach items="${resellList }" end="4" var="resellBuy"> --%>       
-		                   <table>
-		                       	<tr>
-		                       		<td rowspan="3"> <img src="${pageContext.request.contextPath }/resources/img/latest-product/lp-2.jpg" alt="중고판매대표사진">
-		                       		</td>
-		                       		<td><h3>살제목4</h3></td>
-		                       	</tr>
-		                       	<tr>
-		                       		<td><h3>살상품명4</h3></td>
-		                      		</tr>
-		                      		<tr>
-		                       		<th><h3>살가격4</h3></th>
-		                       	</tr>
-		                    </table>
-		                <%-- </c:forEach> --%>
-	                </div>
-            	</div>
-			</div>
+	        <!-- 배너화살표 -->
+	            <div class="owl-nav">
+	           	</div>       	
+		       
+	   		<!-- 팔구보기 -->
+		        <div id="resell" style="margin-left: 5%; margin-right: 5%; margin-bottom: 5%; min-height: 170px; width: 90%;">
+	           		<div style="text-align: right;">
+	           			<p><a href="selectResellPageList?sellBuy=S"  style="margin-bottom: 20px; font-size: 15px;">팔구보기</a></p>
+	            	</div>
+	            	
+	            	<div id="owl-banner_resell" class="owl-carousel" style="margin-top: 50px;">           		
+	           			<c:forEach items="${SellList }" end="4" var="SellList">
+		                	<div class="item">
+		                        <table>
+		                        	<tr>
+		                        		<td rowspan="3">
+		                        			<a href="selectResellPageList?sellBuy=S"><img alt="" src="${pageContext.request.contextPath }/resources/img/resell/${SellList.ubmainimg}"></a>
+		                        		</td>
+		                        		<td><h3>${SellList.ubtitle }</h3></td>
+		                        	</tr>
+		                        	<tr>
+		                        		<td><h3>${SellList.ubnickname }</h3></td>
+		                       		</tr>
+		                       		<tr>
+		                        		<th><h3>${SellList.ubdate }</h3></th>
+		                        	</tr>
+		                        </table>
+		                	</div>
+	                	</c:forEach>	                
+	            	</div>
+	           	</div>
+	         
+	       <!-- 사구보기 -->        
+		        <div id="rebuy" class="display_none" style="margin-left: 5%; margin-right: 5%; margin-bottom: 5%; min-height: 170px; width: 90%;">
+	           		<div style="text-align: right;">
+	           			<p><a href="selectResellPageList?sellBuy=B"  style="margin-bottom: 20px; font-size: 15px;">사구보기</a></p>
+	            	</div>
+	            	
+	            	<div id="owl-banner_rebuy" class="owl-carousel" style="margin-top: 50px;">
+	           		
+	            		<c:forEach items="${buyList }" end="4" var="buyList">
+		                	<div class="item">
+		                        <table>
+		                        	<tr>
+		                        		<td rowspan="3">
+		                        			<a href="selectResellPageList?sellBuy=B"><img alt="" src="${pageContext.request.contextPath }/resources/img/resell/${buyList.ubmainimg}"></a>
+		                        		</td>
+		                        		<td><h3>${buyList.ubtitle }</h3></td>
+		                        	</tr>
+		                        	<tr>
+		                        		<td><h3>${buyList.ubnickname }</h3></td>
+		                       		</tr>
+		                       		<tr>
+		                        		<th><h3>${buyList.ubdate }</h3></th>
+		                        	</tr>
+		                        </table>
+		                	</div>
+	                	</c:forEach>
+	            	</div>
+				</div>
+			
+			</div>			
 		</div>
-	
 	
 	
     </section>

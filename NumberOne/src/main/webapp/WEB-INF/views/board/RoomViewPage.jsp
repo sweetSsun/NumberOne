@@ -351,7 +351,14 @@ section{
 	<main>
 		
 		<!-- 사이드바 -->
-		<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
+		<c:choose>
+			<c:when test="${sessionScope.loginId.equals(\"admin\") }">
+				<%@ include file="/WEB-INF/views/includes/SideBar_Admin.jsp" %>				
+			</c:when>
+			<c:otherwise>
+				<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
+			</c:otherwise>
+		</c:choose>
 		
 		<section>
 		<!-- 본문 -->
@@ -606,8 +613,13 @@ roomView_ajax(nowBdcode)
 				//작성자 프로필	
 				var mprofileOutput = "<img class='product-img' style='width:30px; height:30px; border-radius:50%;'";
 				if(roomView.bdmprofile != 'nomprofile'){
-					console.log()
-					mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+roomView.bdmprofile+"'>";
+					if(roomView.bdmstate == 1){
+						//일반 로그인
+						mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+roomView.bdmprofile+"'>";
+					} else if(roomView.bdmstate == 9) {
+						//카카오 로그인
+						mprofileOutput += "src='"+roomView.bdmprofile+"'>";							
+					}
 				} else {
 					mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png'>"; 
 				}
@@ -706,7 +718,14 @@ roomView_ajax(nowBdcode)
 					//댓글 작성자와 관리자에게만 보이는 ...
 					if(replys[i].rpmid == '${sessionScope.loginId}'){
 						//console.log("댓글 작성자");
-						replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \"${sessionScope.loginId}\")' style='font-size:15px;'>&#8943;</span>"; 
+						if(replys[i].rpmstate == 1){
+							//일반 로그인
+							replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+replys[i].rpprofile+"'>";
+						} else if(replys[i].rpmstate == 9) {
+							//카카오 로그인
+							console.log(replys[i].rpprofile);
+							replyOutput += "src='"+replys[i].rpprofile+"'>";							
+						} 
 					} else if ('${sessionScope.loginId}'=='admin'){
 						//console.log("관리자");
 						replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \"${sessionScope.loginId}\")' style='font-size:15px;'>&#8943;</span>"; 	
@@ -852,17 +871,6 @@ roomView_ajax(nowBdcode)
 </script>
 
 <script type="text/javascript">
-	
-	  //모달창 비우기
-	  /*
-	  $("#roomMprofile").html("");
-	  $("#roomMnickname").html("");
-	  $("#roomContents").html("");
-	  $("#reply").html("");
-	  $("#reply").html("");
-	  nowBdcode = "";
-	  nowBdmid = "";
-	  */
 	
 	function log(history){
 		console.log("log 함수 호출");

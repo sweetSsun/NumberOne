@@ -143,7 +143,7 @@
 		ON BD.BDCODE = RCCOUNT.RCBDCODE
 		WHERE BDCATEGORY NOT IN ( '자랑' )
 		
-		<if test="bdcategory != null">
+		<if test="bdcategory != '' ">
 		AND BDCATEGORY = #{bdcategory}
 		</if>
 		
@@ -171,6 +171,34 @@
  		AND BDSTATE = 1
  		ORDER BY BDCODE DESC
  	 </select>
+ 	 
+ 	 <select id="selectNoticeSearchList"  resultType="com.NumberOne.dto.NoticeDto">
+ 	 	<!-- 공지글 검색결과 조회 -->
+ 	 	SELECT NBCODE, NBMID, NBTITLE, NBCONTENTS, TO_CHAR(NBDATE,'YYYY-MM-DD HH24:MI'), NBIMG, NBSTATE, NBHITS, NBFIX
+		FROM NOTICEBOARDS
+		
+		<if test="searchType == 'nbtitle' ">
+ 		<!-- 제목으로 검색 -->
+ 		WHERE NBTITLE LIKE '%'||#{searchText}||'%'
+ 		</if>
+ 		
+ 		<if test="searchType == 'nbcontents'">
+ 		<!-- 내용으로 검색 -->
+ 		WHERE NBCONTENTS LIKE '%'||#{searchText}||'%'
+ 		</if>
+ 		
+ 		<if test="searchType == 'nbtitlecontents'">
+ 		<!-- 제목 + 내용으로 검색  -->
+ 		WHERE NBTITLE LIKE '%'||#{searchText}||'%'
+ 		OR NBCONTENTS LIKE '%'||#{searchText}||'%'
+ 		</if>
+ 		
+ 		AND NBSTATE = 1
+ 		ORDER BY NBCODE DESC
+		
+ 	 </select>
+ 	 
+ 	 
  	 <select id="selectRoomList" resultType="com.NumberOne.dto.BoardDto">
  	 	<!-- 자랑글 목록 -->
  	 	select bdcode, bdmid, bdtitle, bddate, bdimg, bdstate, bdhits, bdcontents,
@@ -201,7 +229,9 @@
  	 <select id="selectBoardView" resultType="com.NumberOne.dto.BoardDto">
  	 	<!-- 일반글 상세 -->
 		SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, TO_CHAR(BDDATE,'YY-MM-DD HH24:MI') AS BDDATE, 
-	    	   BDIMG, BDDETAILIMG, BDSTATE, BDIMG, BDHITS, MB.MNICKNAME AS BDNICKNAME, RG.RGCODE AS BDRGCODE, RG.RGNAME AS BDRGNAME
+	    	   BDIMG, BDDETAILIMG, BDSTATE, BDHITS, 
+	    	   MB.MNICKNAME AS BDNICKNAME, MB.MPROFILE AS BDMPROFILE, MB.MSTATE AS BDMSTATE,
+	    	   RG.RGCODE AS BDRGCODE, RG.RGNAME AS BDRGNAME
 		FROM BOARDS BD, MEMBERS MB, REGION RG
 		WHERE BD.BDMID = MB.MID
         AND BD.BDRGCODE = RG.RGCODE
@@ -425,5 +455,54 @@
 		WHERE RPCODE = #{rpcode}
 	</update>
 	
+	<select id="selectRegionBoardList" resultType="com.NumberOne.dto.BoardDto">
+		SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, 
+			   TO_CHAR(BDDATE,'YY-MM-DD') AS BDDATE, 
+			   BDIMG, BDDETAILIMG, BDSTATE, BDHITS, 
+		       RG.RGNAME AS BDRGNAME, 
+		       MB.MNICKNAME AS BDNICKNAME, 
+		       NVL(RPCOUNT.BDRPCOUNT, 0) AS BDRPCOUNT,
+		       NVL(RCCOUNT.BDRCCOUNT, 0) AS BDRCCOUNT
+		FROM BOARDS BD
+		LEFT OUTER JOIN REGION RG
+		ON BD.BDRGCODE = RG.RGCODE
+		LEFT OUTER JOIN MEMBERS MB
+		ON BD.BDMID = MB.MID
+		LEFT OUTER JOIN (SELECT BD.BDCODE AS RPBDCODE, COUNT(*) AS BDRPCOUNT
+		                        FROM BOARDS BD LEFT OUTER JOIN REPLY RP
+		                        ON BD.BDCODE = RP.RPBDCODE
+		                        WHERE RP.RPSTATE = 1
+		                        GROUP BY BD.BDCODE
+		                        ORDER BY BD.BDCODE) RPCOUNT
+		ON BD.BDCODE = RPCOUNT.RPBDCODE
+		LEFT OUTER JOIN (SELECT BD.BDCODE AS RPBDCODE, COUNT(*) AS BDRPCOUNT
+		                        FROM BOARDS BD LEFT OUTER JOIN REPLY RP
+		                        ON BD.BDCODE = RP.RPBDCODE
+		                        WHERE RP.RPSTATE = 1
+		                        GROUP BY BD.BDCODE
+		                        ORDER BY BD.BDCODE) RPCOUNT
+		ON BD.BDCODE = RPCOUNT.RPBDCODE
+		LEFT OUTER JOIN (SELECT RCBDCODE, COUNT(*) AS BDRCCOUNT
+		                        FROM RECOMMEND
+		                        GROUP BY RCBDCODE ) RCCOUNT
+		ON BD.BDCODE = RCCOUNT.RCBDCODE
+		WHERE BDSTATE = 1
+		AND BDCATEGORY NOT IN ('자랑')
+		
+		<if test="bdrgcode != null ">
+			AND RG.RGCODE = #{bdrgcode}
+		</if>
+		ORDER BY BDCODE DESC
+	</select>
+	
+	<update id="updateRoomView">
+		<!-- 자랑글 수정 -->
+		UPDATE BOARDS
+		SET BDTITLE = #{bdtitle},
+		BDCONTENTS = #{bdcontents},
+		BDIMG = #{bdimg},
+		BDDETAILIMG = #{bddetailimg}
+		WHERE BDCODE = #{bdcode}
+	</update>
 	
  </mapper>

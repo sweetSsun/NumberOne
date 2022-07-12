@@ -87,7 +87,7 @@ background-color: #00BCD4;
 									<c:choose>
 										<c:when test="${board.bdcategory.equals('자랑') }">
 											<!-- 자랑글 상세 -->
-											<a href="loadToRoomViewPage?bdcode=${board.bdcode }">${board.bdtitle}</a>
+											<a href="selectRoomList?bdcode=${board.bdcode }&jsp=view">${board.bdtitle}</a>
 										</c:when>
 										<c:otherwise>
 											<!-- 일반글 상세 -->										
@@ -208,7 +208,7 @@ background-color: #00BCD4;
 
   function writeMember(nickname) { 
 	  var url = 'selectWriteMemberInfo?nickname='+nickname;
-	  window.open(url, 'memberInfo', 'width=600%, height=650%, left=500, top=50 '); 
+	  window.open(url, 'memberInfo', 'width=700px, height=800px'); 
 	  console.log("nickname : " + nickname);
 	  }
   </script>

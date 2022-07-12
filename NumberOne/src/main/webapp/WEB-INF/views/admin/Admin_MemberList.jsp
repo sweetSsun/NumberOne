@@ -9,8 +9,8 @@
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<%@ include file="/resources/css/BarCss.jsp" %>
 <!-- Css Styles -->
+<%@ include file="/resources/css/BarCss.jsp" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/listCss.css" type="text/css">
 
@@ -58,7 +58,7 @@
 		<form action="admin_selectMemberList" method="get" id="actionForm">
 			<div class="container">
             <div class="row" style="margin:auto;">
-               <h1 class="text-center">회원 관리페이지 : Admin_MemberList.jsp</h1>
+               <h4 class="text-center">회원 관리페이지 : Admin_MemberList.jsp</h4>
             </div>
             <!-- 검색 -->
             <div class="row">
@@ -88,7 +88,7 @@
             </div>
             
             <!-- 회원 목록 -->
-            <div class="row">
+            <div class="row" style="margin-top: 20px;">
             <table style="table-layout: fixed;" >
                <thead >
                   <tr class="text-center fw-bold" id="board_column">
@@ -98,6 +98,7 @@
                      <td>연락처</td>
                      <td>이메일</td>
                      <td style="width:10%">가입일</td>
+                     <td style="width:3rem;">경고</td>
                      <td style="width:3rem;">상태</td>
                   </tr>
                </thead>
@@ -111,6 +112,7 @@
 	                      <td class="overflow text-center">${member.mphone}</td>
 	                      <td class="overflow text-center">${member.memail}</td>
 	                      <td class="overflow text-center">${member.mjoindate}</td>
+	                      <td class="text-center">${member.mwarning}</td>
 	                      <td>
 	                      	<c:choose>
 	                      		<c:when test="${member.mwarning > 0}">
@@ -121,6 +123,9 @@
 	                      		</c:when>
 	                      		<c:when test="${member.mstate == 1}">
 	                      			<button class="btn btn-sm btn-primary"  type="button" onclick="showMstateModal(this,'${member.mid }')">활동</button>
+	                      		</c:when>
+	                      		<c:when test="${member.mstate == 9}">
+	                      			<button class="btn btn-sm btn-primary member-kakao"  type="button" onclick="showMstateModal(this,'${member.mid }')">활동</button>
 	                      		</c:when>
 	                      		<c:when test="${member.mstate == 2}">
 	                      			<button class="btn btn-sm btn-secondary" type="button"  style="cursor:default;">탈퇴</button>
@@ -440,13 +445,14 @@
 						output += "<td class='text-center overflow' >" + result[i].mphone + "</td>";
 						output += "<td class='text-center overflow' >" + result[i].memail + "</td>";
 						output += "<td class='text-center overflow' >" + result[i].mjoindate + "</td>";
+						output += "<td class='text-center' >" + result[i].mwarning + "</td>";
 						output += "<td class='text-center'>"
 						if (result[i].mwarning > 0){
-							output += "<button class='btn btn-sm btn-warning' onclick='showMstateModal(this, \""+result[i].mid+"\")' style='width:4rem;'>경고</button>";
+							output += "<button class='btn btn-sm btn-warning' onclick='showMstateModal(this, \""+result[i].mid+"\")'>경고</button>";
 						} else if (result[i].mstate == 0){
-							output += "<button class='btn btn-sm btn-danger' onclick='showMstateModal(this, \""+result[i].mid+"\")' style='width:4rem;'>정지</button>";
+							output += "<button class='btn btn-sm btn-danger' onclick='showMstateModal(this, \""+result[i].mid+"\")'>정지</button>";
 						} else if (result[i].mstate == 1){
-							output += "<button class='btn btn-sm btn-primary' onclick='showMstateModal(this, \""+result[i].mid+"\")' style='width:4rem;'>활동</button>";
+							output += "<button class='btn btn-sm btn-primary' onclick='showMstateModal(this, \""+result[i].mid+"\")'>활동</button>";
 						} else {
 							output += "<button class='btn btn-sm btn-secondary' style='cursor:default; style='width:4rem;''>탈퇴</button>";
 						}

@@ -5,45 +5,51 @@
 <head>
 <meta charset="UTF-8">
 <title>1인자 - 공지작성</title>
-
+<!-- Css Styles -->
 <%@ include file="/resources/css/BarCss.jsp" %>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
 <style type="text/css">
+	section{
+		max-width: 70%;
+		margin: auto;
+		margin-top: 0%;
+	}
 	table{
 		width:70%;
 		border:1px solid black;
 		margin-left: auto; margin-right: auto;
-	};
-	
-	th, td{
-		padding-left: 40px;
 	}
-	.roomtxtarea{
-		width=:65%;
+	.textarea-NbView{
+		resize: none;
+		width: -webkit-fill-available;
+		min-height: 20rem;
 	}
-	
-	.mainfile{
-		border-style: inherit;
-    	border-color: internal-light-dark;
-		padding: 6px;
-		background-color: #BDB4A3;	
-		color: white;
-		border-radius: 6px;
+	.bdtitle{
+		border: none;
+		font-weight: bold;
+		font-size: 20px;
+		margin: auto;
+		height: 22px;
 	}
-	
-	span:hover {
-		/* border: 1px solid #897B63; */
-		padding: 6px;
-		background-color: #AFA58F;	
-		color: white;
-		border-radius: 6px;
+	.bdcontents{
+		border-radius: 5px;
+		border: solid gray 1px;
+		font-size: 19px;
 	}
-	
-	.d_none{ display:none; }
-	
-	.tableHead{ padding-left: 40px; }
+	.btn-wrapper{
+		width: 100%;
+		text-align: center;
+		display:inline-block;
+	}
+		textarea:focus {
+ 	   outline: none;
+	}
+	input:focus{
+	   outline: none;	
+	}
 </style>
 
 </head>
@@ -64,20 +70,41 @@
 		<section>
 		<!-- 본문 -->
 			<div class="container">
-				<h1 class="text-center">공지 작성페이지 : Admin_NoticeWriteForm.jsp</h1>
+				<div class="row" style="margin:auto;">
+					<h4 class="text-center">공지 작성페이지 : Admin_NoticeWriteForm.jsp</h4>
+				</div>
 				<div>
  				<form action="admin_insertNoticeWrite" method="post" enctype="multipart/form-data" onsubmit="return inputCheck()">
-				<table>
+				<div class="row">
+					<input type="text" id="title" class="bdtitle" name="nbtitle" placeholder="제목을 입력하세요" maxlength="50">
+				</div>
+				<hr>
+				<div class="row">
+					<textarea id="contents" class="bdcontents textarea-NbView" rows="17" cols="40" name="nbcontents"
+						maxlength="2000"  placeholder="내용을 입력하세요"></textarea>
+				</div>
+				<div class="row mt-4">
+					<input type="file" id="nbImg" name="nbimgfile" class="" accept="image/*" onchange="checkFileType(this)"> 
+				</div>
+				<div class="row mt-4 mb-2">
+					<div class="col btn-wrapper">
+						<input class="btn-numberone btn-md fw-bold text-white" type="submit" value="작성">
+						<input onclick="$('#nbWriteCancelCheckModal').modal('show')" class="btn-numberone btn-md fw-bold text-white" type="button" value="취소">
+					</div>
+				</div>		
+				
+								
+				
+<%-- 				<table>
 					<tr class="tableRow">
 						<th class="tableHead">작성자</th>
-						<!-- imhido 부분은 나중에 로그인 아이디로 출력 -->
-						<td colspan="3">${mnickname}</td>						
+						<td colspan="3">${sessionScope.loginNickname}</td>						
 					</tr>
 					<tr class="tableRow">
 						<!-- th, td에 패딩, 마진을 주고 싶은데 먹히지 않아서 tableHead 클래스로 여백 줬슴당 -->
 						<th class="tableHead">제목</th>
 						<td colspan="3">
-							<input type="text" id="title" name="nbtitle" placeholder="제목을 입력하세요" size="35%">
+							<input type="text" id="title" name="nbtitle" placeholder="제목을 입력하세요" size="35%" maxlength="50">
 						</td>
 					</tr>
 					<tr class="tableRow">
@@ -101,7 +128,7 @@
 							</center>
 						</th>
 					</tr>
-				</table>
+				</table> --%>
 				</form>
             </div>
 
@@ -110,12 +137,49 @@
 	</main>
 	
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
-
+	
+	<!-- 게시글 작성 취소 확인 -->
+	<div class="modal fade" id="nbWriteCancelCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"> 공지글 작성 취소 </h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" >
+                	<span class="fw-bold">공지글 작성을 취소하시겠습니까?</span>
+                	<br>
+                	<span class="">이 페이지를 벗어나면 작성된 내용은 저장되지 않습니다.</span>
+                </div>	
+                <div class="modal-footer">
+                	<input type="hidden" >
+                    <button class="close btn-numberone text-white" onclick="writeBoardCancel()" >네</button>
+                    <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
 <script type="text/javascript">
+	// 공지글 작성 취소 경고 모달창 close 하는 스크립트
+		var modal = $(".modal");
+	var close = $(".close");
+	for (var i = 0; i < close.length; i++){
+		close[i].addEventListener("click", function(){
+			$("#nbWriteCancelCheckModal").modal("hide");
+		});
+	}
+</script>
+
+<script type="text/javascript">
 	
-	function withdraw(){
+	// 공지글 작성 취소
+	function writeBoardCancel(){
 		console.log("취소 버튼 클릭");
 		location.href="admin_selectNoticeList${paging.makeQueryPage(paging.page)}";
 	}

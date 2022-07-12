@@ -157,6 +157,7 @@ public class MemberService {
 
 
 				session.setAttribute("loginId", loginMember.getMid());
+				session.setAttribute("loginNickname", loginMember.getMnickname());
 				mav.setViewName("redirect:/admin_loadToAdminMainPage");
 			
 			}else if(loginMember .getMstate() == 2){
@@ -753,6 +754,7 @@ public class MemberService {
 				System.out.println("회원정보 있음");
 				
 				//임시 비밀번호 생성
+<<<<<<< HEAD
 				String subject = "임시비밀번호가 발급되었습니다.";
 				String content = "";
 				String from = "pj220810@naver.com";
@@ -784,6 +786,19 @@ public class MemberService {
 				
 				
 				
+=======
+				String temporaryPw= "임시 번호";
+				
+				
+				//메일 제목
+				String subject = "test 메일";
+				//메일 내용(temporaryPw 포함)
+				String content = "<p>메일 테스트 내용</p>";
+				//보내는 사람 주소
+				String from = "pj220810@naver.com";
+				//받는 사람 주소(매개변수)
+				String to = checkMemail;
+>>>>>>> 2d534449312f720d530c0b591cccd2b7dc0052b1
 				
 				try {
 					//Helper객체 생성
@@ -798,25 +813,56 @@ public class MemberService {
 					
 					//메일 전송
 					mailSender.send(mail);
-					System.out.println("성공?");
+					pwCheckResult = "2";
 					
 				} catch (Exception e) {
 					 e.printStackTrace();
 				}
 				
-				
-
 				return pwCheckResult;
 			
 			}else {
 				
-				return null;
+				return pwCheckResult;
 				
 			}
 			
 		}
 
 
+<<<<<<< HEAD
+=======
+		//비밀번호 찾기 - 임시 비밀번호 보내기
+		public String updatePw(String checkMid, String checkMemail) {
+			//비밀번호 찾기
+			String subject = "test 메일";
+			String content = "<p>메일 테스트 내용</p>";
+			String from = "pj220810@naver.com";
+			String to = checkMemail;
+			String temporaryPw= "테스트 메세지";
+			
+			try {
+				//Helper객체 생성
+				MimeMessage mail = mailSender.createMimeMessage();
+				MimeMessageHelper mailHelper = new MimeMessageHelper(mail, "UTF-8");
+				
+				//메일 내용 채우기	
+				mailHelper.setFrom(from);
+				mailHelper.setTo(to);
+				mailHelper.setSubject(subject);
+				mailHelper.setText(content);
+				
+				//메일 전송
+				mailSender.send(mail);
+				
+			} catch (Exception e) {
+				 e.printStackTrace();
+			}
+			
+			System.out.println("성공?");
+			return null;
+		}
+>>>>>>> 2d534449312f720d530c0b591cccd2b7dc0052b1
 
 
 }

@@ -91,16 +91,14 @@
 				<div class="row" style="margin:auto;">
 					<h2 class="text-center">공지게시판 : NoticeBoardList.jsp</h2>
 				</div>
-				<form action="selectBoardSearchList" method="get" onsubmit="return searchTextCheck();">
-				<input type="hidden" name="bdcategory" value="">
+				<form action="selectNoticeSearchList" method="get" onsubmit="return searchTextCheck();">
 					<div class="row ">
 						<!-- 검색기능 -->
 						<div class="col-5" align="right">
 								<select name="searchType" class="searchType">
-									<option value="bdtitle">제목</option>
-									<option value="bdcontents">내용</option>
-									<option value="bdtitlecontents">제목+내용</option>
-									<option value="bdnickname">작성자</option>
+									<option value="nbtitle">제목</option>
+									<option value="nbcontents">내용</option>
+									<option value="nbtitlecontents">제목+내용</option>
 								</select>
 						</div>
 						<div class="col-7 ">
@@ -115,7 +113,7 @@
 					
 				</div>
 				
-				<div class="community bg-secondary" style="text-align:center;">
+				<div class="community" style="text-align:center;">
 					<span style="font-size:21px;" class="fw-bold text-white">공지게시판</span>
 				</div>
 				
@@ -165,11 +163,11 @@
 					</c:forEach>
 					</tbody>
 				</table>
-				<div align="right" class="col mt-2">
+				<%-- <div align="right" class="col mt-2">
 					<c:if test="${sessionScope.loginId == 'admin' }">
 						<button  onclick="loadToBoardWrite()" style="background-color:gray;" class="btn btm-sm fw-bold text-white writeButton">글작성</button>
 					</c:if>
-				</div>
+				</div> --%>
 				</div>
 		</section>
 	</main>
