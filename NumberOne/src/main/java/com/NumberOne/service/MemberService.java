@@ -6,10 +6,16 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.UUID;
 
+import javax.mail.Address;
+import javax.mail.Message.RecipientType;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -31,7 +37,8 @@ public class MemberService {
 	
 	@Autowired
 	private MemberDao mdao;
-	
+	@Autowired
+	private JavaMailSender mailSender;
 	
 	 @Autowired private HttpServletRequest request;
 	 @Autowired private HttpSession session;
@@ -748,6 +755,34 @@ public class MemberService {
 				
 				System.out.println("회원정보 있음");
 				
+				//임시 비밀번호 생성
+				String subject = "test 메일";
+				String content = "<p>메일 테스트 내용</p>";
+				String from = "seunggi418@naver.com";
+				String to = checkMemail;
+				String temporaryPw= "테스트 메세지";
+				
+				try {
+					//Helper객체 생성
+					MimeMessage mail = mailSender.createMimeMessage();
+					MimeMessageHelper mailHelper = new MimeMessageHelper(mail, "UTF-8");
+					
+					//메일 내용 채우기	
+					mailHelper.setFrom(from);
+					mailHelper.setTo(to);
+					mailHelper.setSubject(subject);
+					mailHelper.setText(content);
+					
+					//메일 전송
+					mailSender.send(mail);
+					System.out.println("성공?");
+					
+				} catch (Exception e) {
+					 e.printStackTrace();
+				}
+				
+				
+
 				return pwCheckResult;
 			
 			}else {
@@ -756,6 +791,38 @@ public class MemberService {
 				
 			}
 			
+		}
+
+
+		//비밀번호 찾기 - 임시 비밀번호 보내기
+		public String updatePw(String checkMid, String checkMemail) {
+			//비밀번호 찾기
+			String subject = "test 메일";
+			String content = "<p>메일 테스트 내용</p>";
+			String from = "seunggi418@naver.com";
+			String to = checkMemail;
+			String temporaryPw= "테스트 메세지";
+			
+			try {
+				//Helper객체 생성
+				MimeMessage mail = mailSender.createMimeMessage();
+				MimeMessageHelper mailHelper = new MimeMessageHelper(mail, "UTF-8");
+				
+				//메일 내용 채우기	
+				mailHelper.setFrom(from);
+				mailHelper.setTo(to);
+				mailHelper.setSubject(subject);
+				mailHelper.setText(content);
+				
+				//메일 전송
+				mailSender.send(mail);
+				
+			} catch (Exception e) {
+				 e.printStackTrace();
+			}
+			
+			System.out.println("성공?");
+			return null;
 		}
 
 

@@ -323,8 +323,6 @@ public class BoardController {
 		 
 	 }
 	 
-	 //자취방 자랑글 상세 모달 요청
-   
    
 	 //질문게시판 이동 
 	 @RequestMapping ( value = "/selectQuestionBoardList")
@@ -358,7 +356,7 @@ public class BoardController {
 	 
 	 
 	 
-	 //자취방 자랑글 상세 페이지 이동
+	 //자취방 자랑글 상세 모달 요청
 	 @RequestMapping ( value = "/selectRoomView")
 	 public @ResponseBody String selectRoomView(String bdcode) {
 		 System.out.println(bdcode+"번 자강글 상세모달 요청");
@@ -366,6 +364,7 @@ public class BoardController {
 		 
 		 return roomView_json;
 	 }
+	 
 	 
 	 //자취방 자랑글 추천/스크랩/신고 요청
 	 @RequestMapping ( value = "/updateLog")
