@@ -100,6 +100,16 @@ public class BoardController {
 	     return mav;
 	 }
 	 
+	 //공지글검색
+	 @RequestMapping ( value = "/selectNoticeSearchList")
+	 public ModelAndView selectNoticeSearchList( String searchType, String searchText ) {
+		 System.out.println("공지글 검색 목록 요청");
+		 
+		 ModelAndView mav = bsvc.selectNoticeSearchList(searchType, searchText);
+		 
+		 return mav;
+	 }
+	 
 	 //공지글 상세페이지 이동 
 	 @RequestMapping ( value = "/selectNoticeBoardView" )
 	 public ModelAndView selectNoticeBoardView(String nbcode) {
@@ -119,6 +129,7 @@ public class BoardController {
 		 
 		 return mav;
 	 }
+	 
 	 
 	 //댓글작성(ajax)
 	 @RequestMapping ( value = "/insertBoardReply_ajax")
@@ -369,6 +380,97 @@ public class BoardController {
 		 return mav;
 	 }
 	 
+	 //지역게시판 이동 
+	 @RequestMapping ( value = "/selectRegionBoardList")
+	 public ModelAndView selectRegionBoardList() {
+		 System.out.println("지역게시판 이동");
+		 
+		 ModelAndView mav = bsvc.selectRegionBoardList();
+		 
+		 return mav;
+	 }
+	 
+	 //서울게시판 이동 
+	 @RequestMapping ( value = "/selectSelBoardList")
+	 public ModelAndView selectSelBoardList() {
+		 System.out.println("서울게시판 이동");
+		 
+		 ModelAndView mav = bsvc.selectSelBoardList();
+		 
+		 return mav;
+		 
+	 }
+	 
+	 //인천게시판 이동 
+	 @RequestMapping ( value = "/selectIcnBoardList")
+	 public ModelAndView selectIcnBoardList() {
+		 System.out.println("인천게시판 이동");
+		 
+		 ModelAndView mav = bsvc.selectIcnBoardList();
+		 
+		 return mav;
+	 }
+	 
+	 //경기게시판 이동 
+	 @RequestMapping ( value = "/selectGgdBoardList")
+	 public ModelAndView selectGgdBoardList() {
+		 System.out.println("경기게시판 이동");
+		 
+		 ModelAndView mav = bsvc.selectGgdBoardList();
+		 
+		 return mav;
+	 }
+	 
+	 //경상게시판 이동 
+	 @RequestMapping ( value = "/selectGsdBoardList")
+	 public ModelAndView selectGsdBoardList() {
+		 System.out.println("경상게시판 이동");
+		 
+		 ModelAndView mav = bsvc.selectGsdBoardList();
+		 
+		 return mav;
+		 
+	 }
+	 
+	 //전라게시판 이동 
+	 @RequestMapping ( value = "/selectJldBoardList")
+	 public ModelAndView selectJldBoardList() {
+		 System.out.println("전라게시판 이동");
+		 
+		 ModelAndView mav = bsvc.selectJldBoardList();
+		 
+		 return mav;
+	 }
+	 
+	 //충청게시판 이동 
+	 @RequestMapping ( value = "/selectCcdBoardList")
+	 public ModelAndView selectCcdBoardList() {
+		 System.out.println("충청게시판 이동");
+		 
+		 ModelAndView mav = bsvc.selectCcdBoardList();
+		 
+		 return mav;
+	 }
+	 
+	 //강원게시판 이동 
+	 @RequestMapping ( value = "/selectGwdBoardList")
+	 public ModelAndView selectGwdBoardList() {
+		 System.out.println("강원게시판 이동");
+		 
+		 ModelAndView mav = bsvc.selectGwdBoardList();
+		 
+		 return mav;
+	 }
+	 
+	 //제주게시판 이동 
+	 @RequestMapping ( value = "/selectJjdBoardList")
+	 public ModelAndView selectJjdBoardList() {
+		 System.out.println("제주게시판 이동");
+		 
+		 ModelAndView mav = bsvc.selectJjdBoardList();
+		 
+		 return mav;
+	 }
 	 
 	 
 	 //자취방 자랑글 상세 모달 요청

@@ -21,6 +21,15 @@
 	textarea:focus {
     	outline: none;
 	}
+	.row .col-1{
+		width: auto;
+	}
+	#inputReply{
+		border: none;
+		width: -webkit-fill-available;
+		resize: none;
+		height: auto;
+	}
 	#inputComment{
 		resize: none;
 		height: auto;
@@ -135,6 +144,19 @@
 					</div>
 					<div class="row idDateHits">
 						<div class="col-6">
+							<c:choose>
+								<c:when test="${board.bdmprofile != null && board.bdmstate == 1 }">
+									<img class="img-profile rounded-circle" style="height: 45px; width:45px;" src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/${board.bdmprofile}">
+								</c:when>
+								
+								<c:when test="${board.bdmprofile != null && board.bdmstate == 9 }">
+									<img class="img-profile rounded-circle" style="height: 40px; width:40px;" src="${board.bdmprofile}">
+								</c:when>
+								
+								<c:otherwise>
+									<img class="img-profile rounded-circle" style="height: 45px; width:45px;" src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png">
+								</c:otherwise>
+							</c:choose>
 							<a href="#"><span class="fw-bold bdnickname">${board.bdnickname }</span></a> 
 						</div>
 						
@@ -150,8 +172,8 @@
 					<!-- 본문 글 내용-->
 					<div class="row mt-3 mb-1 boardContents">
 						<div class="col">
-							<%-- <textarea rows="10%" cols="100%" readonly>${board.bdcontents }</textarea> --%>
-							<div style="min-height:270px;">${board.bdcontents }</div>
+							<textarea id="inputReply" rows="10%" cols="100%" readonly>${board.bdcontents }</textarea>
+							<%-- <text style="min-height:270px;">${board.bdcontents }</div> --%>
 						</div>
 					</div>
 				</form>
@@ -599,9 +621,9 @@
 						
 						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;\ margin-right:-20px;' >" /* 프로필영역 */
 						if( replyList[i].rpprofile != null ){
-							output += "<img class=\"img-profile rounded-circle \" style=\"height:55px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+							output += "<img class=\"img-profile rounded-circle \" style=\"height:50px; width:50px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
 						}else{
-							output += "<img class=\"img-profile rounded-circle \" style=\"height:40px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
+							output += "<img class=\"img-profile rounded-circle \" style=\"height:40px; width:40px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
 						}
 						output += "</div>"
 						
@@ -627,9 +649,9 @@
 						
 						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px; margin-right:-20px;'>" /* 프로필영역 */
 						if( replyList[i].rpprofile != null ){
-							output += "<img class=\"img-profile rounded-circle \" style=\"height:55px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+							output += "<img class=\"img-profile rounded-circle \" style=\"height:50px; width:50px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
 						}else{
-							output += "<img class=\"img-profile rounded-circle\" style=\"height:40px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
+							output += "<img class=\"img-profile rounded-circle\" style=\"height:40px; width:40px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
 						}
 						output += "</div>"
 							
@@ -776,6 +798,16 @@
 	}
 	
 </script>
+<script type="text/javascript">
 
+/* Textarea 높이 자동 조절 ( 스크롤바 없애기 ) */
+$("#inputReply").each(function () {
+	this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
+	}).on('input', function () {
+	this.style.height = 'auto';
+	this.style.height = (this.scrollHeight) + 'px';
+	});
+
+</script>
 
 </html>

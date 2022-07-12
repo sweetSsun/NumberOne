@@ -174,31 +174,37 @@
 
 				<div class="sideroom">
 					<span>
+						<!-- 자랑방 -->
 						<a href="selectRoomList"><i class="fa-solid fa-house-user"></i></a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
+						<!-- 자유방 -->
 						<a href="selectFreeBoardList"><i class="fa-solid fa-comments"></i><i class="fa-regular fa-comments"></i></a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="#"><i class="fa-solid fa-circle-question"></i><i class="fa-regular fa-circle-question"></i></a>
+						<!-- 질문방 -->
+						<a href="selectQuestionBoardList"><i class="fa-solid fa-circle-question"></i><i class="fa-regular fa-circle-question"></i></a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="#"><i class="fa-solid fa-head-side-virus"></i></a>
+						<!-- 정보방 -->
+						<a href="selectInfoBoardList"><i class="fa-solid fa-head-side-virus"></i></a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="#"><i class="fa-solid fa-pen-to-square"></i><i class="fa-regular fa-pen-to-square"></i></a>
+						<!-- 후기 -->
+						<a href="selectReviewBoardList"><i class="fa-solid fa-pen-to-square"></i><i class="fa-regular fa-pen-to-square"></i></a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
+						<!-- 공지 -->
 						<a href="selectNoticeBoardList"><i class="fa-solid fa-volume-low"></i></a>
 					</span>
 				</div>
@@ -239,7 +245,7 @@
 			<div class="sidemenu">
 			
 				<div class="sidetitle">
-					<span><a href="loadToBoardMainPage">커뮤니티</a></span>
+					<span><a href="selectBoardList">커뮤니티</a></span>
 				</div>
 
 				<div class="sideroom">
@@ -254,17 +260,17 @@
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="#"><i class="fa-solid fa-circle-question"></i>질문방<i class="fa-regular fa-circle-question"></i></a>
+						<a href="selectQuestionBoardList"><i class="fa-solid fa-circle-question"></i>질문방<i class="fa-regular fa-circle-question"></i></a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="#"><i class="fa-solid fa-head-side-virus"></i>정보방</a>
+						<a href="selectInfoBoardList"><i class="fa-solid fa-head-side-virus"></i>정보방</a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="#"><i class="fa-solid fa-pen-to-square"></i>후기방</a><i class="fa-regular fa-pen-to-square"></i>
+						<a href="selectReviewBoardList"><i class="fa-solid fa-pen-to-square"></i>후기방</a><i class="fa-regular fa-pen-to-square"></i>
 					</span>
 				</div>
 				<div class="sideroom">
@@ -282,19 +288,19 @@
 				<div>
 					<table class="sideregion_tags">
 						<tr>
-							<td><a href="#">전체</a></td>
-							<td><a href="#">서울</a></td>
-							<td><a href="#">인천</a></td>
+							<td><a href="selectRegionBoardList">전체</a></td>
+							<td><a href="selectSelBoardList">서울</a></td>
+							<td><a href="selectIcnBoardList">인천</a></td>
 						</tr>
 						<tr>
-							<td><a href="#">경기</a></td>
-							<td><a href="#">경상</a></td>
-							<td><a href="#">전라</a></td>
+							<td><a href="selectGgdBoardList">경기</a></td>
+							<td><a href="selectGsdBoardList">경상</a></td>
+							<td><a href="selectJldBoardList">전라</a></td>
 						</tr>
 						<tr>
-							<td><a href="#">충청</a></td>
-							<td><a href="#">강원</a></td>
-							<td><a href="#">제주</a></td>
+							<td><a href="selectCcdBoardList">충청</a></td>
+							<td><a href="selectGwdBoardList">강원</a></td>
+							<td><a href="selectJjdBoardList">제주</a></td>
 						</tr>
 					</table>
 				</div>
