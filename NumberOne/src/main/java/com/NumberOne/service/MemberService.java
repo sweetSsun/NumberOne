@@ -284,13 +284,13 @@ public class MemberService {
 		  
 		  ModelAndView mav = new ModelAndView();
 		  System.out.println("MemberService.loadToMyInfoModifyForm() 호출"); 
-		  //String loginId = (String) session.getAttribute("loginId");
-			String loginId;
+		  String loginId = (String) session.getAttribute("loginId");
+			/*String loginId;
 			if((String) session.getAttribute("loginId")!=null) {			
 				loginId = (String) session.getAttribute("loginId");
 			} else {
 				loginId = (String) session.getAttribute("kakaoId");			
-			}
+			}*/
 		  
 		  
 		  System.out.println("로그인 된 아이디 : " + loginId);
@@ -344,25 +344,26 @@ public class MemberService {
 		  
 		ModelAndView mav = new ModelAndView();
 		  System.out.println("MemberService.updateMyInfoMemberModify() 호출"); 
-		  //String loginId = (String) session.getAttribute("loginId");
-			String loginId;
+		  String loginId = (String) session.getAttribute("loginId");
+			/*String loginId;
 			if((String) session.getAttribute("loginId")!=null) {			
 				loginId = (String) session.getAttribute("loginId");
 			} else {
 				loginId = (String) session.getAttribute("kakaoId");			
-			}
+			}*/
 		  String loginProfile = (String) session.getAttribute("loginProfile");
 		  System.out.println("로그인 된 아이디 : " + loginId);
 		  System.out.println("로그인 된 프로필 : " + loginProfile);
 		 
 		 member.setMid(loginId);
 
-		      //이미지 파일
+		     
+			 //이미지 파일
 		      MultipartFile mfile = member.getMfile();
 		      
 		      //이미지의 파일명
 		      String mprofile = "";
-		      
+
 		      //이미지 파일 처리	      
 		      if(!mfile.isEmpty()) {
 		         System.out.println("변경 이미지 파일 있음");		         
@@ -380,8 +381,8 @@ public class MemberService {
 		    		  System.out.println("변경 이미지 파일 없고, 기존 이미지 없음");		         
 		    		  member.setMprofile(mprofile);  
 		    	  }
+		      	
 		      }
-
 		         System.out.println(member);
 		      
 		      

@@ -30,8 +30,8 @@ body {
 }
 
 .table {
-	padding : 10px 20px;
-	border: 3px solid #949494;
+ 	padding : 10px 20px;
+	border: 1px solid #949494;
 	border-radius:5px;
 	height: 50px;
 	font-size: 15px;
@@ -157,18 +157,18 @@ ul li a {
 
 <div class ="con">
 	
-	<table style="border: 3px solid; width: 600px; margin: 10px;">
+	<table style="width: 600px; margin: 10px;">
 	<tr>
 	
 	<!-- 프로필 -->
 	<th rowspan="3" style="padding: 2px 15px 2px 10px; margin: 5px;">	
 	<c:choose>
 		<c:when test="${memberInfo.mprofile != null}">
-    		<img style="height: 100px; width: 100px; border: 2px solid #949494; padding: 3px; margin: 0px; border-radius: 50%;" 
+    		<img style="height: 100px; width: 100px; border: 1px solid #949494; padding: 3px; margin: 0px; border-radius: 50%;" 
     			src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/${memberInfo.mprofile }" alt="">	
 		</c:when>
 		<c:otherwise>
-    		<img style="height: 100px; width: 100px; border: 2px solid #949494; padding: 1px; margin:10px; border-radius: 50%;" 
+    		<img style="height: 100px; width: 100px; border: 1px solid #949494; padding: 1px; margin:10px; border-radius: 50%;" 
     			src="${pageContext.request.contextPath }/resources/img/logo_bada.png" alt="">
 		</c:otherwise>
 	</c:choose>
@@ -176,7 +176,7 @@ ul li a {
 	
 	<!-- 닉네임 -->
 	<th><p style="text-align: right;"> 닉네임&nbsp;&nbsp;| </p></th>
-	<td colspan="2"><input type="text" class="inputText" value="${memberInfo.mnickname }" ></td>
+	<td colspan="2"><input type="text" class="inputText" value="${memberInfo.mnickname }" readonly="readonly" ></td>
 	
 	<!-- 채팅 버튼 -->
 	<td rowspan="2"><input type="button" class="btn" style="width: 90px; margin-right: 30px;" value="채팅"></td>		
@@ -185,14 +185,14 @@ ul li a {
 	
 	<!-- 지역 -->
 	<th><p style="text-align: right;">지역&nbsp;&nbsp;| </p></th>
-	<td><input type="text" class="inputText" value="${memberInfo.mregion }"></td>
+	<td><input type="text" class="inputText" value="${memberInfo.mregion }" readonly="readonly"></td>
 		<!-- <th><p style="width: 40px;">등급</th> -->
 		<!-- <td><input type="hidden" style="width: 90px;" class="inputText" value="sh1234(예시)"></td> -->
 	</tr>
 	<!-- 상태메세지 -->
 	<tr>
 	<th><p style="text-align: right;">상태메세지&nbsp;&nbsp;| </p></th>
-		<td colspan="4"><input type="text" class="inputText" style="width: 320px;"  value="${memberInfo.mmessage }"></td>
+		<td colspan="4"><input type="text" class="inputText" style="width: 320px;"  value="${memberInfo.mmessage }" readonly="readonly"></td>
 	</tr>	
 	</table>
 	
@@ -201,19 +201,19 @@ ul li a {
 <!-- 메뉴 시작 -->	
 	<div class="row" style="width: 640px; margin-left: 11px;">
 		<div class="col-lg-6 col-md-6 col-sm-6" 
-		style="border: 3px solid; border-radius: 20px 20px 0px 0px; height: 50px; border-bottom: 0px; background-color: #F2F2FF">
+		style="border: 1px solid #949494; border-radius: 20px 20px 0px 0px; height: 50px; border-bottom: 0px; background-color: #F2F2FF">
 			<input value="활 동 내 역" 
 			style="width:280px; border: 0px; margin-top: 7px; text-align: center; font-weight: bold; outline:none;  background-color: #F2F2FF" readonly="readonly">
 		</div>
 		<div class="col-lg-6 col-md-6 col-sm-6" 
-		style="border: 3px solid; border-radius: 20px 20px 0px 0px; height: 50px;">
+		style="border: 1px solid #949494; border-radius: 20px 20px 0px 0px; height: 50px; /* border-bottom: 0px; */">
 			<input value="판 매 내 역" 
 			style="width:280px; border: 0px; margin-top: 7px; text-align: center; font-weight: bold; outline:none;"  readonly="readonly">
 		</div>
 	</div>
 	
-	<div class="row"  style="width: 650px; margin-left: 9px; background-color: #F2F2FF;">
-			<div class = "msgTextarea col-lg-12 col-md-6 col-sm-6" style="border-top:0px; padding-top: 20px;" >
+	<div class="row"  style="width: 650px; margin-left: 9px;">
+			<div class = "msgTextarea col-lg-12 col-md-6 col-sm-6" style="border-top:0px! important ; padding-top: 20px; border: 1px solid #949494; background-color: #F2F2FF;" >
 				<c:forEach items="${Board }" var="Board">			
 					<ul>
 						<li><a href="selectBoardView?bdcode=${Board.bdcode }" target="_blank"><!-- 새창 띄우면 내용이 안나와서 다시 확인해봐야함!!!! -->
