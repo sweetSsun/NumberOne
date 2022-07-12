@@ -332,13 +332,13 @@
 						output += "<td class='category text-center'>" + result[i].bdcategory + "</td>";
 						output += "<td class='overflow'>"
 						if(result[i].bdcategory == '자랑'){
-							output +="<a href='loadToRoomViewPage?bdcode=" + result[i].bdcode + "'>"
+							output +="<a href='selectRoomList?bdcode=" + result[i].bdcode + "&jsp=view'>"
 									+"<span class='overflow'>" + result[i].bdtitle + "</span>"
 									+"<span class='fw-bold' style='font-size:15px; color:#00bcd4;'>&nbsp;" + result[i].bdrpcount + "</span>"			
 									+"</a>";
 						} else {
-							output +="<a href='admin_selectBoardView?codeIdx=" + result[i].bdcode
-									+"&page=1&perPageNum=10&searchVal=" + searchVal + "&searchType=" + searchType + "&keyword=" + searchText + "'>"
+							output +="<a href='admin_selectBoardView${paging.makeQueryPage(paging.page)}&codeIdx=" + result[i].bdcode + "'>"
+									//+"&page=1&perPageNum=10&searchVal=" + searchVal + "&searchType=" + searchType + "&keyword=" + searchText + "'>"
 									+"<span class='overflow'>" + result[i].bdtitle + "</span>"
 									+"<span class='fw-bold' style='font-size:15px; color:#00bcd4;'>&nbsp;" + result[i].bdrpcount + "</span>"			
 									+"</a>";

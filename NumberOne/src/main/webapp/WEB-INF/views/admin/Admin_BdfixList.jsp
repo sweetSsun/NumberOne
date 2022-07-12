@@ -96,15 +96,15 @@
                </thead>
                <tbody id="bdListTbody">
 	           		<c:forEach items="${bdfixList }" var="board">
-	                   <!-- 일반게시글 관리 목록 -->
+	                   <!-- 자랑글 배너 관리 목록 -->
 	                	<tr style="border-bottom: solid #E0E0E0 1px;">
 	                    	<td class="overflow text-center">${board.bdcode}</td>
 	                		<td class="text-center"><img src="${pageContext.request.contextPath }/resources/img/room/${board.bdimg }"
 	                      		class="img-fluid" style="width:60px; height:60px; object-fit:fill;"></td>
 	                    	<td class="overflow">
-					    	<a href="loadToRoomViewPage?bdcode=${board.bdcode }">
+					    		<a href="selectRoomList?bdcode=${board.bdcode }&jsp=view">
 					    			<span class="overflow">${board.bdtitle}</span>
-					        	</a>
+					       		</a>
 					        	<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span>
 	                      	</td>
 	                      	<td class="text-center overflow">${board.bdnickname}</td>
@@ -322,7 +322,7 @@
 						output += "<td class='text-center overflow'>" + result[i].bdcode + "</td>";
 						output += "<td class='text-center'><img src='${pageContext.request.contextPath }/resources/img/resell/" + result[i].ubmainimg
 								+ "' class='img-fluid' style='width:60px; height:60px;  object-fit:fill;'></td>";
-						output += "<td><a href='loadToRoomViewPage?bdcode=" + result[i].bdcode + "'>"
+						output += "<td><a href='selectRoomList?bdcode=" + result[i].bdcode + "&jsp=view'>"
 								+"<span class='overflow'>" + result[i].bdtitle + "</span>"
 								+"<span class='fw-bold' style='font-size:15px; color:#00bcd4;'>&nbsp;" + result[i].bdrpcount + "</span>"			
 								+"</a></td>";
