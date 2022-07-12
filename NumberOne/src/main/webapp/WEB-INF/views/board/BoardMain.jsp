@@ -26,25 +26,33 @@ section{
       color: #00bcd4;
    }
    .tdTitle{
-       border-bottom-width: 3px! important;
-         border-color: white! important;
-         font-size: 20px;
+      border-bottom-width: 3px! important;
+      border-color: white! important;
+      font-size: 20px;
       background-color: #eaf8ff;
       
+   }
+   .td_Div{
+   	 /* 말줄임 적용 */
+   	  width : 500px;
+      white-space: nowrap; 
+      overflow: hidden;
+      text-overflow: ellipsis;
    }
    #BestRoomList{
       min-height: 200px;
       display: flex;
       border: solid #00bcd4 2px;
       border-radius: 5px;
+      width: max-content;
    }
    .img-container{
      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-     width: 250px;
-     height: 250px;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     width: 233px;
+     height: 233px;
      border: solid #E0E0E0 2px;
      margin-top: 5%;
      margin-bottom: 5%;
@@ -94,7 +102,7 @@ section{
 				</div>
 				<!-- 자취방자랑 최신순 목록 -->
 				<div class="row mb-5" id="BestRoomList">
-					<c:forEach items="${roomList }" end="3" var="room">
+					<c:forEach items="${roomList }" end="4" var="room">
 						<div class="col-3" style="width:auto;">
 							<div class="img-container" >
 								<a href="selectRoomList?bdcode=${room.bdcode }&jsp=modal"><img alt="" src="${pageContext.request.contextPath }/resources/img/room/${room.bdimg }"></a>
@@ -125,7 +133,9 @@ section{
 							<c:forEach items="${noticeList }" end="2" var="notice">
 								<tr>
 									<td class="tdTitle">
+									<div>
 										<a href="selectNoticeBoardView?nbcode=${notice.nbcode }">${notice.nbtitle}</a>
+									</div>
 									</td>
 								</tr>
 							</c:forEach>
@@ -142,8 +152,10 @@ section{
 							<c:forEach items="${boardList_Free }" end="2" var="board">
 									<tr>
 										<td class="tdTitle">
+										<div class="td_Div">
 											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
 												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
+										</div>
 										</td>
 									</tr>
 							</c:forEach>
@@ -154,8 +166,10 @@ section{
 							<c:forEach items="${boardList_Free }" begin="3" end="5" var="board">
 									<tr>
 										<td class="tdTitle">
+										<div class="td_Div">
 											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
 												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
+										</div>
 										</td>
 									</tr>
 							</c:forEach>
@@ -172,8 +186,10 @@ section{
 							<c:forEach items="${boardList_Question }" end="2" var="board">
 									<tr>
 										<td class="tdTitle">
+										<div class="td_Div">
 											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
 												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
+										</div>
 										</td>
 									</tr>
 							</c:forEach>
@@ -184,8 +200,10 @@ section{
 							<c:forEach items="${boardList_Question }" begin="3" end="5" var="board">
 									<tr>
 										<td class="tdTitle">
+										<div class="td_Div">
 											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
 												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
+										</div>
 										</td>
 									</tr>
 							</c:forEach>
@@ -202,8 +220,10 @@ section{
 							<c:forEach items="${boardList_Information }" end="2" var="board">
 									<tr>
 										<td class="tdTitle">
+										<div class="td_Div">
 											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
 												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
+										</div>
 										</td>
 									</tr>
 							</c:forEach>
@@ -214,8 +234,10 @@ section{
 							<c:forEach items="${boardList_Information }" begin="3" end="5" var="board">
 									<tr>
 										<td class="tdTitle">
+										<div class="td_Div">
 											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
 												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
+										</div>
 										</td>
 									</tr>
 							</c:forEach>
@@ -233,8 +255,10 @@ section{
 								<c:if test="${board.bdcategory.equals('후기') }">
 									<tr>
 										<td class="tdTitle">
+										<div class="td_Div">
 											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
 												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
+										</div>
 										</td>
 									</tr>
 								</c:if>
@@ -247,8 +271,10 @@ section{
 								<c:if test="${board.bdcategory.equals('후기') }">
 									<tr>
 										<td class="tdTitle">
+										<div class="td_Div">
 											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
 												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
+										</div>
 										</td>
 									</tr>
 								</c:if>
@@ -257,7 +283,6 @@ section{
 					</div>
 				</div>
 				<!-- 게시판 목록 종료 -->
-				
 				<hr>
 				
 				<!-- 지역게시판-->

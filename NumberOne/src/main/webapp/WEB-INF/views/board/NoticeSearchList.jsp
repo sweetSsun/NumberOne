@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 공지게시판</title>
+<title>1인자 - 공지글 검색결과 페이지</title>
 <!-- Jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <%@ include file="/resources/css/BarCss.jsp" %>
@@ -17,12 +17,6 @@
 		background-color: white;
 	}
 	
-	.boardList{
-		margin: auto;
-	}
-	.tableCell{
-		font-size: 20px;
-	}
 	#board_column{
 		border-bottom: solid #E0E0E0 2px;
 	}
@@ -33,12 +27,12 @@
 		font-size: 20px;
 	}
 	.bdcategory{
-		color : gray;
+		color : #00bcd4;
 	}
 	.bdCategoryList{
 		color : #00bcd4;
 		border: none;
-		font-size: 20px;
+		font-size: 18px;
 	}
 	.bdcategorySel{
 		font-weight: bold;
@@ -54,18 +48,16 @@
 	.searchType{
 		text-align: center;
 		border-radius: 5px;
-		font-size: 20px;
+		font-size: 18px;
 		border: solid 1px #00bcd4;
-	}
-	.community{
-		background-color: #00bcd4;
-	}
-	.malmeori{
-		display: none;
 	}
 	#inputSearchText{
 		font-size: 18px;
 	}
+	.community{
+		background-color: #00bcd4;
+	}
+
 </style>
 </head>
 <body>
@@ -89,7 +81,7 @@
 		<!-- 본문 -->
 			<div class="container">
 				<div class="row" style="margin:auto;">
-					<h2 class="text-center">공지게시판 : NoticeBoardList.jsp</h2>
+					<h2 class="text-center">공지글 검색결과 페이지 : NoticeSearchList.jsp</h2>
 				</div>
 				<form action="selectNoticeSearchList" method="get" onsubmit="return searchTextCheck();">
 					<div class="row ">
@@ -109,13 +101,25 @@
 				</form>
 						
 				</div>
-				<div class="row" style="margin-top: 20px;">
-					
+				
+				<div class="row mt-3 mb-3">
+					<!-- 검색결과 안내  -->
+					<h3 class="text-center">[ <span class="text-info">${param.searchText}</span> ] 로 검색한 결과 입니다.</h3>  
 				</div>
 				
-				<div class="community" style="text-align:center;">
-					<span style="font-size:21px;" class="fw-bold text-white">공지게시판</span>
-				</div>
+				<c:choose>
+					<c:when test="${bdcategory == '' }">
+						<div class=" community" style="text-align:center;">
+							<span style="font-size:21px;" class="fw-bold text-white">전체게시판 검색 결과</span>
+						</div>
+					</c:when>
+					
+					<c:otherwise>
+						<div class=" community" style="text-align:center;">
+							<span style="font-size:21px;" class="fw-bold text-white">${bdcategory}게시판 검색 결과</span>
+						</div>			
+					</c:otherwise>
+				</c:choose>
 				
 				<!-- 게시글 목록 -->
 				<div class="row">
@@ -123,49 +127,36 @@
 					<thead >
 						<tr class="text-center" id="board_column">
 							<td style="font-size: 17px;">글번호</td>
-							<td style="font-size: 17px;">말머리</td>
+							<td style="font-size: 17px;">카테고리</td>
 							<td style="font-size: 17px;">제목</td>
 							<td style="font-size: 17px;">작성자</td>
 							<td style="font-size: 17px;">날짜</td>
 							<td style="font-size: 17px;">조회</td>
 						</tr>
 						
-						<c:forEach items="${noticeList }" end="2" var="notice">
-							<!-- 공지게시판 : 상위에 띄울 공지-->
-							<tr class="fw-bold" style="border-bottom: solid #E0E0E0 1px;">
-								<td class="text-center tableCell">${notice.nbcode}</td>
-								<td class="text-center tableCell">공지</td>
-								<td class="tableCell">
-									<a href="selectNoticeBoardView?nbcode=${notice.nbcode }">${notice.nbtitle}</a>
-								</td>
-								<td class="text-center tableCell">관리자</td>
-								<td class="text-center tableCell">${notice.nbdate}</td>
-								<td class="text-center tableCell">${notice.nbhits }</td>
-							</tr>
-						</c:forEach>
 					</thead>
 					
 					<tbody id="bdCategoryList">
-					<c:forEach items="${noticeList }" begin="3" var="notice">
+					<!-- 일반게시판 목록 -->
+					<c:forEach items="${noticeList }" var="notice">
 						<tr style="border-bottom: solid #E0E0E0 1px;">
 							<td class="text-center tableCell">${notice.nbcode}</td>
 							<td class="bdcategory text-center tableCell">공지</td>
 							<td class="tableCell">
-							 	<a href="selectNoticeBoardView?nbcode=${notice.nbcode }">${notice.nbtitle} 
-							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;"></span> </a>
+							 	<a href="selectBoardView?bdcode=${notice.nbcode }">${notice.nbtitle} </a>
 							 </td>
 							<td class="text-center tableCell">
 								관리자
 							</td>
 							<td class="text-center tableCell">${notice.nbdate}</td>
-							<td class="text-center tableCell">${notice.nbhits }</td>
+							<td class="text-center tableCell">${notice.nbhits}</td>
 						</tr>
 					</c:forEach>
 					</tbody>
 				</table>
 				<%-- <div align="right" class="col mt-2">
-					<c:if test="${sessionScope.loginId == 'admin' }">
-						<button  onclick="loadToBoardWrite()" style="background-color:gray;" class="btn btm-sm fw-bold text-white writeButton">글작성</button>
+					<c:if test="${sessionScope.loginId != null }">
+						<button  onclick="loadToBoardWrite()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">글작성</button>
 					</c:if>
 				</div> --%>
 				</div>
@@ -190,11 +181,10 @@
 	/* 글쓰기 버튼 클릭 */
 	function loadToBoardWrite(){
 		//글작성 페이지로 이동 
-		location.href= "loadToBoardWrite";
+		var bdcategory = "";
+		location.href= "loadToBoardWrite?bdcategory="+bdcategory;
 	}
 
-	
-	
 </script>
 <script type="text/javascript">
 	function searchTextCheck(){

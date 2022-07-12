@@ -50,7 +50,6 @@ public class BoardDto {
 	private int bdrccount;		//추천수
 	
 
-	
 	public String getBdcode() {
 		return bdcode;
 	}
@@ -203,17 +202,31 @@ public class BoardDto {
 	public void setBdrccount(int bdrccount) {
 		this.bdrccount = bdrccount;
 	}
+	public int getBdfix() {
+		return bdfix;
+	}
+	public void setBdfix(int bdfix) {
+		this.bdfix = bdfix;
+	}
+	public int getBdmstate() {
+		return bdmstate;
+	}
+	public void setBdmstate(int bdmstate) {
+		this.bdmstate = bdmstate;
+	}
 	@Override
 	public String toString() {
 		return "BoardDto [bdcode=" + bdcode + ", bdrgcode=" + bdrgcode + ", bdrgname=" + bdrgname + ", bdcategory="
 				+ bdcategory + ", bdmid=" + bdmid + ", bdtitle=" + bdtitle + ", bdcontents=" + bdcontents + ", bddate="
 				+ bddate + ", bdimg=" + bdimg + ", bddetailimg=" + bddetailimg + ", bdstate=" + bdstate + ", bdhits="
-				+ bdhits + ", bdrecommend=" + bdrecommend + ", bdwarning=" + bdwarning + ", bdreply=" + bdreply
-				+ ", bdscrap=" + bdscrap + ", bdimgfile=" + bdimgfile + ", bddetailimgfile="
-				+ Arrays.toString(bddetailimgfile) + ", bdnickname=" + bdnickname + ", bdmprofile=" + bdmprofile
-				+ ", rchistory=" + rchistory + ", schistory=" + schistory + ", wbhistory=" + wbhistory + ", bdrpcount="
-				+ bdrpcount + ", bdrccount=" + bdrccount + "]";
+				+ bdhits + ", bdfix=" + bdfix + ", bdmstate=" + bdmstate + ", bdrecommend=" + bdrecommend
+				+ ", bdwarning=" + bdwarning + ", bdreply=" + bdreply + ", bdscrap=" + bdscrap + ", bdimgfile="
+				+ bdimgfile + ", bddetailimgfile=" + Arrays.toString(bddetailimgfile) + ", bdnickname=" + bdnickname
+				+ ", bdmprofile=" + bdmprofile + ", rchistory=" + rchistory + ", schistory=" + schistory
+				+ ", wbhistory=" + wbhistory + ", bdrpcount=" + bdrpcount + ", bdrccount=" + bdrccount + "]";
 	}
+	
+	
 	
 	
 	

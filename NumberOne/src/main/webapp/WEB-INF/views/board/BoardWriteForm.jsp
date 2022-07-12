@@ -142,7 +142,7 @@
 					<textarea id="bdcontents" class="bdcontents" rows="17" cols="80" name="bdcontents"></textarea>
 				</div>
 				<div class="row mt-4">
-					<input type="file" name="bdimgfile" accept="image/*" >
+					<input id="bdImg" type="file" name="bdimgfile" accept="image/*" onchange="checkFileType()" >
 				</div>
 				<div class="row mt-4">
 					<div class="col btn-wrapper">
@@ -176,7 +176,7 @@
                 </div>	
                 <div class="modal-footer">
                 	<input type="hidden" >
-                    <button class="close btn btn-info text-white" onclick="writeBoardCancel()" >네</button>
+                    <button class="close btn btn-info text-white" onclick="writeBoardCancel(this)" >네</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
             </div>
@@ -240,5 +240,26 @@
 	}
 
 </script>
+
+<script type="text/javascript">
+		// 이미지 파일을 업로드 했는지 확인
+        function checkFileType(obj) {
+                var file_kind = obj.value.lastIndexOf('.');
+                var file_name = obj.value.substring(file_kind+1, obj.length);
+                var file_type = file_name.toLowerCase();
+
+                var checkType = new Array();
+                checkType = ['jpg','gif','png','jpeg','bmp'];
+                
+                if(checkType.indexOf(file_type) == -1){
+                        alert('이미지 파일만 선택할 수 있습니다.');
+                        $("#bdImg").val("");
+                        $("#bdImg").replaceWith($("#bdImg").clone(true));
+                        return false;
+                }
+        }
+		
+</script>
+
 
 </html>
