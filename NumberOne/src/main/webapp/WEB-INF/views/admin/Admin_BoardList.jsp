@@ -109,7 +109,7 @@
 					        	</c:when>
 					        	<c:otherwise>
 						        	<!-- 일반글 상세 -->										
-		                      		<a href="admin_selectBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}">
+		                      		<a href="admin_selectBoardView${paging.makeQueryPage(board.bdcode, paging.page)}">
 			                      		<span class="overflow">${board.bdtitle}</span>
 			                      	</a>
 			                      	<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span>

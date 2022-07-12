@@ -203,8 +203,8 @@ public class AdminController {
 	@RequestMapping (value="admin_selectBoardView")
 	public ModelAndView admin_selectBoardView(Paging paging, String codeIdx) {
 		System.out.println("커뮤니티 상세페이지 이동 요청_관리자");
-		// 상세 이동 코드 생성 필요
-		return null;
+		mav = asvc.admin_selectBoardView(paging, codeIdx);
+		return mav;
 	}
 	
 	/* 댓글 관리 */
@@ -254,9 +254,9 @@ public class AdminController {
 	
 	/* 게시글/댓글 정지 */
 	@RequestMapping (value="admin_updateBoardStop")
-	public ModelAndView admin_updateBoardStop(String bdcode, RedirectAttributes ra) {
+	public ModelAndView admin_updateBoardStop(String bdcode, Paging paging, String check, RedirectAttributes ra) {
 		System.out.println("커뮤니티 게시글 정지 요청");
-		mav = asvc.admin_updateBoardStop(bdcode, ra);
+		mav = asvc.admin_updateBoardStop(bdcode, paging, check, ra);
 		return mav;
 		// 글목록으로 돌아가는 url 만들어서 매개변수 생기면 수정 필요
 	}
