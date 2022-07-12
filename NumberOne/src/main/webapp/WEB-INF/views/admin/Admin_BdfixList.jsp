@@ -48,7 +48,7 @@
          <form action="admin_selectBdfixList" method="get" id="actionForm">
 			<div class="container">
 	            <div class="row" style="margin:auto;">
-	                <h1 class="text-center">커뮤니티-배너 관리페이지 : Admin_BdfixList.jsp</h1>
+	                <h4 class="text-center">커뮤니티-배너 관리페이지 : Admin_BdfixList.jsp</h4>
 	            </div>
 	            <!-- 검색 -->
 	            <div class="row">
@@ -72,57 +72,56 @@
                   <!-- 상태값 정렬 -->
                    <select class="categoryList" name="searchVal" id="searchValSel" onchange="bdSearchFix(this.value)">
                      <option class="categorySel" value="all">전체</option>
-                     <option class="categorySel" value="fixed">고정</option>
+                     <option class="categorySel" value="fixed">배너</option>
                      <option class="categorySel" value="unfixed">일반</option>
                   </select>
                </div>
             </div>
             
             <!-- 게시글 목록 -->
-            <div class="row">
+            <div class="row" style="margin-top: 20px;">
             <table style="table-layout: fixed;" >
                <thead >
                   <tr class="text-center fw-bold" id="board_column">
+                     <td style="width:60px;">사진</td>
                      <td style="width:10%;">글번호</td>
-                     <td style="width:4.5rem;">말머리</td>
                      <td style="">제목</td>
                      <td style="width:15%;">작성자</td>
                      <td style="width:10%;">작성일</td>
-                     <td style="width:4rem;" class="text-center">조회</td>
-                     <td style="width:3rem;" class="text-center">추천</td>
-                     <td style="width:3rem;" class="text-center">신고</td>
-                     <td style="width:3rem;" class="text-center">고정</td>
+                     <td style="width:4rem;">조회</td>
+                     <td style="width:3rem;">추천</td>
+                     <td style="width:3rem;">경고</td>
+                     <td style="width:3rem;">고정</td>
                   </tr>
                </thead>
                <tbody id="bdListTbody">
-	               <c:forEach items="${bdfixList }" var="board">
+	           		<c:forEach items="${bdfixList }" var="board">
 	                   <!-- 일반게시글 관리 목록 -->
-	                   <tr style="border-bottom: solid #E0E0E0 1px;">
-	                      <td class="overflow text-center">${board.bdcode}</td>
-	                      <td class="category text-center">${board.bdcategory }
-	                      <td class="overflow">
-	                      	<a href="admin_selectBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}">
-	                      	<span class="overflow">
-	                      	${board.bdtitle}
-	                      	</span>
-	                      	</a>
-	                      	<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span>
-	                      </td>
-	                      <td class="text-center overflow">${board.bdnickname}</td>
-	                      <td class="text-center overflow">${board.bddate}</td>
-	                      <td class="text-center">${board.bdhits}</td>
-	                      <td class="text-center">${board.bdrccount}</td>
-	                      <td class="text-center">${board.bdwarning}</td>
-	                      <td>
-	                      	<c:choose>
-	                      		<c:when test="${board.bdfix == 1}">
-	                      			<button class="btn-sm btn-numberone" type="button" onclick="showBdfixModal(this,'${board.bdcode }')">배너</button>
-	                      		</c:when>
-	                      		<c:otherwise>
-	                      			<button class="btn btn-sm btn-secondary" type="button" onclick="showBdfixModal(this, '${board.bdcode }')">일반</button>
-	                      		</c:otherwise>
-	                      	</c:choose>
-	                      </td>
+	                	<tr style="border-bottom: solid #E0E0E0 1px;">
+	                		<td class="text-center"><img src="${pageContext.request.contextPath }/resources/img/room/${board.bdimg }"
+	                      		class="img-fluid" style="width:60px; height:60px; object-fit:fill;"></td>
+	                    	<td class="overflow text-center">${board.bdcode}</td>
+	                    	<td class="overflow">
+					    	<a href="loadToRoomViewPage?bdcode=${board.bdcode }">
+					    			<span class="overflow">${board.bdtitle}</span>
+					        	</a>
+					        	<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span>
+	                      	</td>
+	                      	<td class="text-center overflow">${board.bdnickname}</td>
+	                      	<td class="text-center overflow">${board.bddate}</td>
+	                      	<td class="text-center">${board.bdhits}</td>
+	                      	<td class="text-center">${board.bdrccount}</td>
+	                     	<td class="text-center">${board.bdwarning}</td>
+	                      	<td>
+		                      	<c:choose>
+		                      		<c:when test="${board.bdfix == 1}">
+		                      			<button class="btn-sm btn-numberone" type="button" onclick="showBdfixModal(this,'${board.bdcode }')">배너</button>
+		                      		</c:when>
+		                      		<c:otherwise>
+		                      			<button class="btn btn-sm btn-secondary" type="button" onclick="showBdfixModal(this, '${board.bdcode }')">일반</button>
+		                      		</c:otherwise>
+		                      	</c:choose>
+	                      	</td>
 	                   </tr>
 	                </c:forEach>                 
                 </tbody>
@@ -217,7 +216,7 @@
 			btnObj = $(obj);
 			var btnObjText = btnObj.text();
 			console.log("btnObjText:"+btnObjText);
-			if (btnObjText == "고정"){
+			if (btnObjText == "배너"){
 				$("#updateBdfixModalBody").text(bdcode + "번 게시글의 배너 고정을 취소하시겠습니까?");
 			} else {
 				$("#updateBdfixModalBody").text(bdcode + "번 게시글을 배너로 고정하시겠습니까?");
@@ -231,7 +230,7 @@
 			console.log("updateBdfix() 실행");
 			var bdcode = $("#bdcode").val();
 			console.log(btnObj.text());
-			if (btnObj.text() == "고정"){
+			if (btnObj.text() == "배너"){
 				var bdfix = 0;				
 			} else {
 				var bdfix = 1;				
@@ -246,7 +245,7 @@
 						if (bdfix == 0){
 							btnObj.text("일반").addClass("btn-secondary").removeClass("btn-numberone").toggleClass("btn");
 						} else {
-							btnObj.text("고정").addClass("btn-numberone").removeClass("btn-secondary").toggleClass("btn");
+							btnObj.text("배너").addClass("btn-numberone").removeClass("btn-secondary").toggleClass("btn");
 						}
 					}
 					$("#updateBdfixModal").modal("hide");
@@ -256,6 +255,7 @@
 					alert("글상태 변경에 실패했습니다.");
 				}
 			});
+		}
 	</script>
 	
 	<script type="text/javascript">
@@ -319,10 +319,10 @@
 					console.log(result);					
 					for (var i = 0; i < result.length; i++){
 						output += "<tr style='border-bottom: solid #E0E0E0 1px;'>";
+						output += "<td class='text-center'><img src='${pageContext.request.contextPath }/resources/img/resell/" + result[i].ubmainimg
+								+ "' class='img-fluid' style='width:60px; height:60px;  object-fit:fill;'></td>";
 						output += "<td class='text-center overflow'>" + result[i].bdcode + "</td>";
-						output += "<td class='category text-center'>" + result[i].bdcategory + "</td>";
-						output += "<td class='overflow'><a href='admin_selectBoardView?codeIdx=" + result[i].bdcode
-								+"&page=1&perPageNum=10&searchVal=" + searchVal + "&searchType=" + searchType + "&keyword=" + searchText + "'>"
+						output += "<td><a href='loadToRoomViewPage?bdcode=" + result[i].bdcode + "'>"
 								+"<span class='overflow'>" + result[i].bdtitle + "</span>"
 								+"<span class='fw-bold' style='font-size:15px; color:#00bcd4;'>&nbsp;" + result[i].bdrpcount + "</span>"			
 								+"</a></td>";
@@ -333,7 +333,7 @@
 						output += "<td class='text-center'>" + result[i].bdwarning + "</td>";
 						output += "<td class='text-center'>"
 						if (result[i].bdfix == 1){
-							output += "<button class='btn-sm btn-numberone' type='button' onclick='showBdfixModal(this, \""+result[i].bdcode+"\")'>고정</button>";
+							output += "<button class='btn-sm btn-numberone' type='button' onclick='showBdfixModal(this, \""+result[i].bdcode+"\")'>배너</button>";
 						} else {
 							output += "<button class='btn btn-sm btn-secondary' type='button' onclick='showBdfixModal(this,\""+result[i].bdcode+"\")'>일반</button>";
 						}
@@ -381,7 +381,7 @@
 		}	
 
 			
-		}
+
 	</script>
 	
 	
