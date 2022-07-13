@@ -412,103 +412,19 @@ public class BoardController {
 		 return mav;
 	 }
 	 
-<<<<<<< HEAD
-	 //서울게시판 이동 
-	 @RequestMapping ( value = "/selectSelBoardList")
-	 public ModelAndView selectSelBoardList() {
-		 System.out.println("서울게시판 이동");
-		
-		 
-		 ModelAndView mav = bsvc.selectSelBoardList();
-=======
+
 	 //지역별 게시판 이동 
 	 @RequestMapping ( value = "/selectDetailBoardList")
 	 public ModelAndView selectDetailBoardList(String bdrgcode) {
 		 System.out.println("지역별 게시판 이동");
 		 System.out.println(bdrgcode);
 		 ModelAndView mav = bsvc.selectDetailBoardList(bdrgcode);
->>>>>>> 31fa105dd83155432087c736054d418b75094138
-		 
-		 return mav;
-		 
-	 }
-<<<<<<< HEAD
-	 
-	 //인천게시판 이동 
-	 @RequestMapping ( value = "/selectIcnBoardList")
-	 public ModelAndView selectIcnBoardList() {
-		 System.out.println("인천게시판 이동");
-		 
-		 ModelAndView mav = bsvc.selectIcnBoardList();
-		 
-		 return mav;
-	 }
-	 
-	 
-	 //경기게시판 이동 
-	 @RequestMapping ( value = "/selectGgdBoardList")
-	 public ModelAndView selectGgdBoardList() {
-		 System.out.println("경기게시판 이동");
-		 
-		 ModelAndView mav = bsvc.selectGgdBoardList();
-		 
-		 return mav;
-	 }
-	 
-	 //경상게시판 이동 
-	 @RequestMapping ( value = "/selectGsdBoardList")
-	 public ModelAndView selectGsdBoardList() {
-		 System.out.println("경상게시판 이동");
-		 
-		 ModelAndView mav = bsvc.selectGsdBoardList();
-		 
-		 return mav;
-		 
-	 }
-	 
-	 //전라게시판 이동 
-	 @RequestMapping ( value = "/selectJldBoardList")
-	 public ModelAndView selectJldBoardList() {
-		 System.out.println("전라게시판 이동");
-		 
-		 ModelAndView mav = bsvc.selectJldBoardList();
-		 
-		 return mav;
-	 }
-	 
-	 //충청게시판 이동 
-	 @RequestMapping ( value = "/selectCcdBoardList")
-	 public ModelAndView selectCcdBoardList() {
-		 System.out.println("충청게시판 이동");
-		 
-		 ModelAndView mav = bsvc.selectCcdBoardList();
-		 
-		 return mav;
-	 }
-	 
-	 //강원게시판 이동 
-	 @RequestMapping ( value = "/selectGwdBoardList")
-	 public ModelAndView selectGwdBoardList() {
-		 System.out.println("강원게시판 이동");
-		 
-		 ModelAndView mav = bsvc.selectGwdBoardList();
-		 
-		 return mav;
-	 }
-	 
-	 //제주게시판 이동 
-	 @RequestMapping ( value = "/selectJjdBoardList")
-	 public ModelAndView selectJjdBoardList() {
-		 System.out.println("제주게시판 이동");
-		 
-		 ModelAndView mav = bsvc.selectJjdBoardList();
-		 
-		 return mav;
-	 }
-	 
-=======
 
->>>>>>> 31fa105dd83155432087c736054d418b75094138
+		 
+		 return mav;
+		 
+	 }
+
 	 
 	 //자취방 자랑글 상세 모달 요청
 	 @RequestMapping ( value = "/selectRoomView")
