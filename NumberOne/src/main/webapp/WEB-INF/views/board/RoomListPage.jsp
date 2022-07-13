@@ -344,7 +344,14 @@ section{
 	<main>
 		
 		<!-- 사이드바 -->
-		<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
+		<c:choose>
+			<c:when test="${loginId.equals(\"admin\") }">
+				<%@ include file="/WEB-INF/views/includes/SideBar_Admin.jsp" %>				
+			</c:when>
+			<c:otherwise>
+				<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
+			</c:otherwise>
+		</c:choose>
 		
 		<section>
 		<!-- 본문 -->
@@ -508,6 +515,25 @@ section{
 //관리자 스크립트
 function adminRvBan(){
 	console.log("관리자 자랑글 정지")
+	var rvBanConfirm = confirm("해당 글을 정지하시겠습니까?");
+	
+	if(rvBanConfirm == 'false'){
+		$("#menuModal").css("display", "none");
+		return false;
+	}
+	
+	$.ajax({
+			type : "get",
+			url : "admin_updateRoomStop_ajax",
+			data : { "bdcode" : nowBdcode},
+			async : false,
+			success : function(updateResult){
+				if( updateResult > 0 ){
+					console.log("관리자 자랑글 정지 성공!");
+					//그 다음 페이지를 다시 로드하고 스크롤을 원하는 위치로...??
+				}
+			}
+		});
 	
 	//메뉴창 닫기
 	$("#menuModal").css("display", "none");
@@ -515,33 +541,21 @@ function adminRvBan(){
 
 function adminRpBan(){
 	console.log("관리자 댓글 정지")
-
-	//메뉴창 닫기
-	closeMenuModal()
-}
-
-</script>
-
-
-<script type="text/javascript">
-	function closeMenuModal(){
-		console.log("메뉴 모달 닫기 요청");
-		//nowRpcode 초기화
-		nowRpcode = "";
-		//모달창 닫기
+	var rpBanConfirm = confirm("해당 댓글을 정지하시겠습니까?");
+	
+	if(rpBanConfirm == 'false'){
 		$("#menuModal").css("display", "none");
+		return false;
 	}
 	
-	function replyDelete(){
-		console.log("리플 삭제 요청");
-		$.ajax({
+	$.ajax({
 			type : "get",
-			url : "updateReplyState_ajax",
+			url : "admin_updateReplyStop_ajax",
 			data : { "rpcode" : nowRpcode},
 			async : false,
 			success : function(updateResult){
 				if( updateResult > 0 ){
-					console.log("뎃글 삭제 성공!");
+					console.log("관리자 댓글 삭제 성공!");
 					replyPrint();
 					
 					//목록 페이지 댓글수 업데이트 (-1)
@@ -552,73 +566,23 @@ function adminRpBan(){
 				}
 			}
 		});	
-	}
-
+}
 </script>
 
 <script type="text/javascript">
+
+	nowBdcode = ('${bdcode}');
+	if(nowBdcode != null){
+		roomView_ajax(nowBdcode);
+	}
+	
+	//필드
 	var nowBdcode;
 	var nowRpcode;
 	var nowBdmid;
-	
-	function replyEnter(e){
-		if(e.keyCode==13){
-			replyResister();
-		}
-	}
+	var modal = document.getElementById("myModal");
+	var span = document.getElementsByClassName("close")[0];
 
-	function replyResister(){
-		console.log("댓글 등록 요청");
-		var rpcontents = $("#inputReply").val();
-		
-		$.ajax({
-			type : "get",
-			url : "insertBoardReply_ajax",
-			data : { "bdcode" : nowBdcode, "rpcontents" : rpcontents},
-			async : false,
-			success : function(insertResult){
-				if( insertResult > 0 ){
-					console.log("뎃글 등록 성공!");
-					$("#inputReply").val("");
-					replyPrint();
-					
-					//목록 페이지 댓글수 업데이트
-					logUpdate('bdreplies', 'up');
-				}
-			}
-		});
-	}
-	
-	//조회/추천/즐찾/댓글수 증가/감소시 목록 페이지 업데이트
-	function logUpdate(logType, updown){
-		
-		console.log("logUpdate() 호출")
-		var before = $("#"+nowBdcode+"_"+logType).text().trim();
-		var after;
-		if(updown == 'up'){
-			//증가
-			console.log("증가 요청");
-			if(before==""){
-				after = 1;
-			} else {
-				after = parseInt(before)+1;
-			}
-		} else {
-			//감소
-			console.log("감소 요청");
-			after = parseInt(before)-1;
-			if(after == 0){
-				after = "&nbsp;";
-			}
-
-		}
-		
-		$("#"+nowBdcode+"_"+logType).html(after+"&nbsp;");
-	}
-</script>
-
-<script type="text/javascript">
-	
 	function roomView_ajax(bdcode){
 		console.log(bdcode+"번글 roomView() 호출");
 		nowBdcode = bdcode; 
@@ -686,10 +650,15 @@ function adminRpBan(){
 				//작성자 프로필	
 				var mprofileOutput = "<img class='product-img' style='width:30px; height:30px; border-radius:50%;'";
 				if(roomView.bdmprofile != 'nomprofile'){
-					console.log()
-					mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+roomView.bdmprofile+"'>";
+					if(roomView.bdmstate == 1){
+						//일반 로그인
+						mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+roomView.bdmprofile+"'>";
+					} else if(roomView.bdmstate == 9) {
+						//카카오 로그인
+						mprofileOutput += "src='"+roomView.bdmprofile+"'>";							
+					}
 				} else {
-					mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/logo_beige.jpg'>"; 
+					mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png'>"; 
 				}
 				mprofileOutput += "</img>";
 				$("#roomMprofile").html(mprofileOutput);
@@ -707,18 +676,336 @@ function adminRpBan(){
 				//추천
 				if(roomView.rchistory != "n"){
 					console.log("추천 기록 있음")
-					roomInfoOutput += "<a onclick='log(\"rchistory\")'><span id='"+roomView.bdcode+"_rchistory'><i class='fa-solid fa-heart'></i></span></a> ";
+					roomInfoOutput += "<a onclick='log(\"rchistory\")' style='cursor:pointer;'><span id='"+roomView.bdcode+"_rchistory'><i class='fa-solid fa-heart'></i></span></a> ";
 				} else {					
 					console.log("추천 기록 없음")
-					roomInfoOutput += "<a onclick='log(\"rchistory\")'><span id='"+roomView.bdcode+"_rchistory'><i class='fa-regular fa-heart'></i></span></a> ";
+					roomInfoOutput += "<a onclick='log(\"rchistory\")' style='cursor:pointer;'><span id='"+roomView.bdcode+"_rchistory'><i class='fa-regular fa-heart'></i></span></a> ";
 				}
 				//스크랩
 				if(roomView.schistory != "n"){
 					console.log("스크랩 기록 있음")
-					roomInfoOutput += "<a onclick='log(\"schistory\")'><span id='"+roomView.bdcode+"_schistory'><i class='fa-solid fa-star' style=''></i></span></a> ";
+					roomInfoOutput += "<a onclick='log(\"schistory\")' style='cursor:pointer;'><span id='"+roomView.bdcode+"_schistory'><i class='fa-solid fa-star' style=''></i></span></a> ";
 				} else {					
 					console.log("스크랩 기록 없음")
-					roomInfoOutput += "<a onclick='log(\"schistory\")'><span id='"+roomView.bdcode+"_schistory'><i class='fa-regular fa-star'></i></span></a> ";
+					roomInfoOutput += "<a onclick='log(\"schistory\")' style='cursor:pointer;'><span id='"+roomView.bdcode+"_schistory'><i class='fa-regular fa-star'></i></span></a> ";
+				}
+				//신고
+				if(roomView.wbhistory != "n"){
+					console.log("신고 기록 있음")
+					roomInfoOutput += "<span id='"+roomView.bdcode+"_wbhistory'><i class='fa-solid fa-land-mine-on' style='position:absolute; right:0;'></i></span>";
+				}	
+				
+				//console.log(roomInfoOutput);
+				$("#roomInfo").html(roomInfoOutput);
+				
+				//좋아요수, 날짜 출력
+				var likesDateOutput = "<span style='color:black; font-size:18px; font-weight:bold;'>좋아요&nbsp;<span id='likesNum'>"+roomView.bdrecommend+"</span>개</span><br>";
+				likesDateOutput += "<span style='color:grey; font-size:15px;'>"+roomView.bddate+"</span>"
+				$("#likes_date").html(likesDateOutput);
+				
+				//댓글 출력
+				replyPrint();
+				
+				//bdhits 1 추가
+				logUpdate('bdhits', 'up');
+				
+				$("#myModal").css("display", "block") ;
+				//modal.style.display = "block";
+				//modalImg.src = this.src;
+				//captionText.innerHTML = this.alt;
+			}
+		});
+	}	
+	
+	//댓글 출력
+	function replyPrint(scroll){
+		$.ajax({
+			type : "get",
+			url : "selectBoardReplyList_ajax",
+			data : { "bdcode" : nowBdcode },
+			dataType : "json",
+			async : false,
+			success: function(replys){
+				//console.log(replys)
+				var replyOutput ="";
+				for(var i=0; i<replys.length; i++){			
+					//console.log(replys[i]);
+					replyOutput += "<div id='reply_"+replys[i].rpcode+"' style='width:100%; margin-bottom:3px;' class='row' onmouseover='toggleReplyMenu(\""+replys[i].rpcode+"\", \"show\")' onmouseout='toggleReplyMenu(\""+replys[i].rpcode+"\", \"hide\")'>";
+					//댓글 작성자 프로필 이미지
+					replyOutput += "<div style='width:30px;'>";
+					replyOutput += "<img class='product-img' style='width:20px; height:20px; border-radius:50%;'";
+					if(replys[i].rpprofile != 'nomprofile'){
+						console.log("프로필 있음")
+						if(replys[i].rpmstate == 1){
+							//일반 로그인
+							replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+replys[i].rpprofile+"'>";
+						} else if(replys[i].rpmstate == 9) {
+							//카카오 로그인
+							console.log(replys[i].rpprofile);
+							replyOutput += "src='"+replys[i].rpprofile+"'>";							
+						}
+					} else {
+						replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png'>"; 
+					}
+					replyOutput += "</img></div>";
+					//댓글 내용 부분 시작
+					replyOutput += "<div id='replyContents_"+replys[i].rpcode+"' style='width:320px; font-size:15px; word-break:break-word;'>"; 
+					//닉네임(진하게)
+					replyOutput += "<span style='font-weight:600;'>"+replys[i].rpnickname+"&nbsp;&nbsp;</span>";
+					//내용 
+					replyOutput += replys[i].rpcontents;
+					
+					//댓글 작성자와 관리자에게만 보이는 ...
+					if(replys[i].rpmid == '${sessionScope.loginId}'){
+						console.log("댓글 작성자");
+						replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \"${sessionScope.loginId}\")' style='font-size:15px;'>&#8943;</span>"; 
+					} else if ('${sessionScope.loginId}'=='admin'){
+						console.log("관리자");
+						replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \"${sessionScope.loginId}\")' style='font-size:15px;'>&#8943;</span>"; 	
+					}
+					
+					
+					replyOutput += "</div></div>";
+				}
+				
+				//console.log(replyOutput);
+				$("#reply").html(replyOutput);
+				
+				if(scroll != null){
+					//댓글 등록시 스크롤 하단으로 이동
+					$("#reply").scrollTop($("#reply")[0].scrollHeight);
+				}
+			}
+		})
+	}	
+	
+	//조회/추천/즐찾/댓글수 증가/감소시 목록 페이지 업데이트
+	function logUpdate(logType, updown){
+		
+		console.log("logUpdate() 호출")
+		var before = $("#"+nowBdcode+"_"+logType).text().trim();
+		var after;
+		if(updown == 'up'){
+			//증가
+			console.log("증가 요청");
+			if(before==""){
+				after = 1;
+			} else {
+				after = parseInt(before)+1;
+			}
+		} else {
+			//감소
+			console.log("감소 요청");
+			after = parseInt(before)-1;
+			if(after == 0){
+				after = "&nbsp;";
+			}
+
+		}
+		
+		$("#"+nowBdcode+"_"+logType).html(after+"&nbsp;");
+	}
+	
+	
+	function closeMenuModal(){
+		console.log("메뉴 모달 닫기 요청");
+		//nowRpcode 초기화
+		nowRpcode = "";
+		//모달창 닫기
+		$("#menuModal").css("display", "none");
+	}
+	
+	function replyDelete(){
+		console.log("리플 삭제 요청");
+		$.ajax({
+			type : "get",
+			url : "updateReplyState_ajax",
+			data : { "rpcode" : nowRpcode},
+			async : false,
+			success : function(updateResult){
+				if( updateResult > 0 ){
+					console.log("댓글 삭제 성공!");
+					replyPrint();
+					
+					//목록 페이지 댓글수 업데이트 (-1)
+					logUpdate('bdreplies', 'down');
+					
+					//메뉴 모달 닫기
+					closeMenuModal()
+				}
+			}
+		});	
+	}
+
+</script>
+
+<script type="text/javascript">
+/* 	var nowBdcode;
+	var nowRpcode;
+	var nowBdmid; */
+	
+	function replyEnter(e){
+		if(e.keyCode==13){
+			replyResister();
+		}
+	}
+
+	function replyResister(){
+		console.log("댓글 등록 요청");
+		var rpcontents = $("#inputReply").val();
+		console.log(rpcontents);
+		
+		$.ajax({
+			type : "get",
+			url : "insertBoardReply_ajax",
+			data : { "bdcode" : nowBdcode, "rpcontents" : rpcontents},
+			async : false,
+			success : function(insertResult){
+				if( insertResult > 0 ){
+					console.log("댓글 등록 성공!");
+					$("#inputReply").val("");
+					replyPrint('bottom');
+					
+					//목록 페이지 댓글수 업데이트
+					logUpdate('bdreplies', 'up');
+				}
+			}
+		});
+	}
+	
+/* 	//조회/추천/즐찾/댓글수 증가/감소시 목록 페이지 업데이트
+	function logUpdate(logType, updown){
+		
+		console.log("logUpdate() 호출")
+		var before = $("#"+nowBdcode+"_"+logType).text().trim();
+		var after;
+		if(updown == 'up'){
+			//증가
+			console.log("증가 요청");
+			if(before==""){
+				after = 1;
+			} else {
+				after = parseInt(before)+1;
+			}
+		} else {
+			//감소
+			console.log("감소 요청");
+			after = parseInt(before)-1;
+			if(after == 0){
+				after = "&nbsp;";
+			}
+
+		}
+		
+		$("#"+nowBdcode+"_"+logType).html(after+"&nbsp;");
+	} */
+
+	
+	/* function roomView_ajax(bdcode){
+		console.log(bdcode+"번글 roomView() 호출");
+		nowBdcode = bdcode; 
+		
+		$.ajax({
+			type : "get",
+			url : "selectRoomView",
+			data : { "bdcode" : bdcode },
+			dataType : "json",
+			async : false,
+			success: function(roomView){
+				//console.log(roomView);
+				//글작성자 아이디 필드에 저장
+				nowBdmid = roomView.bdmid;
+				//글 이미지
+				var imgHtml = "";
+				
+				if(roomView.bdimg=='noimg'){
+					console.log('noimg');
+					imgHtml += "<img alt='NumberOneLogo' style='width:800px; height:600px' src='${pageContext.request.contextPath }/resources/img/logo_grey.jpg'>";
+				} else {
+					console.log(roomView.bddetailimg);
+					var imgs = roomView.bddetailimg.split("___");
+					imgs.unshift(roomView.bdimg);
+					imgs.pop();
+					var numOfImgs = parseInt(imgs.length);
+					console.log("이미지 개수: "+numOfImgs);
+					
+					imgHtml += "<div id='myCarousel' class='carousel slide' data-ride='carousel' style='width:100%; height:100%;'>";		
+
+					//indicators
+					imgHtml += "<ol class='carousel-indicators'>";
+					imgHtml += "<li data-target='#myCarousel' data-slide-to='0' class='active'></li>";
+					for(var i=1; i<numOfImgs; i++){
+						imgHtml += "<li data-target='#myCarousel' data-slide-to='"+i+"'></li>";
+					}
+					imgHtml += "</ol>";
+					
+					//wrapper for slide
+					imgHtml += "<div class='carousel-inner'>";
+					imgHtml += "<div class='item active'>";
+					imgHtml += "<img style='width:800px; height:600px;' class='viewImgs' src='${pageContext.request.contextPath }/resources/img/room/"+imgs[0]+"'></img>";		
+					imgHtml += "</div>";
+					for(var j=1; j<numOfImgs; j++){
+						imgHtml += "<div class='item'>";
+						imgHtml += "<img class='viewImgs' style='width:800px; height:600px;' src='${pageContext.request.contextPath }/resources/img/room/"+imgs[j]+"' ></img>";		
+						imgHtml += "</div>";
+					}
+					imgHtml += "</div>";
+					
+					//left and right controls
+					imgHtml += "<a class='left carousel-control' href='#myCarousel' data-slide='prev'>";	
+					imgHtml += "<span class='glyphicon glyphicon-chevron-left'></span>";
+					imgHtml += "<span class='sr-only'>Previous</span>"
+					imgHtml += "</a>";
+					imgHtml += "<a class='right carousel-control' href='#myCarousel' data-slide='next'>";	
+					imgHtml += "<span class='glyphicon glyphicon-chevron-right'></span>";
+					imgHtml += "<span class='sr-only'>Next</span>"
+					imgHtml += "</a>";
+					imgHtml += "</div>";
+				
+				} 
+				
+				$("#roomimg").html(imgHtml);
+				//작성자 프로필	
+				var mprofileOutput = "<img class='product-img' style='width:30px; height:30px; border-radius:50%;'";
+				if(roomView.bdmprofile != 'nomprofile'){
+					if(roomView.bdmstate == 1){
+						//일반 로그인
+						mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+roomView.bdmprofile+"'>";
+					} else if(roomView.bdmstate == 9) {
+						//카카오 로그인
+						mprofileOutput += "src='"+roomView.bdmprofile+"'>";							
+					}
+				} else {
+					mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png'>"; 
+				}
+				mprofileOutput += "</img>";
+				$("#roomMprofile").html(mprofileOutput);
+				mnicknameOutput = "<div id='mnickname' style='font-size:22px; margin-left:5px; padding-bottom:2px; color: black;'>"+roomView.bdnickname;
+				//메뉴 출력 할 수 있는 ...
+				//로그인 아이디에 따라 메뉴는 다르게 출력됨 
+				mnicknameOutput += "<span  style='position:absolute; right:20px; cursor:pointer;' onclick='menuModal(\""+nowBdcode+"\", \"${sessionScope.loginId}\")' style='font-size:15px; color:black; padding-rignt:10px;'>&#8943;</span>";
+				mnicknameOutput += "</div>";
+				$("#roomMnickname").html(mnicknameOutput);
+
+				//글 내용
+				$("#roomContents").html("<textarea class='scroll' readonly style='font-size:15px; resize:none;'>"+roomView.bdcontents+"</textarea>");
+				//추천, 스크랩, 신고 출력
+				var roomInfoOutput = ""
+				//추천
+				if(roomView.rchistory != "n"){
+					console.log("추천 기록 있음")
+					roomInfoOutput += "<a onclick='log(\"rchistory\")' style='cursor:pointer;'><span id='"+roomView.bdcode+"_rchistory'><i class='fa-solid fa-heart'></i></span></a> ";
+				} else {					
+					console.log("추천 기록 없음")
+					roomInfoOutput += "<a onclick='log(\"rchistory\")' style='cursor:pointer;'><span id='"+roomView.bdcode+"_rchistory'><i class='fa-regular fa-heart'></i></span></a> ";
+				}
+				//스크랩
+				if(roomView.schistory != "n"){
+					console.log("스크랩 기록 있음")
+					roomInfoOutput += "<a onclick='log(\"schistory\")' style='cursor:pointer;'><span id='"+roomView.bdcode+"_schistory'><i class='fa-solid fa-star' style=''></i></span></a> ";
+				} else {					
+					console.log("스크랩 기록 없음")
+					roomInfoOutput += "<a onclick='log(\"schistory\")' style='cursor:pointer;'><span id='"+roomView.bdcode+"_schistory'><i class='fa-regular fa-star'></i></span></a> ";
 				}
 				//신고
 				if(roomView.wbhistory != "n"){
@@ -745,14 +1032,24 @@ function adminRpBan(){
 				//captionText.innerHTML = this.alt;
 			}
 		});
+	} */
+	
+	function toggleReplyMenu(rpcode, action){
+		//console.log("댓글 ... 보여주기 요청");
+		if(action=='show'){
+			$("#"+rpcode+"_replyMenu").css("cursor", "pointer");
+			$("#"+rpcode+"_replyMenu").removeClass("d_none");
+		} else {
+			$("#"+rpcode+"_replyMenu").addClass("d_none");			
+		}
+		
 	}
 	
-	
-	// Get the modal
+/* 	// Get the modal
 	var modal = document.getElementById("myModal");
 
 	// Get the <span> element that closes the modal
-	var span = document.getElementsByClassName("close")[0];
+	var span = document.getElementsByClassName("close")[0]; */
 
 	// When the user clicks on <span> (x), close the modal
 	span.onclick = function() {
@@ -881,7 +1178,7 @@ function adminRpBan(){
 	}
 	
 	function deleteRoomView(){
-		console.log(nowRdcode+"글 삭제 요청");
+		console.log(nowBdcode+"글 삭제 요청");
 		var confirmCh = confirm("해당 글을 삭제하시겠습니까?");
 		if(confirmCh == false){
 			return;
@@ -890,7 +1187,7 @@ function adminRpBan(){
 		location.href = "updateBoardDelete?bdcode="+nowBdcode+"&bdcategory=자랑";
 
 	}
-	
+/* 	
 	//댓글 출력
 	function replyPrint(){
 		$.ajax({
@@ -904,19 +1201,26 @@ function adminRpBan(){
 				var replyOutput ="";
 				for(var i=0; i<replys.length; i++){			
 					//console.log(replys[i]);
-					replyOutput += "<div id='reply_"+replys[i].rpcode+"' style='width:100%;' class='row' onmouseover='toggleReplyMenu(\""+replys[i].rpcode+"\", \"show\")' onmouseout='toggleReplyMenu(\""+replys[i].rpcode+"\", \"hide\")' onstyle='width:100%'>";
+					replyOutput += "<div id='reply_"+replys[i].rpcode+"' style='width:100%; margin-bottom:3px;' class='row' onmouseover='toggleReplyMenu(\""+replys[i].rpcode+"\", \"show\")' onmouseout='toggleReplyMenu(\""+replys[i].rpcode+"\", \"hide\")'>";
 					//댓글 작성자 프로필 이미지
 					replyOutput += "<div style='width:30px;'>";
 					replyOutput += "<img class='product-img' style='width:20px; height:20px; border-radius:50%;'";
-					if(replys[i].rpmprofile != 'nomprofile'){
+					if(replys[i].rpprofile != 'nomprofile'){
 						console.log("프로필 있음")
-						replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+replys[i].rpmprofile+"'>";
+						if(replys[i].rpmstate == 1){
+							//일반 로그인
+							replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+replys[i].rpprofile+"'>";
+						} else if(replys[i].rpmstate == 9) {
+							//카카오 로그인
+							console.log(replys[i].rpprofile);
+							replyOutput += "src='"+replys[i].rpprofile+"'>";							
+						}
 					} else {
-						replyOutput += "src='${pageContext.request.contextPath }/resources/img/logo_beige.jpg'>"; 
+						replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png'>"; 
 					}
 					replyOutput += "</img></div>";
 					//댓글 내용 부분 시작
-					replyOutput += "<div id='replyContents_"+replys[i].rpcode+"' style='width:320px; font-size:15px'>"; 
+					replyOutput += "<div id='replyContents_"+replys[i].rpcode+"' style='width:320px; font-size:15px; word-break:break-word;'>"; 
 					//닉네임(진하게)
 					replyOutput += "<span style='font-weight:600;'>"+replys[i].rpnickname+"&nbsp;&nbsp;</span>";
 					//내용 
@@ -951,7 +1255,7 @@ function adminRpBan(){
 			$("#"+rpcode+"_replyMenu").addClass("d_none");			
 		}
 		
-	}
+	} */
 	
 	function menuModal(objcode, loginId){
 		console.log("메뉴 모달 요청");
@@ -969,7 +1273,7 @@ function adminRpBan(){
 			} else if( loginId == nowBdmid){ //글작성자
 				//console.log("작성자");
 				//수정 메소드 아직 안 만들었음
-				menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick=''>수정</div>";
+				menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick='modifyRoomView()'>수정</div>";
 				menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick='deleteRoomView()'>삭제</div>";
 				menuOutput += "<div class='menu' onclick='closeMenuModal()'>취소</div>";
 			} else {
@@ -977,7 +1281,7 @@ function adminRpBan(){
 				menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick='log(\"wbhistory\")'>신고</div>";
 				menuOutput += "<div class='menu' onclick='closeMenuModal()'>취소</div>";			
 			}
-		} else {onclick=
+		} else {
 			console.log("댓글(Rp) 메뉴 요청")
 			nowRpcode = objcode;
 			console.log(loginId);
@@ -997,6 +1301,10 @@ function adminRpBan(){
 		$("#menuModal").css("display", "block") ;
 	}
 
+	function modifyRoomView(){
+		console.log("글 수정 버튼 클릭");
+		location.href = "${pageContext.request.contextPath}/loadToBoardModify?bdcode="+nowBdcode+"&bdcategory=자랑";
+	}
 </script>
 
 </html>

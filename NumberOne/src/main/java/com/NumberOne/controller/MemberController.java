@@ -125,6 +125,7 @@ public class MemberController {
 			System.out.println("비밀번호 찾기 페이지 요청");
 			mav = new ModelAndView();
 			mav.setViewName("member/LookforPwForm");
+			//mav.setViewName("LookforPwForm");
 			return mav;
 		}		
 		  
@@ -236,29 +237,53 @@ public class MemberController {
 			return mav;
 	
 		}		
+		//작성자 상세페이지 _ Board
+		@RequestMapping(value = "/selectWriteMemberInfo")
+		public ModelAndView selectWriteMemberInfo(String nickname) {
+			System.out.println("작성자 상세페이지 _ Board");
+			mav = new ModelAndView();
+			System.out.println("controller.nickname : " + nickname);
+			mav = msvc.selectWriteMemberInfo(nickname);
+			return mav;
+			
+		}
 		
 		//카카오아이디 중복 확인
 		@RequestMapping(value = "/memberKakaoLogin")
 		public ModelAndView memberKakaoLogin(MemberDto member, RedirectAttributes ra) {
 			System.out.println("카카오로 로그인 요청");
-			System.out.println(member);
-			//ModelAndView mav = msvc.memberKakaoLogin(member, ra);
+			//System.out.println(member);
+			ModelAndView mav = msvc.memberKakaoLogin(member, ra);
 			
 			return mav;
 			
 		}
 		
-		//작성자 상세페이지 _ Board
-		@RequestMapping(value = "/insertWriteMemberInfo_Board")
-		public ModelAndView insertWriteMemberInfo_Board(String nickname) {
-			System.out.println("작성자 상세페이지 _ Board");
+		//카카오 회원가입
+		@RequestMapping(value="/insertKakaoRegister")
+		public ModelAndView insertKakaoRegister(RedirectAttributes ra, MemberDto member) throws IllegalStateException, IOException {
+			System.out.println("카카오 가입");
+			System.out.println(member);
 			mav = new ModelAndView();
-			System.out.println("nickname : " + nickname);
-			mav = msvc.insertWriteMemberInfo_Board(nickname);
+			mav = msvc.insertKakaoRegister(ra, member);
+			
 			return mav;
+		}
+		
+		
+		
+		//비밀번호 찾기 - 회원 정보 확인
+		@RequestMapping(value = "/selectLookforPw_ajax")
+		public @ResponseBody String selectLookforPw_ajax(String checkMid , String checkMemail, MemberDto member) {
+			System.out.println("비밀번호 찾기 요청");
+			System.out.println("입력한 아이디 : " + checkMid);
+			System.out.println("입력한 메일 : " + checkMemail);
+			String pwCheckResult = msvc.selectLookforPw_ajax(checkMid , checkMemail);
+			
+			return pwCheckResult;  
+		}	
 	
-		}		
-
+		
 }
 
 
