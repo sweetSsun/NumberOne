@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,6 +37,7 @@
 				
 				<div class="sideroom">
 					<span>
+						<!-- 공지방 -->
 						<a href="selectNoticeBoardList"><i class="fa-solid fa-volume-low"></i></a>
 					</span>
 				</div>
@@ -47,22 +49,26 @@
 				</div>
 				<div class="sideroom">
 					<span>
+						<!-- 자유방 -->
 						<a href="selectFreeBoardList"><i class="fa-solid fa-comments"></i></a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="#"><i class="fa-solid fa-circle-question"></i></a>
+						<!-- 질문방 -->
+						<a href="selectQuestionBoardList"><i class="fa-solid fa-circle-question"></i></a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
+						<!-- 정보방 -->
 						<a href="selectInfoBoardList"><i class="fa-solid fa-head-side-virus"></i></a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="#"><i class="fa-solid fa-pen-to-square"></i></a>
+						<!-- 후기방 -->
+						<a href="selectReviewBoardList"><i class="fa-solid fa-pen-to-square"></i></a>
 					</span>
 				</div>
 				<div class="sideroom">
@@ -128,17 +134,17 @@
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="#"><i class="fa-solid fa-circle-question"></i>&nbsp;&nbsp;질문방</a>
+						<a href="selectQuestionBoardList"><i class="fa-solid fa-circle-question"></i>&nbsp;&nbsp;질문방</a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="#"><i class="fa-solid fa-head-side-virus"></i>&nbsp;&nbsp;정보방</a>
+						<a href="selectInfoBoardList"><i class="fa-solid fa-head-side-virus"></i>&nbsp;&nbsp;정보방</a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="#"><i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;후기방</a>
+						<a href="selectReviewBoardList"><i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;후기방</a>
 					</span>
 				</div>
 			</div>
@@ -151,6 +157,7 @@
 				<div>
 					<table class="sideregion_tags">
 						<tr>
+							
 							<td><a href="selectRegionBoardList">전체</a></td>
 							<td><a href="selectDetailBoardList?bdrgcode=SEL">서울</a></td>
 							<td><a href="selectDetailBoardList?bdrgcode=ICN">인천</a></td>

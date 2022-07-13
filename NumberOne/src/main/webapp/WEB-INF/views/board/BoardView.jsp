@@ -108,6 +108,19 @@
 	#inputSearchText{
 		font-size: 18px;
 	}
+	.img-container{
+     overflow: hidden;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     border: solid #E0E0E0 2px;
+     margin-top: 5%;
+     margin-bottom: 5%;
+   }
+   #upload_Img{
+   	width: 100px;
+   	heigth: 100px;
+   }
 </style>
 </head>
 <body>
@@ -205,11 +218,14 @@
 							<input onclick="adminBoardStop('${board.bdcode}')" type="button" style="left:0;" class="middleBtn btn btn-sm bg-secondary fw-bold text-white" value="정지">
 						</div>
 					</c:when>
-					
 				</c:choose>
-					
 				</div>
 				
+
+				<div class="img-container">
+					<img id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
+				
+				</div>				
 				
 				<!------------------ 댓글영역 ------------------->
 				<div class="mb-2" id="commentBox">
@@ -617,12 +633,18 @@
 				output += "<div class=\"row\">"
 				for( var i=0; i < replyList.length; i++ ){
 					
-					if( replyList[i].rpmid == '${sessionScope.loginId}' ){//동일한 아이디
+					if( replyList[i].rpmid == '${sessionScope.loginId}' ){//동일한 아이디 (댓글 수정, 삭제 버튼)
+						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;' >" /* 프로필영역 */
+
+						if( replyList[i].rpprofile != null ){//프로필 이미지가 있을 시 
+							if(  replyList[i].rpmstate == 9){//카카오 회원
+								output += "<img class=\"img-profile rounded-circle \" style=\"height:50px; width:50px;\" src='"+replyList[i].rpprofile + "'>"
+							}else{
+								output += "<img class=\"img-profile rounded-circle \" style=\"height:50px; width:50px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+							}
 						
-						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;\ margin-right:-20px;' >" /* 프로필영역 */
-						if( replyList[i].rpprofile != null ){
-							output += "<img class=\"img-profile rounded-circle \" style=\"height:50px; width:50px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
-						}else{
+						
+						}else{//프로필 이미지가 없을 시 
 							output += "<img class=\"img-profile rounded-circle \" style=\"height:40px; width:40px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
 						}
 						output += "</div>"
@@ -647,15 +669,19 @@
 						
 					}else{
 						
-						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px; margin-right:-20px;'>" /* 프로필영역 */
-						if( replyList[i].rpprofile != null ){
-							output += "<img class=\"img-profile rounded-circle \" style=\"height:50px; width:50px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
-						}else{
+						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;'>" /* 프로필영역 */
+						if( replyList[i].rpprofile != null ){//프로필 이미지가 있을 시 
+							if(  replyList[i].rpmstate == 9){//카카오 회원
+								output += "<img class=\"img-profile rounded-circle \" style=\"height:50px; width:50px;\" src='"+replyList[i].rpprofile + "'>"
+							}else{
+								output += "<img class=\"img-profile rounded-circle \" style=\"height:50px; width:50px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+							}
+						}else{//프로필 이미지가 없을 시 
 							output += "<img class=\"img-profile rounded-circle\" style=\"height:40px; width:40px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
 						}
 						output += "</div>"
 							
-						output += "<div class=\"col-11\" style='border-bottom: solid #E0E0E0 1px;\'>"
+						output += "<div class=\"col-11\" style='border-bottom: solid #E0E0E0 1px;'>"
 						/* 닉네임, 시간 */
 						output += "<span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span>"
 						output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span> "

@@ -8,7 +8,7 @@
  	<select id="selectNoticeList" resultType="com.NumberOne.dto.NoticeDto">
  		<!-- 공지 게시글 목록 조회 -->
  		SELECT NBCODE,NBMID,NBTITLE,NBCONTENTS,TO_CHAR(NBDATE,'YY-MM-DD') AS NBDATE,
- 			   NBIMG,NBSTATE,NBHITS 
+ 			   NBIMG,NBSTATE,NBHITS,NBFIX
  		FROM NOTICEBOARDS
  		ORDER BY NBCODE DESC
  	</select>
@@ -193,7 +193,6 @@
  		OR NBCONTENTS LIKE '%'||#{searchText}||'%'
  		</if>
  		
- 		AND NBSTATE = 1
  		ORDER BY NBCODE DESC
 		
  	 </select>
@@ -221,7 +220,7 @@
  	 <select id="selectNoticeBoardView" resultType="com.NumberOne.dto.NoticeDto">	
 	 	 <!-- 공지글 상세 -->
 	 	 SELECT NBCODE,NBMID,NBTITLE,NBCONTENTS,TO_CHAR(NBDATE,'YY-MM-DD HH24:MI') AS NBDATE,
- 			   NBIMG,NBSTATE,NBHITS,MB.MNICKNAME AS NBNICKNAME
+ 			   NBIMG,NBSTATE,NBHITS,MB.MNICKNAME AS NBNICKNAME, NBFIX
 	 	 FROM NOTICEBOARDS NB, MEMBERS MB
 	 	 WHERE NBCODE = #{nbcode} AND NB.NBMID = MB.MID
  	 </select>
@@ -277,7 +276,8 @@
  	<select id="selectBoardReplyList" resultType="com.NumberOne.dto.ReplyDto">
  		<!-- 댓글목록 조회 -->
 
- 		SELECT RP.*, MB.MNICKNAME AS RPNICKNAME, MB.MPROFILE AS RPPROFILE
+ 		SELECT RP.*, MB.MNICKNAME AS RPNICKNAME, 
+ 			   MB.MPROFILE AS RPPROFILE, MB.MSTATE AS RPMSTATE 
 		FROM REPLY RP, MEMBERS MB 
 		WHERE RP.RPMID = MB.MID
 		AND RPBDCODE = #{bdcode}
@@ -291,6 +291,7 @@
 		FROM REPLY 
 		WHERE RPBDCODE = #{bdcode}
 		AND RPSTATE = 1
+
  	</select>
  	 
  	<update id="updateReplyState_ajax">
@@ -504,5 +505,100 @@
 		BDDETAILIMG = #{bddetailimg}
 		WHERE BDCODE = #{bdcode}
 	</update>
+	
+	<select id="selectRegionList_ajax" resultType="com.NumberOne.dto.BoardDto">
+		<!-- 지역카테고리 목록  -->
+		SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, 
+			   TO_CHAR(BDDATE,'YY-MM-DD') AS BDDATE, 
+			   BDIMG, BDDETAILIMG, BDSTATE, BDHITS, 
+		       RG.RGNAME AS BDRGNAME, 
+		       MB.MNICKNAME AS BDNICKNAME, 
+		       NVL(RPCOUNT.BDRPCOUNT, 0) AS BDRPCOUNT,
+		       NVL(RCCOUNT.BDRCCOUNT, 0) AS BDRCCOUNT
+		FROM BOARDS BD
+		LEFT OUTER JOIN REGION RG
+		ON BD.BDRGCODE = RG.RGCODE
+		LEFT OUTER JOIN MEMBERS MB
+		ON BD.BDMID = MB.MID
+		LEFT OUTER JOIN (SELECT BD.BDCODE AS RPBDCODE, COUNT(*) AS BDRPCOUNT
+		                        FROM BOARDS BD LEFT OUTER JOIN REPLY RP
+		                        ON BD.BDCODE = RP.RPBDCODE
+		                        WHERE RP.RPSTATE = 1
+		                        GROUP BY BD.BDCODE
+		                        ORDER BY BD.BDCODE) RPCOUNT
+		ON BD.BDCODE = RPCOUNT.RPBDCODE
+		LEFT OUTER JOIN (SELECT BD.BDCODE AS RPBDCODE, COUNT(*) AS BDRPCOUNT
+		                        FROM BOARDS BD LEFT OUTER JOIN REPLY RP
+		                        ON BD.BDCODE = RP.RPBDCODE
+		                        WHERE RP.RPSTATE = 1
+		                        GROUP BY BD.BDCODE
+		                        ORDER BY BD.BDCODE) RPCOUNT
+		ON BD.BDCODE = RPCOUNT.RPBDCODE
+		LEFT OUTER JOIN (SELECT RCBDCODE, COUNT(*) AS BDRCCOUNT
+		                        FROM RECOMMEND
+		                        GROUP BY RCBDCODE ) RCCOUNT
+		ON BD.BDCODE = RCCOUNT.RCBDCODE
+		WHERE BDSTATE = 1
+		AND BDCATEGORY NOT IN ('자랑')
+		AND RG.RGCODE = #{rgcode}
+		ORDER BY BDCODE DESC
+		
+	</select>	
+	
+	<select id="selectRegionSearchList" resultType="com.NumberOne.dto.BoardDto">
+		<!-- 지역게시판 검색결과 -->
+		SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, 
+		   TO_CHAR(BDDATE,'YY-MM-DD') AS BDDATE, 
+		   BDIMG, BDDETAILIMG, BDSTATE, BDHITS, 
+	       MB.MNICKNAME AS BDNICKNAME, 
+	       NVL(RPCOUNT.BDRPCOUNT, 0) AS BDRPCOUNT,
+	       NVL(RCCOUNT.BDRCCOUNT, 0) AS BDRCCOUNT,
+	       RG.RGCODE, RG.RGNAME AS BDRGNAME
+		FROM BOARDS BD 
+		LEFT OUTER JOIN MEMBERS MB 
+		ON BD.BDMID = MB.MID
+		LEFT OUTER JOIN REGION RG
+		ON BD.BDRGCODE = RG.RGCODE
+		LEFT OUTER JOIN (SELECT BD.BDCODE AS RPBDCODE, COUNT(*) AS BDRPCOUNT
+		                        FROM BOARDS BD LEFT OUTER JOIN REPLY RP
+		                        ON BD.BDCODE = RP.RPBDCODE
+		                        WHERE RP.RPSTATE = 1
+		                        GROUP BY BD.BDCODE
+		                        ORDER BY BD.BDCODE) RPCOUNT
+		ON BD.BDCODE = RPCOUNT.RPBDCODE
+		LEFT OUTER JOIN (SELECT RCBDCODE, COUNT(*) AS BDRCCOUNT
+		                        FROM RECOMMEND
+		                        GROUP BY RCBDCODE ) RCCOUNT
+		ON BD.BDCODE = RCCOUNT.RCBDCODE
+		WHERE BDCATEGORY NOT IN ( '자랑' )
+		
+		<if test="bdrgcode != ' ' ">
+		AND BD.BDRGCODE = #{bdrgcode}
+		</if>
+		
+ 		<if test="searchType == 'bdtitle' ">
+ 		<!-- 제목으로 검색 -->
+ 		AND BDTITLE LIKE '%'||#{searchText}||'%'
+ 		</if>
+ 		
+ 		<if test="searchType == 'bdcontents'">
+ 		<!-- 내용으로 검색 -->
+ 		AND BDCONTENTS LIKE '%'||#{searchText}||'%'
+ 		</if>
+ 		
+ 		<if test="searchType == 'bdtitlecontents'">
+ 		<!-- 제목 + 내용으로 검색  -->
+ 		AND BDTITLE LIKE '%'||#{searchText}||'%'
+ 		OR BDCONTENTS LIKE '%'||#{searchText}||'%'
+ 		</if>
+ 		
+ 		<if test="searchType == 'bdnickname'">
+ 		<!-- 닉네임으로 검색 -->
+ 		AND MB.MNICKNAME LIKE '%'||#{searchText}||'%'
+ 		</if>
+ 		
+ 		AND BDSTATE = 1
+ 		ORDER BY BDCODE DESC
+	</select>
 	
  </mapper>

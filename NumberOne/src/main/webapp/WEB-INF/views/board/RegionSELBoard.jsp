@@ -85,7 +85,9 @@
 				<div class="row" style="margin:auto;">
 					<h2 class="text-center">서울게시판 글목록 페이지 : RegionBoardListPage.jsp</h2>
 				</div>
-				<form action="selectBoardSearchList" method="get" onsubmit="return searchTextCheck();">
+				<form action="selectRegionSearchList" method="get" onsubmit="return searchTextCheck();">
+					<input type="hidden" name="bdrgcode" value="SEL">
+					<input type="hidden" name="bdrgname" value="서울">
 					<div class="row ">
 						<!-- 검색기능 -->
 						<div class="col-5" align="right">
@@ -140,7 +142,8 @@
 							<td style="font-size: 17px;">추천</td>
 						</tr>
 						
-						<c:forEach items="${noticeList }" end="2" var="notice">
+						<c:forEach items="${noticeList }" var="notice">
+							<c:if test="${notice.nbfix == 1 }">
 							<!-- 공지게시판 -->
 							<tr class="fw-bold" style="border-bottom: solid #E0E0E0 1px;">
 								<td class="text-center tableCell">${notice.nbcode}</td>
@@ -153,6 +156,7 @@
 								<td class="text-center tableCell">${notice.nbhits }</td>
 								<td></td>
 							</tr>
+							</c:if>
 						</c:forEach>
 					</thead>
 					

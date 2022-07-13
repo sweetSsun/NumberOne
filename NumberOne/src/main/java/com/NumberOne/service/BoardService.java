@@ -407,6 +407,14 @@ public class BoardService {
 	   public int insertBoardReply_ajax(String bdcode, String rpcontents) {
 	      System.out.println("BoardService.insertBoardComment_ajax() 호출");
 
+<<<<<<< HEAD
+		ReplyDto reply = new ReplyDto();
+		
+		String loginId = (String) session.getAttribute("loginId");
+		System.out.println("로그인 아이디 : " + loginId);
+		System.out.println("댓글작성할 글번호 : " + bdcode);
+		System.out.println("작성할 댓글 내용 : " + rpcontents);
+=======
 	      ReplyDto reply = new ReplyDto();
 	      
 	      String loginId = (String) session.getAttribute("loginId");
@@ -417,6 +425,7 @@ public class BoardService {
 	      String maxRpcode = bdao.selectReplyMaxNumber();
 	      System.out.println("maxRpcode : " + maxRpcode);
 	      String rpcode = "RP";
+>>>>>>> 31fa105dd83155432087c736054d418b75094138
 
 	      if (maxRpcode == null) {
 	         rpcode = rpcode + "00001";
@@ -445,7 +454,15 @@ public class BoardService {
 	      reply.setRpbdcode(bdcode);
 	      reply.setRpmid(loginId);
 
+<<<<<<< HEAD
+		// Reply 객체에 저장
+		reply.setRpcontents(rpcontents);
+		reply.setRpcode(rpcode);
+		reply.setRpbdcode(bdcode);
+		reply.setRpmid(loginId);
+=======
 	      int insertResult = bdao.insertBoardReply_ajax(reply);
+>>>>>>> 31fa105dd83155432087c736054d418b75094138
 
 	      return insertResult;
 	   }
@@ -934,6 +951,130 @@ public class BoardService {
 		return mav;
 	}
 	
+<<<<<<< HEAD
+	//인천게시판 이동
+	public ModelAndView selectIcnBoardList() {
+		System.out.println("BoardService.selectIcnBoardList() 호출");
+		ModelAndView mav = new ModelAndView();
+		
+		ArrayList<NoticeDto> noticeList = bdao.selectNoticeList();
+		//인천글목록 조회 
+		String bdrgcode = "ICN";
+		ArrayList<BoardDto> regionList = bdao.selectRegionBoardList(bdrgcode);
+		
+		mav.addObject("noticeList", noticeList);
+		mav.addObject("regionList", regionList);
+		mav.setViewName("board/RegionIcnBoardList");
+		
+		return mav;
+	}
+	
+	
+	//경기게시판 이동
+	public ModelAndView selectGgdBoardList() {
+		System.out.println("BoardService.selectGgdBoardList() 호출");
+		ModelAndView mav = new ModelAndView();
+		
+		ArrayList<NoticeDto> noticeList = bdao.selectNoticeList();
+		//인천글목록 조회 
+		String bdrgcode = "GGD";
+		ArrayList<BoardDto> regionList = bdao.selectRegionBoardList(bdrgcode);
+		
+		mav.addObject("noticeList", noticeList);
+		mav.addObject("regionList", regionList);
+		mav.setViewName("board/RegionGgdBoardList");
+		
+		return mav;
+	}
+	
+	//경상게시판 이동 
+	public ModelAndView selectGsdBoardList() {
+		System.out.println("BoardService.selectGsdBoardList() 호출");
+		ModelAndView mav = new ModelAndView();
+		
+		ArrayList<NoticeDto> noticeList = bdao.selectNoticeList();
+		//경상글목록 조회 
+		String bdrgcode = "GSD";
+		ArrayList<BoardDto> regionList = bdao.selectRegionBoardList(bdrgcode);
+		
+		mav.addObject("noticeList", noticeList);
+		mav.addObject("regionList", regionList);
+		mav.setViewName("board/RegionGsdBoardList");
+		
+		return mav;
+	}
+	
+	//전라게시판 이동
+	public ModelAndView selectJldBoardList() {
+		System.out.println("BoardService.selectGsdBoardList() 호출");
+		ModelAndView mav = new ModelAndView();
+		
+		ArrayList<NoticeDto> noticeList = bdao.selectNoticeList();
+		//전라글목록 조회 
+		String bdrgcode = "JLD";
+		ArrayList<BoardDto> regionList = bdao.selectRegionBoardList(bdrgcode);
+		
+		mav.addObject("noticeList", noticeList);
+		mav.addObject("regionList", regionList);
+		mav.setViewName("board/RegionJldBoardList");
+		
+		return mav;
+	}
+	
+	//충청게시판 이동
+	public ModelAndView selectCcdBoardList() {
+		System.out.println("BoardService.selectCcdBoardList() 호출");
+		ModelAndView mav = new ModelAndView();
+		
+		ArrayList<NoticeDto> noticeList = bdao.selectNoticeList();
+		//충청글목록 조회 
+		String bdrgcode = "CCD";
+		ArrayList<BoardDto> regionList = bdao.selectRegionBoardList(bdrgcode);
+		
+		mav.addObject("noticeList", noticeList);
+		mav.addObject("regionList", regionList);
+		mav.setViewName("board/RegionCcdBoardList");
+		
+		
+		return mav;
+	}
+	
+	//강원게시판 이동 
+	public ModelAndView selectGwdBoardList() {
+		System.out.println("BoardService.selectGwdBoardList() 호출");
+		ModelAndView mav = new ModelAndView();
+		
+		ArrayList<NoticeDto> noticeList = bdao.selectNoticeList();
+		//강원글목록 조회 
+		String bdrgcode = "GWD";
+		ArrayList<BoardDto> regionList = bdao.selectRegionBoardList(bdrgcode);
+		
+		mav.addObject("noticeList", noticeList);
+		mav.addObject("regionList", regionList);
+		mav.setViewName("board/RegionGwdBoardList");
+		
+		return mav;
+	}
+	
+	//제주게시판 이동
+	public ModelAndView selectJjdBoardList() {
+		System.out.println("BoardService.selectJjdBoardList() 호출");
+		ModelAndView mav = new ModelAndView();
+		
+		ArrayList<NoticeDto> noticeList = bdao.selectNoticeList();
+		//제주글목록 조회 
+		String bdrgcode = "JJD";
+		ArrayList<BoardDto> regionList = bdao.selectRegionBoardList(bdrgcode);
+		
+		mav.addObject("noticeList", noticeList);
+		mav.addObject("regionList", regionList);
+		mav.setViewName("board/RegionJjdBoardList");
+		
+		return mav;
+	}
+
+=======
+>>>>>>> 31fa105dd83155432087c736054d418b75094138
 	
 	// 자랑글 수정
 	public ModelAndView updateRoomView(BoardDto room, RedirectAttributes ra) throws IllegalStateException, IOException {
@@ -1043,6 +1184,43 @@ public class BoardService {
 		return mav;
 
 	}
+<<<<<<< HEAD
+
+	//지역카테고리 목록 (ajax)
+	public String selectRegionList_ajax(String rgcode) {
+		System.out.println("BoardService.selectRegionList_ajax() 호출");
+		System.out.println("선택한 지역코드 : " + rgcode);
+		
+		ArrayList<BoardDto> selRegionList = bdao.selectRegionList_ajax(rgcode); 
+		System.out.println(selRegionList);
+		
+		Gson gson = new Gson();
+		String selRegionList_ajax = gson.toJson(selRegionList);
+		
+		return selRegionList_ajax;
+	}
+
+	//지역게시판 검색결과 
+	public ModelAndView selectRegionSearchList(String bdrgcode, String bdrgname, String searchType, String searchText) {
+		System.out.println("BoardService.selectRegionSearchList() 호출");
+		ModelAndView mav = new ModelAndView();
+		
+		System.out.println("검색 - 선택지역코드: " + bdrgcode);
+		System.out.println("검색타입: " + searchType);
+		System.out.println("검색어: " + searchText);
+		
+		ArrayList<BoardDto> searchList = bdao.selectRegionSearchList(bdrgcode, searchType, searchText);
+		System.out.println(searchList);
+		
+		mav.addObject("bdrgcode", bdrgcode);
+		mav.addObject("bdrgname", bdrgname);
+		mav.addObject("searchBdList", searchList);
+		mav.setViewName("board/RegionSearchList");
+		
+		return mav;
+	}
+}
+=======
 }
 
 
@@ -1077,3 +1255,4 @@ public class BoardService {
 
 
 
+>>>>>>> 31fa105dd83155432087c736054d418b75094138
