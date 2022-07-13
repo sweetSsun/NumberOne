@@ -37,7 +37,7 @@
 	
 	.tableHead{ 
 		padding-top: 10px; 
-		padding-bottom: 10px; 
+		padding-bottom: 20px; 
 		padding-left: 30px;
 		
 	}
@@ -50,7 +50,25 @@
 	
 	.title{ width : 13%; }
 	
-	img{ height : 180px; width: 250px; }
+	img{ height : 180px; width: 250px;}
+	
+	span.x{ 
+		/* 사진 X 버튼 */
+		background-color: black; 
+		border-radius: 50%; 
+		color: white; 
+		position: absolute; 
+		top: 10px; 
+		right: 15px; 
+		cursor: pointer;
+	}
+	
+	div.detailimageBox{ 
+		/* position: relative; */
+		height : 190px; width: 260px;
+		display : inline-block; 
+	}
+	
 </style>
 
 </head>
@@ -73,11 +91,8 @@
 				<div>
 				<form action="updateRoomView" method="post" enctype="multipart/form-data" onsubmit="return roomModifyCh(${detailCount})">
 				<table id="roomWriteTable">
-					<tr style=''>
-						<th><input type="text" name="bdcode" value="${board.bdcode }"></th>
-					</tr>
 					<tr>
-						<th class="tableHead">작성자</th>
+						<th class="tableHead">작성자<input type="hidden" name="bdcode" value="${board.bdcode }"></th>
 						<!-- session의 로그인 닉네임로 출력 -->
 						<td colspan="5">${sessionScope.loginNickname}</td>						
 					</tr>
@@ -101,12 +116,12 @@
 						<td colspan="5">
 							<div>
 								<img alt="대표사진" src="${pageContext.request.contextPath }/resources/img/room/${board.bdimg }" id="currentBdimg_screen"><br>
-								<input type="text" value="${board.bdimg }" id="currentBdimg" name="bdimg">
+								<input type="hidden" value="${board.bdimg }" id="currentBdimg" name="bdimg">
 							</div>
 						</td>
 					</tr>
 					<tr>
-						<th class="tableHead title" style="font-size:20px;">대표사진<br>수정</th>
+						<th class="tableHead title">대표사진<br>수정</th>
 						<td colspan="5">
 							<input type="file" id="mainImg" name="bdimgfile"> 
 						</td>
@@ -115,18 +130,18 @@
 						<th class="tableHead title">상세사진</th>
 						<td colspan="5">			 
 							<c:forEach items="${roomdetailimgs }" var="detail" varStatus="status">
-								<div>
-									<img alt='상세사진' src='${pageContext.request.contextPath }/resources/img/room/${detail }' id="${status.index }_currentDetailimg_screen"><br>
-									<span onclick="currentImgStateUpdate('${status.index }_currentDetailimg')" style="background-color:black; border-radius:50%; color:white;">&nbsp;X&nbsp;</span>
-									<input type="text" id="${status.index }_currentDetailimg" value="${detail }">
+								<div class="detailimageBox" id="${status.index }_currentDetailimg_screen" style="position: relative;">
+									<img alt='상세사진' src='${pageContext.request.contextPath }/resources/img/room/${detail }'>
+									<span class="x" onclick="currentImgStateUpdate('${status.index }_currentDetailimg')">&nbsp;X&nbsp;</span>
+									<input type="hidden" id="${status.index }_currentDetailimg" value="${detail }">
 								</div>
 							</c:forEach> 
 							
-							<input type="text" id="bddetailimg" name="bddetailimg" placeholder="현재상세이미지 파일명을 모을 input">
+							<input type="hidden" id="bddetailimg" name="bddetailimg" placeholder="현재상세이미지 파일명을 모을 input">
 						</td>
 					</tr>
 					<tr>
-						<th class="tableHead title" style="font-size:20px;">상세사진<br>수정</th>
+						<th class="tableHead title">상세사진<br>추가</th>
 						<td colspan="5">
 							<input type="file" multiple="multiple" id="detailImg" name="bddetailimgfile" accept="image/*" onclick="return mainimgCh()"> 
 						</td>
@@ -193,8 +208,10 @@
 		var mainImg = $("#mainImg").val();
 		console.log(mainImg);
 		if(mainImg==""){
-			alert("메인이미지를 먼저 등록하세요");
-			return false;
+			if($("#currentBdimg").val()==""){
+				alert("메인이미지를 먼저 등록하세요");			
+				return false;
+			}
 		}
 	} 
 	
