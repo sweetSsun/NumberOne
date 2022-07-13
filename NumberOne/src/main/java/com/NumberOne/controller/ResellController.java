@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.NumberOne.dto.ChatDto;
+import com.NumberOne.dto.ChatMessageDto;
 import com.NumberOne.dto.GoodsDto;
 import com.NumberOne.dto.Paging;
 import com.NumberOne.dto.UsedBoardDto;
@@ -70,7 +70,7 @@ public class ResellController {
 		System.out.println("updateResellModify 호출");
 		ModelAndView mav = new ModelAndView();
 
-		mav = rsvc.updateResellModify(ubDto);
+		//mav = rsvc.updateResellModify(ubDto);
 
 		return mav;
 	}
@@ -146,7 +146,7 @@ public class ResellController {
 
 	// 채팅창에 상품명 넘기기
 	@RequestMapping(value = "/insertResellChat")
-	public ModelAndView insertResellChat(String[] gd_names, ChatDto chat, String gdtitle) {
+	public ModelAndView insertResellChat(String[] gd_names, ChatMessageDto chat, String gdtitle) {
 		System.out.println("insertResellChat 호출");
 		ModelAndView mav = new ModelAndView();
 		

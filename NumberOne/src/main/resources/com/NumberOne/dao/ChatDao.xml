@@ -40,4 +40,11 @@
 	WHERE CHCODE = #{chcode}
 	</select>
 
+	<!-- 여기부터 새로한거! -->
+	<!-- chatRoom 조회 -->
+	<select id="selectChatRoom" resultType="com.NumberOne.dto.ChatRoomDto">
+		SELECT * 
+		FROM CHATROOM
+		WHERE CRCODE = #{cmcrcode}
+	</select>
 </mapper>

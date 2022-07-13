@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.NumberOne.dao.ResellDao;
-import com.NumberOne.dto.ChatDto;
+import com.NumberOne.dto.ChatMessageDto;
 import com.NumberOne.dto.GoodsDto;
 import com.NumberOne.dto.PageDto;
 import com.NumberOne.dto.Paging;
@@ -462,7 +462,7 @@ public ModelAndView selectResellPageList(Paging paging) {
 	}
 
 
-	public ModelAndView insertResellChat(String[] gd_names, ChatDto chat, String gdtitle) {
+	public ModelAndView insertResellChat(String[] gd_names, ChatMessageDto chat, String gdtitle) {
 		System.out.println("insertResellChat() 호출");
 		ModelAndView mav = new ModelAndView();
 		String gdname = null;
