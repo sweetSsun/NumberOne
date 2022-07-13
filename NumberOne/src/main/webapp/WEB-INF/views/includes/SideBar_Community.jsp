@@ -41,7 +41,6 @@
 				</div>
 				<div class="sideroom">
 					<span>
-						<!-- 자랑방 -->
 						<a href="selectRoomList"><i class="fa-solid fa-house-user"></i></a>
 					</span>
 				</div>
@@ -63,11 +62,6 @@
 				<div class="sideroom">
 					<span>
 						<a href="#"><i class="fa-solid fa-pen-to-square"></i></a>
-					</span>
-				</div>
-				<div class="sideroom">
-					<span>
-						<a href="selectNoticeBoardList"><i class="fa-solid fa-volume-low"></i></a>
 					</span>
 				</div>
 			</div>

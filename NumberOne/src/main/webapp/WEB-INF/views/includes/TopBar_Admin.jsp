@@ -4,6 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
+
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <!-- 폰트어썸 -->
@@ -11,15 +12,10 @@
 <%@ include file="/resources/css/BarCss.jsp" %>
 
 <style type="text/css">
-	header{
-	    font-family: 'Jal_Onuel';
-		color: #4C4C4C;
-	    white-space: nowrap;		
-	}
-	
+
 	.logoimg{
 		margin-top: 2%;  
-		padding-left: 45%;
+		padding-left: 35%;
 	}
 	
 	.menubar_left{
@@ -43,23 +39,23 @@
 		<div class="container" style="width: 70%;">
 		
 		
-			<div class="row" style="margin-bottom: -2%">			
+			<div class="row">			
 				
 				<!-- 로고이미지 -->
-				<div class="col-lg-12 col-sm-12">
-					<a class="logoimg" href="${pageContext.request.contextPath }/"><img style="height:100px; min-width:140px;"src="${pageContext.request.contextPath }/resources/img/logo_bada.png"></a>
+				<div class="col-lg-12 col-sm-12" style="min-width: 800px;">
+					<a href="${pageContext.request.contextPath }/"><img class="logoimg" style="height:100px; min-width:140px;"src="${pageContext.request.contextPath }/resources/img/logo_bada.png"></a>
 					
-					<div>					
-						<p style="float: left; font-size: 15px; margin-left: 20px;">						
+					<span>					
+						<p style="float: left; font-size: 15px; margin-left: 20px; margin-top: 4rem; margin-bottom: 10px;">						
 							<a href="admin_loadToAdminMainPage">
 							<img class="img-profile rounded-circle" style="height:50px; width:50px" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png">&nbsp;&nbsp;관리자님</a>
 						</p>
 			
 					 	<!-- 살아남은 미니박수^^~! -->
-						 <p style="float: right; font-size: 12.5px; margin-right: 20px;">
-							수고해주시는 관리자님께 박수 &nbsp;<img class="img-profile rounded-circle" style="width:50px" src="${pageContext.request.contextPath }/resources/img/clap.png">
+						 <p style="float: right; font-size: 12.5px; margin-right: 20px; margin-top: 4rem; margin-bottom: 10px;">
+							수고해주시는 관리자님께 박수 &nbsp;<img class="img-profile rounded-circle" style="height: 50px; width:50px" src="${pageContext.request.contextPath }/resources/img/clap.png">
 						 </p>
-					 </div>				 
+					 </span>				 
 			 	 </div>
 			</div>
 			 

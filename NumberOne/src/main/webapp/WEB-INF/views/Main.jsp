@@ -365,17 +365,16 @@
 		                	<div class="item">
 		                        <table>
 		                        	<tr>
-		                        		<td rowspan="3">
+		                        		<td>
 		                        			<a href="selectResellPageList?sellBuy=S"><img alt="" src="${pageContext.request.contextPath }/resources/img/resell/${SellList.ubmainimg}"></a>
 		                        		</td>
-		                        		<td><h3>${SellList.ubtitle }</h3></td>
 		                        	</tr>
+		                        	<tr>
+		                        		<td><h3>${SellList.ubtitle }</h3></td>
+	                        		</tr>
 		                        	<tr>
 		                        		<td><h3>${SellList.ubnickname }</h3></td>
 		                       		</tr>
-		                       		<tr>
-		                        		<th><h3>${SellList.ubdate }</h3></th>
-		                        	</tr>
 		                        </table>
 		                	</div>
 	                	</c:forEach>	                
@@ -394,17 +393,16 @@
 		                	<div class="item">
 		                        <table>
 		                        	<tr>
-		                        		<td rowspan="3">
+		                        		<td>
 		                        			<a href="selectResellPageList?sellBuy=B"><img alt="" src="${pageContext.request.contextPath }/resources/img/resell/${buyList.ubmainimg}"></a>
 		                        		</td>
+		                        	</tr>
+		                        	<tr>
 		                        		<td><h3>${buyList.ubtitle }</h3></td>
 		                        	</tr>
 		                        	<tr>
 		                        		<td><h3>${buyList.ubnickname }</h3></td>
 		                       		</tr>
-		                       		<tr>
-		                        		<th><h3>${buyList.ubdate }</h3></th>
-		                        	</tr>
 		                        </table>
 		                	</div>
 	                	</c:forEach>

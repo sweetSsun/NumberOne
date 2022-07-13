@@ -88,32 +88,37 @@ body.sideon {
 				
 				<div class="sideroom">
 					<span>
-						<a href="selectNoticeBoardList"><i class="fa-solid fa-volume-low"></i></a>
+						<a href="admin_selectMemberList"><i class="fa-solid fa-circle-user"></i></a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="selectRoomList"><i class="fa-solid fa-house-user"></i></a>
+						<a href="admin_selectNoticeList"><i class="fa-solid fa-volume-low"></i></a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="selectFreeBoardList"><i class="fa-solid fa-comments"></i></a>
+						<a href="admin_selectResellList"><i class="fa-solid fa-carrot"></i></a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="#"><i class="fa-solid fa-circle-question"></i></a>
+						<a href="admin_selectBoardList"><i class="fa-solid fa-ban"></i></a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="#"><i class="fa-solid fa-head-side-virus"></i></a>
+						<a href="admin_selectBdfixList"><i class="fa-solid fa-thumbtack"></i></a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="#"><i class="fa-solid fa-pen-to-square"></i></a>
+						<a href="admin_selectReplyList"><i class="fa-brands fa-replyd"></i></a>
+					</span>
+				</div>
+				<div class="sideroom">
+					<span>
+						<a href="admin_selectQuestionList"><i class="fa-solid fa-headset"></i></a>
 					</span>
 				</div>
 			</div>
@@ -130,31 +135,31 @@ body.sideon {
 				
 				<div class="side_admin">
 					<span>
-						<a href="admin_selectMemberList"><i class="fa-solid fa-volume-low"></i>&nbsp;&nbsp;회원</a>
+						<a href="admin_selectMemberList"><i class="fa-solid fa-circle-user"></i>&nbsp;&nbsp;회원</a>
 					</span>
 				</div>
 				<div class="side_admin">
 					<span>
-						<a href="admin_selectNoticeList"><i class="fa-solid fa-house-user"></i>&nbsp;&nbsp;공지방</a>
+						<a href="admin_selectNoticeList"><i class="fa-solid fa-volume-low"></i>&nbsp;&nbsp;공지방</a>
 					</span>
 				</div>
 				<div class="side_admin">
 					<span>
-						<a href="admin_selectResellList"><i class="fa-solid fa-comments"></i>&nbsp;&nbsp;중고거래</a>
+						<a href="admin_selectResellList"><i class="fa-solid fa-carrot"></i>&nbsp;&nbsp;중고거래</a>
 					</span>
 				</div>
 				
 				
 				<div class="side_admin" style="height: auto; padding: 10px;">
 					<span style="font-weight: bold; font-size: 20px;">
-						<a href="admin_selectBoardList"><i class="fa-solid fa-circle-question"></i>&nbsp;&nbsp;커뮤니티</a>
+						<a href="admin_selectBoardList"><i class="fa-solid fa-square-pen"></i>&nbsp;&nbsp;커뮤니티</a>
 					</span>
 				
 					<div class="side_mypage">
-						<a href="admin_selectBoardList"><i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;경고/정지</a>
+						<a href="admin_selectBoardList"><i class="fa-solid fa-ban"></i>&nbsp;&nbsp;경고/정지</a>
 					</div>
 					<div class="side_mypage">
-						<a href="admin_selectBdfixList"><i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;배너</a>
+						<a href="admin_selectBdfixList"><i class="fa-solid fa-thumbtack"></i>&nbsp;&nbsp;배너</a>
 					</div>
 				</div>
 				
@@ -162,12 +167,12 @@ body.sideon {
 				
 				<div class="side_admin">
 					<span>
-						<a href="admin_selectReplyList"><i class="fa-solid fa-head-side-virus"></i>&nbsp;&nbsp;댓글</a>
+						<a href="admin_selectReplyList"><i class="fa-brands fa-replyd"></i>&nbsp;&nbsp;댓글</a>
 					</span>
 				</div>
 				<div class="side_admin">
 					<span>
-						<a href="admin_selectQuestionList"><i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;문의</a>
+						<a href="admin_selectQuestionList"><i class="fa-solid fa-headset"></i>&nbsp;&nbsp;문의</a>
 					</span>
 				</div>
 			</div>
