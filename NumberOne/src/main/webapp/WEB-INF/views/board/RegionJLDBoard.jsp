@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 질문게시판</title>
+<title>1인자 - 제주게시판</title>
 <!-- Jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <%@ include file="/resources/css/BarCss.jsp" %>
@@ -14,15 +14,8 @@
 		max-width: 70%;
 		margin: auto;
 		margin-top: 0%;
-		background-color: white;
 	}
 	
-	.boardList{
-		margin: auto;
-	}
-	.tableCell{
-		font-size: 20px;
-	}
 	#board_column{
 		border-bottom: solid #E0E0E0 2px;
 	}
@@ -38,7 +31,7 @@
 	.bdCategoryList{
 		color : #00bcd4;
 		border: none;
-		font-size: 20px;
+		font-size: 18px;
 	}
 	.bdcategorySel{
 		font-weight: bold;
@@ -54,25 +47,29 @@
 	.searchType{
 		text-align: center;
 		border-radius: 5px;
-		font-size: 20px;
+		font-size: 18px;
 		border: solid 1px #00bcd4;
-	}
-	.community{
-		background-color: #00bcd4;
 	}
 	#inputSearchText{
 		font-size: 18px;
 	}
+	.community{
+		background-color: #00bcd4;
+	}
+	.malmeori{
+		display: none;
+	}
+	
 </style>
 </head>
 <body>
 	    <!-- TopBar -->
         <c:choose>
             <c:when test="${sessionScope.loginId != 'admin'}">
-                  <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
+                    <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
             </c:when>
             <c:otherwise>
-                  <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
+                    <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
             </c:otherwise>
         </c:choose>
         <!-- End of TopBar -->
@@ -86,10 +83,11 @@
 		<!-- 본문 -->
 			<div class="container">
 				<div class="row" style="margin:auto;">
-					<h2 class="text-center">질문게시판 : QuestionBoardList.jsp</h2>
+					<h2 class="text-center">제주게시판 글목록 페이지 : RegionBoardListPage.jsp</h2>
 				</div>
-				<form action="selectBoardSearchList" method="get" onsubmit="return searchTextCheck();">
-				<input type="hidden" name="bdcategory" value="질문">
+				<form action="selectRegionSearchList" method="get" onsubmit="return searchTextCheck();">
+					<input type="hidden" name="bdrgcode" value="JJD">
+					<input type="hidden" name="bdrgname" value="제주">
 					<div class="row ">
 						<!-- 검색기능 -->
 						<div class="col-5" align="right">
@@ -109,11 +107,25 @@
 						
 				</div>
 				<div class="row" style="margin-top: 20px;">
-					
+					<div class="col">
+						<!-- 말머리 정렬 
+						<select class="bdCategoryList" onchange="bdCategorySel(this.value)">
+							<option class="bdcategorySel malmeori" value="" disabled selected >말머리 선택</option>
+							<option class="bdcategorySel" value="자유">자유</option>
+							<option class="bdcategorySel" value="질문">질문</option>
+							<option class="bdcategorySel" value="정보">정보</option>
+							<option class="bdcategorySel" value="후기">후기</option>
+						</select> -->
+					</div>
+					<%-- <div align="right" class="col">
+						<c:if test="${sessionScope.loginId != null }">
+								<button  onclick="loadToBoardWrite()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">글작성</button>
+						</c:if>
+					</div> --%>
 				</div>
 				
 				<div class=" community" style="text-align:center;">
-					<span style="font-size:21px;" class="fw-bold text-white">질문게시판</span>
+					<span style="font-size:21px;" class="fw-bold text-white">제주게시판</span>
 				</div>
 				
 				<!-- 게시글 목록 -->
@@ -122,7 +134,7 @@
 					<thead >
 						<tr class="text-center" id="board_column">
 							<td style="font-size: 17px;">글번호</td>
-							<td style="font-size: 17px;">말머리</td>
+							<td style="font-size: 17px;">지역</td>
 							<td style="font-size: 17px;">제목</td>
 							<td style="font-size: 17px;">작성자</td>
 							<td style="font-size: 17px;">날짜</td>
@@ -150,10 +162,14 @@
 					
 					<tbody id="bdCategoryList">
 					<!-- 일반게시판 목록 -->
-					<c:forEach items="${boardList }" var="board">
+					
+					<c:forEach items="${regionList }" var="board">
+						<c:if test="${board.bdcategory != '자랑' }">
 						<tr style="border-bottom: solid #E0E0E0 1px;">
 							<td class="text-center tableCell">${board.bdcode}</td>
-							<td class="bdcategory text-center tableCell">${board.bdcategory}</td>
+							<td class="bdcategory text-center tableCell">
+								${board.bdrgname }
+							</td>
 							<td class="tableCell">
 							 	<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
 							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
@@ -165,6 +181,7 @@
 							<td class="text-center tableCell">${board.bdhits }</td>
 							<td class="fw-bold text-center tableCell" style="color: #00bcd4;">${board.bdrccount}</td>
 						</tr>
+						</c:if>
 					</c:forEach>
 					</tbody>
 				</table>
@@ -192,15 +209,16 @@
 
 <script type="text/javascript">
 
-/* 글쓰기 버튼 클릭 */
+	/* 글쓰기 버튼 클릭 */
 	function loadToBoardWrite(){
 		//글작성 페이지로 이동 
-		var bdcategory = "질문";
+		var bdcategory =  "";
 		location.href= "loadToBoardWrite?bdcategory="+bdcategory;
 	}
 
 	
 </script>
+
 <script type="text/javascript">
 	function searchTextCheck(){
 		/* 검색어 입력유무 확인 */
@@ -211,7 +229,10 @@
 		
 			return false;
 		}
+		
 	}
 </script>
+
+
 
 </html>

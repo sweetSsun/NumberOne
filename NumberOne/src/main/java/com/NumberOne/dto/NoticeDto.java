@@ -112,6 +112,14 @@ public class NoticeDto {
 		this.nbnickname = nbnickname;
 	}
 
+	public int getNbfix() {
+		return nbfix;
+	}
+
+	public void setNbfix(int nbfix) {
+		this.nbfix = nbfix;
+	}
+
 	@Override
 	public String toString() {
 		return "NoticeDto [nbcode=" + nbcode + ", nbmid=" + nbmid + ", nbtitle=" + nbtitle + ", nbcontents="
@@ -119,5 +127,7 @@ public class NoticeDto {
 				+ ", nbfix=" + nbfix + ", nbimgfile=" + nbimgfile + ", originImg=" + originImg + ", nbnickname="
 				+ nbnickname + "]";
 	}
+
+	
 
 }

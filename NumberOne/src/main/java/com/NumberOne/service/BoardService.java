@@ -108,9 +108,10 @@ public class BoardService {
 				bddetailimg += bddetailimgname + "___";
 			}
 
-			// room에 setBddetailimg
-			System.out.println("bddetailimg : " + bddetailimg);
+			
 		}
+		// room에 setBddetailimg
+		System.out.println("bddetailimg : " + bddetailimg);
 		room.setBddetailimg(bddetailimg);
 
 		// 로그인 아이디
@@ -401,51 +402,56 @@ public class BoardService {
 		return updateResult;
 	}
 
+	
 	// 게시글 댓글등록(ajax)
-	public int insertBoardReply_ajax(String bdcode, String rpcontents) {
-		System.out.println("BoardService.insertBoardComment_ajax() 호출");
+	   public int insertBoardReply_ajax(String bdcode, String rpcontents) {
+	      System.out.println("BoardService.insertBoardComment_ajax() 호출");
 
-		ReplyDto reply = new ReplyDto();
 
-		String loginId = (String) session.getAttribute("loginId");
-		System.out.println("로그인 아이디 : " + loginId);
-		System.out.println("댓글작성할 글번호 : " + bdcode);
-		System.out.println("작성할 댓글 내용 : " + rpcontents);
+	      ReplyDto reply = new ReplyDto();
+	      
+	      String loginId = (String) session.getAttribute("loginId");
+	      System.out.println("로그인 아이디 : " + loginId);
+	      System.out.println("댓글작성할 글번호 : " + bdcode);
+	      System.out.println("작성할 댓글 내용 : " + rpcontents);
 
-		String maxRpcode = bdao.selectReplyMaxNumber();
-		System.out.println("maxRpcode : " + maxRpcode);
-		String rpcode = "RP";
+	      String maxRpcode = bdao.selectReplyMaxNumber();
+	      System.out.println("maxRpcode : " + maxRpcode);
+	      String rpcode = "RP";
 
-		if (maxRpcode == null) {
-			rpcode = rpcode + "00001";
-		} else {
+	      if (maxRpcode == null) {
+	         rpcode = rpcode + "00001";
+	      } else {
 
-			String rpcode_stirng = maxRpcode.substring(4);
-			int rpcode_num = Integer.parseInt(rpcode_stirng) + 1;
+	         String rpcode_stirng = maxRpcode.substring(4);
+	         int rpcode_num = Integer.parseInt(rpcode_stirng) + 1;
 
-			if (rpcode_num < 10) {
-				rpcode = rpcode + "0000" + rpcode_num;
-			} else if (rpcode_num < 100) {
-				rpcode = rpcode + "000" + rpcode_num;
-			} else if (rpcode_num < 1000) {
-				rpcode = rpcode + "00" + rpcode_num;
-			} else if (rpcode_num < 10000) {
-				rpcode = rpcode + "0" + rpcode_num;
-			} else {
-				rpcode = rpcode + rpcode_num;
-			}
-		}
-		System.out.println(rpcode);
+	         if (rpcode_num < 10) {
+	            rpcode = rpcode + "0000" + rpcode_num;
+	         } else if (rpcode_num < 100) {
+	            rpcode = rpcode + "000" + rpcode_num;
+	         } else if (rpcode_num < 1000) {
+	            rpcode = rpcode + "00" + rpcode_num;
+	         } else if (rpcode_num < 10000) {
+	            rpcode = rpcode + "0" + rpcode_num;
+	         } else {
+	            rpcode = rpcode + rpcode_num;
+	         }
+	      }
+	      System.out.println(rpcode);
 
-		// Reply 객체에 저장
-		reply.setRpcode(rpcode);
-		reply.setRpbdcode(bdcode);
-		reply.setRpmid(loginId);
+	      // Reply 객체에 저장
+	      reply.setRpcontents(rpcontents);
+	      reply.setRpcode(rpcode);
+	      reply.setRpbdcode(bdcode);
+	      reply.setRpmid(loginId);
 
-		int insertResult = bdao.insertBoardReply_ajax(reply);
+	      int insertResult = bdao.insertBoardReply_ajax(reply);
 
-		return insertResult;
-	}
+
+	      return insertResult;
+	   }
+	   
 
 	// 게시글 댓글목록 조회(ajax)
 	public String selectBoardReplyList_ajax(String bdcode) {
@@ -623,10 +629,19 @@ public class BoardService {
 		} else {
 			// 자랑글(selec문 분리);
 			board = bdao.selectRoomModify(bdcode);
-			String[] roomdetailimgs = board.getBddetailimg().split("___");
-			System.out.println(roomdetailimgs.length);
-			mav.addObject("roomdetailimgs", roomdetailimgs);
-			mav.addObject("detailCount", roomdetailimgs.length);
+			
+			//디테일 이미지가 있는 경우 이미지이름 배열 생성
+			if(board.getBddetailimg()!=null) {
+				System.out.println(board.getBddetailimg());
+				String[] roomdetailimgs = board.getBddetailimg().split("___");
+				//System.out.println(roomdetailimgs.length);
+				
+				//상세 이미지 이름 배열
+				mav.addObject("roomdetailimgs", roomdetailimgs);
+				//상세 이미지 개수
+				mav.addObject("detailCount", roomdetailimgs.length);
+			}
+			
 		}
 
 		mav.addObject("board", board);
@@ -903,25 +918,25 @@ public class BoardService {
 		return mav;
 	}
 	
-	//서울게시판 이동
-	public ModelAndView selectSelBoardList() {
-		System.out.println("BoardService.selectSelBoardList() 호출");
+	//지역별 게시판 이동
+	public ModelAndView selectDetailBoardList(String bdrgcode) {
+		System.out.println("BoardService.selectDetailBoardList() 호출");
 		ModelAndView mav = new ModelAndView();
 		
 		ArrayList<NoticeDto> noticeList = bdao.selectNoticeList();
-		//서울글목록 조회
-		String bdrgcode = "SEL";
+		//지역별 목록 조회
 		ArrayList<BoardDto> regionList = bdao.selectRegionBoardList(bdrgcode);
 		System.out.println(regionList);
 		
-		
 		mav.addObject("noticeList", noticeList);
 		mav.addObject("regionList", regionList);
-		mav.setViewName("board/RegionSelBoardList");
+		
+		mav.setViewName("board/Region"+bdrgcode+"Board");
 		
 		return mav;
 	}
 	
+
 	//인천게시판 이동
 	public ModelAndView selectIcnBoardList() {
 		System.out.println("BoardService.selectIcnBoardList() 호출");
@@ -938,7 +953,8 @@ public class BoardService {
 		
 		return mav;
 	}
-
+	
+	
 	//경기게시판 이동
 	public ModelAndView selectGgdBoardList() {
 		System.out.println("BoardService.selectGgdBoardList() 호출");
@@ -985,7 +1001,7 @@ public class BoardService {
 		
 		mav.addObject("noticeList", noticeList);
 		mav.addObject("regionList", regionList);
-		mav.setViewName("board/RegionGsdBoardList");
+		mav.setViewName("board/RegionJldBoardList");
 		
 		return mav;
 	}
@@ -1002,7 +1018,7 @@ public class BoardService {
 		
 		mav.addObject("noticeList", noticeList);
 		mav.addObject("regionList", regionList);
-		mav.setViewName("board/RegionGsdBoardList");
+		mav.setViewName("board/RegionCcdBoardList");
 		
 		
 		return mav;
@@ -1048,47 +1064,61 @@ public class BoardService {
 		System.out.println("BoardService.updateRoomView() 호출");
 		ModelAndView mav = new ModelAndView();
 
+		//삭제할 파일을 모으는 배열
+		ArrayList<String> deleteFile = new ArrayList<>();
 
 		// System.out.println(room);
 
 		// 대표이미지
 		MultipartFile bdimgfile = room.getBdimgfile();
 
-		// 대표이미지의 파일명
-		String bdimg = "";
-
 		// 대표이미지 파일 처리
 		if (!bdimgfile.isEmpty()) {
+			
+			//기존 대표 이미지명 deleteFile에 저장
+			deleteFile.add(room.getBdimg());
+ 			
+			// 대표이미지의 파일명
+			String bdimg = "";
 			System.out.println("대표 이미지 변경");
 			UUID uuid = UUID.randomUUID();
 
 			// 파일명 생성
 			bdimg = "M" + uuid.toString() + "_" + bdimgfile.getOriginalFilename();
 			// 대표 이미지 파일 저장
-			System.out.println(roomSavePath);
+			//System.out.println(roomSavePath);
 			bdimgfile.transferTo(new File(roomSavePath, bdimg));
 
 			// room에 setBdimg
 			System.out.println("bdimg : " + bdimg);
 			room.setBdimg(bdimg);
+			
+			//기존 대표이미지 이름에 del_  추가
 		}
 
 		// 상세 이미지 del_ 이 붙으면 삭제하는 파일 아니면 유지
 		String[] currentDetailImg = room.getBddetailimg().split("___");
 		String bddetailimg = "";
 		for (int i = 0; i < currentDetailImg.length; i++) {
-			// System.out.println(currentDetailImg[i]);
+			System.out.println(i+"번 상세 이미지명: "+currentDetailImg[i]);
 			if (!currentDetailImg[i].substring(0, 4).equals("del_")) {
+				System.out.println(i+"번 상세 유지: "+currentDetailImg[i]);
+				//유지파일
 				bddetailimg += currentDetailImg[i] + "___";
+				System.out.println("bddetailimg: "+bddetailimg);
+			} else {
+				//삭제파일
+				deleteFile.add(currentDetailImg[i].substring(4));
+				System.out.println("bddetailimg: "+bddetailimg);
 			}
 		}
-		System.out.println(bddetailimg);
-
+		//System.out.println("bddetailimg: "+bddetailimg);
+		System.out.println("deleteFile.size(): "+deleteFile.size());
 		
 		//추가된 상세이미지 파일 
 		MultipartFile[] bddetailimgfile = room.getBddetailimgfile();
 		//상세이미지 파일 처리
-		System.out.println("추가된 상세이미지개수: "+bddetailimgfile.length); //상세 이미지를 선택 안해도 배열의 크키가 1로 나옴 //0번 인덱스의 filename이 있는지로 확인해야 함
+		//상세 이미지를 선택 안해도 배열의 크기가 1로 나와서 0번 인덱스의 filename이 있는지로 확인해야 함
 		System.out.println("bddetailimgfile[0].length: "+bddetailimgfile[0].getOriginalFilename().length());
 
 		if( bddetailimgfile[0].getOriginalFilename().length() > 0 ) {
@@ -1101,13 +1131,74 @@ public class BoardService {
 				bddetailimg += bddetailimgname+"___"; 
 				//room에 setBddetailimg System.out.println("bddetailimg : " + bddetailimg); }
 			}
-			room.setBddetailimg(bddetailimg);
+			
 		}
+		room.setBddetailimg(bddetailimg);
 		System.out.println(room);
 		
 		int updateResult = bdao.updateRoomView(room);
-		System.out.println("updateResult: "+updateResult);
+		//System.out.println("updateResult: "+updateResult);
+		
+		if(updateResult==0) {
+			System.out.println("글 수정 실패");
+			ra.addFlashAttribute("msg", "수정에 실패하였습니다.");
+			mav.setViewName("redirect:/loadToFail");
+			return mav;
+		} else {			
+			System.out.println("글 수정 성공");
+
+			//기존 파일 삭제
+			File delFile;
+			for(int i=0; i<deleteFile.size(); i++) {
+				System.out.println(deleteFile.get(i));
+				delFile = new File(roomSavePath, deleteFile.get(i)) ;
+				if(delFile.exists()) { //해당 파일 있는지 확인 후
+					System.out.println(deleteFile.get(i)+"파일 삭제");
+					delFile.delete(); //삭제
+				}
+				
+			}
+			
+			ra.addFlashAttribute("msg", "수정에 성공하였습니다.");
+			mav.setViewName("redirect:/selectRoomList?bdcode="+room.getBdcode());
+		}
+		
+		
 		return mav;
 
+	}
+
+	//지역카테고리 목록 (ajax)
+	public String selectRegionList_ajax(String rgcode) {
+		System.out.println("BoardService.selectRegionList_ajax() 호출");
+		System.out.println("선택한 지역코드 : " + rgcode);
+		
+		ArrayList<BoardDto> selRegionList = bdao.selectRegionList_ajax(rgcode); 
+		System.out.println(selRegionList);
+		
+		Gson gson = new Gson();
+		String selRegionList_ajax = gson.toJson(selRegionList);
+		
+		return selRegionList_ajax;
+	}
+
+	//지역게시판 검색결과 
+	public ModelAndView selectRegionSearchList(String bdrgcode, String bdrgname, String searchType, String searchText) {
+		System.out.println("BoardService.selectRegionSearchList() 호출");
+		ModelAndView mav = new ModelAndView();
+		
+		System.out.println("검색 - 선택지역코드: " + bdrgcode);
+		System.out.println("검색타입: " + searchType);
+		System.out.println("검색어: " + searchText);
+		
+		ArrayList<BoardDto> searchList = bdao.selectRegionSearchList(bdrgcode, searchType, searchText);
+		System.out.println(searchList);
+		
+		mav.addObject("bdrgcode", bdrgcode);
+		mav.addObject("bdrgname", bdrgname);
+		mav.addObject("searchBdList", searchList);
+		mav.setViewName("board/RegionSearchList");
+		
+		return mav;
 	}
 }
