@@ -24,12 +24,6 @@
 		font-family: 'pretendard';
 	}
 	
-	header{
-		font-family: 'Jal_Onuel'! important;
-		color: #4C4C4C;
-	    white-space: nowrap;	
-	    
-	}
 	
 	aside, footer{
 		/* border: solid 1px black; */
@@ -38,12 +32,17 @@
 	}
 	
 	header{
+		font-family: 'Jal_Onuel'! important;
+		color: #4C4C4C;
+	    white-space: nowrap;
+
 		margin-bottom: 0px;
 		font-size: 24px;
 		position: sticky;
+		width: 100%;
+		min-width: 800px;
 		top: 0px;
 		z-index:10;
-		padding: tpx;
 		border-bottom: solid 5px #F2F2FF;
 
 	}
@@ -124,7 +123,7 @@
 	
 	
 	/* 닫혀있을 때 사이드바 목록 */
-	#sideList {
+	#sideList {	
 		-webkit-transform: translate3d(-70px,0,0);
 		-moz-transform: translate3d(-70px,0,0);
 		transform: translate3d(-70px,0,0);
@@ -208,7 +207,7 @@
 	
 	/* 열었을 때 햄버거 */
 	#sidebar-toggleOff.sideon .sideOffImg {
-		position:fixed; display:block;
+		position:fixed; display:block;		
 		margin-top: 27px; margin-left: 130px; float: left;
 		width:50px; height:50px; line-height:50px;
 		border-radius: 0 10px 10px 0; background:#4cadcc; color:#fff; 
