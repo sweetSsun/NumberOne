@@ -658,7 +658,9 @@ public class MemberService {
 			System.out.println("MemberService.memberKakaoLogin() 호출");
 			ModelAndView mav = new ModelAndView();
 			
-			MemberDto kakaoMember = mdao.selectMemberKakao(member.getMid());
+			String kakaomid= "@_"+member.getMid();
+			
+			MemberDto kakaoMember = mdao.selectMemberKakao(kakaomid);
 			System.out.println(kakaoMember);
 			if( kakaoMember != null ) {
 				System.out.println(kakaoMember .getMstate());
@@ -693,6 +695,7 @@ public class MemberService {
 			} else {
 				//회원가입 처리
 				System.out.println("회원가입 확인!!!!");
+				member.setMid("@_"+member.getMid());
 				member.setMpw("12121212");
 				//이메일 분리
 				String email = member.getMemail();
@@ -758,9 +761,16 @@ public class MemberService {
 				String content = "";
 				String from = "pj220810@naver.com";
 				String to = checkMemail;
-				String temporaryPw= "임시비번";
+				String temporaryPw= "";
+				
+					for (int i = 0; i < 12; i++) {
+						temporaryPw += (char) ((Math.random() * 26) + 97);
+					}
+					
+					
 
-		       // 임시번호
+		       // 메일 내용
+				content += "<style>a{text-decoration: none;}</style>";
 		        content += "<div style='margin: 50px;'>";
 		        content += "<div style='height: 30px; width:800px; padding: 15px; font-size: 20px; font-family : pretendard; border-bottom : 1px solid gray; '>";
 		        content += "<span style='color:gray;'>임시비밀번호가 발급되었습니다!</span></div>";		       
@@ -774,7 +784,7 @@ public class MemberService {
 		        content += "<br>";
 		        content += "<button style='text-align:center; border:0px; border-radius: 4px; height:50px; width: 250px; margin:20px;";
 		        content += "margin-left: 10px; background-color: #00bcd4; color: white; font-weight: bold;font-family : pretendard;'>";
-		        content += "일인자사이트로 바로가기</button>";
+		        content += "<a href=\"http://localhost:8080/controller12/loadToLogin\">일인자사이트로 바로가기</a></button>";
 		        content += "</div>";
 								
 				try {
@@ -787,24 +797,32 @@ public class MemberService {
 					mailHelper.setTo(to);
 					mailHelper.setSubject(subject);
 					mailHelper.setText(content, true);
-					
+
 					//메일 전송
 					mailSender.send(mail);
 					pwCheckResult = "2";
+					
+					//임시비번으로 변경
+					mdao.updatePw(checkMid, checkMemail, temporaryPw);
+
 					
 				} catch (Exception e) {
 					 e.printStackTrace();
 				}
 				
-				return pwCheckResult;
-			
-			}else {
+				
 				
 				return pwCheckResult;
-				
-			}
 			
+		}else {
+				
+			return pwCheckResult;
+				
 		}
+			
+			
+		
+	}
 
 
 }

@@ -22,6 +22,12 @@
 
 <style type="text/css">
 
+	section{
+		max-width: 70%;
+		margin: auto;
+		margin-top: 0%;
+	}
+
 	.checkout__form {
 	  padding: 100px 100px;
 	  cursor: default;

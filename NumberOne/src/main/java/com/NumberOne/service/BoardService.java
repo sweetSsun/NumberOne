@@ -443,7 +443,6 @@ public class BoardService {
 	      reply.setRpbdcode(bdcode);
 	      reply.setRpmid(loginId);
 
-
 	      int insertResult = bdao.insertBoardReply_ajax(reply);
 
 
@@ -934,7 +933,6 @@ public class BoardService {
 		return mav;
 	}
 	
-	
 	// 자랑글 수정
 	public ModelAndView updateRoomView(BoardDto room, RedirectAttributes ra) throws IllegalStateException, IOException {
 		System.out.println("BoardService.updateRoomView() 호출");
@@ -1077,7 +1075,11 @@ public class BoardService {
 		
 		return mav;
 	}
+
 	
 
 }
+
+
+
 

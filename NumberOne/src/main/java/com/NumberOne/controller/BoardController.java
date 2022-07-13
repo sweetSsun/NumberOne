@@ -424,7 +424,6 @@ public class BoardController {
 		 return mav;
 		 
 	 }
-
 	 
 	 //자취방 자랑글 상세 모달 요청
 	 @RequestMapping ( value = "/selectRoomView")
