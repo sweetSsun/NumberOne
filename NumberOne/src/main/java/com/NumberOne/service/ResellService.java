@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.NumberOne.dao.ResellDao;
+import com.NumberOne.dto.ChatDto;
 import com.NumberOne.dto.GoodsDto;
 import com.NumberOne.dto.PageDto;
 import com.NumberOne.dto.Paging;
@@ -311,7 +312,7 @@ public ModelAndView selectResellPageList(Paging paging) {
 
 		ArrayList<GoodsDto> gd_resellView = rdao.selectResellView_goods(ubDto);
 
-		ArrayList<UsedBoardDto> memberSellList = rdao.selectResellView_List(ubDto.getUbmid());
+		ArrayList<UsedBoardDto> memberSellList = rdao.selectResellView_List(ub_resellView.getUbmid());
 		
 		String zzimCheck = rdao.selectZzimCheck(loginId, ubDto.getUbcode());
 		
@@ -414,8 +415,9 @@ public ModelAndView selectResellPageList(Paging paging) {
 
 	public int insertResellWarning_ajax(String loginId, String ubcode) {
 	System.out.println("insertResellWarning_ajax 호출");
-		
+	System.out.println("로그인아이디:" + loginId);
 		int insertResult = rdao.insertResellWarning_ajax(loginId, ubcode);
+		
 		return insertResult;
 	}
 
@@ -457,6 +459,67 @@ public ModelAndView selectResellPageList(Paging paging) {
 
 		return mav;
 		
+	}
+
+
+	public ModelAndView insertResellChat(String[] gd_names, ChatDto chat, String gdtitle) {
+		System.out.println("insertResellChat() 호출");
+		ModelAndView mav = new ModelAndView();
+		String gdname = null;
+		
+		int maxChcode = rdao.selectMaxChcode();
+		int chcode = 0;
+		
+			System.out.println("채팅MAX번호 : "+maxChcode);
+			if (maxChcode==0) {
+				chcode = 1; 
+			} else {
+				chcode = maxChcode + 1;
+			}				
+		System.out.println("채팅번호 : "+chcode);
+		chat.setChcode(chcode);
+		System.out.println("DB입력 전 : "+chat);
+		
+		gdtitle+= "___";
+		if(gd_names.length==1) {
+			
+			for (String gdcheck : gd_names)
+				gdtitle += gdcheck;
+			System.out.println(gdtitle);
+		}
+		else {
+			for (String gdcheck : gd_names) {
+				
+				gdtitle += gdcheck+"//"; 
+				System.out.println(gdtitle);
+			}			
+		}
+		gdname += "관심있어요";
+		System.out.println("dao전 출력: "+gdname);
+		int chatResult = rdao.insertResellChat(gdtitle, chat);
+		System.out.println(chatResult);
+		if(chatResult>0) {
+			System.out.println("입력성공");
+			
+			
+			
+		}
+		
+		return null;
+	}
+
+
+	public String updateResellState_ajax(GoodsDto gdDto) {
+		System.out.println("updateResellState_ajax() 호출");
+		
+		int stateResult = rdao.updateResellState_ajax(gdDto);
+		String result = null;
+		if(stateResult>0) {
+			result = "OK";
+		}
+		
+		
+		return result;
 	}
 
 	
