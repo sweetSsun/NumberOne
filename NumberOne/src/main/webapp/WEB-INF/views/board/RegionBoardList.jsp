@@ -85,7 +85,8 @@
 				<div class="row" style="margin:auto;">
 					<h2 class="text-center">지역게시판 전체글목록 페이지 : RegionBoardListPage.jsp</h2>
 				</div>
-				<form action="selectBoardSearchList" method="get" onsubmit="return searchTextCheck();">
+				<form action="selectRegionSearchList" method="get" onsubmit="return searchTextCheck();">
+					<input type="hidden" name="bdrgcode" value=" ">
 					<div class="row ">
 						<!-- 검색기능 -->
 						<div class="col-5" align="right">
@@ -107,7 +108,7 @@
 				<div class="row" style="margin-top: 20px;">
 					<div class="col">
 						<!--  말머리 정렬  -->
-						<select class="bdCategoryList" onchange="">
+						<select class="bdCategoryList" onchange="regionSel(this.value)">
 							<option class="bdcategorySel malmeori" value="" disabled selected >지역선택</option>
 							<option class="bdcategorySel" value="ALL">전국</option>
 							<option class="bdcategorySel" value="SEL">서울</option>
@@ -145,7 +146,8 @@
 							<td style="font-size: 17px;">추천</td>
 						</tr>
 						
-						<c:forEach items="${noticeList }" end="2" var="notice">
+						<c:forEach items="${noticeList }" var="notice">
+							<c:if test="${notice.nbfix == 1 }">
 							<!-- 공지게시판 -->
 							<tr class="fw-bold" style="border-bottom: solid #E0E0E0 1px;">
 								<td class="text-center tableCell">${notice.nbcode}</td>
@@ -158,10 +160,11 @@
 								<td class="text-center tableCell">${notice.nbhits }</td>
 								<td></td>
 							</tr>
+							</c:if>
 						</c:forEach>
 					</thead>
 					
-					<tbody id="bdCategoryList">
+					<tbody id="regionList">
 					<!-- 일반게시판 목록 -->
 					<c:forEach items="${regionList }" var="board">
 						<c:if test="${board.bdcategory != '자랑' }">
@@ -215,8 +218,6 @@
 		var bdcategory =  "";
 		location.href= "loadToBoardWrite?bdcategory="+bdcategory;
 	}
-
-	
 </script>
 
 <script type="text/javascript">
@@ -229,9 +230,53 @@
 		
 			return false;
 		}
-		
 	}
 </script>
+
+<script type="text/javascript">
+	/* 지역정렬 */
+	function regionSel(region){
+		console.log("선택 지역 : " + region);
+		
+		var output = "";
+		$.ajax({
+			type : "get",
+			url : "selectRegionList_ajax",
+			data : { "rgcode" : region },
+			dataType : "json",
+			async : false,
+			success : function(regionList){
+				console.log(regionList)
+				
+				for( var i=0; i<regionList.length; i++){
+					
+					output += "<tr style=\"border-bottom: solid #E0E0E0 1px;\">"
+					output += "<td class=\"text-center tableCell\">"+ regionList[i].bdcode + "</td>"
+					output += "<td class=\"bdcategory text-center tableCell\">" + regionList[i].bdrgname + "</td>"
+					output += "<td class=\"tableCell\">"
+					output += "<a href='selectBoardView?bdcode=" + regionList[i].bdcode + "'>" + regionList[i].bdtitle
+							+ "<span class=\"fw-bold\" style=\"font-size:15px; color:#00bcd4;\">&nbsp;" + regionList[i].bdrpcount + "</span> </a>"
+					output += "</td>"
+					output += "<td class=\"text-center tableCell\">"
+					output += "<a href=\"#\">" + regionList[i].bdnickname + "</a>"
+					output += "</td>"
+					output += "<td class=\"text-center tableCell\">" + regionList[i].bddate + "</td>"
+					output += "<td class=\"text-center tableCell\">" + regionList[i].bdhits + "</td>"
+					output += "<td class=\"fw-bold text-center tableCell\" style=\"color: #00bdc4;\">" + regionList[i].bdrccount + "</td>"
+					output += "</tr>"
+				}
+				
+			}
+			
+		});
+		$("#regionList").html(output);
+		
+		
+	}
+	
+
+</script>
+
 
 
 

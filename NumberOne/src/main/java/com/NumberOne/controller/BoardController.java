@@ -380,6 +380,28 @@ public class BoardController {
 		 return mav;
 	 }
 	 
+	 //지역카테고리 목록 (ajax)
+	 @RequestMapping ("/selectRegionList_ajax")
+	 @ResponseBody
+	 public String selectRegionList_ajax(String rgcode) {
+		 System.out.println("지역카테고리 목록 조회 ");
+		 
+		 String selRegionList_ajax = bsvc.selectRegionList_ajax(rgcode);
+		 
+		 return selRegionList_ajax;
+		 
+	 }
+	 //지역게시판 검색
+	 @RequestMapping ("/selectRegionSearchList")
+	 public ModelAndView selectRegionSearchList(String bdrgcode, String bdrgname, String searchType, String searchText) {
+		 System.out.println("지역게시판 검색결과 페이지 이동 요청");
+		 
+		 ModelAndView mav = bsvc.selectRegionSearchList(bdrgcode, bdrgname, searchType, searchText);
+		 
+		 return mav;
+	 }
+	 
+	 
 	 //지역게시판 이동 
 	 @RequestMapping ( value = "/selectRegionBoardList")
 	 public ModelAndView selectRegionBoardList() {
@@ -394,6 +416,7 @@ public class BoardController {
 	 @RequestMapping ( value = "/selectSelBoardList")
 	 public ModelAndView selectSelBoardList() {
 		 System.out.println("서울게시판 이동");
+		
 		 
 		 ModelAndView mav = bsvc.selectSelBoardList();
 		 
@@ -410,6 +433,7 @@ public class BoardController {
 		 
 		 return mav;
 	 }
+	 
 	 
 	 //경기게시판 이동 
 	 @RequestMapping ( value = "/selectGgdBoardList")

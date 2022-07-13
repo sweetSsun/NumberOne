@@ -406,7 +406,7 @@ public class BoardService {
 		System.out.println("BoardService.insertBoardComment_ajax() 호출");
 
 		ReplyDto reply = new ReplyDto();
-
+		
 		String loginId = (String) session.getAttribute("loginId");
 		System.out.println("로그인 아이디 : " + loginId);
 		System.out.println("댓글작성할 글번호 : " + bdcode);
@@ -438,6 +438,7 @@ public class BoardService {
 		System.out.println(rpcode);
 
 		// Reply 객체에 저장
+		reply.setRpcontents(rpcontents);
 		reply.setRpcode(rpcode);
 		reply.setRpbdcode(bdcode);
 		reply.setRpmid(loginId);
@@ -938,7 +939,8 @@ public class BoardService {
 		
 		return mav;
 	}
-
+	
+	
 	//경기게시판 이동
 	public ModelAndView selectGgdBoardList() {
 		System.out.println("BoardService.selectGgdBoardList() 호출");
@@ -985,7 +987,7 @@ public class BoardService {
 		
 		mav.addObject("noticeList", noticeList);
 		mav.addObject("regionList", regionList);
-		mav.setViewName("board/RegionGsdBoardList");
+		mav.setViewName("board/RegionJldBoardList");
 		
 		return mav;
 	}
@@ -1002,7 +1004,7 @@ public class BoardService {
 		
 		mav.addObject("noticeList", noticeList);
 		mav.addObject("regionList", regionList);
-		mav.setViewName("board/RegionGsdBoardList");
+		mav.setViewName("board/RegionCcdBoardList");
 		
 		
 		return mav;
@@ -1109,5 +1111,39 @@ public class BoardService {
 		System.out.println("updateResult: "+updateResult);
 		return mav;
 
+	}
+
+	//지역카테고리 목록 (ajax)
+	public String selectRegionList_ajax(String rgcode) {
+		System.out.println("BoardService.selectRegionList_ajax() 호출");
+		System.out.println("선택한 지역코드 : " + rgcode);
+		
+		ArrayList<BoardDto> selRegionList = bdao.selectRegionList_ajax(rgcode); 
+		System.out.println(selRegionList);
+		
+		Gson gson = new Gson();
+		String selRegionList_ajax = gson.toJson(selRegionList);
+		
+		return selRegionList_ajax;
+	}
+
+	//지역게시판 검색결과 
+	public ModelAndView selectRegionSearchList(String bdrgcode, String bdrgname, String searchType, String searchText) {
+		System.out.println("BoardService.selectRegionSearchList() 호출");
+		ModelAndView mav = new ModelAndView();
+		
+		System.out.println("검색 - 선택지역코드: " + bdrgcode);
+		System.out.println("검색타입: " + searchType);
+		System.out.println("검색어: " + searchText);
+		
+		ArrayList<BoardDto> searchList = bdao.selectRegionSearchList(bdrgcode, searchType, searchText);
+		System.out.println(searchList);
+		
+		mav.addObject("bdrgcode", bdrgcode);
+		mav.addObject("bdrgname", bdrgname);
+		mav.addObject("searchBdList", searchList);
+		mav.setViewName("board/RegionSearchList");
+		
+		return mav;
 	}
 }
