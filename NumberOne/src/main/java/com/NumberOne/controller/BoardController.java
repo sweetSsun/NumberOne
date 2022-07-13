@@ -412,6 +412,7 @@ public class BoardController {
 		 return mav;
 	 }
 	 
+<<<<<<< HEAD
 	 //서울게시판 이동 
 	 @RequestMapping ( value = "/selectSelBoardList")
 	 public ModelAndView selectSelBoardList() {
@@ -419,10 +420,19 @@ public class BoardController {
 		
 		 
 		 ModelAndView mav = bsvc.selectSelBoardList();
+=======
+	 //지역별 게시판 이동 
+	 @RequestMapping ( value = "/selectDetailBoardList")
+	 public ModelAndView selectDetailBoardList(String bdrgcode) {
+		 System.out.println("지역별 게시판 이동");
+		 System.out.println(bdrgcode);
+		 ModelAndView mav = bsvc.selectDetailBoardList(bdrgcode);
+>>>>>>> 31fa105dd83155432087c736054d418b75094138
 		 
 		 return mav;
 		 
 	 }
+<<<<<<< HEAD
 	 
 	 //인천게시판 이동 
 	 @RequestMapping ( value = "/selectIcnBoardList")
@@ -496,11 +506,14 @@ public class BoardController {
 		 return mav;
 	 }
 	 
+=======
+
+>>>>>>> 31fa105dd83155432087c736054d418b75094138
 	 
 	 //자취방 자랑글 상세 모달 요청
 	 @RequestMapping ( value = "/selectRoomView")
 	 public @ResponseBody String selectRoomView(String bdcode) {
-		 System.out.println(bdcode+"번 자강글 상세모달 요청");
+		 System.out.println(bdcode+"번 자랑글 상세모달 요청");
 		 String roomView_json = bsvc.selectRoomView(bdcode);
 		 
 		 return roomView_json;

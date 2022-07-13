@@ -9,8 +9,9 @@
 <body>
 </body>
 <script type="text/javascript">
-	var checkMsg = "${msg}"
-	console.log(checkMsg.length);
+	var checkMsg = "${msg}";
+	console.log("${msg}");
+	console.log("${msg}".length);
 	if(checkMsg.length > 0){
 		alert(checkMsg);
 	}

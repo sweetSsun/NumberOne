@@ -207,7 +207,7 @@
 		on b.bdcode = sc.scbdcode
 		left outer join (select rcbdcode, count(*) as bdrecommend from recommend group by rcbdcode) rc
 		on b.bdcode = rc.rcbdcode
-		left outer join (select rpbdcode, count(*) as bdreply from reply group by rpbdcode) rp
+		left outer join (select rpbdcode, count(*) as bdreply from reply WHERE RPSTATE=1 group by rpbdcode) rp
 		on b.bdcode = rp.rpbdcode
 		left outer join members m
 		on b.bdmid = m.mid
