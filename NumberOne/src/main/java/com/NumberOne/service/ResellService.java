@@ -494,16 +494,14 @@ public ModelAndView selectResellPageList(Paging paging) {
 				System.out.println(gdtitle);
 			}			
 		}
-		gdname += "관심있어요";
+		gdtitle += "관심있어요";
 		
-		System.out.println("dao전 출력: "+gdname);
+		System.out.println("dao전 출력: "+gdtitle);
 		int chatResult = rdao.insertResellChat(gdtitle, chat);
 		System.out.println(chatResult);
 		if(chatResult>0) {
 			System.out.println("입력성공");
-			
-			
-			
+						
 		}
 		
 		return null;
@@ -524,27 +522,25 @@ public ModelAndView selectResellPageList(Paging paging) {
 	}
 
 
-	public String updateResellState_usedBoardAjax(UsedBoardDto ubDto, GoodsDto gdDto) {
+	public String updateResellState_usedBoardAjax(UsedBoardDto ubDto) {
 		System.out.println("updateResellState_usedBoardAjax() 호출");
 		String result = null;
 		
 		
 		int usedBoardState = rdao.updateResellState_usedBoardAjax(ubDto);
 		
-		gdDto.setGdubcode(ubDto.getUbcode());
-		
-		
-		if(ubDto.getUbstate() == 0) {
+		if(usedBoardState>0){
+			if( ubDto.getUbstate() == 0) {							
+				result = "SOLD";
+			}else {
+				result = "ING";
+			}
 			
+		}
+		
 				
-				int goodsState = rdao.updateResellState_usedBoardAjax(ubDto, gdDto);
-		}
-		else {
-			// 
-		}
 		
-		
-		return null;
+		return result;
 	}
 
 	

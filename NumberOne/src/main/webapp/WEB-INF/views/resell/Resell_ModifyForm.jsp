@@ -228,8 +228,6 @@
 	}
 </script>
 
-
-
 <!-- 상품 상태 확인 -->
 <script type="text/javascript">
 	
@@ -263,17 +261,17 @@
 		$.ajax({
 			type : 'get',
 			url : 'updateResellState_usedBoardAjax',
-			data : {'ubcode' ubcode ,'ubstate': select_ubstate, 'gd_code' : gd_code, 'gd_state' : gd_state },
+			data : {'ubcode' ubcode ,'ubstate': select_ubstate},
 
 			success : function(result) {
 				console.log("결과", result);
-				if(result=='OK'){
+				if(result=='SOLD'){
 					alert("변경성공 = 판매완료");
-					
+					document.getElementById("titleMsg").innerText = "판매완료된 글입니다.";
 				}
 				else{
 					alert("변경성공 = 판매중");
-					
+					document.getElementById("titleMsg").innerText = "판매중";
 				}
 				
 			}

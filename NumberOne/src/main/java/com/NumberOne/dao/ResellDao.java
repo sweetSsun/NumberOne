@@ -65,7 +65,7 @@ public interface ResellDao {
 
 	int updateResellState_GoodsAjax(GoodsDto gdDto);
 
-	int updateResellState_usedBoardAjax(@Param("ubDto") UsedBoardDto ubDto,@Param("gdDto") GoodsDto gdDto);
+	int updateResellState_usedBoardAjax(UsedBoardDto ubDto);
 
 	
 	

@@ -120,11 +120,10 @@ public class ResellController {
 	}
 	
 	@RequestMapping(value = "/updateResellState_usedBoardAjax")
-	public @ResponseBody String updateResellState_usedBoardAjax(UsedBoardDto ubDto, GoodsDto gdDto) {		
+	public @ResponseBody String updateResellState_usedBoardAjax(UsedBoardDto ubDto) {		
 		System.out.println("updateResellState_usedBoardAjax 요청");
-		System.out.println(gdDto);
 		
-		String updateResult = rsvc.updateResellState_usedBoardAjax(ubDto, gdDto);
+		String updateResult = rsvc.updateResellState_usedBoardAjax(ubDto);
 
 		return updateResult;
 	}
