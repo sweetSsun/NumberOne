@@ -70,9 +70,9 @@ public class ResellController {
 		System.out.println("updateResellModify 호출");
 		ModelAndView mav = new ModelAndView();
 
-		mav = rsvc.updateResellModify(ubDto);
+		//mav = rsvc.updateResellModify(ubDto);
 
-		return mav;
+		return null;
 	}
 
 	@RequestMapping(value = "/updateResellDelete")
@@ -109,16 +109,26 @@ public class ResellController {
 		return sell_buyList;
 
 	}
-	@RequestMapping(value = "/updateResellState_ajax")
-	public @ResponseBody String updateResellState_ajax(GoodsDto gdDto) {		
-		System.out.println("updateResellState_ajax 요청");
+	@RequestMapping(value = "/updateResellState_GoodsAjax")
+	public @ResponseBody String updateResellState_GoodsAjax(GoodsDto gdDto) {		
+		System.out.println("updateResellState_GoodsAjax 요청");
 		System.out.println(gdDto);
 		
-		String updateResult = rsvc.updateResellState_ajax(gdDto);
+		String updateResult = rsvc.updateResellState_GoodsAjax(gdDto);
 
 		return updateResult;
-
 	}
+	
+	@RequestMapping(value = "/updateResellState_usedBoardAjax")
+	public @ResponseBody String updateResellState_usedBoardAjax(UsedBoardDto ubDto, GoodsDto gdDto) {		
+		System.out.println("updateResellState_usedBoardAjax 요청");
+		System.out.println(gdDto);
+		
+		String updateResult = rsvc.updateResellState_usedBoardAjax(ubDto, gdDto);
+
+		return updateResult;
+	}
+	
 	
 	
 	

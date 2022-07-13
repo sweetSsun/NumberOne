@@ -63,7 +63,9 @@ public interface ResellDao {
 
 	int selectMaxChcode();
 
-	int updateResellState_ajax(GoodsDto gdDto);
+	int updateResellState_GoodsAjax(GoodsDto gdDto);
+
+	int updateResellState_usedBoardAjax(@Param("ubDto") UsedBoardDto ubDto,@Param("gdDto") GoodsDto gdDto);
 
 	
 	

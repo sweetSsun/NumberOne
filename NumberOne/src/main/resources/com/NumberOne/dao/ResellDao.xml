@@ -293,7 +293,7 @@
  	 <update id="updateResellDelete_ub">
  	 	UPDATE USEDBOARDS
  	 	SET UBSTATE = 2
- 	 	WHERE UBCODE = #{ubcode} AND UBSELLBUY = #{ubsellbuy} 
+ 	 	WHERE UBCODE = #{ubcode} 
  	 </update>
  	 
  	 <update id="updateResellDelete_gd">
@@ -302,11 +302,22 @@
  	 WHERE GDUBCODE = #{ubcode}
  	 </update>
  	
-	<update id="updateResellState_ajax">
+ 	
+ 	<update id="updateResellState_usedBoardAjax">
+ 	UPDATE USEDBOARDS
+ 	SET UBSTATE = #{ubstate} 	
+ 	WHERE UBCODE = #{ubcode}
+ 	</update>
+ 	
+	<update id="updateResellState_GoodsAjax">
 	UPDATE GOODS
 	SET GDSTATE = #{gdstate}
-	WHERE GDUBCODE = #{gdubcode} AND GDCODE = #{gdcode}  
+	WHERE GDCODE = #{gdcode}  
+		</update>
+	
+	<update id="">
 	
 	</update>
+	
 			
 </mapper>

@@ -104,7 +104,7 @@
 
 								<div class="flex_card ">
 									<div class="card_top">
-										<a href="selectResellView?ubcode=${sell_List.ubcode }&ubsellbuy=${sell_List.ubsellbuy }}&modifyCheck=LIST">${sell_List.ubtitle }</a>
+										<a href="selectResellView?ubcode=${sell_List.ubcode }&ubsellbuy=${sell_List.ubsellbuy }&modifyCheck=LIST">${sell_List.ubtitle }</a>
 									</div>
 
 									<div class="card_body font-s text-right padding-right text-bold">${sell_List.ubnickname }</div>

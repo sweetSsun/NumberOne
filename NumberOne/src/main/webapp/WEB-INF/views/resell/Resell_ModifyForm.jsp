@@ -19,8 +19,9 @@
 	max-width: 400px;
 	max-height: 300px;
 }
-.line-through{
-text-decoration: line-through;
+
+.line-through {
+	text-decoration: line-through;
 }
 </style>
 
@@ -28,15 +29,22 @@ text-decoration: line-through;
 
 
 <body>
-	<!-- TobBar -->
-	<%@ include file="/WEB-INF/views/includes/TopBar.jsp"%>
-	<!-- End of TobBar -->
-
+	<!-- TopBar -->
+	<%-- 
+        <c:choose>
+                <c:when test="${sessionScope.loginId != 'admin'}">
+                        <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
+                </c:when>
+                <c:otherwise>
+                        <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
+                </c:otherwise>
+        </c:choose>
+        --%>
+	<!-- End of TopBar -->
 	<main>
 		<!-- 사이드바 -->
 
-		<%@ include file="/WEB-INF/views/includes/SideBar_Mypage.jsp"%>
-
+		<%-- <%@ include file="/WEB-INF/views/includes/SideBar_Resell.jsp"%> --%>
 		<section>
 			<!-- 본문 -->
 			<div class="container">
@@ -46,7 +54,7 @@ text-decoration: line-through;
 					<div class="container-header">
 						<div class="container-flex_1 flex_between">
 							<div class="item_start">
-								<span> <select class="select-size" id="boardTitle" name="ubsellbuy">
+								<span> <select class="select-size" id="totalOp" onchange="resellState(this,'${gd_resellView}')">
 										<option value="1">판매중</option>
 										<option value="0">판매완료</option>
 								</select>
@@ -77,25 +85,23 @@ text-decoration: line-through;
 
 							<c:forEach items="${gd_resellView}" var="gdList">
 
-
 								<div class="container-card_goods_2">
 									<div class="item-basis_1 wrap">
 
-										<select name="ubstate" id="selectOp" class="selectState">
+										<select id="selectOp" class="selectState" onchange="select_option(this, '${gdList.gdcode }')">
 											<option value="1">판매중</option>
 											<option value="0">판매완료</option>
 										</select>
-									<input type="hidden" class="select_gdstate" value="${gdList.gdstate }">
-									<input type="hidden" class="select_gdcode" value="${gdList.gdcode }">
 
 									</div>
+									<input type="hidden" class="select_gdcode" value="${gdList.gdcode }">
+									<input type="hidden" class="select_gdstate" value="${gdList.gdstate }">
 									<div class="item-basis_2" class="gd_nameList">${gdList.gdname }</div>
 									<div class="item-basis_3" class="gd_priceList">${gdList.gdprice }</div>
 								</div>
 
 
 							</c:forEach>
-
 						</div>
 
 
@@ -157,15 +163,14 @@ text-decoration: line-through;
 </body>
 <!-- 페이지로드시 실행할 코드 스크립트 -->
 <script type="text/javascript">
-const ubstate = '${ub_resellView.ubstate}'; //글 상태 값  o or 1
-const boardTitle = document.getElementById("boardTitle"); //select태그지정
-const ubcode = '${ub_resellView.ubcode}';
-const sellbuy = '${ub_resellView.ubsellbuy}';
-const selectOp = document.querySelector("#selectOp");
-const selectStates = document.querySelectorAll(".selectState");
-const select_gdcode = document.querySelectorAll(".select_gdcode");
-const select_gdstate = 	document.querySelectorAll(".select_gdstate");
-const wrap = document.querySelector(".wrap");	
+	const ubstate = '${ub_resellView.ubstate}'; //글 상태 값  o or 1
+	const totalOp = document.getElementById("totalOp"); //select태그지정
+	const ubcode = '${ub_resellView.ubcode}';
+	const sellbuy = '${ub_resellView.ubsellbuy}';
+	const selectOp = document.querySelector("#selectOp");
+	const selectStates = document.querySelectorAll(".selectState");
+	const select_gdcode = document.querySelectorAll(".select_gdcode");
+	const select_gdstate = document.querySelectorAll(".select_gdstate");
 	
 	//페이지로드시 무조건실행
 	window.onload = function() {
@@ -176,60 +181,123 @@ const wrap = document.querySelector(".wrap");
 			location.href = "loadToLogin"
 
 		}
+
+		/* 페이지로드시 글의 판매상태체크 */
+		for (var i = 0; i < totalOp.options.length; i++) {
+
+			if (totalOp.options[i].value == ubstate) {
+				/* 글의 판매상태 option (0:판매완료 ,1:판매중)와 
+				페이지 이동시 넘어온 글의 상태값 파라메터가 같을 경우 그 option에 selected 속성 추가*/
+				totalOp.options[i].selected = 'true';
+
+				if (ubstate == '0') { // 글의 상태값이 0(판매완료)이면 실행.
+					document.getElementById("titleMsg").innerText = "판매완료된 글입니다.";
+
+					for (var j = 0; j < select_gdstate.length; j++) {
+
+						selectStates[j].selectedIndex = '0';
+						// 모든 상품들의 상태 값을 0(판매완료)으로 변경.
+					}
+
+				} else { //글의 상태값이 1(판매중)이면 실행
+					document.getElementById("titleMsg").innerText = "판매중";
+
+					for (var j = 0; j < select_gdstate.length; j++) {
+						console.log("selectStates[j].selectedIndex : ",selectStates[j].selectedIndex);
+						console.log("select_gdstate[j].value : ",select_gdstate[j].value);
 						
-
-for(var i = 0; i < select_gdstate.length; i++){
-	//console.log("select_gdstate[i]",select_gdstate[i]);
-	if(select_gdstate[i].value==0){
-		selectStates[i].selectedIndex = '1';
+						//상품별로 상태값에 따라 option을 selected
+						
+						if (select_gdstate[j].value == 0) {
 		
-	}
-	else{
-		selectStates[i].selectedIndex = '0';
-	}
+							selectStates[j].selectedIndex = '1';
+							
+							//1번인덱스 selected 
 
-	
-	}
+						} else {
 
-		
-	}
-</script>
-
-
-<script type="text/javascript">
-
-	 
-	
-	for (var i = 0; i < boardTitle.options.length; i++) {
-		if (boardTitle.options[i].value == ubstate) {
-			boardTitle.options[i].selected = 'true'
-			ubstate == '0' ? document.getElementById("titleMsg").innerText = "판매완료된 글입니다."
-			
-					: document.getElementById("titleMsg").innerText = "판매중";
-			break; 	
+							selectStates[j].selectedIndex = '0';
+							console.log();
+							//0번인덱스 selected
+						}
+					}
+				}
+				break;
+			}
 		}
 	}
-	
-	
 </script>
+
+
 
 <!-- 상품 상태 확인 -->
 <script type="text/javascript">
-
-
+	
 </script>
 <!-- select태그 option선택 이벤트 -->
 <script type="text/javascript">
-	boardTitle.addEventListener('change', selectOp_value);
 
-	function selectOp_value() {
+	totalOp.addEventListener('change', selectOp_value);
 
-		boardTitle.options[boardTitle.selectedIndex].value == '0' ? document
+	function selectOp_value(e) {
+		console.log("e",e.target.value);
+		let gd_state = [];
+		let gd_code = [];
+		let select_ubstate  = e.target.value;
+		
+	for(var i in select_gdstate){
+		console.log(select_gdstate[i].value);
+		console.log(select_gdcode[i].value);
+		if(select_gdstate[i].value != undefined){
+			
+			gd_state.push(select_gdstate[i].value);
+		
+			gd_code.push(select_gdcode[i].value);
+		
+		}		
+	}
+	console.log("상품의 상태 : ", gd_state);
+	console.log("상품의 번호 : ", gd_code);
+	console.log("글 번호 : ", ubcode);
+	console.log("글 상태 : ",select_ubstate)
+		$.ajax({
+			type : 'get',
+			url : 'updateResellState_usedBoardAjax',
+			data : {'ubcode' ubcode ,'ubstate': select_ubstate, 'gd_code' : gd_code, 'gd_state' : gd_state },
+
+			success : function(result) {
+				console.log("결과", result);
+				if(result=='OK'){
+					alert("변경성공 = 판매완료");
+					
+				}
+				else{
+					alert("변경성공 = 판매중");
+					
+				}
+				
+			}
+			
+			
+			
+		})		
+	
+		totalOp.options[totalOp.selectedIndex].value == '0' ? document
 				.getElementById("titleMsg").innerText = "판매완료된 글입니다."
 		// 판매완료체크 하면 전체디서블드 처리?
 
 		: document.getElementById("titleMsg").innerText = "판매중";
 	}
+	 
+	//			이건 객체를 통째로 받아와서 스플릿 많이 해야함. 
+	function resellState(selOP,geTest){
+		
+		console.log("글상태값 :",selOP.value);
+		console.log("코드 :",geTest);
+		
+	}
+	
+	
 </script>
 
 
@@ -268,11 +336,9 @@ for(var i = 0; i < select_gdstate.length; i++){
 
 <!-- 전페이지(상세페이지)로 돌아가기 -->
 <script type="text/javascript">
-	
 	/* 수정취소 코드 */
-	
+
 	let cancelModify = document.querySelector("#cancelModify");
-	console.log(cancelModify);
 	cancelModify.addEventListener("click", backPage);
 	function backPage() {
 		console.log("수정취소버튼 클릭이벤트");
@@ -283,78 +349,27 @@ for(var i = 0; i < select_gdstate.length; i++){
 
 <!-- 상품 상태변경시 실행 스크립트  -->
 <script type="text/javascript">
-/* 상품 상태변경 코드 */
-	var gdstate;
-	var gdcode;
+	/* 상품 상태변경 코드 */
 
-	selectStates.forEach(function(e){
-		e.addEventListener('change', changeOp)
-		
-	});
-		
-	function changeOp(e) {
-		console.log(e);
-		console.log(e.target);
-		console.log(e.target.value);
-		
+	function select_option(sel_tag, gd_code) {
 
+		console.log('매개변수확인(sel_tag) :', sel_tag.value);
+		console.log('매개변수확인(gd_code) :', gd_code);
 
-			if (e.target.value == '0') {
-				gdcode = select_gdcode[selectState.selectedIndex].value;
-				console.log("상품코드 : " + gdcode);
-				gdstate = 0;
-				gdUpdateState(ubcode, gdcode, gdstate);
-			} else {
-				gdcode = select_gdcode[selectState.selectedIndex].value;
-				console.log("상품코드 : " + gdcode);
-				gdstate = 1;
-				gdUpdateState(ubcode, gdcode, gdstate);
-			}
-		}
-	
-	
-	<%--	
-	selectStates.forEach(function(selectState){
-		selectState.addEventListener('change', changeOp)
-		
-	});
-	
-	
-	function changeOp() {
-		console.log("셀렉트된옵션" + selectOp.value);
-		console.log("ubcode:", ubcode);
+		gdUpdateState(gd_code, sel_tag.value);
 
-
-		for (var i = 0; i < selectStates.length; i++) {
-
-			if (selectStates[i].value == '0') {
-				gdcode = select_gdcode[i].value;
-				console.log("상품코드 : " + gdcode);
-				gdstate = 0;
-				gdUpdateState(ubcode, gdcode, gdstate);
-				break;
-			} else {
-				gdcode = select_gdcode[i].value;
-				console.log("상품코드 : " + gdcode);
-				gdstate = 1;
-				gdUpdateState(ubcode, gdcode, gdstate);
-				break;
-			}
-		}
 	}
-	 --%>
 </script>
 
 
 <!-- 상품 상태변경 ajax  -->
 <script type="text/javascript">
 	//상품 상태변경 ajax 
-	function gdUpdateState(udcode, gdcode, gdstate) {
+	function gdUpdateState(gdcode, gdstate) {
 		$.ajax({
 			type : 'get',
-			url : 'updateResellState_ajax',
+			url : 'updateResellState_GoodsAjax',
 			data : {
-				'gdubcode' : ubcode,
 				'gdcode' : gdcode,
 				'gdstate' : gdstate
 			},
@@ -362,7 +377,7 @@ for(var i = 0; i < select_gdstate.length; i++){
 				console.log(result);
 				if (result == 'OK') {
 					alert("변경성공")
-					
+
 				}
 			}
 		})
