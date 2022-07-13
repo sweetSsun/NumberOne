@@ -47,4 +47,16 @@
 		FROM CHATROOM
 		WHERE CRCODE = #{cmcrcode}
 	</select>
+	
+	<!-- crcode 최대값 조회 -->
+	<select id="selectMaxCrcode" resultType="String">
+		SELECT NVL(MAX(CRCODE), CR00000)
+		FROM CHATROOM
+	</select>
+	
+	<!-- chatRoom 생성 -->
+	<insert id="insertChatRoom">
+		INSERT INTO CHATROOM
+		VALUES ()
+	</insert>
 </mapper>

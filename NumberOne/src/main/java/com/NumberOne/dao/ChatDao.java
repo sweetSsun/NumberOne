@@ -32,6 +32,10 @@ public interface ChatDao {
 	
 	/* 새로한거! */
 	ChatRoomDto selectChatRoom(String cmcrcode);
+
+	int insertChatRoom(ChatMessageDto chatMessage);
+
+	String selectMaxCrcode();
 	
 	
 	
