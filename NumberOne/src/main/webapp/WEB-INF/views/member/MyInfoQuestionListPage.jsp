@@ -23,6 +23,13 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 
 <style type="text/css">
+
+	section{
+		max-width: 70%;
+		margin: auto;
+		margin-top: 0%;
+	}
+	
 	#board_column{
 		border-bottom: solid gray 3px;
 	}

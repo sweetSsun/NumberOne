@@ -407,14 +407,7 @@ public class BoardService {
 	   public int insertBoardReply_ajax(String bdcode, String rpcontents) {
 	      System.out.println("BoardService.insertBoardComment_ajax() 호출");
 
-<<<<<<< HEAD
-		ReplyDto reply = new ReplyDto();
-		
-		String loginId = (String) session.getAttribute("loginId");
-		System.out.println("로그인 아이디 : " + loginId);
-		System.out.println("댓글작성할 글번호 : " + bdcode);
-		System.out.println("작성할 댓글 내용 : " + rpcontents);
-=======
+
 	      ReplyDto reply = new ReplyDto();
 	      
 	      String loginId = (String) session.getAttribute("loginId");
@@ -425,7 +418,6 @@ public class BoardService {
 	      String maxRpcode = bdao.selectReplyMaxNumber();
 	      System.out.println("maxRpcode : " + maxRpcode);
 	      String rpcode = "RP";
->>>>>>> 31fa105dd83155432087c736054d418b75094138
 
 	      if (maxRpcode == null) {
 	         rpcode = rpcode + "00001";
@@ -454,15 +446,8 @@ public class BoardService {
 	      reply.setRpbdcode(bdcode);
 	      reply.setRpmid(loginId);
 
-<<<<<<< HEAD
-		// Reply 객체에 저장
-		reply.setRpcontents(rpcontents);
-		reply.setRpcode(rpcode);
-		reply.setRpbdcode(bdcode);
-		reply.setRpmid(loginId);
-=======
 	      int insertResult = bdao.insertBoardReply_ajax(reply);
->>>>>>> 31fa105dd83155432087c736054d418b75094138
+
 
 	      return insertResult;
 	   }
@@ -951,7 +936,7 @@ public class BoardService {
 		return mav;
 	}
 	
-<<<<<<< HEAD
+
 	//인천게시판 이동
 	public ModelAndView selectIcnBoardList() {
 		System.out.println("BoardService.selectIcnBoardList() 호출");
@@ -1073,8 +1058,6 @@ public class BoardService {
 		return mav;
 	}
 
-=======
->>>>>>> 31fa105dd83155432087c736054d418b75094138
 	
 	// 자랑글 수정
 	public ModelAndView updateRoomView(BoardDto room, RedirectAttributes ra) throws IllegalStateException, IOException {
@@ -1184,7 +1167,6 @@ public class BoardService {
 		return mav;
 
 	}
-<<<<<<< HEAD
 
 	//지역카테고리 목록 (ajax)
 	public String selectRegionList_ajax(String rgcode) {
@@ -1220,39 +1202,3 @@ public class BoardService {
 		return mav;
 	}
 }
-=======
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
->>>>>>> 31fa105dd83155432087c736054d418b75094138

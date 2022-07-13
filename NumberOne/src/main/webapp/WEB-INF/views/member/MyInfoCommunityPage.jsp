@@ -8,6 +8,7 @@
 <title>1인자 - 마이페이지 커뮤니티</title>
 
 <%@ include file="/resources/css/BarCss.jsp"%>
+
 <!-- 부트스트랩 -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
@@ -26,12 +27,33 @@
 
 
 <style type="text/css">
+
+	section{
+		max-width: 70%;
+		margin: auto;
+		margin-top: 0%;
+	}
+
+
+
 	#board_column{
 		border-bottom: solid gray 3px;
+	
 	}
 	table{
 		margin: 20px;
-		font-size: 20px;
+		font-size: 18px;
+		table-layout: fixed;
+		border-left: 20px; 
+	}
+	
+	td {
+	overflow:hidden;		
+	white-space : nowrap;		
+	text-overflow: ellipsis;
+	padding: 10px;
+	
+
 	}
 	
 .site-btn {
@@ -81,13 +103,14 @@ background-color: #00BCD4;
 						</tr>
 						<c:forEach items="${board }" var="board">
 							<!-- 작성글 목록 -->
-							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center;">
-								<td>${board.bdcode }</td>
-								<td>
+							<tr style="border-bottom: solid #E0E0E0 1px;">
+								<td style="text-align: center;">${board.bdcode }</td>
+								<td style="text-align: center;">
 									<c:choose>
 										<c:when test="${board.bdcategory.equals('자랑') }">
 											<!-- 자랑글 상세 -->
-											<a href="selectRoomList?bdcode=${board.bdcode }&jsp=view">${board.bdtitle}</a>
+											<a href="selectRoomList?bdcode=${board.bdcode }&jsp=view">
+											${board.bdtitle}</a>
 										</c:when>
 										<c:otherwise>
 											<!-- 일반글 상세 -->										
@@ -95,8 +118,8 @@ background-color: #00BCD4;
 										</c:otherwise>
 									</c:choose>
 								</td>	
-								<td>${board.bdreply }</td>
-								<td>${board.bddate }</td>								
+								<td style="text-align: center;">${board.bdreply }</td>
+								<td style="text-align: center;">${board.bddate }</td>								
 							</tr>
 						</c:forEach>
 				</table>
@@ -127,11 +150,13 @@ background-color: #00BCD4;
 							<!-- 작성글 목록 -->
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center;">
 								<td>${reply.rpcode }</td>
-								<td>
+								<td style="width: 500px;" >
 									<c:choose>
 										<c:when test="${reply.rpbdcategory.equals('자랑') }">
 											<!-- 자랑글 상세 -->
-											<a href="loadToRoomViewPage?bdcode=${reply.rpbdcode }">${reply.rpbdtitle}</a>
+											<a href="loadToRoomViewPage?bdcode=${reply.rpbdcode }">
+											<span style="text-overflow : ellipsis;">${reply.rpbdtitle}</span>
+											</a>
 										</c:when>
 										<c:otherwise>
 											<!-- 일반글 상세 -->										
@@ -139,7 +164,7 @@ background-color: #00BCD4;
 										</c:otherwise>
 									</c:choose>
 								</td>
-								<td>
+								<td style="width: 500px;" >
 									<c:choose>
 										<c:when test="${reply.rpbdcategory.equals('자랑') }">
 											<!-- 자랑글 상세 -->
@@ -181,10 +206,13 @@ background-color: #00BCD4;
 							<!-- 스크랩 목록(스크랩은 자랑글만 가능함 -->
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center; ">
 								<td>${scrap.scbdcode }</td>
-								<td><a href="loadToRoomViewPage?bdcode=${scrap.scbdcode }">${scrap.bdtitle }</a></td>
+								<td>
+								<a href="loadToRoomViewPage?bdcode=${scrap.scbdcode }">
+								${scrap.bdtitle }</a></td>
 								<td>${scrap.bdreply }</td>
-								<td><input type="text" value="${scrap.mnickname }" readonly="readonly" onclick="writeMember('${scrap.mnickname }');"
-								style="border: 0px; text-align: center; cursor: pointer;"></td>
+								<td>
+								<span onclick="writeMember('${scrap.mnickname }');"
+								style="text-align: center; cursor: pointer;">${scrap.mnickname }</span></td>
 								<td>${scrap.bddate }</td>								
 							</tr>
 														
