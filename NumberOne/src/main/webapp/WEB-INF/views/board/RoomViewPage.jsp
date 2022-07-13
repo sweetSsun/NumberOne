@@ -527,8 +527,8 @@ function adminRpBan(){
 			async : false,
 			success : function(updateResult){
 				if( updateResult > 0 ){
-					console.log("관리자 뎃글 삭제 성공!");
-					replyPrint(bottom);
+					console.log("관리자 댓글 삭제 성공!");
+					replyPrint();
 					
 					//목록 페이지 댓글수 업데이트 (-1)
 					logUpdate('bdreplies', 'down');
@@ -738,7 +738,7 @@ roomView_ajax(nowBdcode)
 				//console.log(replyOutput);
 				$("#reply").html(replyOutput);
 
-				if(scroll == 'bottom'){					
+				if(scroll != null){					
 					$("#reply").scrollTop($("#reply")[0].scrollHeight);
 				}
 			}
@@ -793,8 +793,8 @@ roomView_ajax(nowBdcode)
 			async : false,
 			success : function(updateResult){
 				if( updateResult > 0 ){
-					console.log("뎃글 삭제 성공!");
-					replyPrint(bottom);
+					console.log("댓글 삭제 성공!");
+					replyPrint();
 					
 					//목록 페이지 댓글수 업데이트 (-1)
 					logUpdate('bdreplies', 'down');
@@ -831,7 +831,7 @@ roomView_ajax(nowBdcode)
 			async : false,
 			success : function(insertResult){
 				if( insertResult > 0 ){
-					console.log("뎃글 등록 성공!");
+					console.log("댓글 등록 성공!");
 					$("#inputReply").val("");
 					replyPrint(bottom);
 					

@@ -152,18 +152,18 @@
 					<table class="sideregion_tags">
 						<tr>
 							<td><a href="selectRegionBoardList">전체</a></td>
-							<td><a href="selectSelBoardList">서울</a></td>
-							<td><a href="selectIcnBoardList">인천</a></td>
+							<td><a href="selectDetailBoardList?bdrgcode=SEL">서울</a></td>
+							<td><a href="selectDetailBoardList?bdrgcode=ICN">인천</a></td>
 						</tr>
 						<tr>
-							<td><a href="selectGgdBoardList">경기</a></td>
-							<td><a href="selectGsdBoardList">경상</a></td>
-							<td><a href="selectJldBoardList">전라</a></td>
+							<td><a href="selectDetailBoardList?bdrgcode=GGD">경기</a></td>
+							<td><a href="selectDetailBoardList?bdrgcode=GSD">경상</a></td>
+							<td><a href="selectDetailBoardList?bdrgcode=JLD">전라</a></td>
 						</tr>
 						<tr>
-							<td><a href="selectCcdBoardList">충청</a></td>
-							<td><a href="selectGwdBoardList">강원</a></td>
-							<td><a href="selectJjdBoardList">제주</a></td>
+							<td><a href="selectDetailBoardList?bdrgcode=CCD">충청</a></td>
+							<td><a href="selectDetailBoardList?bdrgcode=GWD">강원</a></td>
+							<td><a href="selectDetailBoardList?bdrgcode=JJD">제주</a></td>
 						</tr>
 					</table>
 				</div>
