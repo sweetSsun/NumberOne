@@ -77,7 +77,7 @@
 	<main>
 		
 		<!-- 사이드바 -->
-		<%@ include file="/WEB-INF/views/includes/SideBar_Admin.jsp" %>
+		<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
 		
 		<section>
 		<!-- 본문 -->
@@ -141,7 +141,8 @@
 							<td style="font-size: 17px;">추천</td>
 						</tr>
 						
-						<c:forEach items="${noticeList }" end="2" var="notice">
+						<c:forEach items="${noticeList }" var="notice">
+							<c:if test="${notice.nbfix == 1 }">
 							<!-- 공지게시판 -->
 							<tr class="fw-bold" style="border-bottom: solid #E0E0E0 1px;">
 								<td class="text-center tableCell">${notice.nbcode}</td>
@@ -154,6 +155,7 @@
 								<td class="text-center tableCell">${notice.nbhits }</td>
 								<td></td>
 							</tr>
+							</c:if>
 						</c:forEach>
 					</thead>
 					

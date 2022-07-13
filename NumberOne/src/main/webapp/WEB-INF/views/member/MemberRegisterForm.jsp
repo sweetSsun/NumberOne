@@ -165,7 +165,8 @@ background-color: #00BCD4;
                                 <div class="col-lg-6  col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p>아이디<span>*</span></p>
-                                        <input type="text" placeholder="영문&숫자 5~10자로 입력해주세요." id="inputMid" name="mid">
+                                        <input type="text" placeholder="특수문자 제외 영문&숫자 5~10자로 입력해주세요." id="inputMid" name="mid" 
+                                        onkeyup="characterCheck(this)" onkeydown="characterCheck(this)">
                                         <span id="idCheckMsg" class="msg"></span>  
                                     </div>
                                 </div>
@@ -360,6 +361,20 @@ background-color: #00BCD4;
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="${pageContext.request.contextPath }/resources/MemberJs/daumPostCode.js"></script>
     
+ 
+
+ <script type="text/javascript">
+	//특수문자 입력 방지
+	function characterCheck(obj){
+	var regExp = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi; 
+	//허용할 특수문자는 여기서 삭제하면 됨
+	//지금은 띄어쓰기도 특수문자 처리됨 참고하셈
+	if( regExp.test(obj.value) ){
+		alert("특수문자는 입력하실수 없습니다.");
+		obj.value = obj.value.substring( 0 , obj.value.length - 1 ); // 입력한 특수문자 한자리 지움
+		}
+	}
+</script>
     
 	<!-- 아이디 중복 체크 -->
     <script type="text/javascript">
@@ -522,6 +537,9 @@ background-color: #00BCD4;
     		$("#inputMid").focus();
     		return false;
     	}
+    	
+
+    	
     	/*이름 유무*/
     	if($("#inputMname").val().length == 0){
     		alert("이름을 입력해주세요.");
