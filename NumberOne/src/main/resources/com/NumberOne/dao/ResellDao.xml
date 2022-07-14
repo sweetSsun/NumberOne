@@ -299,11 +299,8 @@
 	UPDATE GOODS
 	SET GDSTATE = #{gdstate}
 	WHERE GDCODE = #{gdcode}  
-		</update>
-	
-	<update id="">
-	
 	</update>
+
 	
 			
 </mapper>

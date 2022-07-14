@@ -8,6 +8,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.NumberOne.dao.ChatDao;
 import com.NumberOne.dto.ChatMessageDto;
 import com.NumberOne.dto.ChatRoomDto;
+import com.google.gson.Gson;
 
 @Service
 public class ChatService {
@@ -23,7 +24,7 @@ public class ChatService {
 	}
 
 	// 중고거래 관심상품 채팅메세지 입력 요청
-	public int insertResellChat(String[] gd_names, ChatMessageDto chatMessage, String gdtitle) {
+	public String insertResellChat(String[] gd_names, ChatMessageDto chatMessage, String gdtitle) {
 		System.out.println("ChatService.insertResellChat() 호출");
 		ModelAndView mav = new ModelAndView();
 		int insertResult = 0;
@@ -71,6 +72,9 @@ public class ChatService {
 
 		// 채팅 메세지 입력
 		chdao.insertChatMessage(chatMessage);
+		
+		Gson gson = new Gson();
+		String crcode = gson.toJson(chatMessage.getCmcrcode());
 //		
 //		// 채팅 출력_닉네임
 //		String chfrmnick = chdao.selectMfrnick(chatMessage.getCmfrmid());
@@ -78,15 +82,15 @@ public class ChatService {
 //		chatMessage.setChfrmnick(chfrmnick);
 //		chatMessage.setChtomnick(chtomnick);
 		
-		return insertResult;
+		return crcode;
 	}
 
 
 
-	// 채팅방 유무 확인 (신규채팅방 생성 확인용)
-	public ChatRoomDto selectChatRoom(String mid) {
+	// 채팅방 조회 (보낸 메세지의 crcode)
+	public ChatRoomDto selectChatRoom(String crcode) {
 		System.out.println("ChatService.selectChatRoom_1() 호출");
-		ChatRoomDto chatRoom = chdao.selectChatRoom_1(mid); 
+		ChatRoomDto chatRoom = chdao.selectChatRoom_1(crcode); 
 		return chatRoom;
 	}
 

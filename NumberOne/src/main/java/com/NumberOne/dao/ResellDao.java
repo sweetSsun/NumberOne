@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.NumberOne.dto.ChatMessageDto;
 import com.NumberOne.dto.GoodsDto;
 import com.NumberOne.dto.Paging;
 import com.NumberOne.dto.UsedBoardDto;

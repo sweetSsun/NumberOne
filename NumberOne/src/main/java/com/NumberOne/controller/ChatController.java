@@ -17,7 +17,7 @@ public class ChatController {
 	private ModelAndView mav;
 	
 	@RequestMapping(value="/loadToChat")
-	public ModelAndView loadToChat() {
+	public ModelAndView loadToChat(String crcode) {
 		System.out.println("채팅 페이지 요청");
 		mav = new ModelAndView();
 		mav.setViewName("chat/Chat");
@@ -25,7 +25,7 @@ public class ChatController {
 	}
 	
 	@RequestMapping(value = "/insertResellChat")
-	public @ResponseBody int insertResellChat(String[] gd_names, ChatMessageDto chatMessage, String gdtitle) {
+	public @ResponseBody String insertResellChat(String[] gd_names, ChatMessageDto chatMessage, String gdtitle) {
 		System.out.println("중고거래 관심상품 채팅메세지 입력 요청");
 		mav = new ModelAndView();
 		
@@ -34,9 +34,11 @@ public class ChatController {
 //		}
 //		System.out.println(chat);
 //		System.out.println(gdtitle);
-		int insertResult = chsvc.insertResellChat(gd_names, chatMessage, gdtitle);
+		String crcode = chsvc.insertResellChat(gd_names, chatMessage, gdtitle);
 
-		return insertResult;
+		return crcode;
+		// 채팅방 번호를 return해줌.
+		// ajax로 insertResellChat을 호출하고, 리턴받은 crcode를 loadToChat 맵핑주소로 보내준다 (새창으로 띄우기 "blank_")
 	}
 	
 	

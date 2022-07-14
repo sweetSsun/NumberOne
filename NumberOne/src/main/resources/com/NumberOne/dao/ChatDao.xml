@@ -19,11 +19,7 @@
 	WHERE MID = #{chfrmid}
 	</select>
 	
-	<select resultType="String" id="selectMtonick">
-	SELECT MNICKNAME
-	FROM MEMBERS
-	WHERE MID = #{chtomid}
-	</select>
+
 	
 	<select resultType="String" id="selectTime">
 	SELECT TO_CHAR(CHDATE, 'YYYY-MM-DD AM HH:MI')
@@ -33,10 +29,17 @@
 
 	<!-- 여기부터 새로한거! -->
 	<!-- chatRoom 조회(회원정보/탑바용) -->
-	<select id="selectChatRoom_1" resultType="com.NumberOne.dto.ChatRoomDto">
+<!-- 	<select id="selectChatRoom_1" resultType="com.NumberOne.dto.ChatRoomDto">
 		SELECT * 
 		FROM CHATROOM
 		WHERE CRFRMID = #{mid} OR CRTOMID = #{mid}
+	</select> -->
+
+	<!-- chatRoom 조회(채팅방 유무 확인용) -->
+	<select id="selectChatRoom_1" resultType="com.NumberOne.dto.ChatRoomDto">
+		SELECT * 
+		FROM CHATROOM
+		WHERE CRCODE = #{crcode}
 	</select>
 	
 	<!-- chatRoom 조회(신규채팅방 생성 조회용) -->
@@ -74,4 +77,11 @@
 			VALUES (${cmcode}, #{cmcrcode}, #{cmfrmid}, #{cmcontents}, SYSDATE, 0)
 		</if>
 	</insert>
+	
+	<!-- 채팅 보낸 사람 닉네임 조회 -->
+	<select id="selectMnickname" resultType="String" >
+		SELECT MNICKNAME
+		FROM MEMBERS
+		WHERE MID = #{mid}
+	</select>
 </mapper>

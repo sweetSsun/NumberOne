@@ -6,6 +6,8 @@
 <meta charset="UTF-8">
 <title>1인자 - 1:1채팅</title>
 <%@ include file="/resources/css/CommonCss.jsp" %>
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <style>
 	html{
@@ -208,11 +210,11 @@
 	        	<div>
 	            	<div class="row">
 	                	<div class="col-9" style="padding-right: 0px;">
-		                    <textarea class="insertChat" id="inputMsg" placeholder="메세지입력" onkeydown="if(event.keyCode==13){messageSend();}"
+		                    <textarea class="insertChat" id="inputMsg" placeholder="메세지입력"
 		                    style="padding-left: 5px; border: none; background-color: #F2F2FF;"></textarea>
 	                    </div>
 	                    <div class="col-3" style="padding-left:0;">
-	                    	<input type="button" class="btn btn-lg insertBtn" onclick="messageSend()" value="Talk" style="width:100%;">
+	                    	<input type="button" class="btn btn-lg insertBtn" onclick="sendBtn()" value="Talk" style="width:100%;">
 	                    	
 	                    	
 	                    	<!-- onkeydown을 통해서 엔터키로도 입력되도록 설정. -->
@@ -244,42 +246,99 @@
 	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 
 	<script type="text/javascript">
-		var chatUrl = '${pageContext.request.contextPath }/chatWskMessage';
+		let crcode = "${param.crcode }";
+		console.log("해당 채팅방 코드 : " + crcode)
+		// enter키 이벤트
+		$(document).on("keydown", $("#inputMsg"), function(e){
+			if(e.keyCode == 13 && !e.shiftKey){
+				e.preventDefault(); // 엔터키 입력 막기
+				sendBtn(); // Talk 버튼 클릭한 것과 동일한 함수 호출
+			}
+		});
+		
+		// Talk 버튼 클릭
+		function sendBtn(){
+			const cmcontents = $("#inputMsg").val();	// 현재 입력된 메세지 저장
+			if(cmcontents.trim().length > 0){	// 공백 제외 입력한 글이 있을 때 send
+				sendMessage(cmcontents);
+			}
+			$("#inputMsg").val(""); // 입력창 초기화
+			$("#inputMsg").focus();
+		}
+	
+		
+		var chatUrl = "${pageContext.request.contextPath }/chatWskMessage";
 		var chatWebSocket = new SockJS(chatUrl);
-		
-		// 연결시 실행
+		// 연결시 실행 (채팅방 입장)
 		chatWebSocket.onopen = function() {
-		    console.log('open');
-		};
+		    console.log("open");
+			// ENTER-CHAT 이라는 메세지를 보내 Java Map에 session을 추가한다.
+			const data = {
+					"cmcrcode" : crcode,
+					"cmfrmid" : "${sessionScope.loginId}",
+					"cmcontents" : "ENTER-CHAT"
+			}			
+			let jsonData = JSON.stringify(data);
+			chatWebSocket.send(jsonData);
+		}
 		
-		// 서버로부터 메세지/데이터를 받으면 수행할 작업
-		chatWebSocket.onmessage = function(event) {
-			console.log("onmessage event.data : "+event.data);
+		// 메세지 전송
+		function sendMessage(cmcontents){
+			var data = {
+				"cmcrcode" : crcode,
+				"cmfrmid" : "${sessionScope.loginId}",
+				"cmcontents" : cmcontents
+			}
+			
+			checkLR(data); // 왼쪽, 오른쪽 출력 확인
+			
+			var jsonData = JSON.stringify(data);
+			chatWebSocket.send(jsonData);
+		}
+		
+		// 메세지 수신
+		chatWebSocket.onmessage = function(data) {
+	   		var receiveMsg = JSON.parse(data.data);
+	   		console.log("보낸 사람 닉네임 : " + receiveMsg.cmfrmnickname);
 		    
-	   		var receiveData = JSON.parse(event.data);
-	   		console.log("보낸사람 : "+receiveData.chfrmnick);
-	   		console.log("받은메세지 : "+receiveData.chcontents);
-		    
-	   		 	
-		    var receiveMsg = "<div style=\"text-align:left;\"><span>"+receiveData.chfrmnick+"</span><div>";
-		    receiveMsg += "<div style=\"display: table;\"><span class=\"chatRe\">"+receiveData.chcontents+"</span>";
-		    receiveMsg += "<span style=\"vertical-align: bottom; display: table-cell;\">"+receiveData.chdatetime+"</span></div>";
+	   		if (receiveMsg.cmfrmid != "${sessionScope.loginId}"){
+	   			checkLR(receiveMsg);
+	   		}
+	    };
+
+	    // 추가된 메세지의 보낸 사람이 나인지 상대방인지 확인
+	    function checkLR(data){
+	    	var LR = (data.cmfrmid != "${sessionScope.loginId}") ? "left":"right";
+	    	appendMessage(LR, data);
+	    }
+	    
+	    // 메세지 append
+	    function appendMessage(LR, data){
+	    	var message = "";
+	    	if (LR == "left"){
+			    message = "<div style=\"text-align:left;\"><span>"+data.cmfrmnickname+"</span><div>";
+			    message += "<div style=\"display: table;\"><span class=\"chatRe\">"+data.cmcontents+"</span>";
+			    message += "<span style=\"vertical-align: bottom; display: table-cell;\">"+data.cmdate+"</span></div>";
+	    	} else {
+	    		message ="<div style=\"text-align:right; margin-top: 10px;\"><span class=\"chatSe\">"+data.cmcontents+"</span>";
+	    		message += "<span style=\"vertical-align: bottom;\">"+data.cmdate+"</span></div>";
+	    	}
+			$("#chatList").append(message);
+			$("#chatList").scrollTop( $("#chatList")[0].scrollHeight );
 		    	    
-		    
-		    $("#chatList").append(receiveMsg);
-		    $("#chatList").scrollTop( $("#chatList")[0].scrollHeight );
-			console.log("받은 메세지 json : "+JSON.stringify(receiveData));
+	    }
 
 		    
-	    };
 	    
         // 연결이 끊어지면 실행되는 부분
 	    chatWebSocket.onclose = function(event) {
 	    	console.log("onclose event.data : " + event.data);
-		};
-		
+		}
+		chatWebSocket.onerror = function(event){
+			  console.log(event);
+		}
 	</script>
-
+<!-- 
 	<script type="text/javascript">
 		function messageSend(){
 			var frmid = '${sessionScope.loginId}';
@@ -307,5 +366,5 @@
 			//location.href="insertChat";
 			
 		}
-	</script>
+	</script> -->
 </html>

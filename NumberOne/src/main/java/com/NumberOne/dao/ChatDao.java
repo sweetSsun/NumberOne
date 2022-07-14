@@ -15,8 +15,7 @@ public interface ChatDao {
 
 //	
 
-//	// 채팅 보낸사람 닉네임 확인
-//	String selectMfrnick(String chfrmid);
+
 //		
 //	// 채팅 받는사람 닉네임 확인
 //	String selectMtonick(String chtomid);
@@ -34,7 +33,7 @@ public interface ChatDao {
 
 	String selectMaxCrcode();
 
-	ChatRoomDto selectChatRoom_1(String mid);
+	ChatRoomDto selectChatRoom_1(String crcode);
 	
 	ChatRoomDto selectChatRoom_2(@Param ("crfrmid") String crfrmid, @Param ("crtomid") String crtomid);
 	
@@ -42,7 +41,7 @@ public interface ChatDao {
 
 	int insertChatMessage(ChatMessageDto chatMessage);
 
-
+	String selectMnickname(String mid);
 
 	
 	
