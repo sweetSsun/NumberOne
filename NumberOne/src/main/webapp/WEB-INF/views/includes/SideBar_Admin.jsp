@@ -34,31 +34,13 @@ body.sideon {
 }
 
 
-.sidetitle{
+.sidetitle_close{
 	color: white! important;
 	border-color: white! important;	
 }
 
 
-.side_admin{
-    display: grid;
-    text-align: left;
-    align-items: center;
-    height: 50px;
-    font-size: 20px;
-    padding-left: 10px;
-    font-weight: bold;
-}
 
-
-.side_admin span a:hover, .side_mypage a:hover {
-	color: #00bcd4;
-	text-decoration: none;
-}
-
-.side_admin:hover, .side_mypage:hover {
-	background-color: white;
-}
 
 
 
@@ -82,41 +64,41 @@ body.sideon {
 		<div id="sideclose">
 			<div class="sidemenu">
 			
-				<div id="sidebar-toggleOn" class="sidetitle" style="padding-bottom: 12px; padding-top: 12px; border-color: white; color: white;">
+				<div id="sidebar-toggleOn" class="sidetitle_close" style="padding-bottom: 12px; padding-top: 12px; border-color: white; color: white;">
 					<span><a class="sideOnImg"><i class="fa fa-bars"></i></a></span>
 				</div>
 				
-				<div class="sideroom">
+				<div class="sideclose_room">
 					<span>
 						<a href="admin_selectMemberList"><i class="fa-solid fa-circle-user"></i></a>
 					</span>
 				</div>
-				<div class="sideroom">
+				<div class="sideclose_room">
 					<span>
 						<a href="admin_selectNoticeList"><i class="fa-solid fa-volume-low"></i></a>
 					</span>
 				</div>
-				<div class="sideroom">
+				<div class="sideclose_room">
 					<span>
 						<a href="admin_selectResellList"><i class="fa-solid fa-carrot"></i></a>
 					</span>
 				</div>
-				<div class="sideroom">
+				<div class="sideclose_room">
 					<span>
 						<a href="admin_selectBoardList"><i class="fa-solid fa-ban"></i></a>
 					</span>
 				</div>
-				<div class="sideroom">
+				<div class="sideclose_room">
 					<span>
 						<a href="admin_selectBdfixList"><i class="fa-solid fa-thumbtack"></i></a>
 					</span>
 				</div>
-				<div class="sideroom">
+				<div class="sideclose_room">
 					<span>
 						<a href="admin_selectReplyList"><i class="fa-brands fa-replyd"></i></a>
 					</span>
 				</div>
-				<div class="sideroom">
+				<div class="sideclose_room">
 					<span>
 						<a href="admin_selectQuestionList"><i class="fa-solid fa-headset"></i></a>
 					</span>
@@ -129,7 +111,7 @@ body.sideon {
 
 			<div class="sidemenu">
 			
-				<div class="sidetitle">
+				<div class="sidetitle_close">
 					<span><a href="admin_loadToAdminMainPage">관리자페이지</a></span>
 				</div>
 				
@@ -155,10 +137,10 @@ body.sideon {
 						<a href="admin_selectBoardList"><i class="fa-solid fa-square-pen"></i>&nbsp;&nbsp;커뮤니티</a>
 					</span>
 				
-					<div class="side_mypage">
+					<div class="side_admin_a">
 						<a href="admin_selectBoardList"><i class="fa-solid fa-ban"></i>&nbsp;&nbsp;경고/정지</a>
 					</div>
-					<div class="side_mypage">
+					<div class="side_admin_a">
 						<a href="admin_selectBdfixList"><i class="fa-solid fa-thumbtack"></i>&nbsp;&nbsp;배너</a>
 					</div>
 				</div>

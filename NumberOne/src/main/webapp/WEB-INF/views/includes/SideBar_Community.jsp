@@ -14,7 +14,6 @@
 
 </style>
 
-
 </head>
 
 <body>
@@ -31,40 +30,40 @@
 		<div id="sideclose">
 			<div class="sidemenu" style="color: white;">
 			
-				<div id="sidebar-toggleOn" class="sidetitle" style="padding-bottom: 12px; padding-top: 12px; border-color: white; color: white;">
+				<div id="sidebar-toggleOn" class="sidetitle_close" style="padding-bottom: 12px; padding-top: 12px; border-color: white; color: white;">
 					<span><a class="sideOnImg"><i class="fa fa-bars"></i></a></span>
 				</div>
 				
-				<div class="sideroom">
+				<div class="sideclose_room">
 					<span>
 						<!-- 공지방 -->
 						<a href="selectNoticeBoardList"><i class="fa-solid fa-volume-low"></i></a>
 					</span>
 				</div>
-				<div class="sideroom">
+				<div class="sideclose_room">
 					<span>
 						<a href="selectRoomList"><i class="fa-solid fa-house-user"></i></a>
 					</span>
 				</div>
-				<div class="sideroom">
+				<div class="sideclose_room">
 					<span>
 						<!-- 자유방 -->
 						<a href="selectFreeBoardList"><i class="fa-solid fa-comments"></i></a>
 					</span>
 				</div>
-				<div class="sideroom">
+				<div class="sideclose_room">
 					<span>
 						<!-- 질문방 -->
 						<a href="selectQuestionBoardList"><i class="fa-solid fa-circle-question"></i></a>
 					</span>
 				</div>
-				<div class="sideroom">
+				<div class="sideclose_room">
 					<span>
 						<!-- 정보방 -->
 						<a href="selectInfoBoardList"><i class="fa-solid fa-head-side-virus"></i></a>
 					</span>
 				</div>
-				<div class="sideroom">
+				<div class="sideclose_room">
 					<span>
 						<!-- 후기방 -->
 						<a href="selectReviewBoardList"><i class="fa-solid fa-pen-to-square"></i></a>
