@@ -78,7 +78,6 @@ public class BoardController {
 		return mav;
 	}
 	
-	
 	//게시판 메인 페이지 이동 
 	@RequestMapping( value="/loadToBoardMainPage")
 	public ModelAndView loadToBoardMainPage() {
@@ -89,13 +88,21 @@ public class BoardController {
 	
 	//전체글목록 페이지 
 	@RequestMapping ( value = "/selectBoardList")
-	public ModelAndView boardListPage() {
+	public ModelAndView boardListPage(Paging paging) {
 	    System.out.println("게시판 글목록 페이지 요청");
-	    ModelAndView mav = bsvc.boardListPage();
+	    ModelAndView mav = bsvc.boardListPage(paging);
 	    return mav;
 	}
 	
-	
+	//카테고리별 글목록 조회 ( ajax ) - 페이징 용
+	@RequestMapping ( value = "/selectBoardCategoryList_ajax")
+	@ResponseBody public String selectBoardCategoryList_ajax( Paging paging ) {
+		System.out.println("카테고리별 글목록 요청_ajax");
+		
+		String boardCateList_json = bsvc.selectBoardCategoryList_ajax(paging);
+		
+		return boardCateList_json;
+	}
 	
 	//카테고리별 글목록 조회 ( ajax )
 	@RequestMapping ( value = "/getBoardCategoryList_ajax")
@@ -107,23 +114,23 @@ public class BoardController {
 	    return boardCateList_json;
 	      
 	}
-	   
-	 //글검색 
-	 @RequestMapping ( value = "/selectBoardSearchList")
-	 public ModelAndView selectBoardSearchList( String bdcategory, String searchType, String searchText) {
-	     System.out.println("글검색 목록 요청");
-	      
-	     ModelAndView mav = bsvc.selectBoardSearchList(bdcategory, searchType, searchText);
-	      
-	     return mav;
-	 }
-	 
-	 //공지글검색
-	 @RequestMapping ( value = "/selectNoticeSearchList")
-	 public ModelAndView selectNoticeSearchList( String searchType, String searchText ) {
-		 System.out.println("공지글 검색 목록 요청");
+	
+	//자유,질문,정보,후기게시판 이동 및 글검색
+	@RequestMapping ( value = "/selectCategoryBoardList")
+	public ModelAndView selectCategoryBoardList(Paging paging) {
+		System.out.println(paging.getSearchVal() + "게시판 이동 및 검색 요청");
+		
+		ModelAndView mav = bsvc.selectCategoryBoardList(paging);
+		
+		return mav;
+	}
+	
+	 //공지게시판 이동 및 글검색
+	 @RequestMapping ( value = "/selectNoticeBoardList")
+	 public ModelAndView selectNoticeBoardList( Paging paging ) {
+		 System.out.println("공지글 이동 및 검색 요청");
 		 
-		 ModelAndView mav = bsvc.selectNoticeSearchList(searchType, searchText);
+		 ModelAndView mav = bsvc.selectNoticeBoardList(paging);
 		 
 		 return mav;
 	 }
@@ -206,7 +213,6 @@ public class BoardController {
 		 return updateResult;
 	 }
 	 
-	 
 	 //댓글삭제(상태변경) (ajax)
 	 @RequestMapping ( value = "/updateReplyState_ajax")
 	 @ResponseBody 
@@ -217,7 +223,6 @@ public class BoardController {
 		 
 		 return updateResult;
 	 }
-	 
 	 //게시글 추천
 	 @RequestMapping ( value = "/insertBoardRecommend_ajax")
 	 @ResponseBody 
@@ -346,69 +351,20 @@ public class BoardController {
 		 
 		 return mav;
 	 }
-	 //공지게시판 이동
-	 @RequestMapping ( value = "/selectNoticeBoardList")
-	 public ModelAndView selectNoticeBoardList() {
-		 System.out.println("공지게시판 이동 요청");
-		 
-		 ModelAndView mav = bsvc.selecNoticeBoardList();
-		 
-		 return mav;
-	 }
-	 
-	 //자유게시판 이동 
-	 @RequestMapping ( value = "/selectFreeBoardList")
-	 public ModelAndView selectFreeBoardList() {
-		 System.out.println("자유게시판 이동 요청");
-		 
-		 ModelAndView mav = bsvc.selectFreeBoardList();
-		 
-		 return mav;
-		 
-	 }
-	 
-   
-	 //질문게시판 이동 
-	 @RequestMapping ( value = "/selectQuestionBoardList")
-	 public ModelAndView selectQuestionBoardList() {
-		 System.out.println("질문게시판 이동 요청");
-		 
-		 ModelAndView mav =bsvc.selectQuestionBoardList();
-		 
-		 return mav;
-		 
-	 }
-   
-	 //정보게시판 이동 
-	 @RequestMapping ( value = "/selectInfoBoardList")
-	 public ModelAndView selectInfoBoardList() {
-		 System.out.println("정보게시판 이동");
-		 
-		 ModelAndView mav = bsvc.selectInfoBoardList();
-		 
-		 return mav;
-	 }
-	 //후기게시판 이동 
-	 @RequestMapping ( value = "/selectReviewBoardList")
-	 public ModelAndView selectReviewBoardList() {
-		 System.out.println("후기게시판 이동");
-		 
-		 ModelAndView mav = bsvc.selectReviewBoardList();
-		 
-		 return mav;
-	 }
 	 
 	 //지역카테고리 목록 (ajax)
-	 @RequestMapping ("/selectRegionList_ajax")
+	 @RequestMapping ("/selectRegionBoardList_ajax")
 	 @ResponseBody
-	 public String selectRegionList_ajax(String rgcode) {
+	 public String selectRegionList_ajax(Paging paging) {
 		 System.out.println("지역카테고리 목록 조회 ");
 		 
-		 String selRegionList_ajax = bsvc.selectRegionList_ajax(rgcode);
+		 String selRegionList_ajax = bsvc.selectRegionBoardList_ajax(paging);
 		 
 		 return selRegionList_ajax;
 		 
 	 }
+	 
+	 /*
 	 //지역게시판 검색
 	 @RequestMapping ("/selectRegionSearchList")
 	 public ModelAndView selectRegionSearchList(String bdrgcode, String bdrgname, String searchType, String searchText) {
@@ -418,7 +374,7 @@ public class BoardController {
 		 
 		 return mav;
 	 }
-	 
+	 */
 	 
 	 //지역게시판 이동 
 	 @RequestMapping ( value = "/selectRegionBoardList")
@@ -430,7 +386,7 @@ public class BoardController {
 		 return mav;
 	 }
 	 
-
+	 
 	 //지역별 게시판 이동 
 	 @RequestMapping ( value = "/selectDetailBoardList")
 	 public ModelAndView selectDetailBoardList(String bdrgcode) {
@@ -493,4 +449,12 @@ public class BoardController {
 		 return mav;
 		 
 	 }
+	 
+	 
+	 /////////
+	 
+	 
+	 
+	 
+	 
 }
