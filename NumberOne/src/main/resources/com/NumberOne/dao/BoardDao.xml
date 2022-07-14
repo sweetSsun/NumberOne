@@ -216,6 +216,37 @@
 		order by bdcode desc
 	 </select>
  	 
+ 	 <select id="selectRoomTotalCount" resultType="int">
+ 	 	select count(*)
+ 	 	from boards 
+ 	 	where bdcategory = '자랑' 
+ 	 	and bdstate = '1'
+ 	 </select>
+ 	 
+ 	 <select id="selectRoomList_paging" resultType="com.NumberOne.dto.BoardDto">
+ 	 	<!-- 자랑글 목록 페이징 -->
+ 	 	select * from (select rownum rn, b.* from (select bdcode, bdmid, bdtitle, bddate, bdimg, bdstate, bdhits, bdcontents,
+		bdscrap, bdrecommend, bdreply, mnickname as bdnickname   	
+		from boards b
+		left outer join (select scbdcode, count(*) as bdscrap from scrap group by scbdcode) sc
+		on b.bdcode = sc.scbdcode
+		left outer join (select rcbdcode, count(*) as bdrecommend from recommend group by rcbdcode) rc
+		on b.bdcode = rc.rcbdcode
+		left outer join (select rpbdcode, count(*) as bdreply from reply group by rpbdcode) rp
+		on b.bdcode = rp.rpbdcode
+		left outer join members m
+		on b.bdmid = m.mid
+		where b.bdcategory='자랑'
+		and b.bdstate='1'
+		
+		<!-- 정렬 선택 -->
+		order by ${searchVal} desc nulls last) b)
+		
+		<!-- 요청한 페이지에서 출력할 글만 조회 -->		
+        where rn between #{startRow} and #{endRow}
+	 </select>
+ 	 
+ 	 
  	 <!-- !!자꾸 중복되는 메소드 -->
  	 <select id="selectNoticeBoardView" resultType="com.NumberOne.dto.NoticeDto">	
 	 	 <!-- 공지글 상세 -->
@@ -600,5 +631,12 @@
  		AND BDSTATE = 1
  		ORDER BY BDCODE DESC
 	</select>
+	
+	<select id="selectFixedRoomView" resultType="com.NumberOne.dto.BoardDto">
+      SELECT B.BDCODE, M.MNICKNAME AS BDNICKNAME, B.BDTITLE, B.BDIMG
+      FROM BOARDS B, MEMBERS M
+      WHERE B.BDFIX = 1 AND M.MID=B.BDMID
+      ORDER BY BDCODE DESC
+   </select>
 	
  </mapper>
