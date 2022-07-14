@@ -135,8 +135,10 @@
 					<textarea class="bdcontents" rows="17" cols="80" name="bdcontents">${board.bdcontents }</textarea>
 				</div>
 				<div class="row mt-4">
+					<img style="max-height:200px; max-width:200px;" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg}">
 					<!-- 첨부파일! 나중에 경로 및 name 수정  -->
-					<input type="file" name="bdimgfile" value="${pageContext.request.contextPath }/resources/img/board/${board.bdimg}">
+					<div id="image_container"></div>
+					<input id="bdImg" type="file" name="bdimgfile" accept="image/*"  >
 				</div>
 				<div class="row mt-4">
 					<div class="col btn-wrapper">
@@ -158,7 +160,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" "> 게시글 작성 취소 </h5>
+                    <h5 class="modal-title"> 게시글 작성 취소 </h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -214,8 +216,8 @@
 	function modifyBoardCancel(){
 		/* 수정취소 */
 		history.back();
-		
 	}
 </script>
+
 
 </html>

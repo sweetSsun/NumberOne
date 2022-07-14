@@ -89,13 +89,20 @@ public class ReplyDto {
 	public void setRpmprofile(String rpmprofile) {
 		this.rpprofile = rpmprofile;
 	}
+	public String getRpmstate() {
+		return rpmstate;
+	}
+	public void setRpmstate(String rpmstate) {
+		this.rpmstate = rpmstate;
+	}
 	@Override
 	public String toString() {
 		return "ReplyDto [rpcode=" + rpcode + ", rpbdcode=" + rpbdcode + ", rpcontents=" + rpcontents + ", rpmid="
 				+ rpmid + ", rpdate=" + rpdate + ", rpstate=" + rpstate + ", rpbdtitle=" + rpbdtitle + ", rpbdcategory="
-				+ rpbdcategory + ", rpnickname=" + rpnickname + ", rpmprofile=" + rpprofile + ", rpprofile="
-				+ rpprofile + "]";
+				+ rpbdcategory + ", rpnickname=" + rpnickname + ", rpprofile=" + rpprofile + ", rpmprofile="
+				+ rpmprofile + ", rpmstate=" + rpmstate + "]";
 	}
+	
 	
 	
 	

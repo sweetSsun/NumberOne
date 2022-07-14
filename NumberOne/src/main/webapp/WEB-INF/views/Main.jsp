@@ -160,7 +160,7 @@
 		                            <span>1인자</span>
 		                            <h2>제목</h2>
 		                            <p>클릭시 이동합니다</p>
-		                            <a href="#" class="primary-btn">임시 버튼</a>
+		                            <a href="selectRoomList" class="primary-btn">임시 자랑방이동버튼</a>
 		                        </div>
 	                    	 </div>
 					      </div>
@@ -365,17 +365,16 @@
 		                	<div class="item">
 		                        <table>
 		                        	<tr>
-		                        		<td rowspan="3">
+		                        		<td>
 		                        			<a href="selectResellPageList?sellBuy=S"><img alt="" src="${pageContext.request.contextPath }/resources/img/resell/${SellList.ubmainimg}"></a>
 		                        		</td>
-		                        		<td><h3>${SellList.ubtitle }</h3></td>
 		                        	</tr>
+		                        	<tr>
+		                        		<td><h3>${SellList.ubtitle }</h3></td>
+	                        		</tr>
 		                        	<tr>
 		                        		<td><h3>${SellList.ubnickname }</h3></td>
 		                       		</tr>
-		                       		<tr>
-		                        		<th><h3>${SellList.ubdate }</h3></th>
-		                        	</tr>
 		                        </table>
 		                	</div>
 	                	</c:forEach>	                
@@ -394,17 +393,16 @@
 		                	<div class="item">
 		                        <table>
 		                        	<tr>
-		                        		<td rowspan="3">
+		                        		<td>
 		                        			<a href="selectResellPageList?sellBuy=B"><img alt="" src="${pageContext.request.contextPath }/resources/img/resell/${buyList.ubmainimg}"></a>
 		                        		</td>
+		                        	</tr>
+		                        	<tr>
 		                        		<td><h3>${buyList.ubtitle }</h3></td>
 		                        	</tr>
 		                        	<tr>
 		                        		<td><h3>${buyList.ubnickname }</h3></td>
 		                       		</tr>
-		                       		<tr>
-		                        		<th><h3>${buyList.ubdate }</h3></th>
-		                        	</tr>
 		                        </table>
 		                	</div>
 	                	</c:forEach>

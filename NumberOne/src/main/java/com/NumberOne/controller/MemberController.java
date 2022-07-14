@@ -274,7 +274,7 @@ public class MemberController {
 		
 		//비밀번호 찾기 - 회원 정보 확인
 		@RequestMapping(value = "/selectLookforPw_ajax")
-		public @ResponseBody String selectLookforPw_ajax(String checkMid , String checkMemail) {
+		public @ResponseBody String selectLookforPw_ajax(String checkMid , String checkMemail, MemberDto member) {
 			System.out.println("비밀번호 찾기 요청");
 			System.out.println("입력한 아이디 : " + checkMid);
 			System.out.println("입력한 메일 : " + checkMemail);

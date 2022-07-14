@@ -199,6 +199,12 @@ public interface BoardDao {
 	//지역글 목록
 	ArrayList<BoardDto> selectRegionBoardList(String bdrgcode);
 	
+	//지역 카테고리 목록 
+	ArrayList<BoardDto> selectRegionList_ajax(String rgcode);
+	
+	//지역게시판 검색결과 
+	ArrayList<BoardDto> selectRegionSearchList(@Param("bdrgcode") String bdrgcode, @Param("searchType") String searchType, @Param("searchText") String searchText);
+	
 	
 
 	

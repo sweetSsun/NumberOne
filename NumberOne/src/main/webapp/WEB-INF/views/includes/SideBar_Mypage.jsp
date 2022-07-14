@@ -61,37 +61,37 @@
 				
 				<div class="sideroom">
 					<span>
-						<a href="selectMyInfoCommunityView">글</a>
+						<a href="selectMyInfoCommunityView"><i class="fa-solid fa-pencil"></i></a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="selectMyInfoCommunityView#reply">댓글</a>
+						<a href="selectMyInfoCommunityView#reply"><i class="fa-brands fa-replyd"></i></a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="selectMyInfoCommunityView#scrap">스크랩</a>
+						<a href="selectMyInfoCommunityView#scrap"><i class="fa-solid fa-star"></i></a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="selectMyInfoResellView">팔구사구</a>
+						<a href="selectMyInfoResellView"><i class="fa-solid fa-carrot"></i></a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="selectMyInfoResellView#scroll-chat">채팅</a>
+						<a href="selectMyInfoResellView#scroll-chat"><i class="fa-solid fa-comment-dots"></i></a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="selectMyInfoResellView#scroll-zzim">찜목록</a>
+						<a href="selectMyInfoResellView#scroll-zzim"><i class="fa-solid fa-heart"></i></a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="selectMyInfoQuestionListView">1:1문의</a>
+						<a href="selectMyInfoQuestionListView"><i class="fa-solid fa-headset"></i></a>
 					</span>
 				</div>
 								
@@ -113,13 +113,13 @@
 					<span style="font-weight: bold; font-size: 20px;"><a href="selectMyInfoCommunityView">커뮤니티</a></span>
 					
 					<div class="side_mypage">
-						<a href="selectMyInfoCommunityView"><i class="fa-solid fa-volume-low"></i>&nbsp;&nbsp;글</a>
+						<a href="selectMyInfoCommunityView"><i class="fa-solid fa-pencil"></i>&nbsp;&nbsp;글</a>
 					</div>
 					<div class="side_mypage">
-						<a href="selectMyInfoCommunityView#reply"><i class="fa-solid fa-house-user"></i>&nbsp;&nbsp;댓글</a>
+						<a href="selectMyInfoCommunityView#reply"><i class="fa-brands fa-replyd"></i>&nbsp;&nbsp;댓글</a>
 					</div>
 					<div class="side_mypage">
-						<a href="selectMyInfoCommunityView#scrap"><i class="fa-solid fa-comments"></i>&nbsp;&nbsp;스크랩</a>
+						<a href="selectMyInfoCommunityView#scrap"><i class="fa-solid fa-star"></i>&nbsp;&nbsp;스크랩</a>
 					</div>
 				</div>
 				
@@ -127,13 +127,13 @@
 					<span style="font-weight: bold; font-size: 20px;"><a href="selectMyInfoResellView">중고거래</a></span>
 					
 					<div class="side_mypage">
-						<a href="selectMyInfoResellView"><i class="fa-solid fa-circle-question"></i>&nbsp;&nbsp;팔구사구</a>
+						<a href="selectMyInfoResellView"><i class="fa-solid fa-carrot"></i>&nbsp;&nbsp;팔구사구</a>
 					</div>
 					<div class="side_mypage">
-						<a href="selectMyInfoResellView#scroll-chat"><i class="fa-solid fa-head-side-virus"></i>&nbsp;&nbsp;채팅</a>
+						<a href="selectMyInfoResellView#scroll-chat"><i class="fa-solid fa-comment-dots"></i>&nbsp;&nbsp;채팅</a>
 					</div>
 					<div class="side_mypage">
-						<a href="selectMyInfoResellView#scroll-zzim"><i class="fa-solid fa-head-side-virus"></i>&nbsp;&nbsp;찜목록</a>
+						<a href="selectMyInfoResellView#scroll-zzim"><i class="fa-solid fa-heart"></i>&nbsp;&nbsp;찜목록</a>
 					</div>
 				</div>
 				
@@ -141,7 +141,7 @@
 					<span style="font-weight: bold; font-size: 20px;"><a href="selectMyInfoResellView">문의</a></span>
 				
 					<div class="side_mypage">
-						<a href="selectMyInfoQuestionListView"><i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;1:1문의</a>
+						<a href="selectMyInfoQuestionListView"><i class="fa-solid fa-headset"></i>&nbsp;&nbsp;1:1문의</a>
 					</div>
 				</div>
 				

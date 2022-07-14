@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 질문게시판</title>
+<title>1인자 - 지역 검색결과 페이지</title>
 <!-- Jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <%@ include file="/resources/css/BarCss.jsp" %>
@@ -17,12 +17,6 @@
 		background-color: white;
 	}
 	
-	.boardList{
-		margin: auto;
-	}
-	.tableCell{
-		font-size: 20px;
-	}
 	#board_column{
 		border-bottom: solid #E0E0E0 2px;
 	}
@@ -38,7 +32,7 @@
 	.bdCategoryList{
 		color : #00bcd4;
 		border: none;
-		font-size: 20px;
+		font-size: 18px;
 	}
 	.bdcategorySel{
 		font-weight: bold;
@@ -54,15 +48,16 @@
 	.searchType{
 		text-align: center;
 		border-radius: 5px;
-		font-size: 20px;
+		font-size: 18px;
 		border: solid 1px #00bcd4;
-	}
-	.community{
-		background-color: #00bcd4;
 	}
 	#inputSearchText{
 		font-size: 18px;
 	}
+	.community{
+		background-color: #00bcd4;
+	}
+
 </style>
 </head>
 <body>
@@ -86,10 +81,18 @@
 		<!-- 본문 -->
 			<div class="container">
 				<div class="row" style="margin:auto;">
-					<h2 class="text-center">질문게시판 : QuestionBoardList.jsp</h2>
+					<h2 class="text-center">지역검색결과 페이지 : RegionSearchList.jsp</h2>
 				</div>
-				<form action="selectBoardSearchList" method="get" onsubmit="return searchTextCheck();">
-				<input type="hidden" name="bdcategory" value="질문">
+				<form action="selectRegionSearchList" method="get" onsubmit="return searchTextCheck();">
+					<c:choose>
+						<c:when test="${bdrgcode != null }">
+							<input type="hidden" name="bdrgcode" value="${bdrgcode }">
+						</c:when>
+						<c:otherwise>
+							<input type="hidden" name="bdrgcode" value="">
+						</c:otherwise>
+					</c:choose>
+					
 					<div class="row ">
 						<!-- 검색기능 -->
 						<div class="col-5" align="right">
@@ -108,13 +111,25 @@
 				</form>
 						
 				</div>
-				<div class="row" style="margin-top: 20px;">
-					
+				
+				<div class="row mt-3 mb-3">
+					<!-- 검색결과 안내  -->
+					<h3 class="text-center">[ <span class="text-info">${param.searchText}</span> ] 로 검색한 결과 입니다.</h3>  
 				</div>
 				
-				<div class=" community" style="text-align:center;">
-					<span style="font-size:21px;" class="fw-bold text-white">질문게시판</span>
-				</div>
+				<c:choose>
+					<c:when test="${bdrgcode == '' }">
+						<div class=" community" style="text-align:center;">
+							<span style="font-size:21px;" class="fw-bold text-white">전체게시판 검색 결과</span>
+						</div>
+					</c:when>
+					
+					<c:otherwise>
+						<div class=" community" style="text-align:center;">
+							<span style="font-size:21px;" class="fw-bold text-white">${bdrgname}게시판 검색 결과</span>
+						</div>			
+					</c:otherwise>
+				</c:choose>
 				
 				<!-- 게시글 목록 -->
 				<div class="row">
@@ -130,41 +145,27 @@
 							<td style="font-size: 17px;">추천</td>
 						</tr>
 						
-						<c:forEach items="${noticeList }" var="notice">
-							<c:if test="${notice.nbfix == 1 }">
-							<!-- 공지게시판 -->
-							<tr class="fw-bold" style="border-bottom: solid #E0E0E0 1px;">
-								<td class="text-center tableCell">${notice.nbcode}</td>
-								<td></td>
-								<td class="tableCell">
-									<a href="selectNoticeBoardView?nbcode=${notice.nbcode }">${notice.nbtitle}</a>
-								</td>
-								<td class="text-center tableCell">관리자</td>
-								<td class="text-center tableCell">${notice.nbdate}</td>
-								<td class="text-center tableCell">${notice.nbhits }</td>
-								<td></td>
-							</tr>
-							</c:if>
-						</c:forEach>
 					</thead>
 					
 					<tbody id="bdCategoryList">
 					<!-- 일반게시판 목록 -->
-					<c:forEach items="${boardList }" var="board">
+					<c:forEach items="${searchBdList }" var="searchBd">
+						<c:if test="${searchBd.bdcategory != '자랑' }">
 						<tr style="border-bottom: solid #E0E0E0 1px;">
-							<td class="text-center tableCell">${board.bdcode}</td>
-							<td class="bdcategory text-center tableCell">${board.bdcategory}</td>
+							<td class="text-center tableCell">${searchBd.bdcode}</td>
+							<td class="bdcategory text-center tableCell">${searchBd.bdrgname}</td>
 							<td class="tableCell">
-							 	<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
-							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
+							 	<a href="selectBoardView?bdcode=${searchBd.bdcode }">${searchBd.bdtitle} 
+							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${searchBd.bdrpcount }</span> </a>
 							 </td>
 							<td class="text-center tableCell">
-								<a href="#">${board.bdnickname}</a>
+								<a href="#">${searchBd.bdnickname}</a>
 							</td>
-							<td class="text-center tableCell">${board.bddate}</td>
-							<td class="text-center tableCell">${board.bdhits }</td>
-							<td class="fw-bold text-center tableCell" style="color: #00bcd4;">${board.bdrccount}</td>
+							<td class="text-center tableCell">${searchBd.bddate}</td>
+							<td class="text-center tableCell">${searchBd.bdhits }</td>
+							<td class="fw-bold text-center tableCell" style="color: #00bcd4;">${searchBd.bdrccount}</td>
 						</tr>
+						</c:if>
 					</c:forEach>
 					</tbody>
 				</table>
@@ -192,14 +193,13 @@
 
 <script type="text/javascript">
 
-/* 글쓰기 버튼 클릭 */
+	/* 글쓰기 버튼 클릭 */
 	function loadToBoardWrite(){
 		//글작성 페이지로 이동 
-		var bdcategory = "질문";
+		var bdcategory = "";
 		location.href= "loadToBoardWrite?bdcategory="+bdcategory;
 	}
 
-	
 </script>
 <script type="text/javascript">
 	function searchTextCheck(){

@@ -46,8 +46,8 @@
 		display:inline-block;
 	}
 	.buttons{
-		margin: auto;
-		display: block;
+		margin: auto; /* 수평 */
+		display: block; /* 수직 */
 		
 	}
 	.selectPlaceHolder{
@@ -74,6 +74,11 @@
 		border: none;
 		font-size: 20px;
 	}
+	#image_container{
+		max-height: 100px;
+		max-width: 100px;
+	}
+	
 </style>
 </head>
 <body>
@@ -142,7 +147,9 @@
 					<textarea id="bdcontents" class="bdcontents" rows="17" cols="80" name="bdcontents"></textarea>
 				</div>
 				<div class="row mt-4">
-					<input id="bdImg" type="file" name="bdimgfile" accept="image/*" onchange="checkFileType()" >
+					<!-- 파일선택 -->
+					<div id="image_container"></div>
+					<input id="bdImg" type="file" name="bdimgfile" accept="image/*" onchange="setThumbnail(event);" >
 				</div>
 				<div class="row mt-4">
 					<div class="col btn-wrapper">
@@ -164,7 +171,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" "> 게시글 작성 취소 </h5>
+                    <h5 class="modal-title"> 게시글 작성 취소 </h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -236,30 +243,21 @@
 			
 			return false;
 		}
-		
 	}
-
 </script>
 
 <script type="text/javascript">
-		// 이미지 파일을 업로드 했는지 확인
-        function checkFileType(obj) {
-                var file_kind = obj.value.lastIndexOf('.');
-                var file_name = obj.value.substring(file_kind+1, obj.length);
-                var file_type = file_name.toLowerCase();
-
-                var checkType = new Array();
-                checkType = ['jpg','gif','png','jpeg','bmp'];
-                
-                if(checkType.indexOf(file_type) == -1){
-                        alert('이미지 파일만 선택할 수 있습니다.');
-                        $("#bdImg").val("");
-                        $("#bdImg").replaceWith($("#bdImg").clone(true));
-                        return false;
-                }
-        }
+	/* 업로드 이미지 미리보기 기능 */
+	function setThumbnail(event){
+		var reader = new FileReader();
 		
+		reader.onload = function(event){
+			var img = document.createElement("img");
+			img.setAttribute("src", event.target.result);
+			document.querySelector("div#image_container").appendChild(img);
+		};
+		 reader.readAsDataURL(event.target.files[0]);
+	}
 </script>
-
 
 </html>

@@ -461,16 +461,37 @@ public ModelAndView selectResellPageList(Paging paging) {
 		
 	}
 
-
-	public String updateResellState_ajax(GoodsDto gdDto) {
-		System.out.println("updateResellState_ajax() 호출");
+	public String updateResellState_GoodsAjax(GoodsDto gdDto) {
+		System.out.println("updateResellState_GoodsAjax() 호출");
 		
-		int stateResult = rdao.updateResellState_ajax(gdDto);
+		int stateResult = rdao.updateResellState_GoodsAjax(gdDto);
 		String result = null;
 		if(stateResult>0) {
 			result = "OK";
 		}
 		
+		
+		return result;
+	}
+
+
+	public String updateResellState_usedBoardAjax(UsedBoardDto ubDto) {
+		System.out.println("updateResellState_usedBoardAjax() 호출");
+		String result = null;
+		
+		
+		int usedBoardState = rdao.updateResellState_usedBoardAjax(ubDto);
+		
+		if(usedBoardState>0){
+			if( ubDto.getUbstate() == 0) {							
+				result = "SOLD";
+			}else {
+				result = "ING";
+			}
+			
+		}
+		
+				
 		
 		return result;
 	}
