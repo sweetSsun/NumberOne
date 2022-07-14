@@ -160,7 +160,7 @@
 		                            <span>1인자</span>
 		                            <h2>제목</h2>
 		                            <p>클릭시 이동합니다</p>
-		                            <a href="#" class="primary-btn">임시 버튼</a>
+		                            <a href="selectRoomList" class="primary-btn">임시 자랑방이동버튼</a>
 		                        </div>
 	                    	 </div>
 					      </div>
