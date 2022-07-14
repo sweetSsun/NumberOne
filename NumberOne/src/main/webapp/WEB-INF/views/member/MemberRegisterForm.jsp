@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>1인자 - 회원가입페이지</title>
 
-<%@ include file="/resources/css/CommonCss.jsp"%>
+<%@ include file="/resources/css/BarCss.jsp"%>
 <!-- 부트스트랩 -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
@@ -23,7 +23,7 @@
 <style type="text/css">
 
 	.checkout__form {
-	  padding: 100px 200px;
+	  padding: 100px 100px;
 	}
 
 	.selectOption{
@@ -62,7 +62,7 @@
 	font-size:15px;
     display: inline-block;
     height: 40px;
-    width : 350px;
+   /*  width : 350px; */
     padding: 0 10px;
     vertical-align: middle;
     border: 1px solid #808080;
@@ -105,6 +105,31 @@ background-color: #00BCD4;
 
 }
 
+.msgTextarea {
+	height: 100%;
+	width: 100%;
+	border-radius: 5px; 
+	padding:10px 10px;
+	resize: none;
+  	overflow-y: scroll;
+}
+
+.msgTextarea::-webkit-scrollbar {
+    width: 10px;  /* 스크롤바의 너비 */
+    
+}
+
+.msgTextarea::-webkit-scrollbar-thumb {
+    height: 30%; /* 스크롤바의 길이 */
+    background:  #999999; /* 스크롤바의 색상 */
+    
+    border-radius: 10px;
+}
+
+.msgTextarea::-webkit-scrollbar-track {
+    background: #EAEAEA;  /*스크롤바 뒷 배경 색상*/
+}
+
 
 </style>
 
@@ -124,7 +149,7 @@ background-color: #00BCD4;
 
 	<main>
 		<!-- 사이드바 -->
-		<%@ include file="/WEB-INF/views/includes/SideBar_Mypage.jsp"%>
+		<%-- <%@ include file="/WEB-INF/views/includes/SideBar_Mypage.jsp"%> --%>
 
 		<section>
 			<!-- 본문 -->
@@ -134,17 +159,18 @@ background-color: #00BCD4;
                 <h4>회원가입</h4>
                 <form class="user" action="insertRegisterWrite" method="post" enctype="multipart/form-data" onsubmit="return joinFormCheck()">
                     <div class="row">
-                        <div class="col-lg-12 col-md-6">
+                        <div class="col-lg-12  col-md-12 col-sm-12">
                         <!-- ID , 이름 -->
                             <div class="row">
-                                <div class="col-lg-6">
+                                <div class="col-lg-6  col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p>아이디<span>*</span></p>
-                                        <input type="text" placeholder="영문&숫자 5~10자로 입력해주세요." id="inputMid" name="mid">
+                                        <input type="text" placeholder="특수문자 제외 영문&숫자 5~10자로 입력해주세요." id="inputMid" name="mid" 
+                                        onkeyup="characterCheck(this)" onkeydown="characterCheck(this)">
                                         <span id="idCheckMsg" class="msg"></span>  
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p>이름<span>*</span></p>
                                         <input type="text" id="inputMname" name="mname" placeholder="2~10자로 입력해주세요.">
@@ -154,14 +180,14 @@ background-color: #00BCD4;
                             </div>
                         <!-- 비번 , 비번확인 -->
                             <div class="row">
-                                <div class="col-lg-6">
+                                <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p>비밀번호<span>*</span></p>
                                         <input type="text" placeholder="영문&숫자 6~20자로 입력해주세요." id="inputMpw" name="mpw">
 									<span id="pwCheckMsg" class="msg"></span>                                      
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p>비밀번호확인<span>*</span></p>
                                         <input type="text" placeholder="비밀번호를 확인해주세요." id="checkMpw">
@@ -171,7 +197,7 @@ background-color: #00BCD4;
                             </div>                            
                         <!-- 닉네임 , 성별 -->
                             <div class="row">
-                                <div class="col-lg-6">
+                                <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p>닉네임<span>*</span></p>
                                         <input type="text" placeholder="2~10자로 입력해주세요." id="inputMnickname" name="mnickname">
@@ -180,40 +206,40 @@ background-color: #00BCD4;
                                 </div>
                             <!-- 전화번호 -->
                            
-                                <div class="col-lg-6">
+                                <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p>전화번호<span>*</span></p>
                                         <input type="text" id="inputMphone" name="mphone" placeholder="'-' 포함하여 번호 입력해주세요.">
  									<span id="phoneCheckMsg" class="msg"></span>                                    
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-6 col-md-12 col-sm-12">
                             </div> 
                             </div> 
                                                         
                                                       
                             <!-- 이메일 --> 
                             <div class="row">
-                                <div class="col-lg-5">
+                                <div class="col-lg-5 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p>이메일<span>*</span></p>
                                         <input type="text"  id="inputEmailId" name="memailId" placeholder="이메일 아이디">
  									<span id="emailIdCheckMsg"></span>                                        
                                     </div> 
                                 </div> 
-                                <div class="col-lg-1">
+                                <div class="col-lg-1 col-md-12 col-sm-12">
                                     <div class="checkout__input" style="margin-top:50px; margin-left:18px;">    
                                        @
                                     </div> 
                                 </div>                                
-                                <div class="col-lg-4">
+                                <div class="col-lg-4 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p style="margin-top: 45px;">
                                         <input type="text" id="inputEmailDomain" name="memailDomain" placeholder="이메일 도메인"></p>
  									<span id="emailDomainCheckMsg"></span>                                         
                                     </div>
                                 </div>
-                                <div class="col-lg-2">
+                                <div class="col-lg-2 col-md-12 col-sm-12">
                                     <div class="checkout__input" style="margin-top: 45px;">
                                         <select id="domainSelect"  class="selectOption">
 										<option value="">직접입력</option>
@@ -227,14 +253,14 @@ background-color: #00BCD4;
                             
                             <!-- 관심지역 -->
                             <div class="row">
-                                <div class="col-lg-5">
+                                <div class="col-lg-5 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p>관심지역<span>*</span></p>
                                         <input type="text"  id="inputmregion" name="mregion" placeholder="관심지역 선택">
  									<span id="regionCheckMsg"></span>                                        
                                     </div> 
                                 </div>
-                                <div class="col-lg-2"> 
+                                <div class="col-lg-2 col-md-12 col-sm-12"> 
                                     <div class="checkout__input" style="margin-top: 45px;">
                                         <select id="regionSelect" class="selectOption">
 										<option disabled selected>지역선택</option>
@@ -255,13 +281,13 @@ background-color: #00BCD4;
                            <div class="checkout__input">
                                 <p>주소</p>
                             <div class="row">
-                                <div class="col-lg-6">
+                                <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <input type="text" class="form-control form-control-user" id="sample6_postcode" name="mpostcode" placeholder="우편번호"> 
  									<span id="postcodeCheckMsg"></span>                                    
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div >
                                         <input type="button"  class="addr-btn" style="color : white; background-color: #999999; border: 0px;"
                                         onclick="sample6_execDaumPostcode()" value="우편번호 찾기">
@@ -270,7 +296,7 @@ background-color: #00BCD4;
                             </div>
                             <!-- 기본 주소 -->
                             <div class="row">
-                                <div class="col-lg-12">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <input type="text"  class="form-control form-control-user" id="sample6_address" name="maddress" placeholder="주소">
  									<span id="addressCheckMsg"></span>                                    
@@ -279,12 +305,12 @@ background-color: #00BCD4;
                             </div> 
                             <!-- 상세 주소 -->
                             <div class="row">
-                                <div class="col-lg-6">
+                                <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <input type="text"  class="form-control form-control-user" id="sample6_detailAddress" name="mdetailAddr" placeholder="상세주소">
                                     </div>
                                 </div>
-                                <div class="col-lg-6">
+                                <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <input type="text"  class="form-control form-control-user" id="sample6_extraAddress" name="mextraAddr" placeholder="참고항목">
                                     </div>
@@ -295,16 +321,24 @@ background-color: #00BCD4;
                             </div>
 
                           <!-- 파일 업로드 -->
- 							<div class="filebox checkout__input">
+ 							<div class="filebox checkout__input col-lg-12 col-md-12 col-sm-12">
 							<p>프로필 사진</p>
-    							<input class="upload-name" value="첨부파일" placeholder="첨부파일" id="inputFile" >
-    							<label for="inputMfile" >파일찾기</label> 
-    							<input type="file" id="inputMfile" name="mfile" >
-							</div>						
+							<div class="row">
+									<div class="col-lg-6 col-md-12 col-sm-12">
+    									<input class="upload-name" 
+    									value="${memberInfo.mprofile }" placeholder="첨부파일" id="inputFile" >
+    								</div>	
+									<div class="col-lg-6 col-md-12 col-sm-12">    						
+    									<label for="inputMfile" >파일찾기</label> 
+    									<input type="file" id="inputMfile" name="mfile" value="" class="">
+									</div>
+								</div>	
+							</div>	
+												
                             <!-- 상태메세지 -->                            
                             <div class="checkout__input">
                                 <p>상태메세지</p>
-                                <p><textarea cols="102" rows="2" id="inputMmessage" name="mmessage" placeholder="100자 이하로 입력해주세요." ></textarea></p>
+                                <p><textarea class="msgTextarea" id="inputMmessage" name="mmessage" placeholder="100자 이하로 입력해주세요." ></textarea></p>
                             </div>
                           <!-- 끝 -->
 						<br>
@@ -326,6 +360,21 @@ background-color: #00BCD4;
 	<!-- 다음 우편번호 서비스 -->
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="${pageContext.request.contextPath }/resources/MemberJs/daumPostCode.js"></script>
+    
+ 
+
+ <script type="text/javascript">
+	//특수문자 입력 방지
+	function characterCheck(obj){
+	var regExp = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi; 
+	//허용할 특수문자는 여기서 삭제하면 됨
+	//지금은 띄어쓰기도 특수문자 처리됨 참고하셈
+	if( regExp.test(obj.value) ){
+		alert("특수문자는 입력하실수 없습니다.");
+		obj.value = obj.value.substring( 0 , obj.value.length - 1 ); // 입력한 특수문자 한자리 지움
+		}
+	}
+</script>
     
 	<!-- 아이디 중복 체크 -->
     <script type="text/javascript">
@@ -488,6 +537,9 @@ background-color: #00BCD4;
     		$("#inputMid").focus();
     		return false;
     	}
+    	
+
+    	
     	/*이름 유무*/
     	if($("#inputMname").val().length == 0){
     		alert("이름을 입력해주세요.");

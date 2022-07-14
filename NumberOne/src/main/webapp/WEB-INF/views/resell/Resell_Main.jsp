@@ -19,6 +19,7 @@
 <body>
 	<!-- TopBar -->
 	<%-- 
+
         <c:choose>
                 <c:when test="${sessionScope.loginId != 'admin'}">
                         <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>

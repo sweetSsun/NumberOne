@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +14,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.NumberOne.dao.BoardDao;
+import com.NumberOne.dao.ResellDao;
 import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.NoticeDto;
+import com.NumberOne.dto.Paging;
 import com.NumberOne.dto.UsedBoardDto;
 import com.NumberOne.service.BoardService;
 
@@ -31,6 +36,12 @@ public class HomeController {
 	
 	@Autowired
 	BoardDao bdao;
+	
+	@Autowired
+	ResellDao rdao;
+	
+	@Autowired
+	private HttpSession session;
 	
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
@@ -51,36 +62,83 @@ public class HomeController {
 		
 		ModelAndView mav = new ModelAndView();
 		
-		// 자랑 게시판 불러오기 loadTowriteRoom :: 메인배너로 & 자랑글상세 링크 필요
 		
 		
-		// 전체 게시판 불러오기 & 일반 상세 링크 /selectBoardView
+		// 자랑 게시판 불러오기 selectRoomView?bdcode :: 메인배너로 & 자랑글상세 링크 필요
+		//String roomView_json = bsvc.selectRoomView(bdcode);
+		//System.out.println(roomView_json);
+		//mav.addObject("roomView", roomView_json);
+		
+		// 전체 게시판 불러오기 & 목록 링크 /loadToBoardMainPage & 상세 링크 동일 /selectBoardView?bdcode
 		ArrayList<BoardDto> boardList = bdao.selectBoardList();
 		System.out.println(boardList);
 		mav.addObject("boardList", boardList);
 		
 		
-		// 공지 게시판 불러오기 & 공지 상세 링크 /selectNoticeBoardView	    
+		String bdcategory_Free = "자유";
+		String bdcategory_qa = "질문";
+		String bdcategory_info = "정보";
+		String bdcategory_review = "후기";
+		
+		// 자유 게시판 불러오기 & 목록 링크 /selectFreeBoardList
+		ArrayList<BoardDto> boardList_free = bdao.selectBoardList_Free(bdcategory_Free);
+		System.out.println(boardList_free);
+		mav.addObject("boardList_free", boardList_free);
+		
+		// 질문 게시판 불러오기 & 목록 링크 /selectQuestionBoardList
+		ArrayList<BoardDto> boardList_qa = bdao.selectBoardList_Question(bdcategory_qa);
+		System.out.println(boardList_qa);
+		mav.addObject("boardList_qa", boardList_qa);
+
+		// 정보 게시판 불러오기 & 목록 링크 /selectInfoBoardList
+		ArrayList<BoardDto> boardList_info = bdao.selectBoardList_Information(bdcategory_info);
+		System.out.println(boardList_info);
+		mav.addObject("boardList_info", boardList_info);
+
+		// 후기 게시판 불러오기 & 목록 링크 /selectReviewBoardList
+		ArrayList<BoardDto> boardList_review = bdao.selectBoardList_Review(bdcategory_review);
+		System.out.println(boardList_review);
+		mav.addObject("boardList_review", boardList_review);
+				
+		// 공지 게시판 불러오기 & 목록 링크 /selectNoticeBoardList  
 		ArrayList<NoticeDto> noticeList = bdao.selectNoticeList();
 	    System.out.println(noticeList);
 	    mav.addObject("noticeList", noticeList);
 	    
 	    
 		// 중고거래 팔구 목록 불러오기 /selectResellSellList
-	    // ArrayList<UsedBoardDto> sellList= bsvc.selectResellSellList();
-	    // System.out.println(sellList);
-	    // mav.addObject("sellList", sellList");
+	    Paging paging = new Paging();
+	    String checkMethod = "Main";
 	    
+	    if((String) session.getAttribute("loginRegion") != null) {
+			paging.setSearchVal(rdao.selectRegionCode((String) session.getAttribute("loginRegion")));				
+		}
+	    paging.setSellBuy("S");	
+		ArrayList<UsedBoardDto> SellList = rdao.selectResellPageList(paging, checkMethod);
+				
 		// 중고거래 사구 목록 불러오기 /selectResellBuyList
-	    // ArrayList<UsedBoardDto> buyList= bsvc.selectResellBuyList();
-	    // System.out.println(buyList);
-	    // mav.addObject("buyList", buyList");
+		paging.setSellBuy("B");
+		ArrayList<UsedBoardDto> buyList = rdao.selectResellPageList(paging, checkMethod);
+		
+		mav.addObject("SellList", SellList);
+		mav.addObject("buyList", buyList);
 	    
 		
 		mav.setViewName("Main");
 		return mav;
 
 	}
+	
+	// 고정된 자랑글 불러오기
+	/*
+	 * public ArrayList<BoardDto> selectRoomViewFixed() {
+	 * System.out.println("고정된 자취방 자랑글 출력 요청"); ArrayList<BoardDto> roomView_json =
+	 * bsvc.selectRoomView();
+	 * 
+	 * return null; }
+	 */
+	
+	
 	
 	@RequestMapping(value="/loadToFail")
 	public String loadToFail() {

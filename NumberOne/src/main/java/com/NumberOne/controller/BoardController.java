@@ -22,16 +22,31 @@ public class BoardController {
 	
 	//자취방 자랑 메인 페이지 이동
 	@RequestMapping(value="/selectRoomList")
-	public ModelAndView roomListPage() {
+	public ModelAndView selectRoomList(String bdcode, String jsp) {
 		System.out.println("자쥐방 자랑 메인 요청(목록페이지)");	
+		System.out.println(bdcode+"/"+jsp);
 		ModelAndView mav = new ModelAndView();
 		mav=bsvc.selectRoomList();
+		
+		if(bdcode != "") {
+			//bdcode 추가
+			mav.addObject("bdcode", bdcode);
+			if(jsp !=null) {
+				if(jsp.equals("view")) {
+					//상세보기 페이지로 이동
+					mav.setViewName("board/RoomViewPage");
+				}
+			}
+			
+		}
+		
+		
 		return mav;
 	}
 
 	//자취방 자랑글 작성 페이지 이동
 	@RequestMapping(value="/loadToWriteRoom")
-	public String loadTowriteRoom(RedirectAttributes ra) {
+	public String loadToWriteRoom(RedirectAttributes ra) {
 		System.out.println("자쥐방 자랑 Form 요청");
 		return "board/RoomWriteForm";
 	}
@@ -54,16 +69,18 @@ public class BoardController {
 	    return mav;
 	}
 	
-	//게시판 글목록 페이지 
+	//전체글목록 페이지 
 	@RequestMapping ( value = "/selectBoardList")
 	public ModelAndView boardListPage() {
 	    System.out.println("게시판 글목록 페이지 요청");
 	    ModelAndView mav = bsvc.boardListPage();
 	    return mav;
 	}
-	   
+	
+	
+	
 	//카테고리별 글목록 조회 ( ajax )
-	@RequestMapping ( value = "/getBoardCategoryList")
+	@RequestMapping ( value = "/getBoardCategoryList_ajax")
 	@ResponseBody public String boardCategoryList_ajax( String bdcategory) {
 		System.out.println("카테고리별 글목록 요청_ajax");
 	      
@@ -75,12 +92,22 @@ public class BoardController {
 	   
 	 //글검색 
 	 @RequestMapping ( value = "/selectBoardSearchList")
-	 public ModelAndView selectBoardSearchList( String searchType, String searchText) {
+	 public ModelAndView selectBoardSearchList( String bdcategory, String searchType, String searchText) {
 	     System.out.println("글검색 목록 요청");
 	      
-	     ModelAndView mav = bsvc.selectBoardSearchList(searchType, searchText);
+	     ModelAndView mav = bsvc.selectBoardSearchList(bdcategory, searchType, searchText);
 	      
 	     return mav;
+	 }
+	 
+	 //공지글검색
+	 @RequestMapping ( value = "/selectNoticeSearchList")
+	 public ModelAndView selectNoticeSearchList( String searchType, String searchText ) {
+		 System.out.println("공지글 검색 목록 요청");
+		 
+		 ModelAndView mav = bsvc.selectNoticeSearchList(searchType, searchText);
+		 
+		 return mav;
 	 }
 	 
 	 //공지글 상세페이지 이동 
@@ -102,6 +129,7 @@ public class BoardController {
 		 
 		 return mav;
 	 }
+	 
 	 
 	 //댓글작성(ajax)
 	 @RequestMapping ( value = "/insertBoardReply_ajax")
@@ -252,10 +280,9 @@ public class BoardController {
 	 
 	 //게시글 수정 페이지 이동 
 	 @RequestMapping ( value = "/loadToBoardModify")
-	 public ModelAndView loadToBoardModify(String bdcode) {
+	 public ModelAndView loadToBoardModify(String bdcode, String bdcategory) {
 		 System.out.println("게시글 수정페이지 이동 요청");
-		 
-		 ModelAndView mav = bsvc.loadToBoardModify(bdcode);
+		 ModelAndView mav = bsvc.loadToBoardModify(bdcode, bdcategory);
 		 
 		 return mav;
 	 }
@@ -284,10 +311,10 @@ public class BoardController {
 	 
 	 //게시글 작성 페이지 이동 
 	 @RequestMapping ( value = "/loadToBoardWrite")
-	 public ModelAndView loadToBoardWrite() {
+	 public ModelAndView loadToBoardWrite(String bdcategory) {
 		 System.out.println("게시글 작성페이지 이동 요청");
 		 
-		 ModelAndView mav = bsvc.loadToBoardWrite();
+		 ModelAndView mav = bsvc.loadToBoardWrite(bdcategory);
 		 
 		 return mav;
 	 }
@@ -298,6 +325,15 @@ public class BoardController {
 		 System.out.println("게시글 작성 요청");
 		 
 		 ModelAndView mav = bsvc.insertBoardWrite(board, ra);
+		 
+		 return mav;
+	 }
+	 //공지게시판 이동
+	 @RequestMapping ( value = "/selectNoticeBoardList")
+	 public ModelAndView selectNoticeBoardList() {
+		 System.out.println("공지게시판 이동 요청");
+		 
+		 ModelAndView mav = bsvc.selecNoticeBoardList();
 		 
 		 return mav;
 	 }
@@ -313,20 +349,96 @@ public class BoardController {
 		 
 	 }
 	 
-	 //자취방 자랑글 상세 페이지 이동
+   
+	 //질문게시판 이동 
+	 @RequestMapping ( value = "/selectQuestionBoardList")
+	 public ModelAndView selectQuestionBoardList() {
+		 System.out.println("질문게시판 이동 요청");
+		 
+		 ModelAndView mav =bsvc.selectQuestionBoardList();
+		 
+		 return mav;
+		 
+	 }
+   
+	 //정보게시판 이동 
+	 @RequestMapping ( value = "/selectInfoBoardList")
+	 public ModelAndView selectInfoBoardList() {
+		 System.out.println("정보게시판 이동");
+		 
+		 ModelAndView mav = bsvc.selectInfoBoardList();
+		 
+		 return mav;
+	 }
+	 //후기게시판 이동 
+	 @RequestMapping ( value = "/selectReviewBoardList")
+	 public ModelAndView selectReviewBoardList() {
+		 System.out.println("후기게시판 이동");
+		 
+		 ModelAndView mav = bsvc.selectReviewBoardList();
+		 
+		 return mav;
+	 }
+	 
+	 //지역카테고리 목록 (ajax)
+	 @RequestMapping ("/selectRegionList_ajax")
+	 @ResponseBody
+	 public String selectRegionList_ajax(String rgcode) {
+		 System.out.println("지역카테고리 목록 조회 ");
+		 
+		 String selRegionList_ajax = bsvc.selectRegionList_ajax(rgcode);
+		 
+		 return selRegionList_ajax;
+		 
+	 }
+	 //지역게시판 검색
+	 @RequestMapping ("/selectRegionSearchList")
+	 public ModelAndView selectRegionSearchList(String bdrgcode, String bdrgname, String searchType, String searchText) {
+		 System.out.println("지역게시판 검색결과 페이지 이동 요청");
+		 
+		 ModelAndView mav = bsvc.selectRegionSearchList(bdrgcode, bdrgname, searchType, searchText);
+		 
+		 return mav;
+	 }
+	 
+	 
+	 //지역게시판 이동 
+	 @RequestMapping ( value = "/selectRegionBoardList")
+	 public ModelAndView selectRegionBoardList() {
+		 System.out.println("지역게시판 이동");
+		 
+		 ModelAndView mav = bsvc.selectRegionBoardList();
+		 
+		 return mav;
+	 }
+	 
+
+	 //지역별 게시판 이동 
+	 @RequestMapping ( value = "/selectDetailBoardList")
+	 public ModelAndView selectDetailBoardList(String bdrgcode) {
+		 System.out.println("지역별 게시판 이동");
+		 System.out.println(bdrgcode);
+		 ModelAndView mav = bsvc.selectDetailBoardList(bdrgcode);
+
+		 
+		 return mav;
+		 
+	 }
+	 
+	 //자취방 자랑글 상세 모달 요청
 	 @RequestMapping ( value = "/selectRoomView")
 	 public @ResponseBody String selectRoomView(String bdcode) {
-		 System.out.println("자취방 자랑글 상세페이지 이동 요청");
-		 System.out.println(bdcode+"번글 상세보기 요청");
+		 System.out.println(bdcode+"번 자랑글 상세모달 요청");
 		 String roomView_json = bsvc.selectRoomView(bdcode);
 		 
 		 return roomView_json;
 	 }
 	 
-	 //자취방 자랑글 추천
+	 
+	 //자취방 자랑글 추천/스크랩/신고 요청
 	 @RequestMapping ( value = "/updateLog")
 	 public @ResponseBody String updateRbrecommend(String bdcode, String history, String currentState ) {
-		 System.out.println(bdcode+"번글 "+history+"업데이트 요청 현재상태: "+currentState);
+		 System.out.println(bdcode+"번 자랑글 "+history+"업데이트 요청 현재상태: "+currentState);
 		 int updateResult = bsvc.updateLog(bdcode, history, currentState);
 		 
 		 return updateResult+"";
@@ -341,5 +453,26 @@ public class BoardController {
 
 		 return currnetState;
 	 }
-
+	 
+		/*
+		 * //자취방 자랑글 상세 페이지 요청(마이페이지, 게시판메인. 관리자 연결용)
+		 * 
+		 * @RequestMapping( value="/loadToRoomViewPage") public ModelAndView
+		 * loadToRoomViewPage(String bdcode) {
+		 * System.out.println(bdcode+"번 자랑글 상세 페이지 이동 요청"); //상세 보기 하단에 나올 자랑글 목록
+		 * 받아오기(상세글은 ajax로) ModelAndView mav = bsvc.selectRoomList();
+		 * mav.addObject("bdcode", bdcode); mav.setViewName("board/RoomViewPage");
+		 * return mav; }
+		 */
+	 
+	 
+	 @RequestMapping ( value = "/updateRoomView")
+	 public ModelAndView updateRoomView(BoardDto board, RedirectAttributes ra) throws IllegalStateException, IOException {
+		 System.out.println("자랑글 수정 요청");
+		 
+		 ModelAndView mav = bsvc.updateRoomView(board, ra);
+		 
+		 return mav;
+		 
+	 }
 }

@@ -30,8 +30,10 @@
 
 
 <body>
+
 	<!-- TopBar -->
 	<%-- 
+
         <c:choose>
                 <c:when test="${sessionScope.loginId != 'admin'}">
                         <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
@@ -40,12 +42,14 @@
                         <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
                 </c:otherwise>
         </c:choose>
+
         --%>
 	<!-- End of TopBar -->
 	<main>
 		<!-- 사이드바 -->
 
 		<%-- <%@ include file="/WEB-INF/views/includes/SideBar_Resell.jsp"%> --%>
+
 		<section>
 			<!-- 본문 -->
 			<div class="container">
@@ -372,8 +376,14 @@
 		console.log('매개변수확인(sel_tag) :', sel_tag.value);
 		console.log('매개변수확인(gd_code) :', gd_code);
 
+<<<<<<< HEAD
 		gdUpdateState(gd_code, sel_tag);
+=======
+<<<<<<< HEAD
+		gdUpdateState(gd_code, sel_tag.value);
+>>>>>>> 64a7c25c8f58f9491a6145c8aafb496066f4182c
 
+			
 	}
 </script>
 

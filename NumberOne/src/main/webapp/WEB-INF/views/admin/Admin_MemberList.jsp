@@ -9,15 +9,25 @@
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- Css Styles -->
 <%@ include file="/resources/css/BarCss.jsp" %>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/listCss.css" type="text/css">
 
 <style type="text/css">
-    #board_column{
-       border-bottom: solid gray 3px;
-    }
-    table{
-       margin: 20px;
-    }
+	.textarea-MbList{
+		border: 1px solid #ced4da;
+		resize: none;
+		width: -webkit-fill-available;
+		height: 230px;
+		background-color:#fff;
+		padding: 0.375rem 0.75rem;
+    	font-size: 1rem;
+    	font-weight: 400;
+	}
+	textarea:focus {
+    	outline: none;
+	}
   	#pageList button{
  		display: none;
 	}
@@ -45,80 +55,80 @@
 		
 		<section>
 		<!-- 본문 -->
-		<form action="admin_selectMemberList" method="get">
+		<form action="admin_selectMemberList" method="get" id="actionForm">
 			<div class="container">
             <div class="row" style="margin:auto;">
-               <h1 class="text-center">회원 관리페이지 : Admin_MemberList.jsp</h1>
+               <h4 class="text-center">회원 관리페이지 : Admin_MemberList.jsp</h4>
             </div>
             <!-- 검색 -->
             <div class="row">
-				<div class="col-5">
-					<select name="searchType" id="searchTypeSel">
+				<div class="col-5" align="right">
+					<select name="searchType" id="searchTypeSel" class="searchType">
 						<option value="mid">아이디</option>
 						<option value="mname">이름</option>
 						<option value="mnickname">닉네임</option>
 					</select>
 				</div>
-                <div class="col-5 input-group">
-                   	<input type="text" style="width:100px;" class="form-control" name="keyword" id="searchText" placeholder="검색 키워드를 입력하세요!" value="${paging.keyword}">
-                   	<span class="input-group-btn">
-                      	<button class="btn btn-secondary" type="submit" name="page" value="1">찾기</button>
-                   	</span>
-            	</div>
-	            <div class="col-2">
-				</div>
+                <div class="col-7">
+                   	<input type="text" class="" name="keyword" id="searchText" placeholder="검색 키워드를 입력하세요!" value="${paging.keyword}">
+                    <button class="btn btn-sm btn-secondary" type="submit">검색</button>
            	</div>
            
             <div class="row" style="margin-top: 20px;">
                <div class="col">
                   <!-- 상태값 정렬 -->
-                   <select name="searchVal" id="searchValSel" onchange="mbSearchState(this.value)">
-                     <option value="all">전체</option>
-                     <option value="active">활동</option>
-                     <option value="warning">경고</option>
-                     <option value="inactive">정지</option>
-                     <option value="withdraw">탈퇴</option>
+                   <select class="categoryList" name="searchVal" id="searchValSel" onchange="mbSearchState(this.value)">
+                     <option class="categorySel" value="all">전체</option>
+                     <option class="categorySel" value="active">활동</option>
+                     <option class="categorySel" value="warning">경고</option>
+                     <option class="categorySel" value="inactive">정지</option>
+                     <option class="categorySel" value="withdraw">탈퇴</option>
                   </select>
                </div>
             </div>
             
             <!-- 회원 목록 -->
-            <div class="row">
-            <table >
+            <div class="row" style="margin-top: 20px;">
+            <table style="table-layout: fixed;" >
                <thead >
-                  <tr class="fw-bold" id="board_column">
-                     <td style="width:150px;">아이디</td>
-                     <td style="width:130px;">이름</td>
-                     <td style="width:200px;">닉네임</td>
+                  <tr class="text-center fw-bold" id="board_column">
+                     <td style="max-width:6rem;">아이디</td>
+                     <td style="max-width:5rem;">이름</td>
+                     <td style="max-width:6rem;">닉네임</td>
                      <td>연락처</td>
                      <td>이메일</td>
-                     <td>가입일</td>
-                     <td style="width:70px;">상태</td>
+                     <td style="width:10%">가입일</td>
+                     <td style="width:3rem;">경고</td>
+                     <td style="width:3rem;">상태</td>
                   </tr>
                </thead>
                <tbody id="mbListTbody">
 	               <c:forEach items="${memberList }" var="member">
 	                   <!-- 회원관리 목록 -->
-	                   <tr style="border-bottom: solid gray 1px;">
-	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;" class="overflow">${member.mid}</td>
-	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;" class="overflow">${member.mname}</td>
-	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;" class="overflow">${member.mnickname}</td>
-	                      <td>${member.mphone}</td>
-	                      <td>${member.memail}</td>
-	                      <td>${member.mjoindate}</td>
+	                   <tr style="border-bottom: solid #E0E0E0 1px;">
+	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;" class="overflow text-center">${member.mid}</td>
+	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;" class="overflow text-center">${member.mname}</td>
+	                      <td onclick="showMemberInfoModal('${member.mid}')" style="cursor: pointer;" class="overflow text-center">${member.mnickname}</td>
+	                      <td class="overflow text-center">${member.mphone}</td>
+	                      <td class="overflow text-center">${member.memail}</td>
+	                      <td class="overflow text-center">${member.mjoindate}</td>
+	                      <td class="text-center">${member.mwarning}</td>
 	                      <td>
 	                      	<c:choose>
 	                      		<c:when test="${member.mwarning > 0}">
-	                      			<button class="btn btn-warning" type="button" onclick="showMstateModal(this,'${member.mid }')">경고</button>
+	                      			<button class="btn btn-sm btn-warning" type="button" onclick="showMstateModal(this,'${member.mid }')">경고</button>
 	                      		</c:when>
 	                      		<c:when test="${member.mstate == 0}">
-	                      			<button class="btn btn-danger"  type="button" onclick="showMstateModal(this, '${member.mid }')">정지</button>
+	                      			<button class="btn btn-sm btn-danger"  type="button" onclick="showMstateModal(this, '${member.mid }')">정지</button>
 	                      		</c:when>
 	                      		<c:when test="${member.mstate == 1}">
-	                      			<button class="btn btn-primary"  type="button" onclick="showMstateModal(this,'${member.mid }')">활동</button>
+	                      			<button class="btn btn-sm btn-primary"  type="button" onclick="showMstateModal(this,'${member.mid }')">활동</button>
+	                      		</c:when>
+	                      		<c:when test="${member.mstate == 9}">
+	                      			<button class="btn btn-sm btn-primary member-kakao"  type="button" onclick="showMstateModal(this,'${member.mid }')">활동</button>
 	                      		</c:when>
 	                      		<c:when test="${member.mstate == 2}">
-	                      			<button class="btn btn-secondary" type="button"  style="cursor:default;">탈퇴</button>
+	                      			<button class="btn btn-sm btn-secondary" type="button"  style="cursor:default;">탈퇴</button>
 	                      		</c:when>
 	                      	</c:choose>
 	                      </td>
@@ -127,40 +137,41 @@
                 </tbody>
             </table>
             
-   			<!-- 페이징 -->
+   			<!-- 페이징 시작 -->
+   			<input type="hidden" id="pageNum" name="page" value="1">
   			<div class="block text-center" id="pageList">
-               	<c:choose>
-               		<c:when test="${paging.prev }">
-               			<button type="submit" name="page" value="${paging.page -1 }" id="btn0"></button>
-               			<label for="btn0">[이전]</label>
-               		</c:when>
-               		<c:otherwise>
-               			[이전]
-               		</c:otherwise>
-               	</c:choose>
-               	
-               	<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="num" step="1">
-                	<c:choose>
-                		<c:when test="${paging.page == num }">
-                			<span style="color:#00bcd4;">${num }</span>
-                		</c:when>
-                		<c:otherwise>
-                			<button type="submit" name="page" value="${num }" id="btn${num }"></button>
-               				<label for="btn${num }">${num }</label>
-                		</c:otherwise>
-                	</c:choose>
-               	</c:forEach>
-
-               	<c:choose>
-               		<c:when test="${paging.next }">
-               			<button type="submit" name="page" value="${paging.page +1 }" id="btn6"></button>
-               			<label for="btn6">[다음]</label>
-               		</c:when>
-               		<c:otherwise>
-               			[다음]
-               		</c:otherwise>
-               	</c:choose>
+  				<ul class="pagination">
+  					<c:choose>
+		           		<c:when test="${paging.prev }">
+		           			<li class="paginate_button"><a href="${paging.page -1 }" >이전</a></li>
+		           		</c:when>
+		           		<c:otherwise>
+	           				<li class="paginate_button"><span>이전</span></li>
+		           		</c:otherwise>
+  					</c:choose>
+	               	
+	               	<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="num" step="1">
+	                	<c:choose>
+	                		<c:when test="${paging.page == num }">
+	                			<li class=""><a class="active">${num }</a></li>
+	                		</c:when>
+	                		<c:otherwise>
+	                			<li class="paginate_button "><a href="${num }" >${num }</a></li>
+	                		</c:otherwise>
+	                	</c:choose>
+	               	</c:forEach>
+	               	
+	               	<c:choose>
+		           		<c:when test="${paging.next }">
+		                	<li class="paginate_button"><a href="${paging.page +1 }" >다음</a></li>
+		           		</c:when>
+		           		<c:otherwise>
+	           				<li class="paginate_button"><span>다음</span></li>
+		           		</c:otherwise>
+  					</c:choose>
+	            </ul>
             </div>
+            <!-- 페이징 끝 -->
                 
             </div>
             
@@ -211,7 +222,7 @@
                                     </div>
                                     <div>
                                     	<label class="small cursor_auto">상태메세지</label>
-		                                <textarea readonly class="form-control" id="mI_mmessage" style="min-height:230px; max-height:230px; background-color:#fff"></textarea>
+		                                <textarea readonly class=" textarea-MbList" id="mI_mmessage" style=""></textarea>
                                     </div>
                                 </div>
                             </div>
@@ -282,6 +293,70 @@
 				$("#memberInfoModal").modal("hide");
 			});
 		}
+		
+		// 회원상태 변경 확인 모달창 출력
+		var btnObj;
+		function showMstateModal(obj, mid){
+			console.log("showMstateModal() 실행");
+			btnObj = $(obj);
+			var btnObjText = btnObj.text();
+			console.log("btnObjText:"+btnObjText);
+			if (btnObjText == "활동" || btnObjText == "경고"){
+				$("#updateMstateModalBody").text(mid + " 회원을 정지 처리하시겠습니까?");
+			} else {
+				$("#updateMstateModalBody").text(mid + " 회원을 활동 처리하시겠습니까?");
+			}
+			$("#mid").val(mid);
+			$("#updateMstateModal").modal("show");
+		}
+		
+		// 회원상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
+		function updateMstate(){
+			console.log("updateMstate() 실행");
+			var mid = $("#mid").val();
+			console.log(btnObj.text());
+			if (btnObj.text() == "활동" || btnObj.text() == "경고" ){
+				var mstate = 0;				
+			} else {
+				var mstate = 1;				
+			}
+			$.ajax({
+				type: "get",
+				data: {"mid":mid, "mstate":mstate},
+				url: "admin_updateMstate_ajax",
+				dataType: "json",
+				success: function(result){
+					console.log(result);
+						if (result.mstate == 0){
+							btnObj.text("정지").addClass("btn-danger").removeClass("btn-primary").removeClass("btn-warning");
+						} else if (result.mwarning > 0){
+							btnObj.text("경고").addClass("btn-warning").removeClass("btn-primary").removeClass("btn-secondary");
+						} else {
+							btnObj.text("활동").addClass("btn-primary").removeClass("btn-secondary").removeClass("btn-warning");
+						}
+					$("#updateMstateModal").modal("hide");
+				},
+				error: function(){
+					$("#updateMstateModal").modal("hide");
+					alert("회원상태 변경에 실패했습니다.");
+				}
+			});
+		}
+	</script>
+		
+	<script type="text/javascript">
+	$(document).ready(function () {
+		// 페이지 넘버 a태그를 클릭하면 hidden input태그에 페이지 넘버 값을 넣고 submit 진행
+		var actionForm = $("#actionForm");
+		
+		$(document).on("click", ".paginate_button a", function(e){ // on 이벤트로 변경
+			e.preventDefault();
+			console.log("pageNum click");
+			$("#pageNum").val($(this).attr("href"));
+			console.log($("#pageNum").val());
+			actionForm.submit();
+		});
+	});
 	</script>
 	
 	<script type="text/javascript">
@@ -363,22 +438,23 @@
 					var output = "";
 					console.log(result);					
 					for (var i = 0; i < result.length; i++){
-						output += "<tr style='border-bottom: solid gray 1px;'>";
-						output += "<td onclick='showMemberInfoModal( \"" + result[i].mid + "\")' style='cursor: pointer;'>" + result[i].mid + "</td>";
-						output += "<td onclick='showMemberInfoModal( \"" + result[i].mid + "\")' style='cursor: pointer;'>" + result[i].mname + "</td>";
-						output += "<td onclick='showMemberInfoModal( \"" + result[i].mid + "\")' style='cursor: pointer;'>" + result[i].mnickname + "</td>";
-						output += "<td>" + result[i].mphone + "</td>";
-						output += "<td>" + result[i].memail + "</td>";
-						output += "<td>" + result[i].mjoindate + "</td>";
-						output += "<td>"
+						output += "<tr style='border-bottom: solid #E0E0E0 1px;'>";
+						output += "<td onclick='showMemberInfoModal( \"" + result[i].mid + "\")' class='text-center overflow' style='cursor: pointer; max-width:6rem;'>" + result[i].mid + "</td>";
+						output += "<td onclick='showMemberInfoModal( \"" + result[i].mid + "\")' class='text-center overflow' style='cursor: pointer; max-width:5rem;'>" + result[i].mname + "</td>";
+						output += "<td onclick='showMemberInfoModal( \"" + result[i].mid + "\")' class='text-center overflow' style='cursor: pointer; max-width:6rem;'>" + result[i].mnickname + "</td>";
+						output += "<td class='text-center overflow' >" + result[i].mphone + "</td>";
+						output += "<td class='text-center overflow' >" + result[i].memail + "</td>";
+						output += "<td class='text-center overflow' >" + result[i].mjoindate + "</td>";
+						output += "<td class='text-center' >" + result[i].mwarning + "</td>";
+						output += "<td class='text-center'>"
 						if (result[i].mwarning > 0){
-							output += "<button class='btn btn-warning' onclick='showMstateModal(this, \""+result[i].mid+"\")'>경고</button>";
+							output += "<button class='btn btn-sm btn-warning' onclick='showMstateModal(this, \""+result[i].mid+"\")'>경고</button>";
 						} else if (result[i].mstate == 0){
-							output += "<button class='btn btn-danger' onclick='showMstateModal(this, \""+result[i].mid+"\")'>정지</button>";
+							output += "<button class='btn btn-sm btn-danger' onclick='showMstateModal(this, \""+result[i].mid+"\")'>정지</button>";
 						} else if (result[i].mstate == 1){
-							output += "<button class='btn btn-primary' onclick='showMstateModal(this, \""+result[i].mid+"\")'>활동</button>";
+							output += "<button class='btn btn-sm btn-primary' onclick='showMstateModal(this, \""+result[i].mid+"\")'>활동</button>";
 						} else {
-							output += "<button class='btn btn-secondary' style='cursor:default;'>탈퇴</button>";
+							output += "<button class='btn btn-sm btn-secondary' style='cursor:default; style='width:4rem;''>탈퇴</button>";
 						}
 						output += "</td>";
 						output += "</tr>";
@@ -396,26 +472,23 @@
 					console.log("요청 페이지 : " + result.page);
 					$("#pageList").text("");
 					// 페이징 번호 출력
-					var pageList = "";
+					var pageList = "<ul class='pagination'>";
 					if (result.prev) {
-						pageList += "<button type='submit' name='page' value='" + (result.page - 1) + "' id='btn0'></button>";
-						pageList += "<label for='btn0'>[이전]</label>";
+						pageList += "<li class='paginate_button'><a href='"+ (result.page - 1) + "' >이전</a></li>";
 					} else {
-						pageList += "[이전] ";
+						pageList += "<li class='paginate_button'><span>이전</span></li>"
 					}
 					for (var i = result.startPage; i <= result.endPage; i++){
 						if (result.page == i){
-							pageList += "<span style='color:#00bcd4'>" + i + "</span>";
+							pageList += "<li><a class='active'>"+ i + "</a></li>";
 						} else {
-							pageList += "<button type='submit' name='page' value='" + i + "' id='btn" + i + "'></button>";
-							pageList += "<label for='btn" + i + "'>" + i + "</label>";
+							pageList += "<li class='paginate_button'><a href='"+ i + "' >" + i + "</a></li>";
 						}
 					}
 					if (result.next){
-						pageList += "<button type='submit' name='page' value='" + (result.page + 1) + "' id='btn6'></button>";
-						pageList += "<label for='btn6'>[다음]</label>";
+						pageList += "<li class='paginate_button'><a href='"+ (result.page + 1) + "' >다음</a></li>";
 					} else {
-						pageList += "[다음]";
+						pageList += "<li class='paginate_button'><span>다음</span></li>"
 					}
 					$("#pageList").html(pageList);
 				},
@@ -424,55 +497,7 @@
 				}
 			})
 		}	
-		
-		// 회원상태 변경 확인 모달창 출력
-		var btnObj;
-		function showMstateModal(obj, mid){
-			console.log("showMstateModal() 실행");
-			btnObj = $(obj);
-			var btnObjText = btnObj.text();
-			console.log("btnObjText:"+btnObjText);
-			if (btnObjText == "활동" || btnObjText == "경고"){
-				$("#updateMstateModalBody").text(mid + " 회원을 정지 처리하시겠습니까?");
-			} else {
-				$("#updateMstateModalBody").text(mid + " 회원을 활동 처리하시겠습니까?");
-			}
-			$("#mid").val(mid);
-			$("#updateMstateModal").modal("show");
-		}
-		
-		// 회원상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
-		function updateMstate(){
-			console.log("updateMstate() 실행");
-			var mid = $("#mid").val();
-			console.log(btnObj.text());
-			if (btnObj.text() == "활동" || btnObj.text() == "경고" ){
-				var mstate = 0;				
-			} else {
-				var mstate = 1;				
-			}
-			$.ajax({
-				type: "get",
-				data: {"mid":mid, "mstate":mstate},
-				url: "admin_updateMstate_ajax",
-				dataType: "json",
-				success: function(result){
-					console.log(result);
-						if (result.mstate == 0){
-							btnObj.text("정지").addClass("btn-danger").removeClass("btn-primary").removeClass("btn-warning");
-						} else if (result.mwarning > 0){
-							btnObj.text("경고").addClass("btn-warning").removeClass("btn-primary").removeClass("btn-secondary");
-						} else {
-							btnObj.text("활동").addClass("btn-primary").removeClass("btn-secondary").removeClass("btn-warning");
-						}
-					$("#updateMstateModal").modal("hide");
-				},
-				error: function(){
-					$("#updateMstateModal").modal("hide");
-					alert("회원상태 변경에 실패했습니다.");
-				}
-			});
-		}
+
 	
 	</script>
 </body>
