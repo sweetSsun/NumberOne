@@ -121,11 +121,6 @@ ol {
 	margin: 0;
 }
 
-.overflow {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
 .pagination {
 	width: 18rem;
 	display: inline-block;
@@ -797,7 +792,7 @@ ol {
 	padding-left: 75px;
 }
 
-.hero__text span {
+/* .hero__text span {
 	font-size: 14px;
 	text-transform: uppercase;
 	font-weight: 700;
@@ -815,7 +810,7 @@ ol {
 
 .hero__text p {
 	margin-bottom: 35px;
-}
+} */
 
 /*---------------------
   Categories
