@@ -238,13 +238,13 @@ public class MemberController {
 	
 		}		
 		//작성자 상세페이지 _ Board
-		@RequestMapping(value = "/selectWriteMemberInfo")
-		public ModelAndView selectWriteMemberInfo(String nickname) {
-			System.out.println("작성자 상세페이지 _ Board");
-			mav = new ModelAndView();
+		@RequestMapping(value = "/selectWriteMemberInfo_ajax")
+		public @ResponseBody String selectWriteMemberInfo_ajax (String nickname) {
+			System.out.println("작성자 상세페이지 _ Board,Reply");
+
 			System.out.println("controller.nickname : " + nickname);
-			mav = msvc.selectWriteMemberInfo(nickname);
-			return mav;
+			String boardList = msvc.selectWriteMemberInfo_ajax(nickname);
+			return boardList;
 			
 		}
 		

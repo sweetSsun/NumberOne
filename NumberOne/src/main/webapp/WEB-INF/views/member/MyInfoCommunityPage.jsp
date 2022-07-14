@@ -207,7 +207,7 @@ background-color: #00BCD4;
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center; ">
 								<td>${scrap.scbdcode }</td>
 								<td>
-								<a href="loadToRoomViewPage?bdcode=${scrap.scbdcode }">
+								<a href="selectRoomList?bdcode=${scrap.scbdcode }&jsp=view">
 								${scrap.bdtitle }</a></td>
 								<td>${scrap.bdreply }</td>
 								<td>
