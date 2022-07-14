@@ -162,7 +162,7 @@
 		var mainImg = $("#mainImg").val();
 		console.log(mainImg);
 		if(mainImg==""){
-			alert("메인이미지를 먼저 등록하세요");
+			alert("대표 사진을 먼저 선택하세요!");
 			return false;
 		}
 	} 
@@ -175,6 +175,8 @@
 		} else if ($("#bdcontents").val()==""){
 			alert("내용을 입력하세요");
 			return false;
+		} else if ($("#mainImg").val()==""){
+			alert("대표 사진은 필수 사항입니다!");
 		}
 		return true;
 	}

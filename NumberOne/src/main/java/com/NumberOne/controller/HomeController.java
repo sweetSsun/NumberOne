@@ -64,14 +64,14 @@ public class HomeController {
 		
 		
 		
-		// 자랑 게시판 불러오기 selectRoomView?bdcode :: 메인배너로 & 자랑글상세 링크 필요
-		//String roomView_json = bsvc.selectRoomView(bdcode);
-		//System.out.println(roomView_json);
-		//mav.addObject("roomView", roomView_json);
+		// 고정된 자랑글 불러오기 :: 메인배너로 & 자랑글상세 링크 필요
+		ArrayList<BoardDto> fixList = bdao.selectFixedRoomView();
+		//System.out.println(fixList);
+		mav.addObject("fixList", fixList);
 		
 		// 전체 게시판 불러오기 & 목록 링크 /loadToBoardMainPage & 상세 링크 동일 /selectBoardView?bdcode
 		ArrayList<BoardDto> boardList = bdao.selectBoardList();
-		System.out.println(boardList);
+		//System.out.println(boardList);
 		mav.addObject("boardList", boardList);
 		
 		
@@ -82,27 +82,27 @@ public class HomeController {
 		
 		// 자유 게시판 불러오기 & 목록 링크 /selectFreeBoardList
 		ArrayList<BoardDto> boardList_free = bdao.selectBoardList_Free(bdcategory_Free);
-		System.out.println(boardList_free);
+		//System.out.println(boardList_free);
 		mav.addObject("boardList_free", boardList_free);
 		
 		// 질문 게시판 불러오기 & 목록 링크 /selectQuestionBoardList
 		ArrayList<BoardDto> boardList_qa = bdao.selectBoardList_Question(bdcategory_qa);
-		System.out.println(boardList_qa);
+		//System.out.println(boardList_qa);
 		mav.addObject("boardList_qa", boardList_qa);
 
 		// 정보 게시판 불러오기 & 목록 링크 /selectInfoBoardList
 		ArrayList<BoardDto> boardList_info = bdao.selectBoardList_Information(bdcategory_info);
-		System.out.println(boardList_info);
+		//System.out.println(boardList_info);
 		mav.addObject("boardList_info", boardList_info);
 
 		// 후기 게시판 불러오기 & 목록 링크 /selectReviewBoardList
 		ArrayList<BoardDto> boardList_review = bdao.selectBoardList_Review(bdcategory_review);
-		System.out.println(boardList_review);
+		//System.out.println(boardList_review);
 		mav.addObject("boardList_review", boardList_review);
 				
 		// 공지 게시판 불러오기 & 목록 링크 /selectNoticeBoardList  
 		ArrayList<NoticeDto> noticeList = bdao.selectNoticeList();
-	    System.out.println(noticeList);
+	    //System.out.println(noticeList);
 	    mav.addObject("noticeList", noticeList);
 	    
 	    
@@ -122,21 +122,12 @@ public class HomeController {
 		
 		mav.addObject("SellList", SellList);
 		mav.addObject("buyList", buyList);
-	    
+
 		
 		mav.setViewName("Main");
 		return mav;
-
+		
 	}
-	
-	// 고정된 자랑글 불러오기
-	/*
-	 * public ArrayList<BoardDto> selectRoomViewFixed() {
-	 * System.out.println("고정된 자취방 자랑글 출력 요청"); ArrayList<BoardDto> roomView_json =
-	 * bsvc.selectRoomView();
-	 * 
-	 * return null; }
-	 */
 	
 	
 	

@@ -24,8 +24,11 @@ public interface BoardDao {
 			+ "values (#{bdcode}, #{bdcategory}, #{bdmid}, #{bdtitle}, #{bdcontents}, sysdate, #{bdimg}, #{bddetailimg})")
 	int insertRoomWrite(BoardDto room);
 	   
-	   //자취방 자랑 글목록 조회 
-	   ArrayList<BoardDto> selectRoomList();
+	//자취방 자랑글 목록 조회 
+	ArrayList<BoardDto> selectRoomList();
+	
+	//자랑글 목록 조회 페이징
+	ArrayList<BoardDto> selectRoomList_paging(Paging paging);
 
 	//공지게시판 글목록 조회 
 	ArrayList<NoticeDto> selectNoticeList();
@@ -207,6 +210,13 @@ public interface BoardDao {
 	
 	//지역게시판 검색결과 
 	ArrayList<BoardDto> selectRegionSearchList(@Param("bdrgcode") String bdrgcode, @Param("searchType") String searchType, @Param("searchText") String searchText);
+
+	//자랑글 총 개수
+	int selectRoomTotalCount(Paging paging);
+
+	//고정된 자랑글 목록(민희)
+	ArrayList<BoardDto> selectFixedRoomView();
+
 	
 	//일반게시판 전체 글 개수 조회 
 	int selectBoardTotalCount(Paging paging);
