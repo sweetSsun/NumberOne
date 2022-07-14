@@ -71,12 +71,12 @@
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="selectMyInfoCommunityView#scrap"><i class="fa-solid fa-bookmark"></i></a>
+						<a href="selectMyInfoCommunityView#scrap"><i class="fa-solid fa-star"></i></a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="selectMyInfoResellView"><i class="fa-solid fa-store"></i>&nbsp;<i class="fa-solid fa-cart-shopping"></i></a>
+						<a href="selectMyInfoResellView"><i class="fa-solid fa-carrot"></i></a>
 					</span>
 				</div>
 				<div class="sideroom">
@@ -119,7 +119,7 @@
 						<a href="selectMyInfoCommunityView#reply"><i class="fa-brands fa-replyd"></i>&nbsp;&nbsp;댓글</a>
 					</div>
 					<div class="side_mypage">
-						<a href="selectMyInfoCommunityView#scrap"><i class="fa-solid fa-bookmark"></i>&nbsp;&nbsp;스크랩</a>
+						<a href="selectMyInfoCommunityView#scrap"><i class="fa-solid fa-star"></i>&nbsp;&nbsp;스크랩</a>
 					</div>
 				</div>
 				
@@ -127,7 +127,7 @@
 					<span style="font-weight: bold; font-size: 20px;"><a href="selectMyInfoResellView">중고거래</a></span>
 					
 					<div class="side_mypage">
-						<a href="selectMyInfoResellView"><i class="fa-solid fa-store"></i>&nbsp;팔구사구&nbsp;<i class="fa-solid fa-cart-shopping"></i></a>
+						<a href="selectMyInfoResellView"><i class="fa-solid fa-carrot"></i>&nbsp;&nbsp;팔구사구</a>
 					</div>
 					<div class="side_mypage">
 						<a href="selectMyInfoResellView#scroll-chat"><i class="fa-solid fa-comment-dots"></i>&nbsp;&nbsp;채팅</a>
