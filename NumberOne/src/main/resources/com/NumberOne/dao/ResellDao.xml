@@ -236,11 +236,16 @@
  		AND WUEDUBCODE = #{ubcode}
  	</select>
 
+	<select id="selectMaxChcode"  resultType="int">
+	SELECT NVL(MAX(CHCODE),0)
+	FROM CHAT
+	</select>
+
 
 
 	<insert id="insertResellWarning_ajax">
  		<!-- 게시글 신고 -->
- 		INSERT INTO WARNINGUSEDBOARDS
+ 		INSERT INTO WARNINGUSEDBOARDS (WUMID, WUEDUBCODE)
  		VALUES ( #{loginId}, #{ubcode} )
  	</insert>
  	 
@@ -265,6 +270,14 @@
 	INSERT INTO ZZIM(ZZMID, ZZUBCODE) VALUES(#{zzmid}, #{zzubcode})
 	</insert>
 	
+	
+	<insert id="insertResellChat">
+	INSERT INTO CHAT(CHCODE, CHFRMID, CHTOMID, CHCONTENTS, CHDATE)
+	VALUES(#{chat.chcode}, #{chat.chfrmid}, #{chat.chtomid}, #{gdtitle}, SYSDATE)
+	
+			</insert>
+	
+	
 	<delete id="zzimClick_ajax_delete">
 	DELETE FROM ZZIM
 	WHERE ZZMID = #{zzmid} AND ZZUBCODE = #{zzubcode}
@@ -280,7 +293,7 @@
  	 <update id="updateResellDelete_ub">
  	 	UPDATE USEDBOARDS
  	 	SET UBSTATE = 2
- 	 	WHERE UBCODE = #{ubcode} AND UBSELLBUY = #{ubsellbuy} 
+ 	 	WHERE UBCODE = #{ubcode} 
  	 </update>
  	 
  	 <update id="updateResellDelete_gd">
@@ -289,6 +302,22 @@
  	 WHERE GDUBCODE = #{ubcode}
  	 </update>
  	
-
+ 	
+ 	<update id="updateResellState_usedBoardAjax">
+ 	UPDATE USEDBOARDS
+ 	SET UBSTATE = #{ubstate} 	
+ 	WHERE UBCODE = #{ubcode}
+ 	</update>
+ 	
+	<update id="updateResellState_GoodsAjax">
+	UPDATE GOODS
+	SET GDSTATE = #{gdstate}
+	WHERE GDCODE = #{gdcode}  
+		</update>
+	
+	<update id="">
+	
+	</update>
+	
 			
 </mapper>

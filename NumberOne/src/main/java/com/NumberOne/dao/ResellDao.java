@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.NumberOne.dto.ChatDto;
 import com.NumberOne.dto.GoodsDto;
 import com.NumberOne.dto.Paging;
 import com.NumberOne.dto.UsedBoardDto;
@@ -48,14 +49,24 @@ public interface ResellDao {
 
 	ArrayList<UsedBoardDto> selectResellView_List(String ubmid);
 
-	String checkResellWarning_ajax(String loginId, String ubcode);
+	String checkResellWarning_ajax(@Param("loginId") String loginId, @Param("ubcode") String ubcode);
 
-	int insertResellWarning_ajax(String loginId, String ubcode);
+	int insertResellWarning_ajax(@Param("loginId") String loginId, @Param("ubcode") String ubcode);
 
-	int deleteResellWarning_ajax(String loginId, String ubcode);
+	int deleteResellWarning_ajax(@Param("loginId") String loginId, @Param("ubcode") String ubcode);
 
 	int updateResellDelete_gd(UsedBoardDto ubDto);
 
 	int updateResellDelete_ub(UsedBoardDto ubDto);
 
+	int insertResellChat( @Param("gdtitle") String gdtitle, @Param("chat") ChatDto chat);
+
+	int selectMaxChcode();
+
+	int updateResellState_GoodsAjax(GoodsDto gdDto);
+
+	int updateResellState_usedBoardAjax(UsedBoardDto ubDto);
+
+	
+	
 }

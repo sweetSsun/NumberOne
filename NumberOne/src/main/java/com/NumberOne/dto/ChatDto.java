@@ -12,7 +12,7 @@ public class ChatDto {
 	private String chcontents;		//내용
 	private String chdate;			//작성일
 
-
+	
 	private String chfrmnick;		//보낸사람 닉네임
 	private String chtomnick;		//받는사람 닉네임
 	
