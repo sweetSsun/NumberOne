@@ -10,12 +10,7 @@
 <%@ include file="/resources/css/BarCss.jsp" %>
 
 <style type="text/css">
-	header{
-	    font-family: 'Jal_Onuel';
-		color: #4C4C4C;
-	    white-space: nowrap;		
-	}
-	
+
 	.logoimg{
 		margin-top: 2%;
         padding-left: 45%;    
@@ -88,7 +83,7 @@
 			 
 			<div class="row">	
 				<!-- Home, 커뮤니티, 중고거래 목록 -->
-				<div class="col-lg-5 col-md-6 col-sm-12 menubar_left">
+				<div class="col-lg-5 col-md-6 col-sm-6 menubar_left">
 					<ul>
 						<li style="margin-right: 30px;">
 							<a href="loadToBoardMainPage">커뮤니티</a>
@@ -101,7 +96,7 @@
 	
 					
 				<!-- 로그인, 회원가입, 고객센터 -->
-				<div class="col-lg-7 col-md-6 col-sm-12 menubar_right">
+				<div class="col-lg-7 col-md-6 col-sm-6 menubar_right">
 					<ul>
 						<c:choose>
 	                    <c:when test="${sessionScope.loginId == null && sessionScope.kakaoId == null}">
@@ -114,10 +109,11 @@
 							<!-- 채팅 -->
 							<li style="margin-right: 15px;"><a href="#" title="1:1채팅" onclick="popupChat()"><i class="fa-solid fa-comment-dots"></i></a></li>
 							<!-- 로그아웃 -->
-							<li style="margin-right: 15px;"><a href="selectMemberLogout">로그아웃</a></li>					
+							<li style="margin-right: 15px;"><a href="selectMemberLogout">로그아웃</a></li>
+							<!-- 고객센터(문의) -->					
+							<li ><a href="selectMyInfoQuestionListView">고객센터</a></li>
 						</c:otherwise>
 						</c:choose>
-							<li ><a href="selectMyInfoQuestionListView">고객센터</a></li>
 					</ul>
 				</div>
 			</div>

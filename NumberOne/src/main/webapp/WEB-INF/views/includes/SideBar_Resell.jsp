@@ -36,17 +36,17 @@
 				
 				<div class="sideroom">
 					<span>
-						<a href="selectNoticeBoardList"><i class="fa-solid fa-volume-low"></i></a>
+						<a href="selectNoticeBoardList"><i class="fa-solid fa-store"></i></a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="selectRoomList"><i class="fa-solid fa-house-user"></i></a>
+						<a href="selectRoomList"><i class="fa-solid fa-cart-shopping"></i></a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="selectRoomList"><i class="fa-solid fa-house-user"></i></a>
+						<a href="selectRoomList"><i class="fa-solid fa-comment-dots"></i></a>
 					</span>
 				</div>
 				
@@ -65,25 +65,25 @@
 				
 				<div class="sideroom">
 					<span>
-						<a href="selectResellPageList?sellBuy=S"><i class="fa-solid fa-volume-low"></i>&nbsp;&nbsp;팔구</a>
+						<a href="selectResellPageList?sellBuy=S"><i class="fa-solid fa-store"></i>&nbsp;&nbsp;팔구</a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="selectResellPageList?sellBuy=B"><i class="fa-solid fa-house-user"></i>&nbsp;&nbsp;사구</a>
+						<a href="selectResellPageList?sellBuy=B"><i class="fa-solid fa-cart-shopping"></i>&nbsp;&nbsp;사구</a>
 					</span>
 				</div>
 				
 				<div class="sideroom">
 					<span>
-						<a href="#"><i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;채팅</a>
+						<a href="#"><i class="fa-solid fa-comment-dots"></i>&nbsp;&nbsp;채팅</a>
 					</span>
 				</div>
 			</div>
 			
 			<div class="sideregion">
 				<div class="sideregion_title">
-					<span>지역</span>
+					<span><i class="fa-solid fa-map-location-dot"></i>&nbsp;&nbsp;지역</span>
 				</div>
 						
 				<div>

@@ -20,14 +20,20 @@
 
 
 <body>
-	<!-- TobBar -->
-	<%@ include file="/WEB-INF/views/includes/TopBar.jsp"%>
-	<!-- End of TobBar -->
-
+        <!-- TopBar -->
+        <c:choose>
+                <c:when test="${sessionScope.loginId != 'admin'}">
+                        <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
+                </c:when>
+                <c:otherwise>
+                        <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
+                </c:otherwise>
+        </c:choose>
+        <!-- End of TopBar -->
 	<main>
 		<!-- 사이드바 -->
-		<%@ include file="/WEB-INF/views/includes/SideBar_Mypage.jsp"%>
 
+		<%@ include file="/WEB-INF/views/includes/SideBar_Resell.jsp"%>
 		<section>
 			<!-- 본문 -->
 			<div class="container">
@@ -45,6 +51,7 @@
 						<div class="w3-left position-left" onclick="plusDivs(-1)">&#10094;</div>
 						<div class="w3-right position-right" onclick="plusDivs(1)">&#10095;</div>
 
+<!--  -->
 					</div>
 
 
@@ -54,7 +61,7 @@
 
 				<div class="container-body">
 					<!-- 품목명  -->
-					<!-- <form action=""> -->
+					 <form action="insertResellChat"> 
 						<div class="container-card_goods container-card_w100">
 							<c:forEach items="${gd_resellView}" var="gdList">
 								<c:choose>
@@ -62,15 +69,18 @@
 									<c:when test="${gdList.gdstate==1 }">
 										<div class="container-card_goods_2">
 											<div class="item-basis_1">
-												<input type="checkbox" class="gd_chBox">
+											
+												<input type="checkbox" name="gd_names"   onclick="clickBox(this)" class="gd_chBox" value="${gdList.gdname }" >
 											</div>
 											<div class="item-basis_2">${gdList.gdname }</div>
 											<div class="item-basis_3">${gdList.gdprice }</div>
 										</div>
 									</c:when>
 									<c:otherwise>
-										<div class="container-card_goods_2" style="text-decoration: overline;">
-											<div class="item-basis_1"></div>
+										<div class="container-card_goods_2" style="text-decoration: line-through;">
+											<div class="item-basis_1">
+											<input type="checkbox" class="gd_chBox" disabled="disabled">
+											</div>
 											<div class="item-basis_2">${gdList.gdname }</div>
 											<div class="item-basis_3">${gdList.gdprice }</div>
 										</div>
@@ -79,35 +89,38 @@
 								</c:choose>
 							</c:forEach>
 
+					<input type="hidden"  name="chfrmid" value="${sessionScope.loginId }">
+					<input type="hidden" name="chtomid" value="${ub_resellView.ubmid}">
+					<input type="hidden" name="gdtitle" value="${ub_resellView.ubtitle }">
+
 						</div>
 
 
 						<div class="container-flex_2">
 
 							<div class=item-basis_5>
-							<div><p style="font-size: 12.5px"><a href="selectMyInfoMemberView">${ub_resellView.ubnickname} 님 &nbsp;&nbsp;
+							<div><p style="font-size: 12.5px"><a href="selectMyInfoMemberView">${ub_resellView.ubnickname}  &nbsp;&nbsp;
 										<img class="img-profile rounded-circle" style="width:50px" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/${ub_resellView.ubprofile }">
 										</a></p></div>
 						
 							</div>
 
-							<div class=" item-basis_4"><button id="sellBuyList"> 목록</button></div>
+							<div class=" item-basis_4"><button id="sellBuyList" type="button">글목록</button></div>
 							<div class="item-basis_4"><button id="zzimBtn" type="button"> 찜</button></div>
 							<c:choose>
 								<c:when test="${ub_resellView.ubmid == sessionScope.loginId}">
-									<div class="card_in-icon"><button>수정</button></div>
+									<div class="card_in-icon"><button onclick="resellModifyForm()" type="button">수정</button></div>
 									<div class="card_in-icon"><input onclick="ubDeleteCheckModal()" type="button" style="background-color: #00bcd4;" class="btn btn-sm fw-bold text-white" value="삭제"></div>
 								</c:when>			
 							<c:otherwise>
 																			
 									<div class="item-basis_4" >	<i id="ubWarning" onclick="ubWarningCheckModal()" class='fa-solid fa-land-mine-on  fa-2x icon' style="margin-right: 2px; font-size:40px"></i></div>
-									<div class="item-basis_4"><button id="chatBtn"> 채팅</button></div>
+									<div class="item-basis_4"><button id="chatBtn" type="submit"> 채팅</button></div>
 									</c:otherwise>
-</c:choose>							
-
+</c:choose>					
 							
 						</div>
-	<!-- </form> -->
+	 </form> 
 					
 					<div class="container-flex_1">
 						<textarea rows="2" cols="80" style="resize: none" readonly>${ub_resellView.ubcontents}</textarea>
@@ -187,11 +200,12 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
+
+
 <script type="text/javascript">
 
 var zzim_Check = '${zzim_Check}';
 console.log("찜체크 : " +zzim_Check);
-		const sellBuyList = document.getElementById("sellBuyList"); //목록버튼
 		const warningBtn = document.getElementById("warningBtn"); //신고
 		const zzimBtn = document.getElementById("zzimBtn"); //찜버튼
 		const chatBtn = document.getElementById("chatBtn"); //채팅버튼
@@ -200,8 +214,8 @@ console.log("찜체크 : " +zzim_Check);
 		const ubmid = '${ub_resellView.ubmid}';	//작성자아이디
 		const ubsellbuy = '${ub_resellView.ubsellbuy}';  //사구, 팔구  분류
 		
-		
 		window.onload = function(){
+		
 		if (zzim_Check == 'UNCHECK') {
 			zzimBtn.classList.add("blue");
 			zzimBtn.classList.remove("red");
@@ -220,9 +234,6 @@ console.log("찜체크 : " +zzim_Check);
 
 function clickZzim() {
 	
-		
-		
-
 		$.ajax({
 			type : "get",
 			url : "zzimClick_ajax",
@@ -251,10 +262,18 @@ function clickZzim() {
 </script>
 
 
+<!-- 구매할 품목 체크 (채팅창 넘기기) -->
+<script type="text/javascript">
+function clickBox(sel_box){
+	if(sel_box.checked == true){
+		console.log("선택된체크박스 : ", sel_box.value);
+	}	
+}
+</script>
 
 
-
-<script>
+<!-- 슬라이드배너  -->
+<script type="text/javascript">
 	var slideIndex = 1;
 	showDivs(slideIndex);
 
@@ -395,6 +414,21 @@ function deleteResellWarning(){
 	}
 	
 </script>
+
+<!-- 글목록으로 돌아가기 -->
+<script type="text/javascript">
+
+let sellbuy_List = document.querySelector("#sellBuyList");
+			console.log(sellbuy_List);
+			sellbuy_List.addEventListener("click", backList);		
+	function backList(){	
+		console.log("글목록버튼 클릭이벤트");
+		location.href = "selectResellPageList?sellBuy="+ubsellbuy;
+	}
+
+</script>
+
+
 
 
 </html>
