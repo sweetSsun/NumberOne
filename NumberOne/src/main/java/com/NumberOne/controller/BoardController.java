@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.NumberOne.dto.BoardDto;
+import com.NumberOne.dto.Paging;
 import com.NumberOne.dto.ReplyDto;
 import com.NumberOne.service.BoardService;
 
@@ -20,13 +21,15 @@ public class BoardController {
 	BoardService bsvc;
 
 	
-	//자취방 자랑 메인 페이지 이동
+	//자취방 자랑글 메인 페이지 이동
+	//게시판 메인에서 자랑글 클릭 시 이동
+	//자랑글 상세 페이지 이동
 	@RequestMapping(value="/selectRoomList")
-	public ModelAndView selectRoomList(String bdcode, String jsp) {
+	public ModelAndView selectRoomList(String bdcode, String jsp, Paging paging) {
 		System.out.println("자쥐방 자랑 메인 요청(목록페이지)");	
 		System.out.println(bdcode+"/"+jsp);
 		ModelAndView mav = new ModelAndView();
-		mav=bsvc.selectRoomList();
+		mav=bsvc.selectRoomList(paging);
 		
 		if(bdcode != "") {
 			//bdcode 추가
@@ -40,10 +43,25 @@ public class BoardController {
 			
 		}
 		
-		
 		return mav;
 	}
 
+	//자랑글 목록 정렬 요청(글목록)
+	@RequestMapping (value="selectRoomList_ajax")
+	public @ResponseBody String selectRoomList_ajax(Paging paging) {
+		System.out.println("자랑글 정렬 요청-글목록");
+		String roomList_json = bsvc.selectRoomList_ajax(paging);
+		return roomList_json;
+	}
+	
+	//자랑글 목록 정렬 요청(paging)
+		@RequestMapping (value="selectRoomPaging_ajax")
+		public @ResponseBody String selectRoomNum_ajax(Paging paging) {
+			System.out.println("자랑글 정렬 요청-paging");
+			String paging_json = bsvc.selectRoomPaging_ajax(paging);
+			return paging_json;
+		}
+	
 	//자취방 자랑글 작성 페이지 이동
 	@RequestMapping(value="/loadToWriteRoom")
 	public String loadToWriteRoom(RedirectAttributes ra) {
