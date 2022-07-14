@@ -51,7 +51,7 @@
 			UBRGCODE = #{paging.searchVal} AND
 		</if>
 		UBSELLBUY = #{paging.sellBuy} AND
-		UBSTATE = 1
+		UBSTATE = 1 OR UBSTATE = 9
 		<if test="paging.keyword != null or paging.searchType !=null">
 			<choose>
 				<when
@@ -114,7 +114,7 @@
 		UBCODE)
 
 		WHERE UBRGCODE = #{searchVal} AND UBSELLBUY = #{sellBuy} AND
-		UBSTATE = 1
+		UBSTATE = 1 OR UBSTATE = 9
 		<if test="keyword != null or searchType !=null">
 			<choose>
 				<when
@@ -152,7 +152,7 @@
 		FROM (SELECT *
 		FROM USEDBOARDS
 		WHERE UBRGCODE =
-		#{searchVal} AND UBSELLBUY = #{sellBuy} AND UBSTATE = 1
+		#{searchVal} AND UBSELLBUY = #{sellBuy} AND UBSTATE = 1 OR UBSTATE = 9
 		<if test="keyword != null or searchType !=null">
 			<choose>
 				<when
@@ -206,7 +206,7 @@
 		FROM (SELECT * FROM USEDBOARDS ORDER BY
 		UBCODE)
 		WHERE UBCODE = #{ubcode} AND UBSELLBUY = #{ubsellbuy} AND
-		UBSTATE = 1 
+		UBSTATE = 1 OR UBSTATE = 9
 		) LEFT OUTER JOIN ZZIM_VIEW
 		ON UBCODE = ZZUBCODE,
 		MNICKNAME_VIEW
@@ -300,7 +300,19 @@
 	SET GDSTATE = #{gdstate}
 	WHERE GDCODE = #{gdcode}  
 	</update>
+	
+	<update id="updateResellModify_ub">
+	UPDATE USEDBOARDS
+	SET UBSTATE = #{ubstate}, UBCONTENTS = #{ubcontents}, UBRGCODE = #{ubrgcode},
+	 UBMAINIMG = #{ubmainimg}, UBDETAILIMG = #{ubdetailimg}
+	WHERE UBCODE = #{ubcode}
+	</update>
 
 	
-			
+	<update id="updateResellModify_gd">
+	UPDATE GOODS
+	SET GDSTATE = #{gdstate}
+	WHERE GDCODE = #{gdcode}	
+	</update>
+		
 </mapper>

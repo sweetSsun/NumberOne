@@ -111,8 +111,8 @@ public interface MemberDao {
 	MemberDto selectWriteMemberInfo_member(String nickname);
 
 	//닉네임 별 작성 글 출력
-	@Select("SELECT BD.BDTITLE FROM BOARDS BD, MEMBERS M WHERE BD.BDMID = M.MID AND M.MNICKNAME = #{nickname} ORDER BY BDCODE DESC")
-	ArrayList<BoardDto> insertWriteMemberInfo_Board(String nickname);
+	@Select("SELECT BD.BDCODE, BD.BDTITLE, BD.BDCATEGORY FROM BOARDS BD, MEMBERS M WHERE BD.BDMID = M.MID AND M.MNICKNAME = #{nickname} ORDER BY BDCODE DESC")
+	ArrayList<BoardDto> selectWriteMemberInfo_ajax(String nickname);
 	
 	//카카오 회원가입 처리
 	@Insert("INSERT INTO MEMBERS(MID, MPW, MNAME, MNICKNAME, MPHONE, MEMAIL, MREGION, MPROFILE, MJOINDATE, MSTATE ) "
@@ -126,6 +126,10 @@ public interface MemberDao {
 	//임시 비밀번호로 변경
 	@Update ("UPDATE MEMBERS SET MPW = #{mpw} WHERE MID = #{mid} AND MEMAIL = #{memail}")
 	void updatePw(@Param("mid")String checkMid, @Param("memail")String checkMemail, @Param("mpw")String temporaryPw);
+
+	//닉네임 별 작성 댓글 출력
+	@Select("SELECT RPBDCODE, RPCONTENTS FROM REPLY RP, MEMBERS M WHERE MID = RPMID AND MNICKNAME = #{nickname} ORDER BY RPBDCODE DESC")
+	ArrayList<ReplyDto> selectWriteMemberInfo_Reply(String nickname);
 
 
 	

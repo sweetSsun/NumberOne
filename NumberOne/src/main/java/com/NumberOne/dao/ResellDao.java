@@ -63,6 +63,10 @@ public interface ResellDao {
 	int updateResellState_usedBoardAjax(UsedBoardDto ubDto);
 	
 
+	int updateResellModify_ub(UsedBoardDto ubDto);
+
+	int updateResellModify_gd(GoodsDto gdDto);
+
 	
 	
 }
