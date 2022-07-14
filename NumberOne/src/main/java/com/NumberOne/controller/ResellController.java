@@ -144,23 +144,6 @@ public class ResellController {
 		return mav;
 	}
 
-	// 채팅창에 상품명 넘기기
-	@RequestMapping(value = "/insertResellChat")
-	public ModelAndView insertResellChat(String[] gd_names, ChatMessageDto chat, String gdtitle) {
-		System.out.println("insertResellChat 호출");
-		ModelAndView mav = new ModelAndView();
-		
-		for (String gd : gd_names) {
-			System.out.println(gd);
-		}
-		System.out.println(chat);
-		System.out.println(gdtitle);
-		
-		mav = rsvc.insertResellChat(gd_names, chat, gdtitle);
-
-		return null;
-	}
-
 	/* 게시글 신고 */
 	// 게시글 신고 유무 확인
 	@RequestMapping(value = "/checkResellWarning_ajax")

@@ -27,11 +27,13 @@ public class ChatWebSocketMsg extends TextWebSocketHandler {
 	private final ObjectMapper objectMapper = new ObjectMapper();
 	
     // 뭘 위한 맵일까....?
-    private Map<String, WebSocketSession> users = new ConcurrentHashMap<String, WebSocketSession>();
-//     <session, 방번호>
-//    private Map<WebSocketSession, String> sessionList = new ConcurrentHashMap<WebSocketSession, String>();
-    // 접속 세션
-	private ArrayList<WebSocketSession> sessionList = new ArrayList<WebSocketSession>();
+	private Map<String, ArrayList<WebSocketSession>> RoomList = new ConcurrentHashMap<String, ArrayList<WebSocketSession>>();
+//    private Map<String, WebSocketSession> users = new ConcurrentHashMap<String, WebSocketSession>();
+	
+	// 접속 세션
+	// <session, 방번호>
+    private Map<WebSocketSession, String> sessionList = new ConcurrentHashMap<WebSocketSession, String>();
+//	private ArrayList<WebSocketSession> sessionList = new ArrayList<WebSocketSession>();
 	
     // 세션 접속인원
     private static int loginMbCount;
@@ -44,8 +46,8 @@ public class ChatWebSocketMsg extends TextWebSocketHandler {
 		System.out.println(session.getId() + " 연결성공 >> 총 접속인원 : " + loginMbCount + "명");
 		
 		// 맵과 세션목록에 추가
-		users.put(session.getId(), session);
-		sessionList.add(session);
+//		users.put(session.getId(), session);
+//		sessionList.add(session);
 //		
 //		Map<String, Object> ChatMap = session.getAttributes();
 //		String chfrmid = (String)ChatMap.get("loginId");
@@ -77,8 +79,13 @@ public class ChatWebSocketMsg extends TextWebSocketHandler {
         System.out.println(session.getId() + " 연결종료 >> 총 접속인원 : " + loginMbCount + "명");
         
         // 맵과 세션목록에서 제거
-        users.remove(session.getId());
-        sessionList.remove(session);
+        if(sessionList.get(session) != null) {
+            // 해당 session의 방 번호를 가져와서, 방을 찾고, 그 방의 ArrayList<session>에서 해당 session을 지운다.
+            RoomList.get(sessionList.get(session)).remove(session);
+            sessionList.remove(session);
+        }
+//        users.remove(session.getId());
+//        sessionList.remove(session);
 		
 		
 //		System.out.println("session.getId() : "+session.getId());
@@ -116,20 +123,20 @@ public class ChatWebSocketMsg extends TextWebSocketHandler {
 		ChatMessageDto chatMessage = objectMapper.readValue(msg, ChatMessageDto.class);
 		
 		// 받은 메세지에 저장되어있는 채팅방코드로 해당 채팅방 찾기
-		ChatRoomDto isRoom = chsvc.selectChatRoom(chatMessage.getCmcrcode());
-		// DB에서 조회한 채팅방을 담을 객체
-		ChatRoomDto chatRoom = null;
-		
-		
-		// 다시~~~~~~~
-		// 채팅방 받아오기
-		if (isRoom == null) {
-			System.out.println("DB에 채팅방 없음");
-			chsvc.insertChatRoom(chatMessage);
-			chatRoom = chsvc.selectChatRoom(chatMessage.getCmcrcode());
-		} else {
-			chatRoom = isRoom;
-		}
+//		ChatRoomDto isRoom = chsvc.selectChatRoom(chatMessage.getCmcrcode());
+//		// DB에서 조회한 채팅방을 담을 객체
+//		ChatRoomDto chatRoom = null;
+//		
+//		
+//		// 다시~~~~~~~
+//		// 채팅방 받아오기
+//		if (isRoom == null) {
+//			System.out.println("DB에 채팅방 없음");
+//			chsvc.insertChatRoom(chatMessage);
+//			chatRoom = chsvc.selectChatRoom(chatMessage.getCmcrcode());
+//		} else {
+//			chatRoom = isRoom;
+//		}
 		
 		// 세션에 채팅방 
 		

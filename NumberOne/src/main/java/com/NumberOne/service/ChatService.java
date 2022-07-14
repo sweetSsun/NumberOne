@@ -3,6 +3,7 @@ package com.NumberOne.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.NumberOne.dao.ChatDao;
 import com.NumberOne.dto.ChatMessageDto;
@@ -21,11 +22,78 @@ public class ChatService {
 		
 	}
 
+	// 중고거래 관심상품 채팅메세지 입력 요청
+	public int insertResellChat(String[] gd_names, ChatMessageDto chatMessage, String gdtitle) {
+		System.out.println("ChatService.insertResellChat() 호출");
+		ModelAndView mav = new ModelAndView();
+		int insertResult = 0;
+		
+		// 해당 사용자간의 채팅방이 있는지 확인 후 없으면 새롭게 생성
+		ChatRoomDto chatRoom = selectChatRoom(chatMessage.getCmfrmid(), chatMessage.getCmtomid());
+		if (chatRoom == null) {
+			insertChatRoom(chatMessage);
+			chatRoom = selectChatRoom(chatMessage.getCmfrmid(), chatMessage.getCmtomid());
+		}
+		chatMessage.setCmcrcode(chatRoom.getCrcode());
+		System.out.println("chatRoom : " + chatRoom);
+		
+		
+		// cmcode 생성
+		int cmcode = createCmcode();
+		chatMessage.setCmcode(cmcode);
+		
+		// 중고거래 시도시 입력할 메세지 생성
+		String goodsChatMsg = null;
+		goodsChatMsg = gdtitle + " 글 - ";
+		if(gd_names.length==1) {
+			for (String gdcheck : gd_names) {
+				goodsChatMsg += gdcheck;
+			}
+		} else {
+			for (int i = 0; i < gd_names.length; i++) {
+				String gdcheck = gd_names[i];
+				if (i != gd_names.length-1) {
+					goodsChatMsg += gdcheck + ", "; 
+				} else {
+					goodsChatMsg += gdcheck; 
+				}
+			}			
+		}
+		goodsChatMsg += " 상품에 관심있어요";
+		System.out.println("goodsChatMsg : " + goodsChatMsg);
+		chatMessage.setCmcontents(goodsChatMsg);
+		
+		// 처음 중고거래 시도시의 세션은 구매자 뿐이므로 sessionCount를 1로 보내줌
+		chatMessage.setSessionCount(1);
+		
+		
+		System.out.println("chatDto : " + chatMessage);
 
-	// 채팅방 유무 확인
-	public ChatRoomDto selectChatRoom(String cmcrcode) {
-		System.out.println("ChatService.selectChatRoom() 호출");
-		ChatRoomDto chatRoom = chdao.selectChatRoom(cmcrcode); 
+		// 채팅 메세지 입력
+		chdao.insertChatMessage(chatMessage);
+//		
+//		// 채팅 출력_닉네임
+//		String chfrmnick = chdao.selectMfrnick(chatMessage.getCmfrmid());
+//		String chtomnick = chdao.selectMtonick(chatMessage.getCmtomid());
+//		chatMessage.setChfrmnick(chfrmnick);
+//		chatMessage.setChtomnick(chtomnick);
+		
+		return insertResult;
+	}
+
+
+
+	// 채팅방 유무 확인 (신규채팅방 생성 확인용)
+	public ChatRoomDto selectChatRoom(String mid) {
+		System.out.println("ChatService.selectChatRoom_1() 호출");
+		ChatRoomDto chatRoom = chdao.selectChatRoom_1(mid); 
+		return chatRoom;
+	}
+
+	// 채팅방 유무 확인 (신규채팅방 생성 확인용)
+	public ChatRoomDto selectChatRoom(String crfrmid, String crtomid) {
+		System.out.println("ChatService.selectChatRoom_2() 호출");
+		ChatRoomDto chatRoom = chdao.selectChatRoom_2(crfrmid, crtomid); 
 		return chatRoom;
 	}
 
@@ -57,7 +125,12 @@ public class ChatService {
 		}
 	}	
 	
-	
+	// cmcode 생성 메소드
+	public int createCmcode() {
+		int cmcode = chdao.selectMaxCmcode() + 1;
+		System.out.println("cmcode : "+ cmcode);
+		return cmcode;
+	}
 	
 	
 	

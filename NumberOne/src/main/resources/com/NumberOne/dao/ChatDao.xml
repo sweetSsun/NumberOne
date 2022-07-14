@@ -6,21 +6,12 @@
 <mapper namespace="com.NumberOne.dao.ChatDao">
 
 	
-	
+<!-- 	
 	<select resultType="com.NumberOne.dto.ChatDto" id="selectChatList">
 	SELECT CHCODE, CHFRMID, CHTOMID, CHCONTENTS, TO_CHAR(CHDATE,'YYYY-MM-DD HH24:MI') AS CHDATE
 	FROM CHAT ORDER BY CHDATE
 	</select>
-	
-	<select resultType="int" id="selectMaxChcode">
-	SELECT NVL(MAX(CHCODE),0)
-	FROM CHAT
-	</select>
-	
-	<insert id="insertChat">
-	INSERT INTO CHAT (CHCODE, CHFRMID, CHTOMID, CHCONTENTS, CHDATE)
-	VALUES (#{chcode}, #{chfrmid}, #{chtomid}, #{chcontents}, sysdate)
-	</insert>
+
 	
 	<select resultType="String" id="selectMfrnick">
 	SELECT MNICKNAME
@@ -38,25 +29,49 @@
 	SELECT TO_CHAR(CHDATE, 'YYYY-MM-DD AM HH:MI')
 	FROM CHAT
 	WHERE CHCODE = #{chcode}
-	</select>
+	</select> -->
 
 	<!-- 여기부터 새로한거! -->
-	<!-- chatRoom 조회 -->
-	<select id="selectChatRoom" resultType="com.NumberOne.dto.ChatRoomDto">
+	<!-- chatRoom 조회(회원정보/탑바용) -->
+	<select id="selectChatRoom_1" resultType="com.NumberOne.dto.ChatRoomDto">
 		SELECT * 
 		FROM CHATROOM
-		WHERE CRCODE = #{cmcrcode}
+		WHERE CRFRMID = #{mid} OR CRTOMID = #{mid}
+	</select>
+	
+	<!-- chatRoom 조회(신규채팅방 생성 조회용) -->
+	<select id="selectChatRoom_2" resultType="com.NumberOne.dto.ChatRoomDto">
+		SELECT * 
+		FROM CHATROOM
+		WHERE (CRFRMID = #{crfrmid} OR CRTOMID = #{crfrmid}) AND (CRFRMID = #{crtomid} OR CRTOMID = #{crtomid})
 	</select>
 	
 	<!-- crcode 최대값 조회 -->
 	<select id="selectMaxCrcode" resultType="String">
-		SELECT NVL(MAX(CRCODE), CR00000)
+		SELECT NVL(MAX(CRCODE), 'CR00000') AS CRCODE
 		FROM CHATROOM
 	</select>
 	
 	<!-- chatRoom 생성 -->
 	<insert id="insertChatRoom">
-		INSERT INTO CHATROOM
-		VALUES ()
+		INSERT INTO CHATROOM(crcode, crfrmid, crtomid)
+		VALUES (#{cmcrcode}, #{cmfrmid}, #{cmtomid})
+	</insert>
+	
+	<!-- cmcode 최대값 조회 -->
+	<select id="selectMaxCmcode" resultType="int">
+		SELECT NVL(MAX(CMCODE),0)
+		FROM CHATMESSAGE
+	</select>
+	
+	<!-- chatMessage 입력 -->
+	<insert id="insertChatMessage">
+		INSERT INTO CHATMESSAGE (CMCODE, CMCRCODE, CMFRMID, CMCONTENTS, CMDATE, CMREAD)
+		<if test="sessionCount == 1">
+			VALUES (${cmcode}, #{cmcrcode}, #{cmfrmid}, #{cmcontents}, SYSDATE, DEFAULT)
+		</if>
+		<if test="sessionCount == 2">
+			VALUES (${cmcode}, #{cmcrcode}, #{cmfrmid}, #{cmcontents}, SYSDATE, 0)
+		</if>
 	</insert>
 </mapper>

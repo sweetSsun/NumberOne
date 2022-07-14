@@ -59,10 +59,6 @@ public interface ResellDao {
 
 	int updateResellDelete_ub(UsedBoardDto ubDto);
 
-	int insertResellChat( @Param("gdtitle") String gdtitle, @Param("chat") ChatMessageDto chat);
-
-	int selectMaxChcode();
-
 	int updateResellState_ajax(GoodsDto gdDto);
 
 	

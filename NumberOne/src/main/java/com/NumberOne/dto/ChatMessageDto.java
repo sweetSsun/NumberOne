@@ -14,8 +14,10 @@ public class ChatMessageDto {
 	private int cmread;				//읽음상태
 	
 	// 채팅방 출력시 닉네임으로
-	private String chfrmnick;		//보낸사람 닉네임
-	private String chtomnick;		//받는사람 닉네임
+	private String cmfrmnickname;		//보낸사람 닉네임
+	private String cmtomnickname;		//받는사람 닉네임
+	// INSERT 시의 편의를 위한 받는 사람 id
+	private String cmtomid;
 	
 	//읽음상태 값을 저장하기 위해 필요한 세션
 	private int sessionCount;
@@ -68,22 +70,25 @@ public class ChatMessageDto {
 		this.cmread = cmread;
 	}
 
-	public String getChfrmnick() {
-		return chfrmnick;
+	public String getCmfrmnickname() {
+		return cmfrmnickname;
 	}
 
-	public void setChfrmnick(String chfrmnick) {
-		this.chfrmnick = chfrmnick;
+	public void setCmfrmnickname(String chfrmnick) {
+		this.cmfrmnickname = chfrmnick;
 	}
 
-	public String getChtomnick() {
-		return chtomnick;
+	public String getCmtomnickname() {
+		return cmtomnickname;
 	}
 
-	public void setChtomnick(String chtomnick) {
-		this.chtomnick = chtomnick;
+	public void setCmtomnickname(String chtomnick) {
+		this.cmtomnickname = chtomnick;
 	}
 
+	public String getCmtomid() {
+		return cmtomid;
+	}
 	public int getSessionCount() {
 		return sessionCount;
 	}
@@ -95,8 +100,10 @@ public class ChatMessageDto {
 	@Override
 	public String toString() {
 		return "ChatMessageDto [cmcode=" + cmcode + ", cmcrcode=" + cmcrcode + ", cmfrmid=" + cmfrmid + ", cmcontents="
-				+ cmcontents + ", cmdate=" + cmdate + ", cmread=" + cmread + ", chfrmnick=" + chfrmnick + ", chtomnick="
-				+ chtomnick + ", sessionCount=" + sessionCount + "]";
+				+ cmcontents + ", cmdate=" + cmdate + ", cmread=" + cmread + ", cmfrmnickname=" + cmfrmnickname + ", cmtomnickname="
+				+ cmtomnickname + ", cmtomid=" + cmtomid + ", sessionCount=" + sessionCount + "]";
 	}
+
+
 	
 }
