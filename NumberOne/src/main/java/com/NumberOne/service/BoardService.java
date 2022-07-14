@@ -19,6 +19,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.NumberOne.dao.BoardDao;
 import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.NoticeDto;
+import com.NumberOne.dto.Paging;
 import com.NumberOne.dto.ReplyDto;
 import com.google.gson.Gson;
 
@@ -262,14 +263,30 @@ public class BoardService {
 
 
 	// 자취방 자랑 메인 페이지(목록)
-	public ModelAndView selectRoomList() {
+	public ModelAndView selectRoomList(Paging paging) {
 		System.out.println("BoardService.selectRoomList() 호출");
 		ModelAndView mav = new ModelAndView();
-		ArrayList<BoardDto> roomList = bdao.selectRoomList();
-		System.out.println("자취방 자랑글 개수: " + roomList.size());
-
+		
+		//페이징 없는 글목록
+		//ArrayList<BoardDto> roomList = bdao.selectRoomList();
+		
+		//모든 자랑글 개수 받기
+		int totalRoomCount = bdao.selectRoomTotalCount(paging);
+		paging.setTotalCount(totalRoomCount);
+		paging.calc();
+		paging.setSearchVal("bdcode");
+		System.out.println(paging);
+		
+		//페이징을 위한 글 목록 받기
+		ArrayList<BoardDto> roomList = bdao.selectRoomList_paging(paging);
+		for (int i = 0; i < roomList.size(); i++) {
+			System.out.println(roomList.get(i).getBdcode()+" "+roomList.get(i).getBdhits()+" "+roomList.get(i).getBdreply()+" "+roomList.get(i).getBdrecommend()+" "+roomList.get(i).getBdscrap());
+		}
+		
+		//페이징을 위해 게시글 수 paging 객체에 저장
+		//System.out.println("자취방 자랑글 개수: " + roomList.size());
+		mav.addObject("paging", paging);
 		mav.addObject("roomList", roomList);
-
 		mav.setViewName("board/RoomListPage");
 
 		return mav;
@@ -1074,6 +1091,46 @@ public class BoardService {
 		mav.setViewName("board/RegionSearchList");
 		
 		return mav;
+	}
+	
+	//자랑글 정렬 요청(글목록)
+	public String selectRoomList_ajax(Paging paging) {
+		System.out.println("BoardnService.selectRoomList_ajax() 호출");
+		System.out.println("searchVal : " + paging.getSearchVal());
+		int totalCount = bdao.selectRoomTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
+		//System.out.println(totalCount);
+		
+		paging.setTotalCount(totalCount);
+		paging.calc(); // 페이지 처리 계산 실행
+		System.out.println("paging : " + paging);
+		
+		ArrayList<BoardDto> roomList =bdao.selectRoomList_paging(paging);
+		for (int i = 0; i < roomList.size(); i++) {
+			System.out.println(roomList.get(i).getBdcode()+" "+roomList.get(i).getBdhits()+" "+roomList.get(i).getBdreply()+" "+roomList.get(i).getBdrecommend()+" "+roomList.get(i).getBdscrap());
+		}
+		/*
+		gson = new Gson();
+		if (paging.getAjaxCheck().equals("list")) { // boardList ajax일 경우
+			String boardList_json = gson.toJson(boardList); 
+			return boardList_json;
+		} else { // paging ajax일 경우
+			String paging_json = gson.toJson(paging);
+			return paging_json;
+		}*/
+		return null;
+	}
+
+	//자랑글 정렬 요청(paging)
+	public String selectRoomPaging_ajax(Paging paging) {
+		System.out.println("BoardnService.selectRoomPaging_ajax() 호출");
+		System.out.println("searchVal : " + paging.getSearchVal());
+		int totalCount = bdao.selectRoomTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
+		System.out.println(totalCount);
+		
+		paging.setTotalCount(totalCount);
+		paging.calc(); // 페이지 처리 계산 실행
+		System.out.println("paging : " + paging);
+		return null;
 	}
 
 	
