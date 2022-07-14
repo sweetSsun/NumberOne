@@ -50,7 +50,7 @@
 		font-size: 18px;
 		border: solid 1px #00bcd4;
 	}
-	#inputSearchText{
+	#searchText{
 		font-size: 18px;
 	}
 	.community{
@@ -81,34 +81,34 @@
 		
 		<section>
 		<!-- 본문 -->
+			<form action="selectRegionBoardList" method="get" id="actionForm">
 			<div class="container">
 				<div class="row" style="margin:auto;">
 					<h2 class="text-center">지역게시판 전체글목록 페이지 : RegionBoardListPage.jsp</h2>
 				</div>
-				<form action="selectRegionSearchList" method="get" onsubmit="return searchTextCheck();">
 					<input type="hidden" name="bdrgcode" value=" ">
 					<div class="row ">
 						<!-- 검색기능 -->
 						<div class="col-5" align="right">
-								<select name="searchType" class="searchType">
-									<option value="bdtitle">제목</option>
-									<option value="bdcontents">내용</option>
-									<option value="bdtitlecontents">제목+내용</option>
-									<option value="bdnickname">작성자</option>
+								<select name="searchType" id="searchTypeSel" class="searchType">
+									<option value="bdTitle">제목</option>
+									<option value="bdContents">내용</option>
+									<option value="bdTitleContents">제목+내용</option>
+									<option value="bdNickname">작성자</option>
 								</select>
 						</div>
 						<div class="col-7 ">
-							<input type="text" name="searchText" placeholder="검색어를 입력하세요" id="inputSearchText">
+							<input type="text" name="keyword" placeholder="검색어를 입력하세요" id="searchText">
 							<button class="btn btn-sm btn-secondary">검색</button>
 						</div>
 					</div>		
-				</form>
+				
 						
 				</div>
 				<div class="row" style="margin-top: 20px;">
 					<div class="col">
 						<!--  말머리 정렬  -->
-						<select class="bdCategoryList" onchange="regionSel(this.value)">
+						<select class="bdCategoryList" name="searchVal" id="searchValSel" onchange="regionSel(this.value)">
 							<option class="bdcategorySel malmeori" value="" disabled selected >지역선택</option>
 							<option class="bdcategorySel" value="ALL">전국</option>
 							<option class="bdcategorySel" value="SEL">서울</option>
@@ -237,12 +237,14 @@
 	/* 지역정렬 */
 	function regionSel(region){
 		console.log("선택 지역 : " + region);
+		var searchType = $("#searchTypeSel").val();
+		var searchText = $("#inputSearchText").val(); 
 		
 		var output = "";
 		$.ajax({
 			type : "get",
-			url : "selectRegionList_ajax",
-			data : { "rgcode" : region },
+			url : "selectRegionBoardList_ajax",
+			data : { "searchVal" : region, "searchType" : searchType, "keyword" : searchText, "ajaxCheck" : "list" },
 			dataType : "json",
 			async : false,
 			success : function(regionList){

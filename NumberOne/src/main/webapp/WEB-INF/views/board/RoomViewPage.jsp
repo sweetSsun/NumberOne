@@ -389,7 +389,7 @@ section{
 					<div class="col-2">
 						<!-- 글쓰기 버튼 -->
 						<c:if test="${sessionScope.loginId != null}">
-							<button class="btn btn-primary btm-sm" onclick="location.href='${pageContext.request.contextPath }/loadTowriteRoom'">글쓰기</button>
+							<button class="btn btn-primary btm-sm" onclick="location.href='${pageContext.request.contextPath }/loadToWriteRoom'">글쓰기</button>
 						</c:if>
 					</div>
 					
@@ -528,7 +528,7 @@ function adminRpBan(){
 			success : function(updateResult){
 				if( updateResult > 0 ){
 					console.log("관리자 댓글 삭제 성공!");
-					replyPrint();
+					replyPrint('top');
 					
 					//목록 페이지 댓글수 업데이트 (-1)
 					logUpdate('bdreplies', 'down');
@@ -669,7 +669,7 @@ roomView_ajax(nowBdcode)
 				$("#likes_date").html(likesDateOutput);
 				
 				//댓글 출력
-				replyPrint();
+				replyPrint('top');
 				
 				//bdhits 1 추가
 				logUpdate('bdhits', 'up');
@@ -738,8 +738,13 @@ roomView_ajax(nowBdcode)
 				//console.log(replyOutput);
 				$("#reply").html(replyOutput);
 
-				if(scroll != null){					
+				if(scroll == "bottom"){
+					//댓글 등록시 스크롤 하단으로 이동
+					//console.log("하단 요청")
 					$("#reply").scrollTop($("#reply")[0].scrollHeight);
+				} else if(scroll=="top"){
+					//console.log("상단 요청")
+					$("#reply").scrollTop(0);
 				}
 			}
 		})
@@ -794,7 +799,7 @@ roomView_ajax(nowBdcode)
 			success : function(updateResult){
 				if( updateResult > 0 ){
 					console.log("댓글 삭제 성공!");
-					replyPrint();
+					replyPrint('top');
 					
 					//목록 페이지 댓글수 업데이트 (-1)
 					logUpdate('bdreplies', 'down');
@@ -833,7 +838,7 @@ roomView_ajax(nowBdcode)
 				if( insertResult > 0 ){
 					console.log("댓글 등록 성공!");
 					$("#inputReply").val("");
-					replyPrint(bottom);
+					replyPrint('bottom');
 					
 					//목록 페이지 댓글수 업데이트
 					logUpdate('bdreplies', 'up');
@@ -1015,7 +1020,7 @@ roomView_ajax(nowBdcode)
 		console.log(objType);
 		var menuOutput = "";
 		if(objType=='BD'){
-			console.log("자랑글(Rv) 메뉴 요쳥")
+			console.log("자랑글(Rv) 메뉴 요청")
 			//아이디에 따라 다른 메뉴 구성
 			if(loginId == 'admin'){
 				//관리자:정지/취소

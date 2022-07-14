@@ -123,7 +123,7 @@
 					<tr>
 						<th class="tableHead title">대표사진<br>수정</th>
 						<td colspan="5">
-							<input type="file" id="mainImg" name="bdimgfile"> 
+							<input type="file" id="mainImg" name="bdimgfile" accept="image/*">  
 						</td>
 					</tr>
 					<tr>
@@ -203,17 +203,20 @@
 		console.log("취소 버튼 클릭");
 	}
 	
+	//메인 이미지 없이 상세 이미지 등록하는 경우(현재는 그럴 수 없음 주석처리)
+	/*
 	function mainimgCh(){
 		console.log("메인이미지 확인 함수");
 		var mainImg = $("#mainImg").val();
 		console.log(mainImg);
 		if(mainImg==""){
 			if($("#currentBdimg").val()==""){
-				alert("메인이미지를 먼저 등록하세요");			
+				alert("대표 사진을 먼저 선택하세요!");			
 				return false;
 			}
 		}
 	} 
+	*/
 	
 	function  roomModifyCh(currentDetailCount){
 		console.log("자취방 자랑글 수정 확인");

@@ -44,6 +44,35 @@
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 	
 	<style type="text/css">
+	
+		.display_none{
+	    	display: none;
+	    }
+	    
+	    /* 메인배너*/
+	    .fixtext h2 {
+    	    font-size: 46px;
+		    color: #00bcd4;
+		    line-height: 52px;
+		    font-weight: 700;
+		    margin: 10px 0;
+	    }
+	    .fixtext span {
+			font-size: 20px;
+			text-transform: uppercase;
+			font-weight: 700;
+			letter-spacing: 4px;
+			color: #00bcd4;
+		}
+		
+	    .fixback {    
+	    	background-color: white;
+	    	background-color: rgba( 255, 255, 255, 0.5 );
+	    	border-radius: 10px;
+	    }
+	    
+	    
+		/* 커뮤니티 */
 		.fontOn{
 		    font-family: 'Jal_Onuel';
 		    font-size:25px;
@@ -59,9 +88,34 @@
 			text-decoration: none; 
 		}
 		
+		ul li:hover {
+			color: #00bcd4;
+			text-decoration: none;
+		}
+		
 		.td, .th{
 			font-size: 1.8rem;
 		}
+		
+		
+		/* 커뮤니티 & 중고거래 */
+		.mainbox{
+	    	margin-top : 100px;
+		    border-radius: 50px;
+	   		border: solid;
+	    	border-color: #00bcd4;
+	    }
+   
+   	    .overflow{
+		    overflow: hidden;
+			text-overflow: ellipsis;
+			display: -webkit-box;
+			-webkit-line-clamp: 1;
+			-webkit-box-orient: vertical;
+	    }
+		
+		
+		/* 중고거래 */
 		.owl-prev, .owl-next {
 			position: absolute;
 	        height: 100px;
@@ -70,11 +124,11 @@
 	        border: none;
 	        z-index: 100;
 	
-	        i {
-	            font-size: 2em;
-	            color: #cecece;
-	        }
 	    }
+	    .owl-prev i, .owl-next i {
+            font-size: 3rem;
+            color: #00bcd4;
+        }
 	
 	    .owl-prev {
 	    	top: 10%;
@@ -86,29 +140,17 @@
 	        right: -100px;
 	    }
 	    
-	    .display_none{
-	    	display: none;
-	    }
+		.owl-carousel-img {
+		    height: 100%;
+		    width: auto;
+		    margin: auto;
+			border-radius: 20px;
+		}	    
 	    
-	    .mainbox{
-	    	margin-top : 100px;
-		    border-radius: 50px;
-	   		border: solid;
-	    	border-color: #00bcd4;
-	    }
-	    
-	    .overflow{
-		    overflow: hidden;
-			text-overflow: ellipsis;
-			display: -webkit-box;
-			-webkit-line-clamp: 1;
-			-webkit-box-orient: vertical;
-	    }
 	
-		ul li:hover {
-			color: #00bcd4;
-			text-decoration: none;
-		}
+
+
+
 		
 	</style>
 	
@@ -138,71 +180,93 @@
 		<!-- 캐러셀 : 배너 -->
 		<!-- 클래스에 carousel과 slide 설정. 특이하게 id 설정필요 -->
 
-			<div class="container">
-			
-				<div style="width: 75%; margin: auto;">
+		<div class="container">
+			<div class="row">
+		
+				<!-- 메인배너 -->
+				<div class="col-lg-10" style="margin: auto;">
 					<div id="carousel-example-generic" class="carousel slide" style="width: 100%; min-height: 50px;">
 					<!-- 사진크기 이상해지면 50vh 반응형넣기 -->
-					  <!-- Indicators -->
-					  <ol class="carousel-indicators"style="min-width: -webkit-fill-available;">
-					    <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-					    <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-					    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-					  </ol>
+						<!-- Indicators -->
+						<ol class="carousel-indicators"style="min-width: -webkit-fill-available;">
+					    	<li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+					    	<li data-target="#carousel-example-generic" data-slide-to="1"></li>
+						    <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+						    <li data-target="#carousel-example-generic" data-slide-to="3"></li>
+						</ol>
 					
-					  <!-- Wrapper for slides -->
-					  <div class="carousel-inner" role="listbox">
-					    <div class="item active">
-					      <img src="${pageContext.request.contextPath }/resources/img/banner/slide-1.jpg" style="width:100%">
-					      <div class="carousel-caption" style="color:black;">
-					      	 <div class="hero__item set-bg" data-setbg="img/hero/banner.jpg">
-		                        <div class="hero__text">
-		                            <span>1인자</span>
-		                            <h2>제목</h2>
-		                            <p>클릭시 이동합니다</p>
-		                            <a href="#" class="primary-btn">임시 버튼</a>
-		                        </div>
-	                    	 </div>
-					      </div>
-					    </div>
+					<!-- Wrapper for slides -->
+						<div class="carousel-inner" role="listbox" style="height:50vh">
+						    
+			                <c:forEach items="${fixList }" end="0" var="fixList">
+							    <div class="item active" style="height:100%">
+			                		<img style="width: 100%; height:100%;" alt="자랑방상세이동" src="${pageContext.request.contextPath }/resources/img/room/${fixList.bdimg}">
+							      	<div class="carousel-caption fixback" style="color:black;">
+							      		
+				                        <div class="fixtext">
+				                            <span>${fixList.bdnickname } 님의</span>				                    
+				                            <h2>${fixList.bdtitle }</h2>
+			                    		</div>
+							    	</div>
+							    </div>						      
+					        </c:forEach>
 					        
-					    <div class="item">
-					      <img src="${pageContext.request.contextPath }/resources/img/banner/slide-2.jpg" style="width:100%">
-					      <div class="carousel-caption" style="color:black;">
-					      	 <div>
-		                        <div class="hero__text">
-		                            <span>1인자</span>
-		                            <h2>배너 위에 글만 가능. 그림 하려면 class 이름 수정</h2>
-		                            <label for="clickmove">클릭시 이동합니다</label>
-		                            <button href="#" id="clickmove" class="primary-btn">임시 버튼</button>
-		                        </div>
-	                    	 </div>
-					      </div>
-					    </div>
-			
-					    <div class="item">
-					      <img src="${pageContext.request.contextPath }/resources/img/banner/slide-3.jpg" style="width:100%">
-					      <div class="carousel-caption" style="color:black;"> 배너이미지에 글
-					      </div>
-					    </div>    
-					    
-					  </div>
+					        <c:forEach items="${fixList }" begin="1" var="fixList">
+							    <div class="item" style="height:100%">
+			                		<img style="width: 100%; height:100%;" alt="자랑방상세이동" src="${pageContext.request.contextPath }/resources/img/room/${fixList.bdimg}">
+							      	<div class="carousel-caption fixback" style="color:black;">
+					                        <div class="fixtext">				                            
+					                            <span>${fixList.bdnickname } 님의</span>					                            
+					                            <h2>${fixList.bdtitle }</h2>
+					                        </div>
+
+							    	</div>
+							    </div>						      
+					        </c:forEach>
+				        </div>
 					
-					  <!-- href는 carousel의 id -->
-					  <!-- Controls 왼쪽 화살표버튼 -->
-					  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-					    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-			 		    <span class="sr-only">Previous</span>
-					  </a>
-			  		  <!-- Controls 오른쪽 화살표버튼 -->
-					  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-					    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-					    <span class="sr-only">Next</span>
-					  </a>
+						<!-- href는 carousel의 id -->
+						<!-- Controls 왼쪽 화살표버튼 -->
+						<a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
+							<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+				 		    <span class="sr-only">Previous</span>
+						</a>
+				  		<!-- Controls 오른쪽 화살표버튼 -->
+						<a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
+						    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+						    <span class="sr-only">Next</span>
+						</a>
 					</div>
 				</div>
 				
+				<!-- 두번째배너 -->
+				<div class="col-lg-2" style="margin: auto;">
+					<div id="banner_second" class="owl-carousel" style="width: auto; height: 50vh;">
+						<!-- Indicators -->
+						<!-- <ol class="banner_second_indicators" style="min-width: -webkit-fill-available;">
+					    	<li data-target="#banner_second" data-slide-to="0" class="active"></li>
+					    	<li data-target="#banner_second" data-slide-to="1"></li>
+						</ol> -->
+					
+					
+					    <div class="item" style="height:100%">
+	                		<a href="selectRoomList">
+	                			<img style="height:50vh;" alt="자랑방상세이동" src="${pageContext.request.contextPath }/resources/img/house_ad.jpg">
+	               			</a>
+					    </div>
+			        
+					    <div class="item" style="height:100%">
+	                		<a href="selectRoomList">
+	                			<img style="height:50vh;" alt="자랑방상세이동" src="${pageContext.request.contextPath }/resources/img/house_ad2.jpg">
+	               			</a>
+					    </div>						      
+			        </div>
+				        
+					
+				</div>
+				
 			</div>
+		</div>
 	  	<!-- 캐러셀 : 배너 끝 -->
     <!-- Header Section End -->
 
@@ -355,59 +419,55 @@
 	           	</div>       	
 		       
 	   		<!-- 팔구보기 -->
-		        <div id="resell" style="margin-left: 5%; margin-right: 5%; margin-bottom: 5%; min-height: 170px; width: 90%;">
-	           		<div style="text-align: right;">
-	           			<p><a href="selectResellPageList?sellBuy=S"  style="margin-bottom: 20px; font-size: 15px;">팔구보기</a></p>
-	            	</div>
+		        <div id="resell" style="margin-left: 5%; margin-right: 5%; margin-bottom: 3%; min-height: 170px; width: 90%;">
+	           		<div>
+	           			<p style="text-align: right; margin-bottom: 20px;"><a href="selectResellPageList?sellBuy=S">팔구보기</a></p>
 	            	
-	            	<div id="owl-banner_resell" class="owl-carousel" style="margin-top: 50px;">           		
-	           			<c:forEach items="${SellList }" end="4" var="SellList">
-		                	<div class="item">
-		                        <table>
-		                        	<tr>
-		                        		<td rowspan="3">
-		                        			<a href="selectResellPageList?sellBuy=S"><img alt="" src="${pageContext.request.contextPath }/resources/img/resell/${SellList.ubmainimg}"></a>
-		                        		</td>
-		                        		<td><h3>${SellList.ubtitle }</h3></td>
-		                        	</tr>
-		                        	<tr>
-		                        		<td><h3>${SellList.ubnickname }</h3></td>
-		                       		</tr>
-		                       		<tr>
-		                        		<th><h3>${SellList.ubdate }</h3></th>
-		                        	</tr>
-		                        </table>
-		                	</div>
-	                	</c:forEach>	                
+		            	<div id="owl-banner_resell" class="owl-carousel">           		
+		           			<c:forEach items="${SellList }" end="4" var="SellList">
+			                	<div class="item" style="height:25rem; padding-bottom: 10px;">
+			                        <div style="height:80%">
+	                        			<a href="selectResellPageList?sellBuy=S"><img class="owl-carousel-img" alt="중고판매상세이동" src="${pageContext.request.contextPath }/resources/img/resell/${SellList.ubmainimg}"></a>
+			                        </div>
+			                        <div style="margin-top: 10px; font-size: 16px; height:20%">
+			                        	<div>
+				                        	<span class="overflow">${SellList.ubtitle }</span>
+			                        	</div>
+				                        <div>
+			                        		<span>${SellList.ubnickname }</span>
+		                        		</div>
+			                        </div>
+			                	</div>
+		                	</c:forEach>	                
+		            	</div>
+		            	
 	            	</div>
 	           	</div>
 	         
 	       <!-- 사구보기 -->        
-		        <div id="rebuy" class="display_none" style="margin-left: 5%; margin-right: 5%; margin-bottom: 5%; min-height: 170px; width: 90%;">
-	           		<div style="text-align: right;">
-	           			<p><a href="selectResellPageList?sellBuy=B"  style="margin-bottom: 20px; font-size: 15px;">사구보기</a></p>
-	            	</div>
-	            	
-	            	<div id="owl-banner_rebuy" class="owl-carousel" style="margin-top: 50px;">
-	           		
-	            		<c:forEach items="${buyList }" end="4" var="buyList">
-		                	<div class="item">
-		                        <table>
-		                        	<tr>
-		                        		<td rowspan="3">
-		                        			<a href="selectResellPageList?sellBuy=B"><img alt="" src="${pageContext.request.contextPath }/resources/img/resell/${buyList.ubmainimg}"></a>
-		                        		</td>
-		                        		<td><h3>${buyList.ubtitle }</h3></td>
-		                        	</tr>
-		                        	<tr>
-		                        		<td><h3>${buyList.ubnickname }</h3></td>
-		                       		</tr>
-		                       		<tr>
-		                        		<th><h3>${buyList.ubdate }</h3></th>
-		                        	</tr>
-		                        </table>
-		                	</div>
-	                	</c:forEach>
+		        <div id="rebuy" class="display_none" style="margin-left: 5%; margin-right: 5%; margin-bottom: 3%; min-height: 170px; width: 90%;">
+	           		<div>
+	           			<p style="text-align: right; margin-bottom: 20px;"><a href="selectResellPageList?sellBuy=B">사구보기</a></p>
+	           		  	
+		            	<div id="owl-banner_rebuy" class="owl-carousel">
+		           		
+		            		<c:forEach items="${buyList }" end="4" var="buyList">
+			                	<div class="item" style="height:25rem; padding-bottom: 10px;">
+			                        <div style="height:80%">
+	                        			<a href="selectResellPageList?sellBuy=B"><img class="owl-carousel-img" alt="중고판매상세이동" src="${pageContext.request.contextPath }/resources/img/resell/${buyList.ubmainimg}"></a>
+			                        </div>
+			                        <div style="margin-top: 10px; font-size: 16px; height:20%">
+			                        	<div>
+				                        	<span class="overflow">${buyList.ubtitle }</span>
+			                        	</div>
+				                        <div>
+			                        		<span>${buyList.ubnickname }</span>
+		                        		</div>
+			                        </div>
+			                	</div>
+		                	</c:forEach>
+		            	</div>
+		            	
 	            	</div>
 				</div>
 			
@@ -441,7 +501,7 @@
 		$('#carousel-example-generic').carousel({
 		// 슬라이딩 자동 순환 지연 시간
 		// false면 자동 순환하지 않는다.
-		interval: 1000,
+		interval: false,
 		// hover를 설정하면 마우스를 가져대면 자동 순환이 멈춘다.
 		pause: "hover",
 		// 순환 설정, true면 1 -> 2가면 다시 1로 돌아가서 반복
@@ -451,6 +511,17 @@
 		});
 	});
 	
+	$('#banner_second').owlCarousel({
+	    items : 1, //화면에 표시 할 슬라이드 수
+	    animateOut : 'fadeOut', // 사라질때의 애니메이션
+	    margin : 40, // 슬라이드 간격
+	    dots : true, // Pagination 표시 여부
+	    autoplay : true, // 자동 슬라이드 여부
+	    autoplayTimeout : 30000, // 자동 슬라이드 시간 (1초=1000)
+	    loop : false, // 무한 반복 여부
+	    nav: true,
+	    
+	})
 	
 	$('#owl-banner_resell').owlCarousel({
 	    items : 6, //화면에 표시 할 슬라이드 수

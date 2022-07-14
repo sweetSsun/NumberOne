@@ -24,12 +24,6 @@
 		font-family: 'pretendard';
 	}
 	
-	header{
-		font-family: 'Jal_Onuel'! important;
-		color: #4C4C4C;
-	    white-space: nowrap;	
-	    
-	}
 	
 	aside, footer{
 		/* border: solid 1px black; */
@@ -38,12 +32,17 @@
 	}
 	
 	header{
+		font-family: 'Jal_Onuel'! important;
+		color: #4C4C4C;
+	    white-space: nowrap;
+
 		margin-bottom: 0px;
 		font-size: 24px;
 		position: sticky;
+		width: 100%;
+		min-width: 800px;
 		top: 0px;
 		z-index:10;
-		padding: tpx;
 		border-bottom: solid 5px #F2F2FF;
 
 	}
@@ -124,7 +123,7 @@
 	
 	
 	/* 닫혀있을 때 사이드바 목록 */
-	#sideList {
+	#sideList {	
 		-webkit-transform: translate3d(-70px,0,0);
 		-moz-transform: translate3d(-70px,0,0);
 		transform: translate3d(-70px,0,0);
@@ -151,6 +150,7 @@
 		overflow:hidden;
 		white-space: nowrap;
 		width: 100%;
+		height: 100%;
 	}
 	
 	/* 사이드메뉴 - 커뮤니티 */
@@ -159,7 +159,7 @@
 		color: #4C4C4C;
 	}
 	
-	.sidetitle {
+	.sidetitle, .sidetitle_close {
 		padding-bottom: 10%;
 	    margin-bottom: 10%;
 	    margin-top: 10%;
@@ -172,7 +172,7 @@
 	    color: #00bcd4;
 	}
 
-	.sideroom {
+	.sideroom, .sideclose_room {
 		display: grid;
 		text-align: center;
 		align-items: center;
@@ -208,7 +208,7 @@
 	
 	/* 열었을 때 햄버거 */
 	#sidebar-toggleOff.sideon .sideOffImg {
-		position:fixed; display:block;
+		position:fixed; display:block;		
 		margin-top: 27px; margin-left: 130px; float: left;
 		width:50px; height:50px; line-height:50px;
 		border-radius: 0 10px 10px 0; background:#4cadcc; color:#fff; 
@@ -221,23 +221,6 @@
 	#sideclose.sideon { display:none; }
 
 
-	.sidetitle span a:hover, .sideroom span a:hover, .sideregion_tags tr td a:hover{
-		color: #00bcd4;
-		text-decoration: none;
-	}
-	.sidemenu .sideroom:hover{
-		background-color: white;
-	}
-	
-	#sideclose .sideroom:hover{
-		background-color: white;
-		
-	}
-	.sideclose .sidemenu .sideroom span a:hover{
-		background-color: white;
-		border: solid 1px black;
-	}
-	
 	
 	/* ------------------------------ */
 	/* ------- sidebar_마이페이지 ------ */
@@ -249,9 +232,10 @@
 	    font-weight: bold;
 		font-size: 20px;
 		margin-top: 40%;
+		margin-left: 8%;
 	}
 	
-	.side_mypage {
+	.side_mypage, .side_admin_a {
 		display: grid;
 		text-align: left;
 		align-items: center;
@@ -259,15 +243,44 @@
 		font-size: 16px;
 		padding-left: 20px;
 	}
+					
+	/* -------------------------------- */
+	/* ------- sidebar_관리자페이지 ------ */
+	/* -------------------------------- */
+			
+	.side_admin{
+	    display: grid;
+	    text-align: left;
+	    align-items: center;
+	    height: 50px;
+	    font-size: 20px;
+	    padding-left: 10px;
+	    font-weight: bold;
+	}
+
+	/* -------------------------- */
+	/* HOVERRRRRRRRRRRRRRRRRRRRRR */
+	/* -------------------------- */
 	
-	.sidetitle_mypage span a:hover, .side_mypage a:hover {
+	.sidetitle span a:hover, .sideroom span a:hover, .sideregion_tags tr td a:hover, .sidetitle_mypage span a:hover, .side_mypage a:hover {
 		color: #00bcd4;
 		text-decoration: none;
 	}
-	.sidetitle_mypage:hover, .side_mypage:hover {
+	
+	.sideroom:hover, .sidetitle_mypage:hover, .side_mypage:hover{
 		background-color: white;
 	}
-		
 	
+	.sideclose_room span a:hover, .sidetitle_close span a:hover, .side_admin span a:hover, .side_admin_a a:hover{
+		color: white;
+		text-decoration: none;
+	}
+	.sideclose_room:hover, .side_admin:hover {
+		background-color: rgba( 255, 255, 255, 0.3 );	
+	}
+
+
+
+
 	
 </style>

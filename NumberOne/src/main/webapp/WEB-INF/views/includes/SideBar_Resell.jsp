@@ -11,8 +11,28 @@
 
 <style type="text/css">
 
-</style>
+ul {
+	list-style:none;
+}
 
+.dropdown_menu:after {
+	display:block; content:''; clear:both;
+}
+.dropdown_menu > li {
+	position:relative; float:left; margin-right:5px;
+}
+.dropdown_menu > li > a{
+	display:block; height:40px; line-height:40px;
+}
+.dropdown_menu > li:hover .dorpdown_list {
+	display:block;
+}
+.dropdown_menu .dorpdown_list {
+	display:none; position:absolute; padding: 0; text-align:center; font-size: 16px;
+}
+
+
+</style>
 
 </head>
 
@@ -30,23 +50,23 @@
 		<div id="sideclose">
 			<div class="sidemenu" style="color: white;">
 			
-				<div id="sidebar-toggleOn" class="sidetitle" style="padding-bottom: 12px; padding-top: 12px; border-color: white; color: white;">
+				<div id="sidebar-toggleOn" class="sidetitle_close" style="padding-bottom: 12px; padding-top: 12px; border-color: white; color: white;">
 					<span><a class="sideOnImg"><i class="fa fa-bars"></i></a></span>
 				</div>
 				
-				<div class="sideroom">
+				<div class="sideclose_room">
 					<span>
-						<a href="selectNoticeBoardList"><i class="fa-solid fa-volume-low"></i></a>
+						<a href="selectResellPageList?sellBuy=S"><i class="fa-solid fa-store"></i></a>
 					</span>
 				</div>
-				<div class="sideroom">
+				<div class="sideclose_room">
 					<span>
-						<a href="selectRoomList"><i class="fa-solid fa-house-user"></i></a>
+						<a href="selectResellPageList?sellBuy=B"><i class="fa-solid fa-cart-shopping"></i></a>
 					</span>
 				</div>
-				<div class="sideroom">
+				<div class="sideclose_room">
 					<span>
-						<a href="selectRoomList"><i class="fa-solid fa-house-user"></i></a>
+						<a href="#"><i class="fa-solid fa-comment-dots"></i></a>
 					</span>
 				</div>
 				
@@ -64,26 +84,59 @@
 				</div>
 				
 				<div class="sideroom">
-					<span>
-						<a href="selectResellPageList?sellBuy=S"><i class="fa-solid fa-volume-low"></i>&nbsp;&nbsp;팔구</a>
-					</span>
+					<ul class="dropdown_menu">
+						<li class="sideregion_title">
+							<span>
+								<a href="selectResellPageList?sellBuy=S"><i class="fa-solid fa-store"></i>&nbsp;&nbsp;팔구</a>
+							</span>
+							
+							<!-- <ul class="dorpdown_list">
+								<li>
+									<table class="sideregion_tags">
+										<tr>
+											<td><a href="#">전체</a></td>
+											<td><a href="#">서울</a></td>
+											<td><a href="#">인천</a></td>
+										</tr>
+										<tr>
+											<td><a href="#">경기</a></td>
+											<td><a href="#">경상</a></td>
+											<td><a href="#">전라</a></td>
+										</tr>
+										<tr>
+											<td><a href="#">충청</a></td>
+											<td><a href="#">강원</a></td>
+											<td><a href="#">제주</a></td>
+										</tr>
+									</table>
+								</li>
+							</ul> -->
+						</li>
+					</ul>
 				</div>
+				
+				
 				<div class="sideroom">
-					<span>
-						<a href="selectResellPageList?sellBuy=B"><i class="fa-solid fa-house-user"></i>&nbsp;&nbsp;사구</a>
-					</span>
+					<ul class="dropdown_menu">
+						<li class="sideregion_title">
+							<span>
+								<a href="selectResellPageList?sellBuy=B"><i class="fa-solid fa-cart-shopping"></i>&nbsp;&nbsp;사구</a>
+							</span>
+						</li>
+					</ul>
 				</div>
+				
 				
 				<div class="sideroom">
 					<span>
-						<a href="#"><i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;채팅</a>
+						<a href="#"><i class="fa-solid fa-comment-dots"></i>&nbsp;&nbsp;채팅</a>
 					</span>
 				</div>
 			</div>
 			
 			<div class="sideregion">
 				<div class="sideregion_title">
-					<span>지역</span>
+					<span><i class="fa-solid fa-map-location-dot"></i>&nbsp;&nbsp;지역</span>
 				</div>
 						
 				<div>
@@ -106,6 +159,37 @@
 					</table>
 				</div>
 			</div>
+			
+			
+			<!-- 연습중 -->
+			<ul class="dropdown_menu">
+				<li class="sideregion_title">
+					<span><a href="selectResellPageList?sellBuy=S"><i class="fa-solid fa-store"></i>&nbsp;&nbsp;팔구</a></span>
+						
+					<ul class="dorpdown_list">
+						<li>
+							<table class="sideregion_tags">
+								<tr>
+									<td><a href="#">전체</a></td>
+									<td><a href="#">서울</a></td>
+									<td><a href="#">인천</a></td>
+								</tr>
+								<tr>
+									<td><a href="#">경기</a></td>
+									<td><a href="#">경상</a></td>
+									<td><a href="#">전라</a></td>
+								</tr>
+								<tr>
+									<td><a href="#">충청</a></td>
+									<td><a href="#">강원</a></td>
+									<td><a href="#">제주</a></td>
+								</tr>
+							</table>
+						</li>
+					</ul>
+				</li>
+			</ul>
+			
 			
 		</div>
 	</div>
