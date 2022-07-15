@@ -1060,16 +1060,18 @@ public class BoardService {
 		String[] currentDetailImg = room.getBddetailimg().split("___");
 		String bddetailimg = "";
 		for (int i = 0; i < currentDetailImg.length; i++) {
-			System.out.println(i+"번 상세 이미지명: "+currentDetailImg[i]);
-			if (!currentDetailImg[i].substring(0, 4).equals("del_")) {
-				System.out.println(i+"번 상세 유지: "+currentDetailImg[i]);
-				//유지파일
-				bddetailimg += currentDetailImg[i] + "___";
-				System.out.println("bddetailimg: "+bddetailimg);
-			} else {
-				//삭제파일
-				deleteFile.add(currentDetailImg[i].substring(4));
-				System.out.println("bddetailimg: "+bddetailimg);
+			System.out.println(i+"번 상세 이미지명: "+currentDetailImg[i].length());
+			if(currentDetailImg[i].length() != 0) {				
+				if (!currentDetailImg[i].substring(0, 4).equals("del_")) {
+					System.out.println(i+"번 상세 유지: "+currentDetailImg[i]);
+					//유지파일
+					bddetailimg += currentDetailImg[i] + "___";
+					System.out.println("bddetailimg: "+bddetailimg);
+				} else {
+					//삭제파일
+					deleteFile.add(currentDetailImg[i].substring(4));
+					System.out.println("bddetailimg: "+bddetailimg);
+				}
 			}
 		}
 		//System.out.println("bddetailimg: "+bddetailimg);

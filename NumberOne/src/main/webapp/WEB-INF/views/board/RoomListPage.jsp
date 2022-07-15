@@ -858,12 +858,15 @@ function adminRpBan(){
 				//작성자 프로필	
 				var mprofileOutput = "<img class='product-img' style='width:30px; height:30px; border-radius:50%;'";
 				if(roomView.bdmprofile != 'nomprofile'){
-					if(roomView.bdmstate == 1){
-						//일반 로그인
-						mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+roomView.bdmprofile+"'>";
-					} else if(roomView.bdmstate == 9) {
+					console.log("작성자 프로필 있음");
+					if(roomView.bdmstate == 9){
 						//카카오 로그인
+						console.log("작성자 카카오 회원 사진 출력")
 						mprofileOutput += "src='"+roomView.bdmprofile+"'>";							
+					} else {
+						//일반 로그인
+						console.log("작성자 일반 회원 사진 출력")
+						mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+roomView.bdmprofile+"'>";
 					}
 				} else {
 					mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png'>"; 

@@ -10,7 +10,12 @@
 <%@ include file="/resources/css/BarCss.jsp" %>
 
 <style type="text/css">
-
+/* 
+.dropdown:hover .dropdown-menu {
+    display: block;
+    margin-top: 0;
+}
+ */
 	.logoimg{
 		margin-top: 2%;
         padding-left: 45%;    
@@ -95,8 +100,8 @@
 	
 					
 				<!-- 로그인, 회원가입, 고객센터 -->
-				<div class="col-lg-7 col-md-6 col-sm-6 menubar_right">
-					<ul>
+				<div class="col-lg-7 col-md-6 col-sm-6 menubar_right dropdown">
+					<ul class="">
 						<c:choose>
 	                    <c:when test="${sessionScope.loginId == null && sessionScope.kakaoId == null}">
 							<li style="margin-right: 15px;" ><a href="loadToRegister">회원가입</a></li>
@@ -106,10 +111,18 @@
 							<!-- 찜 -->
 							<li style="margin-right: 15px;"><a href="#" title="찜목록"><i class="fa-solid fa-heart"></i></a></li>
 							<!-- 채팅 -->
-							<li style="margin-right: 15px;"><a href="#" title="1:1채팅" onclick="popupChat()"><i class="fa-solid fa-comment-dots"></i></a></li>
+							<li style="margin-right: 15px;" class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<a href="#" title="1:1채팅" onclick="popupChat()"><i class="fa-solid fa-comment-dots"></i></a>
+							</li>
+								<!-- 채팅방 목록 드롭다운 -->
+								  <ul class="dropdown-menu" id="chatRoomList" aria-labelledby="dropdownMenuButton1">
+								    <li><a class="dropdown-item" href="#" onclick="popupChat('CR00001')">채팅방1</a></li>
+								    <li><a class="dropdown-item" href="#" onclick="popupChat('CR00002')">채팅방2</a></li>
+								    <li><a class="dropdown-item" href="#" onclick="popupChat('CR00003')">채팅방3</a></li>
+								  </ul>
 							<!-- 로그아웃 -->
-							<li style="margin-right: 15px;"><a href="selectMemberLogout">로그아웃</a></li>
-							<!-- 고객센터(문의) -->					
+ 							<li style="margin-right: 15px;"><a href="selectMemberLogout">로그아웃</a></li>
+							<!-- 고객센터(문의)	-->				
 							<li ><a href="selectMyInfoQuestionListView">고객센터</a></li>
 						</c:otherwise>
 						</c:choose>
@@ -120,17 +133,73 @@
 		</div>
 	</header>
 	
+	
+	<form name="msgData" id="msgData" method="post">
+		<!-- 메세지 리스트 전달받고 팝업창으로 전달하는 부분(동적 생성) -->
+	</form>
+	
+	
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 <script type="text/javascript">
-console.log("스크립트 확인!");
-
-function popupChat(){
-	console.log("popupChat 호출");
-	let popOption = "width=450px, height=550px, top=300px, left=500px, scrollbars=no, resizable=no";
-	let openUrl = 'loadToChat';
-	window.open(openUrl, 'pop', popOption);
-};
+	console.log("스크립트 확인!");
+	
+	var popChat;
+	
+	// 채팅 버튼 클릭시 채팅창 팝업되면서 기존 채팅방 메세지 목록 데이터 보내주는 함수
+	function popupChat(crcode){
+		//var crcode = "CR00001"; // 함수 호출시 파라미터로 받을 값. 임시 crcode
+		console.log("popupChat 호출");
+		let popOption = "width=450px, height=550px, top=300px, left=500px, scrollbars=no, resizable=no";
+		let openUrl = "loadToChat?crcode="+crcode;
+		//console.log($('popChat[name=pop'+crcode+']').closed); // 해당 팝업창이 열려있는지 확인
+		$.ajax({
+			url: "selectAllRoomMessage",
+			data: {"crcode":crcode},
+			async:false,
+			dataType:"json",
+			success:function(data){
+				//var popCheck = popChatHistory(crcode); // 팝업창 안열려있으면 true, 열려있으면 false 반환
+				
+				// 특정 자식창의 name으로 어떻게 접근하는지요......................................
+				//if(!(popChat.window.name=crcode) || (popChat.window.name=crcode).closed) { // 안열려있으면 open
+					popChat = window.open(openUrl, crcode, popOption);
+					popChat.window.addEventListener("load", function(){
+						popChat.enterRoom(data);
+				 	});
+				/*} else { // 열려있으면 focus
+					$('popChat[name=pop'+crcode+']').focus();
+				} */
+			}
+		});
+	};
+	
+	// 동일한 코드의 팝업창이 열려있는지 확인
+	function popChatHistory(crcode){
+		var Obj = popChat.
+		console.log(Obj==undefined);
+		console.log(Obj.closed);
+		console.log(Obj==null);
+		console.log(!Obj);
+		if(!Obj || Obj.closed){
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	// 채팅 아이콘 클릭하면 채팅방 목록 불러오고 드롭다운(안읽은 메세지 > 최신순)
+	$(document).on("click", "#chatRoomList", function(){
+		$.ajax({
+			type: "post",
+			url: "",
+			data: {"mid": ${sessionScope.loginId}},
+			dataType: "json",
+			success: function(result){
+				
+			}
+		});
+	})
 
 </script>
 
