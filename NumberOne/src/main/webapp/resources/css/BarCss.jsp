@@ -3,6 +3,7 @@
 
 <!-- 폰트어썸 -->
 <script src="https://kit.fontawesome.com/86a85cd392.js" crossorigin="anonymous"></script>
+
 <style type="text/css">
 /* 폰트 : 프리텐다드 */
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
@@ -22,6 +23,7 @@
 	
 	body{
 		font-family: 'pretendard';
+		height: auto;
 	}
 	
 	
@@ -47,8 +49,8 @@
 	}
 	
 	#header_menu ul li{
-		overflow: auto;
-		display: inline;
+/* 		overflow: auto;
+ */		display: inline;
 	}
 	
 	a{	
@@ -218,8 +220,6 @@
 	#sidebar-toggleOff .sideOffImg { display:none; }	
 	#sidebar-toggleOn.sideon .sideOnImg { display:none; }
 	#sideclose.sideon { display:none; }
-
-
 	
 	/* ------------------------------ */
 	/* ------- sidebar_마이페이지 ------ */
@@ -231,9 +231,10 @@
 	    font-weight: bold;
 		font-size: 20px;
 		margin-top: 40%;
-		margin-left: 8%;
 	}
-	
+	.sidetitle_mypage span a {
+		margin-left: 7%;
+	}
 	.side_mypage, .side_admin_a {
 		display: grid;
 		text-align: left;
@@ -242,7 +243,28 @@
 		font-size: 16px;
 		padding-left: 20px;
 	}
-					
+
+
+	/* --------------------------------- */
+	/* ------- sidebar_중고거래페이지 ------ */
+	/* --------------------------------- */
+	
+	.dropdown-menu {
+	list-style:none;
+	}
+	.dropdown-menu li {
+		width: 130px;
+	}
+	#drop_buy.padding_plus, #chatroom.padding_plus {
+		padding-top: 100px;
+	}
+	
+	#drop_sell, #drop_buy { display:none; }
+	#drop_sell.sideon, #drop_buy.sideon { display: block; padding-bottom: 0px; margin-bottom: 0px;}
+
+	
+	
+	
 	/* -------------------------------- */
 	/* ------- sidebar_관리자페이지 ------ */
 	/* -------------------------------- */
@@ -256,12 +278,14 @@
 	    padding-left: 10px;
 	    font-weight: bold;
 	}
+	
 
+	
 	/* -------------------------- */
 	/* HOVERRRRRRRRRRRRRRRRRRRRRR */
 	/* -------------------------- */
 	
-	.sidetitle span a:hover, .sideroom span a:hover, .sideregion_tags tr td a:hover, .sidetitle_mypage span a:hover, .side_mypage a:hover {
+	.sidetitle span a:hover, .sideroom a:hover, .sideroom span a:hover, .sideregion_tags tr td a:hover, .sidetitle_mypage span a:hover, .side_mypage a:hover {
 		color: #00bcd4;
 		text-decoration: none;
 	}
@@ -277,7 +301,6 @@
 	.sideclose_room:hover, .side_admin:hover {
 		background-color: rgba( 255, 255, 255, 0.3 );	
 	}
-
 
 
 
