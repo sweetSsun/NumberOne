@@ -51,8 +51,8 @@ section{
      display: flex;
      align-items: center;
      justify-content: center;
-     width: 233px;
-     height: 233px;
+     width: 240px;
+     height: 240px;
      border: solid #E0E0E0 2px;
      margin-top: 5%;
      margin-bottom: 5%;
@@ -145,7 +145,7 @@ section{
 				<!-- 자유게시판 -->
 				<div class="row mb-3" >
 					<div class="col-1 board_category">
-						<a href="selectFreeBoardList"><span class="text-white">자유</span></a>
+						<a href="selectCategoryBoardList?searchVal=자유"><span class="text-white">자유</span></a>
 					</div>
 					<div class="col-5 bg-white ">
 						<table class="boardList">
@@ -179,7 +179,7 @@ section{
 				<!-- 질문게시판 -->
 				<div class="row mb-3" >
 					<div class="col-1 board_category">
-						<a href="selectQuestionBoardList"><span class="text-white">질문</span></a>
+						<a href="selectCategoryBoardList?searchVal=질문"><span class="text-white">질문</span></a>
 					</div>
 					<div class="col-5 bg-white">
 						<table class="boardList">
@@ -213,7 +213,7 @@ section{
 				<!-- 정보게시판 -->
 				<div class="row mb-3" >
 					<div class="col-1 board_category">
-						<a href="selectInfoBoardList"><span class="text-white">정보</span></a>
+						<a href="selectCategoryBoardList?searchVal=정보"><span class="text-white">정보</span></a>
 					</div>
 					<div class="col-5 bg-white">
 						<table class="boardList">
@@ -247,7 +247,7 @@ section{
 				<!-- 후기게시판 -->
 				<div class="row mb-5" >
 					<div class="col-1 board_category">
-						<a href="selectReviewBoardList"><span class="text-white">후기</span></a>
+						<a href="selectCategoryBoardList?searchVal=후기"><span class="text-white">후기</span></a>
 					</div>
 					<div class="col-5 bg-white">
 						<table class="boardList">
@@ -291,31 +291,31 @@ section{
 						<h3>지역</h3>
 					</div>
 					<div class="col-1">
-						<span style="font-size:17px;"> <a href="#"><i class="fa-solid fa-square-plus"></i>&nbsp;더보기</a></span>
+						<span style="font-size:17px;"> <a href="selectRegionBoardList"><i class="fa-solid fa-square-plus"></i>&nbsp;더보기</a></span>
 					</div>
 					<div class="col ">
 						<div class="">
-							<a href="#"> <span>서울</span> </a>
+							<a href="selectDetailBoardList?searchVal=SEL"> <span>서울</span> </a>
 						</div>
 					</div>
 					<div class="col ">
 						<div class="">
-							<a href="#"> <span>인천</span> </a>
+							<a href="selectDetailBoardList?searchVal=ICN"> <span>인천</span> </a>
 						</div>
 					</div>
 					<div class="col ">
 						<div class="">
-							<a href="#"> <span>경기</span> </a>
+							<a href="selectDetailBoardList?searchVal=GGD"> <span>경기</span> </a>
 						</div>
 					</div>
 					<div class="col">
 						<div class="">
-							<a href="#"> <span>경상</span> </a>
+							<a href="selectDetailBoardList?searchVal=GSD"> <span>경상</span> </a>
 						</div>
 					</div>
 					<div class="col ">
 						<div class="">
-							<a href="#"> <span>전라</span> </a>
+							<a href="selectDetailBoardList?searchVal=JLD"> <span>전라</span> </a>
 						</div>
 					</div>
 					<div class="col ">

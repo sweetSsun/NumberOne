@@ -21,21 +21,19 @@
 </head>
 <body>
 	<!-- TopBar -->
-	<%-- 
-        <c:choose>
-                <c:when test="${sessionScope.loginId != 'admin'}">
-                        <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
-                </c:when>
-                <c:otherwise>
-                        <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
-                </c:otherwise>
-        </c:choose>
-        --%>
+	<c:choose>
+		<c:when test="${sessionScope.loginId != 'admin'}">
+			<%@ include file="/WEB-INF/views/includes/TopBar.jsp"%>
+		</c:when>
+		<c:otherwise>
+			<%@ include file="/WEB-INF/views/includes/TopBar_Admin.jsp"%>
+		</c:otherwise>
+	</c:choose>
 	<!-- End of TopBar -->
 	<main>
 		<!-- 사이드바 -->
 
-		<%-- <%@ include file="/WEB-INF/views/includes/SideBar_Resell.jsp"%> --%>
+		<%@ include file="/WEB-INF/views/includes/SideBar_Resell.jsp"%>
 		<section>
 			<!-- 본문 -->
 			<div class="container">
@@ -54,7 +52,7 @@
 								<option value="경상">경상</option>
 								<option value="제주">제주</option>
 
-							</select> <span class="regionCheck" id="mregion">전국목록</span>
+							</select> <span class="regionCheck" id="mregion">전국목록</span> <span id="searchMsg" style="text-align: center;"></span>
 						</div>
 
 						<c:if test="${sessionScope.loginId != null }">
@@ -80,9 +78,7 @@
 								</div>
 							</div>
 							<div class="">
-								<button onclick="searchKeyword(1)">
-									<i class="fas fa-search"></i>
-								</button>
+								<button onclick="searchKeyword(1)" type="button"></button>
 							</div>
 						</div>
 
@@ -178,11 +174,16 @@
 <script type="text/javascript">
 //현재 페이지가 출력될 때 checkData 함수 실행
 		var selRegion = regionInfo.options[regionInfo.selectedIndex].value;
+		// ID가 'regionInfo'인 select태그의 option들 중 선택된 인덱스의 option태그 value를 변수에 저장
 		const loginRegion = '${sessionScope.loginRegion}'; 
 		const checkSearch = '${checkSearch}';   //검색확인용
-	window.onload = function(){
+		console.log("체크메세지",checkSearch );
+		const keyword = '${paging.keyword}'; 	//검색어
+		const searchMsg = document.getElementById("searchMsg");
+	
+		window.onload = function(){
 		const regionInfo = document.getElementById("regionInfo"); 
-		// ID가 'regionInfo'인 select태그의 option들 중 선택된 인덱스의 option태그 value를 변수에 저장
+		
 		console.log("선택된지역" + selRegion);
 		const checkMsg = '${msg}';   //글작성 확인용
 		if(checkMsg.length >0){		// 파라메터를 확인해서 단순 목록페이지이동인지, 글작성 후 페이지이동 인지 확인 
@@ -191,12 +192,19 @@
 			
 			
 		if(checkSearch=='OK'){ // 검색을 통해 페이지이동해 왔을 때 		
-			document.getElementById("mregion").innerText = "[" + selRegion
-			+ "] 지역 목록입니다.";		
-			//ID가 'mregion인 태그의 Text부분에 selRegion(선택된 option의 value가 저장된 변수)을 출력.
+			searchMsg.innerText = "[" + keyword
+			+ "] 로 검색한 목록입니다.";		
+		
 			// 수정****   검색을 통해 이동해 왔을 시 Text를 '' <- 공백으로 처리하고
 			//           중앙에 [검색어] 로 검색된 목록입니다.' 라는 메세지 출력하자
 		}
+		
+		else if(checkSearch=='all'){  //글 작성 후 이동해왔을 시 [전국]으로 selected 하기위한 코드
+			regionInfo.options[0].selected = "true";   //0번인덱스가 [전국]
+			searchMsg.innerText = "[" + keyword
+			+ "] 로 검색한 목록입니다.";	
+		}
+		
 		else{     
 			//checkSearch의 값이 'OK' 가 아닐경우 선택된 지역이 없으므로, 페이지 접속 시 회원의 관심지역이 자동 선택되어 출력되도록 한다.	
 			selRegion = loginRegion;  //회원의 관심지역을 선택된option의 value에 덮어쓰기.
@@ -231,6 +239,7 @@
 	function selectRegion(page) {
 		console.log("selectRegion이벤트 호출");
 		selRegion = regionInfo.options[regionInfo.selectedIndex].value;
+		console.log("selRegion : ", selRegion);
 		//선택된 option의 value를 변수에 저장.
 		$.ajax({   //ajax를 통해 선택된 지역의 목록을 가져온다.
 					type : "get",
@@ -303,9 +312,9 @@
 <script type="text/javascript">
  /* 검색버튼 클릭시 이벤트함수 */	 
 	function searchKeyword(page){
-		var searchType = document.getElementById("searchType").value;
+		let searchType = document.getElementById("searchType").value;
 		console.log(searchType);
-		var keyword = document.getElementById("keyword").value;
+		let keyword = document.getElementById("keyword").value;
 		console.log(keyword);
 		//검색버튼의 click 이벤트 발생시  선택된 검색타입과 작성된 검색어를 변수에 담는다.
 		
@@ -315,7 +324,9 @@
 			dataType : "json",
 			data : {"keyword" : keyword, "sellBuy" : "S", "ajaxCheck" : 'REGION', "searchVal" : selRegion, "searchType" : searchType},
 			success : function(result){
+				alert("검색성공");
 				console.log("결과 : "+result);
+				
 				output_page = '';
 					listOutput(result);  //목록 출력용 함수
 					
@@ -370,7 +381,7 @@
 	
 </script>
 
-<!-- 페이지 출력 함수 --> 
+<!-- 페이지 출력 함수 -->
 <script type="text/javascript">
 
 function listOutput(result){
@@ -397,5 +408,8 @@ function listOutput(result){
 	}
 }
 </script>
+
+
+
 
 </html>

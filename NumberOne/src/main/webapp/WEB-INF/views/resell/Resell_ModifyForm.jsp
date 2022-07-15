@@ -32,7 +32,6 @@
 <body>
 
 	<!-- TopBar -->
-	<%-- 
 
         <c:choose>
                 <c:when test="${sessionScope.loginId != 'admin'}">
@@ -43,19 +42,18 @@
                 </c:otherwise>
         </c:choose>
 
-        --%>
 	<!-- End of TopBar -->
 	<main>
 		<!-- 사이드바 -->
 
-		<%-- <%@ include file="/WEB-INF/views/includes/SideBar_Resell.jsp"%> --%>
+		<%@ include file="/WEB-INF/views/includes/SideBar_Resell.jsp"%>
 
 		<section>
 			<!-- 본문 -->
 			<div class="container">
 				<h1 class="text-center" id="titleMsg"></h1>
 
-				<form action="updateResellModify" method="post" enctype="multipart/form-data" <%-- onsubmit="return checkFormData()"--%>>
+				<form action="updateResellModify" method="post" enctype="multipart/form-data"  onsubmit="return checkFormData()">
 					<input type="hidden" name="ubcode" value="${ub_resellView.ubcode}"> <input type="hidden" name="ubmid" value="${ub_resellView.ubmid}">
 					<input type="hidden" name="ubsellbuy" value="${ub_resellView.ubsellbuy}">
 
@@ -376,14 +374,7 @@
 		console.log('매개변수확인(sel_tag) :', sel_tag.value);
 		console.log('매개변수확인(gd_code) :', gd_code);
 
-<<<<<<< HEAD
-		gdUpdateState(gd_code, sel_tag);
-=======
-<<<<<<< HEAD
-		gdUpdateState(gd_code, sel_tag.value);
->>>>>>> 64a7c25c8f58f9491a6145c8aafb496066f4182c
 
-			
 	}
 </script>
 
@@ -434,5 +425,37 @@
 	}
 </script>
 
+<!-- 폼데이터 입력되었는지 체크하는 코드 스크립트  -->
+<script type="text/javascript">
+/* 폼태그 데이터 공백 체크  */
+/* onsubmit이벤트  false 일시 submit이벤트 취소*/
+function checkFormData() {
+	let checkForm = true;
+	console.log("폼데이터 핸들러 호출");
+	if (document.getElementById("titleCheck").value == '') {		
+		document.getElementById("titleCheck").focus();
+		alert("제목을 입력해주세요.");
+		checkForm = false;
+	}  else if (document.getElementsByClassName("gdcheck_n")[0].value == '') {
+		alert("품목이름을 작성해주세요.");
+		document.getElementsByClassName("gdcheck_n")[0].focus();
+		
+		checkForm = false;
+	} else if (document.getElementsByClassName("gdcheck_p")[0].value == '') {
+		alert("품목가격을 작성해주세요.");
+		document.getElementsByClassName("gdcheck_p")[0].focus();
+		checkForm = false;
+	} else if (document.getElementById("contentsCheck").value == '') {
+		document.getElementById("contentsCheck").focus();
+		alert("내용을 작성해주세요.");
+		checkForm = false;
+	}else if (document.getElementById("mainImgCheck").value == '') {
+		alert("메인사진을 선택해주세요.");
+		document.getElementById("mainImgCheck").focus();
+		checkForm = false;
+	}
+	return checkForm;
+}
+</script>
 
 </html>
