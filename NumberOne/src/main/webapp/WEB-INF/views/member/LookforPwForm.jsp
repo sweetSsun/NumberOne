@@ -148,10 +148,11 @@ background-color: #00BCD4;
 	<!-- 스크립트 시작 -->
 	<script type="text/javascript" src="resources/js/jquery-3.3.1.min.js"></script>
 	
+	  <%--  현석 :  mail API 에러 때문에 주석처리 시작
 	<script type="text/javascript">
 
 		
-	   
+	 
 		function searchPw() {
 			console.log("비밀번호 찾기 함수 연결!")
 		
@@ -191,7 +192,7 @@ background-color: #00BCD4;
 		}
 	
 	</script>
-
+현석 :  mail API 에러 때문에 주석처리 끝 --%>
 	<!-- ra 메세지 -->
 	<script type="text/javascript">
 		var checkMsg = '${msg}';

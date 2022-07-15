@@ -35,8 +35,11 @@ public class MemberService {
 	
 	@Autowired
 	private MemberDao mdao;
+	
+	/*	현석 :  mail API 에러 때문에 주석처리 시작 
 	@Autowired
 	private JavaMailSender mailSender;
+	 현석 :  mail API 에러 때문에 주석처리 끝 */ 
 	
 	 @Autowired private HttpServletRequest request;
 	 @Autowired private HttpSession session;
@@ -751,7 +754,7 @@ public class MemberService {
 
 		      
 		   }
-
+/* 현석 :  mail API 에러 때문에 주석처리 시작
 		//비밀번호 찾기 요청
 		public String selectLookforPw_ajax(String checkMid, String checkMemail) {
 			System.out.println("MemberService.selectLookforPw_ajax() 호출");
@@ -831,7 +834,8 @@ public class MemberService {
 			
 		
 	}
-
+ 현석 :  mail API 에러 때문에 주석처리 끝 */
+		
 		//미니브라우저 작성글 내역
 		public String selectWriteMemberInfo_ajax(String nickname) {
 			System.out.println("service.selectWriteMemberInfo_ajax()호출");
