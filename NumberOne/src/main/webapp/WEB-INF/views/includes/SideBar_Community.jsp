@@ -154,18 +154,18 @@
 					<table class="sideregion_tags">
 						<tr>
 							<td><a href="selectRegionBoardList">전체</a></td>
-							<td><a href="selectDetailBoardList?bdrgcode=SEL">서울</a></td>
-							<td><a href="selectDetailBoardList?bdrgcode=ICN">인천</a></td>
+							<td><a href="selectDetailBoardList?searchVal=SEL">서울</a></td>
+							<td><a href="selectDetailBoardList?searchVal=ICN">인천</a></td>
 						</tr>
 						<tr>
-							<td><a href="selectDetailBoardList?bdrgcode=GGD">경기</a></td>
-							<td><a href="selectDetailBoardList?bdrgcode=GSD">경상</a></td>
-							<td><a href="selectDetailBoardList?bdrgcode=JLD">전라</a></td>
+							<td><a href="selectDetailBoardList?searchVal=GGD">경기</a></td>
+							<td><a href="selectDetailBoardList?searchVal=GSD">경상</a></td>
+							<td><a href="selectDetailBoardList?searchVal=JLD">전라</a></td>
 						</tr>
 						<tr>
-							<td><a href="selectDetailBoardList?bdrgcode=CCD">충청</a></td>
-							<td><a href="selectDetailBoardList?bdrgcode=GWD">강원</a></td>
-							<td><a href="selectDetailBoardList?bdrgcode=JJD">제주</a></td>
+							<td><a href="selectDetailBoardList?searchVal=CCD">충청</a></td>
+							<td><a href="selectDetailBoardList?searchVal=GWD">강원</a></td>
+							<td><a href="selectDetailBoardList?searchVal=JJD">제주</a></td>
 						</tr>
 					</table>
 				</div>

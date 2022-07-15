@@ -35,11 +35,10 @@
 		font-family: 'Jal_Onuel'! important;
 		color: #4C4C4C;
 	    white-space: nowrap;
-
 		margin-bottom: 0px;
 		font-size: 24px;
 		position: sticky;
-		width: 100%;
+		heigth: 100%;
 		min-width: 800px;
 		top: 0px;
 		z-index:10;

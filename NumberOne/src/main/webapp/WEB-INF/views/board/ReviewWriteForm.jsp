@@ -79,6 +79,36 @@
 		max-width: 100px;
 	}
 	
+	/*  */
+#myform fieldset{
+    display: inline-block;
+    direction: rtl;
+    border:0;
+}
+#myform fieldset legend{
+    text-align: right;
+}
+#myform input[type=radio]{
+    display: none;
+}
+#myform label{
+    font-size: 2em;
+    color: transparent;
+    text-shadow: 0 0 0 #f0f0f0;
+}
+#myform label:hover{
+    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+    color: #00bcd4;
+}
+#myform label:hover ~ label{
+    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+    color: #00bcd4;
+}
+#myform input[type=radio]:checked ~ label{
+    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+    color: #00bcd4;
+}
+
 </style>
 </head>
 <body>
@@ -99,26 +129,14 @@
 		
 		<section>
 			<!-- 본문 -->
+			<form action="insertBoardWrite" method="post" enctype="multipart/form-data" onsubmit="return writeFormCheck();">
 			<div class="container">
-				<h2 class="text-center">게시판 글작성페이지 : BoardWriteForm.jsp</h2>
-				<form action="insertBoardWrite" method="post" enctype="multipart/form-data" onsubmit="return writeFormCheck();">
+				<h2 class="text-center">후기글 작성페이지 : ReviewWriteForm.jsp</h2>
 					<input type="hidden" name="bdmid" value="${sessionScope.loginId }">
 				<div class="row">
 					<div class="col-6">
-						<span style="font-size:20px;">게시판</span><span class="text-danger">*</span>
+						<span style="font-size:20px;">게시판</span>
 						<select name="bdcategory" class="bdCategoryList" required="required">
-							<c:choose>
-								<c:when test="${bdcategory eq '' }">
-									<option value="" disabled selected class="selectPlaceHolder">필수</option>
-								</c:when>
-								
-								<c:otherwise>
-									<option value="${bdcategory}" class="selectPlaceHolder">${bdcategory}</option>
-								</c:otherwise>
-							</c:choose>
-							<option value="자유">자유</option>
-							<option value="질문">질문</option>
-							<option value="정보">정보</option>
 							<option value="후기">후기</option>
 						</select>
 					</div>
@@ -138,11 +156,29 @@
 						</select>
 					</div>
 				</div>
+				
 				<hr>
 				<div class="row">
 					<input id="bdtitle" class="bdtitle" name="bdtitle" type="text" >
 				</div>
 				<hr>
+				<div class="row">
+					<div class="col" class="mb-3" id="myform">
+						<fieldset>
+							<span class="text-bold">별점을 선택해주세요</span>
+							<input type="radio" name="bdrate" value="5" id="rate1"><label
+								for="rate1">★</label>
+							<input type="radio" name="bdrate" value="4" id="rate2"><label
+								for="rate2">★</label>
+							<input type="radio" name="bdrate" value="3" id="rate3"><label
+								for="rate3">★</label>
+							<input type="radio" name="bdrate" value="2" id="rate4"><label
+								for="rate4">★</label>
+							<input type="radio" name="bdrate" onclick="NoRate(this);" value="1" id="rate5"><label
+								for="rate5">★</label>
+						</fieldset>
+					</div>
+				</div>				
 				<div class="row">
 					<textarea id="bdcontents" class="bdcontents" rows="17" cols="80" name="bdcontents"></textarea>
 				</div>
@@ -157,8 +193,8 @@
 						<input onclick="bdWriteCancelCheckModal()" style="background-color:#00bcd4;" class="btn btn-lg buttons fw-bold text-white" type="button" value="취소">
 					</div>
 				</div>
-			</form>
 			</div>	
+			</form>
 			
 		</section>
 	</main>
@@ -190,8 +226,6 @@
         </div>
     </div>
 	
-	
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 
@@ -259,5 +293,6 @@
 		 reader.readAsDataURL(event.target.files[0]);
 	}
 </script>
+
 
 </html>

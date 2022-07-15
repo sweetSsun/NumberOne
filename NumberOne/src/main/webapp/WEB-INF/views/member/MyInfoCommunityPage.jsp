@@ -34,8 +34,6 @@
 		margin-top: 0%;
 	}
 
-
-
 	#board_column{
 		border-bottom: solid gray 3px;
 	

@@ -5,10 +5,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 강원게시판</title>
+<title>1인자 - 서울게시판</title>
 <!-- Jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <%@ include file="/resources/css/BarCss.jsp" %>
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 <style type="text/css">
 	section{
 		max-width: 70%;
@@ -81,30 +82,28 @@
 		
 		<section>
 		<!-- 본문 -->
+			<form action="selectDetailBoardList" method="get" id="actionForm">
+			<input type="hidden" name="searchVal" value="${paging.searchVal }">
+			<input type="hidden" name="bdrgname" value="${paging.bdrgname }">
 			<div class="container">
 				<div class="row" style="margin:auto;">
-					<h2 class="text-center">강원게시판 글목록 페이지 페이지 : RegionBoardListPage.jsp</h2>
+					<h2 class="text-center">${paging.bdrgname }게시판 글목록 페이지 : Region${paging.searchVal }Board.jsp</h2>
 				</div>
-				<form action="selectRegionSearchList" method="get" onsubmit="return searchTextCheck();">
-					<input type="hidden" name="bdrgcode" value="GWD">
-					<input type="hidden" name="bdrgname" value="강원">
 					<div class="row ">
 						<!-- 검색기능 -->
 						<div class="col-5" align="right">
-								<select name="searchType" class="searchType">
-									<option value="bdtitle">제목</option>
-									<option value="bdcontents">내용</option>
-									<option value="bdtitlecontents">제목+내용</option>
-									<option value="bdnickname">작성자</option>
+								<select name="searchType" id="searchTypeSel" class="searchType">
+									<option value="bdTitle">제목</option>
+									<option value="bdContents">내용</option>
+									<option value="bdTitleContents">제목+내용</option>
+									<option value="bdNickname">작성자</option>
 								</select>
 						</div>
 						<div class="col-7 ">
-							<input type="text" name="searchText" placeholder="검색어를 입력하세요" id="inputSearchText">
+							<input type="text" name="keyword" placeholder="검색어를 입력하세요" id="searchText">
 							<button class="btn btn-sm btn-secondary">검색</button>
 						</div>
 					</div>		
-				</form>
-						
 				</div>
 				<div class="row" style="margin-top: 20px;">
 					<div class="col">
@@ -117,15 +116,10 @@
 							<option class="bdcategorySel" value="후기">후기</option>
 						</select> -->
 					</div>
-					<%-- <div align="right" class="col">
-						<c:if test="${sessionScope.loginId != null }">
-								<button  onclick="loadToBoardWrite()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">글작성</button>
-						</c:if>
-					</div> --%>
 				</div>
 				
 				<div class=" community" style="text-align:center;">
-					<span style="font-size:21px;" class="fw-bold text-white">강원게시판</span>
+					<span style="font-size:21px;" class="fw-bold text-white">지역게시판 : ${paging.bdrgname }</span>
 				</div>
 				
 				<!-- 게시글 목록 -->
@@ -187,10 +181,48 @@
 				</table>
 				<div align="right" class="col mt-2">
 					<c:if test="${sessionScope.loginId != null }">
-						<button  onclick="loadToBoardWrite()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">글작성</button>
+						<button type="button" onclick="loadToBoardWrite()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">글작성</button>
 					</c:if>
 				</div>
 				</div>
+				
+				<!-- 페이징 시작 -->
+				<input type="hidden" id="pageNum" name="page" value="1">
+				<div class="block text-center" id="pageList">
+				  	<ul class="pagination">
+					<c:choose>
+		           		<c:when test="${paging.prev }">
+		           			<li class="paginate_button"><a href="${paging.page -1 }" >이전</a></li>
+		           		</c:when>
+		           		<c:otherwise>
+	           				<li class="paginate_button"><span>이전</span></li>
+		           		</c:otherwise>
+  					</c:choose>
+	               	
+	               	<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="num" step="1">
+	                	<c:choose>
+	                		<c:when test="${paging.page == num }">
+	                			<li class=""><a class="active">${num }</a></li>
+	                		</c:when>
+	                		<c:otherwise>
+	                			<li class="paginate_button "><a href="${num }" >${num }</a></li>
+	                		</c:otherwise>
+	                	</c:choose>
+	               	</c:forEach>
+	               	
+	               	<c:choose>
+		           		<c:when test="${paging.next }">
+		                	<li class="paginate_button"><a href="${paging.page +1 }" >다음</a></li>
+		           		</c:when>
+		           		<c:otherwise>
+	           				<li class="paginate_button"><span>다음</span></li>
+		           		</c:otherwise>
+  					</c:choose>
+					</ul>
+				</div>
+				<!-- 페이징 끝 -->
+				</form>
+				
 		</section>
 	</main>
 	
@@ -200,11 +232,44 @@
 </body>
 
 <script type="text/javascript">
+	var actionForm = $("#actionForm");
+	// $(".paginate_button a").click(function(e){ // click 이벤트는 동적 처리 불가능
+	$(document).on("click", ".paginate_button a", function(e){ // on 이벤트로 변경
+		e.preventDefault();
+		console.log("pageNum click");
+		$("#pageNum").val($(this).attr("href"));
+		console.log($("#pageNum").val());
+		actionForm.submit();
+	});
+</script>
+
+<script type="text/javascript">
 	var checkMsg = '${msg}';
 	if ( checkMsg.length > 0 ){
 		alert(checkMsg);
 	}
-	
+</script>
+<script type="text/javascript">
+	//선택한 검색 select option 으로 선택되도록 하기 
+	var searchOption = $("#searchTypeSel option");
+	var searchType = "${paging.searchType}";
+	if ( searchType.length > 0 ){
+		for ( var i = 0; i<searchOption.length; i++){
+			if (searchOption.eq(i).val() == searchType){
+				searchOption.eq(i).attr("selected", "selected");
+			}
+		}	
+	}
+	//선택한 정렬 select option으로 선택되도록 하기
+	var searchValOption = $("#searchValSel option");
+	var searchVal = "${paging.searchVal}";
+	if (searchVal.length > 0) {
+		for (var i = 0; i < searchValOption.length; i++){
+			if (searchValOption.eq(i).val() == searchVal){
+				searchValOption.eq(i).attr("selected", "selected");
+			}
+		}
+	}
 </script>
 
 <script type="text/javascript">
@@ -215,24 +280,6 @@
 		var bdcategory =  "";
 		location.href= "loadToBoardWrite?bdcategory="+bdcategory;
 	}
-
-	
 </script>
-
-<script type="text/javascript">
-	function searchTextCheck(){
-		/* 검색어 입력유무 확인 */
-		var inputSearchText = $("#inputSearchText").val();
-		
-		if( inputSearchText.length == 0 ){//검색어를 입력하지 않았으면 
-			alert("검색어를 입력해주세요!");
-		
-			return false;
-		}
-		
-	}
-</script>
-
-
 
 </html>
