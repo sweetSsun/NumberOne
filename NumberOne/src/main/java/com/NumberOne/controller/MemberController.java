@@ -238,13 +238,13 @@ public class MemberController {
 	
 		}		
 		//작성자 상세페이지 _ Board
-		@RequestMapping(value = "/selectWriteMemberInfo")
-		public ModelAndView selectWriteMemberInfo(String nickname) {
-			System.out.println("작성자 상세페이지 _ Board");
-			mav = new ModelAndView();
+		@RequestMapping(value = "/selectWriteMemberInfo_ajax")
+		public @ResponseBody String selectWriteMemberInfo_ajax (String nickname) {
+			System.out.println("작성자 상세페이지 _ Board,Reply");
+
 			System.out.println("controller.nickname : " + nickname);
-			mav = msvc.selectWriteMemberInfo(nickname);
-			return mav;
+			String boardList = msvc.selectWriteMemberInfo_ajax(nickname);
+			return boardList;
 			
 		}
 		
@@ -271,7 +271,7 @@ public class MemberController {
 		}
 		
 		
-		
+		/* 현석 :  mail API 에러 때문에 주석처리 시작
 		//비밀번호 찾기 - 회원 정보 확인
 		@RequestMapping(value = "/selectLookforPw_ajax")
 		public @ResponseBody String selectLookforPw_ajax(String checkMid , String checkMemail, MemberDto member) {
@@ -282,7 +282,7 @@ public class MemberController {
 			
 			return pwCheckResult;  
 		}	
-	
+현석 :  mail API 에러 때문에 주석처리 끝	*/
 		
 }
 

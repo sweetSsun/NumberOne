@@ -37,13 +37,9 @@ public interface ResellDao {
 
 	String loadToResellWriteForm(String loginId);
 
-	ArrayList<UsedBoardDto> selectResellPageList(@Param("paging") Paging paging,
-			@Param("checkMethod") String checkMethod);
+	ArrayList<UsedBoardDto> selectResellPageList(@Param("paging") Paging paging, @Param("checkMethod") String checkMethod);
 
 	ArrayList<UsedBoardDto> selectResellRegionList_ajax(Paging paging);
-
-	String selectSearchList_ajax(@Param("searchVal") String searchVal, @Param("sell_buy") String sell_buy,
-			@Param("selectRegion") String selectRegion, @Param("searchOp") String searchOp);
 
 	String selectMemberId(String keyword);
 
@@ -66,6 +62,10 @@ public interface ResellDao {
 	int updateResellState_GoodsAjax(GoodsDto gdDto);
 
 	int updateResellState_usedBoardAjax(UsedBoardDto ubDto);
+
+	int updateResellModify_ub(UsedBoardDto ubDto);
+
+	int updateResellModify_gd(GoodsDto gdDto);
 
 	
 	

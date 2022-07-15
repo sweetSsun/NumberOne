@@ -43,14 +43,32 @@ p {
 	margin: 2px;
 }
 
-.inputText {
+.pText {
 	font-family : pretendard;
 	width : 290px;
 	height: 25px;
 	font-size: 15px;
 	font-weight: bold;
+	width : 500px;
+	border-bottom: 1px solid #D2D2D2;
+	/* border: 0px; */
+}
+
+.pText a{
+	color:black;
+	text-decoration: none;
+	
+}
+
+.spanText {
+	font-family : pretendard;
+	/* width : 500px; */
+	height: 25px;
+	font-size: 15px;
+	font-weight: bold;
 	border: 0px;
 }
+
 
 .btn {
 	border : 0px;
@@ -64,6 +82,7 @@ p {
   background: #00BCD4;
   padding: 10px 20px;
   text-decoration: none;
+  float: right;
 }
 
 .btn:hover {
@@ -71,23 +90,6 @@ p {
   text-decoration: none;
 }
 
-/*.menuTable {
-	border: 3px solid #949494;
-	border-radius : 20px 20px 0px 0px ;
-	height: 50px;
-	font-size: 17px;
-	
-}*/
-
-/* .menuInput {
-	font-family : pretendard;
-	text-align: center; 
-	font-size: 18px;
-	border: 0px;
-	font-weight: bold;
-	border-top-left-radius: 10px;
-	border-top-right-radius: 10px;
-} */
 
 #list{ resize:none; overflow-y:scroll; }
 
@@ -108,10 +110,7 @@ p {
 		border-radius: 10px;
  	}
  	
- .con {
- 	margin-left: 1px;
- 	
- }	
+
  
  li input {
 	font-size: 17px;
@@ -120,7 +119,7 @@ p {
  }
  
  .msgTextarea {
- border: 3px solid black;
+ border: 1px solid black;
 	height: 550px;
 	width: 640px;
 	padding:10px;
@@ -148,57 +147,138 @@ p {
 ul li a {
 	
 }
+
+ .msgTextarea2 {
+ border-left: 1px solid #949494;
+ border-right: 1px solid #949494;
+	/* height: 550px; */
+	width: 640px;
+	padding:10px;
+	resize: none;
+  	/* overflow-y: scroll; */
+  	margin-left: 2px;
+}
+
+
+#inputMmessage {
+  display:block; 
+  overflow:hidden; 
+  width:100%; 
+  height:2rem; 
+  /* padding-left:1rem;
+  padding-top:0.8rem; */
+  font-size:1rem; 
+  font-weight:bold;
+  color:#000; 
+  border:1px;
+  resize:none;
+  border-radius : 4px;
+ }
  
+ 
+.parent{
+    width: 640px;
+    margin: 20px;
+    display: flex;
+}
+
+.first {
+    /* border: 1px solid red; */
+    flex:1;
+    width:20%;
+    box-sizing: border-box;
+}
+
+.second{
+    /* border: 1px solid green; */
+    flex:5;
+    padding: 10px 20px;
+    width:40%;
+    box-sizing: border-box;
+}
+
+.third{
+    /* border: 1px solid blue; */ 
+    flex:1;
+    width:20%;
+    box-sizing: border-box;
+}
+
+.spantitle{
+
+color:#00bcd4; 
+display:inline-block; 
+width: 130px; 
+text-align: right; 
+font-weight: bold;
+
+}
+
+.spantitle2{
+
+display:inline-block; 
+width: 250px; 
+text-align: right; 
+
+
+}
+
+
 </style>
 
 <body>
 
 <!-- 프로필 란 -->
 
-<div class ="con">
-	
-	<table style="width: 600px; margin: 10px;">
-	<tr>
+ <div> <!--  class ="container" -->
+
 	
 	<!-- 프로필 -->
-	<th rowspan="3" style="padding: 2px 15px 2px 10px; margin: 5px;">	
-	<c:choose>
+
+	<div class="row">
+
+		<div class="parent">
+		<c:choose>
 		<c:when test="${memberInfo.mprofile != null}">
+			<div class="first">
     		<img style="height: 100px; width: 100px; border: 1px solid #949494; padding: 3px; margin: 0px; border-radius: 50%;" 
     			src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/${memberInfo.mprofile }" alt="">	
+			</div>
+			
 		</c:when>
 		<c:otherwise>
-    		<img style="height: 100px; width: 100px; border: 1px solid #949494; padding: 1px; margin:10px; border-radius: 50%;" 
-    			src="${pageContext.request.contextPath }/resources/img/logo_bada.png" alt="">
+    		<img style="height: 100px; width: 100px; border: 1px solid #949494; padding: 3px; margin: 0px; border-radius: 50%;"  
+    			src="${pageContext.request.contextPath }/resources/img/logo_bada.png" alt="">	
 		</c:otherwise>
-	</c:choose>
-	</th>
-	
-	<!-- 닉네임 -->
-	<th><p style="text-align: right;"> 닉네임&nbsp;&nbsp;| </p></th>
-	<td colspan="2"><input type="text" class="inputText" value="${memberInfo.mnickname }" readonly="readonly" ></td>
-	
-	<!-- 채팅 버튼 -->
-	<td rowspan="2"><input type="button" class="btn" style="width: 90px; margin-right: 30px;" value="채팅"></td>		
-	</tr>
-	<tr>
-	
-	<!-- 지역 -->
-	<th><p style="text-align: right;">지역&nbsp;&nbsp;| </p></th>
-	<td><input type="text" class="inputText" value="${memberInfo.mregion }" readonly="readonly"></td>
-		<!-- <th><p style="width: 40px;">등급</th> -->
-		<!-- <td><input type="hidden" style="width: 90px;" class="inputText" value="sh1234(예시)"></td> -->
-	</tr>
-	<!-- 상태메세지 -->
-	<tr>
-	<th><p style="text-align: right;">상태메세지&nbsp;&nbsp;| </p></th>
-		<td colspan="4"><input type="text" class="inputText" style="width: 320px;"  value="${memberInfo.mmessage }" readonly="readonly"></td>
-	</tr>	
-	</table>
-	
-<!-- 프로필 란 끝 -->
+		</c:choose> 
+			<div class="second">	
+				
+				<span class="profile"> 
+				<span class="spantitle">닉네임&nbsp;&nbsp;|</span>
+				<span>${memberInfo.mnickname }</span>
+				</span>	
+					
+				<span class="profile" style="display: block;"> 
+				<span class="spantitle">지역&nbsp;&nbsp;|</span>
+				<span>${memberInfo.mregion }</span>
+				</span>	
+				
+				<span class="profile" style="display: block;"> 
+				<span class="spantitle" style="">상태메세지&nbsp;&nbsp;|</span>
+				<span>${memberInfo.mmessage }</span>	
+				</span>
+						
+			</div>
+			<div class="third">
+			<input type="button" class="btn" style="width: 90px;" value="채팅">
+			</div>
+		</div>
+	</div>	 
+	 
 
-<!-- 메뉴 시작 -->	
+
+<!-- 메뉴 시작 -->
+
 	<div class="row" style="width: 640px; margin-left: 11px;">
 		<div class="col-lg-6 col-md-6 col-sm-6" 
 		style="border: 1px solid #949494; border-radius: 20px 20px 0px 0px; height: 50px; border-bottom: 0px; background-color: #F2F2FF">
@@ -211,23 +291,92 @@ ul li a {
 			style="width:280px; border: 0px; margin-top: 7px; text-align: center; font-weight: bold; outline:none;"  readonly="readonly">
 		</div>
 	</div>
-	
+		
 	<div class="row"  style="width: 650px; margin-left: 9px;">
-			<div class = "msgTextarea col-lg-12 col-md-6 col-sm-6" style="border-top:0px! important ; padding-top: 20px; border: 1px solid #949494; background-color: #F2F2FF;" >
-				<c:forEach items="${Board }" var="Board">			
+	<div class = "msgTextarea2" style="background-color: #F2F2FF; padding-left: 50px;">
+	<span style="width: 500px; text-align: center;">
+	<button onclick="wboard('${memberInfo.mnickname }')">작성글</button> 
+	&nbsp;&nbsp;&nbsp; 
+	<button>작성댓글</button></span>
+	</div>
+	<!-- 작성 글 -->
+				
+	<div class = "msgTextarea col-lg-12 col-md-6 col-sm-6" 
+			style="border-top:0px! important ; padding-top: 20px; border: 1px solid #949494; background-color: #F2F2FF;" >
+	<div id="WboardList_ajax"> </div>
+	</div>
+			 
+	<!-- 작성 글 끝 -->
+	<!-- 작성 댓글 글 -->
+ 			<div class = "msgTextarea col-lg-12 col-md-6 col-sm-6" 
+			style="border-top:0px! important ; padding-top: 20px; border: 1px solid #949494; background-color: #F2F2FF;" >
+				<c:forEach items="${Reply }" var="Reply">			
 					<ul>
-						<li><a href="selectBoardView?bdcode=${Board.bdcode }" target="_blank"><!-- 새창 띄우면 내용이 안나와서 다시 확인해봐야함!!!! -->
-						<input type="text" class="inputText" style="background-color: #F2F2FF; border-bottom: 1px solid #D2D2D2; outline:none; width: 540px; " 
-						readonly="readonly" value="${Board.bdtitle }"></a></li>
+						<li>
+						<!-- 댓글 상세 -->                              
+                        <p class="pText" style="background-color: #F2F2FF; outline:none; width: 540px; " >                          	
+                         ${Reply.rpcontents }</p>	
+						</li>
 					</ul>					
 				</c:forEach>
-			 </div>
+			 </div>  
+	<!-- 작성 댓글 끝 -->
 		</div>	
 <!-- 메뉴 끝 -->		
+</div>
+
+
+
+<script type="text/javascript">
+
+/* function wboard(nickname) {
+	console.log("닉네임 : "+nickname);
+	
+	var output = "";
+	
+	$.ajax({
+		type : "get",
+		url : "selectWriteMemberInfo_ajax",
+		data : {"nickname" : nickname },
+		dataType : "json",
+		async : false,
+		success : function(boardList){
+			console.log(boardList);
+			
+			for( var i=0; i < boardList.length; i++ ){
+				output +="<ul>"
+				output +="<li>"
+			
+				if(boardList[i].bdcategory == '자랑'){
+					output +="<p class=\"pText\" style='background-color: #F2F2FF; outline:none; width: 540px; ' >"
+					output +="<a href=\"selectRoomList?bdcode=${Board.bdcode }&jsp=view\" target=\"_blank\">"
+					output +=boardList[i].bdtitle+"</a></p>"		
+				}else{
+					output +="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px;\" >"
+					output +="<a href=\"selectRoomList?bdcode=${Board.bdcode }&jsp=view\" target=\"_blank\">"
+					output +=boardList[i].bdtitle+"</a></p>"
+					}		
+				output +="<li>"
+				output +="<ul>"	
+							
+				}
+			
+				
+			}
+	});
+	
+	$("#Wboard").html(output);
+
+	} */
+
+
+
+
+</script>
+
+	
 </body>
 </html>
-
-
 
 
 

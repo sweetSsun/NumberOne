@@ -26,6 +26,7 @@ import com.NumberOne.dto.ReplyDto;
 import com.NumberOne.dto.ScrapDto;
 import com.NumberOne.dto.UsedBoardDto;
 import com.NumberOne.dto.ZzimDto;
+import com.google.gson.Gson;
 
 @Service
 public class MemberService {
@@ -34,8 +35,11 @@ public class MemberService {
 	
 	@Autowired
 	private MemberDao mdao;
+	
+	/*	현석 :  mail API 에러 때문에 주석처리 시작 
 	@Autowired
 	private JavaMailSender mailSender;
+	 현석 :  mail API 에러 때문에 주석처리 끝 */ 
 	
 	 @Autowired private HttpServletRequest request;
 	 @Autowired private HttpSession session;
@@ -619,7 +623,7 @@ public class MemberService {
 
 
 	//회원정보 상세페이지 (미니브라우저)
-	public ModelAndView selectWriteMemberInfo(String nickname) {
+	/*public ModelAndView selectWriteMemberInfo(String nickname) {
 			ModelAndView mav = new ModelAndView();
 			System.out.println("MemberService.selectWriteMemberInfo() 호출");
 			  //String loginId = (String) session.getAttribute("loginId");
@@ -639,11 +643,18 @@ public class MemberService {
 			
 			
 			//닉네임 별 작성 글 제목 출력
-			ArrayList<BoardDto> Board = mdao.insertWriteMemberInfo_Board(nickname);
+			ArrayList<BoardDto> Board = mdao.selectWriteMemberInfo_Board(nickname);
 			System.out.println(Board);
+			
+			//닉네임 별  작성 댓글 내용 출력
+			ArrayList<ReplyDto> Reply = mdao.selectWriteMemberInfo_Reply(nickname);
+			System.out.println(Reply);			
+			
+			
 			
 			mav.addObject("memberInfo", memberInfo);
 			mav.addObject("Board",Board);
+			mav.addObject("Reply",Reply);
 			
 			mav.setViewName("member/WriteMemberInfoPage_Board");
 			
@@ -651,7 +662,7 @@ public class MemberService {
 
 
 
-	}
+	}*/
 
 	//카카오 로그인
 		public ModelAndView memberKakaoLogin(MemberDto member, RedirectAttributes ra) {
@@ -743,7 +754,7 @@ public class MemberService {
 
 		      
 		   }
-
+/* 현석 :  mail API 에러 때문에 주석처리 시작
 		//비밀번호 찾기 요청
 		public String selectLookforPw_ajax(String checkMid, String checkMemail) {
 			System.out.println("MemberService.selectLookforPw_ajax() 호출");
@@ -823,6 +834,20 @@ public class MemberService {
 			
 		
 	}
+ 현석 :  mail API 에러 때문에 주석처리 끝 */
+		
+		//미니브라우저 작성글 내역
+		public String selectWriteMemberInfo_ajax(String nickname) {
+			System.out.println("service.selectWriteMemberInfo_ajax()호출");
+			ArrayList<BoardDto> boardList = mdao.selectWriteMemberInfo_ajax(nickname);
+
+			Gson gson = new Gson();
+			String boardList_gson = gson.toJson(boardList);
+			System.out.println(boardList_gson);
+			
+			
+			return boardList_gson;
+		}
 
 
 }

@@ -35,23 +35,33 @@ public class ResellService {
 	@Autowired
 	ResellDao rdao;
 	
+	public static String savePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\resell";
+	
+	
 	public ModelAndView selectResellMainPage(Paging paging) {
 		System.out.println("selectResellMainPage 서비스 호출");
 		ModelAndView mav = new ModelAndView();
 		
 		String checkMethod = "Main";
-		
+		/*회원의 관심지역 출력용
 		if((String) session.getAttribute("loginRegion") != null) {
 			paging.setSearchVal(rdao.selectRegionCode((String) session.getAttribute("loginRegion")));				
+		}
+		*/
+		System.out.println("지역정보 : " + paging.getSearchVal());
+		if(paging.getSearchVal() == null || paging.getSearchVal() == "") {
+			
+			paging.setSearchVal("all");
+			
 		}
 		
 		paging.setSellBuy("S");		
 //		팔구리스트
 		ArrayList<UsedBoardDto> SellList = rdao.selectResellPageList(paging, checkMethod);
 		System.out.println("팔구DTO : " + paging);
-		paging.setSellBuy("B");
 		
 //		사구리스트
+		paging.setSellBuy("B");
 		ArrayList<UsedBoardDto> buyList = rdao.selectResellPageList(paging, checkMethod);
 		System.out.println("사구DTO : " + paging);
 		
@@ -68,13 +78,11 @@ public class ResellService {
 	
 	
 	public ModelAndView insertResellWrite(GoodsDto gdDto, UsedBoardDto ubDto, RedirectAttributes ra)
-			throws IllegalStateException, IOException {
-				
+			throws IllegalStateException, IOException {				
 		ModelAndView mav = new ModelAndView();
 		System.out.println("insertResellWrite 서비스호출");
 
-		String savePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\resell";
-
+	
 		String ubmid = (String) session.getAttribute("loginId");
 
 		String ub_char = "UB";
@@ -105,7 +113,9 @@ public class ResellService {
 		ubDto.setUbmid(ubmid);
 
 		gdDto.setGdubcode(ubCode);
-
+		
+		//CV로 SAVEPATH 선언되어있음
+		
 		MultipartFile ubMainFile = ubDto.getUbmainimgfile();
 		// 대표이미지의 파일명
 		String ubmainimg = "";
@@ -155,6 +165,7 @@ public class ResellService {
 
 		ubDto.setUbdetailimg(uddetailimg);
 
+		
 		int insertResult_ub = rdao.insertResellWrite_ub(ubDto);
 
 		System.out.println("게시글 등록 : " + insertResult_ub);
@@ -210,11 +221,11 @@ public class ResellService {
 			ra.addFlashAttribute("msg", "글이 작성되었습니다.");
 			if (ubDto.getUbsellbuy().equals("B")) {
 
-				mav.setViewName("redirect:/selectResellPageList?sellBuy=B");
+				mav.setViewName("redirect:/selectResellPageList?sellBuy=B&searchVal=all");
 				
 			} else {
 				
-				mav.setViewName("redirect:/selectResellPageList?sellBuy=S");
+				mav.setViewName("redirect:/selectResellPageList?sellBuy=S&searchVal=all");
 								
 			}
 		} else {
@@ -232,17 +243,24 @@ public ModelAndView selectResellPageList(Paging paging) {
 	System.out.println("selectResellPageList 서비스 호출");
 	ModelAndView mav = new ModelAndView();
 	
-	
+	/*  페이지처음출력 시 전체목록출력용
+	if(paging.getSearchVal() == null || paging.getSearchVal() == "") {
+		
+		paging.setSearchVal("all");		
+	}
+	*/
 	String checkMethod = "NO";
-	if(paging.getSearchType()!=null) {
-		checkMethod = "OK";
+	
+
+	if(paging.getSearchVal().equals("all"))  {
+		checkMethod ="all";
 	}
 	System.out.println("검색타입(searchType) : "+ paging.getSearchType());
 	System.out.println("검색어(keyword) : " + paging.getKeyword());
 	System.out.println(paging);
 	
-		
-		if((String) session.getAttribute("loginRegion") != null) {
+	 //로그인되어있으면 회원의 관심지역을 지역필드에 저장	
+		if((String) session.getAttribute("loginRegion") != null && paging.getSearchType()==null) {
 			paging.setSearchVal(rdao.selectRegionCode((String) session.getAttribute("loginRegion")));				
 		}
 
@@ -258,7 +276,7 @@ public ModelAndView selectResellPageList(Paging paging) {
 	mav.addObject("paging", paging);
 	mav.addObject("checkSearch", checkMethod);
 	if (paging.getSellBuy().equals("S")) {
-		System.out.println("조건문S");
+		System.out.println("조건문S");		
 		mav.setViewName("resell/Resell_SellList");
 		
 	} else if (paging.getSellBuy().equals("B")) {
@@ -277,14 +295,22 @@ public ModelAndView selectResellPageList(Paging paging) {
 		System.out.println("검색어(keyword) : " + paging.getKeyword());
 				
 		String mregion = rdao.selectRegionCode(paging.getSearchVal());
+		String checkMethod = "NO";
+		if(mregion.equals("ALL")) {
+						mregion = mregion.toLowerCase();
+		}
 		System.out.println("파라메터지역코드 : " + mregion);
 		paging.setSearchVal(mregion);
-		int totalCount = rdao.selectPageTotalCount(paging);
 		
+		/*
+		 * if(paging.getSearchType()!=null) { checkMethod = "search"; }
+		 */
+		System.out.println("checkMethod : "+checkMethod);
+		int totalCount = rdao.selectPageTotalCount(paging);
 		paging.setTotalCount(totalCount);
 		paging.calc();
-		
 		System.out.println(paging);
+		
 		ArrayList<UsedBoardDto> sellbuyList = rdao.selectResellRegionList_ajax(paging);
 		
 		System.out.println(sellbuyList);
@@ -305,15 +331,17 @@ public ModelAndView selectResellPageList(Paging paging) {
 	public ModelAndView selectResellView(UsedBoardDto ubDto, String modifyCheck) {
 		System.out.println("selectResellView 서비스 호출");
 		ModelAndView mav = new ModelAndView();
-
+		System.out.println("서비스에서확인 : " + ubDto);
 		String loginId = (String)session.getAttribute("loginId");
-		ubDto.setUbmid(loginId);
+		
 		UsedBoardDto ub_resellView = rdao.selectResellView(ubDto);
+		
+		System.out.println(ub_resellView);
+		System.out.println(ub_resellView.getUbmid());
 
 		ArrayList<GoodsDto> gd_resellView = rdao.selectResellView_goods(ubDto);
 
 		ArrayList<UsedBoardDto> memberSellList = rdao.selectResellView_List(ub_resellView.getUbmid());
-		
 		String zzimCheck = rdao.selectZzimCheck(loginId, ubDto.getUbcode());
 		
 		String zzim_Check;
@@ -514,7 +542,14 @@ public ModelAndView selectResellPageList(Paging paging) {
 		int stateResult = rdao.updateResellState_GoodsAjax(gdDto);
 		String result = null;
 		if(stateResult>0) {
-			result = "OK";
+			
+			if(gdDto.getGdstate()==0) {
+				result = "SOLD";
+				
+			}else {
+				
+				result = "ING";
+			}
 		}
 		
 		
@@ -530,17 +565,122 @@ public ModelAndView selectResellPageList(Paging paging) {
 		int usedBoardState = rdao.updateResellState_usedBoardAjax(ubDto);
 		
 		if(usedBoardState>0){
-			if( ubDto.getUbstate() == 0) {							
+			if( ubDto.getUbstate() == 9) {							
 				result = "SOLD";
 			}else {
 				result = "ING";
 			}
 			
 		}
-		
-				
-		
 		return result;
+	}
+
+
+	public ModelAndView updateResellModify(GoodsDto gdDto, UsedBoardDto ubDto, RedirectAttributes ra) throws IllegalStateException, IOException {
+		System.out.println("updateResellModify() 호출");
+		System.out.println(savePath);
+		ModelAndView mav = new ModelAndView();
+		
+		//CV로 SAVEPATH 선언되어있음
+		
+		MultipartFile ubMainFile = ubDto.getUbmainimgfile();
+				
+		// 대표이미지의 파일명담을 변수 공백으로 초기화
+		String ubmainimg = "";
+	
+		//대표이미지 있는지 확인 (비어있지않으면) 
+		if (!ubMainFile.isEmpty()) {  
+			System.out.println("대표 이미지 있음");
+			
+			UUID uuid = UUID.randomUUID();
+			
+			System.out.println(savePath);
+
+			// 파일명 생성
+			ubmainimg = "M" + uuid.toString() + "_" + ubMainFile.getOriginalFilename();
+	
+			// 대표 이미지 실제파일 저장 (지정한경로:savePath에 ubmainimg에 담긴 이름으로 메모리(파일?)를 만들고, 실제파일인담긴 ubMainFile을 저장한다.)  
+			ubMainFile.transferTo(new File(savePath, ubmainimg));
+
+			
+			System.out.println("ubmainimg : " + ubmainimg);
+			
+		}
+		ubDto.setUbmainimg(ubmainimg);
+		System.out.println("메인이미지"+ubmainimg);
+		// 상세이미지 파일 담을 인스턴스배열 생성
+		MultipartFile[] ubdetailimgfile = ubDto.getUbdetailimgfile();
+		
+
+		// 상세이미지의 파일명을 담을 변수 공백(빈값)으로 초기화
+		String uddetailimg = "";
+
+		
+		// 상세이미지 파일 처리
+		// System.out.println("상세이미지개수: "+bddetailimgfile.length);
+		// 상세 이미지를 선택 안해도 배열의 크키가 1로 나옴 (파일이 있는지 없는지 이걸로 확인 어려움)
+		
+		// 대신 0번 인덱스의 filename이 있는지로 확인해야 함
+		System.out.println("ubdetailimgfile[0].length: " + ubdetailimgfile[0].getOriginalFilename().length());
+
+		if (ubdetailimgfile[0].getOriginalFilename().length() > 0) {
+			//0번 인덱스의 실제 파일이름의 길이가 0보다 크면)
+
+			for (int i = 0; i < ubdetailimgfile.length; i++) {
+				UUID uuid = UUID.randomUUID();
+				// 파일명 랜덤 생성
+				String uddetailimgname = uuid.toString() + ubdetailimgfile[i].getOriginalFilename();
+				// 상세 이미지 파일 저장
+				ubdetailimgfile[i].transferTo(new File(savePath, uddetailimgname));
+				uddetailimg += "___" + uddetailimgname; //이미지가 여러개를 한열에 담고, 이미지끼리 구분할 수 있도록 구분할 수 있는 특수문자사용해서 변수에 담는다.
+			}
+
+			System.out.println("uddetailimg : " + uddetailimg);
+		}
+
+		ubDto.setUbdetailimg(uddetailimg);
+		
+	
+		int gdStateUPdateResult = 0;
+		
+		// 상품 코드, 상품상태 배열의 길이만큼 반복
+		for(int i= 0; i<gdDto.getGd_code().length; i++) {
+			
+			gdDto.setGdcode(gdDto.getGd_code()[i]);
+			gdDto.setGdstate(gdDto.getGd_state()[i]);
+			gdStateUPdateResult = rdao.updateResellModify_gd(gdDto);
+						
+		}
+		
+		System.out.println("상품 업데이트결과 : " + gdStateUPdateResult);
+		
+		int ubStateUpdateResult = rdao.updateResellModify_ub(ubDto);
+		
+		System.out.println("글번호 : "+ubDto.getUbcode());
+		System.out.println(ubDto);
+		System.out.println("글 업데이트결과 : " + ubStateUpdateResult); //글 업데이트 계속 실패 (7월14일)
+	
+		
+		//상세페이지 이동을 위한 파라메터들
+		String ubcode = ubDto.getUbcode();
+		String ubmid = ubDto.getUbmid();
+		String ubsellbuy = ubDto.getUbsellbuy();
+		String modifyCheck = "LIST";
+		
+		
+		if(ubStateUpdateResult>0 && gdStateUPdateResult>0) {
+			System.out.println("수정성공");
+			
+			ra.addFlashAttribute("msg", "글이 수정되었습니다.");
+			
+			mav.setViewName("redirect:/selectResellView?ubcode="+ubcode+"&ubmid="+ubmid+"&ubsellbuy="+ubsellbuy+"&modifyCheck="+modifyCheck);	
+		}
+		else {
+			System.out.println("수정실패");
+			ra.addFlashAttribute("msg", "수정에 실패하였습니다.");
+			mav.setViewName("redirect:/");
+		}
+		return mav;
 	}
 
 	
