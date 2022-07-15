@@ -84,4 +84,12 @@
 		FROM MEMBERS
 		WHERE MID = #{mid}
 	</select>
+	
+	<!-- 특정 채팅방의 채팅메세지 목록 조회 -->
+	<select id="selectAllRoomMessage" resultType="com.NumberOne.dto.ChatMessageDto">
+		SELECT CMCODE, CMCRCODE, CMFRMID, CMCONTENTS, TO_CHAR(CMDATE,'YYYY-MM-DD HH24:MI') AS CMDATE, CMREAD
+		FROM CHATMESSAGE
+		WHERE CMCRCODE = #{crcode}
+		ORDER BY CMCODE
+	</select>
 </mapper>

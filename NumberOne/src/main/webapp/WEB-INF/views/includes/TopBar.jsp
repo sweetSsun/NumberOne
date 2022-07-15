@@ -121,17 +121,51 @@
 		</div>
 	</header>
 	
+	
+	<form name="msgData" id="msgData" method="post">
+		<!-- 메세지 리스트 전달받고 팝업창으로 전달하는 부분(동적 생성) -->
+	</form>
+	
+	
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 <script type="text/javascript">
-console.log("스크립트 확인!");
-
-function popupChat(){
-	console.log("popupChat 호출");
-	let popOption = "width=450px, height=550px, top=300px, left=500px, scrollbars=no, resizable=no";
-	let openUrl = 'loadToChat';
-	window.open(openUrl, 'pop', popOption);
-};
+	console.log("스크립트 확인!");
+	var popChat = null;
+	//var msgList = [];
+	
+	function popupChat(){
+		var crcode = "CR00001"; // 함수 호출시 파라미터로 받을 값. 임시 crcode
+		console.log("popupChat 호출");
+		let popOption = "width=450px, height=550px, top=300px, left=500px, scrollbars=no, resizable=no";
+		let openUrl = "loadToChat?crcode="+crcode;
+		popChat = window.open(openUrl, "popChat", popOption);
+		$.ajax({
+			url: "selectAllRoomMessage",
+			data: {"crcode":crcode},
+			async:false,
+			dataType:"json",
+			success:function(data){
+			/* 	for (var i = 0; i < data.length; i++){
+					console.log(data[i]);
+	 				var message = {
+						"cmcode" : data[i].cmcode,
+						"cmcrcode" : data[i].cmcrcode,
+						"cmfrmid" : data[i].cmfrmid,
+						"cmcontents" : data[i].cmcontents,
+						"cmfrmnickname" : data[i].cmfrmnickname
+					}; 
+	 				msgList += message;
+				}
+				console.log("msgList : " + typeof msgList); */
+				
+				popChat.window.addEventListener("load", function(){
+					//popChat.enterRoom(JSON.stringify(msgList));
+					popChat.enterRoom(data);
+				});
+			}
+		});
+	};
 
 </script>
 

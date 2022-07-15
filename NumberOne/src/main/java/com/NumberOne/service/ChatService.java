@@ -1,6 +1,9 @@
 package com.NumberOne.service;
 
 
+
+import java.util.ArrayList;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
@@ -16,12 +19,6 @@ public class ChatService {
 	@Autowired
 	private ChatDao chdao;
 	
-	
-	public void insertChat() {
-		
-		
-		
-	}
 
 	// 중고거래 관심상품 채팅메세지 입력 요청
 	public String insertResellChat(String[] gd_names, ChatMessageDto chatMessage, String gdtitle) {
@@ -85,7 +82,22 @@ public class ChatService {
 		return crcode;
 	}
 
-
+	// 특정 채팅방의 메세지 목록 조회
+	public String selectAllRoomMessage(String crcode){
+		System.out.println("ChatService.selectAllRoomMessage() 호출");
+		ArrayList<ChatMessageDto> msgList = chdao.selectAllRoomMessage(crcode);
+		
+		// 메세지 보낸 사람의 닉네임 조회 후 set
+		for (int i = 0; i < msgList.size(); i++) {
+			String cmfrmnickname = chdao.selectMnickname(msgList.get(i).getCmfrmid());
+			msgList.get(i).setCmfrmnickname(cmfrmnickname);
+		}
+		Gson gson = new Gson();
+		String msgList_json = gson.toJson(msgList);
+		System.out.println("msgList_json : " + msgList_json);
+		return msgList_json;
+	}
+	
 
 	// 채팅방 조회 (보낸 메세지의 crcode)
 	public ChatRoomDto selectChatRoom(String crcode) {

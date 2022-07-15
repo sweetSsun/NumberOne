@@ -43,6 +43,8 @@ public interface ChatDao {
 
 	String selectMnickname(String mid);
 
+	ArrayList<ChatMessageDto> selectAllRoomMessage(String crcode);
+
 	
 	
 }

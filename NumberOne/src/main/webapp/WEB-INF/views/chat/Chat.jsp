@@ -248,6 +248,16 @@
 	<script type="text/javascript">
 		let crcode = "${param.crcode }";
 		console.log("해당 채팅방 코드 : " + crcode)
+		
+		// 채팅방 접속시 기존 채팅방의 대화목록 불러오기
+		// 팝업창 ajax가 불가하므로 부모창(Topbar)에서 데이터 보내줌
+		function enterRoom(msgList){
+			for (var i = 0; i < msgList.length; i++){
+				console.log(msgList[i].cmcontents);
+				checkLR(msgList[i]);
+			}
+		}
+		
 		// enter키 이벤트
 		$(document).on("keydown", $("#inputMsg"), function(e){
 			if(e.keyCode == 13 && !e.shiftKey){
