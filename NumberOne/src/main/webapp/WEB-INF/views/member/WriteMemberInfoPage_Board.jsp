@@ -308,7 +308,7 @@ text-align: right;
 			 
 	<!-- 작성 글 끝 -->
 	<!-- 작성 댓글 글 -->
-<%-- 			<div class = "msgTextarea col-lg-12 col-md-6 col-sm-6" 
+ 			<div class = "msgTextarea col-lg-12 col-md-6 col-sm-6" 
 			style="border-top:0px! important ; padding-top: 20px; border: 1px solid #949494; background-color: #F2F2FF;" >
 				<c:forEach items="${Reply }" var="Reply">			
 					<ul>
@@ -319,7 +319,7 @@ text-align: right;
 						</li>
 					</ul>					
 				</c:forEach>
-			 </div>  --%>	 
+			 </div>  
 	<!-- 작성 댓글 끝 -->
 		</div>	
 <!-- 메뉴 끝 -->		
@@ -329,29 +329,9 @@ text-align: right;
 
 <script type="text/javascript">
 
-function wboard(nickname) {
+/* function wboard(nickname) {
 	console.log("닉네임 : "+nickname);
 	
-	$.ajax({
-		type : "get",
-		url : "admin_updateReplyStop_ajax",
-		data : { "rpcode" : nowRpcode},
-		async : false,
-		success : function(updateResult){
-			if( updateResult > 0 ){
-				console.log("관리자 댓글 삭제 성공!");
-				replyPrint();
-				
-				//목록 페이지 댓글수 업데이트 (-1)
-				logUpdate('bdreplies', 'down');
-				
-				//메뉴 모달 닫기
-				closeMenuModal()
-			}
-		}
-	});	
-	
-	/*
 	var output = "";
 	
 	$.ajax({
@@ -386,8 +366,8 @@ function wboard(nickname) {
 	});
 	
 	$("#Wboard").html(output);
-	*/
-	}
+
+	} */
 
 
 
