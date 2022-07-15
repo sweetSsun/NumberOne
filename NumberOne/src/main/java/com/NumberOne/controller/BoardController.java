@@ -10,6 +10,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.NumberOne.dto.BoardDto;
+import com.NumberOne.dto.Paging;
 import com.NumberOne.dto.ReplyDto;
 import com.NumberOne.service.BoardService;
 
@@ -20,18 +21,50 @@ public class BoardController {
 	BoardService bsvc;
 
 	
-	//자취방 자랑 메인 페이지 이동
+	//자취방 자랑글 메인 페이지 이동
+	//게시판 메인에서 자랑글 클릭 시 이동
+	//자랑글 상세 페이지 이동
 	@RequestMapping(value="/selectRoomList")
-	public ModelAndView roomListPage() {
+	public ModelAndView selectRoomList(String bdcode, String jsp, Paging paging) {
 		System.out.println("자쥐방 자랑 메인 요청(목록페이지)");	
+		System.out.println(bdcode+"/"+jsp);
 		ModelAndView mav = new ModelAndView();
-		mav=bsvc.selectRoomList();
+		mav=bsvc.selectRoomList(paging);
+		
+		if(bdcode != "") {
+			//bdcode 추가
+			mav.addObject("bdcode", bdcode);
+			if(jsp !=null) {
+				if(jsp.equals("view")) {
+					//상세보기 페이지로 이동
+					mav.setViewName("board/RoomViewPage");
+				}
+			}
+			
+		}
+		
 		return mav;
 	}
 
+	//자랑글 목록 정렬 요청(글목록)
+	@RequestMapping (value="selectRoomList_ajax")
+	public @ResponseBody String selectRoomList_ajax(Paging paging) {
+		System.out.println("자랑글 정렬 요청-글목록");
+		String roomList_json = bsvc.selectRoomList_ajax(paging);
+		return roomList_json;
+	}
+	
+	//자랑글 목록 정렬 요청(paging)
+		@RequestMapping (value="selectRoomPaging_ajax")
+		public @ResponseBody String selectRoomNum_ajax(Paging paging) {
+			System.out.println("자랑글 정렬 요청-paging");
+			String paging_json = bsvc.selectRoomPaging_ajax(paging);
+			return paging_json;
+		}
+	
 	//자취방 자랑글 작성 페이지 이동
 	@RequestMapping(value="/loadToWriteRoom")
-	public String loadTowriteRoom(RedirectAttributes ra) {
+	public String loadToWriteRoom(RedirectAttributes ra) {
 		System.out.println("자쥐방 자랑 Form 요청");
 		return "board/RoomWriteForm";
 	}
@@ -45,7 +78,6 @@ public class BoardController {
 		return mav;
 	}
 	
-	
 	//게시판 메인 페이지 이동 
 	@RequestMapping( value="/loadToBoardMainPage")
 	public ModelAndView loadToBoardMainPage() {
@@ -56,13 +88,21 @@ public class BoardController {
 	
 	//전체글목록 페이지 
 	@RequestMapping ( value = "/selectBoardList")
-	public ModelAndView boardListPage() {
+	public ModelAndView boardListPage(Paging paging) {
 	    System.out.println("게시판 글목록 페이지 요청");
-	    ModelAndView mav = bsvc.boardListPage();
+	    ModelAndView mav = bsvc.boardListPage(paging);
 	    return mav;
 	}
 	
-	
+	//카테고리별 글목록 조회 ( ajax ) - 페이징 용
+	@RequestMapping ( value = "/selectBoardCategoryList_ajax")
+	@ResponseBody public String selectBoardCategoryList_ajax( Paging paging ) {
+		System.out.println("카테고리별 글목록 요청_ajax");
+		
+		String boardCateList_json = bsvc.selectBoardCategoryList_ajax(paging);
+		
+		return boardCateList_json;
+	}
 	
 	//카테고리별 글목록 조회 ( ajax )
 	@RequestMapping ( value = "/getBoardCategoryList_ajax")
@@ -74,15 +114,25 @@ public class BoardController {
 	    return boardCateList_json;
 	      
 	}
-	   
-	 //글검색 
-	 @RequestMapping ( value = "/selectBoardSearchList")
-	 public ModelAndView selectBoardSearchList( String bdcategory, String searchType, String searchText) {
-	     System.out.println("글검색 목록 요청");
-	      
-	     ModelAndView mav = bsvc.selectBoardSearchList(bdcategory, searchType, searchText);
-	      
-	     return mav;
+	
+	//자유,질문,정보,후기게시판 이동 및 글검색
+	@RequestMapping ( value = "/selectCategoryBoardList")
+	public ModelAndView selectCategoryBoardList(Paging paging) {
+		System.out.println(paging.getSearchVal() + "게시판 이동 및 검색 요청");
+		
+		ModelAndView mav = bsvc.selectCategoryBoardList(paging);
+		
+		return mav;
+	}
+	
+	 //공지게시판 이동 및 글검색
+	 @RequestMapping ( value = "/selectNoticeBoardList")
+	 public ModelAndView selectNoticeBoardList( Paging paging ) {
+		 System.out.println("공지글 이동 및 검색 요청");
+		 
+		 ModelAndView mav = bsvc.selectNoticeBoardList(paging);
+		 
+		 return mav;
 	 }
 	 
 	 //공지글 상세페이지 이동 
@@ -104,6 +154,7 @@ public class BoardController {
 		 
 		 return mav;
 	 }
+	 
 	 
 	 //댓글작성(ajax)
 	 @RequestMapping ( value = "/insertBoardReply_ajax")
@@ -162,7 +213,6 @@ public class BoardController {
 		 return updateResult;
 	 }
 	 
-	 
 	 //댓글삭제(상태변경) (ajax)
 	 @RequestMapping ( value = "/updateReplyState_ajax")
 	 @ResponseBody 
@@ -173,7 +223,6 @@ public class BoardController {
 		 
 		 return updateResult;
 	 }
-	 
 	 //게시글 추천
 	 @RequestMapping ( value = "/insertBoardRecommend_ajax")
 	 @ResponseBody 
@@ -302,72 +351,68 @@ public class BoardController {
 		 
 		 return mav;
 	 }
-	 //공지게시판 이동
-	 @RequestMapping ( value = "/selectNoticeBoardList")
-	 public ModelAndView selectNoticeBoardList() {
-		 System.out.println("공지게시판 이동 요청");
-		 
-		 ModelAndView mav = bsvc.selecNoticeBoardList();
-		 
-		 return mav;
-	 }
 	 
-	 //자유게시판 이동 
-	 @RequestMapping ( value = "/selectFreeBoardList")
-	 public ModelAndView selectFreeBoardList() {
-		 System.out.println("자유게시판 이동 요청");
+	 //지역카테고리 목록 (ajax)
+	 @RequestMapping ("/selectRegionBoardList_ajax")
+	 @ResponseBody
+	 public String selectRegionList_ajax(Paging paging) {
+		 System.out.println("지역카테고리 목록 조회 ");
 		 
-		 ModelAndView mav = bsvc.selectFreeBoardList();
+		 String selRegionList_ajax = bsvc.selectRegionBoardList_ajax(paging);
 		 
-		 return mav;
+		 return selRegionList_ajax;
 		 
 	 }
 	 
-	 //질문게시판 이동 
-	 @RequestMapping ( value = "/selectQuestionBoardList")
-	 public ModelAndView selectQuestionBoardList() {
-		 System.out.println("질문게시판 이동 요청");
+	 /*
+	 //지역게시판 검색
+	 @RequestMapping ("/selectRegionSearchList")
+	 public ModelAndView selectRegionSearchList(String bdrgcode, String bdrgname, String searchType, String searchText) {
+		 System.out.println("지역게시판 검색결과 페이지 이동 요청");
 		 
-		 ModelAndView mav =bsvc.selectQuestionBoardList();
-		 
-		 return mav;
-		 
-	 }
-	 //정보게시판 이동 
-	 @RequestMapping ( value = "/selectInfoBoardList")
-	 public ModelAndView selectInfoBoardList() {
-		 System.out.println("정보게시판 이동");
-		 
-		 ModelAndView mav = bsvc.selectInfoBoardList();
+		 ModelAndView mav = bsvc.selectRegionSearchList(bdrgcode, bdrgname, searchType, searchText);
 		 
 		 return mav;
 	 }
-	 //후기게시판 이동 
-	 @RequestMapping ( value = "/selectReviewBoardList")
-	 public ModelAndView selectReviewBoardList() {
-		 System.out.println("후기게시판 이동");
+	 */
+	 
+	 //지역게시판 이동 
+	 @RequestMapping ( value = "/selectRegionBoardList")
+	 public ModelAndView selectRegionBoardList() {
+		 System.out.println("지역게시판 이동");
 		 
-		 ModelAndView mav = bsvc.selectReviewBoardList();
+		 ModelAndView mav = bsvc.selectRegionBoardList();
 		 
 		 return mav;
 	 }
 	 
 	 
+	 //지역별 게시판 이동 
+	 @RequestMapping ( value = "/selectDetailBoardList")
+	 public ModelAndView selectDetailBoardList(String bdrgcode) {
+		 System.out.println("지역별 게시판 이동");
+		 System.out.println(bdrgcode);
+		 ModelAndView mav = bsvc.selectDetailBoardList(bdrgcode);
+
+		 
+		 return mav;
+		 
+	 }
 	 
-	 //자취방 자랑글 상세 페이지 이동
+	 //자취방 자랑글 상세 모달 요청
 	 @RequestMapping ( value = "/selectRoomView")
 	 public @ResponseBody String selectRoomView(String bdcode) {
-		 System.out.println("자취방 자랑글 상세페이지 이동 요청");
-		 System.out.println(bdcode+"번글 상세보기 요청");
+		 System.out.println(bdcode+"번 자랑글 상세모달 요청");
 		 String roomView_json = bsvc.selectRoomView(bdcode);
 		 
 		 return roomView_json;
 	 }
 	 
-	 //자취방 자랑글 추천
+	 
+	 //자취방 자랑글 추천/스크랩/신고 요청
 	 @RequestMapping ( value = "/updateLog")
 	 public @ResponseBody String updateRbrecommend(String bdcode, String history, String currentState ) {
-		 System.out.println(bdcode+"번글 "+history+"업데이트 요청 현재상태: "+currentState);
+		 System.out.println(bdcode+"번 자랑글 "+history+"업데이트 요청 현재상태: "+currentState);
 		 int updateResult = bsvc.updateLog(bdcode, history, currentState);
 		 
 		 return updateResult+"";
@@ -383,8 +428,33 @@ public class BoardController {
 		 return currnetState;
 	 }
 	 
-	 //자랑글 수정 페이지 요청
+		/*
+		 * //자취방 자랑글 상세 페이지 요청(마이페이지, 게시판메인. 관리자 연결용)
+		 * 
+		 * @RequestMapping( value="/loadToRoomViewPage") public ModelAndView
+		 * loadToRoomViewPage(String bdcode) {
+		 * System.out.println(bdcode+"번 자랑글 상세 페이지 이동 요청"); //상세 보기 하단에 나올 자랑글 목록
+		 * 받아오기(상세글은 ajax로) ModelAndView mav = bsvc.selectRoomList();
+		 * mav.addObject("bdcode", bdcode); mav.setViewName("board/RoomViewPage");
+		 * return mav; }
+		 */
 	 
-
-
+	 
+	 @RequestMapping ( value = "/updateRoomView")
+	 public ModelAndView updateRoomView(BoardDto board, RedirectAttributes ra) throws IllegalStateException, IOException {
+		 System.out.println("자랑글 수정 요청");
+		 
+		 ModelAndView mav = bsvc.updateRoomView(board, ra);
+		 
+		 return mav;
+		 
+	 }
+	 
+	 
+	 /////////
+	 
+	 
+	 
+	 
+	 
 }

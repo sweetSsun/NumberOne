@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>1인자 - 마이페이지 중고거래</title>
 
-<%@ include file="/resources/css/CommonCss.jsp"%>
+<%@ include file="/resources/css/BarCss.jsp"%>
 <!-- 부트스트랩 -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
@@ -21,12 +21,31 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 
 <style type="text/css">
+
+	section{
+		max-width: 70%;
+		margin: auto;
+		margin-top: 0%;
+	}
+
 	#board_column{
 		border-bottom: solid gray 3px;
 	}
+
 	table{
 		margin: 20px;
-		font-size: 20px;
+		font-size: 18px;
+		table-layout: fixed;
+		border-left: 20px; 
+	}
+	
+	td {
+	overflow:hidden;		
+	white-space : nowrap;		
+	text-overflow: ellipsis;
+	padding: 10px;
+	
+
 	}
 
 .site-btn { background-color: #00BCD4; }	
@@ -71,14 +90,14 @@
                                 <div class="col-lg-6" >
                                     <div>
 										<h4 class="" style="color: #00BCD4; margin-left: 30px;" class ="blank">팔구</h4>  
-										<table style="width: 600px;">
+										<table style="width: 550px;">
 											<tr class="text-center" id="board_column">
 											<td>글제목</td>
 											</tr>
 										<c:forEach items="${sellBoard }" var="sell" varStatus="index">
 										<!-- 팔구 목록 -->
 											<tr style="border-bottom: solid #E0E0E0 1px; text-align: center;">						
-											<td><a href="selectResellView?ubcode=${sell.ubcode }&ubsellbuy=S">${sell.ubtitle}</a></td>					
+											<td><a href="selectResellView?ubcode=${sell.ubcode }&ubsellbuy=S&modifyCheck=LIST">${sell.ubtitle}</a></td>					
 											</tr>
 										</c:forEach> 
 										</table>										                                  
@@ -87,14 +106,14 @@
                                 <div class="col-lg-6" >
                                     <div>
 										<h4 class="checkout__form" style="color: #00BCD4; margin-left: 30px;">사구</h4>
-										<table style="width: 600px;">
+										<table style="width: 550px;">
 											<tr class="text-center" id="board_column">
 											<td>글제목</td>
 											</tr>
 										<c:forEach items="${buyBoard }" var="buy">
 										<!-- 사구 목록 -->
 											<tr style="border-bottom: solid #E0E0E0 1px; text-align: center;">
-											<td><a href="selectResellView?ubcode=${buy.ubcode }&ubsellbuy=B">${buy.ubtitle}</a></td>					
+											<td><a href="selectResellView?ubcode=${buy.ubcode }&ubsellbuy=B&modifyCheck=LIST">${buy.ubtitle}</a></td>					
 											</tr>
 										</c:forEach>
 										</table>
@@ -103,7 +122,7 @@
                                     </div>
                                 </div> 																		                                  
                              </div>                	        
-<hr>
+							<hr>
 				<!-- 채팅 목록 -->
 				<!-- 여백 -->
 				<div style="min-height: 50px;" id="scroll-chat"></div>				
@@ -113,35 +132,28 @@
 				<!-- 여백 -->
 				<div style="min-height: 50px;"></div>				
 				<div class="row"  style="margin:20px;">
-				<table >
+				<table>
 						<tr class="text-center" id="board_column">
-							<td>제목</td>
+							<td>닉네임</td>
 							<td>최신채팅글</td>						
 							<td>날짜</td>
 						</tr>
-						<%-- <c:forEach items="${reply }" var="reply"> --%>
-							<!-- 채팅 목록 -->
-							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center;">
-								<!--<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>
-								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>								
-								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>								
-								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>								
-								<tr  ><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>								
-								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>								
-								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>								
-								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>								
-								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>	
-								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>
-								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>								
-								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>								
-								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>								
-								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>								
-								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>								
-								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>								
-								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>								
-								<tr><td>건조기팝니다.(예시)</td><td>건조기 네고 부탁드려요!!!!! (예시)</td><td>2022-07-01 00:00 (예시)</td></tr>	-->																							
+<%-- 						<c:forEach items="${zzimBoard }" var="zzim"> 
+							<!-- 찜한 목록 -->
+							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center; ">
+							<c:choose>
+							<c:when test="${zzim.ubsellbuy == 'S' }">
+								<td><a href="selectResellView?ubcode=${zzim.zzubcode }&ubsellbuy=S&modifyCheck=LIST">${zzim.ubtitle }</a></td>
+							</c:when>
+							<c:otherwise>
+								<td><a href="selectResellView?ubcode=${zzim.zzubcode }&ubsellbuy=B&modifyCheck=LIST">${zzim.ubtitle }</a></td>						
+							</c:otherwise>
+							</c:choose> 
+								<td>${zzim.mnickname }</td>
+								<td>${zzim.ubdate }</td>
 							</tr>
-						<%-- </c:forEach> --%>
+														
+						</c:forEach> --%>
 				</table>
 				<!-- 여백 -->				
 				<div style="min-height: 700px;"></div><hr>
@@ -156,7 +168,7 @@
 				<!-- 여백 -->
 				<div style="min-height: 50px;"></div>				
 				<div class="row" style="margin:20px;">
-				<table >
+				<table>
 						<tr class="text-center" id="board_column">
 							<td>글제목</td>
 							<td>작성자</td>						
@@ -167,10 +179,10 @@
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center; ">
 							<c:choose>
 							<c:when test="${zzim.ubsellbuy == 'S' }">
-								<td><a href="selectResellView?ubcode=${zzim.zzubcode }&ubsellbuy=S">${zzim.ubtitle }</a></td>
+								<td><a href="selectResellView?ubcode=${zzim.zzubcode }&ubsellbuy=S&modifyCheck=LIST">${zzim.ubtitle }</a></td>
 							</c:when>
 							<c:otherwise>
-								<td><a href="selectResellView?ubcode=${zzim.zzubcode }&ubsellbuy=B">${zzim.ubtitle }</a></td>						
+								<td><a href="selectResellView?ubcode=${zzim.zzubcode }&ubsellbuy=B&modifyCheck=LIST">${zzim.ubtitle }</a></td>						
 							</c:otherwise>
 							</c:choose> 
 								<td>${zzim.mnickname }</td>

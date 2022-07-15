@@ -14,20 +14,38 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
 	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/resell.css" type="text/css">
+<style type="text/css">
+.product-img {
+	max-width: 400px;
+	max-height: 300px;
+}
 
+.line-through {
+	text-decoration: line-through;
+	font-size: 20px;
+}
+</style>
 
 </head>
 
 
 <body>
-	<!-- TobBar -->
-	<%@ include file="/WEB-INF/views/includes/TopBar.jsp"%>
-	<!-- End of TobBar -->
-
+	<!-- TopBar -->
+	<%-- 
+        <c:choose>
+                <c:when test="${sessionScope.loginId != 'admin'}">
+                        <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
+                </c:when>
+                <c:otherwise>
+                        <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
+                </c:otherwise>
+        </c:choose>
+        --%>
+	<!-- End of TopBar -->
 	<main>
 		<!-- 사이드바 -->
-		<%@ include file="/WEB-INF/views/includes/SideBar_Mypage.jsp"%>
 
+		<%-- <%@ include file="/WEB-INF/views/includes/SideBar_Resell.jsp"%> --%>
 		<section>
 			<!-- 본문 -->
 			<div class="container">
@@ -45,6 +63,7 @@
 						<div class="w3-left position-left" onclick="plusDivs(-1)">&#10094;</div>
 						<div class="w3-right position-right" onclick="plusDivs(1)">&#10095;</div>
 
+<!--  -->
 					</div>
 
 
@@ -54,30 +73,26 @@
 
 				<div class="container-body">
 					<!-- 품목명  -->
-					<!-- <form action=""> -->
+					 <form action="insertResellChat"> 
 						<div class="container-card_goods container-card_w100">
 							<c:forEach items="${gd_resellView}" var="gdList">
-								<c:choose>
 
-									<c:when test="${gdList.gdstate==1 }">
 										<div class="container-card_goods_2">
 											<div class="item-basis_1">
-												<input type="checkbox" class="gd_chBox">
+											
+												<input type="checkbox" name="gd_names" class="selectCheckBox" onclick="clickBox(this)" value="${gdList.gdname }" >
 											</div>
-											<div class="item-basis_2">${gdList.gdname }</div>
-											<div class="item-basis_3">${gdList.gdprice }</div>
+											<div class="item-basis_2 gd_nameList">${gdList.gdname }</div>
+											<div class="item-basis_3 gd_priceList">${gdList.gdprice }</div>
+									<input type="hidden" class="select_gdcode" value="${gdList.gdcode }"> <input type="hidden" class="select_gdstate"
+										value="${gdList.gdstate }">
 										</div>
-									</c:when>
-									<c:otherwise>
-										<div class="container-card_goods_2" style="text-decoration: overline;">
-											<div class="item-basis_1"></div>
-											<div class="item-basis_2">${gdList.gdname }</div>
-											<div class="item-basis_3">${gdList.gdprice }</div>
-										</div>
-									</c:otherwise>
-
-								</c:choose>
+					
 							</c:forEach>
+
+					<input type="hidden"  name="chfrmid" value="${sessionScope.loginId }">
+					<input type="hidden" name="chtomid" value="${ub_resellView.ubmid}">
+					<input type="hidden" name="gdtitle" value="${ub_resellView.ubtitle }">
 
 						</div>
 
@@ -85,29 +100,32 @@
 						<div class="container-flex_2">
 
 							<div class=item-basis_5>
-							<div><p style="font-size: 12.5px"><a href="selectMyInfoMemberView">${ub_resellView.ubnickname} 님 &nbsp;&nbsp;
+							<div><p style="font-size: 12.5px"><a href="selectMyInfoMemberView">${ub_resellView.ubnickname}  &nbsp;&nbsp;
 										<img class="img-profile rounded-circle" style="width:50px" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/${ub_resellView.ubprofile }">
 										</a></p></div>
 						
 							</div>
 
-							<div class=" item-basis_4"><button id="sellBuyList"> 목록</button></div>
+							<div class=" item-basis_4"><button id="sellBuyList" type="button">글목록</button></div>
 							<div class="item-basis_4"><button id="zzimBtn" type="button"> 찜</button></div>
 							<c:choose>
 								<c:when test="${ub_resellView.ubmid == sessionScope.loginId}">
-									<div class="card_in-icon"><button>수정</button></div>
+								<div class="card_in-icon">	<select class="select-size" id="totalOp">
+										<option value="1">판매중</option>
+										<option value="9">판매완료</option>
+								</select>	</div>
+									<div class="card_in-icon"><button onclick="resellModifyForm()" type="button">수정</button></div>
 									<div class="card_in-icon"><input onclick="ubDeleteCheckModal()" type="button" style="background-color: #00bcd4;" class="btn btn-sm fw-bold text-white" value="삭제"></div>
 								</c:when>			
 							<c:otherwise>
 																			
 									<div class="item-basis_4" >	<i id="ubWarning" onclick="ubWarningCheckModal()" class='fa-solid fa-land-mine-on  fa-2x icon' style="margin-right: 2px; font-size:40px"></i></div>
-									<div class="item-basis_4"><button id="chatBtn"> 채팅</button></div>
+									<div class="item-basis_4"><button id="chatBtn" type="submit"> 채팅</button></div>
 									</c:otherwise>
-</c:choose>							
-
+</c:choose>					
 							
 						</div>
-	<!-- </form> -->
+	 </form> 
 					
 					<div class="container-flex_1">
 						<textarea rows="2" cols="80" style="resize: none" readonly>${ub_resellView.ubcontents}</textarea>
@@ -187,11 +205,12 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
+
+
 <script type="text/javascript">
 
 var zzim_Check = '${zzim_Check}';
 console.log("찜체크 : " +zzim_Check);
-		const sellBuyList = document.getElementById("sellBuyList"); //목록버튼
 		const warningBtn = document.getElementById("warningBtn"); //신고
 		const zzimBtn = document.getElementById("zzimBtn"); //찜버튼
 		const chatBtn = document.getElementById("chatBtn"); //채팅버튼
@@ -199,9 +218,16 @@ console.log("찜체크 : " +zzim_Check);
 		const ubcode = '${ub_resellView.ubcode}';	//현재 글번호
 		const ubmid = '${ub_resellView.ubmid}';	//작성자아이디
 		const ubsellbuy = '${ub_resellView.ubsellbuy}';  //사구, 팔구  분류
+		const ubstate = '${ub_resellView.ubstate}'; // 글 상태 값 
+		const selectCheckBox = document.querySelectorAll(".selectCheckBox"); // 상품 상태 checkbox (복수 , c:forEach태그안에 있음) 
+		const select_gdcode = document.querySelectorAll(".select_gdcode"); //상품코드	(복수 , c:forEach태그안에 있음) 
+		const select_gdstate = document.querySelectorAll(".select_gdstate");//상품상태 (복수 , c:forEach태그안에 있음) 
+		const gd_nameList = document.querySelectorAll(".gd_nameList"); //상품명 (복수 , c:forEach태그안에 있음)
+		const gd_priceList = document.querySelectorAll(".gd_priceList"); //상품가격 (복수 , c:forEach태그안에 있음))
 		
 		
 		window.onload = function(){
+		
 		if (zzim_Check == 'UNCHECK') {
 			zzimBtn.classList.add("blue");
 			zzimBtn.classList.remove("red");
@@ -212,6 +238,62 @@ console.log("찜체크 : " +zzim_Check);
 		}
 </script>
 
+<script type="text/javascript">
+	//페이지로드시 무조건실행
+	window.onload = function() {
+		/* 로그인된 회원인지 체크 */
+		let loginCheck = '${sessionScope.loginId}';
+		if (loginCheck.length == 0) {
+			alert("잘못된 접근입니다.");
+			location.href = "loadToLogin"
+
+		}
+
+		/* 페이지로드시 글의 판매상태체크 */
+
+		for (var i = 0; i < totalOp.options.length; i++) {
+			if (totalOp.options[i].value == ubstate) {
+				/* 글의 판매상태 option (9:판매완료 ,1:판매중)와 
+				페이지 이동시 넘어온 글의 상태값 파라메터가 같을 경우 그 option에 selected 속성 추가*/
+				totalOp.options[i].selected = 'true';
+
+				if (ubstate == '9') { // 글의 상태값이 9(판매완료)이면 실행.
+
+					for (var j = 0; j < select_gdstate.length; j++) {
+
+						gd_nameList[j].classList.add('line-through');
+						gd_priceList[j].classList.add('line-through');	
+						selectCheckBox[j].setAttribute('disabled',
+						'disabled');
+					}
+
+				} else { //글의 상태값이 1(판매중)이면 실행
+
+					for (var j = 0; j < select_gdstate.length; j++) {
+						
+
+						if (select_gdstate[j].value == 0) {
+							console.log("상태값이 0인 : "+select_gdstate[j].value);
+							//css속성 주기
+							selectCheckBox[j].setAttribute('disabled', 'disabled');
+							gd_nameList[j].classList.add('line-through');
+							gd_priceList[j].classList.add('line-through');
+							
+
+						} else {
+							console.log("상태값 1인 : "+select_gdstate[j].value);
+							selectCheckBox[j].removeAttribute('disabled');
+							gd_nameList[j].classList.remove('line-through');
+							gd_priceList[j].classList.remove('line-through');	
+					}
+				}
+				break;
+			}
+		}
+
+}
+		}
+</script>
 
 <!-- 찜버튼 스크립트 -->
 <script type="text/javascript">
@@ -220,9 +302,6 @@ console.log("찜체크 : " +zzim_Check);
 
 function clickZzim() {
 	
-		
-		
-
 		$.ajax({
 			type : "get",
 			url : "zzimClick_ajax",
@@ -249,12 +328,77 @@ function clickZzim() {
 		})
 	}
 </script>
+<script type="text/javascript">
+	totalOp.addEventListener('change', selectOp_value);
+
+	function selectOp_value(e) {
+		console.log("e", e.target.value);
+		let select_ubstate = e.target.value;
+		console.log("글 상태 : ", select_ubstate);
+		console.log("글 번호 : ", ubcode);
+		
+		$.ajax({
+			type : 'get',
+			url : 'updateResellState_usedBoardAjax',
+			data : {
+				'ubcode' : ubcode,
+				'ubstate' : select_ubstate
+			},
+
+			success : function(result) {
+				console.log("결과", result);
+				if (result == 'SOLD') {
+					alert("변경성공 = 판매완료");
+
+					for (let i = 0; i < selectCheckBox.length; i++) {
+							console.log("길이",selectCheckBox.length);
+						gd_nameList[i].classList.add('line-through');
+						gd_priceList[i].classList.add('line-through');
+						selectCheckBox[i].setAttribute('disabled', 'disabled');
+						
+					}
+
+				} else {
+					alert("변경성공 = 판매중");
+			for (var j = 0; j < select_gdstate.length; j++) {
+						
+
+						if (select_gdstate[j].value == 0) {
+							console.log("상태값이 0인 : "+select_gdstate[j].value);
+							//css속성 주기
+							selectCheckBox[j].setAttribute('disabled', 'disabled');
+							gd_nameList[j].classList.add('line-through');
+							gd_priceList[j].classList.add('line-through');
+							
+
+						} else {
+							console.log("상태값 1인 : "+select_gdstate[j].value);
+							selectCheckBox[j].removeAttribute('disabled');
+							gd_nameList[j].classList.remove('line-through');
+							gd_priceList[j].classList.remove('line-through');	
+					}
+				}
+				}
+			}
+		})
+	}
+</script>
 
 
 
 
+<!-- 구매할 품목 체크 (채팅창 넘기기) -->
+<script type="text/javascript">
+function clickBox(sel_box){
+	if(sel_box.checked == true){
+		console.log("선택된체크박스 : ", sel_box.value);
+	}	
+}
+</script>
 
-<script>
+
+<!-- 슬라이드배너  -->
+<script type="text/javascript">
 	var slideIndex = 1;
 	showDivs(slideIndex);
 
@@ -395,6 +539,21 @@ function deleteResellWarning(){
 	}
 	
 </script>
+
+<!-- 글목록으로 돌아가기 -->
+<script type="text/javascript">
+
+let sellbuy_List = document.querySelector("#sellBuyList");
+			console.log(sellbuy_List);
+			sellbuy_List.addEventListener("click", backList);		
+	function backList(){	
+		console.log("글목록버튼 클릭이벤트");
+		location.href = "selectResellPageList?sellBuy="+ubsellbuy;
+	}
+
+</script>
+
+
 
 
 </html>

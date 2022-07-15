@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>1인자 - 회원정보수정</title>
 
-<%@ include file="/resources/css/CommonCss.jsp"%>
+<%@ include file="/resources/css/BarCss.jsp"%>
 <!-- 부트스트랩 -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
@@ -21,6 +21,12 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 
 <style type="text/css">
+
+	section{
+		max-width: 70%;
+		margin: auto;
+		margin-top: 0%;
+	}
 
 	.checkout__form {
 	  padding: 100px 100px;
@@ -178,25 +184,8 @@ background-color: #00BCD4;
                                 </div>
                             </div>
                         <!-- 비번 , 비번확인 -->
-                        <c:if test="${memberInfo.mpw != 12121212}">
-                            <div class="row">
-                                <div class="col-lg-6 col-md-12 col-sm-12">
-                                    <div class="checkout__input">
-                                        <p>비밀번호<span>*</span></p>
-                                        <input type="text" placeholder="영문&숫자 6~20자로 입력해주세요." id="inputMpw" name="mpw"  value="${memberInfo.mpw }">
-									<span id="pwCheckMsg" class="msg"></span>                                      
-                                    </div>
-                                </div>
-                                <div class="col-lg-6 col-md-12 col-sm-12">
-                                    <div class="checkout__input">
-                                        <p>비밀번호확인<span>*</span></p>
-                                        <input type="text" placeholder="비밀번호를 확인해주세요." id="checkMpw">
-									<span id="pwReCheckMsg" class="msg"></span>                                    
-                                    </div>
-                                </div>
-                            </div>
-                           </c:if>
-                           <c:if test="${memberInfo.mpw == 12121212}">
+                       <c:choose>
+                        <c:when test="${memberInfo.mstate == 9}">
                             <div class="row">
                                 <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="checkout__input">
@@ -213,7 +202,27 @@ background-color: #00BCD4;
                                     </div>
                                 </div>
                             </div>                           
-                           </c:if>                             
+                        
+                        </c:when>
+                        <c:otherwise>
+                            <div class="row">
+                                <div class="col-lg-6 col-md-12 col-sm-12">
+                                    <div class="checkout__input">
+                                        <p>비밀번호<span>*</span></p>
+                                        <input type="text" placeholder="영문&숫자 6~20자로 입력해주세요." id="inputMpw" name="mpw"  value="${memberInfo.mpw }">
+									<span id="pwCheckMsg" class="msg"></span>                                      
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-12 col-sm-12">
+                                    <div class="checkout__input">
+                                        <p>비밀번호확인<span>*</span></p>
+                                        <input type="text" placeholder="비밀번호를 확인해주세요." id="checkMpw">
+									<span id="pwReCheckMsg" class="msg"></span>                                    
+                                    </div>
+                                </div>
+                            </div>                       
+                        </c:otherwise>
+                        </c:choose>
                         <!-- 닉네임 , 성별 -->
                             <div class="row">
                                 <div class="col-lg-6 col-md-12 col-sm-12">
@@ -344,6 +353,21 @@ background-color: #00BCD4;
                             </div>
 
                           <!-- 파일 업로드 -->
+							<c:choose>
+							<c:when test="${memberInfo.mstate == 9}">
+								<div class="row" style="display: none;">
+									<div class="col-lg-6 col-md-12 col-sm-12">
+    									<input class="upload-name" type="text"
+    									value="${memberInfo.mprofile }" placeholder="첨부파일" id="inputFile" >
+    								</div>	
+									<div class="col-lg-6 col-md-12 col-sm-12">    						
+    									<label for="inputMfile" >파일찾기</label> 
+    									<input type="file" id="inputMfile" name="mfile" value="" class="">
+									</div>
+								</div>	
+							
+							</c:when>
+							<c:otherwise>
  							<div class="filebox checkout__input col-lg-12 col-md-12 col-sm-12">
 							<p>프로필 사진</p>
 							<div class="row">
@@ -356,8 +380,11 @@ background-color: #00BCD4;
     									<input type="file" id="inputMfile" name="mfile" value="" class="">
 									</div>
 								</div>	
-							</div>			
-									
+							</div>
+							</c:otherwise>
+							</c:choose>			
+
+														
                             <!-- 상태메세지 -->                            
                             <div class="checkout__input">
                                 <p>상태메세지</p>

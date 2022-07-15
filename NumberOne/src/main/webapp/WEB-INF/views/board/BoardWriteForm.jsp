@@ -46,8 +46,8 @@
 		display:inline-block;
 	}
 	.buttons{
-		margin: auto;
-		display: block;
+		margin: auto; /* 수평 */
+		display: block; /* 수직 */
 		
 	}
 	.selectPlaceHolder{
@@ -74,6 +74,11 @@
 		border: none;
 		font-size: 20px;
 	}
+	#image_container{
+		max-height: 100px;
+		max-width: 100px;
+	}
+	
 </style>
 </head>
 <body>
@@ -142,7 +147,9 @@
 					<textarea id="bdcontents" class="bdcontents" rows="17" cols="80" name="bdcontents"></textarea>
 				</div>
 				<div class="row mt-4">
-					<input type="file" name="bdimgfile" accept="image/*" >
+					<!-- 파일선택 -->
+					<div id="image_container"></div>
+					<input id="bdImg" type="file" name="bdimgfile" accept="image/*" onchange="setThumbnail(event);" >
 				</div>
 				<div class="row mt-4">
 					<div class="col btn-wrapper">
@@ -164,7 +171,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" "> 게시글 작성 취소 </h5>
+                    <h5 class="modal-title"> 게시글 작성 취소 </h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -176,7 +183,7 @@
                 </div>	
                 <div class="modal-footer">
                 	<input type="hidden" >
-                    <button class="close btn btn-info text-white" onclick="writeBoardCancel()" >네</button>
+                    <button class="close btn btn-info text-white" onclick="writeBoardCancel(this)" >네</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
             </div>
@@ -236,9 +243,21 @@
 			
 			return false;
 		}
-		
 	}
+</script>
 
+<script type="text/javascript">
+	/* 업로드 이미지 미리보기 기능 */
+	function setThumbnail(event){
+		var reader = new FileReader();
+		
+		reader.onload = function(event){
+			var img = document.createElement("img");
+			img.setAttribute("src", event.target.result);
+			document.querySelector("div#image_container").appendChild(img);
+		};
+		 reader.readAsDataURL(event.target.files[0]);
+	}
 </script>
 
 </html>

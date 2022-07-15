@@ -21,6 +21,7 @@
     <%-- <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/bootstrap.min.css" type="text/css">  --%>
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/nice-select.css" type="text/css">         
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/listCss.css" type="text/css">
 
 <style type="text/css">
   	.d_none{
@@ -35,7 +36,8 @@
 	}
 	.textareaSt {
 		border: solid #E0E0E0 1px;
-		margin: 20px;
+		font-size: 20px;
+		margin: 10px;
 		padding: 10px;
 		resize: none;
 		width: -webkit-fill-available;
@@ -79,64 +81,58 @@
 		<!-- 본문 -->
 		<form action="admin_selectQuestionList" method="get" id="actionForm">
 			<div class="container">
-				<br>
-				<div class="checkout__form"><h4>문의 관리페이지 - Admin_QuestionList.jsp</h4></div>
-				<br>
-				<!-- 작성글 목록 -->
-<!--				<div class="row" >
- 					<div class="col-lg-6">
-					<h4 class="checkout__form" style="color: #00BCD4; padding-left: 30px;">문의내역22</h4>
-					</div>  
-					<br> -->
+				<div class="row" style="margin:auto;">
+	                <h4 class="text-center">문의 관리페이지 - Admin_QuestionList.jsp</h4>
+	            </div>
                 <!-- 상태값 정렬 -->
 	            <div class="row" style="margin-top: 20px;">
 	               <div class="col">
-	                   <select name="searchVal" id="searchValSel" onchange="ctSearchState(this.value)">
-	                     <option value="all">전체</option>
-	                     <option value="standBy">대기</option>
-	                     <option value="finish">완료</option>
+	                   <select class="categoryList" name="searchVal" id="searchValSel" onchange="ctSearchState(this.value)">
+	                     <option class="categorySel" value="all">전체</option>
+	                     <option class="categorySel" value="standBy">대기</option>
+	                     <option class="categorySel" value="finish">완료</option>
 	                  </select>
 	               </div>
 	            </div>
 	            
-				<div class="row"  style="margin:20px;">
+				<div class="row mt-2">
 				<table style="table-layout: fixed;">
 					<thead>
-						<tr class="text-center" id="board_column">
-							<td style="width: 10%;">글번호</td>
+						<tr class="text-center fw-bold" id="board_column">
+							<td style="width: 15%;">글번호</td>
 							<td>제목</td>
 							<td style="width: 15%;">작성자</td>
-							<td style="width: 15%;">날짜</td>
+							<td style="width: 10rem;">날짜</td>
 							<td style="width: 4rem;">답변</td>
 						</tr>												
 					</thead>					
 					<tbody id="ctListTbody">
 			 			<c:forEach items="${contactList }" var="contact">
 							<!-- 문의 목록 -->
-							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center; height: 50px;">
-								<td class="overflow">${contact.ctcode }</td>
+							<tr style="border-bottom: solid #E0E0E0 1px; height: 40px;">
+								<td class="overflow text-center">${contact.ctcode }</td>
 								<td onclick="showContents('${contact.ctcode }')" class="buttonPoint overflow">${contact.cttitle }</td>
-								<td class="overflow">${contact.ctnickname }</td>
-								<td class="overflow">${contact.ctdate }</td>
+								<td class="overflow text-center">${contact.ctnickname }</td>
+								<td class="overflow text-center">${contact.ctdate }</td>
 								<c:choose>
 									<c:when test="${contact.ctans != null}">
-										<td>완료</td>								
+										<td class="text-center">완료</td>								
 									</c:when>
 									<c:otherwise>
-										<td id="${contact.ctcode }_state">대기</td>								
+										<td class="text-center" id="${contact.ctcode }_state">대기</td>								
 									</c:otherwise>
 								</c:choose>								
 							</tr>
-							<tr style="border-bottom: solid #E0E0E0 1px; height: 50px;" class="replyForm d_none" id="${contact.ctcode }_title">
-								<td colspan="5" class="fw-bold p-3" style="background-color: #EAEAEA;">
+							<tr style="border-bottom: solid #E0E0E0 1px; height: 40px;" class="replyForm d_none" id="${contact.ctcode }_title">
+								<td colspan="5" class="fw-bold px-3 py-1" style="background-color: #EAEAEA;">
 								문의 내용 </td>							
 							</tr>							
 							<tr style="border-bottom: solid #E0E0E0 1px; min-height: 100px;" class="replyForm d_none" id="${contact.ctcode }_contents">
 								<td colspan="5" class="p-4">${contact.ctcontents }</td>							
 							</tr>
 							<!-- 답변 -->							
-							<tr style="border-bottom: solid #E0E0E0 1px; height: 50px;" class="replyForm d_none" id="${contact.ctcode }_replytitle">
-								<td colspan="5" class="fw-bold p-3" style="background-color: #EAEAEA;"> 답변 </td>							
+							<tr style="border-bottom: solid #E0E0E0 1px; height: 40px;" class="replyForm d_none" id="${contact.ctcode }_replytitle">
+								<td colspan="5" class="fw-bold  px-3 py-1" style="background-color: #EAEAEA;"> 답변 </td>							
 							</tr>							
 							<tr style="border-bottom: solid #E0E0E0 1px; min-height: 100px;" class="replyForm d_none" id="${contact.ctcode }_replycontents">
 								<c:choose>
@@ -148,8 +144,7 @@
 											</div>	
 										</td>
 										<td>
-											<input type="button" onclick="insertReply('${contact.ctcode}')" value="등록" 
-											class="site-btn" style="width: 130px; border-radius: 4px;">
+											<button type="button" onclick="insertReply('${contact.ctcode}')" class="btn-numberone fw-bold">등록</button>
 										</td>
 									</c:when>
 									<%-- 답변 있을 때 --%>
@@ -303,32 +298,32 @@ $(document).ready(function () {
 				var output = "";
 				console.log(result);					
 				for (var i = 0; i < result.length; i++){
-					output += "<tr style='border-bottom: solid #E0E0E0 1px; text-align: center; height: 50px;'>";
-					output += "<td class='overflow'>" + result[i].ctcode + "</td>";
+					output += "<tr style='border-bottom: solid #E0E0E0 1px; height: 40px;'>";
+					output += "<td class='overflow text-center'>" + result[i].ctcode + "</td>";
 					output += "<td onclick='showContents(\"" + result[i].ctcode + "\")' class='buttonPoint overflow'>" + result[i].cttitle + "</td>";
-					output += "<td class='overflow'>" + result[i].ctnickname + "</td>";
-					output += "<td class='overflow'>" + result[i].ctdate + "</td>";
+					output += "<td class='overflow text-center'>" + result[i].ctnickname + "</td>";
+					output += "<td class='overflow text-center'>" + result[i].ctdate + "</td>";
 					if (result[i].ctans != null){
-						output += "<td>완료</td>";
+						output += "<td class='text-center'>완료</td>";
 					} else {
-						output += "<td id='" + result[i].ctcode + "_state'>대기</td>";
+						output += "<td class='text-center' id='" + result[i].ctcode + "_state'>대기</td>";
 					}
 					output += "</tr>";
-					output += "<tr style='border-bottom: solid #E0E0E0 1px; height: 50px;' class='replyForm d_none' id='" + result[i].ctcode + "_title'>"
-							+ "<td colspan='5' class='fw-bold p-3' style='background-color: #EAEAEA;'>문의 내용 </td></tr>";
+					output += "<tr style='border-bottom: solid #E0E0E0 1px; height: 40px;' class='replyForm d_none' id='" + result[i].ctcode + "_title'>"
+							+ "<td colspan='5' class='fw-bold px-3 py-1' style='background-color: #EAEAEA;'>문의 내용 </td></tr>";
 					output += "<tr style='border-bottom: solid #E0E0E0 1px; min-height: 100px;' class='replyForm d_none' id='" + result[i].ctcode + "_contents'>"
 							+ "<td colspan='5' class='p-4'>" + result[i].ctcontents + "</td></tr>";
-					output += "<tr style='border-bottom: solid #E0E0E0 1px; height: 50px;' class='replyForm d_none' id='" + result[i].ctcode + "_replytitle'>"
-							+ "<td colspan='5' class='fw-bold p-3' style='background-color: #EAEAEA;'> 답변 </td></tr>";
+					output += "<tr style='border-bottom: solid #E0E0E0 1px; height: 40px;' class='replyForm d_none' id='" + result[i].ctcode + "_replytitle'>"
+							+ "<td colspan='5' class='fw-bold px-3 py-1' style='background-color: #EAEAEA;'> 답변 </td></tr>";
 					output += "<tr style='border-bottom: solid #E0E0E0 1px; min-height: 100px;' class='replyForm d_none' id='" + result[i].ctcode + "_replycontents'>";
 					if (result[i].ctans == null){
-						output += "<td colspan='4' class='p-4'>"
+						output += "<td colspan='4'>"
 								+ "<div class='commentWriteForm'>"
 								+ "<textarea id='" + result[i].ctcode + "_ctans' class='textareaSt' rows='3' cols='80' placeholder='문의글에 대한 답변을 작성해주세요.'></textarea>"
 								+ "</div>"
 								+ "</td>";
 						output += "<td>";
-						output += "<input type='button' onclick='insertReply(\"" + result[i].ctcode + "\")' value='등록' class='site-btn' style='width: 130px; border-radius: 4px;'>";
+						output += "<button type='button' onclick='insertReply(\"" + result[i].ctcode + "\")' class='btn-numberone fw-bold'>등록</button>";
 						output += "</td>";
 					} else {
 						output += "<td colspan='5' class='p-4'>" + result[i].ctans + "</td>";

@@ -13,8 +13,12 @@ public class GoodsDto {
 	private int gdprice;		//상품가격(천만)
 	private int gdstate;		//상품상태
 	
-	private String[] gd_names;  //작성된 품목들
-	private int[] gd_price;
+	private String[] gd_names;  //상품이름 배열
+	private int[] gd_price;		//상품가격 배열
+    private String[] gd_code;	//상품코드 배열
+    private int[] gd_state;		//상품상태 배열
+	
+	
 	public String getGdcode() {
 		return gdcode;
 	}
@@ -61,7 +65,8 @@ public class GoodsDto {
 	public String toString() {
 		return "GoodsDto [gdcode=" + gdcode + ", gdubcode=" + gdubcode + ", gdname=" + gdname + ", gdprice=" + gdprice
 				+ ", gdstate=" + gdstate + ", gd_names=" + Arrays.toString(gd_names) + ", gd_price="
-				+ Arrays.toString(gd_price) + "]";
+				+ Arrays.toString(gd_price) + ", gd_code=" + Arrays.toString(gd_code) + ", gd_state="
+				+ Arrays.toString(gd_state) + "]";
 	}
 	
 	

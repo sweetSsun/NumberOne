@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>1인자 - 1:1문의 작성 페이지</title>
 
-<%@ include file="/resources/css/CommonCss.jsp"%>
+<%@ include file="/resources/css/BarCss.jsp"%>
 <!-- 부트스트랩 -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
@@ -21,6 +21,13 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 
 <style type="text/css">
+
+	section{
+		max-width: 70%;
+		margin: auto;
+		margin-top: 0%;
+	}
+	
 	#board_column{
 		border-bottom: solid gray 3px;
 	}

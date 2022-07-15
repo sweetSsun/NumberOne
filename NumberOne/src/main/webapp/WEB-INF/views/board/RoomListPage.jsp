@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>1인자 - 자취방 자랑 메인</title>
 
-
+<%-- <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css"> --%>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -87,17 +87,6 @@
 	color:#fff;
 	font-size:20px;
 	transition:all .35s;
-}
-
-.gallerylist > ul > li > a .screen .middle {
-	position:absolute;
-	top:45%;
-	left:30%;
-	z-index:2;
-	color:#fff;
-	font-size:30px;
-	transition:all .35s;
-	opacity: 0;
 }
 
 .gallerylist > ul > li > a .screen .info {
@@ -326,6 +315,61 @@ section{
     background: #EAEAEA;  /*스크롤바 뒷 배경 색상*/
 }
 
+.bdcategory{
+      color : #00bcd4;
+}
+.bdCategoryList{
+      color : #00bcd4;
+      border: none;
+      font-size: 18px;   
+}
+.bdcategorySel{
+      font-weight: bold;
+      text-align : center;
+      color : #00bcd4;
+}
+input{
+      border-radius:3px;
+      border: solid #E0E0E0 2px;
+      height: 28px;
+      font-size: 20px;
+}
+.searchType{
+      text-align: center;
+      border-radius: 5px;
+      font-size: 18px;
+      border: solid 1px #00bcd4;
+}
+#inputSearchText{
+      font-size: 18px;
+}
+.pagination {
+	width: 20rem ! important;
+	display: inline-block ! important;
+	margin-left: auto ! important;
+	margin-right: auto ! important; 
+	margin-top: 1rem ! important;
+	font-size: 18px ! important;
+}
+
+.pagination a {
+  color: black ! important;
+  padding: 6px 12px ! important;
+  text-decoration: none ! important;
+  border-radius: 5px ! important;
+}
+.pagination span {
+  color: black ! important;
+  padding: 6px 12px ! important;
+  text-decoration: none ! important;
+    border-radius: 5px ! important;
+}
+.pagination a.active {
+  background-color: #00bcd4 ! important;
+  border-radius: 5px ! important;
+  color: white ! important;
+}
+
 </style>
 </head>
 <body>
@@ -344,11 +388,59 @@ section{
 	<main>
 		
 		<!-- 사이드바 -->
-		<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
+		<c:choose>
+			<c:when test="${loginId.equals(\"admin\") }">
+				<%@ include file="/WEB-INF/views/includes/SideBar_Admin.jsp" %>				
+			</c:when>
+			<c:otherwise>
+				<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
+			</c:otherwise>
+		</c:choose>
 		
 		<section>
 		<!-- 본문 -->
+		<form action="selectRoomList" method="get" id="actionForm">
 			<div class="container">
+				<div class="row" style="margin:auto;">
+					<h2 class="text-center" style="font-size:2rem">자랑방 글목록 페이지 : RoomListPage.jsp</h2>
+				</div>
+				
+					<input type="hidden" name="bdcategory" value="" >
+					<div class="row ">
+						<!-- 검색기능 -->
+						<div class="col-5" align="right">
+								<select name="searchType" class="searchType">
+									<option value="bdtitle">제목</option>
+									<option value="bdcontents">내용</option>
+									<option value="bdtitlecontents">제목+내용</option>
+									<option value="bdnickname">작성자</option>
+								</select>
+						</div>
+						<div class="col-7 ">
+							<input type="text" name="searchText" placeholder="검색어를 입력하세요" id="inputSearchText">
+							<button class="btn btn-sm btn-secondary">검색</button>
+							<c:if test="${sessionScope.loginId != null}">
+								<button type="button" class="btn btn-primary btm-sm" style="padding: .25rem .5rem;" onclick="location.href='${pageContext.request.contextPath }/loadToWriteRoom'">글쓰기</button>
+							</c:if>
+						</div>
+					</div>		
+						
+			</div>
+			 
+			<div class="row" style="margin-top: 20px; margin-left:8%;">
+				<div class="col">
+					<select class="roomOrderBy" onchange="roomOrderBy(this.value)" style="border:1px #D2D2D2 solid; border-radius:3px;">
+						<option class="roomOrderBy" value="bddate">최신순</option>
+						<option class="roomOrderBy" value="bdhits">조회수순</option>
+						<option class="roomOrderBy" value="bdrecommend">좋아요순</option>
+						<option class="roomOrderBy" value="bdreply">댓글순</option>
+					</select>
+				</div>
+			</div>
+				
+			<!-- <div class="container"> -->
+			 
+			 <!-- 
 				<div class="row" style="margin:auto;">
 					<h1 class="text-center">자취방 자랑 목록 페이지 : RoomListPage.jsp</h1>
 					<div class="col-2"></div>
@@ -362,7 +454,7 @@ section{
 					</div>
 					<div class="col-6">
 						
-						<!-- 검색기능 -->
+						
 						<form action="searchBoard" method="get">
 						<div class="input-group">
 						  <input type="text" class="form-control" name="searchText" placeholder="검색 키워드를 입력하세요!">
@@ -373,13 +465,14 @@ section{
 						</form>
 					</div>
 					<div class="col-2">
-						<!-- 글쓰기 버튼 -->
+						
 						<c:if test="${sessionScope.loginId != null}">
 							<button class="btn btn-primary btm-sm" onclick="location.href='${pageContext.request.contextPath }/loadToWriteRoom'">글쓰기</button>
 						</c:if>
 					</div>
 					
 				</div>
+			 -->
 				
 				<!-- 자취방 자랑글 목록 -->
 				<div class="gallerylist">
@@ -413,37 +506,53 @@ section{
 											 <i class='fa-solid fa-heart'></i> <span id="${room.bdcode }_bdlikes">${room.bdrecommend}&nbsp;</span> 
 											 <i class="fa-solid fa-comment"></i> <span id="${room.bdcode }_bdreplies">${room.bdreply}&nbsp;</span> 
 											 <i class="fa-solid fa-star"></i> <span id="${room.bdcode }_bdscraps">${room.bdscrap}&nbsp;</span>
-										</div> 
-										
-										<!-- instagram ver
-										<c:choose>
-											<c:when test="${room.bdimg!=null}">	
-																						
-												<img class="roomMainImg" alt="" src="${pageContext.request.contextPath }/resources/img/room/${room.bdimg}"> 
-											</c:when>
-											<c:otherwise>
-																							
-												<img class="roomMainImg" alt="" src="${pageContext.request.contextPath }/resources/img/logo_grey.jpg"> 									
-											</c:otherwise>
-										</c:choose>
-										<div class="middle">
-											<i class="fa-solid fa-eye"></i> 
-											<span id="${room.bdcode }_bdhits">
-												<c:if test="${room.bdhits != 0}">${room.bdhits}</c:if>&nbsp;
-											</span>&nbsp;
-											<i class='fa-solid fa-heart'></i> <span id="${room.bdcode }_bdlikes">${room.bdrecommend}&nbsp;</span>&nbsp;
-											<i class="fa-solid fa-comment"></i> <span id="${room.bdcode }_bdreplies">${room.bdreply}&nbsp;</span>&nbsp; 
-											<i class="fa-solid fa-star"></i> <span id="${room.bdcode }_bdscraps">${room.bdscrap}&nbsp;</span>
-										</div>
-										 --> 												
+										</div> 											
 										
 									</div>
 								</a>
 							</li>						
 						</c:forEach>
 					</ul>
-				</div>		
+				</div>
+				
+				<!-- 페이징 시작 -->
+   				<input type="hidden" id="pageNum" name="page" value="1">
+  				<div class="block text-center" id="pageList">
+  					<ul class="pagination">
+  						<c:choose>
+		           			<c:when test="${paging.prev }">
+		           				<li class="paginate_button"><a href="${paging.page -1 }" >이전</a></li>
+		           			</c:when>
+		           			<c:otherwise>
+	           					<li class="paginate_button"><span>이전</span></li>
+		           			</c:otherwise>
+  						</c:choose>
+	               	
+	               		<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="num" step="1">
+	                		<c:choose>
+	                			<c:when test="${paging.page == num }">
+	                				<li class=""><a class="active">${num }</a></li>
+	                			</c:when>
+	                			<c:otherwise>
+	                				<li class="paginate_button "><a href="${num }" >${num }</a></li>
+	                			</c:otherwise>
+	                		</c:choose>
+	               		</c:forEach>
+	               	
+	               		<c:choose>
+		           			<c:when test="${paging.next }">
+		                		<li class="paginate_button"><a href="${paging.page +1 }" >다음</a></li>
+		           			</c:when>
+		           			<c:otherwise>
+		           				<li class="paginate_button"><span>다음</span></li>
+		           			</c:otherwise>
+  						</c:choose>
+	            	</ul>
+            	</div>
+            	<!-- 페이징 끝 -->
+						
 			</div>
+		</form>	
 		</section>
 	</main>
 	
@@ -503,11 +612,134 @@ section{
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
+<script type="text/javascript">
 
+	$(document).ready(function () {
+		// 페이지 넘버 a태그를 클릭하면 hidden input태그에 페이지 넘버 값을 넣고 submit 진행
+		var actionForm = $("#actionForm");
+		
+		$(document).on("click", ".paginate_button a", function(e){ // on 이벤트로 변경
+			e.preventDefault();
+			console.log("pageNum click");
+			$("#pageNum").val($(this).attr("href"));
+			console.log($("#pageNum").val());
+			actionForm.submit();
+		});
+	});
+
+	
+	// 정렬 select하면 ajax로 글목록 받고 출력을 바꿔주는 함수
+	function roomOrderBy(orderBy){
+		console.log("roomOrderBy 실행");
+		console.log("정렬 선택 : " + orderBy);
+		var searchType = $("#searchTypeSel").val();
+		var searchText = $("#searchText").val();
+		console.log(searchType);
+		console.log(searchText);
+		$.ajax({
+			type: "get",
+			data: {"searchVal":orderBy, "searchType":searchType, "keyword":searchText, "ajaxCheck":"list"},
+			url: "selectRoomList_ajax",
+			dataType: "json",
+			success: function(result){
+				// 정렬 목록 출력
+				var output = "";
+				console.log(result);					
+				for (var i = 0; i < result.length; i++){
+					output += "<tr style='border-bottom: solid #E0E0E0 1px;'>";
+					output += "<td class='text-center overflow'>" + result[i].bdcode + "</td>";
+					output += "<td class='category text-center'>" + result[i].bdcategory + "</td>";
+					output += "<td class='overflow'>"
+					if(result[i].bdcategory == '자랑'){
+						output +="<a href='selectRoomList?bdcode=" + result[i].bdcode + "&jsp=view'>"
+								+"<span class='overflow'>" + result[i].bdtitle + "</span>"
+								+"<span class='fw-bold' style='font-size:15px; color:#00bcd4;'>&nbsp;" + result[i].bdrpcount + "</span>"			
+								+"</a>";
+					} else {
+						output +="<a href='admin_selectBoardView${paging.makeQueryPage(paging.page)}&codeIdx=" + result[i].bdcode + "'>"
+								//+"&page=1&perPageNum=10&searchVal=" + searchVal + "&searchType=" + searchType + "&keyword=" + searchText + "'>"
+								+"<span class='overflow'>" + result[i].bdtitle + "</span>"
+								+"<span class='fw-bold' style='font-size:15px; color:#00bcd4;'>&nbsp;" + result[i].bdrpcount + "</span>"			
+								+"</a>";
+					}
+					output += "</td>";
+					output += "<td class='text-center overflow'>" + result[i].bdnickname + "</td>";
+					output += "<td class='text-center overflow'>" + result[i].bddate + "</td>";
+					output += "<td class='text-center'>" + result[i].bdhits + "</td>";
+					output += "<td class='text-center'>" + result[i].bdrccount + "</td>";
+					output += "<td class='text-center'>" + result[i].bdwarning + "</td>";
+					output += "<td class='text-center'>"
+					if (result[i].bdstate == 1){
+						output += "<button class='btn btn-sm btn-warning' type='button' onclick='showBdstateModal(this, \""+result[i].bdcode+"\")'>경고</button>";
+					} else {
+						output += "<button class='btn btn-sm btn-danger' type='button' onclick='showBdstateModal(this,\""+result[i].bdcode+"\")'>정지</button>";
+					}
+					output += "</td>";
+					output += "</tr>";
+				}
+				$("#bdListTbody").html(output);
+			}
+		});
+		// 페이지에서 출력할 페이지번호 받아오기
+		$.ajax({
+			type: "get",
+			data: {"searchVal":orderBy, "searchType":searchType, "keyword":searchText, "ajaxCheck":"page"},
+			url: "selectRoomNum_ajax",
+			dataType: "json",
+			success: function(result){
+				console.log("요청 페이지 : " + result.page);
+				$("#pageList").text("");
+				// 페이징 번호 출력
+				var pageList = "<ul class='pagination'>";
+				if (result.prev) {
+					pageList += "<li class='paginate_button'><a href='"+ (result.page - 1) + "'>이전</a></li>";
+				} else {
+					pageList += "<li class='paginate_button'><span>이전</span></li>"
+				}
+				for (var i = result.startPage; i <= result.endPage; i++){
+					if (result.page == i){
+						pageList += "<li><a class='active'>"+ i + "</a></li>";
+					} else {
+						pageList += "<li class='paginate_button'><a href='"+ i + "' >" + i + "</a></li>";
+					}
+				}
+				if (result.next){
+					pageList += "<li class='paginate_button'><a href='"+ (result.page + 1) + "' >다음</a></li>";
+				} else {
+					pageList += "<li class='paginate_button'><span>다음</span></li>"
+				}
+				$("#pageList").html(pageList);
+			},
+			error: function(){
+				alert("페이징넘버링 실패");
+			}
+		})
+		
+	}	
+</script>
 <script type="text/javascript">
 //관리자 스크립트
 function adminRvBan(){
 	console.log("관리자 자랑글 정지")
+	var rvBanConfirm = confirm("해당 글을 정지하시겠습니까?");
+	
+	if(rvBanConfirm == 'false'){
+		$("#menuModal").css("display", "none");
+		return false;
+	}
+	
+	$.ajax({
+			type : "get",
+			url : "admin_updateRoomStop_ajax",
+			data : { "bdcode" : nowBdcode},
+			async : false,
+			success : function(updateResult){
+				if( updateResult > 0 ){
+					console.log("관리자 자랑글 정지 성공!");
+					//그 다음 페이지를 다시 로드하고 스크롤을 원하는 위치로...??
+				}
+			}
+		});
 	
 	//메뉴창 닫기
 	$("#menuModal").css("display", "none");
@@ -515,34 +747,22 @@ function adminRvBan(){
 
 function adminRpBan(){
 	console.log("관리자 댓글 정지")
-
-	//메뉴창 닫기
-	closeMenuModal()
-}
-
-</script>
-
-
-<script type="text/javascript">
-	function closeMenuModal(){
-		console.log("메뉴 모달 닫기 요청");
-		//nowRpcode 초기화
-		nowRpcode = "";
-		//모달창 닫기
+	var rpBanConfirm = confirm("해당 댓글을 정지하시겠습니까?");
+	
+	if(rpBanConfirm == 'false'){
 		$("#menuModal").css("display", "none");
+		return false;
 	}
 	
-	function replyDelete(){
-		console.log("리플 삭제 요청");
-		$.ajax({
+	$.ajax({
 			type : "get",
-			url : "updateReplyState_ajax",
+			url : "admin_updateReplyStop_ajax",
 			data : { "rpcode" : nowRpcode},
 			async : false,
 			success : function(updateResult){
 				if( updateResult > 0 ){
-					console.log("뎃글 삭제 성공!");
-					replyPrint();
+					console.log("관리자 댓글 삭제 성공!");
+					replyPrint('top');
 					
 					//목록 페이지 댓글수 업데이트 (-1)
 					logUpdate('bdreplies', 'down');
@@ -552,73 +772,25 @@ function adminRpBan(){
 				}
 			}
 		});	
-	}
-
+}
 </script>
 
+
 <script type="text/javascript">
+
+	nowBdcode = ('${bdcode}');
+	if(nowBdcode != ''){
+		roomView_ajax(nowBdcode);
+	}
+	
+	//필드
 	var nowBdcode;
 	var nowRpcode;
 	var nowBdmid;
-	
-	function replyEnter(e){
-		if(e.keyCode==13){
-			replyResister();
-		}
-	}
+	var nowWb = "";
+	var modal = document.getElementById("myModal");
+	var span = document.getElementsByClassName("close")[0];
 
-	function replyResister(){
-		console.log("댓글 등록 요청");
-		var rpcontents = $("#inputReply").val();
-		
-		$.ajax({
-			type : "get",
-			url : "insertBoardReply_ajax",
-			data : { "bdcode" : nowBdcode, "rpcontents" : rpcontents},
-			async : false,
-			success : function(insertResult){
-				if( insertResult > 0 ){
-					console.log("뎃글 등록 성공!");
-					$("#inputReply").val("");
-					replyPrint();
-					
-					//목록 페이지 댓글수 업데이트
-					logUpdate('bdreplies', 'up');
-				}
-			}
-		});
-	}
-	
-	//조회/추천/즐찾/댓글수 증가/감소시 목록 페이지 업데이트
-	function logUpdate(logType, updown){
-		
-		console.log("logUpdate() 호출")
-		var before = $("#"+nowBdcode+"_"+logType).text().trim();
-		var after;
-		if(updown == 'up'){
-			//증가
-			console.log("증가 요청");
-			if(before==""){
-				after = 1;
-			} else {
-				after = parseInt(before)+1;
-			}
-		} else {
-			//감소
-			console.log("감소 요청");
-			after = parseInt(before)-1;
-			if(after == 0){
-				after = "&nbsp;";
-			}
-
-		}
-		
-		$("#"+nowBdcode+"_"+logType).html(after+"&nbsp;");
-	}
-</script>
-
-<script type="text/javascript">
-	
 	function roomView_ajax(bdcode){
 		console.log(bdcode+"번글 roomView() 호출");
 		nowBdcode = bdcode; 
@@ -686,10 +858,15 @@ function adminRpBan(){
 				//작성자 프로필	
 				var mprofileOutput = "<img class='product-img' style='width:30px; height:30px; border-radius:50%;'";
 				if(roomView.bdmprofile != 'nomprofile'){
-					console.log()
-					mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+roomView.bdmprofile+"'>";
+					if(roomView.bdmstate == 1){
+						//일반 로그인
+						mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+roomView.bdmprofile+"'>";
+					} else if(roomView.bdmstate == 9) {
+						//카카오 로그인
+						mprofileOutput += "src='"+roomView.bdmprofile+"'>";							
+					}
 				} else {
-					mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/logo_beige.jpg'>"; 
+					mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png'>"; 
 				}
 				mprofileOutput += "</img>";
 				$("#roomMprofile").html(mprofileOutput);
@@ -702,32 +879,36 @@ function adminRpBan(){
 
 				//글 내용
 				$("#roomContents").html("<textarea class='scroll' readonly style='font-size:15px; resize:none;'>"+roomView.bdcontents+"</textarea>");
+				
 				//추천, 스크랩, 신고 출력
 				var roomInfoOutput = ""
 				//추천
 				if(roomView.rchistory != "n"){
 					console.log("추천 기록 있음")
-					roomInfoOutput += "<a onclick='log(\"rchistory\")'><span id='"+roomView.bdcode+"_rchistory'><i class='fa-solid fa-heart'></i></span></a> ";
+					roomInfoOutput += "<a onclick='log(\"rchistory\")' style='cursor:pointer;'><span id='"+roomView.bdcode+"_rchistory'><i class='fa-solid fa-heart'></i></span></a> ";
 				} else {					
 					console.log("추천 기록 없음")
-					roomInfoOutput += "<a onclick='log(\"rchistory\")'><span id='"+roomView.bdcode+"_rchistory'><i class='fa-regular fa-heart'></i></span></a> ";
+					roomInfoOutput += "<a onclick='log(\"rchistory\")' style='cursor:pointer;'><span id='"+roomView.bdcode+"_rchistory'><i class='fa-regular fa-heart'></i></span></a> ";
 				}
 				//스크랩
 				if(roomView.schistory != "n"){
 					console.log("스크랩 기록 있음")
-					roomInfoOutput += "<a onclick='log(\"schistory\")'><span id='"+roomView.bdcode+"_schistory'><i class='fa-solid fa-star' style=''></i></span></a> ";
+					roomInfoOutput += "<a onclick='log(\"schistory\")' style='cursor:pointer;'><span id='"+roomView.bdcode+"_schistory'><i class='fa-solid fa-star' style=''></i></span></a> ";
 				} else {					
 					console.log("스크랩 기록 없음")
-					roomInfoOutput += "<a onclick='log(\"schistory\")'><span id='"+roomView.bdcode+"_schistory'><i class='fa-regular fa-star'></i></span></a> ";
+					roomInfoOutput += "<a onclick='log(\"schistory\")' style='cursor:pointer;'><span id='"+roomView.bdcode+"_schistory'><i class='fa-regular fa-star'></i></span></a> ";
 				}
 				//신고
+				roomInfoOutput += "<span id='"+roomView.bdcode+"_wbhistory'>";
 				if(roomView.wbhistory != "n"){
 					console.log("신고 기록 있음")
-					roomInfoOutput += "<span id='"+roomView.bdcode+"_wbhistory'><i class='fa-solid fa-land-mine-on' style='position:absolute; right:0;'></i></span>";
+					roomInfoOutput += "<i class='fa-solid fa-land-mine-on' style='position:absolute; right:0;'></i>";
+					nowWb = "y";
 				}	
-				
+				roomInfoOutput += "</span>";
 				//console.log(roomInfoOutput);
 				$("#roomInfo").html(roomInfoOutput);
+	
 				
 				//좋아요수, 날짜 출력
 				var likesDateOutput = "<span style='color:black; font-size:18px; font-weight:bold;'>좋아요&nbsp;<span id='likesNum'>"+roomView.bdrecommend+"</span>개</span><br>";
@@ -735,26 +916,191 @@ function adminRpBan(){
 				$("#likes_date").html(likesDateOutput);
 				
 				//댓글 출력
-				replyPrint();
+				replyPrint('top');
 				
 				//bdhits 1 추가
 				logUpdate('bdhits', 'up');
 				
-				modal.style.display = "block";
+				$("#myModal").css("display", "block") ;
+				//modal.style.display = "block";
 				//modalImg.src = this.src;
 				//captionText.innerHTML = this.alt;
+			}
+		});
+	}	
+	
+	//댓글 출력
+	function replyPrint(scroll){
+		$.ajax({
+			type : "get",
+			url : "selectBoardReplyList_ajax",
+			data : { "bdcode" : nowBdcode },
+			dataType : "json",
+			async : false,
+			success: function(replys){
+				//console.log(replys)
+				var replyOutput ="";
+				for(var i=0; i<replys.length; i++){			
+					//console.log(replys[i]);
+					replyOutput += "<div id='reply_"+replys[i].rpcode+"' style='width:100%; margin-bottom:3px;' class='row' onmouseover='toggleReplyMenu(\""+replys[i].rpcode+"\", \"show\")' onmouseout='toggleReplyMenu(\""+replys[i].rpcode+"\", \"hide\")'>";
+					//댓글 작성자 프로필 이미지
+					replyOutput += "<div style='width:30px;'>";
+					replyOutput += "<img class='product-img' style='width:20px; height:20px; border-radius:50%;'";
+					if(replys[i].rpprofile != 'nomprofile'){
+						console.log("프로필 있음")
+						if(replys[i].rpmstate == 1){
+							//일반 로그인
+							replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+replys[i].rpprofile+"'>";
+						} else if(replys[i].rpmstate == 9) {
+							//카카오 로그인
+							console.log(replys[i].rpprofile);
+							replyOutput += "src='"+replys[i].rpprofile+"'>";							
+						}
+					} else {
+						replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png'>"; 
+					}
+					replyOutput += "</img></div>";
+					//댓글 내용 부분 시작
+					replyOutput += "<div id='replyContents_"+replys[i].rpcode+"' style='width:320px; font-size:15px; word-break:break-word;'>"; 
+					//닉네임(진하게)
+					replyOutput += "<span style='font-weight:600;'>"+replys[i].rpnickname+"&nbsp;&nbsp;</span>";
+					//내용 
+					replyOutput += replys[i].rpcontents;
+					
+					//댓글 작성자와 관리자에게만 보이는 ...
+					if(replys[i].rpmid == '${sessionScope.loginId}'){
+						console.log("댓글 작성자");
+						replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \"${sessionScope.loginId}\")' style='font-size:15px;'>&#8943;</span>"; 
+					} else if ('${sessionScope.loginId}'=='admin'){
+						console.log("관리자");
+						replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \"${sessionScope.loginId}\")' style='font-size:15px;'>&#8943;</span>"; 	
+					}
+					
+					
+					replyOutput += "</div></div>";
+				}
+				
+				//console.log(replyOutput);
+				$("#reply").html(replyOutput);
+				//console.log(scroll);
+				if(scroll == "bottom"){
+					//댓글 등록시 스크롤 하단으로 이동
+					//console.log("하단 요청")
+					$("#reply").scrollTop($("#reply")[0].scrollHeight);
+				} else if(scroll=="top"){
+					//console.log("상단 요청")
+					$("#reply").scrollTop(0);
+				}
+			}
+		})
+	}	
+	
+	//조회/추천/즐찾/댓글수 증가/감소시 목록 페이지 업데이트
+	function logUpdate(logType, updown){
+		
+		console.log("logUpdate() 호출")
+		var before = $("#"+nowBdcode+"_"+logType).text().trim();
+		var after;
+		if(updown == 'up'){
+			//증가
+			console.log("증가 요청");
+			if(before==""){
+				after = 1;
+			} else {
+				after = parseInt(before)+1;
+			}
+		} else {
+			//감소
+			console.log("감소 요청");
+			after = parseInt(before)-1;
+			if(after == 0){
+				after = "&nbsp;";
+			}
+
+		}
+		
+		$("#"+nowBdcode+"_"+logType).html(after+"&nbsp;");
+	}
+	
+	
+	function closeMenuModal(){
+		console.log("메뉴 모달 닫기 요청");
+		//nowRpcode 초기화
+		nowRpcode = "";
+		//모달창 닫기
+		$("#menuModal").css("display", "none");
+	}
+	
+	function replyDelete(){
+		console.log("댓글 삭제 요청");
+		$.ajax({
+			type : "get",
+			url : "updateReplyState_ajax",
+			data : { "rpcode" : nowRpcode},
+			async : false,
+			success : function(updateResult){
+				if( updateResult > 0 ){
+					console.log("댓글 삭제 성공!");
+					replyPrint('top');
+					
+					//목록 페이지 댓글수 업데이트 (-1)
+					logUpdate('bdreplies', 'down');
+					
+					//메뉴 모달 닫기
+					closeMenuModal()
+				}
+			}
+		});	
+	}
+
+</script>
+
+<script type="text/javascript">
+	
+	function replyEnter(e){
+		if(e.keyCode==13){
+			replyResister();
+		}
+	}
+
+	function replyResister(){
+		console.log("댓글 등록 요청");
+		var rpcontents = $("#inputReply").val();
+		console.log(rpcontents);
+		
+		$.ajax({
+			type : "get",
+			url : "insertBoardReply_ajax",
+			data : { "bdcode" : nowBdcode, "rpcontents" : rpcontents},
+			async : false,
+			success : function(insertResult){
+				if( insertResult > 0 ){
+					console.log("댓글 등록 성공!");
+					$("#inputReply").val("");
+					replyPrint('bottom');
+					
+					//목록 페이지 댓글수 업데이트
+					logUpdate('bdreplies', 'up');
+				}
 			}
 		});
 	}
 	
 	
-	// Get the modal
-	var modal = document.getElementById("myModal");
+	function toggleReplyMenu(rpcode, action){
+		//console.log("댓글 ... 보여주기 요청");
+		if(action=='show'){
+			$("#"+rpcode+"_replyMenu").css("cursor", "pointer");
+			$("#"+rpcode+"_replyMenu").removeClass("d_none");
+		} else {
+			$("#"+rpcode+"_replyMenu").addClass("d_none");			
+		}
+		
+	}
+	
 
-	// Get the <span> element that closes the modal
-	var span = document.getElementsByClassName("close")[0];
 
-	// When the user clicks on <span> (x), close the modal
+	//모달창 닫는 X 눌렀을 때 실행된느 함수
 	span.onclick = function() {
 	  modal.style.display = "none";
 
@@ -768,6 +1114,7 @@ function adminRpBan(){
 	  nowBdmid = "";
 	  
 	}
+	
 	
 	function log(history){
 		console.log("log 함수 호출");
@@ -841,6 +1188,7 @@ function adminRpBan(){
 
 						} else {
 							console.log("신고 성공");
+							nowWb = 'y';
 							$("#"+nowBdcode+"_wbhistory").html("<i class='fa-solid fa-land-mine-on' style='position:absolute; right:0;'></i>");
 							$("#menuModal").css("display", "none");
 						}
@@ -872,6 +1220,7 @@ function adminRpBan(){
 						} else {
 							console.log("신고 취소 성공");
 							$("#"+nowBdcode+"_wbhistory").html("");	
+							nowWb = 'n';
 							$("#menuModal").css("display", "none");
 						}						
 					}	
@@ -881,7 +1230,7 @@ function adminRpBan(){
 	}
 	
 	function deleteRoomView(){
-		console.log(nowRdcode+"글 삭제 요청");
+		console.log(nowBdcode+"글 삭제 요청");
 		var confirmCh = confirm("해당 글을 삭제하시겠습니까?");
 		if(confirmCh == false){
 			return;
@@ -890,68 +1239,7 @@ function adminRpBan(){
 		location.href = "updateBoardDelete?bdcode="+nowBdcode+"&bdcategory=자랑";
 
 	}
-	
-	//댓글 출력
-	function replyPrint(){
-		$.ajax({
-			type : "get",
-			url : "selectBoardReplyList_ajax",
-			data : { "bdcode" : nowBdcode },
-			dataType : "json",
-			async : false,
-			success: function(replys){
-				//console.log(replys)
-				var replyOutput ="";
-				for(var i=0; i<replys.length; i++){			
-					//console.log(replys[i]);
-					replyOutput += "<div id='reply_"+replys[i].rpcode+"' style='width:100%;' class='row' onmouseover='toggleReplyMenu(\""+replys[i].rpcode+"\", \"show\")' onmouseout='toggleReplyMenu(\""+replys[i].rpcode+"\", \"hide\")' onstyle='width:100%'>";
-					//댓글 작성자 프로필 이미지
-					replyOutput += "<div style='width:30px;'>";
-					replyOutput += "<img class='product-img' style='width:20px; height:20px; border-radius:50%;'";
-					if(replys[i].rpmprofile != 'nomprofile'){
-						console.log("프로필 있음")
-						replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+replys[i].rpmprofile+"'>";
-					} else {
-						replyOutput += "src='${pageContext.request.contextPath }/resources/img/logo_beige.jpg'>"; 
-					}
-					replyOutput += "</img></div>";
-					//댓글 내용 부분 시작
-					replyOutput += "<div id='replyContents_"+replys[i].rpcode+"' style='width:320px; font-size:15px'>"; 
-					//닉네임(진하게)
-					replyOutput += "<span style='font-weight:600;'>"+replys[i].rpnickname+"&nbsp;&nbsp;</span>";
-					//내용 
-					replyOutput += replys[i].rpcontents;
-					
-					//댓글 작성자와 관리자에게만 보이는 ...
-					if(replys[i].rpmid == '${sessionScope.loginId}'){
-						console.log("댓글 작성자");
-						replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \"${sessionScope.loginId}\")' style='font-size:15px;'>&#8943;</span>"; 
-					} else if ('${sessionScope.loginId}'=='admin'){
-						console.log("관리자");
-						replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \"${sessionScope.loginId}\")' style='font-size:15px;'>&#8943;</span>"; 	
-					}
-					
-					
-					replyOutput += "</div></div>";
-				}
-				
-				//console.log(replyOutput);
-				$("#reply").html(replyOutput);
-				$("#reply").scrollTop($("#reply")[0].scrollHeight);
-			}
-		})
-	}
-	
-	function toggleReplyMenu(rpcode, action){
-		//console.log("댓글 ... 보여주기 요청");
-		if(action=='show'){
-			$("#"+rpcode+"_replyMenu").css("cursor", "pointer");
-			$("#"+rpcode+"_replyMenu").removeClass("d_none");
-		} else {
-			$("#"+rpcode+"_replyMenu").addClass("d_none");			
-		}
-		
-	}
+
 	
 	function menuModal(objcode, loginId){
 		console.log("메뉴 모달 요청");
@@ -960,7 +1248,7 @@ function adminRpBan(){
 		console.log(objType);
 		var menuOutput = "";
 		if(objType=='BD'){
-			console.log("자랑글(Rv) 메뉴 요쳥")
+			console.log("자랑글(Rv) 메뉴 요청")
 			//아이디에 따라 다른 메뉴 구성
 			if(loginId == 'admin'){ //관리자
 				//console.log("관리자");
@@ -968,14 +1256,17 @@ function adminRpBan(){
 				menuOutput += "<div class='menu' onclick='closeMenuModal()'>취소</div>";
 			} else if( loginId == nowBdmid){ //글작성자
 				//console.log("작성자");
-				//수정 메소드 아직 안 만들었음
 				menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick='modifyRoomView()'>수정</div>";
 				menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick='deleteRoomView()'>삭제</div>";
 				menuOutput += "<div class='menu' onclick='closeMenuModal()'>취소</div>";
 			} else {
-				//console.log("다른 회원");
-				menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick='log(\"wbhistory\")'>신고</div>";
-				menuOutput += "<div class='menu' onclick='closeMenuModal()'>취소</div>";			
+				//다른 회원:신고/신고취소
+				if(nowWb == 'y'){
+					menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick='log(\"wbhistory\")'>신고 취소</div>";					
+				} else {					
+					menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick='log(\"wbhistory\")'>신고</div>";
+				}
+				menuOutput += "<div class='menu' onclick='closeMenuModal()'>취소</div>";				
 			}
 		} else {
 			console.log("댓글(Rp) 메뉴 요청")
@@ -988,11 +1279,12 @@ function adminRpBan(){
 				menuOutput += "<div class='menu' onclick='closeMenuModal()'>취소</div>";
 			} else { //댓글작성자
 				//console.log("작성자");
+				//console.log("작성자");
 				menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick='replyDelete()'>삭제</div>";
 				menuOutput += "<div class='menu' onclick='closeMenuModal()'>취소</div>";
 			} 
 		}
-		console.log(menuOutput);
+		//console.log(menuOutput);
 		$("#menuInnerDiv").html(menuOutput);
 		$("#menuModal").css("display", "block") ;
 	}
