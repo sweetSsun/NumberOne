@@ -22,7 +22,7 @@
 <body>
 
 	<!-- TopBar -->
-	<%-- 
+
 
         <c:choose>
                 <c:when test="${sessionScope.loginId != 'admin'}">
@@ -32,14 +32,12 @@
                         <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
                 </c:otherwise>
         </c:choose>
-
-        --%>
+     --%>
 	<!-- End of TopBar -->
 	<main>
 		<!-- 사이드바 -->
 
-
-		<%-- <%@ include file="/WEB-INF/views/includes/SideBar_Resell.jsp"%> --%>
+<%@ include file="/WEB-INF/views/includes/SideBar_Resell.jsp"%> 
 		<section>
 			<!-- 본문 -->
 			<div class="container">
