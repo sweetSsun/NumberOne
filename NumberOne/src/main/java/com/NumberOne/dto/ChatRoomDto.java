@@ -11,7 +11,7 @@ public class ChatRoomDto {
 	private String crtomid;			//받는사람
 	
 	// 각 채팅방의 안읽은 메세지수
-	private int crReadCount;		//읽음상태 count (chatmessage 조인)
+	private int unreadCount;		//읽음상태 count (chatmessage 조인)
 
 	public String getCrcode() {
 		return crcode;
@@ -37,18 +37,18 @@ public class ChatRoomDto {
 		this.crtomid = crtomid;
 	}
 
-	public int getCrReadCount() {
-		return crReadCount;
+	public int getUnreadCount() {
+		return unreadCount;
 	}
 
-	public void setCrReadCount(int crReadCount) {
-		this.crReadCount = crReadCount;
+	public void setUnReadCount(int crReadCount) {
+		this.unreadCount = crReadCount;
 	}
 
 	@Override
 	public String toString() {
-		return "ChatRoomDto [crcode=" + crcode + ", crfrmid=" + crfrmid + ", crtomid=" + crtomid + ", crReadCount="
-				+ crReadCount + "]";
+		return "ChatRoomDto [crcode=" + crcode + ", crfrmid=" + crfrmid + ", crtomid=" + crtomid + ", unReadCount="
+				+ unreadCount + "]";
 	}
 	
 	

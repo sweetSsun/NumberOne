@@ -45,6 +45,10 @@ public interface ChatDao {
 
 	ArrayList<ChatMessageDto> selectAllRoomMessage(String crcode);
 
+	void updateCmread(@Param ("crcode") String crcode, @Param ("mid") String mid);
+
+	ArrayList<ChatRoomDto> selectRoomList(String loginId);
+
 	
 	
 }

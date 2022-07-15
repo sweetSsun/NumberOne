@@ -92,4 +92,16 @@
 		WHERE CMCRCODE = #{crcode}
 		ORDER BY CMCODE
 	</select>
+	
+	<!-- 채팅방 목록 조회 시 cmread 0으로 수정 -->
+	<update id="updateCmread">
+		UPDATE CHATMESSAGE
+		SET CMREAD = 0
+		WHERE CMCRCODE = #{crcode} AND CMFRMID != #{mid} AND CMREAD = 1
+	</update>
+	
+	<!-- 특정 사용자의 채팅방 목록 조회 -->
+	<select id="selectRoomList" resultType="com.NumberOne.dto.ChatRoomDto">
+		<!-- 최신 메세지 순으로 띄워야함.....! -->
+	</select>
 </mapper>

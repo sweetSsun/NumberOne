@@ -4,6 +4,8 @@ package com.NumberOne.service;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
@@ -18,7 +20,8 @@ public class ChatService {
 
 	@Autowired
 	private ChatDao chdao;
-	
+	@Autowired
+	private HttpSession session;
 
 	// 중고거래 관심상품 채팅메세지 입력 요청
 	public String insertResellChat(String[] gd_names, ChatMessageDto chatMessage, String gdtitle) {
@@ -87,6 +90,10 @@ public class ChatService {
 		System.out.println("ChatService.selectAllRoomMessage() 호출");
 		ArrayList<ChatMessageDto> msgList = chdao.selectAllRoomMessage(crcode);
 		
+		// 안읽은 메세지 숫자 0으로 변경
+		String mid = (String) session.getAttribute("loginId");
+		chdao.updateCmread(crcode, mid);
+		
 		// 메세지 보낸 사람의 닉네임 조회 후 set
 		for (int i = 0; i < msgList.size(); i++) {
 			String cmfrmnickname = chdao.selectMnickname(msgList.get(i).getCmfrmid());
@@ -95,6 +102,9 @@ public class ChatService {
 		Gson gson = new Gson();
 		String msgList_json = gson.toJson(msgList);
 		System.out.println("msgList_json : " + msgList_json);
+		
+		
+		
 		return msgList_json;
 	}
 	
@@ -146,6 +156,17 @@ public class ChatService {
 		int cmcode = chdao.selectMaxCmcode() + 1;
 		System.out.println("cmcode : "+ cmcode);
 		return cmcode;
+	}
+
+	// 특정 사용자의 채팅방 목록 조회 요청
+	public String selectRoomList(String loginId) {
+		System.out.println("ChatService.selectRoomList() 호출");
+		ArrayList<ChatRoomDto> chatRoomList = chdao.selectRoomList(loginId);
+		// selectRoomList 쿼리문 만들어야함~~~~~~~~~~~~~~~~~~~~~~~~~~~
+		Gson gson = new Gson();
+		String chatRoomList_json = gson.toJson(chatRoomList);
+		
+		return chatRoomList_json;
 	}
 	
 	

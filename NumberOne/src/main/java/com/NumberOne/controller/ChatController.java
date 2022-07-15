@@ -1,9 +1,5 @@
 package com.NumberOne.controller;
 
-import java.util.ArrayList;
-
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,11 +29,12 @@ public class ChatController {
 		System.out.println("중고거래 관심상품 채팅메세지 입력 요청");
 		mav = new ModelAndView();
 		
-//		for (String gd : gd_names) {
-//			System.out.println(gd);
-//		}
-//		System.out.println(chat);
-//		System.out.println(gdtitle);
+		for (String gd : gd_names) {
+			System.out.println(gd);
+		}
+		System.out.println(chatMessage);
+		System.out.println(gdtitle);
+		
 		String crcode = chsvc.insertResellChat(gd_names, chatMessage, gdtitle);
 
 		return crcode;
@@ -46,29 +43,20 @@ public class ChatController {
 	}
 	
 	@RequestMapping(value = "/selectAllRoomMessage")
-	public @ResponseBody String selectAllRoomMessage(String crcode, HttpServletResponse response) {
+	public @ResponseBody String selectAllRoomMessage(String crcode) {
+		System.out.println("특정 채팅방의 메세지 목록 조회 요청");
 		String msgList_json = chsvc.selectAllRoomMessage(crcode);
-		response.setContentType("application/json; charset=utf-8");
+		//response.setContentType("application/json; charset=utf-8");
 		
 		return msgList_json;
 	}
-	/*
-	    @RequestMapping(value="{roomId}.do")
-    public void messageList(@PathVariable String roomId, String userEmail, Model model, HttpServletResponse response) throws JsonIOException, IOException {
-        
-        List<ChatMessage> mList = cService.messageList(roomId);
-        response.setContentType("application/json; charset=utf-8");
- 
-        // 안읽은 메세지의 숫자 0으로 바뀌기
-        ChatMessage message = new ChatMessage();
-        message.setEmail(userEmail);
-        message.setRoomId(roomId);
-        cService.updateCount(message);
-        
-        Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd").create();
-        gson.toJson(mList,response.getWriter());
-    }
-    
-	 */
+
+	@RequestMapping(value = "/selectRoomList")
+	public @ResponseBody String selectRoomList(String loginId) {
+		System.out.println("특정 사용자의 채팅방 목록 조회 요청");
+		String chatRoomList_json = chsvc.selectRoomList(loginId);
+			
+		return chatRoomList_json;
+	}
 	
 }
