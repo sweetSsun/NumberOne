@@ -66,7 +66,6 @@
 					<div class="d_body">
 						<div class="flex_div flex_between flex-p0">
 							<div class="item_start font-l">팔구</div>
-							<div id="mregion"></div>
 							<div class="item_end font-m">
 								<a href="selectResellPageList?sellBuy=S"> 더보기+</a>
 							</div>

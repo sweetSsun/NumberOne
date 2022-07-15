@@ -89,6 +89,8 @@
 							</c:forEach>
 
 					<input type="hidden"  name="chfrmid" value="${sessionScope.loginId }">
+					
+					
 					<input type="hidden" name="chtomid" value="${ub_resellView.ubmid}">
 					<input type="hidden" name="gdtitle" value="${ub_resellView.ubtitle }">
 
