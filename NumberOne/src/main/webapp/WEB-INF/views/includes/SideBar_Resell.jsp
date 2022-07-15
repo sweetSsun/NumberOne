@@ -11,24 +11,8 @@
 
 <style type="text/css">
 
-ul {
-	list-style:none;
-}
-
-.dropdown_menu:after {
-	display:block; content:''; clear:both;
-}
-.dropdown_menu > li {
-	position:relative; float:left; margin-right:5px;
-}
-.dropdown_menu > li > a{
-	display:block; height:40px; line-height:40px;
-}
-.dropdown_menu > li:hover .dorpdown_list {
-	display:block;
-}
-.dropdown_menu .dorpdown_list {
-	display:none; position:absolute; padding: 0; text-align:center; font-size: 16px;
+.sideroom a{
+	border: none;
 }
 
 
@@ -40,7 +24,7 @@ ul {
 	
 	<!-- 햄버거 -->
 	<div id="sidebar-toggleOff">
-		<a class="sideOffImg"><i class="fa fa-bars"></i></a>
+		<a class="sideOffImg" title="메뉴 축소"><i class="fa fa-bars"></i></a>
 	</div>
 	
 	<!-- 사이드바 -->
@@ -51,22 +35,22 @@ ul {
 			<div class="sidemenu" style="color: white;">
 			
 				<div id="sidebar-toggleOn" class="sidetitle_close" style="padding-bottom: 12px; padding-top: 12px; border-color: white; color: white;">
-					<span><a class="sideOnImg"><i class="fa fa-bars"></i></a></span>
+					<span><a class="sideOnImg" title="메뉴 확장"><i class="fa fa-bars"></i></a></span>
 				</div>
 				
 				<div class="sideclose_room">
 					<span>
-						<a href="selectResellPageList?sellBuy=S"><i class="fa-solid fa-store"></i></a>
+						<a href="selectResellPageList?sellBuy=S" title="팔구"><i class="fa-solid fa-store"></i></a>
 					</span>
 				</div>
 				<div class="sideclose_room">
 					<span>
-						<a href="selectResellPageList?sellBuy=B"><i class="fa-solid fa-cart-shopping"></i></a>
+						<a href="selectResellPageList?sellBuy=B" title="사구"><i class="fa-solid fa-cart-shopping"></i></a>
 					</span>
 				</div>
 				<div class="sideclose_room">
 					<span>
-						<a href="#"><i class="fa-solid fa-comment-dots"></i></a>
+						<a href="#" title="채팅"><i class="fa-solid fa-comment-dots"></i></a>
 					</span>
 				</div>
 				
@@ -83,93 +67,16 @@ ul {
 					<span><a href="selectResellMainPage">중고거래</a></span>
 				</div>
 				
-				<div class="sideroom">
-					<ul class="dropdown_menu">
-						<li class="sideregion_title">
-							<span>
-								<a href="selectResellPageList?sellBuy=S"><i class="fa-solid fa-store"></i>&nbsp;&nbsp;팔구</a>
-							</span>
-							
-							<!-- <ul class="dorpdown_list">
-								<li>
-									<table class="sideregion_tags">
-										<tr>
-											<td><a href="#">전체</a></td>
-											<td><a href="#">서울</a></td>
-											<td><a href="#">인천</a></td>
-										</tr>
-										<tr>
-											<td><a href="#">경기</a></td>
-											<td><a href="#">경상</a></td>
-											<td><a href="#">전라</a></td>
-										</tr>
-										<tr>
-											<td><a href="#">충청</a></td>
-											<td><a href="#">강원</a></td>
-											<td><a href="#">제주</a></td>
-										</tr>
-									</table>
-								</li>
-							</ul> -->
-						</li>
-					</ul>
-				</div>
 				
-				
-				<div class="sideroom">
-					<ul class="dropdown_menu">
-						<li class="sideregion_title">
-							<span>
-								<a href="selectResellPageList?sellBuy=B"><i class="fa-solid fa-cart-shopping"></i>&nbsp;&nbsp;사구</a>
-							</span>
-						</li>
-					</ul>
-				</div>
-				
-				
-				<div class="sideroom">
-					<span>
-						<a href="#"><i class="fa-solid fa-comment-dots"></i>&nbsp;&nbsp;채팅</a>
-					</span>
-				</div>
-			</div>
-			
-			<div class="sideregion">
-				<div class="sideregion_title">
-					<span><i class="fa-solid fa-map-location-dot"></i>&nbsp;&nbsp;지역</span>
-				</div>
-						
-				<div>
-					<table class="sideregion_tags">
-						<tr>
-							<td><a href="#">전체</a></td>
-							<td><a href="#">서울</a></td>
-							<td><a href="#">인천</a></td>
-						</tr>
-						<tr>
-							<td><a href="#">경기</a></td>
-							<td><a href="#">경상</a></td>
-							<td><a href="#">전라</a></td>
-						</tr>
-						<tr>
-							<td><a href="#">충청</a></td>
-							<td><a href="#">강원</a></td>
-							<td><a href="#">제주</a></td>
-						</tr>
-					</table>
-				</div>
-			</div>
-			
-			
-			<!-- 연습중 -->
-			<ul class="dropdown_menu">
-				<li class="sideregion_title">
-					<span><a href="selectResellPageList?sellBuy=S"><i class="fa-solid fa-store"></i>&nbsp;&nbsp;팔구</a></span>
-						
-					<ul class="dorpdown_list">
-						<li>
-							<table class="sideregion_tags">
-								<tr>
+				<div class="dropdown sideroom">
+					  <a id="drop_sell" class="sideregion_title dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="true">
+					    <i class="fa-solid fa-store"></i>&nbsp;&nbsp;팔구
+					  </a>
+					
+					  <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+					  	<li>
+					    	<table class="sideregion_tags">
+					    		<tr>
 									<td><a href="#">전체</a></td>
 									<td><a href="#">서울</a></td>
 									<td><a href="#">인천</a></td>
@@ -185,10 +92,47 @@ ul {
 									<td><a href="#">제주</a></td>
 								</tr>
 							</table>
-						</li>
-					</ul>
-				</li>
-			</ul>
+					    </li>
+					  </ul>
+				</div>
+				
+				
+				<div class="dropdown sideroom">
+					  <a id="drop_buy" class="sideregion_title dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="true">
+					    <i class="fa-solid fa-cart-shopping"></i>&nbsp;&nbsp;사구
+					  </a>
+					
+					  <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+					  	<li>
+					    	<table class="sideregion_tags">
+					    		<tr>
+									<td><a href="#">전체</a></td>
+									<td><a href="#">서울</a></td>
+									<td><a href="#">인천</a></td>
+								</tr>
+								<tr>
+									<td><a href="#">경기</a></td>
+									<td><a href="#">경상</a></td>
+									<td><a href="#">전라</a></td>
+								</tr>
+								<tr>
+									<td><a href="#">충청</a></td>
+									<td><a href="#">강원</a></td>
+									<td><a href="#">제주</a></td>
+								</tr>
+							</table>
+					    </li>
+					  </ul>
+				</div>	
+				
+				
+				<div id="chatroom" class="sideroom">
+					<span>
+						<a href="#"><i class="fa-solid fa-comment-dots"></i>&nbsp;&nbsp;채팅</a>
+					</span>
+				</div>
+				
+			</div>
 			
 			
 		</div>
@@ -199,15 +143,44 @@ ul {
 <script type="text/javascript">
 
 $('#sidebar-toggleOff').click(function() {    
-    $("#sidebar, #sideList, #sidebar-toggleOff, #sideclose").removeClass('sideon')
+    $("#sidebar, #sideList, #sidebar-toggleOff, #sideclose, #drop_sell, #drop_buy").removeClass('sideon')
     console.log("off");
 });
 
 $('#sidebar-toggleOn').click(function() {
-    $("#sidebar, #sideList, #sidebar-toggleOff, #sideclose").addClass('sideon')
+    $("#sidebar, #sideList, #sidebar-toggleOff, #sideclose, #drop_sell, #drop_buy").addClass('sideon')
     console.log("on");
 });
 
+
+
+$('#drop_sell').click(function() {
+	if($("#drop_buy").hasClass('padding_plus')){		
+		$("#drop_buy").removeClass('padding_plus')
+		$("#chatroom").removeClass('padding_plus')
+	} else{
+		$("#drop_buy").addClass('padding_plus')
+		$("#chatroom").addClass('padding_plus')
+	}
+	
+});
+
+$('#drop_buy').click(function(){
+	if($("#drop_buy").hasClass('padding_plus')){
+		if($("#chatroom").hasClass('padding_plus')){
+			$("#drop_buy").removeClass('padding_plus')
+			$(".dropdown-menu").css("transform","translate(0px, 43px)");
+		}
+	} else {
+		if($("#chatroom").hasClass('padding_plus')){
+			$("#chatroom").removeClass('padding_plus')
+		} else{
+		$("#chatroom").addClass('padding_plus')
+		}
+	}
+});
+
+	
 </script>
 
 </html>

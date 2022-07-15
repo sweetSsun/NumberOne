@@ -31,7 +31,7 @@
 	  
 	<!-- Js Plugins -->
     <script src="${pageContext.request.contextPath }/resources/js/jquery-3.3.1.min.js"></script>
-    <script src="${pageContext.request.contextPath }/resources/js/bootstrap.min.js"></script>
+<%--     <script src="${pageContext.request.contextPath }/resources/js/bootstrap.min.js"></script> --%>
     <script src="${pageContext.request.contextPath }/resources/js/jquery.nice-select.min.js"></script>
     <script src="${pageContext.request.contextPath }/resources/js/jquery-ui.min.js"></script>
     <script src="${pageContext.request.contextPath }/resources/js/jquery.slicknav.js"></script>
@@ -52,22 +52,22 @@
 	    /* 메인배너*/
 	    .fixtext h2 {
     	    font-size: 46px;
-		    color: #00bcd4;
+		    color: #fff;
 		    line-height: 52px;
 		    font-weight: 700;
 		    margin: 10px 0;
 	    }
 	    .fixtext span {
 			font-size: 20px;
+			color: #00bcd4;
 			text-transform: uppercase;
 			font-weight: 700;
 			letter-spacing: 4px;
-			color: #00bcd4;
 		}
 		
 	    .fixback {    
 	    	background-color: white;
-	    	background-color: rgba( 255, 255, 255, 0.5 );
+	    	background-color: rgba( 0, 0, 0, 0.3 );
 	    	border-radius: 10px;
 	    }
 	    
@@ -184,7 +184,7 @@
 			<div class="row">
 		
 				<!-- 메인배너 -->
-				<div class="col-lg-10" style="margin: auto;">
+				<div class="col-lg-9 col-sm-9" style="margin: auto;">
 					<div id="carousel-example-generic" class="carousel slide" style="width: 100%; min-height: 50px;">
 					<!-- 사진크기 이상해지면 50vh 반응형넣기 -->
 						<!-- Indicators -->
@@ -204,7 +204,7 @@
 							      	<div class="carousel-caption fixback" style="color:black;">
 							      		
 				                        <div class="fixtext">
-				                            <span>${fixList.bdnickname } 님의</span>				                    
+				                            <span>${fixList.bdnickname } 님</span>				                    
 				                            <h2>${fixList.bdtitle }</h2>
 			                    		</div>
 							    	</div>
@@ -216,7 +216,7 @@
 			                		<img style="width: 100%; height:100%;" alt="자랑방상세이동" src="${pageContext.request.contextPath }/resources/img/room/${fixList.bdimg}">
 							      	<div class="carousel-caption fixback" style="color:black;">
 					                        <div class="fixtext">				                            
-					                            <span>${fixList.bdnickname } 님의</span>					                            
+					                            <span>${fixList.bdnickname } 님</span>					                            
 					                            <h2>${fixList.bdtitle }</h2>
 					                        </div>
 
@@ -240,24 +240,18 @@
 				</div>
 				
 				<!-- 두번째배너 -->
-				<div class="col-lg-2" style="margin: auto;">
+				<div class="col-lg-3 col-sm-3" style="margin: auto;">
 					<div id="banner_second" class="owl-carousel" style="width: auto; height: 50vh;">
-						<!-- Indicators -->
-						<!-- <ol class="banner_second_indicators" style="min-width: -webkit-fill-available;">
-					    	<li data-target="#banner_second" data-slide-to="0" class="active"></li>
-					    	<li data-target="#banner_second" data-slide-to="1"></li>
-						</ol> -->
-					
-					
+										
 					    <div class="item" style="height:100%">
 	                		<a href="selectRoomList">
-	                			<img style="height:50vh;" alt="자랑방상세이동" src="${pageContext.request.contextPath }/resources/img/house_ad.jpg">
+	                			<img style="height:50vh;" alt="자랑방목록이동" src="${pageContext.request.contextPath }/resources/img/house_ad.jpg">
 	               			</a>
 					    </div>
 			        
 					    <div class="item" style="height:100%">
 	                		<a href="selectRoomList">
-	                			<img style="height:50vh;" alt="자랑방상세이동" src="${pageContext.request.contextPath }/resources/img/house_ad2.jpg">
+	                			<img style="height:50vh;" alt="자랑방목록이동" src="${pageContext.request.contextPath }/resources/img/house_ad2.jpg">
 	               			</a>
 					    </div>						      
 			        </div>
@@ -501,7 +495,7 @@
 		$('#carousel-example-generic').carousel({
 		// 슬라이딩 자동 순환 지연 시간
 		// false면 자동 순환하지 않는다.
-		interval: false,
+		interval: 30000,
 		// hover를 설정하면 마우스를 가져대면 자동 순환이 멈춘다.
 		pause: "hover",
 		// 순환 설정, true면 1 -> 2가면 다시 1로 돌아가서 반복
@@ -518,7 +512,7 @@
 	    dots : true, // Pagination 표시 여부
 	    autoplay : true, // 자동 슬라이드 여부
 	    autoplayTimeout : 30000, // 자동 슬라이드 시간 (1초=1000)
-	    loop : false, // 무한 반복 여부
+	    loop : true, // 무한 반복 여부
 	    nav: true,
 	    
 	})

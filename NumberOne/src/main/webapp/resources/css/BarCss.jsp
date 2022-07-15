@@ -22,6 +22,7 @@
 	
 	body{
 		font-family: 'pretendard';
+		height: auto;
 	}
 	
 	
@@ -48,8 +49,8 @@
 	}
 	
 	#header_menu ul li{
-		overflow: auto;
-		display: inline;
+/* 		overflow: auto;
+ */		display: inline;
 	}
 	
 	a{	
@@ -219,8 +220,6 @@
 	#sidebar-toggleOff .sideOffImg { display:none; }	
 	#sidebar-toggleOn.sideon .sideOnImg { display:none; }
 	#sideclose.sideon { display:none; }
-
-
 	
 	/* ------------------------------ */
 	/* ------- sidebar_마이페이지 ------ */
@@ -243,7 +242,28 @@
 		font-size: 16px;
 		padding-left: 20px;
 	}
-					
+
+
+	/* --------------------------------- */
+	/* ------- sidebar_중고거래페이지 ------ */
+	/* --------------------------------- */
+	
+	.dropdown-menu {
+	list-style:none;
+	}
+	.dropdown-menu li {
+		width: 130px;
+	}
+	#drop_buy.padding_plus, #chatroom.padding_plus {
+		padding-top: 100px;
+	}
+	
+	#drop_sell, #drop_buy { display:none; }
+	#drop_sell.sideon, #drop_buy.sideon { display: block; padding-bottom: 0px; margin-bottom: 0px;}
+
+	
+	
+	
 	/* -------------------------------- */
 	/* ------- sidebar_관리자페이지 ------ */
 	/* -------------------------------- */
@@ -257,12 +277,14 @@
 	    padding-left: 10px;
 	    font-weight: bold;
 	}
+	
 
+	
 	/* -------------------------- */
 	/* HOVERRRRRRRRRRRRRRRRRRRRRR */
 	/* -------------------------- */
 	
-	.sidetitle span a:hover, .sideroom span a:hover, .sideregion_tags tr td a:hover, .sidetitle_mypage span a:hover, .side_mypage a:hover {
+	.sidetitle span a:hover, .sideroom a:hover, .sideroom span a:hover, .sideregion_tags tr td a:hover, .sidetitle_mypage span a:hover, .side_mypage a:hover {
 		color: #00bcd4;
 		text-decoration: none;
 	}
@@ -278,7 +300,6 @@
 	.sideclose_room:hover, .side_admin:hover {
 		background-color: rgba( 255, 255, 255, 0.3 );	
 	}
-
 
 
 
