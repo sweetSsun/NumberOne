@@ -122,22 +122,25 @@
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="selectFreeBoardList"><i class="fa-solid fa-comments"></i>&nbsp;&nbsp;자유방</a>
+					<!-- 자유방 -->
+						<a href="selectCategoryBoardList?searchVal=자유"><i class="fa-solid fa-comments"></i>&nbsp;&nbsp;자유방</a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="selectQuestionBoardList"><i class="fa-solid fa-circle-question"></i>&nbsp;&nbsp;질문방</a>
+					<!-- 질문방 -->
+						<a href="selectCategoryBoardList?searchVal=질문"><i class="fa-solid fa-circle-question"></i>&nbsp;&nbsp;질문방</a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="selectInfoBoardList"><i class="fa-solid fa-head-side-virus"></i>&nbsp;&nbsp;정보방</a>
+					<!-- 정보방 -->
+						<a href="selectCategoryBoardList?searchVal=정보"><i class="fa-solid fa-head-side-virus"></i>&nbsp;&nbsp;정보방</a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="selectReviewBoardList"><i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;후기방</a>
+						<a href="selectCategoryBoardList?searchVal=후기"><i class="fa-solid fa-pen-to-square"></i>&nbsp;&nbsp;후기방</a>
 					</span>
 				</div>
 			</div>
@@ -150,7 +153,6 @@
 				<div>
 					<table class="sideregion_tags">
 						<tr>
-							
 							<td><a href="selectRegionBoardList">전체</a></td>
 							<td><a href="selectDetailBoardList?bdrgcode=SEL">서울</a></td>
 							<td><a href="selectDetailBoardList?bdrgcode=ICN">인천</a></td>

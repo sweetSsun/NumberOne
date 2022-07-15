@@ -66,13 +66,14 @@ public class ResellController {
 	}
 	
 	@RequestMapping(value = "/updateResellModify")
-	public ModelAndView updateResellModify(UsedBoardDto ubDto) {
+	public ModelAndView updateResellModify(GoodsDto gdDto, UsedBoardDto ubDto, RedirectAttributes ra) throws IllegalStateException, IOException {
 		System.out.println("updateResellModify 호출");
 		ModelAndView mav = new ModelAndView();
+System.out.println(gdDto);
+System.out.println(ubDto);
+		mav = rsvc.updateResellModify(gdDto, ubDto, ra);
 
-		//mav = rsvc.updateResellModify(ubDto);
-
-		return null;
+		return mav;
 	}
 
 	@RequestMapping(value = "/updateResellDelete")
