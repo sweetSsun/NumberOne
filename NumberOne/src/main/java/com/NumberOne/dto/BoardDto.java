@@ -44,12 +44,14 @@ public class BoardDto {
 	private String schistory;   //스크랩 기록
 	private String wbhistory;   //신고 기록	
 	
-	//게시글 별 댓글수 저장
+	//게시글 댓글수 저장
 	private int bdrpcount;		//댓글수
-	//게시글 별 추천수 저장 
+	//게시글 추천수 저장 
 	private int bdrccount;		//추천수
 	
-
+	//후기글 별점 저장
+	private int bdrate;			//별점수
+	
 	public String getBdcode() {
 		return bdcode;
 	}
@@ -214,27 +216,23 @@ public class BoardDto {
 	public void setBdmstate(int bdmstate) {
 		this.bdmstate = bdmstate;
 	}
+	public int getBdrate() {
+		return bdrate;
+	}
+	public void setBdrate(int bdrate) {
+		this.bdrate = bdrate;
+	}
 	@Override
 	public String toString() {
 		return "BoardDto [bdcode=" + bdcode + ", bdrgcode=" + bdrgcode + ", bdrgname=" + bdrgname + ", bdcategory="
 				+ bdcategory + ", bdmid=" + bdmid + ", bdtitle=" + bdtitle + ", bdcontents=" + bdcontents + ", bddate="
 				+ bddate + ", bdimg=" + bdimg + ", bddetailimg=" + bddetailimg + ", bdstate=" + bdstate + ", bdhits="
-				+ bdhits + ", bdfix=" + bdfix + ", bdmstate=" + bdmstate + ", bdrecommend=" + bdrecommend
-				+ ", bdwarning=" + bdwarning + ", bdreply=" + bdreply + ", bdscrap=" + bdscrap + ", bdimgfile="
-				+ bdimgfile + ", bddetailimgfile=" + Arrays.toString(bddetailimgfile) + ", bdnickname=" + bdnickname
-				+ ", bdmprofile=" + bdmprofile + ", rchistory=" + rchistory + ", schistory=" + schistory
-				+ ", wbhistory=" + wbhistory + ", bdrpcount=" + bdrpcount + ", bdrccount=" + bdrccount + "]";
+				+ bdhits + ", bdfix=" + bdfix + ", bdrecommend=" + bdrecommend + ", bdwarning=" + bdwarning
+				+ ", bdreply=" + bdreply + ", bdscrap=" + bdscrap + ", bdimgfile=" + bdimgfile + ", bddetailimgfile="
+				+ Arrays.toString(bddetailimgfile) + ", bdnickname=" + bdnickname + ", bdmprofile=" + bdmprofile
+				+ ", bdmstate=" + bdmstate + ", rchistory=" + rchistory + ", schistory=" + schistory + ", wbhistory="
+				+ wbhistory + ", bdrpcount=" + bdrpcount + ", bdrccount=" + bdrccount + ", bdrate=" + bdrate + "]";
 	}
 	
-	
-	
-	
-	
-	
-	
-
-
-		
-
 
 }

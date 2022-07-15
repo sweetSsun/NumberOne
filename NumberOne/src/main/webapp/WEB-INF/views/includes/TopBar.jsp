@@ -36,7 +36,6 @@
 	<header class="bg-white" id="header_menu">
 		<div class="container" style="width: 70%;">
 		
-		
 			<div class="row">			
 				
 				<!-- 로고이미지 -->

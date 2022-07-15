@@ -8,7 +8,7 @@
 <%@ include file="/resources/css/BarCss.jsp" %>
 <!-- 폰트어썸 -->
 <script src="https://kit.fontawesome.com/86a85cd392.js" crossorigin="anonymous"></script>
-<title>1인자 - 게시글 작성페이지</title>
+<title>1인자 - 후기글 수정페이지</title>
 <!-- Jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
@@ -22,18 +22,18 @@
 		width: 200px;
 		text-align : center;
 		border : none;
-		color : #004804;
+		color : #00bcd4;
 	}
 	option{
-		color : #00bcd4;
+		color :#00bcd4;
 		font-weight: bold;
 	}
 	.bdtitle{
 		border: none;
 		font-weight: bold;
 		font-size: 20px;
-		margin: auto;
 		height: 22px;
+		margin: auto;
 	}
 	.bdcontents{
 		border-radius: 5px;
@@ -46,17 +46,12 @@
 		display:inline-block;
 	}
 	.buttons{
-		margin: auto; /* 수평 */
-		display: block; /* 수직 */
+		margin: auto;
+		display: block;
 		
 	}
 	.selectPlaceHolder{
 		display: none;
-	}
-	textarea{
-		spellcheck: false;
-		resize: none;
-		
 	}
 	textarea:focus {
  	   outline: none;
@@ -74,11 +69,36 @@
 		border: none;
 		font-size: 20px;
 	}
-	#image_container{
-		max-height: 100px;
-		max-width: 100px;
-	}
 	
+	/*  */
+#myform fieldset{
+    display: inline-block;
+    direction: rtl;
+    border:0;
+}
+#myform fieldset legend{
+    text-align: right;
+}
+#myform input[type=radio]{
+    display: none;
+}
+#myform label{
+    font-size: 2em;
+    color: transparent;
+    text-shadow: 0 0 0 #f0f0f0;
+}
+#myform label:hover{
+    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+    color: #00bcd4;
+}
+#myform label:hover ~ label{
+    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+    color: #00bcd4;
+}
+#myform input[type=radio]:checked ~ label{
+    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+    color: #00bcd4;
+}
 </style>
 </head>
 <body>
@@ -100,32 +120,26 @@
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h2 class="text-center">게시판 글작성페이지 : BoardWriteForm.jsp</h2>
-				<form action="insertBoardWrite" method="post" enctype="multipart/form-data" onsubmit="return writeFormCheck();">
-					<input type="hidden" name="bdmid" value="${sessionScope.loginId }">
+				<h2 class="text-center">후기글 수정페이지 : ReviewBoardModifyForm.jsp</h2>
+				<form action="updateBoardModify" method="post" enctype="multipart/form-data">
+				<div class="row">
+					<input type="hidden" name="bdmid" value="${board.bdmid }">
+					<input type="hidden" name="bdcode" value="${board.bdcode }">
+					<input type="hidden" class="fw-bold" name="bdnickname" value="${board.bdnickname }">
+					<hr>
+				</div>
+				
 				<div class="row">
 					<div class="col-6">
-						<span style="font-size:20px;">게시판</span><span class="text-danger">*</span>
+						 <span style="font-size:20px;">게시판</span><span class="text-danger">*</span>
 						<select name="bdcategory" class="bdCategoryList" required="required">
-							<c:choose>
-								<c:when test="${bdcategory eq '' }">
-									<option value="" disabled selected class="selectPlaceHolder">필수</option>
-								</c:when>
-								
-								<c:otherwise>
-									<option value="${bdcategory}" class="selectPlaceHolder">${bdcategory}</option>
-								</c:otherwise>
-							</c:choose>
-							<option value="자유">자유</option>
-							<option value="질문">질문</option>
-							<option value="정보">정보</option>
 							<option value="후기">후기</option>
 						</select>
 					</div>
 					<div class="col-6">
 						<span style="font-size:20px;">지역</span>
 						<select name="bdrgcode" class="bdRegionSel">
-							<option value="" disabled selected class="selectPlaceHolder">선택</option>
+							<option value="${board.bdrgcode }"  class="selectPlaceHolder">${board.bdrgname }</option>
 							<option value="ALL">전국</option>
 							<option value="SEL">서울</option>
 							<option value="ICN">인천</option>
@@ -140,21 +154,39 @@
 				</div>
 				<hr>
 				<div class="row">
-					<input id="bdtitle" class="bdtitle" name="bdtitle" type="text" >
+					<input class="bdtitle" name="bdtitle" type="text" value="${board.bdtitle }">
 				</div>
 				<hr>
+				<!-- 별점 -->
+					<div class="row">
+						<div class="col" class="mb-3" id="myform">
+							<fieldset>
+								<input type="radio" name="bdrate" value="5" id="rate1"><label
+									for="rate1">★</label>
+								<input type="radio" name="bdrate" value="4" id="rate2"><label
+									for="rate2">★</label>
+								<input type="radio" name="bdrate" value="3" id="rate3"><label
+									for="rate3">★</label>
+								<input type="radio" name="bdrate" value="2" id="rate4"><label
+									for="rate4">★</label>
+								<input type="radio" name="bdrate" value="1" id="rate5"><label
+									for="rate5">★</label>
+							</fieldset>
+						</div>
+					</div>	
 				<div class="row">
-					<textarea id="bdcontents" class="bdcontents" rows="17" cols="80" name="bdcontents"></textarea>
+					<textarea class="bdcontents" rows="17" cols="80" name="bdcontents">${board.bdcontents }</textarea>
 				</div>
 				<div class="row mt-4">
-					<!-- 파일선택 -->
+					<%-- <img style="max-height:200px; max-width:200px;" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg}"> --%>
+					<!-- 첨부파일! 나중에 경로 및 name 수정  -->
 					<div id="image_container"></div>
-					<input id="bdImg" type="file" name="bdimgfile" accept="image/*" onchange="setThumbnail(event);" >
+					<input id="bdImg" type="file" name="bdimgfile" accept="image/*"  >
 				</div>
 				<div class="row mt-4">
 					<div class="col btn-wrapper">
-						<input class="btn btn-lg buttons fw-bold text-white" style="background-color:#00bcd4;" type="submit" value="작성">
-						<input onclick="bdWriteCancelCheckModal()" style="background-color:#00bcd4;" class="btn btn-lg buttons fw-bold text-white" type="button" value="취소">
+						<input class="btn btn-lg buttons fw-bold text-white" style="background-color:#00bcd4;" type="submit" value="수정">
+						<input onclick="bdWriteCancelCheckModal()" class="btn btn-lg buttons fw-bold text-white" style="background-color:#00bcd4;" type="button" value="취소">
 					</div>
 				</div>
 			</form>
@@ -183,81 +215,66 @@
                 </div>	
                 <div class="modal-footer">
                 	<input type="hidden" >
-                    <button class="close btn btn-info text-white" onclick="writeBoardCancel(this)" >네</button>
+                    <button class="close btn btn-info text-white" onclick="modifyBoardCancel()" >네</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
             </div>
         </div>
     </div>
 	
-	
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 
 <script type="text/javascript">
-	
+	$(document).ready(function(){
+		
+		/* 별점 출력 */
+		var bdrate = ${board.bdrate};
+		console.log("별점 : " + bdrate);
+		
+		var radio = $("input[type=radio][name=bdrate]");
+		console.log(radio);
+		for( var i=0; i< radio.length; i++){
+			if( radio.eq(i).val() == bdrate ){
+				radio.eq(i).attr("checked", "checked");
+			}
+		}
+		
+	});
 </script>
 
 <script type="text/javascript">
+	//선택한 글번호 
+	var bdcode = '${board.bdcode}';
 	//현재 로그인중인 아이디
 	var loginId = '${sessionScope.loginId}';
 	
 </script>
+
 <script type="text/javascript">
-		// 게시글 작성 취소 경고 모달창 close 하는 스크립트
- 		var modal = $(".modal");
-		var close = $(".close");
-		for (var i = 0; i < close.length; i++){
-			close[i].addEventListener("click", function(){
-				$("#bdWriteCancelCheckModal").modal("hide");
-			});
-		}
-</script>
-<script type="text/javascript">
-	
 	function bdWriteCancelCheckModal(){
-		/* 게시글 작성 취소버튼 클릭시 모달 출력 */
-		$("#bdWriteCancelCheckModal").modal('show');
+	/* 게시글 작성 취소버튼 클릭시 모달 출력 */
+	$("#bdWriteCancelCheckModal").modal('show');
+}
+</script>
+
+<script type="text/javascript">
+	// 게시글 삭제 경고 모달창 close 하는 스크립트
+ 	var modal = $(".modal");
+	var close = $(".close");
+	for (var i = 0; i < close.length; i++){
+		close[i].addEventListener("click", function(){
+			$("#bdWriteCancelCheckModal").modal("hide");
+		});
 	}
-	function writeBoardCancel(){
-		/* 작성취소 */
+</script>
+
+<script type="text/javascript">
+	function modifyBoardCancel(){
+		/* 수정취소 */
 		history.back();
-		
 	}
 </script>
 
-<script type="text/javascript">
-	function writeFormCheck(){
-		/* 게시글 작성 submit */
-		var inputTitle = $("#bdtitle").val();
-		var inputContents = $("#bdcontents").val();
-		
-		if ( inputTitle.length == 0){
-			alert("제목을 입력하세요.");
-			return false;
-		}
-		
-		if ( inputContents.length == 0 ){
-			alert("내용을 입력하세요.");
-			
-			return false;
-		}
-	}
-</script>
-
-<script type="text/javascript">
-	/* 업로드 이미지 미리보기 기능 */
-	function setThumbnail(event){
-		var reader = new FileReader();
-		
-		reader.onload = function(event){
-			var img = document.createElement("img");
-			img.setAttribute("src", event.target.result);
-			document.querySelector("div#image_container").appendChild(img);
-		};
-		 reader.readAsDataURL(event.target.files[0]);
-	}
-</script>
 
 </html>
