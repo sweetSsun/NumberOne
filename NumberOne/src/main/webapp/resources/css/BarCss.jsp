@@ -3,6 +3,7 @@
 
 <!-- 폰트어썸 -->
 <script src="https://kit.fontawesome.com/86a85cd392.js" crossorigin="anonymous"></script>
+
 <style type="text/css">
 /* 폰트 : 프리텐다드 */
 @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
@@ -231,9 +232,10 @@
 	    font-weight: bold;
 		font-size: 20px;
 		margin-top: 40%;
-		margin-left: 8%;
 	}
-	
+	.sidetitle_mypage span a {
+		margin-left: 7%;
+	}
 	.side_mypage, .side_admin_a {
 		display: grid;
 		text-align: left;

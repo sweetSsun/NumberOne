@@ -35,22 +35,22 @@
 				
 				<div class="sideclose_room">
 					<span>
-						<a href="selectMyInfoCommunityView" title="글"><i class="fa-solid fa-pencil"></i></a>
+						<a href="selectMyInfoCommunityView#scroll-board" title="글"><i class="fa-solid fa-pencil"></i></a>
 					</span>
 				</div>
 				<div class="sideclose_room">
 					<span>
-						<a href="selectMyInfoCommunityView#reply" title="댓글"><i class="fa-brands fa-replyd"></i></a>
+						<a href="selectMyInfoCommunityView#scroll-reply" title="댓글"><i class="fa-brands fa-replyd"></i></a>
 					</span>
 				</div>
 				<div class="sideclose_room">
 					<span>
-						<a href="selectMyInfoCommunityView#scrap" title="스크랩"><i class="fa-solid fa-star"></i></a>
+						<a href="selectMyInfoCommunityView#scroll-scrap" title="스크랩"><i class="fa-solid fa-star"></i></a>
 					</span>
 				</div>
 				<div class="sideclose_room">
 					<span>
-						<a href="selectMyInfoResellView" title="팔구사구"><i class="fa-solid fa-carrot"></i></a>
+						<a href="selectMyInfoResellView#scroll-sellbuy" title="팔구사구"><i class="fa-solid fa-carrot"></i></a>
 					</span>
 				</div>
 				<div class="sideclose_room">
@@ -87,13 +87,13 @@
 					<span style="font-weight: bold; font-size: 20px;"><a href="selectMyInfoCommunityView">커뮤니티</a></span>
 					
 					<div class="side_mypage">
-						<a href="selectMyInfoCommunityView"><i class="fa-solid fa-pencil"></i>&nbsp;&nbsp;글</a>
+						<a href="selectMyInfoCommunityView#scroll-board"><i class="fa-solid fa-pencil"></i>&nbsp;&nbsp;글</a>
 					</div>
 					<div class="side_mypage">
-						<a href="selectMyInfoCommunityView#reply"><i class="fa-brands fa-replyd"></i>&nbsp;&nbsp;댓글</a>
+						<a href="selectMyInfoCommunityView#scroll-reply"><i class="fa-brands fa-replyd"></i>&nbsp;&nbsp;댓글</a>
 					</div>
 					<div class="side_mypage">
-						<a href="selectMyInfoCommunityView#scrap"><i class="fa-solid fa-star"></i>&nbsp;&nbsp;스크랩</a>
+						<a href="selectMyInfoCommunityView#scroll-scrap"><i class="fa-solid fa-star"></i>&nbsp;&nbsp;스크랩</a>
 					</div>
 				</div>
 				
@@ -101,7 +101,7 @@
 					<span style="font-weight: bold; font-size: 20px;"><a href="selectMyInfoResellView">중고거래</a></span>
 					
 					<div class="side_mypage">
-						<a href="selectMyInfoResellView"><i class="fa-solid fa-carrot"></i>&nbsp;&nbsp;팔구사구</a>
+						<a href="selectMyInfoResellView#scroll-sellbuy"><i class="fa-solid fa-carrot"></i>&nbsp;&nbsp;팔구사구</a>
 					</div>
 					<div class="side_mypage">
 						<a href="selectMyInfoResellView#scroll-chat"><i class="fa-solid fa-comment-dots"></i>&nbsp;&nbsp;채팅</a>

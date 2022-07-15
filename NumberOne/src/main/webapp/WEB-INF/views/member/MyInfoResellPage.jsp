@@ -79,6 +79,7 @@
 		<%@ include file="/WEB-INF/views/includes/SideBar_Mypage.jsp" %>
 		
 		<section>
+		<div style="min-height: 50px;" id="scroll-sellbuy"></div>
 		<!-- 본문 -->
 			<div class="container">
 				<br>
@@ -89,34 +90,60 @@
                             <div class="row">
                                 <div class="col-lg-6" >
                                     <div>
+                                    
+										<!-- 팔구 목록 -->
 										<h4 class="" style="color: #00BCD4; margin-left: 30px;" class ="blank">팔구</h4>  
 										<table style="width: 550px;">
 											<tr class="text-center" id="board_column">
 											<td>글제목</td>
-											</tr>
-										<c:forEach items="${sellBoard }" var="sell" varStatus="index">
-										<!-- 팔구 목록 -->
+											</tr>											
+									<c:forEach items="${sellBoard }" var="sell" varStatus="index">
+									<c:choose>
+										<c:when test="${sell.ubstate == 0}">
+											<tr style="border-bottom: solid #E0E0E0 1px; color:gray; text-align: center;">
+											<td>(정지)&nbsp;<span style="text-decoration : line-through;">${sell.ubtitle}</span></td></tr>									
+										</c:when>
+										<c:when test="${sell.ubstate == 2}">
+											<tr style="border-bottom: solid #E0E0E0 1px; color:gray; text-align: center;">
+											<td>(삭제)&nbsp;<span style="text-decoration : line-through;">${sell.ubtitle}</span></td></tr>									
+										</c:when>										
+										<c:otherwise>
 											<tr style="border-bottom: solid #E0E0E0 1px; text-align: center;">						
 											<td><a href="selectResellView?ubcode=${sell.ubcode }&ubsellbuy=S&modifyCheck=LIST">${sell.ubtitle}</a></td>					
-											</tr>
+											</tr>									
+										</c:otherwise>
+									</c:choose>		
 										</c:forEach> 
 										</table>										                                  
                                     </div>
                                 </div>    
                                 <div class="col-lg-6" >
                                     <div>
-										<h4 class="checkout__form" style="color: #00BCD4; margin-left: 30px;">사구</h4>
+										<!-- 사구 목록 -->
+										<h4 class="" style="color: #00BCD4; margin-left: 30px;" class ="blank">사구</h4>  
 										<table style="width: 550px;">
 											<tr class="text-center" id="board_column">
 											<td>글제목</td>
-											</tr>
-										<c:forEach items="${buyBoard }" var="buy">
-										<!-- 사구 목록 -->
-											<tr style="border-bottom: solid #E0E0E0 1px; text-align: center;">
-											<td><a href="selectResellView?ubcode=${buy.ubcode }&ubsellbuy=B&modifyCheck=LIST">${buy.ubtitle}</a></td>					
-											</tr>
-										</c:forEach>
-										</table>
+											</tr>											
+									<c:forEach items="${buyBoard }" var="buy" varStatus="index">
+									<c:choose>
+										<c:when test="${buy.ubstate == 0}">
+											<tr style="border-bottom: solid #E0E0E0 1px; color:gray; text-align: center;">
+											<td>(정지)&nbsp;<span style="text-decoration : line-through;">${buy.ubtitle}</span></td></tr>									
+										</c:when>
+										<c:when test="${buy.ubstate == 2}">
+											<tr style="border-bottom: solid #E0E0E0 1px; color:gray; text-align: center;">
+											<td>(삭제)&nbsp;<span style="text-decoration : line-through;">${buy.ubtitle}</span></td></tr>									
+										</c:when>										
+										<c:otherwise>
+											<tr style="border-bottom: solid #E0E0E0 1px; text-align: center;">						
+											<td><a href="selectResellView?ubcode=${buy.ubcode }&ubsellbuy=S&modifyCheck=LIST">${buy.ubtitle}</a></td>					
+											</tr>									
+										</c:otherwise>
+									</c:choose>		
+										</c:forEach> 
+										</table>                                    
+
 				<!-- 여백 -->				
 					<div style="min-height: 500px;"></div>										
                                     </div>
@@ -174,8 +201,27 @@
 							<td>작성자</td>						
 							<td>날짜</td>
 						</tr>
-						<c:forEach items="${zzimBoard }" var="zzim"> 
-							<!-- 찜한 목록 -->
+						<c:forEach items="${zzimBoard }" var="zzim">
+						
+						<c:choose>
+						
+						<c:when test="${zzim.ubstate == 0}">
+							<tr style="border-bottom: solid #E0E0E0 1px;  color:gray; text-align: center; ">
+								<td>(정지)&nbsp;<span style="text-decoration : line-through;">${zzim.ubtitle }</span></td>
+								<td style="text-decoration : line-through;">${zzim.mnickname }</td>
+								<td style="text-decoration : line-through;">${zzim.ubdate }</td>
+							</tr>						
+						</c:when>
+
+						<c:when test="${zzim.ubstate == 2}">
+							<tr style="border-bottom: solid #E0E0E0 1px;  color:gray; text-align: center; ">
+								<td>(삭제)&nbsp;<span style="text-decoration : line-through;">${zzim.ubtitle }</span></td>
+								<td style="text-decoration : line-through;">${zzim.mnickname }</td>
+								<td style="text-decoration : line-through;">${zzim.ubdate }</td>
+							</tr>						
+						</c:when>						
+						
+						<c:otherwise>
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center; ">
 							<c:choose>
 							<c:when test="${zzim.ubsellbuy == 'S' }">
@@ -188,6 +234,11 @@
 								<td>${zzim.mnickname }</td>
 								<td>${zzim.ubdate }</td>
 							</tr>
+						</c:otherwise> 
+						
+						</c:choose>
+						 
+							<!-- 찜한 목록 -->
 														
 						</c:forEach>
 				</table>
