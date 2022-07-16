@@ -109,6 +109,7 @@
 						<!-- 말머리 정렬 -->
 						<select class="bdCategoryList" name="searchVal" id="searchValSel" onchange="bdCategorySel(this.value)">
 							<option class="bdcategorySel malmeori" value="" disabled selected >카테고리 선택</option>
+							<option class="bdcategorySel" value="">전체</option>
 							<option class="bdcategorySel" value="자유">자유</option>
 							<option class="bdcategorySel" value="질문">질문</option>
 							<option class="bdcategorySel" value="정보">정보</option>
@@ -182,7 +183,7 @@
 				</table>
 				<div align="right" class="col mt-2">
 					<c:if test="${sessionScope.loginId != null }">
-						<button  onclick="loadToBoardWrite()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">글작성</button>
+						<button type="button" onclick="loadToBoardWrite()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">글작성</button>
 					</c:if>
 				</div>
 				</div>
@@ -248,7 +249,6 @@
 	if ( checkMsg.length > 0 ){
 		alert(checkMsg);
 	}
-	
 </script>
 
 <script type="text/javascript">
@@ -273,7 +273,6 @@
 		}
 	}
 </script>
-	
 
 <script type="text/javascript">
 
@@ -305,7 +304,7 @@
 					output += "<td class=\"text-center tableCell\">" + bdCategoryList[i].bdcode + "</td>";
 					output += "<td class=\"bdcategory text-center tableCell \">" + bdCategoryList[i].bdcategory + "</td>";
 					output += "<td class=\"tableCell\"><a href='selectBoardView?bdcode=" + bdCategoryList[i].bdcode + "'>" + bdCategoryList[i].bdtitle + "</a>"
-					output += "<span class=\"fw-bold tableCell \" style=\"font-size:15px; color:#00bcd4;\">&nbsp;" + bdCategoryList[i].bdrpcount + "</span></td>"
+					output += "<span class=\"fw-bold tableCell \" style=\"font-size:15px; color:#00bcd4;\">&nbsp;&nbsp;" +bdCategoryList[i].bdrpcount + "</span></td>"
 					output += "<td class=\"text-center tableCell\"><a href=\"#\">" + bdCategoryList[i].bdnickname + "</a></td>";
 					output += "<td class=\"text-center tableCell\">" + bdCategoryList[i].bddate + "</td>";
 					output += "<td class=\"text-center tableCell\">" + bdCategoryList[i].bdhits + "</td>";
@@ -318,18 +317,5 @@
 	}
 	
 </script>
-
-<!-- <script type="text/javascript">
-	function searchTextCheck(){
-		/* 검색어 입력유무 확인 */
-		var inputSearchText = $("#inputSearchText").val();
-		
-		if( inputSearchText.length == 0 ){//검색어를 입력하지 않았으면 
-			alert("검색어를 입력해주세요!");
-		
-			return false;
-		}
-	}
-</script> -->
 
 </html>

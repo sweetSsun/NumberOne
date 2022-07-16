@@ -54,7 +54,7 @@ body.sideon {
 	<!-- 햄버거 -->
 	<div id="sidebar-toggleOff">
 		<!-- <a class="sideOnImg"><i class="fa fa-bars"></i></a> -->
-		<a class="sideOffImg"><i class="fa fa-bars"></i></a>
+		<a class="sideOffImg" title="메뉴 축소"><i class="fa fa-bars"></i></a>
 	</div>
 	
 	<!-- 사이드바 -->
@@ -65,42 +65,42 @@ body.sideon {
 			<div class="sidemenu">
 			
 				<div id="sidebar-toggleOn" class="sidetitle_close" style="padding-bottom: 12px; padding-top: 12px; border-color: white; color: white;">
-					<span><a class="sideOnImg"><i class="fa fa-bars"></i></a></span>
+					<span><a class="sideOnImg" title="메뉴 확장"><i class="fa fa-bars"></i></a></span>
 				</div>
 				
 				<div class="sideclose_room">
 					<span>
-						<a href="admin_selectMemberList"><i class="fa-solid fa-circle-user"></i></a>
+						<a href="admin_selectMemberList" title="회원관리"><i class="fa-solid fa-circle-user"></i></a>
 					</span>
 				</div>
 				<div class="sideclose_room">
 					<span>
-						<a href="admin_selectNoticeList"><i class="fa-solid fa-volume-low"></i></a>
+						<a href="admin_selectNoticeList" title="공지관리"><i class="fa-solid fa-volume-low"></i></a>
 					</span>
 				</div>
 				<div class="sideclose_room">
 					<span>
-						<a href="admin_selectResellList"><i class="fa-solid fa-carrot"></i></a>
+						<a href="admin_selectResellList" title="중고거래관리"><i class="fa-solid fa-carrot"></i></a>
 					</span>
 				</div>
 				<div class="sideclose_room">
 					<span>
-						<a href="admin_selectBoardList"><i class="fa-solid fa-ban"></i></a>
+						<a href="admin_selectBoardList" title="경고/정지관리"><i class="fa-solid fa-ban"></i></a>
 					</span>
 				</div>
 				<div class="sideclose_room">
 					<span>
-						<a href="admin_selectBdfixList"><i class="fa-solid fa-thumbtack"></i></a>
+						<a href="admin_selectBdfixList" title="배너관리"><i class="fa-solid fa-thumbtack"></i></a>
 					</span>
 				</div>
 				<div class="sideclose_room">
 					<span>
-						<a href="admin_selectReplyList"><i class="fa-brands fa-replyd"></i></a>
+						<a href="admin_selectReplyList" title="댓글관리"><i class="fa-brands fa-replyd"></i></a>
 					</span>
 				</div>
 				<div class="sideclose_room">
 					<span>
-						<a href="admin_selectQuestionList"><i class="fa-solid fa-headset"></i></a>
+						<a href="admin_selectQuestionList" title="문의관리"><i class="fa-solid fa-headset"></i></a>
 					</span>
 				</div>
 			</div>
@@ -138,10 +138,10 @@ body.sideon {
 					</span>
 				
 					<div class="side_admin_a">
-						<a href="admin_selectBoardList"><i class="fa-solid fa-ban"></i>&nbsp;&nbsp;경고/정지</a>
+						<a href="admin_selectBoardList"><i class="fa-solid fa-ban" style="font-size: small;"></i>&nbsp;&nbsp;경고/정지</a>
 					</div>
 					<div class="side_admin_a">
-						<a href="admin_selectBdfixList"><i class="fa-solid fa-thumbtack"></i>&nbsp;&nbsp;배너</a>
+						<a href="admin_selectBdfixList"><i class="fa-solid fa-thumbtack" style="margin-right: 9px;"></i>배너 고정</a>
 					</div>
 				</div>
 				

@@ -88,8 +88,10 @@
 					
 							</c:forEach>
 
-					<input type="hidden"  name="chfrmid" value="${sessionScope.loginId }">
-					<input type="hidden" name="chtomid" value="${ub_resellView.ubmid}">
+					<input type="hidden"  name="cmfrmid" value="${sessionScope.loginId }">
+					<input type="hidden"  name="cmfrmnickname" value="${sessionScope.loginNickname }">
+					<input type="hidden" name="cmtomid" value="${ub_resellView.ubmid}">
+					<input type="hidden" name="cmtomnickname" value="${ub_resellView.ubnickname}">
 					<input type="hidden" name="gdtitle" value="${ub_resellView.ubtitle }">
 
 						</div>
