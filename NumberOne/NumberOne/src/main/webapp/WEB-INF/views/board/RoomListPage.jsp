@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<%@ include file="/resources/css/BarCss.jsp" %>
+<%@ include file="/resources/css/BarCss.jsp"%>
 <style type="text/css">
 	#board_column{
 		border-bottom: solid gray 3px;
@@ -370,6 +370,7 @@ input{
   color: white ! important;
 }
 
+.bigger { font-size : 2rem;}
 </style>
 </head>
 <body>
@@ -401,25 +402,25 @@ input{
 		<!-- 본문 -->
 		<form action="selectRoomList" method="get" id="actionForm">
 			<div class="container">
-				<div class="row" style="margin:auto;">
-					<h2 class="text-center" style="font-size:2rem" onclick="location.href='selectRoomList'">자랑방 글목록 페이지 : RoomListPage.jsp</h2>
+				<div style="padding-left:auto; padding-right:auto;">
+					<center><span style="font-size:3.5rem; cursor:pointer; margin-left:auto; margin-right:auto;" onclick="location.href='selectRoomList'">자랑방 글목록 페이지 : RoomListPage.jsp</span></center>
 				</div>
 				
 					<div class="row ">
 						<!-- 검색기능 -->
 						<div class="col-5" align="right">
-								<select name="searchType" class="searchType" id="searchTypeSel">
-									<option value="bdtitle">제목</option>
-									<option value="bdcontents">내용</option>
-									<option value="bdtc">제목+내용</option>
-									<option value="bdnickname">작성자</option>
+								<select name="searchType" class="searchType bigger" id="searchTypeSel">
+									<option value="bdtitle bigger">제목</option>
+									<option value="bdcontents bigger">내용</option>
+									<option value="bdtc bigger">제목+내용</option>
+									<option value="bdnickname bigger">작성자</option>
 								</select>
 						</div>
 						<div class="col-7 ">
-							<input type="text" name="keyword" placeholder="검색어를 입력하세요" id="searchText">
-							<button class="btn btn-sm btn-secondary">검색</button>
+							<input type="text" class="bigger" name="keyword" placeholder="검색어를 입력하세요" id="searchText">
+							<button class="btn btn-secondary bigger">검색</button>
 							<c:if test="${sessionScope.loginId != null}">
-								<button type="button" class="btn btn-primary btm-sm" style="padding: .25rem .5rem;" onclick="location.href='${pageContext.request.contextPath }/loadToWriteRoom'">글쓰기</button>
+								<button type="button" class="btn btn-primary bigger" style="padding: .25rem .5rem;" onclick="location.href='${pageContext.request.contextPath }/loadToWriteRoom'">글쓰기</button>
 							</c:if>
 						</div>
 					</div>		
@@ -428,11 +429,11 @@ input{
 			 
 			<div class="row" style="margin-top: 20px; margin-left:8%;">
 				<div class="col">
-					<select class="roomOrderBy" onchange="roomOrderBy(this.value)" name="searchVal" id="orderBySel" style="border:1px #D2D2D2 solid; border-radius:3px;">
-						<option class="roomOrderBy" value="bdcode">최신순</option>
-						<option class="roomOrderBy" value="bdhits">조회수순</option>
-						<option class="roomOrderBy" value="bdrecommend">좋아요순</option>
-						<option class="roomOrderBy" value="bdreply">댓글순</option>
+					<select class="roomOrderBy bigger" onchange="roomOrderBy(this.value)" name="searchVal" id="orderBySel" style="border:1px #D2D2D2 solid; border-radius:3px;">
+						<option class="roomOrderBy bigger" value="bdcode">최신순</option>
+						<option class="roomOrderBy bigger" value="bdhits">조회수순</option>
+						<option class="roomOrderBy bigger" value="bdrecommend">좋아요순</option>
+						<option class="roomOrderBy bigger" value="bdreply">댓글순</option>
 					</select>
 				</div>
 			</div>
@@ -1007,7 +1008,7 @@ function adminRpBan(){
 			success: function(replys){
 				//console.log(replys)
 				var replyOutput ="";
-				for(var i=0; i<replys.length; i++){			
+				for(var i=0; i<replys.length; i++){
 					//console.log(replys[i]);
 					replyOutput += "<div id='reply_"+replys[i].rpcode+"' style='width:100%; margin-bottom:3px;' class='row' onmouseover='toggleReplyMenu(\""+replys[i].rpcode+"\", \"show\")' onmouseout='toggleReplyMenu(\""+replys[i].rpcode+"\", \"hide\")'>";
 					//댓글 작성자 프로필 이미지

@@ -72,10 +72,8 @@ public class MemberController {
 		System.out.println("afterUrl: "+afterUrl);
 		if(afterUrl != null) {
 			session.setAttribute("afterUrl", afterUrl);						
-		} else {
-			session.setAttribute("afterUrl", "noUrl");			
-		}
-		System.out.println((String)session.getAttribute("afterUrl"));
+		} 
+		//System.out.println((String)session.getAttribute("afterUrl"));
 		mav.setViewName("member/MemberLoginForm");
 		return mav;
 	}	
