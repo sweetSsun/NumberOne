@@ -10,9 +10,12 @@ public class ChatRoomDto {
 	private String crfrmid;			//보낸사람
 	private String crtomid;			//받는사람
 	
-	// 각 채팅방의 안읽은 메세지수
-	private int unreadCount;		//읽음상태 count (chatmessage 조인)
-
+	// 채팅방 목록 조회하면서 함께 출력해주어야 하는 필드
+	private int unreadCount;			//읽음상태 count (chatmessage 조인 sum)
+	private String recentCmcontents;	//가장 최신 메세지 (chatmessage 조인)
+	private String recentCmdate;		//가장 최신 메세지의 날짜,시간 (chatmessage 조인)
+	private String crfrmnickname;		//상대방 닉네임 (members 조인)
+	
 	public String getCrcode() {
 		return crcode;
 	}
@@ -37,19 +40,11 @@ public class ChatRoomDto {
 		this.crtomid = crtomid;
 	}
 
-	public int getUnreadCount() {
-		return unreadCount;
-	}
-
-	public void setUnReadCount(int crReadCount) {
-		this.unreadCount = crReadCount;
-	}
-
 	@Override
 	public String toString() {
-		return "ChatRoomDto [crcode=" + crcode + ", crfrmid=" + crfrmid + ", crtomid=" + crtomid + ", unReadCount="
-				+ unreadCount + "]";
+		return "ChatRoomDto [crcode=" + crcode + ", crfrmid=" + crfrmid + ", crtomid=" + crtomid + ", unreadCount="
+				+ unreadCount + ", recentCmcontents=" + recentCmcontents + ", recentCmdate=" + recentCmdate
+				+ ", crfrmnickname=" + crfrmnickname + "]";
 	}
-	
 	
 }

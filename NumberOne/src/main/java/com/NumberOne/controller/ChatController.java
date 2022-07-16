@@ -42,19 +42,19 @@ public class ChatController {
 		// ajax로 insertResellChat을 호출하고, 리턴받은 crcode를 loadToChat 맵핑주소로 보내준다 (새창으로 띄우기 "blank_")
 	}
 	
-	@RequestMapping(value = "/selectAllRoomMessage")
-	public @ResponseBody String selectAllRoomMessage(String crcode) {
+	@RequestMapping(value = "/selectChatRoomMessage")
+	public @ResponseBody String selectChatRoomMessage(String crcode) {
 		System.out.println("특정 채팅방의 메세지 목록 조회 요청");
-		String msgList_json = chsvc.selectAllRoomMessage(crcode);
+		String msgList_json = chsvc.selectChatRoomMessage(crcode);
 		//response.setContentType("application/json; charset=utf-8");
 		
 		return msgList_json;
 	}
 
-	@RequestMapping(value = "/selectRoomList")
-	public @ResponseBody String selectRoomList(String loginId) {
+	@RequestMapping(value = "/selectChatRoomList")
+	public @ResponseBody String selectChatRoomList(String loginId) {
 		System.out.println("특정 사용자의 채팅방 목록 조회 요청");
-		String chatRoomList_json = chsvc.selectRoomList(loginId);
+		String chatRoomList_json = chsvc.selectChatRoomList(loginId);
 			
 		return chatRoomList_json;
 	}
