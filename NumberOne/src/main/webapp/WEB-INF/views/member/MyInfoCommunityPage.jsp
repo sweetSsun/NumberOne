@@ -7,6 +7,41 @@
 <meta charset="UTF-8">
 <title>1인자 - 마이페이지 커뮤니티</title>
 
+<script type="text/javascript">
+	function writeMemberBoard(nickname){
+		console.log("팝업 스트립트 확인!!!");
+		let wMemberPopupUrl = "loadToWriteMemberBoard?nickname"+nickname;
+		let wMemberPopupX = 500;
+		let wMemberPopupY = 400;
+		let x = (window.screen.width/2) - (wMemberPopupX/2);
+		let y = (window.screen.height/2) - (wMemberPopupY/2);
+	    
+		$.ajax({
+			url: "selectWriteMemberInfo_ajax",
+			data: {"nickname":nickname},
+			async:false,
+			dataType:"json",
+			success:function(data){
+				
+				wMemberPopup = window.open(wMemberPopupUrl,"writeMemberBoard",
+	    		"width="+wMemberPopupX+", height="+wMemberPopupY+", left="+x+", top="+y);
+	    
+				wMemberPopup.window.addEventListener("load", function(){
+					wMemberPopup.enterRoom(data);
+			 	});
+			}
+		});
+		
+	    
+    
+		
+	}
+</script>
+
+
+
+
+
 <%@ include file="/resources/css/BarCss.jsp"%>
 
 <!-- 부트스트랩 -->
@@ -344,7 +379,7 @@ background-color: #00BCD4;
 								${scrap.bdtitle }</a></td>
 								<td>${scrap.bdreply }</td>
 								<td>
-								<span onclick="writeMember('${scrap.mnickname }');"
+								<span onclick="writeMemberBoard('${scrap.mnickname }')"
 								style="text-align: center; cursor: pointer;">${scrap.mnickname }</span></td>
 								<td>${scrap.bddate }</td>								
 							</tr>														
@@ -363,16 +398,8 @@ background-color: #00BCD4;
 	</main>
 	
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
->
-<!-- 팝업 -->
- <script type="text/javascript">
 
-  function writeMember(nickname) { 
-	  var url = 'selectWriteMemberInfo?nickname='+nickname;
-	  window.open(url, 'memberInfo', 'width=700px, height=800px'); 
-	  console.log("nickname : " + nickname);
-	  }
-  </script>
+
 
 
 

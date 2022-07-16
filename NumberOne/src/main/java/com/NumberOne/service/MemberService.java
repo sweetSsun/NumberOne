@@ -833,6 +833,7 @@ public class MemberService {
 	}
  현석 :  mail API 에러 때문에 주석처리 끝 */
 		
+		
 		//미니브라우저 작성글 내역
 		public String selectWriteMemberInfo_ajax(String nickname) {
 			System.out.println("service.selectWriteMemberInfo_ajax()호출");
@@ -842,9 +843,9 @@ public class MemberService {
 			String boardList_gson = gson.toJson(boardList);
 			System.out.println(boardList_gson);
 			
-			
 			return boardList_gson;
 		}
+
 
 
 }
