@@ -3,6 +3,9 @@ package com.NumberOne.dto;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 
+import javax.mail.Session;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -11,6 +14,8 @@ import lombok.Data;
 @Data
 public class Paging {
 
+	private HttpSession session;
+	
 	// 페이지 처리 된 데이터를 DB에서 가져올 때 필요한 정보
 	private int page;		// 요청페이지
 	private int perPageNum;	// 한 페이지당 보여줄 글의 갯수
@@ -43,9 +48,6 @@ public class Paging {
 	// 중고거래 페이징에서 필요한 필드
 	private String sellBuy;		//중고거래 사구,팔구 구분용
 	
-	//지역게시판 지역이름 저장을 위한 필드 
-	private String bdrgname;	//서울 ~ 제주 게시판 이름 출력용
-	
 	
 	// 생성자
 	public Paging() {
@@ -60,7 +62,8 @@ public class Paging {
 		prev = false;
 		next = false;
 		
-		searchVal = "all";
+		searchVal = "all";				
+
 	}
 	
 	// 데이터 들어올 경우 페이지 정보 계산
@@ -247,23 +250,14 @@ public class Paging {
 		this.sellBuy = sellBuy;
 	}
 
-	public String getBdrgname() {
-		return bdrgname;
-	}
-
-	public void setBdrgname(String bdrgname) {
-		this.bdrgname = bdrgname;
-	}
-
 	@Override
 	public String toString() {
 		return "Paging [page=" + page + ", perPageNum=" + perPageNum + ", startRow=" + startRow + ", endRow=" + endRow
 				+ ", totalCount=" + totalCount + ", maxPage=" + maxPage + ", displayPageNum=" + displayPageNum
 				+ ", startPage=" + startPage + ", endPage=" + endPage + ", prev=" + prev + ", next=" + next
 				+ ", searchVal=" + searchVal + ", searchType=" + searchType + ", keyword=" + keyword + ", ajaxCheck="
-				+ ajaxCheck + ", sellBuy=" + sellBuy + ", bdrgname=" + bdrgname + "]";
+				+ ajaxCheck + ", sellBuy=" + sellBuy + "]";
 	}
-
 	
 	
 	

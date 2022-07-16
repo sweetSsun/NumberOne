@@ -614,15 +614,15 @@ roomView_ajax(nowBdcode)
 				var mprofileOutput = "<img class='product-img' style='width:30px; height:30px; border-radius:50%;'";
 				if(roomView.bdmprofile != 'nomprofile'){
 					console.log("작성자 프로필 있음");
-					if(roomView.bdmstate == 9){
-						//카카오 로그인
+					if(roomView.bdmid.substring(0,1) == "@"){
+						//카카오 회원
 						console.log("작성자 카카오 회원 사진 출력")
 						mprofileOutput += "src='"+roomView.bdmprofile+"'>";							
 					} else {
-						//일반 로그인
+						//일반 회원						
 						console.log("작성자 일반 회원 사진 출력")
 						mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+roomView.bdmprofile+"'>";
-					}
+					} 
 				} else {
 					mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png'>"; 
 				}
@@ -631,7 +631,7 @@ roomView_ajax(nowBdcode)
 				mnicknameOutput = "<div id='mnickname' style='font-size:22px; margin-left:5px; padding-bottom:2px; color: black;'>"+roomView.bdnickname;
 				//메뉴 출력 할 수 있는 ...
 				//로그인 아이디에 따라 메뉴는 다르게 출력됨 
-				mnicknameOutput += "<span  style='position:absolute; right:20px; cursor:pointer;' onclick='menuModal(\""+nowBdcode+"\", \"${sessionScope.loginId}\")' style='font-size:15px; color:black; padding-rignt:10px;'>&#8943;</span>";
+				mnicknameOutput += "<span  style='position:absolute; right:20px; cursor:pointer;' onclick='menuModal(\""+roomView.bdcode+"\", \""+roomView.bdmid+"\")' style='font-size:15px; color:black; padding-rignt:10px;'>&#8943;</span>";
 				mnicknameOutput += "</div>";
 				$("#roomMnickname").html(mnicknameOutput);
 
@@ -701,40 +701,39 @@ roomView_ajax(nowBdcode)
 					replyOutput += "<div id='reply_"+replys[i].rpcode+"' style='width:100%; margin-bottom:3px;' class='row' onmouseover='toggleReplyMenu(\""+replys[i].rpcode+"\", \"show\")' onmouseout='toggleReplyMenu(\""+replys[i].rpcode+"\", \"hide\")'>";
 					//댓글 작성자 프로필 이미지
 					replyOutput += "<div style='width:30px;'>";
-					replyOutput += "<img class='product-img' style='width:20px; height:20px; border-radius:50%;'";
+					replyOutput += "<img class='product-img' style='width:20px; height:20px; border-radius:50%; margin-top:10px;'";
 					if(replys[i].rpprofile != 'nomprofile'){
 						//console.log(replys[i].rpprofile);
 						console.log("프로필 있음");
-						if(replys[i].rpmstate == 1){
-							//일반 로그인
-							replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+replys[i].rpprofile+"'>";
-						} else if(replys[i].rpmstate == 9) {
-							//카카오 로그인
-							console.log(replys[i].rpprofile);
-							replyOutput += "src='"+replys[i].rpprofile+"'>";							
-						}
+						if(replys[i].rpmid.substring(0, 1) == "@"){
+							//카카오 회원
+							replyOutput += "src='"+replys[i].rpprofile+"'>";			
+						} else {
+							//일반 회원
+							replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+replys[i].rpprofile+"'>";					
+						} 
 					} else {
 						console.log("프로필 없음");
 						replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png'>"; 
 					}
 					replyOutput += "</img></div>";
 					//댓글 내용 부분 시작
-					replyOutput += "<div id='replyContents_"+replys[i].rpcode+"' style='width:320px; font-size:15px; padding-top:8px; word-break:break-word;'>"; 
+					replyOutput += "<div id='replyContents_"+replys[i].rpcode+"' style='width:320px; font-size:15px; padding-top:0px; word-break:break-word;'>"; 
 					//닉네임(진하게)
-					replyOutput += "<span style='font-weight:600;'>"+replys[i].rpnickname+"&nbsp;&nbsp;</span>";
+					replyOutput += "<span style='font-weight:600; margin:0px;'>"+replys[i].rpnickname+"&nbsp;&nbsp;</span>";
 					//내용 
-					replyOutput += replys[i].rpcontents;
-					
+					replyOutput += replys[i].rpcontents+"<br>";
+					//댓글 작성 시간
+					replyOutput += "<span style='font-size:10px; color:grey; margin:0px;'>"+replys[i].rpdate+"</span>";
 					//댓글 작성자와 관리자에게만 보이는 ...
 					if(replys[i].rpmid == '${sessionScope.loginId}'){
 						console.log("댓글 작성자");
-						replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \"${sessionScope.loginId}\")' style='font-size:15px;'>&#8943;</span>"; 
+						replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \""+replys[i].rpmid+"\")' style='font-size:15px;'>&#8943;</span>"; 
 					} else if ('${sessionScope.loginId}'=='admin'){
 						console.log("관리자");
-						replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \"${sessionScope.loginId}\")' style='font-size:15px;'>&#8943;</span>"; 	
+						replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \""+replys[i].rpmid+"\")' style='font-size:15px;'>&#8943;</span>"; 	
 					}
 					
-				
 					replyOutput += "</div></div>";
 				}
 			
@@ -781,7 +780,6 @@ roomView_ajax(nowBdcode)
 		$("#"+nowBdcode+"_"+logType).html(after+"&nbsp;");
 	}
 </script>
-</script>
 
 <script type="text/javascript">
 	function closeMenuModal(){
@@ -793,14 +791,22 @@ roomView_ajax(nowBdcode)
 	}
 	
 	function replyDelete(){
-		console.log("리플 삭제 요청");
+		console.log("댓글 삭제 요청");
+		console.log('${sessionScope.loginId}');
+		console.log(nowRpmid);
+		if(nowRpmid != '${sessionScope.loginId}'){
+			alert("댓글 작성자만 삭제할 수 있습니다!");
+			return;
+		}
+		
+			
 		$.ajax({
 			type : "get",
-			url : "updateReplyState_ajax",
-			data : { "rpcode" : nowRpcode},
+			url : "updateReplyState_ajax2",
+			data : { "rpcode" : nowRpcode, "rpmid":nowRpmid},
 			async : false,
 			success : function(updateResult){
-				if( updateResult > 0 ){
+				if( updateResult == 0 ){
 					console.log("댓글 삭제 성공!");
 					replyPrint('top');
 					
@@ -809,11 +815,16 @@ roomView_ajax(nowBdcode)
 					
 					//메뉴 모달 닫기
 					closeMenuModal()
+				} else if (updateResult == 2){
+					console.log("댓글 작성자가 아님!");
+					alert("댓글 작성자만 삭제할 수 있습니다!");
+					return;
 				}
 			}
 		});	
 	}
 
+</script>
 </script>
 
 <script type="text/javascript">
@@ -1000,7 +1011,7 @@ roomView_ajax(nowBdcode)
 			return;
 		} 
 		
-		location.href = "updateBoardDelete?bdcode="+nowBdcode+"&bdcategory=자랑";
+		location.href = "updateBoardDelete?bdcode="+nowBdcode+"&bdcategory=자랑&bdmid="+nowBdmid;
 
 	}
 	
@@ -1016,46 +1027,48 @@ roomView_ajax(nowBdcode)
 		
 	}
 	
-	function menuModal(objcode, loginId){
+	function menuModal(objcode, writer){
 		console.log("메뉴 모달 요청");
 		console.log(objcode);
 		var objType = objcode.substring(0, 2);
-		console.log(objType);
 		var menuOutput = "";
 		if(objType=='BD'){
 			console.log("자랑글(Rv) 메뉴 요청")
 			//아이디에 따라 다른 메뉴 구성
-			if(loginId == 'admin'){
-				//관리자:정지/취소
+			if('${sessionScope.loginId}' == 'admin'){ //관리자
+				//console.log("관리자");
 				menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick='adminRvBan()'>정지</div>";
 				menuOutput += "<div class='menu' onclick='closeMenuModal()'>취소</div>";
-			} else if( loginId == nowBdmid){ 
-				//글작성자:수정/삭제/취소
+			} else if( '${sessionScope.loginId}' == writer){ //글작성자
+				//console.log("작성자");
 				menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick='modifyRoomView()'>수정</div>";
 				menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick='deleteRoomView()'>삭제</div>";
 				menuOutput += "<div class='menu' onclick='closeMenuModal()'>취소</div>";
 			} else {
-				//다른 회원:신고/취소
+				//다른 회원:신고/신고취소
 				if(nowWb == 'y'){
 					menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick='log(\"wbhistory\")'>신고 취소</div>";					
 				} else {					
 					menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick='log(\"wbhistory\")'>신고</div>";
 				}
-				menuOutput += "<div class='menu' onclick='closeMenuModal()'>취소</div>";			
+				menuOutput += "<div class='menu' onclick='closeMenuModal()'>취소</div>";				
 			}
 		} else {
 			console.log("댓글(Rp) 메뉴 요청")
 			nowRpcode = objcode;
-			console.log(loginId);
-			if(loginId == 'admin'){ //관리자
+			nowRpmid = writer;
+			//console.log('${sessionScope.loginId}');
+			//아이디에 따라 다른 메뉴 구성
+			if('${sessionScope.loginId}' == 'admin'){ //관리자
 				//console.log("관리자");
 				menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick='adminRpBan()'>정지</div>";
 				menuOutput += "<div class='menu' onclick='closeMenuModal()'>취소</div>";
-			} else { //댓글작성자
+			} else if ('${sessionScope.loginId}' == nowRpmid){ //댓글작성자
+				//console.log("작성자");
 				//console.log("작성자");
 				menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick='replyDelete()'>삭제</div>";
 				menuOutput += "<div class='menu' onclick='closeMenuModal()'>취소</div>";
-			} 
+			}
 		}
 		//console.log(menuOutput);
 		$("#menuInnerDiv").html(menuOutput);

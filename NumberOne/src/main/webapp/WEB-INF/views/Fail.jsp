@@ -14,7 +14,13 @@
 	console.log("${msg}".length);
 	if(checkMsg.length > 0){
 		alert(checkMsg);
+		if('${afterUrl}'.length != 0){
+			if('${afterUrl}'!= 'noUrl'){
+				location.href = "${pageContext.request.contextPath }/"+'${afterUrl}';
+			}
+		} 
+	} else {				
+		history.back();
 	}
-	history.back();
 </script>
 </html>

@@ -9,7 +9,6 @@
 <!-- Jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <%@ include file="/resources/css/BarCss.jsp" %>
-<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 <style type="text/css">
 	section{
 		max-width: 70%;
@@ -87,6 +86,7 @@
 				<div class="row" style="margin:auto;">
 					<h2 class="text-center">지역게시판 전체글목록 페이지 : RegionBoardListPage.jsp</h2>
 				</div>
+					<input type="hidden" name="bdrgcode" value=" ">
 					<div class="row ">
 						<!-- 검색기능 -->
 						<div class="col-5" align="right">
@@ -110,7 +110,6 @@
 						<!--  말머리 정렬  -->
 						<select class="bdCategoryList" name="searchVal" id="searchValSel" onchange="regionSel(this.value)">
 							<option class="bdcategorySel malmeori" value="" disabled selected >지역선택</option>
-							<option class="bdcategorySel" value="">전체</option>
 							<option class="bdcategorySel" value="ALL">전국</option>
 							<option class="bdcategorySel" value="SEL">서울</option>
 							<option class="bdcategorySel" value="ICN">인천</option>
@@ -130,7 +129,7 @@
 				</div>
 				
 				<div class=" community" style="text-align:center;">
-					<span style="font-size:21px;" class="fw-bold text-white">전체지역게시판</span>
+					<span style="font-size:21px;" class="fw-bold text-white">지역게시판</span>
 				</div>
 				
 				<!-- 게시글 목록 -->
@@ -191,48 +190,10 @@
 				</table>
 				<div align="right" class="col mt-2">
 					<c:if test="${sessionScope.loginId != null }">
-						<button type="button" onclick="loadToBoardWrite()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">글작성</button>
+						<button  onclick="loadToBoardWrite()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">글작성</button>
 					</c:if>
 				</div>
 				</div>
-				
-				<!-- 페이징 시작 -->
-				<input type="hidden" id="pageNum" name="page" value="1">
-				<div class="block text-center" id="pageList">
-				  	<ul class="pagination">
-					<c:choose>
-		           		<c:when test="${paging.prev }">
-		           			<li class="paginate_button"><a href="${paging.page -1 }" >이전</a></li>
-		           		</c:when>
-		           		<c:otherwise>
-	           				<li class="paginate_button"><span>이전</span></li>
-		           		</c:otherwise>
-  					</c:choose>
-	               	
-	               	<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="num" step="1">
-	                	<c:choose>
-	                		<c:when test="${paging.page == num }">
-	                			<li class=""><a class="active">${num }</a></li>
-	                		</c:when>
-	                		<c:otherwise>
-	                			<li class="paginate_button "><a href="${num }" >${num }</a></li>
-	                		</c:otherwise>
-	                	</c:choose>
-	               	</c:forEach>
-	               	
-	               	<c:choose>
-		           		<c:when test="${paging.next }">
-		                	<li class="paginate_button"><a href="${paging.page +1 }" >다음</a></li>
-		           		</c:when>
-		           		<c:otherwise>
-	           				<li class="paginate_button"><span>다음</span></li>
-		           		</c:otherwise>
-  					</c:choose>
-					</ul>
-				</div>
-				<!-- 페이징 끝 -->
-				</form>
-				
 		</section>
 	</main>
 	
@@ -240,18 +201,6 @@
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
-
-<script type="text/javascript">
-	var actionForm = $("#actionForm");
-	// $(".paginate_button a").click(function(e){ // click 이벤트는 동적 처리 불가능
-	$(document).on("click", ".paginate_button a", function(e){ // on 이벤트로 변경
-		e.preventDefault();
-		console.log("pageNum click");
-		$("#pageNum").val($(this).attr("href"));
-		console.log($("#pageNum").val());
-		actionForm.submit();
-	});
-</script>
 
 <script type="text/javascript">
 	var checkMsg = '${msg}';
@@ -262,35 +211,25 @@
 </script>
 
 <script type="text/javascript">
-	//선택한 검색 select option 으로 선택되도록 하기 
-	var searchOption = $("#searchTypeSel option");
-	var searchType = "${paging.searchType}";
-	if ( searchType.length > 0 ){
-		for ( var i = 0; i<searchOption.length; i++){
-			if (searchOption.eq(i).val() == searchType){
-				searchOption.eq(i).attr("selected", "selected");
-			}
-		}	
-	}
-	//선택한 정렬 select option으로 선택되도록 하기
-	var searchValOption = $("#searchValSel option");
-	var searchVal = "${paging.searchVal}";
-	if (searchVal.length > 0) {
-		for (var i = 0; i < searchValOption.length; i++){
-			if (searchValOption.eq(i).val() == searchVal){
-				searchValOption.eq(i).attr("selected", "selected");
-			}
-		}
-	}
-</script>
-
-<script type="text/javascript">
 
 	/* 글쓰기 버튼 클릭 */
 	function loadToBoardWrite(){
 		//글작성 페이지로 이동 
 		var bdcategory =  "";
 		location.href= "loadToBoardWrite?bdcategory="+bdcategory;
+	}
+</script>
+
+<script type="text/javascript">
+	function searchTextCheck(){
+		/* 검색어 입력유무 확인 */
+		var inputSearchText = $("#inputSearchText").val();
+		
+		if( inputSearchText.length == 0 ){//검색어를 입력하지 않았으면 
+			alert("검색어를 입력해주세요!");
+		
+			return false;
+		}
 	}
 </script>
 
@@ -333,7 +272,11 @@
 			
 		});
 		$("#regionList").html(output);
+		
+		
 	}
+	
+
 </script>
 
 

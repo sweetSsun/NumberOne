@@ -202,7 +202,7 @@ public interface BoardDao {
 	//자랑글 수정
 	int updateRoomView(BoardDto room);
 	
-	//지역글 목록 ( 삭제 예정 ) 
+	//지역글 목록
 	ArrayList<BoardDto> selectRegionBoardList(String bdrgcode);
 	
 	//지역 카테고리 목록 
@@ -230,10 +230,10 @@ public interface BoardDao {
 	//지역게시판 전체 글 개수 조회
 	int selectRegionTotalCount(Paging paging);
 	
-	//지역게시판 전체 글 조회
-	ArrayList<BoardDto> selectRegionBoardList_Paging(Paging paging);
-	
-	
+	//자랑방 검색한 글 개수 조회
+	int selectSearchRoomCount(Paging paging);
+
+
 
 	
 	
