@@ -240,13 +240,13 @@ public class MemberController {
 		//작성자 상세페이지 _ Board
 		@RequestMapping(value = "/selectWriteMemberInfo_ajax")
 		public @ResponseBody String selectWriteMemberInfo_ajax (String nickname) {
-			System.out.println("작성자 상세페이지 _ Board,Reply");
-
+			System.out.println("작성자 상세페이지 _ selectWriteMemberInfo");
 			System.out.println("controller.nickname : " + nickname);
-			String boardList = msvc.selectWriteMemberInfo_ajax(nickname);
-			return boardList;
+			String boardList_ajax = msvc.selectWriteMemberInfo_ajax(nickname);
+			return boardList_ajax;
 			
 		}
+
 		
 		//카카오아이디 중복 확인
 		@RequestMapping(value = "/memberKakaoLogin")
@@ -284,6 +284,20 @@ public class MemberController {
 		}	
 현석 :  mail API 에러 때문에 주석처리 끝	*/
 		
+
+//마이페이지 미니브라우저 
+		@RequestMapping(value="/loadToWriteMemberBoard")
+		public ModelAndView loadToWriteMemberBoard(String nickname) {
+			System.out.println("미니브라우저 마이페이지 Board 페이지 요청");
+			mav = new ModelAndView();
+			mav.setViewName("member/WriteMemberInfoPage");
+			return mav;
+		}
+		
+
+
+
+
 }
 
 
