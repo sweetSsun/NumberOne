@@ -1,0 +1,50 @@
+package com.NumberOne.dto;
+
+import lombok.Data;
+
+@Data
+public class ChatRoomDto {
+	// 채팅방
+	
+	private String crcode;			//채팅방번호
+	private String crfrmid;			//보낸사람
+	private String crtomid;			//받는사람
+	
+	// 채팅방 목록 조회하면서 함께 출력해주어야 하는 필드
+	private int unreadCount;			//읽음상태 count (chatmessage 조인 sum)
+	private String recentCmcontents;	//가장 최신 메세지 (chatmessage 조인)
+	private String recentCmdate;		//가장 최신 메세지의 날짜,시간 (chatmessage 조인)
+	private String crfrmnickname;		//상대방 닉네임 (members 조인)
+	
+	public String getCrcode() {
+		return crcode;
+	}
+
+	public void setCrcode(String crcode) {
+		this.crcode = crcode;
+	}
+
+	public String getCrfrmid() {
+		return crfrmid;
+	}
+
+	public void setCrfrmid(String crfrmid) {
+		this.crfrmid = crfrmid;
+	}
+
+	public String getCrtomid() {
+		return crtomid;
+	}
+
+	public void setCrtomid(String crtomid) {
+		this.crtomid = crtomid;
+	}
+
+	@Override
+	public String toString() {
+		return "ChatRoomDto [crcode=" + crcode + ", crfrmid=" + crfrmid + ", crtomid=" + crtomid + ", unreadCount="
+				+ unreadCount + ", recentCmcontents=" + recentCmcontents + ", recentCmdate=" + recentCmdate
+				+ ", crfrmnickname=" + crfrmnickname + "]";
+	}
+	
+}

@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.NumberOne.dao.ResellDao">
+
+	<!-- 글작성 글번호 -->
+	<select id="selectMaxNumber_ub" resultType="String">
+		SELECT MAX(UBCODE)
+		FROM USEDBOARDS
+	</select>
+
+	<!-- 글작성 상품번호 -->
+	<select id="selectMaxNumber_gd" resultType="String">
+		SELECT MAX(GDCODE)
+		FROM GOODS
+	</select>
+
+	<select id="selectRegionCode" resultType="String">
+		SELECT RGCODE
+		FROM
+		REGION
+		WHERE RGNAME = #{mregion}
+	</select>
+
+	<select id="loadToResellWriteForm" resultType="String">
+		SELECT MNICKNAME
+		FROM MEMBERS
+		WHERE MID = #{loginId}
+	</select>
+
+
+	<!-- 중고거래 글목록 -->
+	<select id="selectResellPageList"
+		resultType="com.NumberOne.dto.UsedBoardDto">
+		SELECT UBNICKNAME, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE,
+		UBCONTENTS,
+		TO_CHAR(UBDATE, 'YYYY-MM-DD') UBDATE, UBMAINIMG,
+		UBDETAILIMG, UBSTATE,
+		NVL(ZZIMCOUNT, 0) ZZIMCOUNT
+		FROM (SELECT ROWNUM
+		RN, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE,
+		UBCONTENTS,
+		UBDATE,
+		UBMAINIMG, UBDETAILIMG, UBSTATE
+		FROM (SELECT * FROM USEDBOARDS 
+				<choose>
+			<when
+				test="paging.searchType == 'total' or paging.searchType == 'sell' or paging.searchType == 'buy'">
+				WHERE UBTITLE LIKE '%'||#{paging.keyword}||'%' OR
+				UBCONTENTS
+				LIKE
+				'%'||#{paging.keyword}||'%'
+			</when>
+
+			<when test="paging.searchType == 'ubmid'">
+				WHERE UBMID IN (SELECT MID
+				FROM MEMBERS
+				WHERE
+				MNICKNAME LIKE '%'||#{paging.keyword}||'%')
+			</when>
+
+			<when test="paging.searchType == 'ubtitle'">
+					WHERE UBTITLE LIKE '%'||#{paging.keyword}||'%'
+				</when>
+		</choose>
+		 ORDER BY
+		UBDATE DESC)
+		
+		WHERE
+
+		<if test="paging.searchVal !='all'">
+			UBRGCODE = #{paging.searchVal} AND
+		</if>
+		
+		UBSELLBUY = #{paging.sellBuy} AND
+		UBSTATE = 1 OR UBSTATE = 9
+
+
+		) LEFT OUTER JOIN ZZIM_VIEW
+		ON UBCODE = ZZUBCODE,
+		MNICKNAME_VIEW
+		WHERE
+		MID = UBMID
+
+		<choose>
+			<when test="checkMethod=='Main'">
+				AND RN BETWEEN 1 AND 8
+			</when>
+
+			<otherwise>
+				AND RN BETWEEN #{paging.startRow} AND #{paging.endRow}
+			</otherwise>
+
+		</choose>
+	</select>
+
+
+	<!-- 지역글 목록 ajax -->
+	<select id="selectResellRegionList_ajax"
+		resultType="com.NumberOne.dto.UsedBoardDto">
+		SELECT UBNICKNAME, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE,
+		UBCONTENTS,
+		TO_CHAR(UBDATE, 'YYYY-MM-DD') UBDATE, UBMAINIMG,
+		UBDETAILIMG, UBSTATE,
+		NVL(ZZIMCOUNT, 0) ZZIMCOUNT
+		FROM (SELECT ROWNUM
+		RN, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE,
+		UBCONTENTS,
+		UBDATE,
+		UBMAINIMG, UBDETAILIMG, UBSTATE
+		FROM (SELECT * FROM USEDBOARDS
+		<if test="searchType != null or searchType != ''">
+			<choose>
+				<when
+					test="searchType == 'total' or searchType == 'sell' or searchType == 'buy'">
+					 WHERE UBTITLE LIKE '%'||#{keyword}||'%' OR UBCONTENTS
+					LIKE
+					'%'||#{keyword}||'%'
+				</when>
+				<when test="searchType == 'ubmid'">
+					 WHERE UBMID IN (SELECT MID
+					FROM MEMBERS
+					WHERE
+					MNICKNAME LIKE '%'||#{keyword}||'%')
+				</when>
+				<when test="searchType == 'ubtitle'">
+					 WHERE UBTITLE LIKE '%'||#{keyword}||'%'
+				</when>
+			</choose>
+
+		</if>
+		ORDER BY
+		UBDATE DESC)
+
+		WHERE
+		<if test="searchVal !='all'">
+			UBRGCODE = #{searchVal} AND
+		</if>
+		UBSELLBUY = #{sellBuy} AND
+		UBSTATE = 1 OR UBSTATE = 9
+		
+		) LEFT OUTER JOIN ZZIM_VIEW
+		ON UBCODE = ZZUBCODE,
+		MNICKNAME_VIEW
+		WHERE
+		MID = UBMID AND RN BETWEEN #{startRow} AND
+		#{endRow}
+
+	</select>
+
+
+	<!-- 중고거래 전체 글 수 확인 -->
+	<select id="selectPageTotalCount" resultType="int">
+		SELECT COUNT(UBCODE)
+		FROM (SELECT *
+		FROM USEDBOARDS
+		WHERE
+		<if test="searchVal !='all'">
+			UBRGCODE = #{searchVal} AND
+		</if>
+		UBSELLBUY = #{sellBuy} AND UBSTATE = 1 OR UBSTATE = 9
+		<if test="searchType != null or searchType != ''">
+			<choose>
+				<when
+					test="searchType == 'total' or searchType == 'sell' or searchType == 'buy'">
+					AND UBTITLE LIKE '%'||#{keyword}||'%' OR UBCONTENTS
+					LIKE
+					'%'||#{keyword}||'%'
+				</when>
+				<when test="searchType == 'ubmid'">
+					AND UBMID LIKE (SELECT MID
+					FROM MEMBERS
+					WHERE
+					MNICKNAME LIKE '%'||#{keyword}||'%')
+				</when>
+				<when test="searchType == 'ubtitle'">
+					AND UBTITLE LIKE '%'||#{keyword}||'%'
+				</when>
+			</choose>
+		</if>
+		),MNICKNAME_VIEW
+		WHERE MID = UBMID
+
+	</select>
+
+
+	<!-- 글상세의 상품불러오기 -->
+	<select id="selectResellView_goods"
+		resultType="com.NumberOne.dto.GoodsDto">
+		SELECT GDCODE, GDUBCODE, GDNAME, GDPRICE, GDSTATE
+		FROM GOODS
+		GD, USEDBOARDS UB
+		WHERE GDUBCODE = UBCODE AND UBCODE = #{ubcode}
+		AND
+		UBSELLBUY = #{ubsellbuy}
+		ORDER BY GDUBCODE
+	</select>
+
+	<!-- 글 상세정보 -->
+	<select id="selectResellView"
+		resultType="com.NumberOne.dto.UsedBoardDto">
+		SELECT UBNICKNAME, UBPROFILE, UBCODE, UBRGCODE, UBSELLBUY,
+		UBMID, UBTITLE,
+		UBCONTENTS,
+		TO_CHAR(UBDATE, 'YYYY-MM-DD HH24:MI')
+		UBDATE, UBMAINIMG,
+		UBDETAILIMG, UBSTATE,
+		NVL(ZZIMCOUNT, 0) ZZIMCOUNT
+		FROM (SELECT ROWNUM
+		RN, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE,
+		UBCONTENTS,
+		UBDATE,
+		UBMAINIMG, UBDETAILIMG, UBSTATE
+		FROM (SELECT * FROM
+		USEDBOARDS ORDER BY
+		UBCODE)
+		WHERE UBCODE = #{ubcode} AND UBSELLBUY =
+		#{ubsellbuy} AND
+		UBSTATE = 1 OR UBSTATE = 9
+		) LEFT OUTER JOIN ZZIM_VIEW
+		ON UBCODE = ZZUBCODE,
+		MNICKNAME_VIEW
+		WHERE MID = UBMID
+
+	</select>
+
+	<select id="selectZzimCheck" resultType="String">
+		SELECT ZZMID
+		FROM ZZIM
+		WHERE ZZMID =#{loginId} AND ZZUBCODE= #{ubcode}
+	</select>
+
+	<select id="selectResellView_List"
+		resultType="com.NumberOne.dto.UsedBoardDto">
+		SELECT UBCODE, UBSELLBUY, UBTITLE, TO_CHAR(UBDATE, 'YYYY-MM-DD') AS UBDATE,
+		UBMAINIMG
+		FROM USEDBOARDS
+		WHERE UBMID = #{ubmid}
+
+	</select>
+
+
+	<select id="checkResellWarning_ajax" resultType="String">
+		<!-- 게시글 신고 유무 확인 -->
+		SELECT WUEDUBCODE
+		FROM WARNINGUSEDBOARDS
+		WHERE WUMID = #{loginId}
+		AND WUEDUBCODE = #{ubcode}
+	</select>
+
+	<insert id="insertResellWarning_ajax">
+		<!-- 게시글 신고 -->
+		INSERT INTO WARNINGUSEDBOARDS (WUMID, WUEDUBCODE)
+		VALUES ( #{loginId}, #{ubcode} )
+	</insert>
+
+	<!-- 중고거래 글작성 상품 insert -->
+	<insert id="insertResellWrite_gd">
+		INSERT INTO GOODS(GDCODE, GDUBCODE, GDNAME, GDPRICE,
+		GDSTATE)
+		VALUES(#{gdcode}, #{gdubcode}, #{gdname}, #{gdprice}, 1)
+	</insert>
+
+	<!-- 중고거래 글작성 글 insert -->
+	<insert id="insertResellWrite_ub">
+		INSERT INTO USEDBOARDS(UBCODE, UBRGCODE, UBSELLBUY,
+		UBMID, UBTITLE,
+		UBCONTENTS, UBDATE, UBMAINIMG, UBDETAILIMG, UBSTATE)
+		VALUES(#{ubcode}, #{ubrgcode}, #{ubsellbuy}, #{ubmid} , #{ubtitle},
+		#{ubcontents},
+		SYSDATE, #{ubmainimg}, #{ubdetailimg}, 1)
+	</insert>
+
+	<insert id="zzimClick_ajax_insert">
+		INSERT INTO ZZIM(ZZMID, ZZUBCODE) VALUES(#{zzmid}, #{zzubcode})
+	</insert>
+
+	<delete id="zzimClick_ajax_delete">
+		DELETE FROM ZZIM
+		WHERE ZZMID = #{zzmid} AND ZZUBCODE = #{zzubcode}
+	</delete>
+
+	<delete id="deleteResellWarning_ajax">
+		<!-- 게시글 신고 취소 -->
+		DELETE FROM WARNINGUSEDBOARDS
+		WHERE WUMID = #{loginId}
+		AND WUEDUBCODE = #{ubcode}
+	</delete>
+
+	<update id="updateResellDelete_ub">
+		UPDATE USEDBOARDS
+		SET UBSTATE = 2
+		WHERE UBCODE = #{ubcode}
+	</update>
+
+	<update id="updateResellDelete_gd">
+		UPDATE GOODS
+		SET GDSTATE = 2
+		WHERE GDUBCODE = #{ubcode}
+	</update>
+
+
+	<update id="updateResellState_usedBoardAjax">
+		UPDATE USEDBOARDS
+		SET UBSTATE = #{ubstate}
+		WHERE UBCODE = #{ubcode}
+	</update>
+
+	<update id="updateResellState_GoodsAjax">
+	UPDATE GOODS
+	SET GDSTATE = #{gdstate}
+	WHERE GDCODE = #{gdcode}  
+	</update>
+	
+	<update id="updateResellModify_ub">
+		UPDATE USEDBOARDS
+		SET UBSTATE = #{ubstate}, UBCONTENTS = #{ubcontents}, UBRGCODE =
+		#{ubrgcode},
+		UBMAINIMG = #{ubmainimg}, UBDETAILIMG = #{ubdetailimg}
+		WHERE UBCODE = #{ubcode}
+	</update>
+
+	<update id="updateResellModify_gd">
+		UPDATE GOODS
+		SET GDSTATE = #{gdstate}
+		WHERE GDCODE = #{gdcode}
+	</update>
+
+</mapper>
