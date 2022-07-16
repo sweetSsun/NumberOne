@@ -18,7 +18,7 @@
    }
    
    table{
-      margin: 20px;
+      margin: 21px;
    }
    
    .tb{
