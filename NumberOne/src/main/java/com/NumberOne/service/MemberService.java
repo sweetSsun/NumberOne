@@ -6,10 +6,13 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.UUID;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -23,7 +26,6 @@ import com.NumberOne.dto.ReplyDto;
 import com.NumberOne.dto.ScrapDto;
 import com.NumberOne.dto.UsedBoardDto;
 import com.NumberOne.dto.ZzimDto;
-import com.google.gson.Gson;
 
 @Service
 public class MemberService {
@@ -32,11 +34,8 @@ public class MemberService {
 	
 	@Autowired
 	private MemberDao mdao;
-	
-	/*	현석 :  mail API 에러 때문에 주석처리 시작 
 	@Autowired
 	private JavaMailSender mailSender;
-	 현석 :  mail API 에러 때문에 주석처리 끝 */ 
 	
 	 @Autowired private HttpServletRequest request;
 	 @Autowired private HttpSession session;
@@ -152,18 +151,20 @@ public class MemberService {
 			if(loginMember .getMstate() == 0) {
 				ra.addFlashAttribute("msg", "이용 정지 된 계정 입니다.");
 				mav.setViewName("redirect:/loadToLogin");
-
+				session.removeAttribute("afterUrl");
 
 			}else if(loginMember.getMid().equals("admin")) {
 
 
 				session.setAttribute("loginId", loginMember.getMid());
 				session.setAttribute("loginNickname", loginMember.getMnickname());
+				session.removeAttribute("afterUrl");
 				mav.setViewName("redirect:/admin_loadToAdminMainPage");
 			
 			}else if(loginMember .getMstate() == 2){
 				ra.addFlashAttribute("msg", "탈퇴 처리 된 회원입니다.");
 				mav.setViewName("redirect:/loadToLogin");				
+				session.removeAttribute("afterUrl");
 			
 			}else {
 
@@ -198,6 +199,7 @@ public class MemberService {
 			//로그인 실패
 			ra.addFlashAttribute("msg", "아이디 또는 비밀번호가 일치 하지 않습니다.");
 			mav.setViewName("redirect:/loadToLogin");
+			session.removeAttribute("afterUrl");
 		}
 		
 		return mav;
@@ -620,7 +622,7 @@ public class MemberService {
 
 
 	//회원정보 상세페이지 (미니브라우저)
-	/*public ModelAndView selectWriteMemberInfo(String nickname) {
+	public ModelAndView selectWriteMemberInfo(String nickname) {
 			ModelAndView mav = new ModelAndView();
 			System.out.println("MemberService.selectWriteMemberInfo() 호출");
 			  //String loginId = (String) session.getAttribute("loginId");
@@ -640,18 +642,11 @@ public class MemberService {
 			
 			
 			//닉네임 별 작성 글 제목 출력
-			ArrayList<BoardDto> Board = mdao.selectWriteMemberInfo_Board(nickname);
+			ArrayList<BoardDto> Board = mdao.insertWriteMemberInfo_Board(nickname);
 			System.out.println(Board);
-			
-			//닉네임 별  작성 댓글 내용 출력
-			ArrayList<ReplyDto> Reply = mdao.selectWriteMemberInfo_Reply(nickname);
-			System.out.println(Reply);			
-			
-			
 			
 			mav.addObject("memberInfo", memberInfo);
 			mav.addObject("Board",Board);
-			mav.addObject("Reply",Reply);
 			
 			mav.setViewName("member/WriteMemberInfoPage_Board");
 			
@@ -659,7 +654,7 @@ public class MemberService {
 
 
 
-	}*/
+	}
 
 	//카카오 로그인
 		public ModelAndView memberKakaoLogin(MemberDto member, RedirectAttributes ra) {
@@ -751,7 +746,7 @@ public class MemberService {
 
 		      
 		   }
-/* 현석 :  mail API 에러 때문에 주석처리 시작
+
 		//비밀번호 찾기 요청
 		public String selectLookforPw_ajax(String checkMid, String checkMemail) {
 			System.out.println("MemberService.selectLookforPw_ajax() 호출");
@@ -831,21 +826,6 @@ public class MemberService {
 			
 		
 	}
- 현석 :  mail API 에러 때문에 주석처리 끝 */
-		
-		
-		//미니브라우저 작성글 내역
-		public String selectWriteMemberInfo_ajax(String nickname) {
-			System.out.println("service.selectWriteMemberInfo_ajax()호출");
-			ArrayList<BoardDto> boardList = mdao.selectWriteMemberInfo_ajax(nickname);
-
-			Gson gson = new Gson();
-			String boardList_gson = gson.toJson(boardList);
-			System.out.println(boardList_gson);
-			
-			return boardList_gson;
-		}
-
 
 
 }

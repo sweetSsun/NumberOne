@@ -18,7 +18,7 @@
 </head>
 <body>
 	<!-- TopBar -->
-
+	<%-- 
 
         <c:choose>
                 <c:when test="${sessionScope.loginId != 'admin'}">
@@ -28,12 +28,12 @@
                         <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
                 </c:otherwise>
         </c:choose>
-        
+        --%>
 	<!-- End of TopBar -->
 	<main>
 		<!-- 사이드바 -->
 
-		 <%@ include file="/WEB-INF/views/includes/SideBar_Resell.jsp"%> 
+		<%-- <%@ include file="/WEB-INF/views/includes/SideBar_Resell.jsp"%> --%>
 		<section>
 			<!-- 본문 -->
 			<div class="container">
@@ -66,6 +66,7 @@
 					<div class="d_body">
 						<div class="flex_div flex_between flex-p0">
 							<div class="item_start font-l">팔구</div>
+							<div id="mregion"></div>
 							<div class="item_end font-m">
 								<a href="selectResellPageList?sellBuy=S"> 더보기+</a>
 							</div>

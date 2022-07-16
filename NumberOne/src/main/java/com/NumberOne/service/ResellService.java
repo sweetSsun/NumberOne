@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.NumberOne.dao.ResellDao;
-import com.NumberOne.dto.ChatMessageDto;
+import com.NumberOne.dto.ChatDto;
 import com.NumberOne.dto.GoodsDto;
 import com.NumberOne.dto.PageDto;
 import com.NumberOne.dto.Paging;
@@ -43,25 +43,18 @@ public class ResellService {
 		ModelAndView mav = new ModelAndView();
 		
 		String checkMethod = "Main";
-		/*회원의 관심지역 출력용
+		
 		if((String) session.getAttribute("loginRegion") != null) {
 			paging.setSearchVal(rdao.selectRegionCode((String) session.getAttribute("loginRegion")));				
-		}
-		*/
-		System.out.println("지역정보 : " + paging.getSearchVal());
-		if(paging.getSearchVal() == null || paging.getSearchVal() == "") {
-			
-			paging.setSearchVal("all");
-			
 		}
 		
 		paging.setSellBuy("S");		
 //		팔구리스트
 		ArrayList<UsedBoardDto> SellList = rdao.selectResellPageList(paging, checkMethod);
 		System.out.println("팔구DTO : " + paging);
+		paging.setSellBuy("B");
 		
 //		사구리스트
-		paging.setSellBuy("B");
 		ArrayList<UsedBoardDto> buyList = rdao.selectResellPageList(paging, checkMethod);
 		System.out.println("사구DTO : " + paging);
 		
@@ -221,11 +214,11 @@ public class ResellService {
 			ra.addFlashAttribute("msg", "글이 작성되었습니다.");
 			if (ubDto.getUbsellbuy().equals("B")) {
 
-				mav.setViewName("redirect:/selectResellPageList?sellBuy=B&searchVal=all");
+				mav.setViewName("redirect:/selectResellPageList?sellBuy=B");
 				
 			} else {
 				
-				mav.setViewName("redirect:/selectResellPageList?sellBuy=S&searchVal=all");
+				mav.setViewName("redirect:/selectResellPageList?sellBuy=S");
 								
 			}
 		} else {
@@ -243,24 +236,17 @@ public ModelAndView selectResellPageList(Paging paging) {
 	System.out.println("selectResellPageList 서비스 호출");
 	ModelAndView mav = new ModelAndView();
 	
-	/*  페이지처음출력 시 전체목록출력용
-	if(paging.getSearchVal() == null || paging.getSearchVal() == "") {
-		
-		paging.setSearchVal("all");		
-	}
-	*/
-	String checkMethod = "NO";
 	
-
-	if(paging.getSearchVal().equals("all"))  {
-		checkMethod ="all";
+	String checkMethod = "NO";
+	if(paging.getSearchType()!=null) {
+		checkMethod = "OK";
 	}
 	System.out.println("검색타입(searchType) : "+ paging.getSearchType());
 	System.out.println("검색어(keyword) : " + paging.getKeyword());
 	System.out.println(paging);
 	
-	 //로그인되어있으면 회원의 관심지역을 지역필드에 저장	
-		if((String) session.getAttribute("loginRegion") != null && paging.getSearchType()==null) {
+		
+		if((String) session.getAttribute("loginRegion") != null) {
 			paging.setSearchVal(rdao.selectRegionCode((String) session.getAttribute("loginRegion")));				
 		}
 
@@ -276,7 +262,7 @@ public ModelAndView selectResellPageList(Paging paging) {
 	mav.addObject("paging", paging);
 	mav.addObject("checkSearch", checkMethod);
 	if (paging.getSellBuy().equals("S")) {
-		System.out.println("조건문S");		
+		System.out.println("조건문S");
 		mav.setViewName("resell/Resell_SellList");
 		
 	} else if (paging.getSellBuy().equals("B")) {
@@ -295,22 +281,14 @@ public ModelAndView selectResellPageList(Paging paging) {
 		System.out.println("검색어(keyword) : " + paging.getKeyword());
 				
 		String mregion = rdao.selectRegionCode(paging.getSearchVal());
-		String checkMethod = "NO";
-		if(mregion.equals("ALL")) {
-						mregion = mregion.toLowerCase();
-		}
 		System.out.println("파라메터지역코드 : " + mregion);
 		paging.setSearchVal(mregion);
-		
-		/*
-		 * if(paging.getSearchType()!=null) { checkMethod = "search"; }
-		 */
-		System.out.println("checkMethod : "+checkMethod);
 		int totalCount = rdao.selectPageTotalCount(paging);
+		
 		paging.setTotalCount(totalCount);
 		paging.calc();
-		System.out.println(paging);
 		
+		System.out.println(paging);
 		ArrayList<UsedBoardDto> sellbuyList = rdao.selectResellRegionList_ajax(paging);
 		
 		System.out.println(sellbuyList);
@@ -488,6 +466,53 @@ public ModelAndView selectResellPageList(Paging paging) {
 		return mav;
 		
 	}
+
+
+	public ModelAndView insertResellChat(String[] gd_names, ChatDto chat, String gdtitle) {
+		System.out.println("insertResellChat() 호출");
+		ModelAndView mav = new ModelAndView();
+		String gdname = null;
+		
+		int maxChcode = rdao.selectMaxChcode();
+		int chcode = 0;
+		
+			System.out.println("채팅MAX번호 : "+maxChcode);
+			if (maxChcode==0) {
+				chcode = 1; 
+			} else {
+				chcode = maxChcode + 1;
+			}				
+		System.out.println("채팅번호 : "+chcode);
+		chat.setChcode(chcode);
+		System.out.println("DB입력 전 : "+chat);
+		
+		gdtitle+= "___";
+		if(gd_names.length==1) {
+			
+			for (String gdcheck : gd_names)
+				gdtitle += gdcheck;
+			System.out.println(gdtitle);
+		}
+		else {
+			for (String gdcheck : gd_names) {
+				
+				gdtitle += gdcheck+"//"; 
+				System.out.println(gdtitle);
+			}			
+		}
+		gdtitle += "관심있어요";
+		
+		System.out.println("dao전 출력: "+gdtitle);
+		int chatResult = rdao.insertResellChat(gdtitle, chat);
+		System.out.println(chatResult);
+		if(chatResult>0) {
+			System.out.println("입력성공");
+						
+		}
+		
+		return null;
+	}
+
 
 	public String updateResellState_GoodsAjax(GoodsDto gdDto) {
 		System.out.println("updateResellState_GoodsAjax() 호출");

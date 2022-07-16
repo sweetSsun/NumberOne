@@ -61,18 +61,6 @@ public class GoodsDto {
 	public void setGd_price(int[] gd_price) {
 		this.gd_price = gd_price;
 	}
-	public String[] getGd_code() {
-		return gd_code;
-	}
-	public void setGd_code(String[] gd_code) {
-		this.gd_code = gd_code;
-	}
-	public int[] getGd_state() {
-		return gd_state;
-	}
-	public void setGd_state(int[] gd_state) {
-		this.gd_state = gd_state;
-	}
 	@Override
 	public String toString() {
 		return "GoodsDto [gdcode=" + gdcode + ", gdubcode=" + gdubcode + ", gdname=" + gdname + ", gdprice=" + gdprice
@@ -80,8 +68,6 @@ public class GoodsDto {
 				+ Arrays.toString(gd_price) + ", gd_code=" + Arrays.toString(gd_code) + ", gd_state="
 				+ Arrays.toString(gd_state) + "]";
 	}
-	
-	
 	
 	
 	

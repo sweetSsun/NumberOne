@@ -113,7 +113,7 @@
 								</c:when>
 								
 								<c:otherwise>
-									<option value="${bdcategory}" class="selectPlaceHolder">${bdcategory}</option>
+									<option value="${bdcategory}" disabled selected class="selectPlaceHolder">${bdcategory}</option>
 								</c:otherwise>
 							</c:choose>
 							<option value="자유">자유</option>

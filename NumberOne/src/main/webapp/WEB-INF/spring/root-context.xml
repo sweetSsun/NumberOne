@@ -24,8 +24,7 @@
 	
 	<mybatis-spring:scan base-package="com.NumberOne.dao"/>
 
-<!--  현석 :  mail API 에러 때문에 주석처리 시작 
-   비밀번호 찾기 이메일 발송
+   <!-- 비밀번호 찾기 이메일 발송 -->
    <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
       <property name="host" value="smtp.naver.com" />
       <property name="port" value="465" />
@@ -45,7 +44,6 @@
                 </props>
        </property>
    </bean>
-현석 :  mail API 에러 때문에 주석처리 끝   -->  
+
 
 </beans>
-

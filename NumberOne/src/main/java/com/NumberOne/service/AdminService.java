@@ -118,10 +118,8 @@ public class AdminService {
 		System.out.println("AdminService_admin_selectMemberInfo_ajax() 호출");
 		MemberDto memberInfo = adao.admin_selectMemberInfo_ajax(mid);
 		System.out.println(memberInfo);
-		if (memberInfo.getMaddr() != null) {
-			String maadr_replace = memberInfo.getMaddr().replace("_", " ");
-			memberInfo.setMaddr(maadr_replace);
-		}
+		String maadr_replace = memberInfo.getMaddr().replace("_", " ");
+		memberInfo.setMaddr(maadr_replace);
 		gson = new Gson();
 		String memberInfo_json = gson.toJson(memberInfo);
 		return memberInfo_json;

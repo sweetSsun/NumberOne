@@ -21,7 +21,6 @@ public class ReplyDto {
 	private String rpmprofile;
 	
 	private String rpmstate;
-	private String bdstate;
 	
 	public String getRpcode() {
 		return rpcode;

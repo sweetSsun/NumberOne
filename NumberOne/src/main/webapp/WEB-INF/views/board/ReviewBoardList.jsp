@@ -64,33 +64,6 @@
 	#inputSearchText{
 		font-size: 18px;
 	}
-	
-	/* 별찍기  */
-#myform fieldset{
-    display: inline-block;
-    direction: rtl;
-    border:0;
-}
-#myform fieldset legend{
-    text-align: right;
-}
-#myform input[type=radio]{
-    display: none;
-}
-#myform label{
-    font-size: 1em;
-    color: transparent;
-    text-shadow: 0 0 0 #f0f0f0;
-}
-
-#myform input[type=radio]:checked ~ label{
-    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
-    color: #00bcd4;
-}
-.None_rate{
-	color: #F0F0F0;
-}
-
 </style>
 </head>
 <body>
@@ -148,7 +121,7 @@
 					<thead >
 						<tr class="text-center" id="board_column">
 							<td style="font-size: 17px;">글번호</td>
-							<td style="font-size: 17px;">카테고리</td>
+							<td style="font-size: 17px;">말머리</td>
 							<td style="font-size: 17px;">제목</td>
 							<td style="font-size: 17px;">작성자</td>
 							<td style="font-size: 17px;">날짜</td>
@@ -176,55 +149,13 @@
 					
 					<tbody id="bdCategoryList">
 					<!-- 일반게시판 목록 -->
+					
 					<c:forEach items="${boardList }" var="board">
 						<tr style="border-bottom: solid #E0E0E0 1px;">
 							<td class="text-center tableCell">${board.bdcode}</td>
-							<td class="bdcategory text-center tableCell">
-								<div class="col" class="mb-3"  id="myform">
-									<c:choose>
-										<c:when test="${board.bdrate == 0 }">
-											 <span class="None_rate">★★★★★</span>
-										</c:when>
-	
-										<c:when test="${board.bdrate == 1 }">
-											 <span>★</span><span class="None_rate">★★★★</span>
-										</c:when>
-										
-										<c:when test="${board.bdrate == 2 }">
-											 <span>★★</span><span class="None_rate">★★★</span>
-										</c:when>
-										
-										<c:when test="${board.bdrate == 3 }">
-											 <span>★★★</span><span class="None_rate">★★</span>
-										</c:when>
-										
-										<c:when test="${board.bdrate == 4 }">
-											 <span>★★★★</span><span class="None_rate">★</span>
-										</c:when>
-										
-										<c:when test="${board.bdrate == 5 }">
-											 <fieldset>
-												<span>★★★★★</span>
-											</fieldset> 
-										</c:when>
-										
-									</c:choose>
-									<!-- <fieldset>
-										<input type="radio" name="bdrate" value="5" id="rate1"><label
-											for="rate1">★</label>
-										<input type="radio" name="bdrate" value="4" id="rate2"><label
-											for="rate2">★</label>
-										<input type="radio" name="bdrate" value="3" id="rate3"><label
-											for="rate3">★</label>
-										<input type="radio" name="bdrate" value="2" id="rate4"><label
-											for="rate4">★</label>
-										<input type="radio" name="bdrate" value="1" id="rate5"><label
-											for="rate5">★</label>
-									</fieldset> -->
-								</div>
-							</td>
+							<td class="bdcategory text-center tableCell">${board.bdcategory}</td>
 							<td class="tableCell">
-							 	<a href="selectReviewBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
+							 	<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
 							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
 							 </td>
 							<td class="text-center tableCell">
@@ -239,8 +170,7 @@
 				</table>
 				<div align="right" class="col mt-2">
 					<c:if test="${sessionScope.loginId != null }">
-						<button type="button" onclick="loadToWriteReview()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">후기시범</button>
-						<button type="button" onclick="loadToBoardWrite()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">글작성</button>
+						<button  onclick="loadToBoardWrite()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">글작성</button>
 					</c:if>
 				</div>
 				</div>
@@ -290,13 +220,6 @@
 </body>
 
 <script type="text/javascript">
-	/* 별점 출력 */
-	var reviewList = "${boardList}";
-	
-	
-</script>
-
-<script type="text/javascript">
 	var actionForm = $("#actionForm");
 	// $(".paginate_button a").click(function(e){ // click 이벤트는 동적 처리 불가능
 	$(document).on("click", ".paginate_button a", function(e){ // on 이벤트로 변경
@@ -323,11 +246,18 @@
 		var bdcategory = "${paging.searchVal}";
 		location.href= "loadToBoardWrite?bdcategory="+bdcategory;
 	}
-	
-	function loadToWriteReview(){
-		location.href="loadToWriteReview";		
-	}
-
 </script>
+<!-- <script type="text/javascript">
+	function searchTextCheck(){
+		/* 검색어 입력유무 확인 */
+		var inputSearchText = $("#inputSearchText").val();
+		
+		if( inputSearchText.length == 0 ){//검색어를 입력하지 않았으면 
+			alert("검색어를 입력해주세요!");
+		
+			return false;
+		}
+	}
+</script> -->
 
 </html>

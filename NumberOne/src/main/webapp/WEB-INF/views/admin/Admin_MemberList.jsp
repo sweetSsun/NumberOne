@@ -92,11 +92,11 @@
             <table style="table-layout: fixed;" >
                <thead >
                   <tr class="text-center fw-bold" id="board_column">
-                     <td style="">아이디</td>
-                     <td style="">이름</td>
-                     <td style="">닉네임</td>
-                     <td style="width:15%">연락처</td>
-                     <td style="width:15%">이메일</td>
+                     <td style="max-width:6rem;">아이디</td>
+                     <td style="max-width:5rem;">이름</td>
+                     <td style="max-width:6rem;">닉네임</td>
+                     <td>연락처</td>
+                     <td>이메일</td>
                      <td style="width:10%">가입일</td>
                      <td style="width:3rem;">경고</td>
                      <td style="width:3rem;">상태</td>
@@ -121,8 +121,11 @@
 	                      		<c:when test="${member.mstate == 0}">
 	                      			<button class="btn btn-sm btn-danger"  type="button" onclick="showMstateModal(this, '${member.mid }')">정지</button>
 	                      		</c:when>
-	                      		<c:when test="${member.mstate == 1 || member.mstate == 9}">
+	                      		<c:when test="${member.mstate == 1}">
 	                      			<button class="btn btn-sm btn-primary"  type="button" onclick="showMstateModal(this,'${member.mid }')">활동</button>
+	                      		</c:when>
+	                      		<c:when test="${member.mstate == 9}">
+	                      			<button class="btn btn-sm btn-primary member-kakao"  type="button" onclick="showMstateModal(this,'${member.mid }')">활동</button>
 	                      		</c:when>
 	                      		<c:when test="${member.mstate == 2}">
 	                      			<button class="btn btn-sm btn-secondary" type="button"  style="cursor:default;">탈퇴</button>
@@ -315,11 +318,7 @@
 			if (btnObj.text() == "활동" || btnObj.text() == "경고" ){
 				var mstate = 0;				
 			} else {
-				if (mid.includes("@_")){
-					var mstate = 9;				
-				} else {
-					var mstate = 1;				
-				}
+				var mstate = 1;				
 			}
 			$.ajax({
 				type: "get",
@@ -329,11 +328,11 @@
 				success: function(result){
 					console.log(result);
 						if (result.mstate == 0){
-							btnObj.text("정지").addClass("btn-danger").removeClass("btn-secondary btn-primary btn-warning");
+							btnObj.text("정지").addClass("btn-danger").removeClass("btn-primary").removeClass("btn-warning");
 						} else if (result.mwarning > 0){
-							btnObj.text("경고").addClass("btn-warning").removeClass("btn-secondary btn-danger btn-primary");
+							btnObj.text("경고").addClass("btn-warning").removeClass("btn-primary").removeClass("btn-secondary");
 						} else {
-							btnObj.text("활동").addClass("btn-primary").removeClass("btn-secondary btn-danger btn-warning");
+							btnObj.text("활동").addClass("btn-primary").removeClass("btn-secondary").removeClass("btn-warning");
 						}
 					$("#updateMstateModal").modal("hide");
 				},
@@ -440,22 +439,22 @@
 					console.log(result);					
 					for (var i = 0; i < result.length; i++){
 						output += "<tr style='border-bottom: solid #E0E0E0 1px;'>";
-						output += "<td onclick='showMemberInfoModal( \"" + result[i].mid + "\")' class='text-center overflow' style='cursor: pointer;'>" + result[i].mid + "</td>";
-						output += "<td onclick='showMemberInfoModal( \"" + result[i].mid + "\")' class='text-center overflow' style='cursor: pointer;'>" + result[i].mname + "</td>";
-						output += "<td onclick='showMemberInfoModal( \"" + result[i].mid + "\")' class='text-center overflow' style='cursor: pointer;'>" + result[i].mnickname + "</td>";
+						output += "<td onclick='showMemberInfoModal( \"" + result[i].mid + "\")' class='text-center overflow' style='cursor: pointer; max-width:6rem;'>" + result[i].mid + "</td>";
+						output += "<td onclick='showMemberInfoModal( \"" + result[i].mid + "\")' class='text-center overflow' style='cursor: pointer; max-width:5rem;'>" + result[i].mname + "</td>";
+						output += "<td onclick='showMemberInfoModal( \"" + result[i].mid + "\")' class='text-center overflow' style='cursor: pointer; max-width:6rem;'>" + result[i].mnickname + "</td>";
 						output += "<td class='text-center overflow' >" + result[i].mphone + "</td>";
 						output += "<td class='text-center overflow' >" + result[i].memail + "</td>";
 						output += "<td class='text-center overflow' >" + result[i].mjoindate + "</td>";
 						output += "<td class='text-center' >" + result[i].mwarning + "</td>";
 						output += "<td class='text-center'>"
 						if (result[i].mwarning > 0){
-							output += "<button class='btn btn-sm btn-warning' type='button' onclick='showMstateModal(this, \""+result[i].mid+"\")'>경고</button>";
+							output += "<button class='btn btn-sm btn-warning' onclick='showMstateModal(this, \""+result[i].mid+"\")'>경고</button>";
 						} else if (result[i].mstate == 0){
-							output += "<button class='btn btn-sm btn-danger' type='button' onclick='showMstateModal(this, \""+result[i].mid+"\")'>정지</button>";
-						} else if (result[i].mstate == 1 || result[i].mstate == 9){
-							output += "<button class='btn btn-sm btn-primary' type='button' onclick='showMstateModal(this, \""+result[i].mid+"\")'>활동</button>";
+							output += "<button class='btn btn-sm btn-danger' onclick='showMstateModal(this, \""+result[i].mid+"\")'>정지</button>";
+						} else if (result[i].mstate == 1){
+							output += "<button class='btn btn-sm btn-primary' onclick='showMstateModal(this, \""+result[i].mid+"\")'>활동</button>";
 						} else {
-							output += "<button class='btn btn-sm btn-secondary' type='button' style='cursor:default;>탈퇴</button>";
+							output += "<button class='btn btn-sm btn-secondary' style='cursor:default; style='width:4rem;''>탈퇴</button>";
 						}
 						output += "</td>";
 						output += "</tr>";

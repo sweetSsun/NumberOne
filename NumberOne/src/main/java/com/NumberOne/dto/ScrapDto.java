@@ -13,6 +13,5 @@ public class ScrapDto {
 	private String bdreply;		//스크랩한 글 댓글수
 	private String mnickname;	// 원본 글 작성자 닉네임
 	private String bddate;		// 글 작성 날짜
-	private int bdstate;		// 글 상태
 
 }

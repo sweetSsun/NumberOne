@@ -165,7 +165,7 @@ background-color: #00BCD4;
                                 <div class="col-lg-6  col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p>아이디<span>*</span></p>
-                                        <input type="text" placeholder="특수문자 제외 영문&숫자 5~12자로 입력해주세요." id="inputMid" name="mid" 
+                                        <input type="text" placeholder="특수문자 제외 영문&숫자 5~10자로 입력해주세요." id="inputMid" name="mid" 
                                         onkeyup="characterCheck(this)" onkeydown="characterCheck(this)">
                                         <span id="idCheckMsg" class="msg"></span>  
                                     </div>
@@ -395,8 +395,8 @@ background-color: #00BCD4;
     		if(inputId.length == 0) {
     			$("#idCheckMsg").text("아이디를 입력 해주세요.").css("color" , "red");
     			inputIdCheck =false;
-    		}else if( inputId.length < 5 || inputId.length > 12 ){
-				$("#idCheckMsg").text("아이디는 5~12자리 입니다.").css("color", "red");
+    		}else if( inputId.length < 5 || inputId.length > 10 ){
+				$("#idCheckMsg").text("아이디는 5~10자리 입니다.").css("color", "red");
 				inputIdCheck = false;
     		}else {
 
