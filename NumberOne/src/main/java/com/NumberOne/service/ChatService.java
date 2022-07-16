@@ -86,9 +86,9 @@ public class ChatService {
 	}
 
 	// 특정 채팅방의 메세지 목록 조회
-	public String selectAllRoomMessage(String crcode){
-		System.out.println("ChatService.selectAllRoomMessage() 호출");
-		ArrayList<ChatMessageDto> msgList = chdao.selectAllRoomMessage(crcode);
+	public String selectChatRoomMessage(String crcode){
+		System.out.println("ChatService.selectChatRoomMessage() 호출");
+		ArrayList<ChatMessageDto> msgList = chdao.selectChatRoomMessage(crcode);
 		
 		// 안읽은 메세지 숫자 0으로 변경
 		String mid = (String) session.getAttribute("loginId");
@@ -159,10 +159,37 @@ public class ChatService {
 	}
 
 	// 특정 사용자의 채팅방 목록 조회 요청
-	public String selectRoomList(String loginId) {
-		System.out.println("ChatService.selectRoomList() 호출");
-		ArrayList<ChatRoomDto> chatRoomList = chdao.selectRoomList(loginId);
-		// selectRoomList 쿼리문 만들어야함~~~~~~~~~~~~~~~~~~~~~~~~~~~
+	public String selectChatRoomList(String loginId) {
+		System.out.println("ChatService.selectChatRoomList() 호출");
+		
+		// 채팅방 목록 조회
+		System.out.println(loginId);
+		ArrayList<ChatRoomDto> chatRoomList = chdao.selectChatRoomList(loginId);
+		
+		for (int i = 0; i < chatRoomList.size(); i++) {
+			// 특정 채팅방의 안읽은 메세지 수 조회
+			String cmcrcode = chatRoomList.get(i).getCrcode();
+			int unReadCount = chdao.selectUnReadCount(loginId, cmcrcode);
+			chatRoomList.get(i).setUnreadCount(unReadCount);
+
+			// 특정 채팅방의 가장 최신 메세지 조회
+			ChatMessageDto recentMsg = chdao.selectRecentMessage(cmcrcode);
+			chatRoomList.get(i).setRecentCmcontents(recentMsg.getCmcontents());
+			chatRoomList.get(i).setRecentCmdate(recentMsg.getCmdate());
+			
+			// 특정 채팅방의 상대방 닉네임 조회
+			String mid = ""; // 로그인한 사람이 아닌 상대방의 아이디 뽑기
+			if (loginId.equals(chatRoomList.get(i).getCrfrmid())) {
+				mid = chatRoomList.get(i).getCrtomid();
+			} else {
+				mid = chatRoomList.get(i).getCrfrmid();
+			}
+			String cmfrmnickname = chdao.selectMnickname(mid);
+			chatRoomList.get(i).setCrfrmnickname(cmfrmnickname);
+		}
+		
+		System.out.println("chatRoomList : " + chatRoomList);
+		
 		Gson gson = new Gson();
 		String chatRoomList_json = gson.toJson(chatRoomList);
 		

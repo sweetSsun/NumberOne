@@ -10,12 +10,12 @@
 <%@ include file="/resources/css/BarCss.jsp" %>
 
 <style type="text/css">
-/* 
-.dropdown:hover .dropdown-menu {
-    display: block;
-    margin-top: 0;
-}
- */
+
+/* 	.dropdown:hover .dropdown-menu {
+	    display: block;
+	    margin-top: 0;
+	} */
+	
 	.logoimg{
 		margin-top: 2%;
         padding-left: 45%;    
@@ -100,7 +100,7 @@
 	
 					
 				<!-- 로그인, 회원가입, 고객센터 -->
-				<div class="col-lg-7 col-md-6 col-sm-6 menubar_right dropdown">
+				<div class="col-lg-7 col-md-6 col-sm-6 menubar_right">
 					<ul class="">
 						<c:choose>
 	                    <c:when test="${sessionScope.loginId == null && sessionScope.kakaoId == null}">
@@ -111,15 +111,55 @@
 							<!-- 찜 -->
 							<li style="margin-right: 15px;"><a href="#" title="찜목록"><i class="fa-solid fa-heart"></i></a></li>
 							<!-- 채팅 -->
-							<li style="margin-right: 15px;" class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-								<a href="#" title="1:1채팅" onclick="popupChat()"><i class="fa-solid fa-comment-dots"></i></a>
-							</li>
+							<li style="margin-right: 15px;" class="dropdown" >
+								<a href="#" title="1:1채팅" class="" id="dropdownChat" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<i class="fa-solid fa-comment-dots"></i>
+									<!-- 안읽은 채팅메세지 표시 -->
+									<!-- badge 클래스 끌어와야함 -->
+									<!-- <span class="badge badge-danger badge-counter">7</span> -->
+								</a>
+
 								<!-- 채팅방 목록 드롭다운 -->
-								  <ul class="dropdown-menu" id="chatRoomList" aria-labelledby="dropdownMenuButton1">
-								    <li><a class="dropdown-item" href="#" onclick="popupChat('CR00001')">채팅방1</a></li>
-								    <li><a class="dropdown-item" href="#" onclick="popupChat('CR00002')">채팅방2</a></li>
-								    <li><a class="dropdown-item" href="#" onclick="popupChat('CR00003')">채팅방3</a></li>
-								  </ul>
+								<div class="dropdown-list dropdown-menu dropdown-menu-right shadow" id="chatRoomList" aria-labelledby="dropdownChat">
+                                <h6 class="dropdown-header">
+                                    채팅방 목록
+                                </h6>
+                                <!-- 채팅방1 -->
+                                <a class="dropdown-item d-flex align-items-center" href="#" onclick="popupChat('CR00001')">
+                                    <div class="mr-3">
+                                    	<!-- 여기 글자가 있으면 이미지가 나오는데 없으면 왜 안나와????? -->
+                                    	<!-- 임시이미지 -->
+                                    	<img src="${pageContext.request.contextPath }/resources/img/logo_bada.png" alt="..."
+                                    		class="img-profile rounded-circle" style="height: 50px; width:50px;"> 
+                                    </div>
+                                    <div class="">
+                                        <div class="overflow">최신 메세지를 아주 길게아아아아아아웆아주아ㅜㅇ자우ㅏ아주길게아아아아아아웆아주아ㅜㅇ자우ㅏ아주길게 써볼게요~~~~~</div>
+                                        <div class="row">
+                                        <div class="col-6 small" style="color:gray; text-align:left;">상대방 닉네임</div>
+                                        <div class="col-6 small" style="color:gray; text-align:right;">날짜</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                
+                                <!-- 채팅방2 -->
+                                <a class="dropdown-item d-flex align-items-center" href="#" onclick="popupChat('CR00002')">
+                                    <div class="mr-3">
+                                    	<!-- 여기 글자가 있으면 이미지가 나오는데 없으면 왜 안나와????? -->
+                                    	<!-- 임시이미지 -->
+                                    	<img src="${pageContext.request.contextPath }/resources/img/logo_bada.png" alt="..."
+                                    		class="img-profile rounded-circle" style="height: 50px; width:50px;"> 
+                                    </div>
+                                    <div class="">
+                                        <div class="overflow">채팅방2</div>
+                                        <div class="row">
+                                        <div class="col-6 small" style="color:gray; text-align:left;">상대방 닉네임</div>
+                                        <div class="col-6 small" style="color:gray; text-align:right;">날짜</div>
+                                        </div>
+                                    </div>
+                                </a>
+                                </div>
+							</li>
+<!--  								
 							<!-- 로그아웃 -->
  							<li style="margin-right: 15px;"><a href="selectMemberLogout">로그아웃</a></li>
 							<!-- 고객센터(문의)	-->				
@@ -154,7 +194,7 @@
 		let openUrl = "loadToChat?crcode="+crcode;
 		//console.log($('popChat[name=pop'+crcode+']').closed); // 해당 팝업창이 열려있는지 확인
 		$.ajax({
-			url: "selectAllRoomMessage",
+			url: "selectChatRoomMessage",
 			data: {"crcode":crcode},
 			async:false,
 			dataType:"json",
@@ -172,11 +212,11 @@
 				} */
 			}
 		});
-	};
+	}
 	
 	// 동일한 코드의 팝업창이 열려있는지 확인
-	function popChatHistory(crcode){
-		var Obj = popChat.
+/* 	function popChatHistory(crcode){
+		var Obj = popChat.[name=pop'+crcode+'];
 		console.log(Obj==undefined);
 		console.log(Obj.closed);
 		console.log(Obj==null);
@@ -186,20 +226,45 @@
 		} else {
 			return false;
 		}
-	}
+	} */
 	
 	// 채팅 아이콘 클릭하면 채팅방 목록 불러오고 드롭다운(안읽은 메세지 > 최신순)
-	$(document).on("click", "#chatRoomList", function(){
+	$(document).on("click", "#dropdownChat", function(){
 		$.ajax({
 			type: "post",
-			url: "",
-			data: {"mid": ${sessionScope.loginId}},
+			url: "selectChatRoomList",
+			data: {"loginId": "${sessionScope.loginId}"},
+			async:false,
 			dataType: "json",
 			success: function(result){
-				
+				console.log(result);
+				outputDropdown(result);
 			}
 		});
-	})
+	});
+	
+	// 드롭다운 채팅방목록 입력 함수
+	function outputDropdown(data){
+		var dropdownList = "<h6 class=\"dropdown-header\">채팅방 목록</h6>";
+		for(var i = 0; i < data.length; i++){
+			if (i == 10){ // 최대 10개 목록까지만 출력
+				break;
+			}
+			dropdownList += "<a class=\"dropdown-item d-flex align-items-center\" href=\"#\" onclick=\"popupChat('" + data[i].crcode + "')\">";
+			dropdownList += "<div class=\"mr-3\">";
+			dropdownList += "상대방이미지";
+			dropdownList += "</div>";
+			dropdownList += "<div>";
+			dropdownList += "<div class=\"overflow\">" + data[i].recentCmcontents + "</div>";
+			dropdownList += "<div class=\"row\">";
+			dropdownList += "<div class=\"col-6 small\" style=\"color:gray; text-align:left;\">" + data[i].crfrmnickname + "</div>";
+			dropdownList += "<div class=\"col-6 small\" style=\"color:gray; text-align:left;\">" + data[i].recentCmdate + "</div>";
+			dropdownList += "</div>";
+			dropdownList += "</div>";
+			dropdownList += "</a>";
+		}
+		$("#chatRoomList").html(dropdownList);
+	}
 
 </script>
 

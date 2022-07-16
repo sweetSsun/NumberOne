@@ -43,11 +43,15 @@ public interface ChatDao {
 
 	String selectMnickname(String mid);
 
-	ArrayList<ChatMessageDto> selectAllRoomMessage(String crcode);
+	ArrayList<ChatMessageDto> selectChatRoomMessage(String crcode);
 
 	void updateCmread(@Param ("crcode") String crcode, @Param ("mid") String mid);
 
-	ArrayList<ChatRoomDto> selectRoomList(String loginId);
+	ArrayList<ChatRoomDto> selectChatRoomList(String loginId);
+
+	int selectUnReadCount(@Param ("loginId") String loginId, @Param ("cmcrcode") String cmcrcode);
+
+	ChatMessageDto selectRecentMessage(String cmcrcode);
 
 	
 	
