@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.NumberOne.dao.ChatDao">
+
+	
+<!-- 	
+	<select resultType="com.NumberOne.dto.ChatDto" id="selectChatList">
+	SELECT CHCODE, CHFRMID, CHTOMID, CHCONTENTS, TO_CHAR(CHDATE,'YYYY-MM-DD HH24:MI') AS CHDATE
+	FROM CHAT ORDER BY CHDATE
+	</select>
+
+	
+	<select resultType="String" id="selectMfrnick">
+	SELECT MNICKNAME
+	FROM MEMBERS
+	WHERE MID = #{chfrmid}
+	</select>
+	
+
+	
+	<select resultType="String" id="selectTime">
+	SELECT TO_CHAR(CHDATE, 'YYYY-MM-DD AM HH:MI')
+	FROM CHAT
+	WHERE CHCODE = #{chcode}
+	</select> -->
+
+	<!-- 여기부터 새로한거! -->
+	<!-- chatRoom 조회(회원정보/탑바용) -->
+<!-- 	<select id="selectChatRoom_1" resultType="com.NumberOne.dto.ChatRoomDto">
+		SELECT * 
+		FROM CHATROOM
+		WHERE CRFRMID = #{mid} OR CRTOMID = #{mid}
+	</select> -->
+
+	<!-- chatRoom 조회(채팅방 유무 확인용) -->
+	<select id="selectChatRoom_1" resultType="com.NumberOne.dto.ChatRoomDto">
+		SELECT * 
+		FROM CHATROOM
+		WHERE CRCODE = #{crcode}
+	</select>
+	
+	<!-- chatRoom 조회(신규채팅방 생성 조회용) -->
+	<select id="selectChatRoom_2" resultType="com.NumberOne.dto.ChatRoomDto">
+		SELECT * 
+		FROM CHATROOM
+		WHERE (CRFRMID = #{crfrmid} OR CRTOMID = #{crfrmid}) AND (CRFRMID = #{crtomid} OR CRTOMID = #{crtomid})
+	</select>
+	
+	<!-- crcode 최대값 조회 -->
+	<select id="selectMaxCrcode" resultType="String">
+		SELECT NVL(MAX(CRCODE), 'CR00000') AS CRCODE
+		FROM CHATROOM
+	</select>
+	
+	<!-- chatRoom 생성 -->
+	<insert id="insertChatRoom">
+		INSERT INTO CHATROOM(crcode, crfrmid, crtomid)
+		VALUES (#{cmcrcode}, #{cmfrmid}, #{cmtomid})
+	</insert>
+	
+	<!-- cmcode 최대값 조회 -->
+	<select id="selectMaxCmcode" resultType="int">
+		SELECT NVL(MAX(CMCODE),0)
+		FROM CHATMESSAGE
+	</select>
+	
+	<!-- chatMessage 입력 -->
+	<insert id="insertChatMessage">
+		INSERT INTO CHATMESSAGE (CMCODE, CMCRCODE, CMFRMID, CMCONTENTS, CMDATE, CMREAD)
+		<if test="sessionCount == 1">
+			VALUES (${cmcode}, #{cmcrcode}, #{cmfrmid}, #{cmcontents}, SYSDATE, DEFAULT)
+		</if>
+		<if test="sessionCount == 2">
+			VALUES (${cmcode}, #{cmcrcode}, #{cmfrmid}, #{cmcontents}, SYSDATE, 0)
+		</if>
+	</insert>
+	
+	<!-- 채팅 보낸 사람 닉네임 조회 -->
+	<select id="selectMnickname" resultType="String" >
+		SELECT MNICKNAME
+		FROM MEMBERS
+		WHERE MID = #{mid}
+	</select>
+	
+	<!-- 특정 채팅방의 채팅메세지 목록 조회 -->
+	<select id="selectChatRoomMessage" resultType="com.NumberOne.dto.ChatMessageDto">
+		SELECT CMCODE, CMCRCODE, CMFRMID, CMCONTENTS, TO_CHAR(CMDATE,'YYYY-MM-DD HH24:MI') AS CMDATE, CMREAD
+		FROM CHATMESSAGE
+		WHERE CMCRCODE = #{crcode}
+		ORDER BY CMCODE
+	</select>
+	
+	<!-- 채팅방 목록 조회 시 cmread 0으로 수정 -->
+	<update id="updateCmread">
+		UPDATE CHATMESSAGE
+		SET CMREAD = 0
+		WHERE CMCRCODE = #{crcode} AND CMFRMID != #{mid} AND CMREAD = 1
+	</update>
+	
+	<!-- 특정 사용자의 채팅방 목록 조회 -->
+	<select id="selectChatRoomList" resultType="com.NumberOne.dto.ChatRoomDto">
+		SELECT *
+		FROM CHATROOM
+		WHERE CRFRMID = #{loginId} OR CRTOMID = #{loginId}
+	</select>
+	
+	<!-- 특정 채팅방의 안읽은 메세지 수 조회 -->
+	<select id="selectUnReadCount" resultType="int">
+		SELECT SUM(CMREAD) CMREAD
+		FROM CHATMESSAGE
+		WHERE CMFRMID != #{loginId} AND CMCRCODE = #{cmcrcode}
+	</select>
+	
+	<!-- 특정 채팅방의 가장 최신 메세지 조회 -->
+	<select id="selectRecentMessage" resultType="com.NumberOne.dto.ChatMessageDto">
+		SELECT CMCONTENTS, TO_CHAR(CMDATE, 'MM/DD HH24:MI') AS CMDATE
+		FROM CHATMESSAGE
+		WHERE CMCODE = (SELECT MAX(CMCODE) 
+						FROM CHATMESSAGE 
+						WHERE CMCRCODE = #{cmcrcode})
+	</select>
+</mapper>
