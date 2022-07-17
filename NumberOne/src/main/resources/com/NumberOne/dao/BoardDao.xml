@@ -148,10 +148,9 @@
 					<if test="searchVal == '자유' or searchVal == '질문' or searchVal == '정보' or searchVal == '후기' ">
 					AND
 					</if>
-					
 				</if>
-				<!-- 상태값 정렬 -->
 				
+				<!-- 상태값 정렬 -->
 				<if test="searchVal == '자유' ">
 					BDCATEGORY = '자유'
 				</if>
@@ -173,12 +172,13 @@
 		
 		SELECT * 
 		FROM (
-				SELECT NBCODE,NBMID,NBTITLE,NBCONTENTS,TO_CHAR(NBDATE,'YY-MM-DD') AS NBDATE,
- 			   			NBIMG,NBSTATE,NBHITS,NBFIX, ROWNUM RN
- 				FROM NOTICEBOARDS
- 				
+				SELECT ROWNUM RN, NBCODE,NBMID,NBTITLE,NBCONTENTS,TO_CHAR(NBDATE,'YY-MM-DD') AS NBDATE,
+ 			   		   NBIMG,NBSTATE,NBHITS, NBFIX
+ 				FROM NOTICEBOARDS 
+ 				ORDER BY NBCODE DESC ) 
+ 		WHERE RN BETWEEN ${startRow} AND ${endRow}	
  		<if test="keyword.length > 0">
- 			WHERE 
+ 			AND
  			<choose>
  				<when test="searchType == 'nbTitleContents' ">
  					(NBTITLE LIKE '%'||#{keyword}||'%' OR NBCONTENTS LIKE '%'||#{keyword}||'%')
@@ -189,9 +189,9 @@
 				</otherwise>
  			</choose>
  		</if>
-		ORDER BY NBCODE DESC )
 		
-		WHERE RN BETWEEN ${startRow} AND ${endRow}
+		
+		
 	</select>
 	
  	 <select id="selectRoomList" resultType="com.NumberOne.dto.BoardDto">

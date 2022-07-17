@@ -8,7 +8,7 @@
 <%@ include file="/resources/css/BarCss.jsp" %>
 <!-- 폰트어썸 -->
 <script src="https://kit.fontawesome.com/86a85cd392.js" crossorigin="anonymous"></script>
-<title>${board.bdtitle } - 1인자:게시판 글상세 페이지</title>
+<title>${board.bdtitle } - 1인자:지역글 상세페이지</title>
 <!-- Jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
@@ -54,16 +54,6 @@
 		color : #00a5ba;
 		font-size: 20px;
 	}
-	.bdProfile{
-		height: 40px;
-		width:40px;
-		object-fit: cover;
-	}
-	.bdProfile_Kakao{
-		height: 40px; 
-		width:40px;
-		object-fit: cover;
-	}
 	.bdnickname{
 		font-size: 20px;
 	}
@@ -105,16 +95,6 @@
 	}
 	.rpnickname{
 		font-size:20px;
-	}
-	.rpProfile{
-		height:50px;
-		width:50px;
-		object-fit: cover;
-	}
-	.rpProfile_None{
-		height:40px; 
-		width:40px;
-		object-fit: cover;
 	}
 	.icon{
 		border : solid gray 2px;
@@ -162,7 +142,7 @@
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h2 class="text-center">게시판 글상세페이지 : BoardView.jsp</h2>
+				<h2 class="text-center">지역글 상세페이지 : RegionBoardView.jsp</h2>
 				<form action="">
 					<div class="row">
 						<div class="col">
@@ -179,16 +159,15 @@
 						<div class="col-6">
 							<c:choose>
 								<c:when test="${board.bdmprofile != null && board.bdmstate == 1 }">
-									<img class="img-profile rounded-circle bdProfile"  src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/${board.bdmprofile}">
+									<img class="img-profile rounded-circle" style="height: 45px; width:45px;" src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/${board.bdmprofile}">
 								</c:when>
 								
 								<c:when test="${board.bdmprofile != null && board.bdmstate == 9 }">
-									<!-- 카카오 회원 -->
-									<img class="img-profile rounded-circle bdProfile_Kakao" src="${board.bdmprofile}">
+									<img class="img-profile rounded-circle" style="height: 40px; width:40px;" src="${board.bdmprofile}">
 								</c:when>
 								
 								<c:otherwise>
-									<img class="img-profile rounded-circle bdProfile"  src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png">
+									<img class="img-profile rounded-circle" style="height: 45px; width:45px;" src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png">
 								</c:otherwise>
 							</c:choose>
 							<a href="#"><span class="fw-bold bdnickname">${board.bdnickname }</span></a> 
@@ -241,7 +220,6 @@
 					</c:when>
 				</c:choose>
 				</div>
-				
 
 				<div class="img-container">
 					<img id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
@@ -404,6 +382,7 @@
 	//현재 로그인중인 아이디
 	var loginId = '${sessionScope.loginId}';
 	
+	
 	$(document).ready(function(){
 		selectReplyList();//게시글 댓글목록
 		selectReplyCount();//게시글 댓글수
@@ -414,10 +393,17 @@
 </script>
 
 <script type="text/javascript">
+
+	console.log("${board.bdcategory}");
 	/* 글목록 버튼 클릭 시 */
 	function boardList(){
 		/* 넘어온 게시판으로 다시 이동 */
-		location.href="selectCategoryBoardList?searchVal=${board.bdcategory}";
+		var region_all = '${board.bdrgcode}';
+		if ( region_all == 'ALL'){//지역이 전국이면 전체지역게시판으로 이동
+			location.href="selectRegionBoardList";
+		}else{
+			location.href="selectDetailBoardList?searchVal=${board.bdrgcode}";
+		}
 	}
 </script>
 
@@ -613,8 +599,7 @@
 	function updateBoardDelete(){
 		/* 게시글 삭제(상태변경) */
 		//모달창에서 "네" 버튼 클릭 시 삭제
-		var bdcategory = '${board.bdcategory }';
-		location.href="updateBoardDelete?bdcode="+bdcode+"&bdcategory="+bdcategory;
+		location.href="updateBoardDelete?bdcode="+bdcode+"&bdcategory="+'${board.bdcategory }';
 	}
 	
 </script>
@@ -663,14 +648,14 @@
 
 						if( replyList[i].rpprofile != null ){//프로필 이미지가 있을 시 
 							if(  replyList[i].rpmstate == 9){//카카오 회원
-								output += "<img class=\"img-profile rounded-circle rpProfile\"  src='"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle \" style=\"height:50px; width:50px;\" src='"+replyList[i].rpprofile + "'>"
 							}else{
-								output += "<img class=\"img-profile rounded-circle rpProfile\"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle \" style=\"height:50px; width:50px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
 							}
 						
 						
 						}else{//프로필 이미지가 없을 시 
-							output += "<img class=\"img-profile rounded-circle rpProfile_None\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
+							output += "<img class=\"img-profile rounded-circle \" style=\"height:40px; width:40px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
 						}
 						output += "</div>"
 						
@@ -697,12 +682,12 @@
 						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;'>" /* 프로필영역 */
 						if( replyList[i].rpprofile != null ){//프로필 이미지가 있을 시 
 							if(  replyList[i].rpmstate == 9){//카카오 회원
-								output += "<img class=\"img-profile rounded-circle rpProfile\"  src='"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle \" style=\"height:50px; width:50px;\" src='"+replyList[i].rpprofile + "'>"
 							}else{
-								output += "<img class=\"img-profile rounded-circle rpProfile\"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle \" style=\"height:50px; width:50px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
 							}
 						}else{//프로필 이미지가 없을 시 
-							output += "<img class=\"img-profile rounded-circle rpProfile_None\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
+							output += "<img class=\"img-profile rounded-circle\" style=\"height:40px; width:40px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
 						}
 						output += "</div>"
 							

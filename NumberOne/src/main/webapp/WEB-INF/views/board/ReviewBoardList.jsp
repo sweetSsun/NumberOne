@@ -148,7 +148,7 @@
 					<thead >
 						<tr class="text-center" id="board_column">
 							<td style="font-size: 17px;">글번호</td>
-							<td style="font-size: 17px;">카테고리</td>
+							<td style="font-size: 17px;">별점</td>
 							<td style="font-size: 17px;">제목</td>
 							<td style="font-size: 17px;">작성자</td>
 							<td style="font-size: 17px;">날짜</td>
@@ -182,30 +182,44 @@
 							<td class="bdcategory text-center tableCell">
 								<div class="col" class="mb-3"  id="myform">
 									<c:choose>
-										<c:when test="${board.bdrate == 0 }">
-											 <span class="None_rate">★★★★★</span>
-										</c:when>
-	
 										<c:when test="${board.bdrate == 1 }">
-											 <span>★</span><span class="None_rate">★★★★</span>
+											 <span>★</span>
+											 <span class="None_rate">★</span>
+											 <span class="None_rate">★</span>
+											 <span class="None_rate">★</span>
+											 <span class="None_rate">★</span>
 										</c:when>
 										
 										<c:when test="${board.bdrate == 2 }">
-											 <span>★★</span><span class="None_rate">★★★</span>
+											 <span>★</span>
+											 <span>★</span>
+											 <span class="None_rate">★</span>
+											 <span class="None_rate">★</span>
+											 <span class="None_rate">★</span>
 										</c:when>
 										
 										<c:when test="${board.bdrate == 3 }">
-											 <span>★★★</span><span class="None_rate">★★</span>
+											 <span>★</span>
+											 <span>★</span>
+											 <span>★</span>
+											 <span class="None_rate">★</span>
+											 <span class="None_rate">★</span>
 										</c:when>
 										
 										<c:when test="${board.bdrate == 4 }">
-											 <span>★★★★</span><span class="None_rate">★</span>
+											 <span>★</span>
+											 <span>★</span>
+											 <span>★</span>
+											 <span>★</span>
+											 <span class="None_rate">★</span>
 										</c:when>
 										
 										<c:when test="${board.bdrate == 5 }">
-											 <fieldset>
-												<span>★★★★★</span>
-											</fieldset> 
+											 <span>★</span>
+											 <span>★</span>
+											 <span>★</span>
+											 <span>★</span>
+										     <span>★</span>
 										</c:when>
 										
 									</c:choose>
@@ -239,8 +253,8 @@
 				</table>
 				<div align="right" class="col mt-2">
 					<c:if test="${sessionScope.loginId != null }">
-						<button type="button" onclick="loadToWriteReview()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">후기시범</button>
-						<button type="button" onclick="loadToBoardWrite()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">글작성</button>
+						<button type="button" onclick="loadToWriteReview()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">글작성</button>
+						<!-- <button type="button" onclick="loadToBoardWrite()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">글작성</button> -->
 					</c:if>
 				</div>
 				</div>

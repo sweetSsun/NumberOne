@@ -175,8 +175,17 @@
 								${board.bdrgname }
 							</td>
 							<td class="tableCell">
-							 	<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
-							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
+							 	<c:choose>
+									<c:when test="${board.bdcategory == '후기'  }">
+										<a href="selectReviewBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
+									 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
+									</c:when>
+									
+									<c:otherwise>
+									 	<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
+									 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
+									</c:otherwise>
+								</c:choose>
 							 </td>
 							<td class="text-center tableCell">
 								<a href="#">${board.bdnickname}</a>

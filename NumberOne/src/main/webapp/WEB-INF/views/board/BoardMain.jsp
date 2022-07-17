@@ -51,11 +51,18 @@ section{
      display: flex;
      align-items: center;
      justify-content: center;
-     width: 240px;
-     height: 240px;
+     width: 239px;
+     height: 239px;
      border: solid #E0E0E0 2px;
      margin-top: 5%;
      margin-bottom: 5%;
+     
+   }
+   .img{
+   /* 오브젝트 채우기 */
+   	width: 239px;
+    height: 239px;
+    object-fit: cover;
    }
    .board_category{
      height: 100px;
@@ -105,7 +112,8 @@ section{
 					<c:forEach items="${roomList }" end="4" var="room">
 						<div class="col-3" style="width:auto;">
 							<div class="img-container" >
-								<a href="selectRoomList?bdcode=${room.bdcode }&jsp=modal"><img alt="" src="${pageContext.request.contextPath }/resources/img/room/${room.bdimg }"></a>
+								<a href="selectRoomList?bdcode=${room.bdcode }&jsp=modal">
+								<img class="img" src="${pageContext.request.contextPath }/resources/img/room/${room.bdimg }"></a>
 							</div>
 						</div>
 					</c:forEach>
