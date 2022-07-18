@@ -298,9 +298,9 @@ text-align: right;
 	<div class="row"  style="width: 650px; margin-left: 9px;">
 	<div class = "msgTextarea2" style="background-color: #F2F2FF; padding-left: 50px;">
 	<span style="width: 500px; text-align: center;">
-	<button>작성글</button> 
+	<button onclick="boardreplySwitch('b')" id="board">작성글</button> 
 	&nbsp;&nbsp;&nbsp; 
-	<button id="wboard_btn">작성댓글</button></span>
+	<button id="reply" onclick="boardreplySwitch('r')">작성댓글</button></span>
 	</div>
 	<!-- 작성 글 -->
 				
@@ -318,51 +318,6 @@ text-align: right;
 <script type="text/javascript">
 
 
- console.log("되나??")
-
-
-function writeMemberBoard(boardList){
-	 
-	 var output = "";
-	 	
-	for (var i = 0; i < boardList.length; i++){
-		output+="<ul><li>"		
-		output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; color:black; \" >"+boardList[i].bdtitle+"</p>"
-		output+="</li></ul>	"		
-		output+="</div> "
-
-		$("#WmemberBoard").html(output);
-	}
-	
- }	
-
-
-
-/*   function writeMemberReply(ReplyList){ 
- 
-	  $("#wboard_btn").on("click",function(){
-		
-		 var output = "";
-			for (var i = 0; i < ReplyList.length; i++){
-				output+="<ul><li>"		
-				output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; \" >"+ReplyList[i].rpcontents+"</p>"
-				output+="</li></ul>	"		
-				output+="</div> "
-
-				$("#WmemberBoard").html(output);
-			}
-					 
-		 
-	 } 
-		 
- }; */
-	 
-	 
- 
-	
-	
-	
-	
 
 
 </script>
