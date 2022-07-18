@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.NumberOne.dao.MemberDao;
 import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.ContactDto;
+import com.NumberOne.dto.GoodsDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.ReplyDto;
 import com.NumberOne.dto.ScrapDto;
@@ -870,11 +871,22 @@ public class MemberService {
 			return mav;
 		}
 
+		//미니브라우저 중고거래 부분
+		public String selectWriteMemberInfoSellBuy_ajax(String nickname) {
+			System.out.println("service.selectWriteMemberInfoSellBuy_ajax() 호출");
+			ArrayList<UsedBoardDto> ubList = mdao.selectWriteMemberInfoSellBuy_ajax(nickname); 
+			System.out.println("ubList : " + ubList);
+			
+			Gson gson = new Gson();
+			String ubList_gson = gson.toJson(ubList);
+			System.out.println(ubList_gson);
+			
+			return ubList_gson;
+		}
+
 
 
 }
-
-
 
 
 

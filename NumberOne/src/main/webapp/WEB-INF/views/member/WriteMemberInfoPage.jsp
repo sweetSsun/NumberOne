@@ -231,7 +231,7 @@ text-align: right;
 
 <!-- 프로필 란 -->
 
- <div> <!--  class ="container" -->
+ <div ><!-- class ="container" -->
 
 	
 	<!-- 프로필 -->
@@ -277,21 +277,21 @@ text-align: right;
 		</div>
 		<%-- </c:forEach> --%>
 	</div>	 
-	 
+</div>	 
 
 
 <!-- 메뉴 시작 -->
-
-	<div class="row" style="width: 640px; margin-left: 11px;" id="WmemberReply">
+	<div id="WmemberReply">
+	<div class="row" style="width: 640px; margin-left: 11px;" >
 		<div class="col-lg-6 col-md-6 col-sm-6" 
 		style="border: 1px solid #949494; border-radius: 20px 20px 0px 0px; height: 50px; border-bottom: 0px; background-color: #F2F2FF">
-			<input value="활 동 내 역" 
+			<input type="button" value="활 동 내 역" onclick="boardreplySwitch('b')"
 			style="width:280px; border: 0px; margin-top: 7px; text-align: center; font-weight: bold; outline:none;  background-color: #F2F2FF" readonly="readonly">
 		</div>
 		<div class="col-lg-6 col-md-6 col-sm-6" 
 		style="border: 1px solid #949494; border-radius: 20px 20px 0px 0px; height: 50px; /* border-bottom: 0px; */">
-			<input value="판 매 내 역" 
-			style="width:280px; border: 0px; margin-top: 7px; text-align: center; font-weight: bold; outline:none;"  readonly="readonly">
+			<input type="button" value="판 매 내 역" onclick="boardreplySwitch('u')"
+			style="background-color: white; width:280px; border: 0px; margin-top: 7px; text-align: center; font-weight: bold; outline:none;"  readonly="readonly">
 		</div>
 	</div>
 		
@@ -302,7 +302,7 @@ text-align: right;
 	<button onclick="boardreplySwitch('b')" id="board"  style="border: 0px; background-color: #F2F2FF; ">작성글보기</button> 
    	&nbsp;&nbsp;&nbsp; 
    	<button id="reply" onclick="boardreplySwitch('r')" style="border: 0px; background-color: #F2F2FF;">작성댓글보기</button></span>	
-	
+
 
 	</div>
 	<!-- 작성 글 -->
@@ -321,7 +321,7 @@ text-align: right;
 <script type="text/javascript">
 
 
- console.log("되나??")
+ console.log("스크립트 확인!!!")
 
 function boardreplySwitch(type){
    console.log(type+"버튼 클릭");
@@ -331,18 +331,19 @@ function boardreplySwitch(type){
 
  function writeMemberBoard(boardList){
 	   console.log("작성글 출력 연결");
-	    var output = "";
-	       
+	   var output = "";
+       
 	   for (var i = 0; i < boardList.length; i++){
 	      output+="<ul><li>"      
 	      output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; color:black; \" >"+boardList[i].bdtitle+"</p>"
 	      output+="</li></ul>   "      
 	      output+="</div> "
 
-	   }
 	      $("#WmemberBoard").html(output);
+	   }
 	   
 	 }   
+
 	
  function writeMemberReply(ReplyList){ 
      console.log("댓글 출력 연결")   ;
@@ -358,59 +359,88 @@ function boardreplySwitch(type){
            $("#WmemberBoard").html(output);
                
       
-}; 
+} 
 
 
-/* 중고거래 부분
-  function writeMemberReply(ReplyList){ 
- 
-	  $("#wboard_btn").on("click",function(){
+// 중고거래 부분
+  function writeMemberSellBuy(ubList){ 
+	    console.log("중고거래 출력 연결");
 		
-		 var output = "";
-			for (var i = 0; i < ReplyList.length; i++){
-				output+="<div class=\"row\" style=\"width: 640px; margin-left: 11px;\">"		
-				output+="<div class=\"col-lg-6 col-md-6 col-sm-6\" style=\"border: 1px solid #949494; border-radius: 20px 20px 0px 0px; height: 50px; border-bottom: 0px; background-color: #F2F2FF\">"
-				output+="<input value=\"활 동 내 역\" style=\"width:280px; border: 0px; margin-top: 7px; text-align: center; font-weight: bold; outline:none;  background-color: #F2F2FF\" readonly=\"readonly\"></div>"		
-				output+="<div class=\"col-lg-6 col-md-6 col-sm-6\" style=\"border: 1px solid #949494; border-radius: 20px 20px 0px 0px; height: 50px; border-bottom: 0px; \">"
-				output+="<input value=\"판 매 내 역\" style=\"width:280px; border: 0px; margin-top: 7px; text-align: center; font-weight: bold; outline:none;\"  readonly=\"readonly\"></div>"		
-				output+="</div>"
-				output+="<div class = \"msgTextarea col-lg-12 col-md-6 col-sm-6\" style=\"border-top:0px! important ; padding-top: 20px; border: 1px solid #949494; background-color: #F2F2FF;\" >"		
-				output+="<ul><li>"		
-				output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; color:black; \" >"+boardList[i].bdtitle+"</p>"
-				output+="</li></ul>	"		
-				output+="</div>"				
-				output+="</div>"		
-								
-
-				$("#WmemberReply").html(output);
-			}
-					 
+	      var output = "";
+	      output="<div id=\"WmemberBoard2\">"
+	      output+="<div class=\"row\" style=\"width: 640px; margin-left: 11px;\"  >"
+	    	  output+="<div class=\"col-lg-6 col-md-6 col-sm-6\" style=\"border: 1px solid #949494; border-radius: 20px 20px 0px 0px; height: 50px;\">"
+	    	  output+="<input type=\"button\" value=\"활 동 내 역\" onclick=\"boardreplySwitch('b2')\" style=\"width:280px; border: 0px; margin-top: 7px; text-align: center; font-weight: bold; outline:none;  background-color: white\" readonly=\"readonly\"></div>"
+	    	  output+="<div class=\"col-lg-6 col-md-6 col-sm-6\" style=\"border: 1px solid #949494; border-radius: 20px 20px 0px 0px; height: 50px; border-bottom: 0px; background-color: #F2F2FF;\">"
+	    	  output+="<input type=\"button\" value=\"판 매 내 역\" onclick=\"boardreplySwitch('u')\" style=\"background-color: #F2F2FF; width:280px; border: 0px; margin-top: 7px; text-align: center; font-weight: bold; outline:none;\"  readonly=\"readonly\"></div>"
+	    	  output+="</div>"  
+	    	  output+="<div class=\"row\"  style=\"width: 650px; margin-left: 9px; \">"
+	    	  
+	    	  //높이 맞추기 위한 여백
+	   		  output+="<div class = \"msgTextarea2\" style=\"background-color: #F2F2FF; padding-left: 50px; height: 45px;\"></div>"
+	
+	    	  output+="<div class = \"msgTextarea col-lg-12 col-md-6 col-sm-6\" style=\"border-top:0px! important ; padding-top: 20px; border: 1px solid #949494; background-color: #F2F2FF;\" >"
+      
+	        for (var i = 0; i < ubList.length; i++){
+	           output+="<ul><li>" 
+	        	   output+="<div>"
+	           output+="&nbsp;&nbsp;&nbsp; <img style=\"height: 70px; width: 70px; border: 1px solid #949494; border-radius:5px; padding: 1px;\" src=\"${pageContext.request.contextPath }/resources/img/resell/"+ubList[i].ubmainimg+"\">"
+	           output+="<span class=\"pText\" style=\"background-color: #F2F2FF; border: 0px; outline:none; color:black; \" >&nbsp;&nbsp;&nbsp; "+ubList[i].ubgdname+"</span>"
+	           output+="<div><hr>"
+	           output+="</li></ul>"      
+	        }
+	        	output+="</div>"
+	        	output+="</div>"
+	        		output+="</div>"
+	           //console.log(output);
+	           $("#WmemberReply").html(output);
+			
 		 
-	 } 
-		 
- }; 
-	*/ 
+ } 
 
 	
-	
-	
-	
+ function writeMemberBoard2(boardList){
+	   console.log("작성글2 출력 연결");
+	     
+	   var output = "";
+	   
+	   output+="<div>"
+		   output+="<div class=\"row\" style=\"width: 640px; margin-left: 11px;\" >"
+		   output+="<div class=\"col-lg-6 col-md-6 col-sm-6\" style=\"border: 1px solid #949494; border-radius: 20px 20px 0px 0px; height: 50px; border-bottom: 0px; background-color: #F2F2FF;\">"
+		   output+="<input type=\"button\" value=\"활 동 내 역\" onclick=\"boardreplySwitch('b')\" "
+		   output+="style=\"width:280px; border: 0px; margin-top: 7px; text-align: center; font-weight: bold; outline:none;  background-color: #F2F2FF\" readonly=\"readonly\"></div>"
+		   output+="<div class=\"col-lg-6 col-md-6 col-sm-6\" style=\"border: 1px solid #949494; border-radius: 20px 20px 0px 0px; height: 50px;\">"
+		   output+="<input type=\"button\" value=\"판 매 내 역\" onclick=\"boardreplySwitch('u')\""
+		   output+="style=\"background-color: white; width:280px; border: 0px; margin-top: 7px; text-align: center; font-weight: bold; outline:none;\"  readonly=\"readonly\"></div>"
+		   output+="</div>"
+		   output+="<div class=\"row\"  style=\"width: 650px; margin-left: 9px;\">"
+		   
+		   output+="<div class = \"msgTextarea2\" style=\"background-color: #F2F2FF; padding-left: 50px;\">"
+		   output+="<span style=\"width: 500px; text-align: center;\">"
+		   output+="<button onclick=\"boardreplySwitch('b')\" id=\"board\"  style=\"border: 0px; background-color: #F2F2FF; \">작성글보기</button> "
+		   output+="&nbsp;&nbsp;&nbsp; "
+		   output+="<button id=\"reply\" onclick=\"boardreplySwitch('r')\" style=\"border: 0px; background-color: #F2F2FF;\">작성댓글보기</button></span></div>"
+		   
+		   output+="<div class = \"msgTextarea col-lg-12 col-md-6 col-sm-6\" style=\"border-top:0px! important ; padding-top: 20px; border: 1px solid #949494; background-color: #F2F2FF;\" >"
+		output+="<div id=\"WmemberBoard\"></div>"
+		   
+		   for (var i = 0; i < boardList.length; i++){
+		   output+="<ul><li>"      
+		   output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; color:black; \" >"+boardList[i].bdtitle+"</p>"
+		   output+="</li></ul>"
+		   } 
+		   output+="</div>"
+		   output+="</div>"		
+		   output+="</div>"
+
+		      $("#WmemberBoard2").html(output);
+		   
+	   
+	 }  
 
 </script>
 
-
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
 
 
