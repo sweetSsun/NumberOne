@@ -38,6 +38,7 @@ public class ChatController {
 		String crcode = chsvc.insertResellChat(gd_names, chatMessage, gdtitle);
 
 		return crcode;
+		
 		// 채팅방 번호를 return해줌.
 		// ajax로 insertResellChat을 호출하고, 리턴받은 crcode를 loadToChat 맵핑주소로 보내준다 (새창으로 띄우기 "blank_")
 	}
@@ -57,6 +58,14 @@ public class ChatController {
 		String chatRoomList_json = chsvc.selectChatRoomList(loginId);
 			
 		return chatRoomList_json;
+	}
+	
+	@RequestMapping(value = "/selectSumUnReadCount")
+	public @ResponseBody int selectSumUnReadCount(String loginId) {
+		System.out.println("읽지않은 메세지 조회 요청");
+		int sumUnReadCount = chsvc.selectSumUnReadCount(loginId);
+			
+		return sumUnReadCount;
 	}
 	
 }

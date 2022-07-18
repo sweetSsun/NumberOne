@@ -174,6 +174,17 @@
 		/* margin-right: 3px; */
 		color: #ffffff;
 	}
+	.chatDate{
+		/*vertical-align: bottom;
+   		display: inline-block; */
+		font-size: small;
+    	margin-left: 2px;
+    	margin-right: 2px;
+    	margin-top: 20px;
+	}
+	.outerDate{
+		vertical-align:middle; display:table-cell;
+	}
 </style>
 
 </head>
@@ -254,8 +265,8 @@
 		function enterRoom(msgList){
 			for (var i = 0; i < msgList.length; i++){
 				console.log(msgList[i].cmcontents);
-				checkLR(msgList[i]);
-			}
+				checkLR(msgList[i], false); // DB 입력시간으로 출력하기 위한 boolean값 전송
+			} 
 		}
 		
 		// enter키 이벤트
@@ -294,14 +305,12 @@
 		
 		// 메세지 전송
 		function sendMessage(cmcontents){
+			// 단순히 전송만 함. 전송한 사람에게도 메세지를 다시 뿌려줄 것이고, 거기에서 checkLR 할거임! (시스템 시간 띄우는 것 때문에)
 			var data = {
 				"cmcrcode" : crcode,
 				"cmfrmid" : "${sessionScope.loginId}",
 				"cmcontents" : cmcontents
 			}
-			
-			checkLR(data); // 왼쪽, 오른쪽 출력 확인
-			
 			var jsonData = JSON.stringify(data);
 			chatWebSocket.send(jsonData);
 		}
@@ -311,34 +320,71 @@
 	   		var receiveMsg = JSON.parse(data.data);
 	   		console.log("보낸 사람 닉네임 : " + receiveMsg.cmfrmnickname);
 		    
-	   		if (receiveMsg.cmfrmid != "${sessionScope.loginId}"){
-	   			checkLR(receiveMsg);
-	   		}
+	   		checkLR(receiveMsg, true); // 현재 서버시간으로 출력하기 위한 boolean값 전송
 	    };
 
 	    // 추가된 메세지의 보낸 사람이 나인지 상대방인지 확인
-	    function checkLR(data){
+	    function checkLR(data, dateCheck){
 	    	var LR = (data.cmfrmid != "${sessionScope.loginId}") ? "left":"right";
-	    	appendMessage(LR, data);
+	    	appendMessage(LR, data, dateCheck);
+	    	console.log("checkLR에서의 dateCheck : " + dateCheck);
 	    }
 	    
 	    // 메세지 append
-	    function appendMessage(LR, data){
+	    function appendMessage(LR, data, dateCheck){
 	    	var message = "";
-	    	if (LR == "left"){
+	    	if (dateCheck){
+		    	var dateInfo = serverDate(); // 실시간이면 서버시간 받아오기
+	    	}
+
+			if (LR == "left"){ // 왼쪽일 때 (상대방이 전송했을 때)
 			    message = "<div style=\"text-align:left;\"><span>"+data.cmfrmnickname+"</span><div>";
-			    message += "<div style=\"display: table;\"><span class=\"chatRe\">"+data.cmcontents+"</span>";
-			    message += "<span style=\"vertical-align: bottom; display: table-cell;\">"+data.cmdate+"</span></div>";
-	    	} else {
-	    		message ="<div style=\"text-align:right; margin-top: 10px;\"><span class=\"chatSe\">"+data.cmcontents+"</span>";
-	    		message += "<span style=\"vertical-align: bottom;\">"+data.cmdate+"</span></div>";
+			    message += "<div class=\"outerDate\"><span class=\"chatRe\">"+data.cmcontents+"</span>";
+			    // 실시간이면 서버시간 출력
+				if (dateCheck){
+				    message += "<span class=\"chatDate\">"+ dateInfo +"</span></div>";
+				// DB에서 받아오는 메세지면 DB 입력시간 출력
+				} else {
+				    message += "<span class=\"chatDate\">"+ data.cmdate +"</span></div>";
+				}
+	    	} else { // 오른쪽일 때 (자신이 전송했을 때)
+	    		message ="<div class=\"outerDate\" style=\"text-align:right; margin-top: 10px;\"><span class=\"chatSe\">"+data.cmcontents+"</span>";
+			    // 실시간이면 서버시간 출력
+				if (dateCheck){
+				    message += "<span class=\"chatDate\">"+ dateInfo +"</span></div>";
+				// DB에서 받아오는 메세지면 DB 입력시간 출력
+				} else {
+				    message += "<span class=\"chatDate\">"+data.cmdate+"</span></div>";
+				}
 	    	}
 			$("#chatList").append(message);
 			$("#chatList").scrollTop( $("#chatList")[0].scrollHeight );
 		    	    
 	    }
-
-		    
+	    
+	    // 서버시간 return 함수
+	    function serverDate(){
+			var now = new Date();
+			
+			/* 시간 수정 필요~!~~~~~~~~~~~*/
+  			let month = now.getMonth()+1; 	// 월
+  		  	let date = now.getDate();  	// 일
+			//		let h = this.getHours() < 12 ? "오전" : "오후";
+			let hour = now.getHours();		// 시간
+			if (hour < 10) {
+				hour = "0" + hour;
+			}
+			let minute = now.getMinutes();	// 분
+			if(minute < 10) {
+				minute = "0" + minute;
+			}
+			var dateInfo = month + "/" + date + " " + hour + ":" + minute;
+			
+			console.log(dateInfo);
+			return dateInfo;
+	    }
+	    
+	    
 	    
         // 연결이 끊어지면 실행되는 부분
 	    chatWebSocket.onclose = function(event) {
@@ -363,7 +409,7 @@
 					chtomid : tomid
 				};
 				chatWebSocket.send(JSON.stringify(sendData));
-				var	sendMsg ="<div style=\"text-align:right; margin-top: 10px;\"><span class=\"chatSe\">"+sendData.chcontents+"</span>";
+				var	sendMsg ="<div style=\"text-align:right; margin-top: 10px;\"><span class=\"chatSe\">"+sendData.chcontents +"</span>";
 
 				$("#chatList").append(sendMsg);
 				$("#chatList").scrollTop( $("#chatList")[0].scrollHeight );
