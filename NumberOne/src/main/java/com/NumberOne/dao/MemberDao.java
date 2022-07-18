@@ -9,6 +9,7 @@ import org.apache.ibatis.annotations.Update;
 
 import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.ContactDto;
+import com.NumberOne.dto.GoodsDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.ReplyDto;
 import com.NumberOne.dto.ScrapDto;
@@ -48,7 +49,7 @@ public interface MemberDao {
 	int updateMyInfoMemberModify(MemberDto member);
 	
 	//마이페이지 회원정보 _ 작성글
-	@Select("SELECT BD.BDCODE, BD.BDTITLE, BD.BDMID, TO_CHAR(BD.BDDATE,'YYYY-MM-DD') AS BDDATE, BD.BDCATEGORY, RP.BDREPLY, BD.BDSTATE FROM BOARDS BD left outer join (SELECT RPBDCODE, COUNT (RPBDCODE) AS BDREPLY FROM REPLY GROUP BY RPBDCODE) RP "
+	@Select("SELECT BD.BDCODE, BD.BDTITLE, BD.BDMID, TO_CHAR(BD.BDDATE,'YYYY-MM-DD') AS BDDATE, BD.BDCATEGORY, RP.BDREPLY, BD.BDSTATE FROM BOARDS BD left outer join (SELECT RPBDCODE, COUNT (RPBDCODE) AS BDREPLY FROM REPLY WHERE RPSTATE =1 GROUP BY RPBDCODE) RP "
 			+ "on BD.BDCODE = RP.RPBDCODE "
 			+ "where bdmid= #{loginId} "
 			+ "ORDER BY BD.BDCODE DESC" )
@@ -97,7 +98,7 @@ public interface MemberDao {
 			+ "FROM SCRAP SC "
 			+ "LEFT OUTER JOIN BOARDS BD ON BD.BDCODE = SC.SCBDCODE "
 			+ "LEFT OUTER JOIN MEMBERS M ON BD.BDMID = M.MID "
-			+ "LEFT OUTER JOIN (SELECT RPBDCODE, COUNT (RPBDCODE) AS BDREPLY FROM REPLY GROUP BY RPBDCODE) RP ON BD.BDCODE = RP.RPBDCODE "
+			+ "LEFT OUTER JOIN (SELECT RPBDCODE, COUNT (RPBDCODE) AS BDREPLY FROM REPLY WHERE RPSTATE =1 GROUP BY RPBDCODE) RP ON BD.BDCODE = RP.RPBDCODE "
 			+ "WHERE SCMID = #{loginId} ORDER BY BD.BDCODE DESC ")
 	ArrayList<ScrapDto> selectMyInfoMemberView_scrap(String loginId);
 
@@ -131,6 +132,13 @@ public interface MemberDao {
 	@Select("SELECT RPBDCODE, RPCONTENTS FROM REPLY RP, MEMBERS M WHERE MID = RPMID AND MNICKNAME = #{nickname} ORDER BY RPBDCODE DESC")
 	ArrayList<ReplyDto> selectWriteMemberInfoReply_ajax(String nickname);
 
+
+	//마이페이지 미니브라우저 중고거래
+	@Select("SELECT UB.UBMAINIMG, UB.UBCODE , GD.GDNAME AS UBGDNAME, M.MNICKNAME AS UBNICKNAME "
+			+ "FROM USEDBOARDS UB,GOODS GD, MEMBERS M "
+			+ "WHERE UB.UBCODE = GD.GDUBCODE AND UB.UBSELLBUY = 'S' AND UB.UBMID = M.MID AND M.MNICKNAME= #{nickname}")
+	ArrayList<UsedBoardDto> selectWriteMemberInfoSellBuy_ajax(String nickname);
+	
 
 	
 	

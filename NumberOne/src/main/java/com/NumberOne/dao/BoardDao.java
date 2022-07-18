@@ -202,22 +202,15 @@ public interface BoardDao {
 	//자랑글 수정
 	int updateRoomView(BoardDto room);
 	
-	//지역글 목록 ( 삭제 예정 ) 
-	ArrayList<BoardDto> selectRegionBoardList(String bdrgcode);
-	
 	//지역 카테고리 목록 
 	ArrayList<BoardDto> selectRegionBoardList_ajax(Paging paging);
 	
-	//지역게시판 검색결과 
-	ArrayList<BoardDto> selectRegionSearchList(@Param("bdrgcode") String bdrgcode, @Param("searchType") String searchType, @Param("searchText") String searchText);
-
 	//자랑글 총 개수
 	int selectRoomTotalCount(Paging paging);
 
 	//고정된 자랑글 목록(민희)
 	ArrayList<BoardDto> selectFixedRoomView();
 
-	
 	//일반게시판 전체 글 개수 조회 
 	int selectBoardTotalCount(Paging paging);
 	
