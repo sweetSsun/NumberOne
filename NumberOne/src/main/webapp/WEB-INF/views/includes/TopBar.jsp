@@ -31,6 +31,25 @@
 		text-align: right;
 		font-size: 16px;
 	}
+	
+	.nav_chat .nav_list-link{
+		position: relative;
+	}
+	
+	.nav_chat .nav_chat-badge{
+		position: absolute;
+		top: 5px;
+		right: 1px;
+		color: white;
+		background-color: red;
+	}
+	
+	.nav_chat-badge{
+		font-size: 0.2rem;
+		border-radius: 10px;
+		min-width: 14px;
+		text-align: center;
+	}
 
 </style>
 
@@ -109,14 +128,14 @@
 	                    </c:when>
 						<c:otherwise>
 							<!-- 찜 -->
-							<li style="margin-right: 15px;"><a href="#" title="찜목록"><i class="fa-solid fa-heart"></i></a></li>
+							<li style="margin-right: 15px;"><a href="#" title="찜목록"><i class="fa-solid fa-heart" style="font-size: large;"></i></a></li>
 							<!-- 채팅 -->
-							<li style="margin-right: 15px;" class="dropdown" >
-								<a href="#" title="1:1채팅" class="" id="dropdownChat" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									<i class="fa-solid fa-comment-dots"></i>
+							<li style="margin-right: 15px;" class="dropdown nav_list-link" >
+								<a href="#" title="1:1채팅" class="nav_chat" id="dropdownChat" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+									<i class="fa-solid fa-comment-dots" style="font-size: large;"></i>
 									<!-- 안읽은 채팅메세지 표시 -->
 									<!-- badge 클래스 끌어와야함 -->
-									<!-- <span class="badge badge-danger badge-counter">7</span> -->
+									<span class="nav_chat-badge">10</span>
 								</a>
 
 								<!-- 채팅방 목록 드롭다운 -->
