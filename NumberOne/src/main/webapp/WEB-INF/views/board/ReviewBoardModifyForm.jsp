@@ -121,7 +121,7 @@
 			<!-- 본문 -->
 			<div class="container">
 				<h2 class="text-center">후기글 수정페이지 : ReviewBoardModifyForm.jsp</h2>
-				<form action="updateBoardModify" method="post" enctype="multipart/form-data">
+				<form action="updateBoardModify" method="post" enctype="multipart/form-data" >
 				<div class="row">
 					<input type="hidden" name="bdmid" value="${board.bdmid }">
 					<input type="hidden" name="bdcode" value="${board.bdcode }">

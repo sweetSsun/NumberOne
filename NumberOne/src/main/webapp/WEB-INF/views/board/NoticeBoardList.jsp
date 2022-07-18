@@ -130,18 +130,18 @@
 							<td style="font-size: 17px;">조회</td>
 						</tr>
 						
-						<c:forEach items="${noticeList }" var="notice">
-							<c:if test="${notice.nbfix == 1 }">
+						<c:forEach items="${noticeList_fix }" var="notice_fix">
+							<c:if test="${notice_fix.nbfix == 1 }">
 							<!-- 공지게시판 : 상단에 띄울 고정 공지-->
 							<tr class="fw-bold" style="border-bottom: solid #E0E0E0 1px;">
-								<td class="text-center tableCell">${notice.nbcode}</td>
+								<td class="text-center tableCell">${notice_fix.nbcode}</td>
 								<td class="text-center tableCell">공지</td>
 								<td class="tableCell">
-									<a href="selectNoticeBoardView?nbcode=${notice.nbcode }">${notice.nbtitle}</a>
+									<a href="selectNoticeBoardView?nbcode=${notice_fix.nbcode }">${notice_fix.nbtitle}</a>
 								</td>
 								<td class="text-center tableCell">관리자</td>
-								<td class="text-center tableCell">${notice.nbdate}</td>
-								<td class="text-center tableCell">${notice.nbhits }</td>
+								<td class="text-center tableCell">${notice_fix.nbdate}</td>
+								<td class="text-center tableCell">${notice_fix.nbhits }</td>
 							</tr>
 							</c:if>
 						</c:forEach>
@@ -149,6 +149,7 @@
 					
 					<tbody id="bdCategoryList">
 					<c:forEach items="${noticeList }" begin="3" var="notice">
+						<c:if test="${notice.nbfix != 1 }">
 						<tr style="border-bottom: solid #E0E0E0 1px;">
 							<td class="text-center tableCell">${notice.nbcode}</td>
 							<td class="bdcategory text-center tableCell">공지</td>
@@ -162,6 +163,7 @@
 							<td class="text-center tableCell">${notice.nbdate}</td>
 							<td class="text-center tableCell">${notice.nbhits }</td>
 						</tr>
+						</c:if>
 					</c:forEach>
 					</tbody>
 				</table>

@@ -40,11 +40,45 @@ public class ChatRoomDto {
 		this.crtomid = crtomid;
 	}
 
+	public int getUnreadCount() {
+		return unreadCount;
+	}
+
+	public void setUnreadCount(int unreadCount) {
+		this.unreadCount = unreadCount;
+	}
+
+	public String getRecentCmcontents() {
+		return recentCmcontents;
+	}
+
+	public void setRecentCmcontents(String recentCmcontents) {
+		this.recentCmcontents = recentCmcontents;
+	}
+
+	public String getRecentCmdate() {
+		return recentCmdate;
+	}
+
+	public void setRecentCmdate(String recentCmdate) {
+		this.recentCmdate = recentCmdate;
+	}
+
+	public String getCrfrmnickname() {
+		return crfrmnickname;
+	}
+
+	public void setCrfrmnickname(String crfrmnickname) {
+		this.crfrmnickname = crfrmnickname;
+	}
+
 	@Override
 	public String toString() {
 		return "ChatRoomDto [crcode=" + crcode + ", crfrmid=" + crfrmid + ", crtomid=" + crtomid + ", unreadCount="
 				+ unreadCount + ", recentCmcontents=" + recentCmcontents + ", recentCmdate=" + recentCmdate
 				+ ", crfrmnickname=" + crfrmnickname + "]";
 	}
+	
+	
 	
 }
