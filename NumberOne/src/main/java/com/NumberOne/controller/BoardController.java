@@ -28,6 +28,7 @@ public class BoardController {
 	public ModelAndView selectRoomList(String bdcode, String jsp, Paging paging) {
 		System.out.println("자쥐방 자랑 메인 요청(목록페이지)");	
 		System.out.println(bdcode+"/"+jsp);
+		System.out.println(paging);
 		ModelAndView mav = new ModelAndView();
 		mav=bsvc.selectRoomList(paging);
 		
@@ -134,12 +135,12 @@ public class BoardController {
 		 return mav;
 	 }
 	 
-	 //일반 - 글상세페이지 이동 
+	 //일반/지역 - 글상세페이지 이동 
 	 @RequestMapping ( value = "/selectBoardView")
-	 public ModelAndView selectBoardView(String bdcode) {
+	 public ModelAndView selectBoardView(String bdcode, String bdtype) {
 		 System.out.println("글상세페이지 이동 요청");
 		 
-		 ModelAndView mav = bsvc.selectBoardView(bdcode);
+		 ModelAndView mav = bsvc.selectBoardView(bdcode, bdtype);
 		 
 		 return mav;
 	 }
