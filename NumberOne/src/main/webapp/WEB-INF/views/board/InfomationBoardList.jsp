@@ -121,7 +121,7 @@
 					<thead >
 						<tr class="text-center" id="board_column">
 							<td style="font-size: 17px;">글번호</td>
-							<td style="font-size: 17px;">말머리</td>
+							<td style="font-size: 17px;">카테고리</td>
 							<td style="font-size: 17px;">제목</td>
 							<td style="font-size: 17px;">작성자</td>
 							<td style="font-size: 17px;">날짜</td>
@@ -169,7 +169,7 @@
 				</table>
 				<div align="right" class="col mt-2">
 					<c:if test="${sessionScope.loginId != null }">
-						<button  onclick="loadToBoardWrite()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">글작성</button>
+						<button type="button" onclick="loadToBoardWrite()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">글작성</button>
 					</c:if>
 				</div>
 				</div>

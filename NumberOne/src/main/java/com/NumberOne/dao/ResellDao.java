@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.NumberOne.dto.ChatDto;
 import com.NumberOne.dto.GoodsDto;
 import com.NumberOne.dto.Paging;
 import com.NumberOne.dto.UsedBoardDto;
@@ -37,13 +36,9 @@ public interface ResellDao {
 
 	String loadToResellWriteForm(String loginId);
 
-	ArrayList<UsedBoardDto> selectResellPageList(@Param("paging") Paging paging,
-			@Param("checkMethod") String checkMethod);
+	ArrayList<UsedBoardDto> selectResellPageList(@Param("paging") Paging paging, @Param("checkMethod") String checkMethod);
 
 	ArrayList<UsedBoardDto> selectResellRegionList_ajax(Paging paging);
-
-	String selectSearchList_ajax(@Param("searchVal") String searchVal, @Param("sell_buy") String sell_buy,
-			@Param("selectRegion") String selectRegion, @Param("searchOp") String searchOp);
 
 	String selectMemberId(String keyword);
 
@@ -59,13 +54,10 @@ public interface ResellDao {
 
 	int updateResellDelete_ub(UsedBoardDto ubDto);
 
-	int insertResellChat( @Param("gdtitle") String gdtitle, @Param("chat") ChatDto chat);
-
-	int selectMaxChcode();
-
 	int updateResellState_GoodsAjax(GoodsDto gdDto);
 
 	int updateResellState_usedBoardAjax(UsedBoardDto ubDto);
+	
 
 	int updateResellModify_ub(UsedBoardDto ubDto);
 
