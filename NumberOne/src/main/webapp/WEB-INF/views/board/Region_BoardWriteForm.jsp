@@ -8,7 +8,7 @@
 <%@ include file="/resources/css/BarCss.jsp" %>
 <!-- 폰트어썸 -->
 <script src="https://kit.fontawesome.com/86a85cd392.js" crossorigin="anonymous"></script>
-<title>1인자 - 게시글 작성페이지</title>
+<title>1인자 - 지역글 작성페이지</title>
 <!-- Jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
@@ -96,22 +96,14 @@
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h2 class="text-center">게시판 글작성페이지 : BoardWriteForm.jsp</h2>
+				<h2 class="text-center">지역글 작성페이지 : RegionBoardWriteForm.jsp</h2>
 				<form action="insertBoardWrite" method="post" enctype="multipart/form-data" onsubmit="return writeFormCheck();">
 					<input type="hidden" name="bdmid" value="${sessionScope.loginId }">
 				<div class="row">
 					<div class="col-6">
 						<span style="font-size:20px;">게시판</span><span class="text-danger">*</span>
 						<select name="bdcategory" onchange="bdcategorySel(this.value)" class="bdCategoryList" required="required">
-							<c:choose>
-								<c:when test="${bdcategory eq '' }">
-									<option value="" disabled selected class="selectPlaceHolder">필수</option>
-								</c:when>
-								
-								<c:otherwise>
-									<option value="${bdcategory}" class="selectPlaceHolder">${bdcategory}</option>
-								</c:otherwise>
-							</c:choose>
+							<option value="" disabled selected class="selectPlaceHolder">필수</option>
 							<option value="자유">자유</option>
 							<option value="질문">질문</option>
 							<option value="정보">정보</option>
@@ -121,7 +113,7 @@
 					<div class="col-6">
 						<span style="font-size:20px;">지역</span>
 						<select name="bdrgcode" class="bdRegionSel">
-							<option value="" disabled selected class="selectPlaceHolder">선택</option>
+							<option value="${bdrgcode }"  class="selectPlaceHolder">${bdrgname}</option>
 							<option value="ALL">전국</option>
 							<option value="SEL">서울</option>
 							<option value="ICN">인천</option>
@@ -201,6 +193,7 @@
 	//현재 로그인중인 아이디
 	var loginId = '${sessionScope.loginId}';
 	
+	console.log('${bdrgname}');
 </script>
 <script type="text/javascript">
 		// 게시글 작성 취소 경고 모달창 close 하는 스크립트

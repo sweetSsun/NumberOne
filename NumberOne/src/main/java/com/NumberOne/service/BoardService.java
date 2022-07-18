@@ -774,54 +774,47 @@ public class BoardService {
 		return mav;
 	}
 
-	// 게시글 수정
-	public ModelAndView updateBoardModify(BoardDto board, RedirectAttributes ra)
-			throws IllegalStateException, IOException {
-		System.out.println("BoardService.updateBoardModify() 호출");
-		ModelAndView mav = new ModelAndView();
-		System.out.println(board);
-		
-		//게시글 띄어쓰기, 줄바꿈
-		/*
-		String bdcontents = board.getBdcontents().replace(" ", "&nbsp;");
-		bdcontents = board.getBdcontents().replace("\r\n", "<br>");
-		board.setBdcontents(bdcontents);
-		*/
-		//이미지 저장 
+	   // 게시글 수정
+	   public ModelAndView updateBoardModify(BoardDto board, RedirectAttributes ra)
+	         throws IllegalStateException, IOException {
+	      System.out.println("BoardService.updateBoardModify() 호출");
+	      ModelAndView mav = new ModelAndView();
+	      System.out.println(board);
 
-		String bdimgfile = "";
-		if (!board.getBdimgfile().isEmpty()) {// 업로드한 이미지가 있을 경우
-			System.out.println("첨부파일 있음");
-			// 파일 가져오기
-			MultipartFile bfile = board.getBdimgfile();// 파일 자체를 가져오기
+	      //이미지 저장 
+	      String bdimgfile = "";
+	      if (!board.getBdimgfile().isEmpty()) {// 업로드한 이미지가 있을 경우
+	         System.out.println("첨부파일 있음");
+	         // 파일 가져오기
+	         MultipartFile bfile = board.getBdimgfile();// 파일 자체를 가져오기
 
-			UUID uuid = UUID.randomUUID();
+	         UUID uuid = UUID.randomUUID();
 
-			// 파일명 생성
-			bdimgfile = uuid.toString() + "_" + board.getBdimgfile().getOriginalFilename();
-			// 파일 저장
-			// 파일저장 경로 :
-			// "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\board"
-			bfile.transferTo(new File(boardSavePath, bdimgfile));
+	         // 파일명 생성
+	         bdimgfile = uuid.toString() + "_" + board.getBdimgfile().getOriginalFilename();
+	         // 파일 저장
+	         // 파일저장 경로 :
+	         // "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\board"
+	         bfile.transferTo(new File(boardSavePath, bdimgfile));
 
-		}
-		System.out.println(bdimgfile);
-		board.setBdimg(bdimgfile);
+	      }
+	      System.out.println(bdimgfile);
+	      board.setBdimg(bdimgfile);
 
-		int updateResult = bdao.updateBoardModify(board);
-		if( updateResult > 0 ) {
-			ra.addFlashAttribute("msg", "글이 수정되었습니다.");
-		}
-		
-		// 글수정 후 다시 글 상세페이지로 이동
-		if( board.getBdcategory().equals("후기") ) {
-			mav.setViewName("redirect:/selectReviewBoardView?bdcode=" + board.getBdcode());
-		}else {
-			mav.setViewName("redirect:/selectBoardView?bdcode=" + board.getBdcode());
-		}
+	      int updateResult = bdao.updateBoardModify(board);
+	      if( updateResult > 0 ) {
+	         ra.addFlashAttribute("msg", "글이 수정되었습니다.");
+	      }
+	      
+	      // 글수정 후 다시 글 상세페이지로 이동
+	      if( board.getBdcategory().equals("후기") ) {
+	         mav.setViewName("redirect:/selectReviewBoardView?bdcode=" + board.getBdcode());
+	      }else {
+	         mav.setViewName("redirect:/selectBoardView?bdcode=" + board.getBdcode());
+	      }
 
-		return mav;
-	}
+	      return mav;
+	   }
 
 	// 자랑글 현재 추천,스크랩,신고 상태 조회
 	public String currentRchistory(String bdcode, String history) {
@@ -833,14 +826,22 @@ public class BoardService {
 	}
 
 	// 글작성 페이지 이동
-	public ModelAndView loadToBoardWrite(String bdcategory) {
+	public ModelAndView loadToBoardWrite(String bdcategory, String bdrgcode, String bdrgname) {
 		System.out.println("BoardService.loadToBoardWrite() 호출");
 		ModelAndView mav = new ModelAndView();
 		System.out.println("bdcategory : " + bdcategory);
-
+		System.out.println("bdrgcode : " + bdrgcode);
+		System.out.println("bdrgname : " + bdrgname);
+		
+		if ( bdcategory != null ) {
+			mav.setViewName("board/BoardWriteForm");
+		}else {
+			mav.setViewName("board/Region_BoardWriteForm");
+		}
 		mav.addObject("bdcategory", bdcategory);
-		mav.setViewName("board/BoardWriteForm");
-
+		mav.addObject("bdrgcode", bdrgcode);
+		mav.addObject("bdrgname",bdrgname);
+		
 		return mav;
 	}
 
@@ -1029,7 +1030,6 @@ public class BoardService {
 		}else if(paging.getSearchVal().equals("GGD") ) {
 			paging.setBdrgname("경기");
 		}
-		
 		
 		System.out.println("지역명: " + paging.getBdrgname());
 		
