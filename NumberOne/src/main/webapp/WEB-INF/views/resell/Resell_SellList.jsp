@@ -78,7 +78,7 @@
 								</div>
 							</div>
 							<div class="">
-								<button onclick="searchKeyword(1)" type="button"></button>
+								<button onclick="searchKeyword(1)" type="button" value="검색"></button>
 							</div>
 						</div>
 
@@ -173,25 +173,27 @@
 </body>
 <script type="text/javascript">
 //현재 페이지가 출력될 때 checkData 함수 실행
-		var selRegion = regionInfo.options[regionInfo.selectedIndex].value;
+		const regionInfo = document.getElementById("regionInfo"); 
+		let selRegion = regionInfo.options[regionInfo.selectedIndex].value;
+		console.log("선택된지역" + selRegion);
 		// ID가 'regionInfo'인 select태그의 option들 중 선택된 인덱스의 option태그 value를 변수에 저장
 		const loginRegion = '${sessionScope.loginRegion}'; 
 		const checkSearch = '${checkSearch}';   //검색확인용
 		console.log("체크메세지",checkSearch );
 		const keyword = '${paging.keyword}'; 	//검색어
 		const searchMsg = document.getElementById("searchMsg");
+		const checkMsg = '${msg}';   //글작성 확인용
 	
 		window.onload = function(){
-		const regionInfo = document.getElementById("regionInfo"); 
-		
-		console.log("선택된지역" + selRegion);
-		const checkMsg = '${msg}';   //글작성 확인용
 		if(checkMsg.length >0){		// 파라메터를 확인해서 단순 목록페이지이동인지, 글작성 후 페이지이동 인지 확인 
+		
 			alert(checkMsg);  // 글작성 후 페이지이동 했을 시에만 글작성 성공메시시출력
+		
 		}
 			
 			
-		if(checkSearch=='OK'){ // 검색을 통해 페이지이동해 왔을 때 		
+		if(checkSearch=='OK'){ // 검색을 통해 페이지이동해 왔을 때 	
+			console.log("checkSearch : OK 다");
 			searchMsg.innerText = "[" + keyword
 			+ "] 로 검색한 목록입니다.";		
 		
@@ -199,7 +201,8 @@
 			//           중앙에 [검색어] 로 검색된 목록입니다.' 라는 메세지 출력하자
 		}
 		
-		else if(checkSearch=='all'){  //글 작성 후 이동해왔을 시 [전국]으로 selected 하기위한 코드
+		else if(checkSearch === 'all'){  //글 작성 후 이동해왔을 시 [전국]으로 selected 하기위한 코드
+			console.log("checkSearch : all 이다");
 			regionInfo.options[0].selected = "true";   //0번인덱스가 [전국]
 			searchMsg.innerText = "[" + keyword
 			+ "] 로 검색한 목록입니다.";	
@@ -212,7 +215,7 @@
 			document.getElementById("mregion").innerText = "[" + selRegion
 			+ "] 지역 목록입니다.";        // 덮어씌워진 값을 ID가 mregion인태그의 Text에 출력
 			
-			for(var i =0; i<regionInfo.options.length; i++){
+			for(let i =0; i<regionInfo.options.length; i++){
 				//select 태그가 갖고있는 option의 갯수(길이)만큼 반복문을 실행한다.
 				if(regionInfo.options[i].value==selRegion){
 					 //option의 value 와 회원의 관심지역이 일치하는지 확인		
@@ -231,8 +234,8 @@
 <!-- 지역 검색 -->
 <script type="text/javascript">
 
-	var output_page = '';
-	var output_pagerNum = '';
+	let output_page = '';
+	let output_pagerNum = '';
 
 	/* 지역선택 이벤트  */
 	

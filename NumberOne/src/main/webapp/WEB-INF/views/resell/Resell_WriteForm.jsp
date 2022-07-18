@@ -9,29 +9,50 @@
 <%@ include file="/resources/css/BarCss.jsp"%>
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"
+>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/resell.css" type="text/css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+	integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"
+	referrerpolicy="no-referrer"
+></script>
+<style type="text/css">
+/* label 스타일 조정 */
+.button {
+	display: flex;
+	justify-content: center;
+}
 
+label {
+	cursor: pointer;
+	font-size: 1em;
+}
+
+/* 못생긴 기존 input 숨기기 */
+.chooseFile {
+	visibility: hidden;
+}
+</style>
 
 </head>
 
 
 <body>
 	<!-- TopBar -->
-        <c:choose>
-                <c:when test="${sessionScope.loginId != 'admin'}">
-                        <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
-                </c:when>
-                <c:otherwise>
-                        <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
-                </c:otherwise>
-        </c:choose>
+	<c:choose>
+		<c:when test="${sessionScope.loginId != 'admin'}">
+			<%@ include file="/WEB-INF/views/includes/TopBar.jsp"%>
+		</c:when>
+		<c:otherwise>
+			<%@ include file="/WEB-INF/views/includes/TopBar_Admin.jsp"%>
+		</c:otherwise>
+	</c:choose>
 	<!-- End of TopBar -->
 	<main>
 		<!-- 사이드바 -->
 
-		
-		 <%@ include file="/WEB-INF/views/includes/SideBar_Resell.jsp"%> 
+
+		<%@ include file="/WEB-INF/views/includes/SideBar_Resell.jsp"%>
 		<section>
 			<!-- 본문 -->
 			<div class="container">
@@ -171,11 +192,21 @@
 						<div>
 							<div>사진첨부</div>
 							<div class="">
-								<input type="file" placeholder="메인사진 1개" name="ubmainimgfile" id="mainImgCheck"> <br> <span class="checkMsg"></span>
+								<div class="button">
+									<label for="chooseFile_id"> 👉 CLICK HERE! 👈 </label>
+								</div>
+								<input type="file" class="chooseFile" id="chooseFile_id" name="chooseFile" accept="image/*" onchange="loadFile(this)" name="ubmainimgfile">
+								<div id="image-show"></div>
+								<div id="fileName"></div>
 							</div>
 
 							<div class="">
-								<input type="file" multiple="multiple" name="ubdetailimgfile">
+								<div class="button">
+									<label for="chooseMultiFile"> 👉 CLICK HERE! 👈 </label>
+								</div>
+								<input type="file" id="chooseMultiFile" class="chooseFile" onchange="loadMultiFile(this)" multiple="multiple" name="ubdetailimgfile">
+								<div id="image-show_multi"></div>
+								<div id="fileName_multi"></div>
 							</div>
 						</div>
 					</div>
@@ -195,25 +226,25 @@
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp"%>
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"
+	></script>
 </body>
 <!-- 페이지로드시 실행할 코드 스크립트 -->
 <script type="text/javascript">
-	
 	//페이지로드시 무조건실행
-	window.onload = function(){
+	window.onload = function() {
 		/* 로그인된 회원인지 체크 */
 		var loginCheck = '${sessionScope.loginId}';
 		if (loginCheck.length == 0) {
 			alert("잘못된 접근입니다.");
 			location.href = "loadToLogin";
 		}
-		
+
 		var boardTitle = document.getElementById("boardTitle"); //select태그지정
-			
+
 		/* 페이지이동 시 어느게시판에서 넘어왔는지 파라메터를 통해 확인 */
-		var sell_buy = '${sell_buy}';   // 'S'  or  'B'
-		
+		var sell_buy = '${sell_buy}'; // 'S'  or  'B'
+
 		/* 사구, 팔구 중 어느게시판에서 글작성눌렀는지 확인해서 출력  */
 		for (var i = 0; i < boardTitle.options.length; i++) {
 			// select태그의 option태그 갯수(길이)만큼 for문 반복 실행
@@ -227,15 +258,14 @@
 				break;
 				//일치하는 값을 찾으면 break 로 for문 종료
 			}
-		}	
+		}
 	}
 </script>
 
 
 <!-- select태그 option선택 이벤트 -->
 <script type="text/javascript">
-
-boardTitle.addEventListener('change', selectSB);
+	boardTitle.addEventListener('change', selectSB);
 
 	function selectSB() {
 
@@ -248,7 +278,6 @@ boardTitle.addEventListener('change', selectSB);
 
 <!-- 품목추가,제거 이벤트 -->
 <script type="text/javascript">
-	
 	/* 추가버튼 변수 */
 	var addBtn0 = document.getElementsByClassName("addBtn")[0];
 	var addBtn1 = document.getElementsByClassName("addBtn")[1];
@@ -322,42 +351,108 @@ boardTitle.addEventListener('change', selectSB);
 		gdcheck_n1.removeAttribute("name", "gd_names");
 		gdcheck_p1.removeAttribute("name", "gd_price");
 	}
-
 </script>
 
 
 <!-- 폼데이터 입력되었는지 체크하는 코드 스크립트  -->
 <script type="text/javascript">
-/* 폼태그 데이터 공백 체크  */
-/* onsubmit이벤트  false 일시 submit이벤트 취소*/
-function checkFormData() {
-	let checkForm = true;
-	console.log("폼데이터 핸들러 호출");
-	if (document.getElementById("titleCheck").value == '') {		
-		document.getElementById("titleCheck").focus();
-		alert("제목을 입력해주세요.");
-		checkForm = false;
-	}  else if (document.getElementsByClassName("gdcheck_n")[0].value == '') {
-		alert("품목이름을 작성해주세요.");
-		document.getElementsByClassName("gdcheck_n")[0].focus();
-		
-		checkForm = false;
-	} else if (document.getElementsByClassName("gdcheck_p")[0].value == '') {
-		alert("품목가격을 작성해주세요.");
-		document.getElementsByClassName("gdcheck_p")[0].focus();
-		checkForm = false;
-	} else if (document.getElementById("contentsCheck").value == '') {
-		document.getElementById("contentsCheck").focus();
-		alert("내용을 작성해주세요.");
-		checkForm = false;
-	}else if (document.getElementById("mainImgCheck").value == '') {
-		alert("메인사진을 선택해주세요.");
-		document.getElementById("mainImgCheck").focus();
-		checkForm = false;
+	/* 폼태그 데이터 공백 체크  */
+	/* onsubmit이벤트  false 일시 submit이벤트 취소*/
+	function checkFormData() {
+		let checkForm = true;
+		console.log("폼데이터 핸들러 호출");
+		if (document.getElementById("titleCheck").value == '') {
+			document.getElementById("titleCheck").focus();
+			alert("제목을 입력해주세요.");
+			checkForm = false;
+		} else if (document.getElementsByClassName("gdcheck_n")[0].value == '') {
+			alert("품목이름을 작성해주세요.");
+			document.getElementsByClassName("gdcheck_n")[0].focus();
+
+			checkForm = false;
+		} else if (document.getElementsByClassName("gdcheck_p")[0].value == '') {
+			alert("품목가격을 작성해주세요.");
+			document.getElementsByClassName("gdcheck_p")[0].focus();
+			checkForm = false;
+		} else if (document.getElementById("contentsCheck").value == '') {
+			document.getElementById("contentsCheck").focus();
+			alert("내용을 작성해주세요.");
+			checkForm = false;
+		} else if (document.getElementById("mainImgCheck").value == '') {
+			alert("메인사진을 선택해주세요.");
+			document.getElementById("mainImgCheck").focus();
+			checkForm = false;
+		}
+		return checkForm;
 	}
-	return checkForm;
-}
 </script>
 
+<!-- 이미지파일 미리보기 스크립트 -->
+<script type="text/javascript">
+/*<!-- 이미지파일 미리보기 이벤트핸들러 호출 -->  */
+	function loadFile(input) { // 함수가 호출된 태그를 인자로 받는다.( 여기선 input태그)
+		
+		let file = input.files[0]; //선택된 파일 가져오기 (하나의 파일만 업로드가능하므로 첫번째 인덱스인 0번을 사용)
 
+		
+		let name = document.getElementById('fileName');
+		name.textContent = file.name;	//미리 만들어 놓은 div에 text(파일 이름) 추가  () 
+
+		//새로운 이미지 div 추가 (img태그 생성)
+		let newImage = document.createElement("img");
+		
+		// img태그에 'class'를 key로, 'img'를 value 로 준다.
+		newImage.setAttribute("class", 'img');  
+
+		//이미지 source 가져오기
+		newImage.src = URL.createObjectURL(file);
+
+		newImage.style.width = "30%";
+		newImage.style.height = "30%";
+		newImage.style.objectFit = "contain";
+
+		//이미지를 image-show div에 추가
+		let container = document.getElementById('image-show');
+		container.appendChild(newImage);   //appendChild는 하나의 노드만 사용가능. 멀티플에는 사용하기어려움
+	};
+</script>
+
+<!-- 멀티플파일 이미지 미리보기 -->
+<script type="text/javascript">
+	/* 멀티플파일 이미지 미리보기 */
+	function loadMultiFile(input) {
+		console.log('loadMultiFile호출 인자 : ', input);
+
+		let name = document.getElementById('fileName_multi');
+		let container = document.getElementById('image-show_multi');
+
+		let newImage_ = [];
+
+			// input태그(type속성의 value가 files인 경우  
+		for (let i = 0; i < input.files.length; i++) {
+			name.append(input.files[i].name + ' '); 		
+			
+			//배열에 push
+			newImage_.push(document.createElement("img"));
+
+			//만들어진 img 태그에 인덱스별로 class속성과 img 값을 준다.
+			//그리고 소스를 담아주고, 스타일도 지정해준다.
+			
+			newImage_[i].setAttribute("class", 'img');
+			newImage_[i].src = URL.createObjectURL(input.files[i]);
+			newImage_[i].style.width = "30%";
+			newImage_[i].style.height = "30%";
+			newImage_[i].style.objectFit = "contain";
+
+			//img 태그를 모두출력
+			container.append(newImage_[i]);
+			
+			console.log('newImage_ : ', newImage_[i]);
+			console.log('input.files : ', input.files[i]);
+
+		}
+
+
+	};
+</script>
 </html>
