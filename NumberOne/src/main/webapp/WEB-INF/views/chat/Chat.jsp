@@ -174,6 +174,14 @@
 		/* margin-right: 3px; */
 		color: #ffffff;
 	}
+	.chatDate{
+		vertical-align: bottom;
+		font-size: small;
+   		display: inline-block;
+    	margin-left: 2px;
+    	margin-right: 2px;
+    	margin-top: 20px;
+	}
 </style>
 
 </head>
@@ -322,39 +330,58 @@
 	    // 메세지 append
 	    function appendMessage(LR, data, dateCheck){
 	    	var message = "";
-			var date = new Date();
-			
-			/* 시간 수정 필요~!~~~~~~~~~~~*/
-		
-			let h = this.getHours() < 12 ? "오전" : "오후";
-			var dateInfo = date.getHours() + ":" + date.getMinutes();
-			console.log("dateCheck:" + dateCheck);
-			console.log(dateInfo);
+	    	if (dateCheck){
+		    	var dateInfo = serverDate(); // 실시간이면 서버시간 받아오기
+	    	}
 
 			if (LR == "left"){ // 왼쪽일 때 (상대방이 전송했을 때)
 			    message = "<div style=\"text-align:left;\"><span>"+data.cmfrmnickname+"</span><div>";
 			    message += "<div style=\"display: table;\"><span class=\"chatRe\">"+data.cmcontents+"</span>";
 			    // 실시간이면 서버시간 출력
 				if (dateCheck){
-				    message += "<span style=\"vertical-align: bottom; display: table-cell;\">"+ dateInfo +"</span></div>";
+				    message += "<span class=\"chatDate\">"+ dateInfo +"</span></div>";
 				// DB에서 받아오는 메세지면 DB 입력시간 출력
 				} else {
-				    message += "<span style=\"vertical-align: bottom; display: table-cell;\">"+ data.cmdate +"</span></div>";
+				    message += "<span class=\"chatDate\">"+ data.cmdate +"</span></div>";
 				}
 	    	} else { // 오른쪽일 때 (자신이 전송했을 때)
 	    		message ="<div style=\"text-align:right; margin-top: 10px;\"><span class=\"chatSe\">"+data.cmcontents+"</span>";
 			    // 실시간이면 서버시간 출력
 				if (dateCheck){
-				    message += "<span style=\"vertical-align: bottom;\">"+ dateInfo +"</span></div>";
+				    message += "<span class=\"chatDate\">"+ dateInfo +"</span></div>";
 				// DB에서 받아오는 메세지면 DB 입력시간 출력
 				} else {
-				    message += "<span style=\"vertical-align: bottom;\">"+data.cmdate+"</span></div>";
+				    message += "<span class=\"chatDate\">"+data.cmdate+"</span></div>";
 				}
 	    	}
 			$("#chatList").append(message);
 			$("#chatList").scrollTop( $("#chatList")[0].scrollHeight );
 		    	    
 	    }
+	    
+	    // 서버시간 return 함수
+	    function serverDate(){
+			var now = new Date();
+			
+			/* 시간 수정 필요~!~~~~~~~~~~~*/
+  			let month = now.getMonth()+1; 	// 월
+  		  	let date = now.getDate();  	// 일
+			//		let h = this.getHours() < 12 ? "오전" : "오후";
+			let hour = now.getHours();		// 시간
+			if (hour < 10) {
+				hour = "0" + hour;
+			}
+			let minute = now.getMinutes();	// 분
+			if(minute < 10) {
+				minute = "0" + minute;
+			}
+			var dateInfo = month + "/" + date + " " + hour + ":" + minute;
+			
+			console.log(dateInfo);
+			return dateInfo;
+	    }
+	    
+	    
 	    
         // 연결이 끊어지면 실행되는 부분
 	    chatWebSocket.onclose = function(event) {
