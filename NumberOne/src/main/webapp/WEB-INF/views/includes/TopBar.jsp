@@ -74,6 +74,15 @@
 		overflow: hidden;
 	}
 
+	@keyframes blink-effect {
+		  50% {
+	    opacity: 0;
+	  }
+	}
+	
+	.iconBlink{
+		animation: blink-effect 1s step-end infinite;
+	}
 </style>
 
 </head>
@@ -158,12 +167,12 @@
 									<i class="fa-solid fa-comment-dots" style="font-size: large;"></i>
 									<!-- 안읽은 채팅메세지 표시 -->
 									<!-- badge 클래스 끌어와야함 -->
-									<span class="nav_chat-badge">10</span>
+									<span id="chat-badge" class="nav_chat-badge"></span>
 								</a>
 
 								<!-- 채팅방 목록 드롭다운 -->
 								<div class="dropdown-list dropdown-menu dropdown-menu-right shadow" id="chatRoomList" aria-labelledby="dropdownChat">
-                                <h6 class="dropdown-header">
+<%--                                 <h6 class="dropdown-header">
                                     채팅방 목록
                                 </h6>
                                 <!-- 채팅방1 -->
@@ -198,7 +207,7 @@
                                         <div class="col-6 small" style="color:gray; text-align:right;">날짜</div>
                                         </div>
                                     </div>
-                                </a>
+                                </a> --%>
                                 </div>
 							</li>
 <!--  								
@@ -226,49 +235,39 @@
 <script type="text/javascript">
 	console.log("스크립트 확인!");
 	
-	var popChat;
+	var popChat;		 // 채팅팝업 이름
+	var popChatArr = []; // 현재 떠있는 채팅 팝업창을 담을 배열
 	
 	// 채팅 버튼 클릭시 채팅창 팝업되면서 기존 채팅방 메세지 목록 데이터 보내주는 함수
 	function popupChat(crcode){
-		//var crcode = "CR00001"; // 함수 호출시 파라미터로 받을 값. 임시 crcode
 		console.log("popupChat 호출");
 		let popOption = "width=450px, height=550px, top=300px, left=500px, scrollbars=no, resizable=no";
 		let openUrl = "loadToChat?crcode="+crcode;
-		//console.log($('popChat[name=pop'+crcode+']').closed); // 해당 팝업창이 열려있는지 확인
 		$.ajax({
 			url: "selectChatRoomMessage",
 			data: {"crcode":crcode},
 			async:false,
 			dataType:"json",
 			success:function(data){
-				//var popCheck = popChatHistory(crcode); // 팝업창 안열려있으면 true, 열려있으면 false 반환
+				console.log(popChatArr.some(popChat => popChat.name === crcode));
+				// 해당 채팅방 팝업이 열려있으면
+				if (popChatArr.some(popChat => popChat.name === crcode)) { 
+					var openedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
+					//console.log(popChatArr[openedIdx]);
+					popChatArr[openedIdx].focus(); // 해당 채팅창 팝업에 focus
+				} 
 				
-				// 특정 자식창의 name으로 어떻게 접근하는지요......................................
-				//if(!(popChat.window.name=crcode) || (popChat.window.name=crcode).closed) { // 안열려있으면 open
-					popChat = window.open(openUrl, crcode, popOption);
+				// 열려있지 않으면
+				else { 
+					popChat = window.open(openUrl, crcode, popOption); // 팝업창 열기
 					popChat.window.addEventListener("load", function(){
-						popChat.enterRoom(data);
+						popChat.enterRoom(data); // 채팅방 목록 불러오기
 				 	});
-				/*} else { // 열려있으면 focus
-					$('popChat[name=pop'+crcode+']').focus();
-				} */
+					popChatArr.push(popChat); // 채팅팝업 배열에 담기
+				}
 			}
 		});
 	}
-	
-	// 동일한 코드의 팝업창이 열려있는지 확인
-/* 	function popChatHistory(crcode){
-		var Obj = popChat.[name=pop'+crcode+'];
-		console.log(Obj==undefined);
-		console.log(Obj.closed);
-		console.log(Obj==null);
-		console.log(!Obj);
-		if(!Obj || Obj.closed){
-			return true;
-		} else {
-			return false;
-		}
-	} */
 	
 	// 채팅 아이콘 클릭하면 채팅방 목록 불러오고 드롭다운(안읽은 메세지 > 최신순)
 	$(document).on("click", "#dropdownChat", function(){
@@ -284,39 +283,6 @@
 			}
 		});
 	});
-	/*
-	// 드롭다운 채팅방목록 입력 함수
-	function outputDropdown(data){
-		var dropdownList = "<h6 class=\"dropdown-header\">채팅방 목록</h6>";
-		for(var i = 0; i < data.length; i++){
-			if (i == 10){ // 최대 10개 목록까지만 출력
-				break;
-			}
-			dropdownList += "<a class=\"dropdown-item d-flex align-items-center mb-2\" href=\"#\" onclick=\"popupChat('" + data[i].crcode + "')\">";
-			dropdownList += "<div class=\"\" style=\"min-width: 35rem;\" >";
-			dropdownList += "<div class=\"\">";
-			if (data[i].crfrmprofile != null){ // 상대방 이미지가 있으면
-				dropdownList += "<img src=\"${pageContext.request.contextPath }/resources/img/mprofileUpLoad/" + data[i].crfrmprofile + "\" alt=\"프로필\" class=\"rounded-circle chat-profile\">";
-			} else { // 없으면
-				dropdownList += "<img src=\"${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png\" alt=\"프로필\" class=\"rounded-circle chat-profile\">";
-			}
-			dropdownList += "</div>";
-			dropdownList += "<div class=\"row nav_chat\" >";
-			dropdownList += "<div class=\"col-11 overflow\">" + data[i].recentCmcontents + "</div>";
-			if (data[i].unreadCount != 0){ // 안읽은 메세지가 있으면
-				dropdownList += "<div class=\"col-1 nav_list-link\"><span class=\"chat-badge\" style=\"\">" + data[i].unreadCount + "</span></div>";
-			}
-			dropdownList += "<div class=\"row\">";
-			dropdownList += "<div class=\"col-6 small\" style=\"color:gray; text-align:left;\">" + data[i].crfrmnickname + "</div>";
-			dropdownList += "<div class=\"col-6 small\" style=\"color:gray; text-align:right;\">" + data[i].recentCmdate + "</div>";
-			dropdownList += "</div>";
-			dropdownList += "</div>";
-			dropdownList += "</div>";
-			dropdownList += "</a>";
-		}
-		$("#chatRoomList").html(dropdownList);
-	}
-	*/
 
 	// 드롭다운 채팅방목록 입력 함수
 	function outputDropdown(data){
@@ -352,6 +318,41 @@
 		$("#chatRoomList").html(dropdownList);
 	}
 
+</script>
+
+<!-- 안읽은 채팅메세지 확인 뱃지 -->
+<script type="text/javascript">
+	console.log('${sessionScope.loginId }');
+	if(${sessionScope.loginId != null}){
+		$(window).on('load', function(){
+	         // 2초에 한번씩 채팅 목록 불러오기(실시간 알림 전용)
+	         setInterval(function(){
+	             // 읽지 않은 메세지 총 개수 불러오기 
+	             var sumUnReadCount = 0;
+	                   $.ajax({
+	                     url:"selectSumUnReadCount",
+	                     data:{"loginId": "${sessionScope.loginId}"},
+	                     dataType:"json",
+	                     async:false, // async : false를 줌으로써 비동기를 동기로 처리 할 수 있다.
+	                     success:function(sumUnReadCount){
+	                    	 //sumUnReadCount += unReadCount; 
+	                    	 console.log(sumUnReadCount);
+	                     
+				             // 읽지 않은 메세지 총 갯수가 0개가 아니면
+				             if(sumUnReadCount != 0){
+				                 // 채팅 icon 깜빡거리기
+				                 $('.nav_chat-badge').addClass('iconBlink');
+				                 play();
+				             }else{
+				                 // 깜빡거림 없애기
+				                 $('.nav_chat-badge').removeClass('iconBlink');
+			             	}
+	                     }
+				     });
+	                   $("#chat-badge").text(sumUnReadCount);
+	         		},2000);
+		 });
+	}
 </script>
 
 

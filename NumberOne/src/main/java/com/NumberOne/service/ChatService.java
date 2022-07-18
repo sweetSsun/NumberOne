@@ -200,6 +200,23 @@ public class ChatService {
 		return chatRoomList_json;
 	}
 	
-	
+	// 읽지않은 메세지 조회 요청
+	public int selectSumUnReadCount (String loginId) {
+		System.out.println("ChatService.selectSumUnReadCount() 호출");
+
+		ArrayList<ChatRoomDto> chatRoomList = chdao.selectChatRoomList(loginId);
+		
+		int sumUnReadCount = 0;
+		for (int i = 0; i < chatRoomList.size(); i++) {
+			// 특정 채팅방의 안읽은 메세지 수 조회
+			String cmcrcode = chatRoomList.get(i).getCrcode();
+			int unReadCount = chdao.selectUnReadCount(loginId, cmcrcode);
+			System.out.println("읽지않은 메세지 수 "+ unReadCount);
+			chatRoomList.get(i).setUnreadCount(unReadCount);
+			sumUnReadCount += chatRoomList.get(i).getUnreadCount();
+		}
+		System.out.println("읽지않은 메세지 총 합 "+sumUnReadCount);
+		return sumUnReadCount;
+	}
 	
 }

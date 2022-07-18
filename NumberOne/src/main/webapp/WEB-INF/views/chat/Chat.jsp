@@ -175,12 +175,15 @@
 		color: #ffffff;
 	}
 	.chatDate{
-		vertical-align: bottom;
+		/*vertical-align: bottom;
+   		display: inline-block; */
 		font-size: small;
-   		display: inline-block;
     	margin-left: 2px;
     	margin-right: 2px;
     	margin-top: 20px;
+	}
+	.outerDate{
+	vertical-align:middle; display:table-cell;
 	}
 </style>
 
@@ -336,7 +339,7 @@
 
 			if (LR == "left"){ // 왼쪽일 때 (상대방이 전송했을 때)
 			    message = "<div style=\"text-align:left;\"><span>"+data.cmfrmnickname+"</span><div>";
-			    message += "<div style=\"display: table;\"><span class=\"chatRe\">"+data.cmcontents+"</span>";
+			    message += "<div class=\"outerDate\"><span class=\"chatRe\">"+data.cmcontents+"</span>";
 			    // 실시간이면 서버시간 출력
 				if (dateCheck){
 				    message += "<span class=\"chatDate\">"+ dateInfo +"</span></div>";
@@ -345,7 +348,7 @@
 				    message += "<span class=\"chatDate\">"+ data.cmdate +"</span></div>";
 				}
 	    	} else { // 오른쪽일 때 (자신이 전송했을 때)
-	    		message ="<div style=\"text-align:right; margin-top: 10px;\"><span class=\"chatSe\">"+data.cmcontents+"</span>";
+	    		message ="<div class=\"outerDate\" style=\"text-align:right; margin-top: 10px;\"><span class=\"chatSe\">"+data.cmcontents+"</span>";
 			    // 실시간이면 서버시간 출력
 				if (dateCheck){
 				    message += "<span class=\"chatDate\">"+ dateInfo +"</span></div>";
