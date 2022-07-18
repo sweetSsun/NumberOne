@@ -410,10 +410,10 @@ input{
 						<!-- 검색기능 -->
 						<div class="col-5" align="right">
 								<select name="searchType" class="searchType bigger" id="searchTypeSel">
-									<option value="bdtitle bigger">제목</option>
-									<option value="bdcontents bigger">내용</option>
-									<option value="bdtc bigger">제목+내용</option>
-									<option value="bdnickname bigger">작성자</option>
+									<option value="bdtitle">제목</option>
+									<option value="bdcontents">내용</option>
+									<option value="bdtc">제목+내용</option>
+									<option value="bdnickname">작성자</option>
 								</select>
 						</div>
 						<div class="col-7 ">
