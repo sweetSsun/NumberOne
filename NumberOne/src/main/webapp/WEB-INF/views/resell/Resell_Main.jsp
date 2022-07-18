@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +11,11 @@
 <%@ include file="/resources/css/BarCss.jsp"%>
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"
+>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+	integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"
+	referrerpolicy="no-referrer"></script>
 <script src="https://kit.fontawesome.com/dadeda074b.js" crossorigin="anonymous"></script>
 
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/resell.css" type="text/css">
@@ -20,20 +25,20 @@
 	<!-- TopBar -->
 
 
-        <c:choose>
-                <c:when test="${sessionScope.loginId != 'admin'}">
-                        <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
-                </c:when>
-                <c:otherwise>
-                        <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
-                </c:otherwise>
-        </c:choose>
-        
+	<c:choose>
+		<c:when test="${sessionScope.loginId != 'admin'}">
+			<%@ include file="/WEB-INF/views/includes/TopBar.jsp"%>
+		</c:when>
+		<c:otherwise>
+			<%@ include file="/WEB-INF/views/includes/TopBar_Admin.jsp"%>
+		</c:otherwise>
+	</c:choose>
+
 	<!-- End of TopBar -->
 	<main>
 		<!-- 사이드바 -->
 
-		 <%@ include file="/WEB-INF/views/includes/SideBar_Resell.jsp"%> 
+		<%@ include file="/WEB-INF/views/includes/SideBar_Resell.jsp"%>
 		<section>
 			<!-- 본문 -->
 			<div class="container">
@@ -62,7 +67,7 @@
 
 						</div>
 					</div>
-					
+
 					<div class="d_body">
 						<div class="flex_div flex_between flex-p0">
 							<div class="item_start font-l">팔구</div>
@@ -71,20 +76,24 @@
 							</div>
 
 						</div>
-						
+
 						<div class="flex_div flex_space-even flex-p2">
 
 							<c:forEach items="${SellList }" var="sList">
 								<div class="col_2-m flex_card">
-									<div class="card_top position_relative">
-										<a href="selectResellView"><img alt="" src="${pageContext.request.contextPath }/resources/img/resell/${sList.ubmainimg}"
-											class="img_size"></a>
+									<div class="card_top">
+										<a href="selectResellView?ubcode=${sList.ubcode }&ubsellbuy=${sList.ubsellbuy }&modifyCheck=LIST"><img alt=""
+											src="${pageContext.request.contextPath }/resources/img/resell/${sList.ubmainimg}" class="img_size"
+										></a>
 										<!--찜 기본  -->
 										<i class="fa-solid fa-heart-circle-plus zzim_size position_absolute"></i>
 										<!--찜하면 show  -->
 										<!-- <i class="fa-solid fa-heart-circle-check zzim_size position_absolute"></i> -->
 									</div>
-									<div class="card_body font-s text-right padding-right text-bold">${sList.ubtitle }</div>
+
+									<div class="card_body font-s text-right padding-right text-bold">
+										<a href="selectResellView?ubcode=${sList.ubcode }&ubsellbuy=${sList.ubsellbuy }&modifyCheck=LIST">${sList.ubtitle }</a>
+									</div>
 									<div class="card_body font-s text-right padding-right text-bold">${sList.ubnickname }</div>
 									<div class="card_footer font-s text-right padding-right">${sList.ubdate }</div>
 
@@ -100,7 +109,7 @@
 
 					<!--사구 div 시작  -->
 					<div class="d_footer">
-					
+
 						<div class="flex_div flex_between flex-p0">
 							<div class="item_start font-l">사구</div>
 							<div class="item_end font-m">
@@ -114,9 +123,14 @@
 							<c:forEach items="${buyList }" var="bList">
 								<div class="col_2-m flex_card">
 									<div class="card_top">
-										<img alt="" src="${pageContext.request.contextPath }/resources/img/resell/${bList.ubmainimg }" class="img_size">
+										<a href="selectResellView?ubcode=${sList.ubcode }&ubsellbuy=${sList.ubsellbuy }&modifyCheck=LIST"> <img alt=""
+											src="${pageContext.request.contextPath }/resources/img/resell/${bList.ubmainimg }" class="img_size"
+										>
+										</a>
 									</div>
-									<div class="card_body font-s text-right padding-right text-bold">${bList.ubtitle }</div>
+									<div class="card_body font-s text-right padding-right text-bold">
+										<a href="selectResellView?ubcode=${sList.ubcode }&ubsellbuy=${sList.ubsellbuy }&modifyCheck=LIST">${bList.ubtitle }</a>
+									</div>
 									<div class="card_body font-s text-right padding-right text-bold">${bList.ubnickname }</div>
 									<div class="card_footer font-s text-right padding-right">${bList.ubdate }</div>
 
@@ -135,10 +149,10 @@
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp"%>
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"
+	></script>
 </body>
 <script type="text/javascript">
-
 	function searchKeyword() {
 		var searchType = document.getElementById("searchType").value;
 		console.log(searchType);

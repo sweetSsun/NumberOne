@@ -57,7 +57,7 @@
 					<div class="w3-content w3-display-container">
 						<img class="mySlides" src="${pageContext.request.contextPath }/resources/img/resell/${ub_resellView.ubmainimg}" style="width: 100%">
 
-						<c:forEach items="${ub_resellView.ubdetailimg_list}" var="ubdetailimg_list">
+						<c:forEach items="${ub_resellView.ubdetailimg_list}" var="ubdetailimg_list" begin="1">
 							<img class="mySlides" src="${pageContext.request.contextPath }/resources/img/resell/${ubdetailimg_list}" style="width: 100%">
 						</c:forEach>
 						<div class="w3-left position-left" onclick="plusDivs(-1)">&#10094;</div>
@@ -107,7 +107,7 @@
 							<div class=item-basis_5>
 								<div>
 									<p style="font-size: 12.5px">
-										<a href="selectMyInfoMemberView">${ub_resellView.ubnickname} &nbsp;&nbsp; <img class="img-profile rounded-circle" style="width: 50px"
+										<a href="selectMyInfoMemberView" id ="memberInfo">${ub_resellView.ubnickname} &nbsp;&nbsp; <img class="img-profile rounded-circle" style="width: 50px"
 											src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/${ub_resellView.ubprofile }"
 										>
 										</a>
@@ -120,7 +120,7 @@
 								<button id="sellBuyList" type="button">글목록</button>
 							</div>
 							<div class="item-basis_4">
-								<button id="zzimBtn" type="button">찜</button>
+								<button id="zzimBtn" type="button">찜</button> <span id="zzimCount">${ub_resellView.ubzzim }</span>
 							</div>
 							<c:choose>
 								<c:when test="${ub_resellView.ubmid == sessionScope.loginId}">
@@ -164,12 +164,12 @@
 					<c:forEach items="${ memberSellList}" var="sellList">
 						<div class="col_2-m container-card_goods item-basis_6">
 							<div class="card_top">
-								<a href="selectResellView?ubcode=${sellList.ubcode}&ubsellbuy=${sellList.ubsellbuy}"><img alt=""
+								<a href="selectResellView?ubcode=${sellList.ubcode}&ubsellbuy=${sellList.ubsellbuy}&modifyCheck=LIST"><img alt=""
 									src="${pageContext.request.contextPath }/resources/img/resell/${sellList.ubmainimg }" class="img_size"
 								></a>
 							</div>
 							<div class="card_body font-s text-right padding-right text-bold">
-								<a href="selectResellView?ubcode=${sellList.ubcode}&ubsellbuy=${sellList.ubsellbuy}"> ${sellList.ubtitle} </a>
+								<a href="selectResellView?ubcode=${sellList.ubcode}&ubsellbuy=${sellList.ubsellbuy}&modifyCheck=LIST"> ${sellList.ubtitle} </a>
 							</div>
 							<div class="card_footer font-s text-right padding-right">${sellList.ubdate}</div>
 
@@ -233,7 +233,7 @@
 
 
 <script type="text/javascript">
-	var zzim_Check = '${zzim_Check}';
+	let zzim_Check = '${zzim_Check}';
 	//console.log("찜체크 : " + zzim_Check);
 	const warningBtn = document.getElementById("warningBtn"); //신고
 	const zzimBtn = document.getElementById("zzimBtn"); //찜버튼
@@ -248,21 +248,12 @@
 	const select_gdstate = document.querySelectorAll(".select_gdstate");//상품상태 (복수 , c:forEach태그안에 있음) 
 	const gd_nameList = document.querySelectorAll(".gd_nameList"); //상품명 (복수 , c:forEach태그안에 있음)
 	const gd_priceList = document.querySelectorAll(".gd_priceList"); //상품가격 (복수 , c:forEach태그안에 있음))
-
-	window.onload = function() {
-
-		if (zzim_Check == 'UNCHECK') {
-			zzimBtn.classList.add("blue");
-			zzimBtn.classList.remove("red");
-		} else if (zzim_Check == 'CHECK') {
-			zzimBtn.classList.add("red");
-			zzimBtn.classList.remove("blue");
-		}
-	}
+	let ubzzim = '${ub_resellView.ubzzim }';	//찜 갯수
 </script>
 
+<!-- 페이지 로드시 실행 스크립트 -->
 <script type="text/javascript">
-	//페이지로드시 무조건실행
+	//페이지로드시 실행
 	window.onload = function() {
 		/* 로그인된 회원인지 체크 */
 		let loginCheck = '${sessionScope.loginId}';
@@ -271,10 +262,23 @@
 			location.href = "loadToLogin"
 
 		}
-
+		
+		/* 로그인한 회원이 현재 글에 찜을 했는지 여부를 확인 */
+		if (zzim_Check === 'UNCHECK') {
+			zzimBtn.classList.add("blue");
+			zzimBtn.classList.remove("red");
+		} else if (zzim_Check === 'CHECK') {
+			zzimBtn.classList.add("red");
+			zzimBtn.classList.remove("blue");
+		}
+		
+		/* 챗버튼 클릭 */
+		chatBtn.addEventListener('click', chatInsert_Ajax);
+		
+		
 		/* 페이지로드시 글의 판매상태체크 */
 		if (ubmid === loginId) {
-			for (var i = 0; i < totalOp.options.length; i++) {
+			for (let i = 0; i < totalOp.options.length; i++) {
 				if (totalOp.options[i].value == ubstate) {
 					/* 글의 판매상태 option (9:판매완료 ,1:판매중)와 
 					페이지 이동시 넘어온 글의 상태값 파라메터가 같을 경우 그 option에 selected 속성 추가*/
@@ -282,7 +286,7 @@
 
 					if (ubstate == '9') { // 글의 상태값이 9(판매완료)이면 실행.
 
-						for (var j = 0; j < select_gdstate.length; j++) {
+						for (let j = 0; j < select_gdstate.length; j++) {
 
 							gd_nameList[j].classList.add('line-through');
 							gd_priceList[j].classList.add('line-through');
@@ -292,7 +296,7 @@
 
 					} else { //글의 상태값이 1(판매중)이면 실행
 
-						for (var j = 0; j < select_gdstate.length; j++) {
+						for (let j = 0; j < select_gdstate.length; j++) {
 
 							if (select_gdstate[j].value == 0) {
 								console.log("상태값이 0인 : "
@@ -334,7 +338,7 @@
 			async : false, //전역변수 값 저장을 위해 필요
 			data : {
 				"zzubcode" : ubcode,
-				"zzmid" : ubmid,
+				"zzmid" : loginId,
 				"zzim_Check" : zzim_Check
 			},
 
@@ -345,16 +349,27 @@
 					zzimBtn.classList.remove("blue");
 					zzimBtn.classList.add("red");
 					zzim_Check = 'CHECK';
+					ubzzim = Number(ubzzim)+1;
+					
+					document.getElementById("zzimCount").innerHTML = ubzzim;
+					
 				} else { //찜 취소했을 때
 					zzimBtn.classList.remove("red");
 					zzimBtn.classList.add("blue");
 					zzim_Check = 'UNCHECK';
+					
+					
+					ubzzim = Number(ubzzim)-1;
+					document.getElementById("zzimCount").innerHTML = ubzzim;
 				}
 			}
 		})
 	}
 </script>
+
+<!-- 글 상태 옵션 변경 ajax 스크립트  -->
 <script type="text/javascript">
+/* 작성자 본인일 경우만 이벤트실행가능 */
 	if (ubmid === loginId) {
 		totalOp.addEventListener('change', selectOp_value);
 
@@ -386,7 +401,6 @@
 											.add('line-through');
 									selectCheckBox[i].setAttribute('disabled',
 											'disabled');
-
 								}
 
 							} else {
@@ -421,11 +435,6 @@
 		}
 	}
 </script>
-
-
-
-
-
 
 <!-- 슬라이드배너  -->
 <script type="text/javascript">
@@ -473,6 +482,7 @@
 	}
 </script>
 
+<!--신고 스크립트  -->
 <script type="text/javascript">
 	///////////////////////////[신고]/////////////////////////////////
 	function ubWarningCheckModal() {
@@ -603,8 +613,8 @@
 
 	function clickBox(sel_boxTag, selOp) {
 		if (sel_boxTag.checked == true) {
-
-			gd_names.push(selOp);
+			// 클릭이벤트 발생 시 체크박스가 checked 된 경우에만 실행
+			gd_names.push(selOp);	// checked 되었을 때 상품명을 gd_names 변수에 push 해서 담아준다.
 
 			/* 데이터 확인 */
 			console.log("선택된체크박스 : ", sel_boxTag);
@@ -616,7 +626,7 @@
 			console.log("글 제목 : ", gdtitle);
 		}
 	}
-	chatBtn.addEventListener('click', chatInsert_Ajax);
+
 
 	function chatInsert_Ajax() {
 
@@ -624,7 +634,7 @@
 
 			type : 'post',
 			url : 'insertResellChat',
-			traditional : true,
+			traditional : true,  	// 배열 전송위해서 필요.  
 			async : false,
 			data : {
 				'gd_names' : gd_names,
@@ -647,6 +657,29 @@
 	}
 </script>
 
+<!-- 작성자정보스크립트 -->
+<script type="text/javascript">
+let memberInfo = document.getElementById('memberInfo');
+memberInfo.addEventListener('click', memberInfoView)
+function memberInfoView(e){
+	e.preventDefault();
+	
+$.ajax({
+	type : 'get',
+	url : 'selectMyInfoResellView',
+	data : {'ubmid' : ubmid},
+	type : 'json',
+	async : false,
+	success : function(mInfo){		
+		alert('성공');
+		console.log('판매자정보',mInfo );
+				}
+		
+})
 
+}
+
+
+</script>
 
 </html>
