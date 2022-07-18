@@ -80,7 +80,7 @@
 								<div class="container-card_goods_2">
 									<div class="item-basis_1">
 
-										<input type="checkbox" name="gd_names" class="selectCheckBox" onclick="clickBox(this, '${gdList.gdname }')" value="${gdList.gdname }">
+										<input type="checkbox" class="selectCheckBox" onclick="clickBox(this, '${gdList.gdname }')" value="${gdList.gdname }">
 									</div>
 									<div class="item-basis_2 gd_nameList">${gdList.gdname }</div>
 									<div class="item-basis_3 gd_priceList">${gdList.gdprice }</div>
@@ -92,9 +92,9 @@
 							</c:forEach>
 
 
-							<input type="hidden" name="chfrmid" value="${sessionScope.loginId }"> <input type="hidden" name="cmfrmnickname"
+							<input type="hidden" name="cmfrmid" value="${sessionScope.loginId }"> <input type="hidden" name="cmfrmnickname"
 								value="${sessionScope.loginNickname }"
-							> <input type="hidden" name="cmtomnickname" value="${ub_resellView.ubnickname}"> <input type="hidden" name="chtomid"
+							> <input type="hidden" name="cmtomnickname" value="${ub_resellView.ubnickname}"> <input type="hidden" name="cmtomid"
 								value="${ub_resellView.ubmid}"
 							> <input type="hidden" name="gdtitle" value="${ub_resellView.ubtitle }">
 
@@ -143,7 +143,7 @@
 										<i id="ubWarning" onclick="ubWarningCheckModal()" class='fa-solid fa-land-mine-on  fa-2x icon' style="margin-right: 2px; font-size: 40px"></i>
 									</div>
 									<div class="item-basis_4">
-										<button id="chatBtn" type="submit">채팅</button>
+										<button id="chatBtn" type="button">채팅</button>
 									</div>
 								</c:otherwise>
 							</c:choose>
@@ -234,7 +234,7 @@
 
 <script type="text/javascript">
 	var zzim_Check = '${zzim_Check}';
-	console.log("찜체크 : " + zzim_Check);
+	//console.log("찜체크 : " + zzim_Check);
 	const warningBtn = document.getElementById("warningBtn"); //신고
 	const zzimBtn = document.getElementById("zzimBtn"); //찜버튼
 	const chatBtn = document.getElementById("chatBtn"); //채팅버튼
@@ -355,69 +355,71 @@
 	}
 </script>
 <script type="text/javascript">
-if (ubmid === loginId) {
-	totalOp.addEventListener('change', selectOp_value);
+	if (ubmid === loginId) {
+		totalOp.addEventListener('change', selectOp_value);
 
-	function selectOp_value(e) {
-		console.log("e", e.target.value);
-		let select_ubstate = e.target.value;
-		console.log("글 상태 : ", select_ubstate);
-		console.log("글 번호 : ", ubcode);
+		function selectOp_value(e) {
+			console.log("e", e.target.value);
+			let select_ubstate = e.target.value;
+			console.log("글 상태 : ", select_ubstate);
+			console.log("글 번호 : ", ubcode);
 
-		$
-				.ajax({
-					type : 'get',
-					url : 'updateResellState_usedBoardAjax',
-					data : {
-						'ubcode' : ubcode,
-						'ubstate' : select_ubstate
-					},
+			$
+					.ajax({
+						type : 'get',
+						url : 'updateResellState_usedBoardAjax',
+						data : {
+							'ubcode' : ubcode,
+							'ubstate' : select_ubstate
+						},
 
-					success : function(result) {
-						console.log("결과", result);
-						if (result == 'SOLD') {
-							alert("변경성공 = 판매완료");
+						success : function(result) {
+							console.log("결과", result);
+							if (result == 'SOLD') {
+								alert("변경성공 = 판매완료");
 
-							for (let i = 0; i < selectCheckBox.length; i++) {
-								console.log("길이", selectCheckBox.length);
-								gd_nameList[i].classList.add('line-through');
-								gd_priceList[i].classList.add('line-through');
-								selectCheckBox[i].setAttribute('disabled',
-										'disabled');
-
-							}
-
-						} else {
-							alert("변경성공 = 판매중");
-							for (var j = 0; j < select_gdstate.length; j++) {
-
-								if (select_gdstate[j].value == 0) {
-									console.log("상태값이 0인 : "
-											+ select_gdstate[j].value);
-									//css속성 주기
-									selectCheckBox[j].setAttribute('disabled',
+								for (let i = 0; i < selectCheckBox.length; i++) {
+									console.log("길이", selectCheckBox.length);
+									gd_nameList[i].classList
+											.add('line-through');
+									gd_priceList[i].classList
+											.add('line-through');
+									selectCheckBox[i].setAttribute('disabled',
 											'disabled');
-									gd_nameList[j].classList
-											.add('line-through');
-									gd_priceList[j].classList
-											.add('line-through');
 
-								} else {
-									console.log("상태값 1인 : "
-											+ select_gdstate[j].value);
-									selectCheckBox[j]
-											.removeAttribute('disabled');
-									gd_nameList[j].classList
-											.remove('line-through');
-									gd_priceList[j].classList
-											.remove('line-through');
+								}
+
+							} else {
+								alert("변경성공 = 판매중");
+								for (var j = 0; j < select_gdstate.length; j++) {
+
+									if (select_gdstate[j].value == 0) {
+										console.log("상태값이 0인 : "
+												+ select_gdstate[j].value);
+										//css속성 주기
+										selectCheckBox[j].setAttribute(
+												'disabled', 'disabled');
+										gd_nameList[j].classList
+												.add('line-through');
+										gd_priceList[j].classList
+												.add('line-through');
+
+									} else {
+										console.log("상태값 1인 : "
+												+ select_gdstate[j].value);
+										selectCheckBox[j]
+												.removeAttribute('disabled');
+										gd_nameList[j].classList
+												.remove('line-through');
+										gd_priceList[j].classList
+												.remove('line-through');
+									}
 								}
 							}
 						}
-					}
-				})
+					})
+		}
 	}
-}
 </script>
 
 
@@ -456,7 +458,7 @@ if (ubmid === loginId) {
 			dots[i].className = dots[i].className.replace(" w3-white", "");
 		}
 		x[slideIndex - 1].style.display = "block";
-		dots[slideIndex - 1].className += " w3-white";
+		//dots[slideIndex - 1].className += " w3-white";
 	}
 </script>
 
@@ -581,7 +583,7 @@ if (ubmid === loginId) {
 <!-- 글목록으로 돌아가기 -->
 <script type="text/javascript">
 	let sellbuy_List = document.querySelector("#sellBuyList");
-	console.log(sellbuy_List);
+	//console.log(sellbuy_List);
 	sellbuy_List.addEventListener("click", backList);
 	function backList() {
 		console.log("글목록버튼 클릭이벤트");
@@ -592,46 +594,56 @@ if (ubmid === loginId) {
 <!-- 체크박스 선택이벤트 스크립트  -->
 <script type="text/javascript">
 	/* 체크박스 클릭 이벤트 */
-	
-	function clickBox(sel_boxTag, selOp) {
-		let chfrmid = document.getElementsByName("chfrmid")
-		let cmfrmnickname = document.getElementsByName("cmfrmnickname")
-		let cmtomnickname = document.getElementsByName("cmtomnickname")
-		let chtomid = document.getElementsByName("chtomid")
-		let selectGoods_nameList = [];
-		selectGoods_nameList.push(selOp);
+	let gd_names = [];
+	const cmfrmid = loginId;
+	const cmfrmnickname = document.getElementsByName("cmfrmnickname")[0].value;
+	const cmtomnickname = document.getElementsByName("cmtomnickname")[0].value;
+	const cmtomid = ubmid;
+	const gdtitle = document.getElementsByName("gdtitle")[0].value;
 
+	function clickBox(sel_boxTag, selOp) {
 		if (sel_boxTag.checked == true) {
-			console.log("선택된체크박스 : ", sel_boxTag.value);
-			console.log("보내는아이디[0]] : ", chfrmid[0].value);
-			console.log("보내는닉네임 : ", cmfrmnickname[0].value);
-			console.log("받는닉네임 : ", cmtomnickname[0].value);
-			console.log("받는아이디 : ", chtomid[0].value);
-			console.log("상품이름 : ", selectGoods_nameList);			
+
+			gd_names.push(selOp);
+
+			/* 데이터 확인 */
+			console.log("선택된체크박스 : ", sel_boxTag);
+			console.log("보내는아이디 : ", cmfrmid);
+			console.log("보내는닉네임 : ", cmfrmnickname);
+			console.log("받는닉네임 : ", cmtomnickname);
+			console.log("받는아이디 : ", cmtomid);
+			console.log("상품이름 : ", gd_names);
+			console.log("글 제목 : ", gdtitle);
 		}
-		
+	}
+	chatBtn.addEventListener('click', chatInsert_Ajax);
+
+	function chatInsert_Ajax() {
+
 		$.ajax({
-			type : 
-			url :
-			data :
-			dataType :
-			success : function(chatResult){
-					console.log("chatResult : ",chatResult);
-					
-					
-					
-				}
-			
-			
-			
-			
-			
+
+			type : 'post',
+			url : 'insertResellChat',
+			traditional : true,
+			async : false,
+			data : {
+				'gd_names' : gd_names,
+				'cmfrmid' : cmfrmid,
+				'cmfrmnickname' : cmfrmnickname,
+				'cmtomnickname' : cmtomnickname,
+				'cmtomid' : cmtomid,
+				'gdtitle' : gdtitle
+			},
+			dataType : 'json',
+			success : function(chatResult) {
+				alert('성공');
+				console.log("chatResult : ", chatResult);
+
+				popupChat(chatResult);
+
+			}
+
 		})
-		
-		
-		
-		
-		
 	}
 </script>
 
