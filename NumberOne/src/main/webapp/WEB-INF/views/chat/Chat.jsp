@@ -183,7 +183,7 @@
     	margin-top: 20px;
 	}
 	.outerDate{
-	vertical-align:middle; display:table-cell;
+		vertical-align:middle; display:table-cell;
 	}
 </style>
 

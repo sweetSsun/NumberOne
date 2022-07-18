@@ -83,6 +83,10 @@
 	.iconBlink{
 		animation: blink-effect 1s step-end infinite;
 	}
+	
+	.d_none{
+      display: none;
+    }
 </style>
 
 </head>
@@ -286,6 +290,7 @@
 
 	// 드롭다운 채팅방목록 입력 함수
 	function outputDropdown(data){
+		console.log("채팅방 목록 드롭다운 실행");
 		var dropdownList = "<h6 class=\"dropdown-header\">채팅방 목록</h6>";
 		for(var i = 0; i < data.length; i++){
 			if (i == 10){ // 최대 10개 목록까지만 출력
@@ -324,7 +329,7 @@
 <script type="text/javascript">
 	console.log('${sessionScope.loginId }');
 	if(${sessionScope.loginId != null}){
-		$(window).on('load', function(){
+	   $(window).on('load', function(){
 	         // 2초에 한번씩 채팅 목록 불러오기(실시간 알림 전용)
 	         setInterval(function(){
 	             // 읽지 않은 메세지 총 개수 불러오기 
@@ -335,23 +340,24 @@
 	                     dataType:"json",
 	                     async:false, // async : false를 줌으로써 비동기를 동기로 처리 할 수 있다.
 	                     success:function(sumUnReadCount){
-	                    	 //sumUnReadCount += unReadCount; 
-	                    	 console.log(sumUnReadCount);
-	                     
-				             // 읽지 않은 메세지 총 갯수가 0개가 아니면
-				             if(sumUnReadCount != 0){
-				                 // 채팅 icon 깜빡거리기
-				                 $('.nav_chat-badge').addClass('iconBlink');
-				                 play();
-				             }else{
-				                 // 깜빡거림 없애기
-				                 $('.nav_chat-badge').removeClass('iconBlink');
-			             	}
+	                       console.log(sumUnReadCount);
+	                       $("#chat-badge").text(sumUnReadCount);
+	                      // 읽지 않은 메세지 총 갯수가 0개가 아니면
+	                      if(sumUnReadCount != 0){
+	                          // 채팅 icon 깜빡거리기
+	                          $('.nav_chat-badge').addClass('iconBlink');
+	                          $('.nav_chat-badge').removeClass('d_none');
+	                          play();
+	                      }else{
+	                          // 깜빡거림 없애기
+	                          $('.nav_chat-badge').removeClass('iconBlink');
+	                          $('.nav_chat-badge').addClass('d_none');
+	                      }
 	                     }
-				     });
-	                   $("#chat-badge").text(sumUnReadCount);
-	         		},2000);
-		 });
+	              });
+	
+	               },2000);
+	    });
 	}
 </script>
 

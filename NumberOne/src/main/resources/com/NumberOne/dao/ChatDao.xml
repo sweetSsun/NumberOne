@@ -114,7 +114,7 @@
 	
 	<!-- 특정 채팅방의 안읽은 메세지 수 조회 -->
 	<select id="selectUnReadCount" resultType="int">
-		SELECT SUM(CMREAD) CMREAD
+		SELECT NVL(SUM(CMREAD), 0) AS CMREAD
 		FROM CHATMESSAGE
 		WHERE CMFRMID != #{loginId} AND CMCRCODE = #{cmcrcode}
 	</select>
