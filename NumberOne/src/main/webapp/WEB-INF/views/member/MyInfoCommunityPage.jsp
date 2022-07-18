@@ -11,31 +11,40 @@
 	function writeMemberBoard(nickname){
 		console.log("팝업 스트립트 확인!!!");
 		let wMemberPopupUrl = "loadToWriteMemberBoard?nickname"+nickname;
-		let wMemberPopupX = 500;
-		let wMemberPopupY = 400;
-		let x = (window.screen.width/2) - (wMemberPopupX/2);
-		let y = (window.screen.height/2) - (wMemberPopupY/2);
-	    
+		let wMemberPopupOption = "width=200, height=200, top=300px, left=500px, scrollbars=no, resizable=no";
+
 		$.ajax({
 			url: "selectWriteMemberInfo_ajax",
 			data: {"nickname":nickname},
 			async:false,
 			dataType:"json",
-			success:function(data){
-				
-				wMemberPopup = window.open(wMemberPopupUrl,"writeMemberBoard",
-	    		"width="+wMemberPopupX+", height="+wMemberPopupY+", left="+x+", top="+y);
+			success:function(result){
+				console.log(nickname);
+				wMemberPopup = window.open(wMemberPopupUrl, wMemberPopupOption, nickname);
 	    
 				wMemberPopup.window.addEventListener("load", function(){
-					wMemberPopup.enterRoom(data);
+					wMemberPopup.writeMemberBoard(result);
 			 	});
 			}
 		});
-		
+
+/* 		$.ajax({
+			url: "selectWriteMemberInfoReply_ajax",
+			data: {"nickname":nickname},
+			async:false,
+			dataType:"json",
+			success:function(result){
+				console.log(nickname);
+				wMemberPopup = window.open(wMemberPopupUrl, wMemberPopupOption, nickname);
 	    
-    
-		
+				wMemberPopup.window.addEventListener("load", function(){
+					wMemberPopup.writeMemberBoard(result);
+			 	});
+			}
+		}); */
 	}
+		
+	
 </script>
 
 
@@ -120,7 +129,7 @@ background-color: #00BCD4;
 		<div style="min-height: 50px;" id="scroll-board"></div>
 		<!-- 본문 -->
 			<div class="container">
-				<div class="checkout__form" style="margin-top: 40px;"><h4>마이페이지 커뮤니티</h4></div>
+				<div class="checkout__form" style="margin-top: 30px;"><h4>마이페이지 커뮤니티</h4></div>
 				<br>
 				<br>
 				<!-- 작성글 목록 -->
@@ -183,7 +192,7 @@ background-color: #00BCD4;
 						</c:forEach>
 				</table>
 				<!-- 여백 -->				
-					<div style="min-height: 500px;"></div><hr>
+					<div style="min-height: 600px;"></div>
 				</div>
 			
 				
@@ -191,13 +200,13 @@ background-color: #00BCD4;
 				
 				<!-- 댓글작성글 목록 -->
 				<!-- 여백 -->
-				<div style="min-height: 50px;" id="scroll-reply"></div>
-				<div class="row" style="margin-top:20px;" >
-					<br><h4 class="checkout__form" style="color: #00BCD4; margin-left: 30px;" > 댓글 작성 글 목록</h4>
+				<div style="min-height: 230px;" id="scroll-reply"></div>
+				<div class="row" >				
+					<h4 class="checkout__form" style="color: #00BCD4; margin-left: 30px;">댓글 작성 글 목록</h4>
 				</div>
 				<!-- 여백 -->				
 				<div style="min-height: 50px;"></div>
-				<div class="row"  style="margin:20px;">
+				<div class="row">
 				<table >
 						<tr class="text-center" id="board_column">
 							<td>댓글번호</td>
@@ -328,19 +337,19 @@ background-color: #00BCD4;
 				</c:forEach>
 				</table>
 				<!-- 여백 -->				
-				<div style="min-height: 800px;"></div><hr>
+				<div style="min-height: 800px;"></div>
 				</div>
 				
 				
 				<!-- 스크랩 목록 -->
 				<!-- 여백 -->
-				<div style="min-height: 50px;" id="scroll-scrap"></div>				
-				<div class="row" style="margin:20px;" >
-					<br><h4 class="checkout__form" style="color: #00BCD4; margin-left: 30px;">스크랩 목록 (작성자 상세보기 test 중)</h4>
-				</div>
+				<div style="min-height: 230px;" id="scroll-scrap"></div>
+				<div class="row" >				
+					<h4 class="checkout__form" style="color: #00BCD4; margin-left: 30px;">스크랩 목록 (작성자 상세보기 test 중)</h4>
+				</div>								
 				<!-- 여백 -->
 				<div style="min-height: 50px;" ></div>				
-				<div class="row"  style="margin:20px;">
+				<div class="row">
 				<table>
 						<tr class="text-center" id="board_column">
 							<td>글번호</td>
@@ -387,7 +396,7 @@ background-color: #00BCD4;
 				</c:choose>
 						</c:forEach>
 				</table>
-				<div style="min-height: 600px;"></div><hr>
+				<div style="min-height: 600px;"></div>
 				</div>
 
 

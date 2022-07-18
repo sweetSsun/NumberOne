@@ -238,6 +238,7 @@ text-align: right;
 
 	<div class="row">
 
+		<%-- <c:forEach items="${memberInfo }" var="memberInfo"> --%>
 		<div class="parent">
 		<c:choose>
 		<c:when test="${memberInfo.mprofile != null}">
@@ -274,6 +275,7 @@ text-align: right;
 			<input type="button" class="btn" style="width: 90px;" value="채팅">
 			</div>
 		</div>
+		<%-- </c:forEach> --%>
 	</div>	 
 	 
 
@@ -296,57 +298,78 @@ text-align: right;
 	<div class="row"  style="width: 650px; margin-left: 9px;">
 	<div class = "msgTextarea2" style="background-color: #F2F2FF; padding-left: 50px;">
 	<span style="width: 500px; text-align: center;">
-	<button onclick="wboard('${boardList.mnickname }')">작성글</button> 
+	<button>작성글</button> 
 	&nbsp;&nbsp;&nbsp; 
-	<button>작성댓글</button></span>
+	<button id="wboard_btn">작성댓글</button></span>
 	</div>
 	<!-- 작성 글 -->
 				
 	<div class = "msgTextarea col-lg-12 col-md-6 col-sm-6" 
 			style="border-top:0px! important ; padding-top: 20px; border: 1px solid #949494; background-color: #F2F2FF;" >
-	
+	<div id="WmemberBoard"></div>
 	</div>
 			 
 	<!-- 작성 글 끝 -->
-	<!-- 작성 댓글 글 -->
- 			<div class = "msgTextarea col-lg-12 col-md-6 col-sm-6" 
-			style="border-top:0px! important ; padding-top: 20px; border: 1px solid #949494; background-color: #F2F2FF;" >
-				<c:forEach items="${Reply }" var="Reply">			
-					<ul>
-						<li>
-						<!-- 댓글 상세 -->                              
-                        <p class="pText" style="background-color: #F2F2FF; outline:none; width: 540px; " >                          	
-                         ${Reply.rpcontents }</p>	
-						</li>
-					</ul>					
-				</c:forEach>
-			 </div>  
-	<!-- 작성 댓글 끝 -->
+
 		</div>	
 <!-- 메뉴 끝 -->		
 </div>
 
 <script type="text/javascript">
 
-console.log("nickname" + nickname)
 
  console.log("되나??")
 
-function enterRoom(boardList){
+
+function writeMemberBoard(boardList){
+	 
+	 var output = "";
+	 	
 	for (var i = 0; i < boardList.length; i++){
-		console.log(msgList[i].cmcontents);
-		checkLR(msgList[i]);
+		output+="<ul><li>"		
+		output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; color:black; \" >"+boardList[i].bdtitle+"</p>"
+		output+="</li></ul>	"		
+		output+="</div> "
+
+		$("#WmemberBoard").html(output);
 	}
-}
+	
+ }	
+
+
+
+/*   function writeMemberReply(ReplyList){ 
+ 
+	  $("#wboard_btn").on("click",function(){
+		
+		 var output = "";
+			for (var i = 0; i < ReplyList.length; i++){
+				output+="<ul><li>"		
+				output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; \" >"+ReplyList[i].rpcontents+"</p>"
+				output+="</li></ul>	"		
+				output+="</div> "
+
+				$("#WmemberBoard").html(output);
+			}
+					 
+		 
+	 } 
+		 
+ }; */
+	 
+	 
+ 
+	
+	
+	
+	
+
 
 </script>
 
 
 </body>
 </html>
-
-
-
 
 
 
