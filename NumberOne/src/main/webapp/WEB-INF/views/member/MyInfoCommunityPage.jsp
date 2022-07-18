@@ -10,6 +10,7 @@
 <script type="text/javascript">
 
    var wMemberPopup = "";
+  
    
    function writeMemberBoard(nickname){
       console.log("팝업 스트립트 확인!!!");
@@ -29,7 +30,7 @@
             
             wMemberPopup.window.addEventListener("load", function(){
                wMemberPopup.writeMemberBoard(result);
-             });
+            });
             
          }
       });
@@ -41,8 +42,12 @@
          var popUpUrl = "";
          if(type == 'b'){
             popUpUrl = "selectWriteMemberInfo_ajax";
-         } else {
+         }else if(type == 'r') {
             popUpUrl = "selectWriteMemberInfoReply_ajax";
+         }else if(type == 'u') {
+        	popUpUrl = "selectWriteMemberInfoSellBuy_ajax"; 
+         }else if (type == 'b2'){
+        	popUpUrl = "selectWriteMemberInfo_ajax"; 
          }
 
          $.ajax({
@@ -56,8 +61,12 @@
                   
                if(type == 'b'){
                   wMemberPopup.writeMemberBoard(result);
-               } else {
+               }else if(type == 'r') {
                   wMemberPopup.writeMemberReply(result);
+               }else if(type == 'u') {
+            	  wMemberPopup.writeMemberSellBuy(result); 
+               }else if(type == 'b2'){
+                  wMemberPopup.writeMemberBoard2(result);
                }
 
             }

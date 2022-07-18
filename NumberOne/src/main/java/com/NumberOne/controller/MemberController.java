@@ -312,10 +312,20 @@ public class MemberController {
 		public @ResponseBody String selectWriteMemberInfoReply_ajax (String nickname) {
 			System.out.println("작성자 상세페이지 _ selectWriteMemberInfoReply_ajax");
 			System.out.println("controller.nickname : " + nickname);
-			String boardList_gson = msvc.selectWriteMemberInfoReply_ajax(nickname);
-			return boardList_gson;
+			String replyList_gson = msvc.selectWriteMemberInfoReply_ajax(nickname);
+			return replyList_gson;
 			
-		}		
+		}	
+		
+		//미니브라우저 작성자 상세페이지 _ SellBuy
+		@RequestMapping(value = "/selectWriteMemberInfoSellBuy_ajax")
+		public @ResponseBody String selectWriteMemberInfoSellBuy_ajax (String nickname) {
+			System.out.println("작성자 상세페이지 _ selectWriteMemberInfoReply_ajax");
+			System.out.println("controller.nickname : " + nickname);
+			String ubList_gson = msvc.selectWriteMemberInfoSellBuy_ajax(nickname);
+			return ubList_gson;
+			
+		}
 		
 
 }
