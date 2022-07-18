@@ -136,11 +136,39 @@
      border: solid #E0E0E0 2px;
      margin-top: 5%;
      margin-bottom: 5%;
+     width: 200px;
+     height: 200px;
+     
    }
    #upload_Img{
-   	width: 100px;
-   	heigth: 100px;
+   	width: 200px;
+   	height: 200px;
+   	object-fit: cover;
    }
+   
+   /* 툴팁 */
+.tooltip {
+  position: relative;
+  display: #00bcd4;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;       /* 이벤트가 없으면 툴팁 영역을 숨김 */
+  width: 120px;             /* 툴팁 영역의 넓이를 설정 */
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  position: absolute;       /* 절대 위치를 사용 */
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;      /* hover 이벤트 발생시 영역을 보여줌 */
+}
+
 </style>
 </head>
 <body>
@@ -166,8 +194,18 @@
 				<form action="">
 					<div class="row">
 						<div class="col">
-							<a href="#"><span class="fw-bold boardCategory"> | ${board.bdcategory }게시판 </span></a> 
-							<span class="fw-bold" style="color:gray; font-size:20px">/</span> <a href="#"><span class="bdregion"> ${board.bdrgname}</span></a>
+							<a href="selectCategoryBoardList?searchVal=${board.bdcategory }"><span class="fw-bold boardCategory"> | ${board.bdcategory }게시판 </span></a> 
+							<span class="fw-bold" style="color:gray; font-size:20px">/</span> 
+							
+							<c:choose>
+								<c:when test="${board.bdrgcode == 'ALL' }">
+									<a href="selectRegionBoardList"><span class="bdregion"> ${board.bdrgname}</span></a>
+								</c:when>
+							
+								<c:otherwise>
+									<a href="selectDetailBoardList?searchVal=${board.bdrgcode }"><span class="bdregion"> ${board.bdrgname}</span></a>
+								</c:otherwise>
+							</c:choose>
 						</div>
 					</div>
 					<div class="row" >
@@ -201,7 +239,6 @@
 						</div>
 					</div>
 					<!-- 실험 -->
-					
 					
 					<!-- 본문 글 내용-->
 					<div class="row mt-3 mb-1 boardContents">
@@ -242,11 +279,11 @@
 				</c:choose>
 				</div>
 				
-
-				<div class="img-container">
-					<img id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
-				
-				</div>				
+				<c:if test="${board.bdimg != null }">
+					<div class="img-container" >
+						<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
+					</div>				
+				</c:if >
 				
 				<!------------------ 댓글영역 ------------------->
 				<div class="mb-2" id="commentBox">
@@ -256,7 +293,6 @@
 							<i class="fa-regular fa-comment"></i> 댓글 <span class="text-info fw-bold" id="ReplyCount"></span>개
 						</div>
 					</div>
-					
 					
 					<!-- 댓글목록_ajax -->
 					<div class="row" id="replyList_ajax">

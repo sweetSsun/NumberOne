@@ -146,7 +146,9 @@
 							<!-- 공지게시판 -->
 							<tr class="fw-bold" style="border-bottom: solid #E0E0E0 1px;">
 								<td class="text-center tableCell">${notice.nbcode}</td>
-								<td></td>
+								<td class="text-center tableCell">
+									<a href="selectNoticeBoardList">공지</a>
+								</td>
 								<td class="tableCell">
 									<a href="selectNoticeBoardView?nbcode=${notice.nbcode }">${notice.nbtitle}</a>
 								</td>
@@ -165,7 +167,12 @@
 						<c:if test="${board.bdcategory != '자랑' }">
 						<tr style="border-bottom: solid #E0E0E0 1px;">
 							<td class="text-center tableCell">${board.bdcode}</td>
-							<td class="bdcategory text-center tableCell">${board.bdcategory}</td>
+							<td class="bdcategory text-center tableCell">
+								<a href="selectCategoryBoardList?searchVal=${board.bdcategory }">
+									${board.bdcategory}
+								</a>
+							
+							</td>
 							<td class="tableCell">
 								<c:choose>
 									<c:when test="${board.bdcategory == '후기'  }">

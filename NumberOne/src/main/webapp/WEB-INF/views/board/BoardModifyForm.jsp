@@ -69,6 +69,34 @@
 		border: none;
 		font-size: 20px;
 	}
+	.img-container{
+     overflow: hidden;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     border: solid #E0E0E0 2px;
+     margin-top: 5%;
+     margin-bottom: 2%;
+     width: 200px;
+     height: 200px;
+     
+   }
+   #upload_Img{
+   	width: 200px;
+   	height: 200px;
+   	object-fit: cover;
+   }
+	span.x{ 
+		/* 사진 X 버튼 */
+		background-color: #00bcd4; 
+		border-radius: 100%; 
+		color: white; 
+		position: absolute; 
+		top: 10px; 
+		right: 10px; 
+		cursor: pointer;
+   }  
+   
 </style>
 </head>
 <body>
@@ -134,12 +162,17 @@
 				<div class="row">
 					<textarea class="bdcontents" rows="17" cols="80" name="bdcontents">${board.bdcontents }</textarea>
 				</div>
-				<div class="row mt-4">
-					<img style="max-height:200px; max-width:200px;" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg}">
-					<!-- 첨부파일! 나중에 경로 및 name 수정  -->
-					<div id="image_container"></div>
+				
+				<!-- 첨부파일! 나중에 경로 및 name 수정  -->
+				<c:if test="${board.bdimg != null || board.bdimg eq '' }">
+					<div class="img-container" id="img-container" style="position: relative;">
+						<img id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
+						<span class="x" onclick="currentImgStateUpdate()">&nbsp;X&nbsp;</span>
+						<input type="hidden" name="bdimg" id="bdimg" value="${board.bdimg }">
+					</div>				
+				</c:if >
 					<input id="bdImg" type="file" name="bdimgfile" accept="image/*"  >
-				</div>
+				
 				<div class="row mt-4">
 					<div class="col btn-wrapper">
 						<input class="btn btn-lg buttons fw-bold text-white" style="background-color:#00bcd4;" type="submit" value="수정">
@@ -183,10 +216,6 @@
 </body>
 
 <script type="text/javascript">
-	
-</script>
-
-<script type="text/javascript">
 	//선택한 글번호 
 	var bdcode = '${board.bdcode}';
 	//현재 로그인중인 아이디
@@ -217,6 +246,18 @@
 		/* 수정취소 */
 		history.back();
 	}
+	
+	function currentImgStateUpdate(){
+		/* 이미지 삭제*/
+		var bdimg = $("#bdimg").val();
+		$("#bdimg").val("del_" + bdimg);
+		
+		var delImgCheck = $("#bdimg").val();
+		console.log(delImgCheck);
+		
+		$("#img-container").css("display", "none");
+	}
+	
 </script>
 
 

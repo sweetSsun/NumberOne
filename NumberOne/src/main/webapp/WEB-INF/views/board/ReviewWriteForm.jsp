@@ -185,10 +185,12 @@
 				<div class="row">
 					<textarea id="bdcontents" class="bdcontents" rows="17" cols="80" name="bdcontents"></textarea>
 				</div>
-				<div class="row mt-4">
+				<div class="row" style="margin-top: 3%;">
+				<div class="image-container" style="width: 300px; heigth:300px;">
+    				<img title="이미지 미리보기" style="width: 200px; heigth:200px;" id="preview-image" src="https://dummyimage.com/500x500/ffffff/000000.png&text=preview+image">
 					<!-- 파일선택 -->
-					<div id="image_container"></div>
-					<input id="bdImg" type="file" name="bdimgfile" accept="image/*" onchange="setThumbnail(event);" >
+					<input type="file" style="display: block;" id="input-image" name="bdimgfile" accept="image/*" >
+				</div>
 				</div>
 				<div class="row mt-4">
 					<div class="col btn-wrapper">
@@ -262,6 +264,32 @@
 		history.back();
 		
 	}
+	
+	/* 이미지 미리보기 */
+	// input file에 change 이벤트 부여
+	const inputImage = document.getElementById("input-image")
+	inputImage.addEventListener("change", e => {
+	    readImage(e.target)
+	})
+	
+	function readImage(input) {
+    // 인풋 태그에 파일이 있는 경우
+    if(input.files && input.files[0]) {
+        // 이미지 파일인지 검사 (생략)
+        // FileReader 인스턴스 생성
+        const reader = new FileReader()
+        // 이미지가 로드가 된 경우
+        reader.onload = e => {
+            const previewImage = document.getElementById("preview-image")
+            previewImage.src = e.target.result
+        }
+        // reader가 이미지 읽도록 하기
+        reader.readAsDataURL(input.files[0])
+    }
+}
+	
+	
+	
 </script>
 
 <script type="text/javascript">
@@ -290,25 +318,13 @@
 	}
 </script>
 
-<script type="text/javascript">
-	/* 업로드 이미지 미리보기 기능 */
-	function setThumbnail(event){
-		var reader = new FileReader();
-		
-		reader.onload = function(event){
-			var img = document.createElement("img");
-			img.setAttribute("src", event.target.result);
-			document.querySelector("div#image_container").appendChild(img);
-		};
-		 reader.readAsDataURL(event.target.files[0]);
-	}
-</script>
+
 
 <script type="text/javascript">
 	/* 자유,질문,후기 게시판 선택 시  */
 	function bdcategorySel(selVal){
 		if( selVal != "후기" ){
-			location.href="loadToBoardWrite";
+			location.href="loadToBoardWrite?bdcategory="+selVal;
 		}
 	}
 	

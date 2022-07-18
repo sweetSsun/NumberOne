@@ -46,22 +46,22 @@
 				</div>
 				<div class="sideclose_room">
 					<span>
-						<a href="selectFreeBoardList" title="자유방"><i class="fa-solid fa-comments"></i></a>
+						<a href="selectCategoryBoardList?searchVal=자유" title="자유방"><i class="fa-solid fa-comments"></i></a>
 					</span>
 				</div>
 				<div class="sideclose_room">
 					<span>
-						<a href="selectQuestionBoardList" title="질문방"><i class="fa-solid fa-circle-question"></i></a>
+						<a href="selectCategoryBoardList?searchVal=질문" title="질문방"><i class="fa-solid fa-circle-question"></i></a>
 					</span>
 				</div>
 				<div class="sideclose_room">
 					<span>
-						<a href="selectInfoBoardList" title="정보방"><i class="fa-solid fa-head-side-virus"></i></a>
+						<a href="selectCategoryBoardList?searchVal=정보" title="정보방"><i class="fa-solid fa-head-side-virus"></i></a>
 					</span>
 				</div>
 				<div class="sideclose_room">
 					<span>
-						<a href="selectReviewBoardList" title="후기방"><i class="fa-solid fa-pen-to-square"></i></a>
+						<a href="selectCategoryBoardList?searchVal=후기" title="후기방"><i class="fa-solid fa-pen-to-square"></i></a>
 					</span>
 				</div>
 			</div>
