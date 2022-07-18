@@ -172,7 +172,21 @@
 						<tr style="border-bottom: solid #E0E0E0 1px;">
 							<td class="text-center tableCell">${board.bdcode}</td>
 							<td class="bdcategory text-center tableCell">
-								${board.bdrgname }
+								
+								<c:choose>
+									<c:when test="${board.bdrgcode == 'ALL' }">
+										<a href="selectRegionBoardList">
+											${board.bdrgname }
+										</a>
+									</c:when>
+									
+									<c:otherwise>
+										<a href="selectDetailBoardList?searchVal=${board.bdrgcode }">
+											${board.bdrgname }
+										</a>	
+									</c:otherwise>
+								</c:choose>
+								
 							</td>
 							<td class="tableCell">
 							 	<c:choose>
@@ -182,7 +196,7 @@
 									</c:when>
 									
 									<c:otherwise>
-									 	<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
+									 	<a href="selectBoardView?bdcode=${board.bdcode }&bdtype=region">${board.bdtitle} 
 									 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
 									</c:otherwise>
 								</c:choose>
