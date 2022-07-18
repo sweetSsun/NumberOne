@@ -28,6 +28,7 @@ public class BoardController {
 	public ModelAndView selectRoomList(String bdcode, String jsp, Paging paging) {
 		System.out.println("자쥐방 자랑 메인 요청(목록페이지)");	
 		System.out.println(bdcode+"/"+jsp);
+		System.out.println(paging);
 		ModelAndView mav = new ModelAndView();
 		mav=bsvc.selectRoomList(paging);
 		

@@ -309,35 +309,56 @@ public class BoardService {
 		   return mav;
 	   }
 
-	// 자취방 자랑 메인 페이지(목록)
-	public ModelAndView selectRoomList(Paging paging) {
-		System.out.println("BoardService.selectRoomList() 호출");
-		ModelAndView mav = new ModelAndView();
+		// 자취방 자랑 메인 페이지(목록)
+		public ModelAndView selectRoomList(Paging paging) {
+			System.out.println("BoardService.selectRoomList() 호출");
+			ModelAndView mav = new ModelAndView();
+			
+			//페이징 없는 글목록
+			//ArrayList<BoardDto> roomList = bdao.selectRoomList();
+			
+			//System.out.println("1번:"+paging);
+			
+			//자랑글 개수 받기
+			//키워드가 있는 경우 검색, 아니면 전체 글 개수 받아옴
+			//null값을 맵핑하면 오류가 남 keyword가 null이면 searchType을 notSearch로 바꾸기
+			if(paging.getKeyword() == null) {
+				System.out.println("keyword가 null");
+				paging.setSearchType("notSearch");
+			} 
 		
-		//페이징 없는 글목록
-		//ArrayList<BoardDto> roomList = bdao.selectRoomList();
-		
-		//모든 자랑글 개수 받기
-		int totalRoomCount = bdao.selectRoomTotalCount(paging);
-		paging.setTotalCount(totalRoomCount);
-		paging.calc();
-		paging.setSearchVal("bdcode");
-		System.out.println(paging);
-		
-		//페이징을 위한 글 목록 받기
-		ArrayList<BoardDto> roomList = bdao.selectRoomList_paging(paging);
-		for (int i = 0; i < roomList.size(); i++) {
-			System.out.println(roomList.get(i).getBdcode()+" "+roomList.get(i).getBdhits()+" "+roomList.get(i).getBdreply()+" "+roomList.get(i).getBdrecommend()+" "+roomList.get(i).getBdscrap());
-		}
-		
-		//페이징을 위해 게시글 수 paging 객체에 저장
-		//System.out.println("자취방 자랑글 개수: " + roomList.size());
-		mav.addObject("paging", paging);
-		mav.addObject("roomList", roomList);
-		mav.setViewName("board/RoomListPage");
+			int totalRoomCount = bdao.selectRoomTotalCount(paging);			
+			System.out.println("totalRoomCount: "+ totalRoomCount);
+			
+			paging.setTotalCount(totalRoomCount);
+			paging.calc();
+			
+			if(paging.getSearchVal() == "all") {
+				//정렬 기준이 없는 경우 최신순으로 정렬
+				paging.setSearchVal("bdcode");	
+			}
+			
+			//System.out.println("2번:"+paging);
+			
+			//페이징을 위한 글 목록 받기
+			
+			ArrayList<BoardDto> roomList = bdao.selectRoomList_paging(paging);
+			for (int i = 0; i < roomList.size(); i++) {
+				System.out.println(roomList.get(i).getBdcode()+" "+roomList.get(i).getBdhits()+" "+roomList.get(i).getBdreply()+" "+roomList.get(i).getBdrecommend()+" "+roomList.get(i).getBdscrap());
+			}
+			
+			if(paging.getSearchType().equals("bdtitle||bdcontents")) {
+				paging.setSearchType("bdtc");
+			}
+			
+			//mav에 object와 view 저장
+			mav.addObject("paging", paging);
+			mav.addObject("roomList", roomList);
+			mav.setViewName("board/RoomListPage");
 
-		return mav;
-	}
+			return mav;
+		}
+
 
 	// 공지글상세 페이지 이동
 	public ModelAndView selectNoticeBoardView(String nbcode) {
