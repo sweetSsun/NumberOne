@@ -8,43 +8,65 @@
 <title>1인자 - 마이페이지 커뮤니티</title>
 
 <script type="text/javascript">
-	function writeMemberBoard(nickname){
-		console.log("팝업 스트립트 확인!!!");
-		let wMemberPopupUrl = "loadToWriteMemberBoard?nickname"+nickname;
-		let wMemberPopupOption = "width=200, height=200, top=300px, left=500px, scrollbars=no, resizable=no";
 
-		$.ajax({
-			url: "selectWriteMemberInfo_ajax",
-			data: {"nickname":nickname},
-			async:false,
-			dataType:"json",
-			success:function(result){
-				console.log(nickname);
-				wMemberPopup = window.open(wMemberPopupUrl, wMemberPopupOption, nickname);
-	    
-				wMemberPopup.window.addEventListener("load", function(){
-					wMemberPopup.writeMemberBoard(result);
-			 	});
-			}
-		});
+   var wMemberPopup = "";
+   
+   function writeMemberBoard(nickname){
+      console.log("팝업 스트립트 확인!!!");
+      let wMemberPopupUrl = "loadToWriteMemberBoard?nickname="+nickname;
+      let wMemberPopupOption = "width=660, height=820, top=300px, left=500px, scrollbars=no, resizable=no";
+      
+      
+      $.ajax({
+         url: "selectWriteMemberInfo_ajax",
+         data: {"nickname":nickname},
+         async:false,
+         dataType:"json",
+         success:function(result){
+           //console.log(result);
+            //console.log(nickname);
+            wMemberPopup = window.open(wMemberPopupUrl, "", wMemberPopupOption, nickname);
+            
+            wMemberPopup.window.addEventListener("load", function(){
+               wMemberPopup.writeMemberBoard(result);
+             });
+            
+         }
+      });
+   }
+      
+   function boardreplySwitch(nickname, type){
+         console.log("팝업 작성글 버튼 클릭!!!");
+         
+         var popUpUrl = "";
+         if(type == 'b'){
+            popUpUrl = "selectWriteMemberInfo_ajax";
+         } else {
+            popUpUrl = "selectWriteMemberInfoReply_ajax";
+         }
 
-/* 		$.ajax({
-			url: "selectWriteMemberInfoReply_ajax",
-			data: {"nickname":nickname},
-			async:false,
-			dataType:"json",
-			success:function(result){
-				console.log(nickname);
-				wMemberPopup = window.open(wMemberPopupUrl, wMemberPopupOption, nickname);
-	    
-				wMemberPopup.window.addEventListener("load", function(){
-					wMemberPopup.writeMemberBoard(result);
-			 	});
-			}
-		}); */
-	}
-		
-	
+         $.ajax({
+            url: popUpUrl,   
+            data: {"nickname":nickname},
+            async:false,
+            dataType:"json",
+            success:function(result){
+               //console.log(result);
+               //console.log(nickname);
+                  
+               if(type == 'b'){
+                  wMemberPopup.writeMemberBoard(result);
+               } else {
+                  wMemberPopup.writeMemberReply(result);
+               }
+
+            }
+         });
+      
+   }
+   
+
+
 </script>
 
 

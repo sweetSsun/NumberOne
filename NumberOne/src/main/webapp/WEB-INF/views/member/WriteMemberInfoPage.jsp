@@ -282,7 +282,7 @@ text-align: right;
 
 <!-- 메뉴 시작 -->
 
-	<div class="row" style="width: 640px; margin-left: 11px;">
+	<div class="row" style="width: 640px; margin-left: 11px;" id="WmemberReply">
 		<div class="col-lg-6 col-md-6 col-sm-6" 
 		style="border: 1px solid #949494; border-radius: 20px 20px 0px 0px; height: 50px; border-bottom: 0px; background-color: #F2F2FF">
 			<input value="활 동 내 역" 
@@ -298,9 +298,12 @@ text-align: right;
 	<div class="row"  style="width: 650px; margin-left: 9px;">
 	<div class = "msgTextarea2" style="background-color: #F2F2FF; padding-left: 50px;">
 	<span style="width: 500px; text-align: center;">
-	<button>작성글</button> 
-	&nbsp;&nbsp;&nbsp; 
-	<button id="wboard_btn">작성댓글</button></span>
+
+	<button onclick="boardreplySwitch('b')" id="board"  style="border: 0px; background-color: #F2F2FF; ">작성글보기</button> 
+   	&nbsp;&nbsp;&nbsp; 
+   	<button id="reply" onclick="boardreplySwitch('r')" style="border: 0px; background-color: #F2F2FF;">작성댓글보기</button></span>	
+	
+	
 	</div>
 	<!-- 작성 글 -->
 				
@@ -320,45 +323,74 @@ text-align: right;
 
  console.log("되나??")
 
+function boardreplySwitch(type){
+   console.log(type+"버튼 클릭");
+   window.opener.boardreplySwitch('${memberInfo.mnickname }', type);
+} 
 
-function writeMemberBoard(boardList){
-	 
-	 var output = "";
-	 	
-	for (var i = 0; i < boardList.length; i++){
-		output+="<ul><li>"		
-		output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; color:black; \" >"+boardList[i].bdtitle+"</p>"
-		output+="</li></ul>	"		
-		output+="</div> "
 
-		$("#WmemberBoard").html(output);
-	}
+ function writeMemberBoard(boardList){
+	   console.log("작성글 출력 연결");
+	    var output = "";
+	       
+	   for (var i = 0; i < boardList.length; i++){
+	      output+="<ul><li>"      
+	      output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; color:black; \" >"+boardList[i].bdtitle+"</p>"
+	      output+="</li></ul>   "      
+	      output+="</div> "
+
+	   }
+	      $("#WmemberBoard").html(output);
+	   
+	 }   
 	
- }	
+ function writeMemberReply(ReplyList){ 
+     console.log("댓글 출력 연결")   ;
+     
+      var output = "";
+        for (var i = 0; i < ReplyList.length; i++){
+           output+="<ul><li>"      
+           output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; color:black; \" >"+ReplyList[i].rpcontents+"</p>"
+           output+="</li></ul>   "      
+           output+="</div> "
+           console.log(output);
+        }
+           $("#WmemberBoard").html(output);
+               
+      
+}; 
 
 
-
-/*   function writeMemberReply(ReplyList){ 
+/* 중고거래 부분
+  function writeMemberReply(ReplyList){ 
  
 	  $("#wboard_btn").on("click",function(){
 		
 		 var output = "";
 			for (var i = 0; i < ReplyList.length; i++){
+				output+="<div class=\"row\" style=\"width: 640px; margin-left: 11px;\">"		
+				output+="<div class=\"col-lg-6 col-md-6 col-sm-6\" style=\"border: 1px solid #949494; border-radius: 20px 20px 0px 0px; height: 50px; border-bottom: 0px; background-color: #F2F2FF\">"
+				output+="<input value=\"활 동 내 역\" style=\"width:280px; border: 0px; margin-top: 7px; text-align: center; font-weight: bold; outline:none;  background-color: #F2F2FF\" readonly=\"readonly\"></div>"		
+				output+="<div class=\"col-lg-6 col-md-6 col-sm-6\" style=\"border: 1px solid #949494; border-radius: 20px 20px 0px 0px; height: 50px; border-bottom: 0px; \">"
+				output+="<input value=\"판 매 내 역\" style=\"width:280px; border: 0px; margin-top: 7px; text-align: center; font-weight: bold; outline:none;\"  readonly=\"readonly\"></div>"		
+				output+="</div>"
+				output+="<div class = \"msgTextarea col-lg-12 col-md-6 col-sm-6\" style=\"border-top:0px! important ; padding-top: 20px; border: 1px solid #949494; background-color: #F2F2FF;\" >"		
 				output+="<ul><li>"		
-				output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; \" >"+ReplyList[i].rpcontents+"</p>"
+				output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; color:black; \" >"+boardList[i].bdtitle+"</p>"
 				output+="</li></ul>	"		
-				output+="</div> "
+				output+="</div>"				
+				output+="</div>"		
+								
 
-				$("#WmemberBoard").html(output);
+				$("#WmemberReply").html(output);
 			}
 					 
 		 
 	 } 
 		 
- }; */
-	 
-	 
- 
+ }; 
+	*/ 
+
 	
 	
 	
