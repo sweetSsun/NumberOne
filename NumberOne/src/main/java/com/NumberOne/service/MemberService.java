@@ -619,7 +619,7 @@ public class MemberService {
 	}
 
 
-	//회원정보 상세페이지 (미니브라우저)
+	//(삭제 예정)회원정보 상세페이지 (미니브라우저)
 	/*public ModelAndView selectWriteMemberInfo(String nickname) {
 			ModelAndView mav = new ModelAndView();
 			System.out.println("MemberService.selectWriteMemberInfo() 호출");
@@ -846,7 +846,7 @@ public class MemberService {
 			return boardList_gson;
 		}
 
-		//미니브라우저 작성댓 글 내역
+		//미니브라우저 작성 댓글 내역
 		public String selectWriteMemberInfoReply_ajax(String nickname) {
 			System.out.println("service.selectWriteMemberInfoReply_ajax호출");
 			ArrayList<ReplyDto> replyList = mdao.selectWriteMemberInfoReply_ajax(nickname);
@@ -858,16 +858,21 @@ public class MemberService {
 			return replyList_gson;
 		}
 
-		//프로필 부분 _ 왜 안돼/???
-/*		public ModelAndView selectWriteMemberInfo(String nickname) {
-			System.out.println("service.selectWriteMemberInfo()호출");
+		//미니브라우저 프로필 부분
+		public ModelAndView selectWriteMemberInfo_member(String nickname) {
+			ModelAndView mav = new ModelAndView();
+			System.out.println("MemberService.selectWriteMemberInfo_member() 호출");
+			System.out.println("service.nickname : " + nickname);
+			
+			//닉네임 회원정보
 			MemberDto memberInfo = mdao.selectWriteMemberInfo_member(nickname);
 			System.out.println(memberInfo);
 			
-			mav.addObject("memberInfo", memberInfo);	  
-			mav.setViewName("member/WriteMemberInfoPage"); 
+			mav.addObject("memberInfo", memberInfo);
+			mav.setViewName("member/WriteMemberInfoPage");
+			
 			return mav;
-		}*/
+		}
 
 
 
