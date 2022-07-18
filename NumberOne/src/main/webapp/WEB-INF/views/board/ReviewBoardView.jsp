@@ -182,15 +182,15 @@
 						<div class="col" class="mb-3" id="myform">
 							<fieldset>
 								<input type="radio" name="bdrate" value="5" id="rate1"><label
-									for="rate1">★</label>
+									for="rate1"  onclick="return(false);">★</label>
 								<input type="radio" name="bdrate" value="4" id="rate2"><label
-									for="rate2">★</label>
+									for="rate2"  onclick="return(false);">★</label>
 								<input type="radio" name="bdrate" value="3" id="rate3"><label
-									for="rate3">★</label>
+									for="rate3"  onclick="return(false);">★</label>
 								<input type="radio" name="bdrate" value="2" id="rate4"><label
-									for="rate4">★</label>
+									for="rate4"  onclick="return(false);">★</label>
 								<input type="radio" name="bdrate" value="1" id="rate5"><label
-									for="rate5">★</label>
+									for="rate5"  onclick="return(false);">★</label>
 							</fieldset>
 						</div>
 					</div>	
@@ -405,6 +405,10 @@
 </body>
 
 <script type="text/javascript">
+
+	var bdcategory = "${board.bdcategory}";
+	console.log("게시판 : " + bdcategory);
+	
 	var checkMsg = '${msg}';
 	if ( checkMsg.length > 0 ){
 		alert(checkMsg);
@@ -442,7 +446,7 @@
 <script type="text/javascript">
 	/* 글목록 버튼 클릭 시 */
 	function ReviewBoardList(){
-		var bdcategory = "후기";
+		
 		location.href="selectCategoryBoardList?searchVal="+bdcategory;
 	}
 </script>
@@ -639,7 +643,7 @@
 	function updateBoardDelete(){
 		/* 게시글 삭제(상태변경) */
 		//모달창에서 "네" 버튼 클릭 시 삭제
-		location.href="updateBoardDelete?bdcode="+bdcode+"&bdcategory="+'${board.bdcategory }';
+		location.href="updateBoardDelete?bdcode="+bdcode+"&bdcategory="+bdcategory;
 	}
 	
 </script>

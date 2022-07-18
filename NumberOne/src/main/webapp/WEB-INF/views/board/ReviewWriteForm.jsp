@@ -136,8 +136,11 @@
 				<div class="row">
 					<div class="col-6">
 						<span style="font-size:20px;">게시판</span>
-						<select name="bdcategory" class="bdCategoryList" required="required">
-							<option value="후기">후기</option>
+						<select name="bdcategory" onchange="bdcategorySel(this.value)" class="bdCategoryList" required="required">
+							<option value="자유">자유</option>
+							<option value="질문">질문</option>
+							<option value="정보">정보</option>
+							<option value="후기" selected>후기</option>
 						</select>
 					</div>
 					<div class="col-6">
@@ -174,7 +177,7 @@
 								for="rate3">★</label>
 							<input type="radio" name="bdrate" value="2" id="rate4"><label
 								for="rate4">★</label>
-							<input type="radio" name="bdrate" onclick="NoRate(this);" value="1" id="rate5"><label
+							<input type="radio" name="bdrate" value="1" id="rate5"><label
 								for="rate5">★</label>
 						</fieldset>
 					</div>
@@ -271,12 +274,19 @@
 			alert("제목을 입력하세요.");
 			return false;
 		}
+		/* 라디오 버튼 체크 확인 */
+		if( $(':radio[name="bdrate"]:checked').length <1 ){
+			alert("별점을 선택해주세요!");
+			
+			return false;
+		}
 		
 		if ( inputContents.length == 0 ){
 			alert("내용을 입력하세요.");
 			
 			return false;
 		}
+		
 	}
 </script>
 
@@ -294,5 +304,15 @@
 	}
 </script>
 
+<script type="text/javascript">
+	/* 자유,질문,후기 게시판 선택 시  */
+	function bdcategorySel(selVal){
+		if( selVal != "후기" ){
+			location.href="loadToBoardWrite";
+		}
+	}
+	
+	
+</script>
 
 </html>

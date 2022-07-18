@@ -1,7 +1,6 @@
 package com.NumberOne.dao;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
@@ -111,7 +110,8 @@ public interface MemberDao {
 	MemberDto selectWriteMemberInfo_member(String nickname);
 
 	//닉네임 별 작성 글 출력
-	@Select("SELECT BD.BDCODE, BD.BDTITLE, BD.BDCATEGORY FROM BOARDS BD, MEMBERS M WHERE BD.BDMID = M.MID AND M.MNICKNAME = #{nickname} ORDER BY BDCODE DESC")
+	@Select("SELECT BD.BDCODE, BD.BDTITLE, BD.BDCATEGORY, M.MNICKNAME AS BDNICKNAME, M.MMESSAGE AS BDMESSAGE , M.MPROFILE AS BDMPROFILE, M.MREGION AS BDREGION "
+			+ "FROM BOARDS BD, MEMBERS M WHERE BD.BDMID = M.MID AND M.MNICKNAME = #{nickname} ORDER BY BDCODE DESC")
 	ArrayList<BoardDto> selectWriteMemberInfo_ajax(String nickname);
 	
 	//카카오 회원가입 처리
@@ -129,7 +129,7 @@ public interface MemberDao {
 
 	//닉네임 별 작성 댓글 출력
 	@Select("SELECT RPBDCODE, RPCONTENTS FROM REPLY RP, MEMBERS M WHERE MID = RPMID AND MNICKNAME = #{nickname} ORDER BY RPBDCODE DESC")
-	ArrayList<ReplyDto> selectWriteMemberInfo_Reply(String nickname);
+	ArrayList<ReplyDto> selectWriteMemberInfoReply_ajax(String nickname);
 
 
 	

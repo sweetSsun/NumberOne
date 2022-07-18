@@ -233,7 +233,8 @@ public interface BoardDao {
 	//지역게시판 전체 글 조회
 	ArrayList<BoardDto> selectRegionBoardList_Paging(Paging paging);
 	
-	
+	//자랑방 검색한 글 개수 조회
+	int selectSearchRoomCount(Paging paging);
 
 	
 	

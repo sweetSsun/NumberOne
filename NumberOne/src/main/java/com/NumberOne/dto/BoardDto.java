@@ -52,6 +52,10 @@ public class BoardDto {
 	//후기글 별점 저장
 	private int bdrate;			//별점수
 	
+	//닉네임 별 작성 글 출력
+	private String bdmessage; // 상태메세지
+	private String bdregion; // 지역
+	
 	public String getBdcode() {
 		return bdcode;
 	}
