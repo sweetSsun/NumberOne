@@ -148,8 +148,8 @@
 				</div>
 				<div class="row mt-4">
 					<!-- 파일선택 -->
-					<div id="image_container"></div>
 					<input id="bdImg" type="file" name="bdimgfile" accept="image/*" onchange="setThumbnail(event);" >
+					<div id="image_container" style="width:100px; height:100px; object-fit: cover;"></div>
 				</div>
 				<div class="row mt-4">
 					<div class="col btn-wrapper">

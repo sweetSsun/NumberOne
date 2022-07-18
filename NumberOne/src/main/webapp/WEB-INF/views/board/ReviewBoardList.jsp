@@ -304,13 +304,6 @@
 </body>
 
 <script type="text/javascript">
-	/* 별점 출력 */
-	var reviewList = "${boardList}";
-	
-	
-</script>
-
-<script type="text/javascript">
 	var actionForm = $("#actionForm");
 	// $(".paginate_button a").click(function(e){ // click 이벤트는 동적 처리 불가능
 	$(document).on("click", ".paginate_button a", function(e){ // on 이벤트로 변경

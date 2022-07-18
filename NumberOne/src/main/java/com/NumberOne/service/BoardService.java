@@ -300,9 +300,14 @@ public class BoardService {
 		   paging.calc(); // 페이지 처리 계산 실행 
 		   System.out.println(paging);
 		   
+		   
+		   //고정공지
+		   ArrayList<NoticeDto> noticeList_fix = bdao.selectNoticeList();
+		   
 		   ArrayList<NoticeDto> noticeList = bdao.selectNoticeBoardList(paging);
 		   //System.out.println(noticeList);
 		   
+		   mav.addObject("noticeList_fix", noticeList_fix);
 		   mav.addObject("noticeList", noticeList);
 		   mav.addObject("paging", paging);
 		   mav.setViewName("board/NoticeBoardList");

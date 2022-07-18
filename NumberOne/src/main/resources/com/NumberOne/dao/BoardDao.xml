@@ -189,9 +189,6 @@
 				</otherwise>
  			</choose>
  		</if>
-		
-		
-		
 	</select>
 	
  	 <select id="selectRoomList" resultType="com.NumberOne.dto.BoardDto">
