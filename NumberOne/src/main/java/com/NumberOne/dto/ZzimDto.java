@@ -59,11 +59,19 @@ public class ZzimDto {
 	public void setUbsellbuy(String ubsellbuy) {
 		this.ubsellbuy = ubsellbuy;
 	}
+	public String getUbstate() {
+		return ubstate;
+	}
+	public void setUbstate(String ubstate) {
+		this.ubstate = ubstate;
+	}
 	@Override
 	public String toString() {
 		return "ZzimDto [zzmid=" + zzmid + ", zzubcode=" + zzubcode + ", zzim_Check=" + zzim_Check + ", ubtitle="
-				+ ubtitle + ", mnickname=" + mnickname + ", ubdate=" + ubdate + ", ubsellbuy=" + ubsellbuy + "]";
-	}	
+				+ ubtitle + ", mnickname=" + mnickname + ", ubdate=" + ubdate + ", ubsellbuy=" + ubsellbuy
+				+ ", ubstate=" + ubstate + "]";
+	}
+
 	
 	
 	
