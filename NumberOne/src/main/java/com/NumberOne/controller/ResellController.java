@@ -170,6 +170,7 @@ System.out.println(ubDto);
 
 		return null;
 	}
+	
 
 	/* 게시글 신고 */
 	// 게시글 신고 유무 확인
