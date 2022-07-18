@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.NumberOne.dto.ChatDto;
+import com.NumberOne.dto.ChatMessageDto;
 import com.NumberOne.dto.GoodsDto;
 import com.NumberOne.dto.Paging;
 import com.NumberOne.dto.UsedBoardDto;
@@ -152,23 +152,6 @@ System.out.println(ubDto);
 		mav = rsvc.selectResellPageList(paging);
 
 		return mav;
-	}
-
-	// 채팅창에 상품명 넘기기
-	@RequestMapping(value = "/insertResellChat")
-	public ModelAndView insertResellChat(String[] gd_names, ChatDto chat, String gdtitle) {
-		System.out.println("insertResellChat 호출");
-		ModelAndView mav = new ModelAndView();
-		
-		for (String gd : gd_names) {
-			System.out.println(gd);
-		}
-		System.out.println(chat);
-		System.out.println(gdtitle);
-		
-		mav = rsvc.insertResellChat(gd_names, chat, gdtitle);
-
-		return null;
 	}
 
 	/* 게시글 신고 */

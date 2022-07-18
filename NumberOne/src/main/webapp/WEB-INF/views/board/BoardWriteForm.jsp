@@ -106,7 +106,7 @@
 				<div class="row">
 					<div class="col-6">
 						<span style="font-size:20px;">게시판</span><span class="text-danger">*</span>
-						<select name="bdcategory" class="bdCategoryList" required="required">
+						<select name="bdcategory" onchange="bdcategorySel(this.value)" class="bdCategoryList" required="required">
 							<c:choose>
 								<c:when test="${bdcategory eq '' }">
 									<option value="" disabled selected class="selectPlaceHolder">필수</option>
@@ -148,8 +148,8 @@
 				</div>
 				<div class="row mt-4">
 					<!-- 파일선택 -->
-					<div id="image_container"></div>
 					<input id="bdImg" type="file" name="bdimgfile" accept="image/*" onchange="setThumbnail(event);" >
+					<div id="image_container" style="width:100px; height:100px; object-fit: cover;"></div>
 				</div>
 				<div class="row mt-4">
 					<div class="col btn-wrapper">
@@ -257,6 +257,15 @@
 			document.querySelector("div#image_container").appendChild(img);
 		};
 		 reader.readAsDataURL(event.target.files[0]);
+	}
+</script>
+
+<script type="text/javascript">
+	/* 후기 카테 클릭 시 후기로 이동  */
+	function bdcategorySel(selVal){
+		if ( selVal == "후기" ){
+			location.href="loadToWriteReview";
+		}
 	}
 </script>
 

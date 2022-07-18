@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<%@ include file="/resources/css/BarCss.jsp" %>
+<%@ include file="/resources/css/BarCss.jsp"%>
 <style type="text/css">
 	#board_column{
 		border-bottom: solid gray 3px;
@@ -370,6 +370,7 @@ input{
   color: white ! important;
 }
 
+.bigger { font-size : 2rem;}
 </style>
 </head>
 <body>
@@ -401,26 +402,25 @@ input{
 		<!-- 본문 -->
 		<form action="selectRoomList" method="get" id="actionForm">
 			<div class="container">
-				<div class="row" style="margin:auto;">
-					<h2 class="text-center" style="font-size:2rem">자랑방 글목록 페이지 : RoomListPage.jsp</h2>
+				<div style="padding-left:auto; padding-right:auto;">
+					<center><span style="font-size:3.5rem; cursor:pointer; margin-left:auto; margin-right:auto;" onclick="location.href='selectRoomList'">자랑방 글목록 페이지 : RoomListPage.jsp</span></center>
 				</div>
 				
-					<input type="hidden" name="bdcategory" value="" >
 					<div class="row ">
 						<!-- 검색기능 -->
 						<div class="col-5" align="right">
-								<select name="searchType" class="searchType">
+								<select name="searchType" class="searchType bigger" id="searchTypeSel">
 									<option value="bdtitle">제목</option>
 									<option value="bdcontents">내용</option>
-									<option value="bdtitlecontents">제목+내용</option>
+									<option value="bdtc">제목+내용</option>
 									<option value="bdnickname">작성자</option>
 								</select>
 						</div>
 						<div class="col-7 ">
-							<input type="text" name="searchText" placeholder="검색어를 입력하세요" id="inputSearchText">
-							<button class="btn btn-sm btn-secondary">검색</button>
+							<input type="text" class="bigger" name="keyword" placeholder="검색어를 입력하세요" id="searchText">
+							<button class="btn btn-secondary bigger">검색</button>
 							<c:if test="${sessionScope.loginId != null}">
-								<button type="button" class="btn btn-primary btm-sm" style="padding: .25rem .5rem;" onclick="location.href='${pageContext.request.contextPath }/loadToWriteRoom'">글쓰기</button>
+								<button type="button" class="btn btn-primary bigger" style="padding: .25rem .5rem;" onclick="location.href='${pageContext.request.contextPath }/loadToWriteRoom'">글쓰기</button>
 							</c:if>
 						</div>
 					</div>		
@@ -429,11 +429,11 @@ input{
 			 
 			<div class="row" style="margin-top: 20px; margin-left:8%;">
 				<div class="col">
-					<select class="roomOrderBy" onchange="roomOrderBy(this.value)" style="border:1px #D2D2D2 solid; border-radius:3px;">
-						<option class="roomOrderBy" value="bddate">최신순</option>
-						<option class="roomOrderBy" value="bdhits">조회수순</option>
-						<option class="roomOrderBy" value="bdrecommend">좋아요순</option>
-						<option class="roomOrderBy" value="bdreply">댓글순</option>
+					<select class="roomOrderBy bigger" onchange="roomOrderBy(this.value)" name="searchVal" id="orderBySel" style="border:1px #D2D2D2 solid; border-radius:3px;">
+						<option class="roomOrderBy bigger" value="bdcode">최신순</option>
+						<option class="roomOrderBy bigger" value="bdhits">조회수순</option>
+						<option class="roomOrderBy bigger" value="bdrecommend">좋아요순</option>
+						<option class="roomOrderBy bigger" value="bdreply">댓글순</option>
 					</select>
 				</div>
 			</div>
@@ -475,7 +475,7 @@ input{
 			 -->
 				
 				<!-- 자취방 자랑글 목록 -->
-				<div class="gallerylist">
+				<div class="gallerylist" id="galleryList">
 					<ul>
 						<c:forEach items="${roomList}" var="room">
 							<li>
@@ -587,8 +587,26 @@ input{
  			</div>
  			<div id="replyWriteForm">
  				<!-- 댓글 입력 영역 -->
- 				<input id="inputReply" type="text" placeholder="댓글 달기..." onkeydown="replyEnter(event)">
- 				<button onclick='replyResister()'>게시</button>
+ 				<c:choose>
+ 					<c:when test="${sessionScope.loginId != null }">
+		 				<input id="inputReply" type="text" placeholder="댓글 달기..." onkeydown="replyEnter(event)">
+		 				<button onclick='replyResister()'>게시</button>
+ 					</c:when>
+ 					<c:otherwise>
+		 				<input id="inputReply" type="text" readonly="readonly" placeholder="로그인 후 이용 가능합니다">
+		 				<button onclick='replyResister()' disabled="disabled">게시</button>
+ 					</c:otherwise>
+ 				</c:choose>	
+ 				<!-- 
+ 				<c:choose>
+ 					<c:when test="${loginId != null }">
+		 				<button onclick='replyResister()'>게시</button>
+ 					</c:when>
+ 					<c:otherwise>
+		 				<button onclick='replyResister()' disabled="disabled">게시</button>
+ 					</c:otherwise>
+ 				</c:choose>	
+ 				 -->
  			</div>		
   		</div>	
   </div>
@@ -625,10 +643,41 @@ input{
 			console.log($("#pageNum").val());
 			actionForm.submit();
 		});
+		
+		// 선택한 orderBy 유지하기
+		console.log('${paging.searchVal}');
+		if('${paging.searchVal}'.length != 0){
+			var searchValOption = $("#orderBySel option");
+			for (var i = 0; i < searchValOption.length; i++){
+				if (searchValOption.eq(i).val() == '${paging.searchVal}'){
+					searchValOption.eq(i).attr("selected", "selected");
+				}
+			}
+		}
+		
+		//선택한 searchType 유지하기
+		console.log('${paging.searchType}');
+		var searchTypeOption = $("#searchTypeSel option");
+		if ('${paging.searchType}'.length > 0) {
+			for (var i = 0; i < searchTypeOption.length; i++){
+				if (searchTypeOption.eq(i).val() == '${paging.searchType}'){
+					searchTypeOption.eq(i).attr("selected", "selected");
+				}
+			}
+		}
+		
+		//검색어 유지하기
+		console.log('${paging.searchType}');
+		if('${paging.searchType}'.length != 0){
+			$("#searchText").val('${paging.keyword}');
+		}
+	
 	});
 
 	
-	// 정렬 select하면 ajax로 글목록 받고 출력을 바꿔주는 함수
+	
+	
+	// 정렬 select하면 ajax로 글목록 받고 페이지 다시 로드(ajax 실패)
 	function roomOrderBy(orderBy){
 		console.log("roomOrderBy 실행");
 		console.log("정렬 선택 : " + orderBy);
@@ -636,49 +685,19 @@ input{
 		var searchText = $("#searchText").val();
 		console.log(searchType);
 		console.log(searchText);
+		location.href="selectRoomList?searchVal="+orderBy+"&searchType="+searchType+"&keyword="+searchText;
+		
+		
+		/*
 		$.ajax({
 			type: "get",
 			data: {"searchVal":orderBy, "searchType":searchType, "keyword":searchText, "ajaxCheck":"list"},
 			url: "selectRoomList_ajax",
 			dataType: "json",
-			success: function(result){
-				// 정렬 목록 출력
-				var output = "";
-				console.log(result);					
-				for (var i = 0; i < result.length; i++){
-					output += "<tr style='border-bottom: solid #E0E0E0 1px;'>";
-					output += "<td class='text-center overflow'>" + result[i].bdcode + "</td>";
-					output += "<td class='category text-center'>" + result[i].bdcategory + "</td>";
-					output += "<td class='overflow'>"
-					if(result[i].bdcategory == '자랑'){
-						output +="<a href='selectRoomList?bdcode=" + result[i].bdcode + "&jsp=view'>"
-								+"<span class='overflow'>" + result[i].bdtitle + "</span>"
-								+"<span class='fw-bold' style='font-size:15px; color:#00bcd4;'>&nbsp;" + result[i].bdrpcount + "</span>"			
-								+"</a>";
-					} else {
-						output +="<a href='admin_selectBoardView${paging.makeQueryPage(paging.page)}&codeIdx=" + result[i].bdcode + "'>"
-								//+"&page=1&perPageNum=10&searchVal=" + searchVal + "&searchType=" + searchType + "&keyword=" + searchText + "'>"
-								+"<span class='overflow'>" + result[i].bdtitle + "</span>"
-								+"<span class='fw-bold' style='font-size:15px; color:#00bcd4;'>&nbsp;" + result[i].bdrpcount + "</span>"			
-								+"</a>";
-					}
-					output += "</td>";
-					output += "<td class='text-center overflow'>" + result[i].bdnickname + "</td>";
-					output += "<td class='text-center overflow'>" + result[i].bddate + "</td>";
-					output += "<td class='text-center'>" + result[i].bdhits + "</td>";
-					output += "<td class='text-center'>" + result[i].bdrccount + "</td>";
-					output += "<td class='text-center'>" + result[i].bdwarning + "</td>";
-					output += "<td class='text-center'>"
-					if (result[i].bdstate == 1){
-						output += "<button class='btn btn-sm btn-warning' type='button' onclick='showBdstateModal(this, \""+result[i].bdcode+"\")'>경고</button>";
-					} else {
-						output += "<button class='btn btn-sm btn-danger' type='button' onclick='showBdstateModal(this,\""+result[i].bdcode+"\")'>정지</button>";
-					}
-					output += "</td>";
-					output += "</tr>";
-				}
-				$("#bdListTbody").html(output);
+			success: function(roomList){
+				roomListPrint(roomList);
 			}
+
 		});
 		// 페이지에서 출력할 페이지번호 받아오기
 		$.ajax({
@@ -713,9 +732,50 @@ input{
 			error: function(){
 				alert("페이징넘버링 실패");
 			}
-		})
+		})*/
 		
 	}	
+
+	/*
+	function roomListPrint(roomList){
+		console.log("roomList 출력 요청");
+		var roomListOutput = "<ul>";
+		for (var i = 0; i < roomList.length; i++) {
+			roomListOutput += "<li>";	
+			roomListOutput += "<a onclick='roomView_ajax(\""+roomList[i].bdcode+"\")'>";	
+			roomListOutput += "<div class='screen'>";	
+			roomListOutput += "<div class='top'>"+roomList[i].bdtitle+"</div>";	
+			roomListOutput += "<div class='bottom'>"+roomList[i].bddate+"</div>";
+			//자랑글 메인이미지
+			roomListOutput += "<img class='roomMainImg' alt='mainImg' src='${pageContext.request.contextPath }/resources/img/room/"+roomList[i].bdimg+"'>";	
+			roomListOutput += "<div class=info'>";	
+			//닉네임
+			roomListOutput += roomList[i].bdnickname;	
+			//조회수
+			roomListOutput += "<i class='fa-solid fa-eye'></i>";	
+			roomListOutput += "<span id='"+roomList[i].bdcode+"_bdhits'>";	
+			if(${room.bdhits != 0}) {
+				roomListOutput += roomList[i].bdhits;
+			} else {
+				roomListOutput += "&nbsp;&nbsp";
+			}
+			roomListOutput += "</span>";
+			//좋아요수
+			roomListOutput += "<i class='fa-solid fa-heart'></i> <span id='"+roomList[i].bdcode+"_bdlikes'>"+roomList[i].bdrecommend+"&nbsp;</span>";	
+			//댓글수
+			roomListOutput += "<i class='fa-solid fa-comment'></i> <span id='"+roomList[i].bdcode+"_bdreplies">+roomList[i].bdreply+"&nbsp;</span>";	
+			//스크랩수
+			roomListOutput += "<i class='fa-solid fa-star'></i> <span id='"+roomList[i].bdcode+"_bdscraps">+roomList[i].bdscrap+"&nbsp;</span>";	
+			roomListOutput += "</div";
+			roomListOutput += "</div>";
+			roomListOutput += "</a>";
+			roomListOutput += "</li>";
+		}
+		
+		roomListOutput += "</ul>";
+		$("#galleryList").html(roomListOutput);
+	}
+	*/
 </script>
 <script type="text/javascript">
 //관리자 스크립트
@@ -787,6 +847,7 @@ function adminRpBan(){
 	var nowBdcode;
 	var nowRpcode;
 	var nowBdmid;
+	var nowRpmid;
 	var nowWb = "";
 	var modal = document.getElementById("myModal");
 	var span = document.getElementsByClassName("close")[0];
@@ -802,132 +863,139 @@ function adminRpBan(){
 			dataType : "json",
 			async : false,
 			success: function(roomView){
-				//console.log(roomView);
-				//글작성자 아이디 필드에 저장
-				nowBdmid = roomView.bdmid;
-				//글 이미지
-				var imgHtml = "";
-				
-				if(roomView.bdimg=='noimg'){
-					console.log('noimg');
-					imgHtml += "<img alt='NumberOneLogo' style='width:800px; height:600px' src='${pageContext.request.contextPath }/resources/img/logo_grey.jpg'>";
-				} else {
-					console.log(roomView.bddetailimg);
-					var imgs = roomView.bddetailimg.split("___");
-					imgs.unshift(roomView.bdimg);
-					imgs.pop();
-					var numOfImgs = parseInt(imgs.length);
-					console.log("이미지 개수: "+numOfImgs);
-					
-					imgHtml += "<div id='myCarousel' class='carousel slide' data-ride='carousel' style='width:100%; height:100%;'>";		
-
-					//indicators
-					imgHtml += "<ol class='carousel-indicators'>";
-					imgHtml += "<li data-target='#myCarousel' data-slide-to='0' class='active'></li>";
-					for(var i=1; i<numOfImgs; i++){
-						imgHtml += "<li data-target='#myCarousel' data-slide-to='"+i+"'></li>";
-					}
-					imgHtml += "</ol>";
-					
-					//wrapper for slide
-					imgHtml += "<div class='carousel-inner'>";
-					imgHtml += "<div class='item active'>";
-					imgHtml += "<img style='width:800px; height:600px;' class='viewImgs' src='${pageContext.request.contextPath }/resources/img/room/"+imgs[0]+"'></img>";		
-					imgHtml += "</div>";
-					for(var j=1; j<numOfImgs; j++){
-						imgHtml += "<div class='item'>";
-						imgHtml += "<img class='viewImgs' style='width:800px; height:600px;' src='${pageContext.request.contextPath }/resources/img/room/"+imgs[j]+"' ></img>";		
-						imgHtml += "</div>";
-					}
-					imgHtml += "</div>";
-					
-					//left and right controls
-					imgHtml += "<a class='left carousel-control' href='#myCarousel' data-slide='prev'>";	
-					imgHtml += "<span class='glyphicon glyphicon-chevron-left'></span>";
-					imgHtml += "<span class='sr-only'>Previous</span>"
-					imgHtml += "</a>";
-					imgHtml += "<a class='right carousel-control' href='#myCarousel' data-slide='next'>";	
-					imgHtml += "<span class='glyphicon glyphicon-chevron-right'></span>";
-					imgHtml += "<span class='sr-only'>Next</span>"
-					imgHtml += "</a>";
-					imgHtml += "</div>";
-				
-				} 
-				
-				$("#roomimg").html(imgHtml);
-				//작성자 프로필	
-				var mprofileOutput = "<img class='product-img' style='width:30px; height:30px; border-radius:50%;'";
-				if(roomView.bdmprofile != 'nomprofile'){
-					if(roomView.bdmstate == 1){
-						//일반 로그인
-						mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+roomView.bdmprofile+"'>";
-					} else if(roomView.bdmstate == 9) {
-						//카카오 로그인
-						mprofileOutput += "src='"+roomView.bdmprofile+"'>";							
-					}
-				} else {
-					mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png'>"; 
-				}
-				mprofileOutput += "</img>";
-				$("#roomMprofile").html(mprofileOutput);
-				mnicknameOutput = "<div id='mnickname' style='font-size:22px; margin-left:5px; padding-bottom:2px; color: black;'>"+roomView.bdnickname;
-				//메뉴 출력 할 수 있는 ...
-				//로그인 아이디에 따라 메뉴는 다르게 출력됨 
-				mnicknameOutput += "<span  style='position:absolute; right:20px; cursor:pointer;' onclick='menuModal(\""+nowBdcode+"\", \"${sessionScope.loginId}\")' style='font-size:15px; color:black; padding-rignt:10px;'>&#8943;</span>";
-				mnicknameOutput += "</div>";
-				$("#roomMnickname").html(mnicknameOutput);
-
-				//글 내용
-				$("#roomContents").html("<textarea class='scroll' readonly style='font-size:15px; resize:none;'>"+roomView.bdcontents+"</textarea>");
-				
-				//추천, 스크랩, 신고 출력
-				var roomInfoOutput = ""
-				//추천
-				if(roomView.rchistory != "n"){
-					console.log("추천 기록 있음")
-					roomInfoOutput += "<a onclick='log(\"rchistory\")' style='cursor:pointer;'><span id='"+roomView.bdcode+"_rchistory'><i class='fa-solid fa-heart'></i></span></a> ";
-				} else {					
-					console.log("추천 기록 없음")
-					roomInfoOutput += "<a onclick='log(\"rchistory\")' style='cursor:pointer;'><span id='"+roomView.bdcode+"_rchistory'><i class='fa-regular fa-heart'></i></span></a> ";
-				}
-				//스크랩
-				if(roomView.schistory != "n"){
-					console.log("스크랩 기록 있음")
-					roomInfoOutput += "<a onclick='log(\"schistory\")' style='cursor:pointer;'><span id='"+roomView.bdcode+"_schistory'><i class='fa-solid fa-star' style=''></i></span></a> ";
-				} else {					
-					console.log("스크랩 기록 없음")
-					roomInfoOutput += "<a onclick='log(\"schistory\")' style='cursor:pointer;'><span id='"+roomView.bdcode+"_schistory'><i class='fa-regular fa-star'></i></span></a> ";
-				}
-				//신고
-				roomInfoOutput += "<span id='"+roomView.bdcode+"_wbhistory'>";
-				if(roomView.wbhistory != "n"){
-					console.log("신고 기록 있음")
-					roomInfoOutput += "<i class='fa-solid fa-land-mine-on' style='position:absolute; right:0;'></i>";
-					nowWb = "y";
-				}	
-				roomInfoOutput += "</span>";
-				//console.log(roomInfoOutput);
-				$("#roomInfo").html(roomInfoOutput);
-	
-				
-				//좋아요수, 날짜 출력
-				var likesDateOutput = "<span style='color:black; font-size:18px; font-weight:bold;'>좋아요&nbsp;<span id='likesNum'>"+roomView.bdrecommend+"</span>개</span><br>";
-				likesDateOutput += "<span style='color:grey; font-size:15px;'>"+roomView.bddate+"</span>"
-				$("#likes_date").html(likesDateOutput);
-				
-				//댓글 출력
-				replyPrint('top');
-				
-				//bdhits 1 추가
-				logUpdate('bdhits', 'up');
-				
-				$("#myModal").css("display", "block") ;
-				//modal.style.display = "block";
-				//modalImg.src = this.src;
-				//captionText.innerHTML = this.alt;
+				roomViewPrint(roomView);
 			}
 		});
 	}	
+	
+	//자랑글 상세 출력
+	function roomViewPrint(roomView){
+		//글작성자 아이디 필드에 저장
+		nowBdmid = roomView.bdmid;
+		//글 이미지
+		var imgHtml = "";
+		
+		if(roomView.bdimg=='noimg'){
+			console.log('noimg');
+			imgHtml += "<img alt='NumberOneLogo' style='width:800px; height:600px' src='${pageContext.request.contextPath }/resources/img/logo_grey.jpg'>";
+		} else {
+			console.log(roomView.bddetailimg);
+			var imgs = roomView.bddetailimg.split("___");
+			imgs.unshift(roomView.bdimg);
+			imgs.pop();
+			var numOfImgs = parseInt(imgs.length);
+			console.log("이미지 개수: "+numOfImgs);
+			
+			imgHtml += "<div id='myCarousel' class='carousel slide' data-ride='carousel' style='width:100%; height:100%;'>";		
+
+			//indicators
+			imgHtml += "<ol class='carousel-indicators'>";
+			imgHtml += "<li data-target='#myCarousel' data-slide-to='0' class='active'></li>";
+			for(var i=1; i<numOfImgs; i++){
+				imgHtml += "<li data-target='#myCarousel' data-slide-to='"+i+"'></li>";
+			}
+			imgHtml += "</ol>";
+			
+			//wrapper for slide
+			imgHtml += "<div class='carousel-inner'>";
+			imgHtml += "<div class='item active'>";
+			imgHtml += "<img style='width:800px; height:600px;' class='viewImgs' src='${pageContext.request.contextPath }/resources/img/room/"+imgs[0]+"'></img>";		
+			imgHtml += "</div>";
+			for(var j=1; j<numOfImgs; j++){
+				imgHtml += "<div class='item'>";
+				imgHtml += "<img class='viewImgs' style='width:800px; height:600px;' src='${pageContext.request.contextPath }/resources/img/room/"+imgs[j]+"' ></img>";		
+				imgHtml += "</div>";
+			}
+			imgHtml += "</div>";
+			
+			//left and right controls
+			imgHtml += "<a class='left carousel-control' href='#myCarousel' data-slide='prev'>";	
+			imgHtml += "<span class='glyphicon glyphicon-chevron-left'></span>";
+			imgHtml += "<span class='sr-only'>Previous</span>"
+			imgHtml += "</a>";
+			imgHtml += "<a class='right carousel-control' href='#myCarousel' data-slide='next'>";	
+			imgHtml += "<span class='glyphicon glyphicon-chevron-right'></span>";
+			imgHtml += "<span class='sr-only'>Next</span>"
+			imgHtml += "</a>";
+			imgHtml += "</div>";
+		
+		} 
+		
+		$("#roomimg").html(imgHtml);
+		//작성자 프로필	
+		var mprofileOutput = "<img class='product-img' style='width:30px; height:30px; border-radius:50%;'";
+		if(roomView.bdmprofile != 'nomprofile'){
+			console.log("작성자 프로필 있음");
+			if(roomView.bdmid.substring(0,1) == "@"){
+				//카카오 로그인
+				console.log("작성자 카카오 회원 사진 출력")
+				mprofileOutput += "src='"+roomView.bdmprofile+"'>";							
+			} else {
+				//일반 로그인
+				console.log("작성자 일반 회원 사진 출력")
+				mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+roomView.bdmprofile+"'>";
+			}
+		} else {
+			mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png'>"; 
+		}
+		mprofileOutput += "</img>";
+		$("#roomMprofile").html(mprofileOutput);
+		mnicknameOutput = "<div id='mnickname' style='font-size:22px; margin-left:5px; padding-bottom:2px; color: black;'>"+roomView.bdnickname;
+		//메뉴 출력 할 수 있는 ...
+		//로그인 아이디에 따라 메뉴는 다르게 출력됨 
+		mnicknameOutput += "<span  style='position:absolute; right:20px; cursor:pointer;' onclick='menuModal(\""+roomView.bdcode+"\", \""+roomView.bdmid+"\")' style='font-size:15px; color:black; padding-rignt:10px;'>&#8943;</span>";
+		mnicknameOutput += "</div>";
+		$("#roomMnickname").html(mnicknameOutput);
+
+		//글 내용
+		$("#roomContents").html("<textarea class='scroll' readonly style='font-size:15px; resize:none;'>"+roomView.bdcontents+"</textarea>");
+		
+		//추천, 스크랩, 신고 출력
+		var roomInfoOutput = ""
+		//추천
+		if(roomView.rchistory != "n"){
+			console.log("추천 기록 있음")
+			roomInfoOutput += "<a onclick='log(\"rchistory\")' style='cursor:pointer;'><span id='"+roomView.bdcode+"_rchistory'><i class='fa-solid fa-heart'></i></span></a> ";
+		} else {					
+			console.log("추천 기록 없음")
+			roomInfoOutput += "<a onclick='log(\"rchistory\")' style='cursor:pointer;'><span id='"+roomView.bdcode+"_rchistory'><i class='fa-regular fa-heart'></i></span></a> ";
+		}
+		//스크랩
+		if(roomView.schistory != "n"){
+			console.log("스크랩 기록 있음")
+			roomInfoOutput += "<a onclick='log(\"schistory\")' style='cursor:pointer;'><span id='"+roomView.bdcode+"_schistory'><i class='fa-solid fa-star' style=''></i></span></a> ";
+		} else {					
+			console.log("스크랩 기록 없음")
+			roomInfoOutput += "<a onclick='log(\"schistory\")' style='cursor:pointer;'><span id='"+roomView.bdcode+"_schistory'><i class='fa-regular fa-star'></i></span></a> ";
+		}
+		//신고
+		roomInfoOutput += "<span id='"+roomView.bdcode+"_wbhistory'>";
+		if(roomView.wbhistory != "n"){
+			console.log("신고 기록 있음")
+			roomInfoOutput += "<i class='fa-solid fa-land-mine-on' style='position:absolute; right:0;'></i>";
+			nowWb = "y";
+		}	
+		roomInfoOutput += "</span>";
+		//console.log(roomInfoOutput);
+		$("#roomInfo").html(roomInfoOutput);
+
+		
+		//좋아요수, 날짜 출력
+		var likesDateOutput = "<span style='color:black; font-size:18px; font-weight:bold;'>좋아요&nbsp;<span id='likesNum'>"+roomView.bdrecommend+"</span>개</span><br>";
+		likesDateOutput += "<span style='color:grey; font-size:15px;'>"+roomView.bddate+"</span>"
+		$("#likes_date").html(likesDateOutput);
+		
+		//댓글 출력
+		replyPrint('top');
+		
+		//bdhits 1 추가
+		logUpdate('bdhits', 'up');
+		
+		$("#myModal").css("display", "block") ;
+		//modal.style.display = "block";
+		//modalImg.src = this.src;
+		//captionText.innerHTML = this.alt;
+	}
 	
 	//댓글 출력
 	function replyPrint(scroll){
@@ -940,40 +1008,40 @@ function adminRpBan(){
 			success: function(replys){
 				//console.log(replys)
 				var replyOutput ="";
-				for(var i=0; i<replys.length; i++){			
+				for(var i=0; i<replys.length; i++){
 					//console.log(replys[i]);
 					replyOutput += "<div id='reply_"+replys[i].rpcode+"' style='width:100%; margin-bottom:3px;' class='row' onmouseover='toggleReplyMenu(\""+replys[i].rpcode+"\", \"show\")' onmouseout='toggleReplyMenu(\""+replys[i].rpcode+"\", \"hide\")'>";
 					//댓글 작성자 프로필 이미지
 					replyOutput += "<div style='width:30px;'>";
-					replyOutput += "<img class='product-img' style='width:20px; height:20px; border-radius:50%;'";
+					replyOutput += "<img class='product-img' style='width:20px; height:20px; border-radius:50%; margin-top:10px;'";
 					if(replys[i].rpprofile != 'nomprofile'){
 						console.log("프로필 있음")
-						if(replys[i].rpmstate == 1){
+						if(replys[i].rpmid.substring(0, 1) == "@"){
+							//카카오 로그인
+							replyOutput += "src='"+replys[i].rpprofile+"'>";							
+						} else {
 							//일반 로그인
 							replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+replys[i].rpprofile+"'>";
-						} else if(replys[i].rpmstate == 9) {
-							//카카오 로그인
-							console.log(replys[i].rpprofile);
-							replyOutput += "src='"+replys[i].rpprofile+"'>";							
 						}
 					} else {
 						replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png'>"; 
 					}
 					replyOutput += "</img></div>";
 					//댓글 내용 부분 시작
-					replyOutput += "<div id='replyContents_"+replys[i].rpcode+"' style='width:320px; font-size:15px; word-break:break-word;'>"; 
+					replyOutput += "<div id='replyContents_"+replys[i].rpcode+"' style='width:320px; font-size:15px; padding-top:0px; word-break:break-word;'>"; 
 					//닉네임(진하게)
-					replyOutput += "<span style='font-weight:600;'>"+replys[i].rpnickname+"&nbsp;&nbsp;</span>";
+					replyOutput += "<span style='font-weight:600; margin:0px;'>"+replys[i].rpnickname+"&nbsp;&nbsp;</span>";
 					//내용 
-					replyOutput += replys[i].rpcontents;
-					
+					replyOutput += replys[i].rpcontents+"<br>";
+					//댓글 작성 시간
+					replyOutput += "<span style='font-size:10px; color:grey; margin:0px;'>"+replys[i].rpdate+"</span>";
 					//댓글 작성자와 관리자에게만 보이는 ...
 					if(replys[i].rpmid == '${sessionScope.loginId}'){
 						console.log("댓글 작성자");
-						replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \"${sessionScope.loginId}\")' style='font-size:15px;'>&#8943;</span>"; 
+						replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \""+replys[i].rpmid+"\")' style='font-size:15px;'>&#8943;</span>"; 
 					} else if ('${sessionScope.loginId}'=='admin'){
 						console.log("관리자");
-						replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \"${sessionScope.loginId}\")' style='font-size:15px;'>&#8943;</span>"; 	
+						replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \""+replys[i].rpmid+"\")' style='font-size:15px;'>&#8943;</span>"; 	
 					}
 					
 					
@@ -1033,13 +1101,21 @@ function adminRpBan(){
 	
 	function replyDelete(){
 		console.log("댓글 삭제 요청");
+		console.log('${sessionScope.loginId}');
+		console.log(nowRpmid);
+		if(nowRpmid != '${sessionScope.loginId}'){
+			alert("댓글 작성자만 삭제할 수 있습니다!");
+			return;
+		}
+		
+			
 		$.ajax({
 			type : "get",
-			url : "updateReplyState_ajax",
-			data : { "rpcode" : nowRpcode},
+			url : "updateReplyState_ajax2",
+			data : { "rpcode" : nowRpcode, "rpmid":nowRpmid},
 			async : false,
 			success : function(updateResult){
-				if( updateResult > 0 ){
+				if( updateResult == 0 ){
 					console.log("댓글 삭제 성공!");
 					replyPrint('top');
 					
@@ -1048,6 +1124,10 @@ function adminRpBan(){
 					
 					//메뉴 모달 닫기
 					closeMenuModal()
+				} else if (updateResult == 2){
+					console.log("댓글 작성자가 아님!");
+					alert("댓글 작성자만 삭제할 수 있습니다!");
+					return;
 				}
 			}
 		});	
@@ -1065,6 +1145,7 @@ function adminRpBan(){
 
 	function replyResister(){
 		console.log("댓글 등록 요청");
+		
 		var rpcontents = $("#inputReply").val();
 		console.log(rpcontents);
 		
@@ -1112,6 +1193,9 @@ function adminRpBan(){
 	  $("#reply").html("");
 	  nowBdcode = "";
 	  nowBdmid = "";
+	  nowRpcode = "";
+	  nowRpmid = "";
+	  nowWb = "";
 	  
 	}
 	
@@ -1236,25 +1320,24 @@ function adminRpBan(){
 			return;
 		} 
 		
-		location.href = "updateBoardDelete?bdcode="+nowBdcode+"&bdcategory=자랑";
+		location.href = "updateBoardDelete?bdcode="+nowBdcode+"&bdcategory=자랑&bdmid="+nowBdmid;
 
 	}
 
 	
-	function menuModal(objcode, loginId){
+	function menuModal(objcode, writer){
 		console.log("메뉴 모달 요청");
 		console.log(objcode);
 		var objType = objcode.substring(0, 2);
-		console.log(objType);
 		var menuOutput = "";
 		if(objType=='BD'){
 			console.log("자랑글(Rv) 메뉴 요청")
 			//아이디에 따라 다른 메뉴 구성
-			if(loginId == 'admin'){ //관리자
+			if('${sessionScope.loginId}' == 'admin'){ //관리자
 				//console.log("관리자");
 				menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick='adminRvBan()'>정지</div>";
 				menuOutput += "<div class='menu' onclick='closeMenuModal()'>취소</div>";
-			} else if( loginId == nowBdmid){ //글작성자
+			} else if( '${sessionScope.loginId}' == writer){ //글작성자
 				//console.log("작성자");
 				menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick='modifyRoomView()'>수정</div>";
 				menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick='deleteRoomView()'>삭제</div>";
@@ -1271,18 +1354,19 @@ function adminRpBan(){
 		} else {
 			console.log("댓글(Rp) 메뉴 요청")
 			nowRpcode = objcode;
-			console.log(loginId);
+			nowRpmid = writer;
+			//console.log('${sessionScope.loginId}');
 			//아이디에 따라 다른 메뉴 구성
-			if(loginId == 'admin'){ //관리자
+			if('${sessionScope.loginId}' == 'admin'){ //관리자
 				//console.log("관리자");
 				menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick='adminRpBan()'>정지</div>";
 				menuOutput += "<div class='menu' onclick='closeMenuModal()'>취소</div>";
-			} else { //댓글작성자
+			} else if ('${sessionScope.loginId}' == nowRpmid){ //댓글작성자
 				//console.log("작성자");
 				//console.log("작성자");
 				menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick='replyDelete()'>삭제</div>";
 				menuOutput += "<div class='menu' onclick='closeMenuModal()'>취소</div>";
-			} 
+			}
 		}
 		//console.log(menuOutput);
 		$("#menuInnerDiv").html(menuOutput);

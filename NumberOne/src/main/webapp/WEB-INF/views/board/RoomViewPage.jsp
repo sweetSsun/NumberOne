@@ -613,12 +613,15 @@ roomView_ajax(nowBdcode)
 				//작성자 프로필	
 				var mprofileOutput = "<img class='product-img' style='width:30px; height:30px; border-radius:50%;'";
 				if(roomView.bdmprofile != 'nomprofile'){
-					if(roomView.bdmstate == 1){
-						//일반 로그인
-						mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+roomView.bdmprofile+"'>";
-					} else if(roomView.bdmstate == 9) {
+					console.log("작성자 프로필 있음");
+					if(roomView.bdmstate == 9){
 						//카카오 로그인
+						console.log("작성자 카카오 회원 사진 출력")
 						mprofileOutput += "src='"+roomView.bdmprofile+"'>";							
+					} else {
+						//일반 로그인
+						console.log("작성자 일반 회원 사진 출력")
+						mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+roomView.bdmprofile+"'>";
 					}
 				} else {
 					mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png'>"; 
@@ -700,9 +703,16 @@ roomView_ajax(nowBdcode)
 					replyOutput += "<div style='width:30px;'>";
 					replyOutput += "<img class='product-img' style='width:20px; height:20px; border-radius:50%;'";
 					if(replys[i].rpprofile != 'nomprofile'){
-						console.log(replys[i].rpprofile);
+						//console.log(replys[i].rpprofile);
 						console.log("프로필 있음");
-						replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+replys[i].rpprofile+"'>";
+						if(replys[i].rpmstate == 1){
+							//일반 로그인
+							replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+replys[i].rpprofile+"'>";
+						} else if(replys[i].rpmstate == 9) {
+							//카카오 로그인
+							console.log(replys[i].rpprofile);
+							replyOutput += "src='"+replys[i].rpprofile+"'>";							
+						}
 					} else {
 						console.log("프로필 없음");
 						replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png'>"; 
@@ -717,17 +727,10 @@ roomView_ajax(nowBdcode)
 					
 					//댓글 작성자와 관리자에게만 보이는 ...
 					if(replys[i].rpmid == '${sessionScope.loginId}'){
-						//console.log("댓글 작성자");
-						if(replys[i].rpmstate == 1){
-							//일반 로그인
-							replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+replys[i].rpprofile+"'>";
-						} else if(replys[i].rpmstate == 9) {
-							//카카오 로그인
-							console.log(replys[i].rpprofile);
-							replyOutput += "src='"+replys[i].rpprofile+"'>";							
-						} 
+						console.log("댓글 작성자");
+						replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \"${sessionScope.loginId}\")' style='font-size:15px;'>&#8943;</span>"; 
 					} else if ('${sessionScope.loginId}'=='admin'){
-						//console.log("관리자");
+						console.log("관리자");
 						replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \"${sessionScope.loginId}\")' style='font-size:15px;'>&#8943;</span>"; 	
 					}
 					

@@ -148,10 +148,9 @@
 					<if test="searchVal == '자유' or searchVal == '질문' or searchVal == '정보' or searchVal == '후기' ">
 					AND
 					</if>
-					
 				</if>
-				<!-- 상태값 정렬 -->
 				
+				<!-- 상태값 정렬 -->
 				<if test="searchVal == '자유' ">
 					BDCATEGORY = '자유'
 				</if>
@@ -173,12 +172,13 @@
 		
 		SELECT * 
 		FROM (
-				SELECT NBCODE,NBMID,NBTITLE,NBCONTENTS,TO_CHAR(NBDATE,'YY-MM-DD') AS NBDATE,
- 			   			NBIMG,NBSTATE,NBHITS,NBFIX, ROWNUM RN
- 				FROM NOTICEBOARDS
- 				
+				SELECT ROWNUM RN, NBCODE,NBMID,NBTITLE,NBCONTENTS,TO_CHAR(NBDATE,'YY-MM-DD') AS NBDATE,
+ 			   		   NBIMG,NBSTATE,NBHITS, NBFIX
+ 				FROM NOTICEBOARDS 
+ 				ORDER BY NBCODE DESC ) 
+ 		WHERE RN BETWEEN ${startRow} AND ${endRow}	
  		<if test="keyword.length > 0">
- 			WHERE 
+ 			AND
  			<choose>
  				<when test="searchType == 'nbTitleContents' ">
  					(NBTITLE LIKE '%'||#{keyword}||'%' OR NBCONTENTS LIKE '%'||#{keyword}||'%')
@@ -189,9 +189,6 @@
 				</otherwise>
  			</choose>
  		</if>
-		ORDER BY NBCODE DESC )
-		
-		WHERE RN BETWEEN ${startRow} AND ${endRow}
 	</select>
 	
  	 <select id="selectRoomList" resultType="com.NumberOne.dto.BoardDto">
@@ -213,33 +210,35 @@
 	 </select>
  	 
  	 <select id="selectRoomTotalCount" resultType="int">
- 	 	select count(*)
- 	 	from boards 
- 	 	where bdcategory = '자랑' 
- 	 	and bdstate = '1'
+ 	 	select count(*) from roomtotalcount
+ 	 	<!-- 검색 -->
+ 	 	<choose>
+			<when test='searchType == "bdtc"'>
+				where bdtitle||bdcontents like '%'||#{keyword}||'%'
+			</when>
+			<when test='searchType != "notSearch"'>
+				where ${searchType} like '%'||#{keyword}||'%'
+			</when>
+		</choose>
  	 </select>
  	 
  	 <select id="selectRoomList_paging" resultType="com.NumberOne.dto.BoardDto">
  	 	<!-- 자랑글 목록 페이징 -->
- 	 	select * from (select rownum rn, b.* from (select bdcode, bdmid, bdtitle, bddate, bdimg, bdstate, bdhits, bdcontents,
-		bdscrap, bdrecommend, bdreply, mnickname as bdnickname   	
-		from boards b
-		left outer join (select scbdcode, count(*) as bdscrap from scrap group by scbdcode) sc
-		on b.bdcode = sc.scbdcode
-		left outer join (select rcbdcode, count(*) as bdrecommend from recommend group by rcbdcode) rc
-		on b.bdcode = rc.rcbdcode
-		left outer join (select rpbdcode, count(*) as bdreply from reply group by rpbdcode) rp
-		on b.bdcode = rp.rpbdcode
-		left outer join members m
-		on b.bdmid = m.mid
-		where b.bdcategory='자랑'
-		and b.bdstate='1'
+ 	 	select * from 
+ 	 	(select rownum rn, r.* 
+		from (select * from roomlist
 		
-		<!-- 정렬 선택 -->
-		order by ${searchVal} desc nulls last) b)
+		<choose>
+			<when test='searchType == "bdtc"'>
+				where bdtitle||bdcontents like '%'||#{keyword}||'%'
+			</when>
+			<when test='searchType != "notSearch"'>
+				where ${searchType} like '%'||#{keyword}||'%'
+			</when>
+		</choose>
 		
-		<!-- 요청한 페이지에서 출력할 글만 조회 -->		
-        where rn between #{startRow} and #{endRow}
+		order by ${searchVal} desc nulls last) r)
+		where rn between ${startRow} AND ${endRow}
 	 </select>
  	 
  	 
