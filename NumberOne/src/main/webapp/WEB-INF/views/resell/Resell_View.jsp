@@ -248,7 +248,9 @@
 	const select_gdstate = document.querySelectorAll(".select_gdstate");//상품상태 (복수 , c:forEach태그안에 있음) 
 	const gd_nameList = document.querySelectorAll(".gd_nameList"); //상품명 (복수 , c:forEach태그안에 있음)
 	const gd_priceList = document.querySelectorAll(".gd_priceList"); //상품가격 (복수 , c:forEach태그안에 있음))
+
 	let ubzzim = '${ub_resellView.ubzzim }';	//찜 갯수
+
 </script>
 
 <!-- 페이지 로드시 실행 스크립트 -->
@@ -287,7 +289,6 @@
 					if (ubstate == '9') { // 글의 상태값이 9(판매완료)이면 실행.
 
 						for (let j = 0; j < select_gdstate.length; j++) {
-
 							gd_nameList[j].classList.add('line-through');
 							gd_priceList[j].classList.add('line-through');
 							selectCheckBox[j].setAttribute('disabled',
@@ -297,7 +298,6 @@
 					} else { //글의 상태값이 1(판매중)이면 실행
 
 						for (let j = 0; j < select_gdstate.length; j++) {
-
 							if (select_gdstate[j].value == 0) {
 								console.log("상태값이 0인 : "
 										+ select_gdstate[j].value);
@@ -349,8 +349,8 @@
 					zzimBtn.classList.remove("blue");
 					zzimBtn.classList.add("red");
 					zzim_Check = 'CHECK';
+
 					ubzzim = Number(ubzzim)+1;
-					
 					document.getElementById("zzimCount").innerHTML = ubzzim;
 					
 				} else { //찜 취소했을 때
@@ -366,6 +366,7 @@
 		})
 	}
 </script>
+
 
 <!-- 글 상태 옵션 변경 ajax 스크립트  -->
 <script type="text/javascript">
@@ -435,6 +436,7 @@
 		}
 	}
 </script>
+
 
 <!-- 슬라이드배너  -->
 <script type="text/javascript">
@@ -599,6 +601,7 @@
 		console.log("글목록버튼 클릭이벤트");
 		location.href = "selectResellPageList?sellBuy=" + ubsellbuy;
 	}
+
 </script>
 
 <!-- 체크박스 선택이벤트 스크립트  -->
