@@ -6,13 +6,10 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.UUID;
 
-import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -836,6 +833,7 @@ public class MemberService {
 	}
  현석 :  mail API 에러 때문에 주석처리 끝 */
 		
+		
 		//미니브라우저 작성글 내역
 		public String selectWriteMemberInfo_ajax(String nickname) {
 			System.out.println("service.selectWriteMemberInfo_ajax()호출");
@@ -845,9 +843,9 @@ public class MemberService {
 			String boardList_gson = gson.toJson(boardList);
 			System.out.println(boardList_gson);
 			
-			
 			return boardList_gson;
 		}
+
 
 
 }

@@ -111,7 +111,8 @@ public interface MemberDao {
 	MemberDto selectWriteMemberInfo_member(String nickname);
 
 	//닉네임 별 작성 글 출력
-	@Select("SELECT BD.BDCODE, BD.BDTITLE, BD.BDCATEGORY FROM BOARDS BD, MEMBERS M WHERE BD.BDMID = M.MID AND M.MNICKNAME = #{nickname} ORDER BY BDCODE DESC")
+	@Select("SELECT BD.BDCODE, BD.BDTITLE, BD.BDCATEGORY, M.MNICKNAME, M.MMESSAGE, M.MPROFILE "
+			+ "FROM BOARDS BD, MEMBERS M WHERE BD.BDMID = M.MID AND M.MNICKNAME = #{nickname} ORDER BY BDCODE DESC")
 	ArrayList<BoardDto> selectWriteMemberInfo_ajax(String nickname);
 	
 	//카카오 회원가입 처리
