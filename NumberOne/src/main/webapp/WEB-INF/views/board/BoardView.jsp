@@ -54,6 +54,16 @@
 		color : #00a5ba;
 		font-size: 20px;
 	}
+	.bdProfile{
+		height: 40px;
+		width:40px;
+		object-fit: cover;
+	}
+	.bdProfile_Kakao{
+		height: 40px; 
+		width:40px;
+		object-fit: cover;
+	}
 	.bdnickname{
 		font-size: 20px;
 	}
@@ -95,6 +105,16 @@
 	}
 	.rpnickname{
 		font-size:20px;
+	}
+	.rpProfile{
+		height:50px;
+		width:50px;
+		object-fit: cover;
+	}
+	.rpProfile_None{
+		height:40px; 
+		width:40px;
+		object-fit: cover;
 	}
 	.icon{
 		border : solid gray 2px;
@@ -159,15 +179,16 @@
 						<div class="col-6">
 							<c:choose>
 								<c:when test="${board.bdmprofile != null && board.bdmstate == 1 }">
-									<img class="img-profile rounded-circle" style="height: 45px; width:45px;" src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/${board.bdmprofile}">
+									<img class="img-profile rounded-circle bdProfile"  src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/${board.bdmprofile}">
 								</c:when>
 								
 								<c:when test="${board.bdmprofile != null && board.bdmstate == 9 }">
-									<img class="img-profile rounded-circle" style="height: 40px; width:40px;" src="${board.bdmprofile}">
+									<!-- 카카오 회원 -->
+									<img class="img-profile rounded-circle bdProfile_Kakao" src="${board.bdmprofile}">
 								</c:when>
 								
 								<c:otherwise>
-									<img class="img-profile rounded-circle" style="height: 45px; width:45px;" src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png">
+									<img class="img-profile rounded-circle bdProfile"  src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png">
 								</c:otherwise>
 							</c:choose>
 							<a href="#"><span class="fw-bold bdnickname">${board.bdnickname }</span></a> 
@@ -368,6 +389,9 @@
 </body>
 
 <script type="text/javascript">
+	var boardCheck = "${bdcategory_none}";
+	console.log(boardCheck);
+	
 	var checkMsg = '${msg}';
 	if ( checkMsg.length > 0 ){
 		alert(checkMsg);
@@ -392,8 +416,8 @@
 <script type="text/javascript">
 	/* 글목록 버튼 클릭 시 */
 	function boardList(){
-		history.back();
-		
+		/* 넘어온 게시판으로 다시 이동 */
+		location.href="selectCategoryBoardList?searchVal=${board.bdcategory}";
 	}
 </script>
 
@@ -589,7 +613,8 @@
 	function updateBoardDelete(){
 		/* 게시글 삭제(상태변경) */
 		//모달창에서 "네" 버튼 클릭 시 삭제
-		location.href="updateBoardDelete?bdcode="+bdcode+"&bdcategory="+'${board.bdcategory }';
+		var bdcategory = '${board.bdcategory }';
+		location.href="updateBoardDelete?bdcode="+bdcode+"&bdcategory="+bdcategory;
 	}
 	
 </script>
@@ -638,14 +663,14 @@
 
 						if( replyList[i].rpprofile != null ){//프로필 이미지가 있을 시 
 							if(  replyList[i].rpmstate == 9){//카카오 회원
-								output += "<img class=\"img-profile rounded-circle \" style=\"height:50px; width:50px;\" src='"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle rpProfile\"  src='"+replyList[i].rpprofile + "'>"
 							}else{
-								output += "<img class=\"img-profile rounded-circle \" style=\"height:50px; width:50px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle rpProfile\"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
 							}
 						
 						
 						}else{//프로필 이미지가 없을 시 
-							output += "<img class=\"img-profile rounded-circle \" style=\"height:40px; width:40px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
+							output += "<img class=\"img-profile rounded-circle rpProfile_None\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
 						}
 						output += "</div>"
 						
@@ -672,12 +697,12 @@
 						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;'>" /* 프로필영역 */
 						if( replyList[i].rpprofile != null ){//프로필 이미지가 있을 시 
 							if(  replyList[i].rpmstate == 9){//카카오 회원
-								output += "<img class=\"img-profile rounded-circle \" style=\"height:50px; width:50px;\" src='"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle rpProfile\"  src='"+replyList[i].rpprofile + "'>"
 							}else{
-								output += "<img class=\"img-profile rounded-circle \" style=\"height:50px; width:50px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle rpProfile\"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
 							}
 						}else{//프로필 이미지가 없을 시 
-							output += "<img class=\"img-profile rounded-circle\" style=\"height:40px; width:40px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
+							output += "<img class=\"img-profile rounded-circle rpProfile_None\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
 						}
 						output += "</div>"
 							

@@ -85,10 +85,11 @@ background-color: #00BCD4;
 		<%@ include file="/WEB-INF/views/includes/SideBar_Mypage.jsp" %>
 		
 		<section>
+		<div style="min-height: 30px;"></div>
 		<!-- 본문 -->
 			<div class="container">
 				<br>
-				<div class="checkout__form"><h4>마이페이지 1:1문의</h4></div>
+				<div class="checkout__form" style="margin-top: 30px;"><h4>마이페이지 1:1문의</h4></div>
 				<br>
 				<!-- 작성글 목록 -->
 				<div class="row">

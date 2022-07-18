@@ -79,11 +79,11 @@
 		<%@ include file="/WEB-INF/views/includes/SideBar_Mypage.jsp" %>
 		
 		<section>
-		<div style="min-height: 50px;" id="scroll-sellbuy"></div>
+		<div style="min-height: 40px;" id="scroll-sellbuy"></div>
 		<!-- 본문 -->
 			<div class="container">
 				<br>
-				<div class="checkout__form"><h4>마이페이지 중고거래</h4></div>
+				<div class="checkout__form" style="margin-top: 20px;"><h4>마이페이지 중고거래</h4></div>
 				<br>
 				<br>
 				<!-- 8949 목록 -->
@@ -149,16 +149,16 @@
                                     </div>
                                 </div> 																		                                  
                              </div>                	        
-							<hr>
+							
 				<!-- 채팅 목록 -->
 				<!-- 여백 -->
-				<div style="min-height: 50px;" id="scroll-chat"></div>				
-				<div class="row" style="margin:20px;">
+				<div style="min-height: 230px;" id="scroll-chat"></div>				
+				<div class="row">
 					<br><h4 class="checkout__form" style="color: #00BCD4;">채팅 내역 (미완성)</h4>
 				</div>
 				<!-- 여백 -->
 				<div style="min-height: 50px;"></div>				
-				<div class="row"  style="margin:20px;">
+				<div class="row" >
 				<table>
 						<tr class="text-center" id="board_column">
 							<td>닉네임</td>
@@ -183,18 +183,18 @@
 						</c:forEach> --%>
 				</table>
 				<!-- 여백 -->				
-				<div style="min-height: 700px;"></div><hr>
+				<div style="min-height: 700px;"></div>
 				</div>
 	
 				<!-- 찜 목록 -->
 				<!-- 여백 -->
-				<div style="min-height: 50px;" id="scroll-zzim"></div>				
-				<div class="row" style="margin:20px;">
+				<div style="min-height: 230px;" id="scroll-zzim"></div>				
+				<div class="row">
 					<br><h4 class="checkout__form" style="color: #00BCD4;">찜목록</h4>
 				</div>
 				<!-- 여백 -->
-				<div style="min-height: 50px;"></div>				
-				<div class="row" style="margin:20px;">
+				<div style="min-height: 30px;"></div>				
+				<div class="row">
 				<table>
 						<tr class="text-center" id="board_column">
 							<td>글제목</td>
@@ -242,7 +242,7 @@
 														
 						</c:forEach>
 				</table>
-				<div style="min-height: 600px;"></div><hr>
+				<div style="min-height: 600px;"></div>
 				</div>				
 				</div>	
 							

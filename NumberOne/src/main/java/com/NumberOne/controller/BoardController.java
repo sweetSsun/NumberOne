@@ -28,6 +28,7 @@ public class BoardController {
 	public ModelAndView selectRoomList(String bdcode, String jsp, Paging paging) {
 		System.out.println("자쥐방 자랑 메인 요청(목록페이지)");	
 		System.out.println(bdcode+"/"+jsp);
+		System.out.println(paging);
 		ModelAndView mav = new ModelAndView();
 		mav=bsvc.selectRoomList(paging);
 		
@@ -104,17 +105,6 @@ public class BoardController {
 		return boardCateList_json;
 	}
 	
-	//카테고리별 글목록 조회 ( ajax )
-	@RequestMapping ( value = "/getBoardCategoryList_ajax")
-	@ResponseBody public String boardCategoryList_ajax( String bdcategory) {
-		System.out.println("카테고리별 글목록 요청_ajax");
-	      
-	    String boardCateList_json = bsvc.boardCategoryList_ajax(bdcategory);
-	      
-	    return boardCateList_json;
-	      
-	}
-	
 	//자유,질문,정보,후기게시판 이동 및 글검색
 	@RequestMapping ( value = "/selectCategoryBoardList")
 	public ModelAndView selectCategoryBoardList(Paging paging) {
@@ -145,16 +135,25 @@ public class BoardController {
 		 return mav;
 	 }
 	 
-	 //일반게시판 - 글상세페이지 이동 
+	 //일반/지역 - 글상세페이지 이동 
 	 @RequestMapping ( value = "/selectBoardView")
-	 public ModelAndView selectBoardView(String bdcode) {
+	 public ModelAndView selectBoardView(String bdcode, String bdtype) {
 		 System.out.println("글상세페이지 이동 요청");
 		 
-		 ModelAndView mav = bsvc.selectBoardView(bdcode);
+		 ModelAndView mav = bsvc.selectBoardView(bdcode, bdtype);
 		 
 		 return mav;
 	 }
 	 
+	 //후기글 상세페이지 이동 
+	 @RequestMapping ( value = "/selectReviewBoardView")
+	 public ModelAndView selectReviewBoardView(String bdcode) {
+		 System.out.println("후기글 상세페이지 이동 요청");
+		 
+		 ModelAndView mav =bsvc.selectReviewBoardView(bdcode);
+		 
+		 return mav;
+	 }
 	 
 	 //댓글작성(ajax)
 	 @RequestMapping ( value = "/insertBoardReply_ajax")
@@ -209,7 +208,6 @@ public class BoardController {
 		 
 		 int updateResult = bsvc.updateRpcontents_ajax(rpcode, rpcontents);
 		 
-		 
 		 return updateResult;
 	 }
 	 
@@ -223,6 +221,7 @@ public class BoardController {
 		 
 		 return updateResult;
 	 }
+	 
 	 //게시글 추천
 	 @RequestMapping ( value = "/insertBoardRecommend_ajax")
 	 @ResponseBody 
@@ -297,9 +296,7 @@ public class BoardController {
 		 int deleteResult = bsvc.deleteBoardWarning_ajax(loginId, bdcode);
 		 
 		 return deleteResult;
-		 
 	 }
-	 
 	 
 	 //게시글 수정 페이지 이동 
 	 @RequestMapping ( value = "/loadToBoardModify")
@@ -318,7 +315,6 @@ public class BoardController {
 		 ModelAndView mav = bsvc.updateBoardModify(board, ra);
 		 
 		 return mav;
-		 
 	 }
 	 
 	 //게시글 삭제
@@ -329,7 +325,6 @@ public class BoardController {
 		 ModelAndView mav = bsvc.updateBoardDelete(bdcode, bdcategory ,ra);
 		 
 		 return mav;
-		 
 	 }
 	 
 	 //게시글 작성 페이지 이동 
@@ -351,52 +346,34 @@ public class BoardController {
 		 
 		 return mav;
 	 }
+	 //지역게시판 이동 
+	 @RequestMapping ( value = "/selectRegionBoardList")
+	 public ModelAndView selectRegionBoardList(Paging paging) {
+		 System.out.println("지역게시판 이동");
+		 
+		 ModelAndView mav = bsvc.selectRegionBoardList(paging);
+		 
+		 return mav;
+	 }
 	 
-	 //지역카테고리 목록 (ajax)
+	 //지역게시판 글정렬 (ajax)
 	 @RequestMapping ("/selectRegionBoardList_ajax")
 	 @ResponseBody
 	 public String selectRegionList_ajax(Paging paging) {
-		 System.out.println("지역카테고리 목록 조회 ");
+		 System.out.println("지역게시판 카테고리 정렬 목록 조회 ");
 		 
 		 String selRegionList_ajax = bsvc.selectRegionBoardList_ajax(paging);
 		 
 		 return selRegionList_ajax;
-		 
 	 }
-	 
-	 /*
-	 //지역게시판 검색
-	 @RequestMapping ("/selectRegionSearchList")
-	 public ModelAndView selectRegionSearchList(String bdrgcode, String bdrgname, String searchType, String searchText) {
-		 System.out.println("지역게시판 검색결과 페이지 이동 요청");
-		 
-		 ModelAndView mav = bsvc.selectRegionSearchList(bdrgcode, bdrgname, searchType, searchText);
-		 
-		 return mav;
-	 }
-	 */
-	 
-	 //지역게시판 이동 
-	 @RequestMapping ( value = "/selectRegionBoardList")
-	 public ModelAndView selectRegionBoardList() {
-		 System.out.println("지역게시판 이동");
-		 
-		 ModelAndView mav = bsvc.selectRegionBoardList();
-		 
-		 return mav;
-	 }
-	 
 	 
 	 //지역별 게시판 이동 
 	 @RequestMapping ( value = "/selectDetailBoardList")
-	 public ModelAndView selectDetailBoardList(String bdrgcode) {
+	 public ModelAndView selectDetailBoardList(Paging paging) {
 		 System.out.println("지역별 게시판 이동");
-		 System.out.println(bdrgcode);
-		 ModelAndView mav = bsvc.selectDetailBoardList(bdrgcode);
-
+		 ModelAndView mav = bsvc.selectDetailBoardList(paging);
 		 
 		 return mav;
-		 
 	 }
 	 
 	 //자취방 자랑글 상세 모달 요청
@@ -407,7 +384,6 @@ public class BoardController {
 		 
 		 return roomView_json;
 	 }
-	 
 	 
 	 //자취방 자랑글 추천/스크랩/신고 요청
 	 @RequestMapping ( value = "/updateLog")
@@ -447,13 +423,19 @@ public class BoardController {
 		 ModelAndView mav = bsvc.updateRoomView(board, ra);
 		 
 		 return mav;
-		 
 	 }
 	 
-	 
-	 /////////
-	 
-	 
+	 //후기글 작성페이지 이동
+	 @RequestMapping ( value = "/loadToWriteReview")
+	 public ModelAndView loadToWriteReview() {
+		 System.out.println("후기글 작성페이지 이동 요청");
+		 ModelAndView mav= new ModelAndView();
+		 
+		 mav.setViewName("board/ReviewWriteForm");
+		 
+		 return mav;
+		 
+	 }
 	 
 	 
 	 

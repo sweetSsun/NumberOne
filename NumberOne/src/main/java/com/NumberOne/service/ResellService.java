@@ -15,7 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.NumberOne.dao.ResellDao;
-import com.NumberOne.dto.ChatDto;
+import com.NumberOne.dto.ChatMessageDto;
 import com.NumberOne.dto.GoodsDto;
 import com.NumberOne.dto.PageDto;
 import com.NumberOne.dto.Paging;
@@ -488,53 +488,6 @@ public ModelAndView selectResellPageList(Paging paging) {
 		return mav;
 		
 	}
-
-
-	public ModelAndView insertResellChat(String[] gd_names, ChatDto chat, String gdtitle) {
-		System.out.println("insertResellChat() 호출");
-		ModelAndView mav = new ModelAndView();
-		String gdname = null;
-		
-		int maxChcode = rdao.selectMaxChcode();
-		int chcode = 0;
-		
-			System.out.println("채팅MAX번호 : "+maxChcode);
-			if (maxChcode==0) {
-				chcode = 1; 
-			} else {
-				chcode = maxChcode + 1;
-			}				
-		System.out.println("채팅번호 : "+chcode);
-		chat.setChcode(chcode);
-		System.out.println("DB입력 전 : "+chat);
-		
-		gdtitle+= "___";
-		if(gd_names.length==1) {
-			
-			for (String gdcheck : gd_names)
-				gdtitle += gdcheck;
-			System.out.println(gdtitle);
-		}
-		else {
-			for (String gdcheck : gd_names) {
-				
-				gdtitle += gdcheck+"//"; 
-				System.out.println(gdtitle);
-			}			
-		}
-		gdtitle += "관심있어요";
-		
-		System.out.println("dao전 출력: "+gdtitle);
-		int chatResult = rdao.insertResellChat(gdtitle, chat);
-		System.out.println(chatResult);
-		if(chatResult>0) {
-			System.out.println("입력성공");
-						
-		}
-		
-		return null;
-	}
-
 
 	public String updateResellState_GoodsAjax(GoodsDto gdDto) {
 		System.out.println("updateResellState_GoodsAjax() 호출");

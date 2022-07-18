@@ -110,7 +110,6 @@ public class BoardService {
 				bddetailimgfile[i].transferTo(new File(roomSavePath, bddetailimgname));
 				bddetailimg += bddetailimgname + "___";
 			}
-
 			
 		}
 		// room에 setBddetailimg
@@ -144,22 +143,6 @@ public class BoardService {
 
 		return mav;
 	}
-	
-	   //카테고리별 글목록 조회 (ajax)
-	   public String boardCategoryList_ajax(String bdcategory) {
-	      System.out.println("BoardService.boardCategoryList() 호출");
-	      System.out.println(bdcategory);
-	      
-	      ArrayList<BoardDto> boardList = bdao.selectBoardCategoryList_ajax(bdcategory);
-	      System.out.println(boardList);
-	      
-	      Gson gson = new Gson();
-	      String boardList_json = gson.toJson(boardList);
-	      System.out.println(boardList_json);
-	      
-	      return boardList_json;
-	   }
-	
 	   //게시판(커뮤니티) 메인페이지 이동 
 	   public ModelAndView loadToBoardMainPage() {
 	      System.out.println("BoardService.loadToBoardMainPage() 호출");
@@ -215,16 +198,17 @@ public class BoardService {
 	      if(paging.getKeyword() == null) { // dao 조건문이 keyword에 null값이 들어가면 오류가 나기 때문에 ""로 변경
 				paging.setKeyword("");
 	      }
-	      int totalCount = bdao.selectBoardTotalCount(paging);//전체 글 수 조회 
+	      //1. 전체 글 수 조회 
+	      int totalCount = bdao.selectBoardTotalCount(paging);
 	      paging.setTotalCount(totalCount);
 	      paging.calc(); // 페이지 처리 계산 실행
-	      System.out.println(paging);
+	      //System.out.println(paging);
 	      
 	      //공지글 목록 조회 
 	      ArrayList<NoticeDto> noticeList = bdao.selectNoticeList();
 	      //System.out.println(noticeList);
 	      
-	      //일반글 목록 조회 
+	      //2. 일반글 목록 조회 
 	      ArrayList<BoardDto> boardList = bdao.selectBoardList_Paging(paging);
 	      //System.out.println(boardList);
 	      
@@ -241,7 +225,7 @@ public class BoardService {
 			System.out.println("BoardService.selectCategoryBoardList() 호출");
 			ModelAndView mav = new ModelAndView();
 			System.out.println(paging.getSearchVal());
-		
+			
 			// 페이징
 			if(paging.getKeyword() == null) {// dao 조건문이 keyword에 null값이 들어가면 오류가 나기 때문에 ""로 변경
 				paging.setKeyword("");
@@ -249,7 +233,7 @@ public class BoardService {
 			int totalCount = bdao.selectBoardTotalCount(paging);
 			paging.setTotalCount(totalCount);
 			paging.calc();
-			System.out.println(paging);
+			//System.out.println(paging);
 			
 			//공지글 목록 조회 
 		    ArrayList<NoticeDto> noticeList = bdao.selectNoticeList();
@@ -258,21 +242,22 @@ public class BoardService {
 		    //일반글 목록 조회 
 		    ArrayList<BoardDto> boardList = bdao.selectBoardList_Paging(paging);
 		    
+		    //자유 ~ 후기 게시판 이동
+		   	if( paging.getSearchVal().equals("자유") ) {
+		   		mav.setViewName("board/FreeBoardList");
+		   	}else if( paging.getSearchVal().equals("질문") ) {
+		   		mav.setViewName("board/QuestionBoardList");
+		   	}else if( paging.getSearchVal().equals("정보") ) {
+		   		mav.setViewName("board/InfomationBoardList");
+		   	}else {//후기게시판
+		   		mav.setViewName("board/ReviewBoardList");
+		   	}
+		   	
 		    mav.addObject("noticeList", noticeList);
 		    mav.addObject("boardList", boardList);
 		    mav.addObject("paging", paging);
 		    
-		    //자유 ~ 후기 게시판 이동
-		    if( paging.getSearchVal().equals("자유") ) {
-		    	mav.setViewName("board/FreeBoardList");
-		    }else if( paging.getSearchVal().equals("질문") ) {
-		    	mav.setViewName("board/QuestionBoardList");
-		    }else if( paging.getSearchVal().equals("정보") ) {
-		    	mav.setViewName("board/InfomationBoardList");
-		    }else {
-		    	mav.setViewName("board/ReviewBoardList");
-		    }
-			return mav;
+		   	return mav;
 		}
 	   
 	   //글정렬 요청 (BoardMain 페이지)
@@ -283,7 +268,7 @@ public class BoardService {
 			int totalCont = bdao.selectBoardTotalCount(paging);//페이지 처리
 			paging.setTotalCount(totalCont);
 			paging.calc();
-			System.out.println(paging);
+			//System.out.println(paging);
 			
 			ArrayList<BoardDto> boardList = bdao.selectBoardList_Paging(paging);
 			System.out.println("글정렬 리스트");
@@ -315,9 +300,14 @@ public class BoardService {
 		   paging.calc(); // 페이지 처리 계산 실행 
 		   System.out.println(paging);
 		   
+		   
+		   //고정공지
+		   ArrayList<NoticeDto> noticeList_fix = bdao.selectNoticeList();
+		   
 		   ArrayList<NoticeDto> noticeList = bdao.selectNoticeBoardList(paging);
 		   //System.out.println(noticeList);
 		   
+		   mav.addObject("noticeList_fix", noticeList_fix);
 		   mav.addObject("noticeList", noticeList);
 		   mav.addObject("paging", paging);
 		   mav.setViewName("board/NoticeBoardList");
@@ -325,35 +315,56 @@ public class BoardService {
 		   return mav;
 	   }
 
-	// 자취방 자랑 메인 페이지(목록)
-	public ModelAndView selectRoomList(Paging paging) {
-		System.out.println("BoardService.selectRoomList() 호출");
-		ModelAndView mav = new ModelAndView();
+		// 자취방 자랑 메인 페이지(목록)
+		public ModelAndView selectRoomList(Paging paging) {
+			System.out.println("BoardService.selectRoomList() 호출");
+			ModelAndView mav = new ModelAndView();
+			
+			//페이징 없는 글목록
+			//ArrayList<BoardDto> roomList = bdao.selectRoomList();
+			
+			//System.out.println("1번:"+paging);
+			
+			//자랑글 개수 받기
+			//키워드가 있는 경우 검색, 아니면 전체 글 개수 받아옴
+			//null값을 맵핑하면 오류가 남 keyword가 null이면 searchType을 notSearch로 바꾸기
+			if(paging.getKeyword() == null) {
+				System.out.println("keyword가 null");
+				paging.setSearchType("notSearch");
+			} 
 		
-		//페이징 없는 글목록
-		//ArrayList<BoardDto> roomList = bdao.selectRoomList();
-		
-		//모든 자랑글 개수 받기
-		int totalRoomCount = bdao.selectRoomTotalCount(paging);
-		paging.setTotalCount(totalRoomCount);
-		paging.calc();
-		paging.setSearchVal("bdcode");
-		System.out.println(paging);
-		
-		//페이징을 위한 글 목록 받기
-		ArrayList<BoardDto> roomList = bdao.selectRoomList_paging(paging);
-		for (int i = 0; i < roomList.size(); i++) {
-			System.out.println(roomList.get(i).getBdcode()+" "+roomList.get(i).getBdhits()+" "+roomList.get(i).getBdreply()+" "+roomList.get(i).getBdrecommend()+" "+roomList.get(i).getBdscrap());
-		}
-		
-		//페이징을 위해 게시글 수 paging 객체에 저장
-		//System.out.println("자취방 자랑글 개수: " + roomList.size());
-		mav.addObject("paging", paging);
-		mav.addObject("roomList", roomList);
-		mav.setViewName("board/RoomListPage");
+			int totalRoomCount = bdao.selectRoomTotalCount(paging);			
+			System.out.println("totalRoomCount: "+ totalRoomCount);
+			
+			paging.setTotalCount(totalRoomCount);
+			paging.calc();
+			
+			if(paging.getSearchVal() == "all") {
+				//정렬 기준이 없는 경우 최신순으로 정렬
+				paging.setSearchVal("bdcode");	
+			}
+			
+			//System.out.println("2번:"+paging);
+			
+			//페이징을 위한 글 목록 받기
+			
+			ArrayList<BoardDto> roomList = bdao.selectRoomList_paging(paging);
+			for (int i = 0; i < roomList.size(); i++) {
+				System.out.println(roomList.get(i).getBdcode()+" "+roomList.get(i).getBdhits()+" "+roomList.get(i).getBdreply()+" "+roomList.get(i).getBdrecommend()+" "+roomList.get(i).getBdscrap());
+			}
+			
+			if(paging.getSearchType().equals("bdtitle||bdcontents")) {
+				paging.setSearchType("bdtc");
+			}
+			
+			//mav에 object와 view 저장
+			mav.addObject("paging", paging);
+			mav.addObject("roomList", roomList);
+			mav.setViewName("board/RoomListPage");
 
-		return mav;
-	}
+			return mav;
+		}
+
 
 	// 공지글상세 페이지 이동
 	public ModelAndView selectNoticeBoardView(String nbcode) {
@@ -375,24 +386,52 @@ public class BoardService {
 		return mav;
 	}
 
-	// 일반게시판 - 글상세페이지 이동
-	public ModelAndView selectBoardView(String bdcode) {
+	// 일반/지역 - 글상세페이지 이동
+	public ModelAndView selectBoardView(String bdcode, String bdtype) {
 		System.out.println("BoardService.selectBoardView() 호출");
 		ModelAndView mav = new ModelAndView();
 		System.out.println("bdcode : " + bdcode);
-
+		
+		if( bdtype == null ) {
+			bdtype = "";
+		}
+		
+		System.out.println("게시판 타입 : " + bdtype);
+		
 		// 게시글 조회수 증가
 		updateBoardHits(bdcode);
 		// 글상세정보 조회
 		BoardDto board = bdao.selectBoardView(bdcode);
 		System.out.println(board);
-
+		
 		mav.addObject("board", board);
-		mav.setViewName("board/BoardView");
+		
+		
+		if ( bdtype.equals("region") ) {
+			mav.setViewName("board/Region_BoardView");
+		}else {
+			mav.setViewName("board/BoardView");
+		}
 
 		return mav;
 	}
+	
+	// 후기글 상세페이지 이동 
+	public ModelAndView selectReviewBoardView(String bdcode) {
+		System.out.println("BoardService.selectReviewBoardView() 호출");
+		ModelAndView mav = new ModelAndView();
+		
+		// 게시글 조회수 증가
+		updateBoardHits(bdcode);
+		BoardDto board = bdao.selectBoardView(bdcode);
+		
+		mav.addObject("board", board);
+		mav.setViewName("board/ReviewBoardView");
+		
+		return mav;
+	}
 
+	
 	// 자취방 자랑글 상세 보기
 	public String selectRoomView(String bdcode) {
 		System.out.println("BoardService.selectRoomView() 호출");
@@ -525,10 +564,8 @@ public class BoardService {
 
 	      int insertResult = bdao.insertBoardReply_ajax(reply);
 
-
 	      return insertResult;
 	   }
-	   
 
 	// 게시글 댓글목록 조회(ajax)
 	public String selectBoardReplyList_ajax(String bdcode) {
@@ -669,6 +706,7 @@ public class BoardService {
 		System.out.println("BoardService.updateBoardDelete() 호출");
 		ModelAndView mav = new ModelAndView();
 		System.out.println("삭제할 글번호 : " + bdcode);
+		System.out.println("삭제할 게시판 : " + bdcategory);
 
 		int updateResult = bdao.updateBoardDelete(bdcode);
 		if (updateResult > 0) {
@@ -681,8 +719,9 @@ public class BoardService {
 			mav.setViewName("redirect:/selectRoomList");
 		} else {
 			System.out.println("일반글 삭제 성공");
-			mav.setViewName("redirect:/selectBoardList");
-		}
+			ra.addAttribute("searchVal", bdcategory);
+			mav.setViewName("redirect:/selectCategoryBoardList");
+		} 
 
 		return mav;
 	}
@@ -696,14 +735,14 @@ public class BoardService {
 		// 수정할 게시글 정보
 		BoardDto board;
 
-		if (bdcategory == null) {
+		if (bdcategory == null || bdcategory.equals("후기")) {
 			// 일반글
 			board = bdao.selectBoardView(bdcode);
 			String bdcontents = board.getBdcontents().replace("&nbsp;", " ");
 			bdcontents = board.getBdcontents().replace("<br>", "\r\n");
 			board.setBdcontents(bdcontents);
-			// System.out.println(board);
-		} else {
+		
+		}else {
 			// 자랑글(selec문 분리);
 			board = bdao.selectRoomModify(bdcode);
 			
@@ -720,10 +759,14 @@ public class BoardService {
 			}
 			
 		}
-
 		mav.addObject("board", board);
+		
+		//페이지 이동 
 		if (bdcategory != null) {
 			mav.setViewName("board/RoomModifyForm");
+			if( bdcategory.equals("후기") ) {
+				mav.setViewName("board/ReviewBoardModifyForm");
+			}
 		} else {
 			mav.setViewName("board/BoardModifyForm");
 		}
@@ -766,9 +809,16 @@ public class BoardService {
 		board.setBdimg(bdimgfile);
 
 		int updateResult = bdao.updateBoardModify(board);
-		ra.addFlashAttribute("msg", "글이 수정되었습니다.");
+		if( updateResult > 0 ) {
+			ra.addFlashAttribute("msg", "글이 수정되었습니다.");
+		}
+		
 		// 글수정 후 다시 글 상세페이지로 이동
-		mav.setViewName("redirect:/selectBoardView?bdcode=" + board.getBdcode());
+		if( board.getBdcategory().equals("후기") ) {
+			mav.setViewName("redirect:/selectReviewBoardView?bdcode=" + board.getBdcode());
+		}else {
+			mav.setViewName("redirect:/selectBoardView?bdcode=" + board.getBdcode());
+		}
 
 		return mav;
 	}
@@ -799,7 +849,8 @@ public class BoardService {
 			throws IllegalStateException, IOException {
 		System.out.println("BoardService.insertBoardWrite() 호출");
 		ModelAndView mav = new ModelAndView();
-
+		
+		System.out.println("카테고리 : " + board.getBdcategory());
 		
 		//글작성 시 지역선택을 하지 않았을 때 -> 전국으로 설정
 		if ( board.getBdrgcode() == null ) {
@@ -847,13 +898,17 @@ public class BoardService {
 		System.out.println(bdimgfile);
 		ra.addFlashAttribute("msg", "글이 작성되었습니다");
 		board.setBdimg(bdimgfile);
-		System.out.println(board);
+		//System.out.println(board);
 		
 		//글작성
 		int insertResult = bdao.insertBoard(board);
 		
-		//글작성 성공 시 글상세페이지로 이동
-		mav.setViewName("redirect:/selectBoardView?bdcode="+bdcode);
+		//글작성 후 글상세페이지로 이동 
+		if( board.getBdcategory().equals("후기") ) {
+			mav.setViewName("redirect:/selectReviewBoardView?bdcode="+bdcode);
+		}else {
+			mav.setViewName("redirect:/selectBoardView?bdcode="+bdcode);
+		}
 
 		return mav;
 	}
@@ -867,7 +922,6 @@ public class BoardService {
 		return boardHits;
 
 	}
-
 
 	// 댓글정보 불러오기
 	public ReplyDto selectRpContents_ajax(String rpcode) {
@@ -893,70 +947,112 @@ public class BoardService {
 		return updateResult;
 	}
 
-	// 공지게시판 이동
-	public ModelAndView selecNoticeBoardList() {
-		System.out.println("BoardService.selecNoticeBoardList() 호출");
-		ModelAndView mav = new ModelAndView();
-
-		// 공지글 목록 조회
-		ArrayList<NoticeDto> noticeList = bdao.selectNoticeList();
-
-		mav.addObject("noticeList", noticeList);
-		mav.setViewName("board/NoticeBoardList");
-
-		return mav;
-	}
-	// 후기게시판 이동
-	public ModelAndView selectReviewBoardList() {
-		System.out.println("BoardService.selectReviewBoardList() 호출");
-		ModelAndView mav = new ModelAndView();
-
-		// 후기글 목록 조회
-		String bdcategory = "후기";
-		ArrayList<BoardDto> boardList = bdao.selectBoardList_Review(bdcategory);
-		ArrayList<NoticeDto> noticeList = bdao.selectNoticeList();
-
-		mav.addObject("noticeList", noticeList);
-		mav.addObject("boardList", boardList);
-		mav.setViewName("board/ReviewBoardList");
-
-		return mav;
-
-	}
-	
-	//지역게시판 이동 
-	public ModelAndView selectRegionBoardList() {
+	//지역게시판 이동 및 검색 
+	public ModelAndView selectRegionBoardList(Paging paging) {
 		System.out.println("BoardService.selectRegionBoardList() 호출");
 		ModelAndView mav = new ModelAndView();
 		
+		//검색 키워드가 없을 경우 keyword의 값을 공백처리
+		if( paging.getKeyword() == null ) {
+			paging.setKeyword("");
+		}
+		
+		//1. 전체글 수 조회
+		int totalCount = bdao.selectRegionTotalCount(paging);
+		paging.setTotalCount(totalCount);
+		paging.calc();
+		
 		//지역글목록 조회 
-		String bdrgcode = null;
-		ArrayList<BoardDto> regionList = bdao.selectRegionBoardList(bdrgcode);
-		System.out.println(regionList);
+		ArrayList<BoardDto> regionList = bdao.selectRegionBoardList_Paging(paging);
+		//System.out.println(regionList);
 		
 		ArrayList<NoticeDto> noticeList = bdao.selectNoticeList();
 		
 		mav.addObject("noticeList", noticeList);
 		mav.addObject("regionList", regionList);
-		mav.setViewName("board/RegionBoardList");
+		mav.addObject("paging", paging);
+		mav.setViewName("board/Region_BoardList");
 		
 		return mav;
 	}
 	
+	//지역게시판 글정렬 (ajax)
+	public String selectRegionBoardList_ajax(Paging paging) {
+		System.out.println("BoardService.selectRegionBoardList_ajax() 호출");
+		System.out.println("선택한 지역코드 : " + paging.getSearchVal() );
+		
+		//검색 키워드가 없을 경우 keyword의 값을 공백처리
+		if( paging.getKeyword() == null ) {
+			paging.setKeyword("");
+		}
+			
+		int totalCount = bdao.selectRegionTotalCount(paging);
+		paging.setTotalCount(totalCount);
+		paging.calc();
+		//System.out.println(paging);
+		
+		ArrayList<BoardDto> regionList = bdao.selectRegionBoardList_Paging(paging);
+		//System.out.println(regionList);
+		
+		Gson gson = new Gson();
+		if( paging.getAjaxCheck().equals("list")) {
+			String selRegionList_ajax = gson.toJson(regionList);
+			
+			return selRegionList_ajax;
+		}else {
+			String paging_json = gson.toJson(paging);
+			
+			return paging_json;
+		}
+	}
+	
 	//지역별 게시판 이동
-	public ModelAndView selectDetailBoardList(String bdrgcode) {
+	public ModelAndView selectDetailBoardList(Paging paging) {
 		System.out.println("BoardService.selectDetailBoardList() 호출");
 		ModelAndView mav = new ModelAndView();
+		System.out.println("선택 지역 게시판 : " + paging.getSearchVal());
 		
-		ArrayList<NoticeDto> noticeList = bdao.selectNoticeList();
+		if( paging.getSearchVal().equals("SEL") ) {
+			paging.setBdrgname("서울");
+		}else if( paging.getSearchVal().equals("ICN") ) {
+			paging.setBdrgname("인천");
+		}else if(paging.getSearchVal().equals("GSD") ) {
+			paging.setBdrgname("경상");
+		}else if(paging.getSearchVal().equals("JLD") ) {
+			paging.setBdrgname("전라");
+		}else if(paging.getSearchVal().equals("CCD") ) {
+			paging.setBdrgname("충청");
+		}else if(paging.getSearchVal().equals("GWD") ) {
+			paging.setBdrgname("강원");
+		}else if(paging.getSearchVal().equals("JJD") ) {
+			paging.setBdrgname("제주");
+		}else if(paging.getSearchVal().equals("GGD") ) {
+			paging.setBdrgname("경기");
+		}
+		
+		
+		System.out.println("지역명: " + paging.getBdrgname());
+		
+		//검색 키워드가 없을 경우 keyword의 값을 공백처리
+		if( paging.getKeyword() == null ) {
+			paging.setKeyword("");
+		}
+		
+		//1. 전체 글 개수 조회
+		int totalCount = bdao.selectRegionTotalCount(paging);
+		paging.setTotalCount(totalCount);
+		paging.calc();
+		System.out.println(paging);
+		
 		//지역별 목록 조회
-		ArrayList<BoardDto> regionList = bdao.selectRegionBoardList(bdrgcode);
-		System.out.println(regionList);
+		ArrayList<BoardDto> regionList = bdao.selectRegionBoardList_Paging(paging);
+		ArrayList<NoticeDto> noticeList = bdao.selectNoticeList();
 		
 		mav.addObject("noticeList", noticeList);
 		mav.addObject("regionList", regionList);
+		mav.addObject("paging", paging);
 		
-		mav.setViewName("board/Region"+bdrgcode+"Board");
+		mav.setViewName("board/Region_"+paging.getSearchVal()+"Board");
 		
 		return mav;
 	}
@@ -1002,16 +1098,18 @@ public class BoardService {
 		String[] currentDetailImg = room.getBddetailimg().split("___");
 		String bddetailimg = "";
 		for (int i = 0; i < currentDetailImg.length; i++) {
-			System.out.println(i+"번 상세 이미지명: "+currentDetailImg[i]);
-			if (!currentDetailImg[i].substring(0, 4).equals("del_")) {
-				System.out.println(i+"번 상세 유지: "+currentDetailImg[i]);
-				//유지파일
-				bddetailimg += currentDetailImg[i] + "___";
-				System.out.println("bddetailimg: "+bddetailimg);
-			} else {
-				//삭제파일
-				deleteFile.add(currentDetailImg[i].substring(4));
-				System.out.println("bddetailimg: "+bddetailimg);
+			System.out.println(i+"번 상세 이미지명: "+currentDetailImg[i].length());
+			if(currentDetailImg[i].length() != 0) {				
+				if (!currentDetailImg[i].substring(0, 4).equals("del_")) {
+					System.out.println(i+"번 상세 유지: "+currentDetailImg[i]);
+					//유지파일
+					bddetailimg += currentDetailImg[i] + "___";
+					System.out.println("bddetailimg: "+bddetailimg);
+				} else {
+					//삭제파일
+					deleteFile.add(currentDetailImg[i].substring(4));
+					System.out.println("bddetailimg: "+bddetailimg);
+				}
 			}
 		}
 		//System.out.println("bddetailimg: "+bddetailimg);
@@ -1069,43 +1167,6 @@ public class BoardService {
 
 	}
 
-
-	//지역카테고리 목록 (ajax)
-	public String selectRegionBoardList_ajax(Paging paging) {
-		System.out.println("BoardService.selectRegionList_ajax() 호출");
-		System.out.println("선택한 지역코드 : " + paging.getSearchVal() );
-		
-		int totalCount = bdao.selectRegionTotalCount(paging);
-		
-		ArrayList<BoardDto> selRegionList = bdao.selectRegionBoardList_ajax(paging); 
-		System.out.println(selRegionList);
-		
-		Gson gson = new Gson();
-		String selRegionList_ajax = gson.toJson(selRegionList);
-		
-		return selRegionList_ajax;
-	}
-
-	//지역게시판 검색결과 
-	public ModelAndView selectRegionSearchList(String bdrgcode, String bdrgname, String searchType, String searchText) {
-		System.out.println("BoardService.selectRegionSearchList() 호출");
-		ModelAndView mav = new ModelAndView();
-		
-		System.out.println("검색 - 선택지역코드: " + bdrgcode);
-		System.out.println("검색타입: " + searchType);
-		System.out.println("검색어: " + searchText);
-		
-		ArrayList<BoardDto> searchList = bdao.selectRegionSearchList(bdrgcode, searchType, searchText);
-		System.out.println(searchList);
-		
-		mav.addObject("bdrgcode", bdrgcode);
-		mav.addObject("bdrgname", bdrgname);
-		mav.addObject("searchBdList", searchList);
-		mav.setViewName("board/RegionSearchList");
-		
-		return mav;
-	}
-	
 	//자랑글 정렬 요청(글목록)
 	public String selectRoomList_ajax(Paging paging) {
 		System.out.println("BoardnService.selectRoomList_ajax() 호출");
@@ -1146,7 +1207,7 @@ public class BoardService {
 		return null;
 		
 	}
-
+	
 	
 
 }

@@ -43,6 +43,9 @@ public class Paging {
 	// 중고거래 페이징에서 필요한 필드
 	private String sellBuy;		//중고거래 사구,팔구 구분용
 	
+	//지역게시판 지역이름 저장을 위한 필드 
+	private String bdrgname;	//서울 ~ 제주 게시판 이름 출력용
+	
 	
 	// 생성자
 	public Paging() {
@@ -244,14 +247,23 @@ public class Paging {
 		this.sellBuy = sellBuy;
 	}
 
+	public String getBdrgname() {
+		return bdrgname;
+	}
+
+	public void setBdrgname(String bdrgname) {
+		this.bdrgname = bdrgname;
+	}
+
 	@Override
 	public String toString() {
 		return "Paging [page=" + page + ", perPageNum=" + perPageNum + ", startRow=" + startRow + ", endRow=" + endRow
 				+ ", totalCount=" + totalCount + ", maxPage=" + maxPage + ", displayPageNum=" + displayPageNum
 				+ ", startPage=" + startPage + ", endPage=" + endPage + ", prev=" + prev + ", next=" + next
 				+ ", searchVal=" + searchVal + ", searchType=" + searchType + ", keyword=" + keyword + ", ajaxCheck="
-				+ ajaxCheck + ", sellBuy=" + sellBuy + "]";
+				+ ajaxCheck + ", sellBuy=" + sellBuy + ", bdrgname=" + bdrgname + "]";
 	}
+
 	
 	
 	
