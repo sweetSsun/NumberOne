@@ -186,6 +186,10 @@ public class ChatService {
 			}
 			String cmfrmnickname = chdao.selectMnickname(mid);
 			chatRoomList.get(i).setCrfrmnickname(cmfrmnickname);
+
+			// 채팅방의 상대방 프로필이미지 조회
+			String crfrMprofile = chdao.selectCrfrMprofile(mid);
+			chatRoomList.get(i).setCrfrmprofile(crfrMprofile);
 		}
 		
 		System.out.println("chatRoomList : " + chatRoomList);

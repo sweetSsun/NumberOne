@@ -44,11 +44,34 @@
 		background-color: red;
 	}
 	
+	.nav_chat .chat-badge{
+		top: 5px;
+		right: 1px;
+		color: white;
+		background-color: red;
+	}
+	
 	.nav_chat-badge{
 		font-size: 0.2rem;
 		border-radius: 10px;
 		min-width: 14px;
 		text-align: center;
+	}
+	
+	.chat-badge{
+		font-size: 0.2rem;
+		border-radius: 10px;
+		min-width: 7px;
+		text-align: center;
+	}
+	
+	.chat-profile{
+		width: 35px;
+		height: 35px;
+	}
+	
+	#chatRoomList{
+		overflow: hidden;
 	}
 
 </style>
@@ -261,7 +284,7 @@
 			}
 		});
 	});
-	
+	/*
 	// 드롭다운 채팅방목록 입력 함수
 	function outputDropdown(data){
 		var dropdownList = "<h6 class=\"dropdown-header\">채팅방 목록</h6>";
@@ -269,15 +292,59 @@
 			if (i == 10){ // 최대 10개 목록까지만 출력
 				break;
 			}
-			dropdownList += "<a class=\"dropdown-item d-flex align-items-center\" href=\"#\" onclick=\"popupChat('" + data[i].crcode + "')\">";
-			dropdownList += "<div class=\"mr-3\">";
-			dropdownList += "상대방이미지";
+			dropdownList += "<a class=\"dropdown-item d-flex align-items-center mb-2\" href=\"#\" onclick=\"popupChat('" + data[i].crcode + "')\">";
+			dropdownList += "<div class=\"\" style=\"min-width: 35rem;\" >";
+			dropdownList += "<div class=\"\">";
+			if (data[i].crfrmprofile != null){ // 상대방 이미지가 있으면
+				dropdownList += "<img src=\"${pageContext.request.contextPath }/resources/img/mprofileUpLoad/" + data[i].crfrmprofile + "\" alt=\"프로필\" class=\"rounded-circle chat-profile\">";
+			} else { // 없으면
+				dropdownList += "<img src=\"${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png\" alt=\"프로필\" class=\"rounded-circle chat-profile\">";
+			}
 			dropdownList += "</div>";
-			dropdownList += "<div>";
-			dropdownList += "<div class=\"overflow\">" + data[i].recentCmcontents + "</div>";
+			dropdownList += "<div class=\"row nav_chat\" >";
+			dropdownList += "<div class=\"col-11 overflow\">" + data[i].recentCmcontents + "</div>";
+			if (data[i].unreadCount != 0){ // 안읽은 메세지가 있으면
+				dropdownList += "<div class=\"col-1 nav_list-link\"><span class=\"chat-badge\" style=\"\">" + data[i].unreadCount + "</span></div>";
+			}
 			dropdownList += "<div class=\"row\">";
 			dropdownList += "<div class=\"col-6 small\" style=\"color:gray; text-align:left;\">" + data[i].crfrmnickname + "</div>";
-			dropdownList += "<div class=\"col-6 small\" style=\"color:gray; text-align:left;\">" + data[i].recentCmdate + "</div>";
+			dropdownList += "<div class=\"col-6 small\" style=\"color:gray; text-align:right;\">" + data[i].recentCmdate + "</div>";
+			dropdownList += "</div>";
+			dropdownList += "</div>";
+			dropdownList += "</div>";
+			dropdownList += "</a>";
+		}
+		$("#chatRoomList").html(dropdownList);
+	}
+	*/
+
+	// 드롭다운 채팅방목록 입력 함수
+	function outputDropdown(data){
+		var dropdownList = "<h6 class=\"dropdown-header\">채팅방 목록</h6>";
+		for(var i = 0; i < data.length; i++){
+			if (i == 10){ // 최대 10개 목록까지만 출력
+				break;
+			}
+			dropdownList += "<a class=\"dropdown-item d-flex align-items-center py-2\" href=\"#\" onclick=\"popupChat('" + data[i].crcode + "')\">";
+			dropdownList += "<div class=\"row\" style=\"min-width: 35rem;\">";
+			dropdownList += "<div class=\"col-2 pr-0 text-center\">";
+			if (data[i].crfrmprofile != null){ // 상대방 이미지가 있으면
+				dropdownList += "<img src=\"${pageContext.request.contextPath }/resources/img/mprofileUpLoad/" + data[i].crfrmprofile + "\" alt=\"프로필\" class=\"rounded-circle chat-profile\">";
+			} else { // 없으면
+				dropdownList += "<img src=\"${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png\" alt=\"프로필\" class=\"rounded-circle chat-profile\">";
+			}
+			dropdownList += "</div>";
+			dropdownList += "<div class=\"col-10\" >";
+			dropdownList += "<div class=\"row nav_chat\" >";
+			dropdownList += "<div class=\"col-11 overflow\" style=\"font-size:1.25rem;\">" + data[i].recentCmcontents + "</div>";
+			if (data[i].unreadCount != 0){ // 안읽은 메세지가 있으면
+				dropdownList += "<div class=\"col-1 nav_list-link\"><span class=\"chat-badge\" style=\"\">" + data[i].unreadCount + "</span></div>";
+			}
+			dropdownList += "<div class=\"row\">";
+			dropdownList += "<div class=\"col-6 small\" style=\"color:gray; text-align:left;\">" + data[i].crfrmnickname + "</div>";
+			dropdownList += "<div class=\"col-6 small\" style=\"color:gray; text-align:right;\">" + data[i].recentCmdate + "</div>";
+			dropdownList += "</div>";
+			dropdownList += "</div>";
 			dropdownList += "</div>";
 			dropdownList += "</div>";
 			dropdownList += "</a>";

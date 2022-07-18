@@ -100,10 +100,15 @@
 		WHERE CMCRCODE = #{crcode} AND CMFRMID != #{mid} AND CMREAD = 1
 	</update>
 	
-	<!-- 특정 사용자의 채팅방 목록 조회 -->
+	<!-- 특정 사용자의 채팅방 목록 조회(가장 최신 메세지 순으로) -->
 	<select id="selectChatRoomList" resultType="com.NumberOne.dto.ChatRoomDto">
-		SELECT *
-		FROM CHATROOM
+		SELECT CRCODE, CRFRMID, CRTOMID, CMCONTENTS, RECENTCMDATE
+		FROM CHATROOM CR 
+		    INNER JOIN (SELECT CMCODE, CMCRCODE, CMCONTENTS, TO_CHAR(CMDATE, 'MM/DD HH24:MI') AS RECENTCMDATE
+		                FROM CHATMESSAGE
+		                WHERE CMCODE IN (SELECT MAX(CMCODE) AS MAXCMCODE FROM CHATMESSAGE GROUP BY CMCRCODE)
+		                ORDER BY CMCODE DESC) 
+		    ON CMCRCODE = CRCODE
 		WHERE CRFRMID = #{loginId} OR CRTOMID = #{loginId}
 	</select>
 	
@@ -121,5 +126,12 @@
 		WHERE CMCODE = (SELECT MAX(CMCODE) 
 						FROM CHATMESSAGE 
 						WHERE CMCRCODE = #{cmcrcode})
+	</select>
+	
+	<!-- 채팅방의 상대방 프로필 이미지 조회 -->
+	<select id="selectCrfrMprofile" resultType="String">
+		SELECT MPROFILE
+		FROM MEMBERS
+		WHERE MID = #{mid}
 	</select>
 </mapper>
