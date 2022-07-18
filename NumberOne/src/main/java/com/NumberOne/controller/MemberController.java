@@ -69,12 +69,12 @@ public class MemberController {
 	public ModelAndView loadToLogin(String afterUrl) {
 		System.out.println("로그인 페이지 요청");
 		mav = new ModelAndView();
-		System.out.println("afterUrl: "+afterUrl);
+		//System.out.println("afterUrl: "+afterUrl);
+		
 		if(afterUrl != null) {
 			session.setAttribute("afterUrl", afterUrl);						
-		} else {
-			session.setAttribute("afterUrl", "noUrl");			
-		}
+		} 
+		
 		System.out.println((String)session.getAttribute("afterUrl"));
 		mav.setViewName("member/MemberLoginForm");
 		return mav;

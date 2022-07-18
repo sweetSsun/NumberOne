@@ -49,6 +49,8 @@
     }
 	
 	.title{ width : 13%; }
+	
+	.d_none{display : none;}
 </style>
 
 </head>
@@ -96,6 +98,7 @@
 							<!--  
 							<input type="text" id="mainImgScreen"> <span class="mainfile"><label for="mainImg">대표사진 선택</label></span>
 							-->
+							<div id="bdimgScreen" style="width:200px; height:150px;" class="d_none"><img id='previewBdmig' style="width:100%; height:100%;"></img></div>
 							<input type="file" id="mainImg" name="bdimgfile" accept="image/*"> 
 						</td>
 					</tr>
@@ -105,8 +108,8 @@
 							<!--  
 							<input type="text" id="detailImgScreen"> <span class="mainfile"><label for="detailImg">상세사진 선택</label></span>
 							-->
+							<div id="bddetailimgScreen" style="width:100%;" class="row"></div>
 							<input type="file" multiple="multiple" id="detailImg" name="bddetailimgfile" onclick="return mainimgCh()" accept="image/*">
-							<div id="detailImgList"></div>
 						</td>
 					</tr>
 					<tr>
@@ -129,6 +132,100 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 <script type="text/javascript">
+//bdimg 미리보기
+function readBdimg(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        
+        reader.onload = (e) => {
+        	console.log(input.files[0].type)
+        	if(! input.files[0].type.match("image.*")){
+        		console.log("이미지 파일 아님");
+            	alert("이미지 파일만 등록 가능합니다!");
+            	$("#mainImg").val("");
+            	$("#previewBdimg").attr("src", "");
+            	$("#bdimgScreen").addClass("d_none");
+            	return;
+            	//$("#detailImg").replaceWith($("#detailImg").clone(true));
+        	}
+            var previewImage = document.getElementById('previewBdmig');
+            previewImage.src = e.target.result;
+            //previewImage.alt = input.files[0].name();
+            $("#bdimgScreen").removeClass("d_none");
+            
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+//bdmig input 파일 업로드 시 readBdimg 함수 호출하기
+document.getElementById('mainImg').addEventListener('change', (e) => {
+	readBdimg(e.target);
+})
+
+//bddetailimg input 파일 업로드 시 미리보기 보여주기
+function readMultipleImage(input) {
+	console.log("readMultipleImage() 호출");
+    const multipleContainer = document.getElementById("bddetailimgScreen");
+    $("#bddetailimgScreen").html("");
+    
+    // 인풋 태그에 파일들이 있는 경우
+    if(input.files) {
+        // 이미지 파일 검사 (생략)
+        // 유사배열을 배열로 변환 (forEach문으로 처리하기 위해)
+        const fileArr = Array.from(input.files);
+        
+        const $colDiv = document.createElement("div")
+        $colDiv.style.display = "inline-block";
+        
+        fileArr.forEach((file, index) => {
+        	console.log(file.type);
+            if(! file.type.match("image.*")){
+            	console.log("이미지 파일 아님");
+            	alert("이미지 파일만 등록 가능합니다!");
+            	$("#detailImg").val("");
+            	//$("#detailImg").replaceWith($("#detailImg").clone(true));
+            	return;
+            }
+        	
+        	const reader = new FileReader()
+            
+            const $imgDiv = document.createElement("div")   
+            $imgDiv.style.width = "200px";
+            $imgDiv.style.height = "150px";
+            $imgDiv.style.display = "inline-block";
+            const $img = document.createElement("img");
+            $imgDiv.appendChild($img)
+            
+            reader.onload = e => {
+                $img.src = e.target.result;
+                $img.alt = file.name;
+                $img.title = file.name;
+                $img.style.width = "100%";
+                $img.style.height = "100%";
+            }
+            
+            //console.log(file.name)
+            $colDiv.appendChild($imgDiv);
+
+            reader.readAsDataURL(file);
+        })
+        
+        multipleContainer.appendChild($colDiv);
+
+    }
+}
+
+const inputMultipleImage = document.getElementById("detailImg");
+inputMultipleImage.addEventListener("change", e => {
+    readMultipleImage(e.target);
+})
+
+
+
+</script>
+
+<script type="text/javascript">
 
 	if('${sessionScope.loginId}'==null){
 		console.log("로그인 후 이용가능합니다.");
@@ -141,7 +238,8 @@
 		console.log("선택된메인이미지: "+mainImg);
 		$("#mainImgScreen").val(mainImg);
 	})
-		
+	
+	/*
 	$("#detailImg").change(function(){
 		
 		var detailImg = $("#detailImg")[0].files;
@@ -152,7 +250,7 @@
 		}
 		$("#detailImgList").html(output);
 	})
-	
+	*/
 	function withdraw(){
 		console.log("취소 버튼 클릭");
 	}

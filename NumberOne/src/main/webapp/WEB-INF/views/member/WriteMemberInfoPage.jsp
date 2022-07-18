@@ -303,6 +303,7 @@ text-align: right;
    	&nbsp;&nbsp;&nbsp; 
    	<button id="reply" onclick="boardreplySwitch('r')" style="border: 0px; background-color: #F2F2FF;">작성댓글보기</button></span>	
 
+
 	</div>
 	<!-- 작성 글 -->
 				
@@ -436,7 +437,6 @@ function boardreplySwitch(type){
 		   
 	   
 	 }  
-
 
 </script>
 

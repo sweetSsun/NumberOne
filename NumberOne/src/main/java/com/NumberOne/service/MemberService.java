@@ -181,16 +181,12 @@ public class MemberService {
 			    
 				ra.addFlashAttribute("msg", "로그인 되었습니다.");
 				
-				String afterUrl = (String) session.getAttribute("afterUrl");
-				//System.out.println(afterUrl);
-				session.removeAttribute("afterUrl");
-				
-				if(afterUrl.equals("noUrl")) {
-					//afterUrl 없는 경우는 메인으로 이동
-					mav.setViewName("redirect:/");				
-				} else {					
-					//afterUrl 있는 경우는 해당페이지로 이동
+				if(session.getAttribute("afterUrl") != null) {
+					String afterUrl = (String) session.getAttribute("afterUrl");					
+					session.removeAttribute("afterUrl");
 					mav.setViewName("redirect:/"+afterUrl);
+				} else {					
+					mav.setViewName("redirect:/");
 				}
 	
 			}
