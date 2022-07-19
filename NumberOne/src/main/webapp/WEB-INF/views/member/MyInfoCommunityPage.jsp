@@ -8,7 +8,6 @@
 <title>1인자 - 마이페이지 커뮤니티</title>
 
 
-
 <%@ include file="/resources/css/BarCss.jsp"%>
 
 <!-- 부트스트랩 -->
