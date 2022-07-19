@@ -305,14 +305,12 @@
 	
 	// 메세지 전송
 	function sendMessage(cmcontents){
+		// 단순히 전송만 함. 전송한 사람에게도 메세지를 다시 뿌려줄 것이고, 거기에서 checkLR 할거임! (시스템 시간 띄우는 것 때문에)
 		var data = {
 			"cmcrcode" : crcode,
 			"cmfrmid" : "${sessionScope.loginId}",
 			"cmcontents" : cmcontents
 		}
-		
-		checkLR(data); // 왼쪽, 오른쪽 출력 확인
-		
 		var jsonData = JSON.stringify(data);
 		chatWebSocket.send(jsonData);
 	}
@@ -322,9 +320,7 @@
    		var receiveMsg = JSON.parse(data.data);
    		console.log("보낸 사람 닉네임 : " + receiveMsg.cmfrmnickname);
 	    
-   		if (receiveMsg.cmfrmid != "${sessionScope.loginId}"){
-   			checkLR(receiveMsg);
-   		}
+   		checkLR(receiveMsg, true); // 현재 서버시간으로 출력하기 위한 boolean값 전송
     };
     
     // 추가된 메세지의 보낸 사람이 나인지 상대방인지 확인

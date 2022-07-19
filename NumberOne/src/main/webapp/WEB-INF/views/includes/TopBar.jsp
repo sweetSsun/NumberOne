@@ -353,6 +353,9 @@
 			dropdownList += "</div>";
 			dropdownList += "</a>";
 		}
+		dropdownList += "<div class=\"text-center mt-1\">";
+		dropdownList += "<a class=\"dropdown-item pt-2\" href=\"selectMyInfoResellView#scroll-chat\">더보기</a>";
+		dropdownList += "</div>";
 		$("#chatRoomList").html(dropdownList);
 	}
 
