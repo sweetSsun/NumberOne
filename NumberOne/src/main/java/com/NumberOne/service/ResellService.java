@@ -260,10 +260,12 @@ public ModelAndView selectResellPageList(Paging paging) {
 	System.out.println(paging);
 	
 	 //로그인되어있으면 회원의 관심지역을 지역필드에 저장	
-		if((String) session.getAttribute("loginRegion") != null && paging.getSearchType()==null) {
-			paging.setSearchVal(rdao.selectRegionCode((String) session.getAttribute("loginRegion")));				
-		}
-
+		/*
+		 * if((String) session.getAttribute("loginRegion") != null &&
+		 * paging.getSearchType()==null) {
+		 * paging.setSearchVal(rdao.selectRegionCode((String)
+		 * session.getAttribute("loginRegion"))); }
+		 */
 	int totalCaount = rdao.selectPageTotalCount(paging);
 	paging.setTotalCount(totalCaount);
 	paging.calc();
@@ -341,7 +343,7 @@ public ModelAndView selectResellPageList(Paging paging) {
 
 		ArrayList<GoodsDto> gd_resellView = rdao.selectResellView_goods(ubDto);
 
-		ArrayList<UsedBoardDto> memberSellList = rdao.selectResellView_List(ub_resellView.getUbmid());
+		ArrayList<UsedBoardDto> memberSellList = rdao.selectResellView_List(ub_resellView.getUbmid(), ub_resellView.getUbcode());
 		String zzimCheck = rdao.selectZzimCheck(loginId, ubDto.getUbcode());
 		
 		String zzim_Check;

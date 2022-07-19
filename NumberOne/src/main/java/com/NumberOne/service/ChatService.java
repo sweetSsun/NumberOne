@@ -169,6 +169,7 @@ public class ChatService {
 		for (int i = 0; i < chatRoomList.size(); i++) {
 			// 특정 채팅방의 안읽은 메세지 수 조회
 			String cmcrcode = chatRoomList.get(i).getCrcode();
+			System.out.println("=====================cmcrcode : " + cmcrcode);
 			int unReadCount = chdao.selectUnReadCount(loginId, cmcrcode);
 			chatRoomList.get(i).setUnreadCount(unReadCount);
 

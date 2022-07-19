@@ -116,10 +116,14 @@
      border: solid #E0E0E0 2px;
      margin-top: 5%;
      margin-bottom: 5%;
+     width: 200px;
+     height: 200px;
+     
    }
    #upload_Img{
-   	width: 100px;
-   	heigth: 100px;
+   	width: 200px;
+   	height: 200px;
+   	object-fit: cover;
    }
    
 	/*  */
@@ -168,8 +172,19 @@
 				<form action="">
 					<div class="row">
 						<div class="col">
-							<a href="#"><span class="fw-bold boardCategory"> | ${board.bdcategory }게시판 </span></a> 
-							<span class="fw-bold" style="color:gray; font-size:20px">/</span> <a href="#"><span class="bdregion"> ${board.bdrgname}</span></a>
+							<a href="selectCategoryBoardList?searchVal=${board.bdcategory }"><span class="fw-bold boardCategory"> | ${board.bdcategory }게시판 </span></a> 
+							<span class="fw-bold" style="color:gray; font-size:20px">/</span> 
+							
+							<c:choose>
+								<c:when test="${board.bdrgcode == 'ALL' }">
+									<a href="selectRegionBoardList"><span class="bdregion"> ${board.bdrgname}</span></a>
+								</c:when>
+							
+								<c:otherwise>
+									<a href="selectDetailBoardList?searchVal=${board.bdrgcode }"><span class="bdregion"> ${board.bdrgname}</span></a>
+								</c:otherwise>
+							</c:choose>
+							
 						</div>
 					</div>
 					<div class="row" >
@@ -259,11 +274,11 @@
 				</c:choose>
 				</div>
 				
-
-				<%-- <div class="img-container">
-					<img id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
-				
-				</div>	 --%>			
+				<c:if test="${board.bdimg != null }">
+					<div class="img-container">
+						<img id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
+					</div>				
+				</c:if >		
 				
 				<!------------------ 댓글영역 ------------------->
 				<div class="mb-2" id="commentBox">
