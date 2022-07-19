@@ -251,6 +251,7 @@
 <script type="text/javascript">
 	$(document).ready(function () {
 		// 페이지 넘버 a태그를 클릭하면 hidden input태그에 페이지 넘버 값을 넣고 submit 진행
+		
 		var actionForm = $("#actionForm");
 		
 		$(document).on("click", ".paginate_button a", function(e){ // on 이벤트로 변경
@@ -261,6 +262,8 @@
 			actionForm.submit();
 		});
 	});
+	
+	
 </script>
 
 <script type="text/javascript">
@@ -333,6 +336,43 @@
 			}
 		});
 		$("#bdCategoryList").html(output);
+		
+		// 페이지에서 출력할 페이지번호 받아오기
+		$.ajax({
+			type: "get",
+			data: { "searchVal" : categorySel, "searchType" : searchType, "keyword" : searchText, "ajaxCheck":"page"},
+			url: "selectBoardCategoryList_ajax",
+			dataType: "json",
+			success: function(result){
+				console.log("요청 페이지 : " + result.page);
+				$("#pageList").text("");
+				// 페이징 번호 출력
+				var pageList = "<ul class='pagination'>";
+				if (result.prev) {
+					pageList += "<li class='paginate_button'><a href='"+ (result.page - 1) + "'>이전</a></li>";
+				} else {
+					pageList += "<li class='paginate_button'><span>이전</span></li>"
+				}
+				for (var i = result.startPage; i <= result.endPage; i++){
+					if (result.page == i){
+						pageList += "<li><a class='active'>"+ i + "</a></li>";
+					} else {
+						pageList += "<li class='paginate_button'><a href='"+ i + "' >" + i + "</a></li>";
+					}
+				}
+				if (result.next){
+					pageList += "<li class='paginate_button'><a href='"+ (result.page + 1) + "' >다음</a></li>";
+				} else {
+					pageList += "<li class='paginate_button'><span>다음</span></li>"
+				}
+				$("#pageList").html(pageList);
+			},
+			error: function(){
+				alert("페이징넘버링 실패");
+			}
+		})
+		
+		
 	}
 	
 </script>
