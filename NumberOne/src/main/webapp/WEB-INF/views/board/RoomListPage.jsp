@@ -369,8 +369,19 @@ input{
   border-radius: 5px ! important;
   color: white ! important;
 }
-
 .bigger { font-size : 2rem;}
+.bdCategoryList{
+	color : #00bcd4;
+	border: none;
+	font-size: 18px;
+	margin-left: 2%;
+}
+.bdcategorySel{
+	font-weight: bold;
+	text-align : center;
+	color : #00bcd4;
+}
+
 </style>
 </head>
 <body>
@@ -403,7 +414,7 @@ input{
 		<form action="selectRoomList" method="get" id="actionForm">
 			<div class="container">
 				<div style="padding-left:auto; padding-right:auto;">
-					<center><span style="font-size:3.5rem; cursor:pointer; margin-left:auto; margin-right:auto;" onclick="location.href='selectRoomList'">자랑방 글목록 페이지 : RoomListPage.jsp</span></center>
+					<center><span style="font-size:2rem; cursor:pointer; margin-left:auto; margin-right:auto;" onclick="location.href='selectRoomList'">자랑방 글목록 페이지 : RoomListPage.jsp</span></center>
 				</div>
 				
 					<div class="row ">
@@ -427,13 +438,13 @@ input{
 						
 			</div>
 			 
-			<div class="row" style="margin-top: 20px; margin-left:8%;">
+			<div class="row" style="margin-top: 20px;">
 				<div class="col">
-					<select class="roomOrderBy bigger" onchange="roomOrderBy(this.value)" name="searchVal" id="orderBySel" style="border:1px #D2D2D2 solid; border-radius:3px;">
-						<option class="roomOrderBy bigger" value="bdcode">최신순</option>
-						<option class="roomOrderBy bigger" value="bdhits">조회수순</option>
-						<option class="roomOrderBy bigger" value="bdrecommend">좋아요순</option>
-						<option class="roomOrderBy bigger" value="bdreply">댓글순</option>
+					<select class="roomOrderBy bigger bdCategoryList" onchange="roomOrderBy(this.value)" name="searchVal" id="orderBySel">
+						<option class="roomOrderBy bigger bdcategorySel" value="bdcode">최신순</option>
+						<option class="roomOrderBy bigger bdcategorySel" value="bdhits">조회수순</option>
+						<option class="roomOrderBy bigger bdcategorySel" value="bdrecommend">좋아요순</option>
+						<option class="roomOrderBy bigger bdcategorySel" value="bdreply">댓글순</option>
 					</select>
 				</div>
 			</div>

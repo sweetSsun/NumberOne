@@ -252,7 +252,7 @@
  	 
  	 <select id="selectBoardView" resultType="com.NumberOne.dto.BoardDto">
  	 	<!-- 일반글 상세 -->
-		SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, TO_CHAR(BDDATE,'YY-MM-DD HH24:MI') AS BDDATE, 
+		SELECT BDCODE, BDRGCODE, BDCATEGORY, BDMID, BDTITLE, BDCONTENTS, BDDATE, 
 	    	   BDIMG, BDDETAILIMG, BDSTATE, BDHITS, BDRATE,
 	    	   MB.MNICKNAME AS BDNICKNAME, MB.MPROFILE AS BDMPROFILE, MB.MSTATE AS BDMSTATE,
 	    	   RG.RGCODE AS BDRGCODE, RG.RGNAME AS BDRGNAME
@@ -543,10 +543,6 @@
 						(BDTITLE LIKE '%'||#{keyword}||'%' OR BDCONTENTS LIKE '%'||#{keyword}||'%')
 					</when>
 					
-					<when test="searchType == 'bdNickname' ">
-						MNICKNAME LIKE '%'||#{keyword}||'%'
-					</when>
-					
 					<otherwise>
 						${searchType} LIKE '%'||#{keyword}||'%'
 					</otherwise>				
@@ -612,7 +608,7 @@
 					</when>
 					
 					<when test="searchType == 'bdNickname' ">
-						MNICKNAME LIKE '%'||#{keyword}||'%'
+						BDNICKNAME LIKE '%'||#{keyword}||'%'
 					</when>
 					
 					<otherwise>
@@ -724,13 +720,11 @@
 
 	</select>	
 		
-		
 	<select id="selectFixedRoomView" resultType="com.NumberOne.dto.BoardDto">
       SELECT B.BDCODE, M.MNICKNAME AS BDNICKNAME, B.BDTITLE, B.BDIMG
       FROM BOARDS B, MEMBERS M
       WHERE B.BDFIX = 1 AND M.MID=B.BDMID
       ORDER BY BDCODE DESC
    </select>
-
 	
  </mapper>
