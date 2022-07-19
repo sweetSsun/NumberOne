@@ -11,7 +11,10 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
 	integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"
 	referrerpolicy="no-referrer"
-></script>
+>chatBtn.addEventListener('click', chatInsert_Ajax);
+
+</script>
+
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
 	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"
 >
@@ -229,6 +232,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"
 	></script>
+	
 </body>
 
 
@@ -249,12 +253,13 @@
 	const gd_nameList = document.querySelectorAll(".gd_nameList"); //상품명 (복수 , c:forEach태그안에 있음)
 	const gd_priceList = document.querySelectorAll(".gd_priceList"); //상품가격 (복수 , c:forEach태그안에 있음))
 	let ubzzim = '${ub_resellView.ubzzim }';	//찜 갯수
-</script>
 
-<!-- 페이지 로드시 실행 스크립트 -->
+	</script>
+
+
 <script type="text/javascript">
 	//페이지로드시 실행
-	window.onload = function() {
+	
 		/* 로그인된 회원인지 체크 */
 		let loginCheck = '${sessionScope.loginId}';
 		if (loginCheck.length == 0) {
@@ -271,19 +276,17 @@
 			zzimBtn.classList.add("red");
 			zzimBtn.classList.remove("blue");
 		}
-		
-		/* 챗버튼 클릭 */
-		chatBtn.addEventListener('click', chatInsert_Ajax);
-		
+
 		
 		/* 페이지로드시 글의 판매상태체크 */
-		if (ubmid === loginId) {
+	if(ubmid===loginId){
+	
 			for (let i = 0; i < totalOp.options.length; i++) {
 				if (totalOp.options[i].value == ubstate) {
 					/* 글의 판매상태 option (9:판매완료 ,1:판매중)와 
 					페이지 이동시 넘어온 글의 상태값 파라메터가 같을 경우 그 option에 selected 속성 추가*/
 					totalOp.options[i].selected = 'true';
-
+	console.log('ubstate', ubstate);
 					if (ubstate == '9') { // 글의 상태값이 9(판매완료)이면 실행.
 
 						for (let j = 0; j < select_gdstate.length; j++) {
@@ -321,13 +324,15 @@
 				}
 
 			}
-		}
+
 	}
+	
 </script>
 
 <!-- 찜버튼 스크립트 -->
 <script type="text/javascript">
 	/* 찜버튼 이벤트 호출 함수 */
+
 	zzimBtn.addEventListener('click', clickZzim);
 
 	function clickZzim() {
@@ -370,9 +375,9 @@
 <!-- 글 상태 옵션 변경 ajax 스크립트  -->
 <script type="text/javascript">
 /* 작성자 본인일 경우만 이벤트실행가능 */
-	if (ubmid === loginId) {
-		totalOp.addEventListener('change', selectOp_value);
-
+if(ubmid === loginId){
+			totalOp.addEventListener('change', selectOp_value);
+}
 		function selectOp_value(e) {
 			console.log("e", e.target.value);
 			let select_ubstate = e.target.value;
@@ -433,7 +438,7 @@
 						}
 					})
 		}
-	}
+	
 </script>
 
 <!-- 슬라이드배너  -->
@@ -484,16 +489,10 @@
 
 <!--신고 스크립트  -->
 <script type="text/javascript">
-	///////////////////////////[신고]/////////////////////////////////
-	function ubWarningCheckModal() {
-		/* 게시글 신고 클릭 시 모달창 출력 */
-		if ($("#ubWarning").hasClass("text-danger")) {
-			alert("이미 신고접수된 게시물입니다.");
-		} else {
-			$("#ubWarningCheckModal").modal('show');
-		}
+	window.onload = function(){
+		checkResellWarning();
 	}
-
+	
 	function checkResellWarning() {
 		/* 게시글 신고 확인 */
 		$.ajax({
@@ -501,7 +500,7 @@
 			url : "checkResellWarning_ajax",
 			data : {
 				"loginId" : loginId,
-				"udcode" : udcode
+				"ubcode" : ubcode
 			},
 			async : false,
 			success : function(wnCheck) {
@@ -512,6 +511,18 @@
 			}
 		});
 	}
+
+
+///////////////////////////[신고]/////////////////////////////////
+	function ubWarningCheckModal() {
+		/* 게시글 신고 클릭 시 모달창 출력 */
+		if ($("#ubWarning").hasClass("text-danger")) {
+			alert("이미 신고접수된 게시물입니다.");
+		} else {
+			$("#ubWarningCheckModal").modal('show');
+		}
+	}
+
 
 	function insertResellWarning() {
 		/* 게시글 신고 */
@@ -594,7 +605,9 @@
 <script type="text/javascript">
 	let sellbuy_List = document.querySelector("#sellBuyList");
 	//console.log(sellbuy_List);
+	
 	sellbuy_List.addEventListener("click", backList);
+	
 	function backList() {
 		console.log("글목록버튼 클릭이벤트");
 		location.href = "selectResellPageList?sellBuy=" + ubsellbuy;
@@ -610,6 +623,7 @@
 	const cmtomnickname = document.getElementsByName("cmtomnickname")[0].value;
 	const cmtomid = ubmid;
 	const gdtitle = document.getElementsByName("gdtitle")[0].value;
+	
 
 	function clickBox(sel_boxTag, selOp) {
 		if (sel_boxTag.checked == true) {
@@ -627,40 +641,49 @@
 		}
 	}
 
+</script>
 
-	function chatInsert_Ajax() {
+<!--채팅 활성화  -->
+<script type="text/javascript">
 
-		$.ajax({
+/* 챗버튼 클릭 이벤트핸들러 */
+function chatInsert_Ajax() {
 
-			type : 'post',
-			url : 'insertResellChat',
-			traditional : true,  	// 배열 전송위해서 필요.  
-			async : false,
-			data : {
-				'gd_names' : gd_names,
-				'cmfrmid' : cmfrmid,
-				'cmfrmnickname' : cmfrmnickname,
-				'cmtomnickname' : cmtomnickname,
-				'cmtomid' : cmtomid,
-				'gdtitle' : gdtitle
-			},
-			dataType : 'json',
-			success : function(chatResult) {
-				alert('성공');
-				console.log("chatResult : ", chatResult);
+	$.ajax({
 
-				popupChat(chatResult);
+		type : 'post',
+		url : 'insertResellChat',
+		traditional : true,  	// 배열 전송위해서 필요.  
+		async : false,
+		data : {
+			'gd_names' : gd_names,
+			'cmfrmid' : cmfrmid,
+			'cmfrmnickname' : cmfrmnickname,
+			'cmtomnickname' : cmtomnickname,
+			'cmtomid' : cmtomid,
+			'gdtitle' : gdtitle
+		},
+		dataType : 'json',
+		success : function(chatResult) {
+			alert('성공');
+			console.log("chatResult : ", chatResult);
 
-			}
+			popupChat(chatResult);
 
-		})
-	}
+		}
+
+	})
+}
+
 </script>
 
 <!-- 작성자정보스크립트 -->
 <script type="text/javascript">
 let memberInfo = document.getElementById('memberInfo');
+
 memberInfo.addEventListener('click', memberInfoView)
+
+
 function memberInfoView(e){
 	e.preventDefault();
 	

@@ -123,13 +123,13 @@
 							<c:forEach items="${buyList }" var="bList">
 								<div class="col_2-m flex_card">
 									<div class="card_top">
-										<a href="selectResellView?ubcode=${sList.ubcode }&ubsellbuy=${sList.ubsellbuy }&modifyCheck=LIST"> <img alt=""
+										<a href="selectResellView?ubcode=${bList.ubcode }&ubsellbuy=${bList.ubsellbuy }&modifyCheck=LIST"> <img alt=""
 											src="${pageContext.request.contextPath }/resources/img/resell/${bList.ubmainimg }" class="img_size"
 										>
 										</a>
 									</div>
 									<div class="card_body font-s text-right padding-right text-bold">
-										<a href="selectResellView?ubcode=${sList.ubcode }&ubsellbuy=${sList.ubsellbuy }&modifyCheck=LIST">${bList.ubtitle }</a>
+										<a href="selectResellView?ubcode=${bList.ubcode }&ubsellbuy=${bList.ubsellbuy }&modifyCheck=LIST">${bList.ubtitle }</a>
 									</div>
 									<div class="card_body font-s text-right padding-right text-bold">${bList.ubnickname }</div>
 									<div class="card_footer font-s text-right padding-right">${bList.ubdate }</div>
@@ -153,6 +153,16 @@
 	></script>
 </body>
 <script type="text/javascript">
+
+window.onload = function() {
+	/* 로그인된 회원인지 체크 */
+	let loginCheck = '${sessionScope.loginId}';
+	if (loginCheck.length == 0) {
+		alert("잘못된 접근입니다.");
+		location.href = "loadToLogin"
+	}
+		
+
 	function searchKeyword() {
 		var searchType = document.getElementById("searchType").value;
 		console.log(searchType);

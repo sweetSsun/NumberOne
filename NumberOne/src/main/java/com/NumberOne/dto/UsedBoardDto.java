@@ -5,13 +5,24 @@ import java.util.Arrays;
 import org.springframework.web.multipart.MultipartFile;
 
 import lombok.Data;
-
 @Data
 public class UsedBoardDto {
 	//중고게시판
 	private String ubcode;		//글번호
 	private String ubrgcode;	//지역코드
 	private String ubsellbuy;	//구매 or 판매
+	public String[] getUbdetailimg_originList() {
+		return ubdetailimg_originList;
+	}
+	public void setUbdetailimg_originList(String[] ubdetailimg_originList) {
+		this.ubdetailimg_originList = ubdetailimg_originList;
+	}
+	public String getUbgdname() {
+		return ubgdname;
+	}
+	public void setUbgdname(String ubgdname) {
+		this.ubgdname = ubgdname;
+	}
 	private String ubmid;		//작성자
 	private String ubtitle;		//제목
 	private String ubcontents;	//내용
@@ -21,7 +32,6 @@ public class UsedBoardDto {
 	private int ubstate;		//글상태
 	
 	
-	private int ubrecommend;	//추천수 (recommend 테이블 조인)
 	private int ubwarning;		//경고수 (warningBoards 테이블 조인)
 	private int ubzzim;			//찜수 (zzim 테이블 조인)
 	
@@ -32,7 +42,7 @@ public class UsedBoardDto {
 	private MultipartFile[] ubdetailimgfile;	//상세사진파일
 	
 	private String[] ubdetailimg_list;			//출력용 상세사진목록
-
+	private String[] ubdetailimg_originList;	//수정전 상세사진목록
 	private String ubgdname; //마이페이지 출력용 굿즈명
 	
 	public String getUbcode() {
@@ -95,12 +105,6 @@ public class UsedBoardDto {
 	public void setUbstate(int ubstate) {
 		this.ubstate = ubstate;
 	}
-	public int getUbrecommend() {
-		return ubrecommend;
-	}
-	public void setUbrecommend(int ubrecommend) {
-		this.ubrecommend = ubrecommend;
-	}
 	public int getUbwarning() {
 		return ubwarning;
 	}
@@ -148,10 +152,11 @@ public class UsedBoardDto {
 	public String toString() {
 		return "UsedBoardDto [ubcode=" + ubcode + ", ubrgcode=" + ubrgcode + ", ubsellbuy=" + ubsellbuy + ", ubmid="
 				+ ubmid + ", ubtitle=" + ubtitle + ", ubcontents=" + ubcontents + ", ubdate=" + ubdate + ", ubmainimg="
-				+ ubmainimg + ", ubdetailimg=" + ubdetailimg + ", ubstate=" + ubstate + ", ubrecommend=" + ubrecommend
-				+ ", ubwarning=" + ubwarning + ", ubzzim=" + ubzzim + ", ubnickname=" + ubnickname + ", ubprofile="
-				+ ubprofile + ", ubmainimgfile=" + ubmainimgfile + ", ubdetailimgfile="
-				+ Arrays.toString(ubdetailimgfile) + ", ubdetailimg_list=" + Arrays.toString(ubdetailimg_list) + "]";
+				+ ubmainimg + ", ubdetailimg=" + ubdetailimg + ", ubstate=" + ubstate + ", ubwarning=" + ubwarning
+				+ ", ubzzim=" + ubzzim + ", ubnickname=" + ubnickname + ", ubprofile=" + ubprofile + ", ubmainimgfile="
+				+ ubmainimgfile + ", ubdetailimgfile=" + Arrays.toString(ubdetailimgfile) + ", ubdetailimg_list="
+				+ Arrays.toString(ubdetailimg_list) + ", ubdetailimg_originList="
+				+ Arrays.toString(ubdetailimg_originList) + ", ubgdname=" + ubgdname + "]";
 	}
 	
 	

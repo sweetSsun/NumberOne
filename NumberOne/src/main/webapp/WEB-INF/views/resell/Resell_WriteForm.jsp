@@ -195,7 +195,7 @@ label {
 								<div class="button">
 									<label for="chooseFile_id"> 👉 CLICK HERE! 👈 </label>
 								</div>
-								<input type="file" class="chooseFile" id="chooseFile_id" name="chooseFile" accept="image/*" onchange="loadFile(this)" name="ubmainimgfile">
+								<input type="file" class="chooseFile" id="chooseFile_id"  accept="image/*" onchange="loadFile(this)" name="ubmainimgfile">
 								<div id="image-show"></div>
 								<div id="fileName"></div>
 							</div>

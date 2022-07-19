@@ -196,6 +196,7 @@
 		AND
 		UBSELLBUY = #{ubsellbuy}
 		ORDER BY GDUBCODE
+		
 	</select>
 
 	<!-- 글 상세정보 -->
@@ -216,13 +217,13 @@
 		FROM (SELECT * FROM
 		USEDBOARDS ORDER BY
 		UBCODE)
-		WHERE UBCODE = #{ubcode} AND UBSELLBUY =
+		WHERE UBSELLBUY =
 		#{ubsellbuy} AND
 		UBSTATE = 1 OR UBSTATE = 9
 		) LEFT OUTER JOIN ZZIM_VIEW
 		ON UBCODE = ZZUBCODE,
 		MNICKNAME_VIEW
-		WHERE MID = UBMID
+		WHERE UBCODE = #{ubcode} AND MID = UBMID
 
 	</select>
 
