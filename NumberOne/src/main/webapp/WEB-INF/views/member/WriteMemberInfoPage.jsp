@@ -224,8 +224,34 @@ text-align: right;
 
 }
 
+.sTextarea {
+
+	resize: none;
+  	overflow-y: scroll;
+}
+
+.sTextarea::-webkit-scrollbar {
+    width: 5px;  /* 스크롤바의 너비 */
+    
+}
+
+.sTextarea::-webkit-scrollbar-thumb {
+    height: 3%; /* 스크롤바의 길이 */
+    background:  #999999; /* 스크롤바의 색상 */
+    
+    border-radius: 10px;
+}
+
+.sTextarea::-webkit-scrollbar-track {
+    background: white;  /*스크롤바 뒷 배경 색상*/
+}
+
+a{
+	text-decoration: none;
+}
 
 </style>
+
 
 <body>
 
@@ -239,7 +265,7 @@ text-align: right;
 	<div class="row">
 
 		<%-- <c:forEach items="${memberInfo }" var="memberInfo"> --%>
-		<div class="parent">
+		<div class="parent"  style="margin-bottom : 0px;">
 		<c:choose>
 		<c:when test="${memberInfo.mprofile != null}">
 			<div class="first">
@@ -256,18 +282,18 @@ text-align: right;
 			<div class="second">	
 				
 				<span class="profile"> 
-				<span class="spantitle">닉네임&nbsp;&nbsp;|</span>
-				<span>${memberInfo.mnickname }</span>
+				<textarea class="spantitle" style="border: 0px; background-color:white; resize: none; height: 25px; overflow: hidden;"  disabled>닉네임&nbsp;&nbsp;|&nbsp;</textarea>
+				<textarea style="border: 0px; background-color:white; resize: none; height: 25px; overflow: hidden; text-align: left; color:black;" disabled >${memberInfo.mnickname }</textarea>				
 				</span>	
 					
 				<span class="profile" style="display: block;"> 
-				<span class="spantitle">지역&nbsp;&nbsp;|</span>
-				<span>${memberInfo.mregion }</span>
+				<textarea class="spantitle" style="border: 0px; background-color:white; resize: none; height: 25px; overflow: hidden;"  disabled>지역&nbsp;&nbsp;|&nbsp;</textarea>
+				<textarea style="border: 0px; background-color:white; resize: none; height: 25px; overflow: hidden; text-align: left; color:black;" disabled >${memberInfo.mregion }</textarea>
 				</span>	
 				
 				<span class="profile" style="display: block;"> 
-				<span class="spantitle" style="">상태메세지&nbsp;&nbsp;|</span>
-				<span>${memberInfo.mmessage }</span>	
+				<textarea id="sTextarea" class="spantitle" style="border: 0px; background-color:white; resize: none;" disabled>상태메세지&nbsp;&nbsp;|&nbsp;</textarea>
+				<textarea class="sTextarea" style="border: 0px; background-color:white; width: 250px; color:black;" disabled >${memberInfo.mmessage }</textarea>	
 				</span>
 						
 			</div>
@@ -285,7 +311,7 @@ text-align: right;
 	<div class="row" style="width: 640px; margin-left: 11px;" >
 		<div class="col-lg-6 col-md-6 col-sm-6" 
 		style="border: 1px solid #949494; border-radius: 20px 20px 0px 0px; height: 50px; border-bottom: 0px; background-color: #F2F2FF">
-			<input type="button" value="활 동 내 역" onclick="boardreplySwitch('b')"
+			<input type="button" value="활 동 내 역" onclick="boardreplySwitch('a')"
 			style="width:280px; border: 0px; margin-top: 7px; text-align: center; font-weight: bold; outline:none;  background-color: #F2F2FF" readonly="readonly">
 		</div>
 		<div class="col-lg-6 col-md-6 col-sm-6" 
@@ -299,7 +325,7 @@ text-align: right;
 	<div class = "msgTextarea2" style="background-color: #F2F2FF; padding-left: 50px;">
 	<span style="width: 500px; text-align: center;">
 
-	<button onclick="boardreplySwitch('b')" id="board"  style="border: 0px; background-color: #F2F2FF; ">작성글보기</button> 
+	<button onclick="boardreplySwitch('a')" id="board"  style="border: 0px; background-color: #F2F2FF; ">작성글보기</button> 
    	&nbsp;&nbsp;&nbsp; 
    	<button id="reply" onclick="boardreplySwitch('r')" style="border: 0px; background-color: #F2F2FF;">작성댓글보기</button></span>	
 
@@ -317,6 +343,7 @@ text-align: right;
 <!-- 메뉴 끝 -->		
 </div>
 
+
 <script type="text/javascript">
 
 
@@ -332,30 +359,65 @@ function boardreplySwitch(type){
 	   console.log("작성글 출력 연결");
 	   var output = "";
        
+	   
+	   
 	   for (var i = 0; i < boardList.length; i++){
-	      output+="<ul><li>"      
-	      output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; color:black; \" >"+boardList[i].bdtitle+"</p>"
-	      output+="</li></ul>   "      
-	      output+="</div> "
+		   
+		  if(boardList[i].bdcategory == "자랑"){
+	      		output+="<ul><li>"
+	    		output+="<a href=\"selectRoomList?bdcode="+boardList[i].bdcode+"&jsp=view\" target=\"_blank\">"
+	      		output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; color:black; \" >"+boardList[i].bdtitle+"</p>"
+	      		output+="</a>"
+	      		output+="</li></ul>"      
+	      
+		   }else {
+		      	output+="<ul><li>"
+		    	output+="<a href=\"selectBoardView?bdcode="+boardList[i].bdcode+"\" target=\"_blank\">"
+		      	output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; color:black; \" >"+boardList[i].bdtitle+"</p>"
+		      	output+="</a>"
+		      	output+="</li></ul>   " 	    	  
+	      }
+	      
+	      output+="</div>"
 
 	      $("#WmemberBoard").html(output);
-	   }
-	   
+	   	}
+	  
 	 }   
+
+ 
+ 
+ 
 
 	
  function writeMemberReply(ReplyList){ 
-     console.log("댓글 출력 연결")   ;
-     
-      var output = "";
-        for (var i = 0; i < ReplyList.length; i++){
-           output+="<ul><li>"      
-           output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; color:black; \" >"+ReplyList[i].rpcontents+"</p>"
-           output+="</li></ul>   "      
-           output+="</div> "
-           console.log(output);
-        }
-           $("#WmemberBoard").html(output);
+ 
+	   console.log("작성 댓글 출력 연결");
+	   var output = "";
+       
+	   
+	   
+	   for (var i = 0; i < ReplyList.length; i++){
+		   
+		  if(ReplyList[i].rpbdcategory == "자랑"){
+	      		output+="<ul><li>"
+	    		output+="<a href=\"selectRoomList?bdcode="+ReplyList[i].rpbdcode+"&jsp=view\" target=\"_blank\">"
+	      		output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; color:black; \" >"+ReplyList[i].rpcontents+"</p>"
+	      		output+="</a>"
+	      		output+="</li></ul>"      
+	      
+		   }else {
+		      	output+="<ul><li>"
+		    	output+="<a href=\"selectBoardView?bdcode="+ReplyList[i].rpbdcode+"\" target=\"_blank\">"
+		      	output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; color:black; \" >"+ReplyList[i].rpcontents+"</p>"
+		      	output+="</a>"
+		      	output+="</li></ul>" 	    	  
+	      }
+	      
+	      output+="</div>"
+
+	   	}
+	  $("#WmemberBoard").html(output);
                
       
 } 
@@ -369,7 +431,7 @@ function boardreplySwitch(type){
 	      output="<div id=\"WmemberBoard2\">"
 	      output+="<div class=\"row\" style=\"width: 640px; margin-left: 11px;\"  >"
 	    	  output+="<div class=\"col-lg-6 col-md-6 col-sm-6\" style=\"border: 1px solid #949494; border-radius: 20px 20px 0px 0px; height: 50px;\">"
-	    	  output+="<input type=\"button\" value=\"활 동 내 역\" onclick=\"boardreplySwitch('b2')\" style=\"width:280px; border: 0px; margin-top: 7px; text-align: center; font-weight: bold; outline:none;  background-color: white\" readonly=\"readonly\"></div>"
+	    	  output+="<input type=\"button\" value=\"활 동 내 역\" onclick=\"boardreplySwitch('a')\" style=\"width:280px; border: 0px; margin-top: 7px; text-align: center; font-weight: bold; outline:none;  background-color: white\" readonly=\"readonly\"></div>"
 	    	  output+="<div class=\"col-lg-6 col-md-6 col-sm-6\" style=\"border: 1px solid #949494; border-radius: 20px 20px 0px 0px; height: 50px; border-bottom: 0px; background-color: #F2F2FF;\">"
 	    	  output+="<input type=\"button\" value=\"판 매 내 역\" onclick=\"boardreplySwitch('u')\" style=\"background-color: #F2F2FF; width:280px; border: 0px; margin-top: 7px; text-align: center; font-weight: bold; outline:none;\"  readonly=\"readonly\"></div>"
 	    	  output+="</div>"  
@@ -383,8 +445,11 @@ function boardreplySwitch(type){
 	        for (var i = 0; i < ubList.length; i++){
 	           output+="<ul><li>" 
 	        	   output+="<div>"
-	           output+="&nbsp;&nbsp;&nbsp; <img style=\"height: 70px; width: 70px; border: 1px solid #949494; border-radius:5px; padding: 1px;\" src=\"${pageContext.request.contextPath }/resources/img/resell/"+ubList[i].ubmainimg+"\">"
+	           output+="&nbsp;&nbsp;&nbsp;"
+	        	   output+="<a href=\"selectResellView?ubcode="+ubList[i].ubbdcode+"&ubsellbuy=S&modifyCheck=LIST\" target=\"_blank\">"
+	       	   output+="<img style=\"height: 70px; width: 70px; border: 1px solid #949494; border-radius:5px; padding: 1px;\" src=\"${pageContext.request.contextPath }/resources/img/resell/"+ubList[i].ubmainimg+"\">"
 	           output+="<span class=\"pText\" style=\"background-color: #F2F2FF; border: 0px; outline:none; color:black; \" >&nbsp;&nbsp;&nbsp; "+ubList[i].ubgdname+"</span>"
+	           		output+="</a>"
 	           output+="<div><hr>"
 	           output+="</li></ul>"      
 	        }
@@ -394,7 +459,7 @@ function boardreplySwitch(type){
 	           //console.log(output);
 	           $("#WmemberReply").html(output);
 			
-		 
+	        	
  } 
 
 	
@@ -406,7 +471,7 @@ function boardreplySwitch(type){
 	   output+="<div>"
 		   output+="<div class=\"row\" style=\"width: 640px; margin-left: 11px;\" >"
 		   output+="<div class=\"col-lg-6 col-md-6 col-sm-6\" style=\"border: 1px solid #949494; border-radius: 20px 20px 0px 0px; height: 50px; border-bottom: 0px; background-color: #F2F2FF;\">"
-		   output+="<input type=\"button\" value=\"활 동 내 역\" onclick=\"boardreplySwitch('b')\" "
+		   output+="<input type=\"button\" value=\"활 동 내 역\" onclick=\"boardreplySwitch('a')\" "
 		   output+="style=\"width:280px; border: 0px; margin-top: 7px; text-align: center; font-weight: bold; outline:none;  background-color: #F2F2FF\" readonly=\"readonly\"></div>"
 		   output+="<div class=\"col-lg-6 col-md-6 col-sm-6\" style=\"border: 1px solid #949494; border-radius: 20px 20px 0px 0px; height: 50px;\">"
 		   output+="<input type=\"button\" value=\"판 매 내 역\" onclick=\"boardreplySwitch('u')\""
@@ -416,7 +481,7 @@ function boardreplySwitch(type){
 		   
 		   output+="<div class = \"msgTextarea2\" style=\"background-color: #F2F2FF; padding-left: 50px;\">"
 		   output+="<span style=\"width: 500px; text-align: center;\">"
-		   output+="<button onclick=\"boardreplySwitch('b')\" id=\"board\"  style=\"border: 0px; background-color: #F2F2FF; \">작성글보기</button> "
+		   output+="<button onclick=\"boardreplySwitch('a')\" id=\"board\"  style=\"border: 0px; background-color: #F2F2FF; \">작성글보기</button> "
 		   output+="&nbsp;&nbsp;&nbsp; "
 		   output+="<button id=\"reply\" onclick=\"boardreplySwitch('r')\" style=\"border: 0px; background-color: #F2F2FF;\">작성댓글보기</button></span></div>"
 		   
@@ -424,9 +489,20 @@ function boardreplySwitch(type){
 		output+="<div id=\"WmemberBoard\"></div>"
 		   
 		   for (var i = 0; i < boardList.length; i++){
-		   output+="<ul><li>"      
-		   output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; color:black; \" >"+boardList[i].bdtitle+"</p>"
-		   output+="</li></ul>"
+			
+			   if(boardList[i].bdcategory == "자랑"){
+		   			output+="<ul><li>"   
+			   		output+="<a href=\"selectRoomList?bdcode="+boardList[i].bdcode+"&jsp=view\" target=\"_blank\">"
+		   			output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; color:black; \" >"+boardList[i].bdtitle+"</p>"
+		   			output+="</a>"
+		   			output+="</li></ul>"  
+			   }else {
+				   	output+="<ul><li>"  
+					output+="<a href=\"selectBoardView?bdcode="+boardList[i].bdcode+"\" target=\"_blank\">"
+					output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; color:black; \" >"+boardList[i].bdtitle+"</p>"
+					output+="</a>"
+					output+="</li></ul>"		   
+			   }
 		   } 
 		   output+="</div>"
 		   output+="</div>"		
@@ -436,6 +512,9 @@ function boardreplySwitch(type){
 		   
 	   
 	 }  
+
+
+ 
 
 
 </script>
