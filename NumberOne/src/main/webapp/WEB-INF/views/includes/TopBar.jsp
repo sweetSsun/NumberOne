@@ -340,14 +340,13 @@
 	                     dataType:"json",
 	                     async:false, // async : false를 줌으로써 비동기를 동기로 처리 할 수 있다.
 	                     success:function(sumUnReadCount){
-	                       console.log(sumUnReadCount);
+	                       //console.log(sumUnReadCount);
 	                       $("#chat-badge").text(sumUnReadCount);
 	                      // 읽지 않은 메세지 총 갯수가 0개가 아니면
 	                      if(sumUnReadCount != 0){
 	                          // 채팅 icon 깜빡거리기
 	                          $('.nav_chat-badge').addClass('iconBlink');
 	                          $('.nav_chat-badge').removeClass('d_none');
-	                          play();
 	                      }else{
 	                          // 깜빡거림 없애기
 	                          $('.nav_chat-badge').removeClass('iconBlink');

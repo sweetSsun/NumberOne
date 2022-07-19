@@ -5,14 +5,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<!-- Jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<!-- Css Styles -->
 <%@ include file="/resources/css/BarCss.jsp" %>
-<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 <!-- 폰트어썸 -->
 <script src="https://kit.fontawesome.com/86a85cd392.js" crossorigin="anonymous"></script>
 <title>${board.bdtitle } - 1인자:커뮤니티</title>
+<!-- Jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <style type="text/css">
 	section{
@@ -20,14 +18,17 @@
 		margin: auto;
 		margin-top: 0%;
 	}
-	.textarea-NbView{
-		border: none;
-		resize: none;
-		width: -webkit-fill-available;
-		min-height: 20rem;
-	}
 	textarea:focus {
     	outline: none;
+	}
+	.row .col-1{
+		width: auto;
+	}
+	#inputReply{
+		border: none;
+		width: -webkit-fill-available;
+		resize: none;
+		height: auto;
 	}
 	#inputComment{
 		resize: none;
@@ -107,11 +108,50 @@
 	#inputSearchText{
 		font-size: 18px;
 	}
+	.img-container{
+     overflow: hidden;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     border: solid #E0E0E0 2px;
+     margin-top: 5%;
+     margin-bottom: 5%;
+     width: 200px;
+     height: 200px;
+     
+   }
+   #upload_Img{
+   	width: 200px;
+   	height: 200px;
+   	object-fit: cover;
+   }
+   
+	/*  */
+#myform fieldset{
+    display: inline-block;
+    direction: rtl;
+    border:0;
+}
+#myform fieldset legend{
+    text-align: right;
+}
+#myform input[type=radio]{
+    display: none;
+}
+#myform label{
+    font-size: 2em;
+    color: transparent;
+    text-shadow: 0 0 0 #f0f0f0;
+}
+#myform input[type=radio]:checked ~ label{
+    text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
+    color: #00bcd4;
+}
 </style>
 </head>
 <body>
 	    <!-- TopBar -->
-       	<%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
+        <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
         <!-- End of TopBar -->
 	
 	<main>
@@ -121,12 +161,23 @@
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h4 class="text-center">관리자 커뮤니티 상세페이지 : Admin_BoardView.jsp</h4>
+				<h2 class="text-center">관리자 후기글 상세페이지 : Admin_ReviewBoardView.jsp</h2>
 				<form action="">
 					<div class="row">
 						<div class="col">
-							<a href="#"><span class="fw-bold boardCategory"> | ${board.bdcategory }게시판 </span></a> 
-							<span class="fw-bold" style="color:gray; font-size:20px">/</span> <a href="#"><span class="bdregion"> ${board.bdrgname}</span></a>
+							<a href="selectCategoryBoardList?searchVal=${board.bdcategory }"><span class="fw-bold boardCategory"> | ${board.bdcategory }게시판 </span></a> 
+							<span class="fw-bold" style="color:gray; font-size:20px">/</span> 
+							
+							<c:choose>
+								<c:when test="${board.bdrgcode == 'ALL' }">
+									<a href="selectRegionBoardList"><span class="bdregion"> ${board.bdrgname}</span></a>
+								</c:when>
+							
+								<c:otherwise>
+									<a href="selectDetailBoardList?searchVal=${board.bdrgcode }"><span class="bdregion"> ${board.bdrgname}</span></a>
+								</c:otherwise>
+							</c:choose>
+							
 						</div>
 					</div>
 					<div class="row" >
@@ -134,6 +185,23 @@
 							<span class="fw-bold boardTitle">${board.bdtitle }</span>  
 						</div>
 					</div>
+					<!-- 별점 -->
+					<div class="row">
+						<div class="col" class="mb-3" id="myform">
+							<fieldset>
+								<input type="radio" name="bdrate" value="5" id="rate1"><label
+									for="rate1"  onclick="return(false);">★</label>
+								<input type="radio" name="bdrate" value="4" id="rate2"><label
+									for="rate2"  onclick="return(false);">★</label>
+								<input type="radio" name="bdrate" value="3" id="rate3"><label
+									for="rate3"  onclick="return(false);">★</label>
+								<input type="radio" name="bdrate" value="2" id="rate4"><label
+									for="rate4"  onclick="return(false);">★</label>
+								<input type="radio" name="bdrate" value="1" id="rate5"><label
+									for="rate5"  onclick="return(false);">★</label>
+							</fieldset>
+						</div>
+					</div>	
 					<div class="row idDateHits">
 						<div class="col-6">
 							<c:choose>
@@ -166,7 +234,8 @@
 							<c:if test="${board.bdimg != null }">
 								<img alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg}" style="max-width:100%; max-height:500px;">
 							</c:if>
-							<textarea class="textarea-NbView" readonly>${board.bdcontents }</textarea>
+							<textarea id="inputReply" rows="10%" cols="100%" readonly>${board.bdcontents }</textarea>
+							<%-- <text style="min-height:270px;">${board.bdcontents }</div> --%>
 						</div>
 					</div>
 				</form>
@@ -192,7 +261,6 @@
 					</div>					
 				</div>
 				
-				
 				<!------------------ 댓글영역 ------------------->
 				<div class="mb-2" id="commentBox">
 					<!-- 댓글개수 -->	
@@ -201,7 +269,6 @@
 							<i class="fa-regular fa-comment"></i> 댓글 <span class="text-info fw-bold" id="ReplyCount"></span>개
 						</div>
 					</div>
-					
 					
 					<!-- 댓글목록_ajax -->
 					<div class="row" id="replyList_ajax">
@@ -257,7 +324,7 @@
             </div>
         </div>
     </div>
-	    
+    
     <!--  --><!-- 댓글 삭제 확인 모달 -->
 	<div class="modal fade" id="rpDeleteCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
@@ -293,6 +360,7 @@
 	}
 </script>
 
+
 <script type="text/javascript">
 	//선택한 글번호 
 	var bdcode = '${board.bdcode}';
@@ -300,10 +368,33 @@
 	var loginId = '${sessionScope.loginId}';
 	
 	$(document).ready(function(){
+		/* 별점 출력 */
+		var bdrate = ${board.bdrate};
+		console.log("별점 : " + bdrate);
+		
+		var radio = $("input[type=radio][name=bdrate]");
+		console.log(radio);
+		for( var i=0; i< radio.length; i++){
+			if( radio.eq(i).val() == bdrate ){
+				radio.eq(i).attr("checked", "checked");
+			}
+		}
 		selectReplyList();//게시글 댓글목록
 		selectReplyCount();//게시글 댓글수
 		updateBoardRecommendCount();//게시글 추천수 
+		
 	});
+</script>
+
+<script type="text/javascript">
+		// 게시글 경고 모달창 close 하는 스크립트
+ 		var modal = $(".modal");
+		var close = $(".close");
+		for (var i = 0; i < close.length; i++){
+			close[i].addEventListener("click", function(){
+				$("#bdWarningCheckModal").modal("hide");
+			});
+		}
 </script>
 
 <script type="text/javascript">
@@ -382,72 +473,72 @@
 			success : function(replyList){
 				console.log(replyList);
 				output += "<div class=\"row\">"
-				for( var i=0; i < replyList.length; i++ ){
-					
-					if( replyList[i].rpmid == '${sessionScope.loginId}' ){//동일한 아이디
+					for( var i=0; i < replyList.length; i++ ){
 						
-						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;'>" /* 프로필영역 */
-							if( replyList[i].rpprofile != "nomprofile" ){//프로필 이미지가 있을 시 
-								if(  replyList[i].rpmstate == 9){//카카오 회원
-									output += "<img class=\"img-profile rounded-circle \" style=\"height:45px; width:45px;\" src='"+replyList[i].rpprofile + "'>"
-								}else{
-									output += "<img class=\"img-profile rounded-circle \" style=\"height:45px; width:45px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
-								}
-							}else{//프로필 이미지가 없을 시 
-								output += "<img class=\"img-profile rounded-circle\" style=\"height:45px; width:45px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
-							}
-						output += "</div>"
-						
-						output += "<div class=\"col-11\" style='border-bottom: solid #E0E0E0 1px;\'>"
-						/* 닉네임, 시간 */
-						output += "<span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span>"
-						output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span> "
-						
-						/* 수정, 삭제 버튼 */
-						output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"rpRemoveModal('"+ replyList[i].rpcode +"')\" value=\"삭제\">"
-						output += "<input style=\"margin-right:5px; border:solid gray 1px\" type=\"button\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"rpModifyModal('"+ replyList[i].rpcode +"')\" value=\"수정\">"
-						output += "<br>"
-						
-						if( '${sessionScope.loginId}' == 'admin'){
-							/* 관리자 - 댓글 정지 버튼 */
-							output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton bg-secondary text-white fw-bold mt-2\" onclick=\"adminReplyStop('"+ replyList[i].rpcode +"')\" value=\"정지\">"
-						}
-						/* 댓글내용 */
-						output += "<span class=\"inputRpcontents\">" + replyList[i].rpcontents + "</span>"
-						output += "</div>"
-						
-					}else{
-						
-						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;'>" /* 프로필영역 */
-							if( replyList[i].rpprofile != "nomprofile" ){//프로필 이미지가 있을 시 
-								if(  replyList[i].rpmstate == 9){//카카오 회원
-									output += "<img class=\"img-profile rounded-circle \" style=\"height:45px; width:45px;\" src='"+replyList[i].rpprofile + "'>"
-								}else{
-									output += "<img class=\"img-profile rounded-circle \" style=\"height:45px; width:45px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
-								}
-							}else{//프로필 이미지가 없을 시 
-								output += "<img class=\"img-profile rounded-circle\" style=\"height:45px; width:45px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
-							}
-						output += "</div>"
+						if( replyList[i].rpmid == '${sessionScope.loginId}' ){//동일한 아이디
 							
-						output += "<div class=\"col-11\" style='border-bottom: solid #E0E0E0 1px;\'>"
-						/* 닉네임, 시간 */
-						output += "<span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span>"
-						output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span> "
-						
-						if( '${sessionScope.loginId}' == 'admin'){
-							/* 관리자 - 댓글 정지 버튼 */
-							output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton bg-secondary text-white fw-bold mt-2\" onclick=\"adminReplyStop('"+ replyList[i].rpcode +"')\" value=\"정지\">"
+							output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;'>" /* 프로필영역 */
+								if( replyList[i].rpprofile != "nomprofile" ){//프로필 이미지가 있을 시 
+									if(  replyList[i].rpmstate == 9){//카카오 회원
+										output += "<img class=\"img-profile rounded-circle \" style=\"height:45px; width:45px;\" src='"+replyList[i].rpprofile + "'>"
+									}else{
+										output += "<img class=\"img-profile rounded-circle \" style=\"height:45px; width:45px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+									}
+								}else{//프로필 이미지가 없을 시 
+									output += "<img class=\"img-profile rounded-circle\" style=\"height:45px; width:45px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
+								}
+							output += "</div>"
+							
+							output += "<div class=\"col-11\" style='border-bottom: solid #E0E0E0 1px;\'>"
+							/* 닉네임, 시간 */
+							output += "<span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span>"
+							output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span> "
+							
+							/* 수정, 삭제 버튼 */
+							output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"rpRemoveModal('"+ replyList[i].rpcode +"')\" value=\"삭제\">"
+							output += "<input style=\"margin-right:5px; border:solid gray 1px\" type=\"button\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"rpModifyModal('"+ replyList[i].rpcode +"')\" value=\"수정\">"
+							output += "<br>"
+							
+							if( '${sessionScope.loginId}' == 'admin'){
+								/* 관리자 - 댓글 정지 버튼 */
+								output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton bg-secondary text-white fw-bold mt-2\" onclick=\"adminReplyStop('"+ replyList[i].rpcode +"')\" value=\"정지\">"
+							}
+							/* 댓글내용 */
+							output += "<span class=\"inputRpcontents\">" + replyList[i].rpcontents + "</span>"
+							output += "</div>"
+							
+						}else{
+							
+							output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;'>" /* 프로필영역 */
+								if( replyList[i].rpprofile != "nomprofile" ){//프로필 이미지가 있을 시 
+									if(  replyList[i].rpmstate == 9){//카카오 회원
+										output += "<img class=\"img-profile rounded-circle \" style=\"height:45px; width:45px;\" src='"+replyList[i].rpprofile + "'>"
+									}else{
+										output += "<img class=\"img-profile rounded-circle \" style=\"height:45px; width:45px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+									}
+								}else{//프로필 이미지가 없을 시 
+									output += "<img class=\"img-profile rounded-circle\" style=\"height:45px; width:45px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
+								}
+							output += "</div>"
+								
+							output += "<div class=\"col-11\" style='border-bottom: solid #E0E0E0 1px;\'>"
+							/* 닉네임, 시간 */
+							output += "<span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span>"
+							output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span> "
+							
+							if( '${sessionScope.loginId}' == 'admin'){
+								/* 관리자 - 댓글 정지 버튼 */
+								output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton bg-secondary text-white fw-bold mt-2\" onclick=\"adminReplyStop('"+ replyList[i].rpcode +"')\" value=\"정지\">"
+							}
+							
+							output += "<br>"
+							/* 댓글내용 */
+							output += "<span class=\"inputRpcontents\">" + replyList[i].rpcontents + "</span>"
+							output += "</div>"
 						}
-						
-						output += "<br>"
-						/* 댓글내용 */
-						output += "<span class=\"inputRpcontents\">" + replyList[i].rpcontents + "</span>"
-						output += "</div>"
-					}
 
-				}
-				output += "</div>"
+					}
+					output += "</div>"
 			}
 		});
 		$("#replyList_ajax").html(output);
@@ -505,9 +596,7 @@
 					selectReplyList();
 				}
 			}
-			
 		});
-		
 	}
 	
 	function rpRemoveModal(rpcode){
@@ -516,7 +605,6 @@
 		
 		$("#deleteRpcode").val(rpcode);
 		$("#rpDeleteCheckModal").modal('show');
-		
 	}
 	
 	function replyRemove(){
@@ -570,9 +658,18 @@
 				}
 			}
 		});
-		
 	}
-	
+</script>
+<script type="text/javascript">
+
+/* Textarea 높이 자동 조절 ( 스크롤바 없애기 ) */
+$("#inputReply").each(function () {
+	this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
+	}).on('input', function () {
+	this.style.height = 'auto';
+	this.style.height = (this.scrollHeight) + 'px';
+	});
+
 </script>
 
 
