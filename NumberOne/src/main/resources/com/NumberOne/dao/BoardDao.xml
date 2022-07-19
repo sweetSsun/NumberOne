@@ -264,26 +264,12 @@
  	 
  	 <select id="selectRoomView" resultType="com.NumberOne.dto.BoardDto">
  	 	<!-- 자랑글 상세 -->
- 	 	select bdcode, bdmid, bdtitle, bddate, bdimg, bdstate, bdhits, bdcontents, bddetailimg,
-		bdscrap, bdrecommend, bdreply, m.mnickname as bdnickname, m.mprofile as bdmprofile,
-        sh.scmid as schistory, rch.rcmid as rchistory, wbh.wbmid as wbhistory
-		from boards b
-		left outer join (select scbdcode, count(*) as bdscrap from scrap group by scbdcode) sc
-		on b.bdcode = sc.scbdcode
-		left outer join (select rcbdcode, count(*) as bdrecommend from recommend group by rcbdcode) rc
-		on b.bdcode = rc.rcbdcode
-		left outer join (select rpbdcode, count(*) as bdreply from reply group by rpbdcode) rp
-		on b.bdcode = rp.rpbdcode
-		left outer join members m
-		on b.bdmid = m.mid
-        left outer join (select * from scrap where scmid=#{loginId}) sh on b.bdcode = sh.scbdcode
-        left outer join (select * from recommend where rcmid=#{loginId}) rch on b.bdcode = rch.rcbdcode
-        left outer join (select * from warningboards where wbmid=#{loginId}) wbh on b.bdcode = wbh.wbedbdcode
-        
-		where b.bdcategory='자랑'
-		and b.bdstate='1'
-        and b.bdcode=#{bdcode}
-        order by bdcode desc
+ 	 	select rv.*, sh.scmid as schistory, rch.rcmid as rchistory, wbh.wbmid as wbhistory
+		from roomview rv
+		left outer join (select * from scrap where scmid=#{loginId}) sh on rv.bdcode = sh.scbdcode
+		left outer join (select * from recommend where rcmid=#{loginId}) rch on rv.bdcode = rch.rcbdcode
+		left outer join (select * from warningboards where wbmid=#{loginId}) wbh on rv.bdcode = wbh.wbedbdcode
+        where rv.bdcode=#{bdcode}
  	 </select>
 
  	 <select id="selectReplyMaxNumber" resultType="String">

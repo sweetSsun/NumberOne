@@ -128,7 +128,7 @@
 
 textarea {
 	 width:100%; 
-	 height:100%; 
+	 height:90%; 
 	 overflow-y:scroll; 
 	 color:black;
 	 border: none;
@@ -254,8 +254,9 @@ div.menu{
 	padding-top:10px;
 	height:250px; 
 	color:black;
+	padding-bottom:5px;
 	margin-bottom:5px;
-	border-bottom: solid 1px #DCDCDC;
+	border-bottom:solid 1px #DCDCDC;
 }
 
 #replyWriteForm{
@@ -881,6 +882,7 @@ function adminRpBan(){
 	
 	//자랑글 상세 출력
 	function roomViewPrint(roomView){
+		console.log(roomView);
 		//글작성자 아이디 필드에 저장
 		nowBdmid = roomView.bdmid;
 		//글 이미지
@@ -957,9 +959,15 @@ function adminRpBan(){
 		mnicknameOutput += "<span  style='position:absolute; right:20px; cursor:pointer;' onclick='menuModal(\""+roomView.bdcode+"\", \""+roomView.bdmid+"\")' style='font-size:15px; color:black; padding-rignt:10px;'>&#8943;</span>";
 		mnicknameOutput += "</div>";
 		$("#roomMnickname").html(mnicknameOutput);
-
+		
 		//글 내용
-		$("#roomContents").html("<textarea class='scroll' readonly style='font-size:15px; resize:none;'>"+roomView.bdcontents+"</textarea>");
+		var roomContentsOutput = "<textarea class='scroll' readonly style='font-size:15px; resize:none;'>"+roomView.bdcontents+"</textarea>";
+		//시간 출력
+		roomContentsOutput += "<span style='font-size:15px; color:grey; margin:0px;'>"+timeForToday(roomView.bddate)+"</span>"
+		//roomContentsOutput +=
+		//roomContentsOutput += "</div>"
+		$("#roomContents").html(roomContentsOutput);
+		//$("#roomContents").html("<textarea class='scroll' readonly style='font-size:15px; resize:none;'>"+roomView.bdcontents+"</textarea>");
 		
 		//추천, 스크랩, 신고 출력
 		var roomInfoOutput = ""
@@ -1007,6 +1015,33 @@ function adminRpBan(){
 		//modalImg.src = this.src;
 		//captionText.innerHTML = this.alt;
 	}
+	
+	//시간 함수
+	function timeForToday(value) {
+		console.log("시간 변경 함수 호출")
+		
+        var today = new Date();
+        var timeValue = new Date(value);
+
+        var betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
+        if (betweenTime < 1) return "방금전";
+        if (betweenTime < 60) {
+            return betweenTime+"분전";
+        }
+
+        const betweenTimeHour = Math.floor(betweenTime / 60);
+        if (betweenTimeHour < 24) {
+            return betweenTimeHour+"시간전";
+        }
+		
+        const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+        if (betweenTimeDay < 365) {
+            return betweenTimeDay+"일전";
+        }
+        return Math.floor(betweenTimeDay / 365)+"년전";
+		
+		return value;
+ }
 	
 	//댓글 출력
 	function replyPrint(scroll){

@@ -136,7 +136,7 @@ public interface MemberDao {
 	//마이페이지 미니브라우저 중고거래
 	@Select("SELECT UB.UBMAINIMG, UB.UBCODE , GD.GDNAME AS UBGDNAME, M.MNICKNAME AS UBNICKNAME "
 			+ "FROM USEDBOARDS UB,GOODS GD, MEMBERS M "
-			+ "WHERE UB.UBCODE = GD.GDUBCODE AND UB.UBSELLBUY = 'S' AND UB.UBMID = M.MID AND M.MNICKNAME= #{nickname}")
+			+ "WHERE UB.UBSTATE=1 AND UB.UBCODE = GD.GDUBCODE AND UB.UBSELLBUY = 'S' AND UB.UBMID = M.MID AND M.MNICKNAME= #{nickname}")
 	ArrayList<UsedBoardDto> selectWriteMemberInfoSellBuy_ajax(String nickname);
 	
 

@@ -238,7 +238,8 @@
 						</div>
 						
 						<div align="right"  class="col-3 offset-md-3">
-							<span class="boardDate">${board.bddate } | </span> 
+							<%-- <span class="boardDate" id="bddate">${board.bddate } | </span>  --%>
+							<span class="boardDate" id="bddate"></span> 
 							<span class="bdhit" style="right:0;"><i class="fa-regular fa-eye"></i>  ${board.bdhits } |</span> 
 							<i class="fa-regular fa-thumbs-up commentDate" ></i> <span class="commentDate" style="right:0;" id="BoardRecommendSum"></span>
 						</div>
@@ -464,8 +465,40 @@
 		updateBoardRecommendCount();//게시글 추천수 
 		checkBoardRecommend();//게시글 추천 확인
 		checkBoardWarning();//게시글 신고 확인 
-		
+		var bddate = timeForToday("${board.bddate }"); //게시글 작성 시간
+		$("#bddate").text(bddate);
 	});
+	
+	//시간 함수
+	function timeForToday(value) {
+		console.log("시간 변경 함수 호출")
+		
+        var today = new Date();
+        var timeValue = new Date(value);
+
+        var betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
+        console.log(betweenTime);
+        if (betweenTime < 1) return "방금전 | ";
+        if (betweenTime < 60) {
+            return betweenTime+"분전 | ";
+        }
+
+        const betweenTimeHour = Math.floor(betweenTime / 60);
+        console.log(betweenTimeHour);
+        if (betweenTimeHour < 24) {
+            return betweenTimeHour+"시간전 | ";
+        }
+		/*
+        const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+        if (betweenTimeDay < 365) {
+            return betweenTimeDay+"일전";
+        }
+        return Math.floor(betweenTimeDay / 365)+"년전";
+		*/
+		return value+" | ";
+ 	}
+		
+
 </script>
 
 <script type="text/javascript">

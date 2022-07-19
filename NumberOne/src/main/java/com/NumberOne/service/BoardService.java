@@ -890,98 +890,98 @@ public class BoardService {
 		return mav;
 	}
 
+    // 게시글 수정
+    public ModelAndView updateBoardModify(BoardDto board, String del_bdimg, RedirectAttributes ra)
+          throws IllegalStateException, IOException {
+       System.out.println("BoardService.updateBoardModify() 호출");
+       ModelAndView mav = new ModelAndView();
+       System.out.println(board);
+       
+    
+    //작성자 확인
+    mav = writerChToFail(ra, board.getBdmid());
+    int loginCh = (int) session.getAttribute("loginCh");
+    if(loginCh == 0) {
+       session.removeAttribute("loginCh");
+       return mav;
+    }
+    session.removeAttribute("loginCh");
+    
+    //이미지 저장 
+     String bdimgfile = "";
+     if (!board.getBdimgfile().isEmpty()) {// 업로드한 이미지가 있을 경우
+          System.out.println("첨부파일 있음");
+          // 파일 가져오기
+          MultipartFile bfile = board.getBdimgfile();// 파일 자체를 가져오기
 
-	   // 게시글 수정
-	   public ModelAndView updateBoardModify(BoardDto board, String del_bdimg, RedirectAttributes ra)
-	         throws IllegalStateException, IOException {
-	      System.out.println("BoardService.updateBoardModify() 호출");
-	      ModelAndView mav = new ModelAndView();
-	      System.out.println(board);
-	      
-		
-		//작성자 확인
-		mav = writerChToFail(ra, board.getBdmid());
-		int loginCh = (int) session.getAttribute("loginCh");
-		if(loginCh == 0) {
-			session.removeAttribute("loginCh");
-			return mav;
-		}
-		session.removeAttribute("loginCh");
-		
-		//이미지 저장 
-	    String bdimgfile = "";
-	    if (!board.getBdimgfile().isEmpty()) {// 업로드한 이미지가 있을 경우
-	         System.out.println("첨부파일 있음");
-	         // 파일 가져오기
-	         MultipartFile bfile = board.getBdimgfile();// 파일 자체를 가져오기
+          UUID uuid = UUID.randomUUID();
 
-	         UUID uuid = UUID.randomUUID();
+          // 파일명 생성
+          bdimgfile = uuid.toString() + "_" + board.getBdimgfile().getOriginalFilename();
+          // 파일 저장
+          // 파일저장 경로 :
+          // "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\board"
+          bfile.transferTo(new File(boardSavePath, bdimgfile));
+          
+          board.setBdimg(bdimgfile);
 
-	         // 파일명 생성
-	         bdimgfile = uuid.toString() + "_" + board.getBdimgfile().getOriginalFilename();
-	         // 파일 저장
-	         // 파일저장 경로 :
-	         // "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\board"
-	         bfile.transferTo(new File(boardSavePath, bdimgfile));
-	         
-	         board.setBdimg(bdimgfile);
+          int updateResult = bdao.updateBoardModify(board);
+          if( updateResult > 0 ) {
+             ra.addFlashAttribute("msg", "글이 수정되었습니다.");
+             File delFile;
+             delFile =  new File(boardSavePath, del_bdimg);
+             if( delFile.exists() ) {
+                if( delFile.delete() ) {
+                   System.out.println("파일삭제 성공");
+                }else {
+                   System.out.println("파일삭제 실패");
+                }
+                
+             }else {
+                System.out.println("존재하지 않는 파일입니다.");
+             }
+          }
+          
+       }else {
+          System.out.println("첨부파일 없음");
+          if ( del_bdimg != null) { //삭제파일 있음 
+             System.out.println("삭제파일 있음");
+             board.setBdimg("");
+             int updateResult = bdao.updateBoardModify(board);
+             if ( updateResult > 0 ) {
+                File delFile;
+                delFile =  new File(boardSavePath, del_bdimg);
+                if( delFile.exists() ) {
+                   if( delFile.delete() ) {
+                      System.out.println("파일삭제 성공");
+                   }else {
+                      System.out.println("파일삭제 실패");
+                   }
+                   
+                }else {
+                   System.out.println("존재하지 않는 파일입니다.");
+                }
+                 ra.addFlashAttribute("msg", "글이 수정되었습니다.");
+             }
+          
+       }else {//삭제파일 없음
+          System.out.println("삭제파일 없음");
+          int updateResult = bdao.updateBoardModify(board);
+          ra.addFlashAttribute("msg", "글이 수정되었습니다.");
+       }
+          
+       }
+       
+       // 글수정 후 다시 글 상세페이지로 이동
+       if( board.getBdcategory().equals("후기") ) {
+          mav.setViewName("redirect:/selectReviewBoardView?bdcode=" + board.getBdcode());
+       }else {
+          mav.setViewName("redirect:/selectBoardView?bdcode=" + board.getBdcode());
+       }
 
-	         int updateResult = bdao.updateBoardModify(board);
-	         if( updateResult > 0 ) {
-	        	 ra.addFlashAttribute("msg", "글이 수정되었습니다.");
-	        	 File delFile;
-					delFile =  new File(boardSavePath, del_bdimg);
-					if( delFile.exists() ) {
-						if( delFile.delete() ) {
-							System.out.println("파일삭제 성공");
-						}else {
-							System.out.println("파일삭제 실패");
-						}
-						
-					}else {
-						System.out.println("존재하지 않는 파일입니다.");
-					}
-	         }
-	         
-	      }else {
-	    	  System.out.println("첨부파일 없음");
-	    	  if ( del_bdimg != null) { //삭제파일 있음 
-	    		  System.out.println("삭제파일 있음");
-	    		  board.setBdimg("");
-	    		  int updateResult = bdao.updateBoardModify(board);
-	    		  if ( updateResult > 0 ) {
-	    			  File delFile;
-						delFile =  new File(boardSavePath, del_bdimg);
-						if( delFile.exists() ) {
-							if( delFile.delete() ) {
-								System.out.println("파일삭제 성공");
-							}else {
-								System.out.println("파일삭제 실패");
-							}
-							
-						}else {
-							System.out.println("존재하지 않는 파일입니다.");
-						}
-						 ra.addFlashAttribute("msg", "글이 수정되었습니다.");
-	    		  }
-				
-			}else {//삭제파일 없음
-				System.out.println("삭제파일 없음");
-				int updateResult = bdao.updateBoardModify(board);
-				ra.addFlashAttribute("msg", "글이 수정되었습니다.");
-			}
-	      }
-	      
-	      // 글수정 후 다시 글 상세페이지로 이동
-	      if( board.getBdcategory().equals("후기") ) {
-	         mav.setViewName("redirect:/selectReviewBoardView?bdcode=" + board.getBdcode());
-	      }else {
-	         mav.setViewName("redirect:/selectBoardView?bdcode=" + board.getBdcode());
-	      }
-
-	      return mav;
-	   }
-
+       return mav;
+    }
+    
 	// 자랑글 현재 추천,스크랩,신고 상태 조회
 	public String currentRchistory(String bdcode, String history) {
 		System.out.println("BoardService.currentRchistory() 호출");
@@ -1218,7 +1218,8 @@ public class BoardService {
 		mav.addObject("regionList", regionList);
 		mav.addObject("paging", paging);
 		
-		mav.setViewName("board/Region_"+paging.getSearchVal()+"Board");
+		//mav.setViewName("board/Region_"+paging.getSearchVal()+"Board");
+		mav.setViewName("board/Region_DetailBoardList");
 		
 		return mav;
 	}
