@@ -88,7 +88,7 @@
 
 				<div class="d_body">
 					<div class="text-left">
-						팔구게시판
+						사구게시판
 						<div></div>
 					</div>
 
@@ -173,19 +173,27 @@
 </body>
 <script type="text/javascript">
 //현재 페이지가 출력될 때 checkData 함수 실행
-		var selRegion = regionInfo.options[regionInfo.selectedIndex].value;
+		let selRegion = regionInfo.options[regionInfo.selectedIndex].value;
 		// ID가 'regionInfo'인 select태그의 option들 중 선택된 인덱스의 option태그 value를 변수에 저장
+		console.log("선택된지역" + selRegion);
 		const loginRegion = '${sessionScope.loginRegion}'; 
 		const checkSearch = '${checkSearch}';   //검색확인용
 		console.log("체크메세지",checkSearch );
 		const keyword = '${paging.keyword}'; 	//검색어
 		const searchMsg = document.getElementById("searchMsg");
-	
-		window.onload = function(){
 		const regionInfo = document.getElementById("regionInfo"); 
 		
-		console.log("선택된지역" + selRegion);
 		const checkMsg = '${msg}';   //글작성 확인용
+	
+		window.onload = function(){
+		
+				/* 로그인된 회원인지 체크 */
+				let loginCheck = '${sessionScope.loginId}';
+				if (loginCheck.length == 0) {
+					alert("잘못된 접근입니다.");
+					location.href = "loadToLogin"
+
+		
 		if(checkMsg.length >0){		// 파라메터를 확인해서 단순 목록페이지이동인지, 글작성 후 페이지이동 인지 확인 
 			alert(checkMsg);  // 글작성 후 페이지이동 했을 시에만 글작성 성공메시시출력
 		}
