@@ -160,7 +160,6 @@ public class ChatWebSocketMsg extends TextWebSocketHandler {
 				// Java객체 -> Json객체 변환 (gson 말고 jackson 사용)
 //				sess.sendMessage(new TextMessage(objectMapper.writeValueAsString(chatMessage)));
 				sess.sendMessage(new TextMessage(gson.toJson(chatMessage)));
-				System.out.println("왜그래 : " + gson.toJson(chatMessage));
 			}
 
 			// 동적쿼리에서 사용할 sessionCount 저장 (세션값에 따라 cmread가 달라짐)

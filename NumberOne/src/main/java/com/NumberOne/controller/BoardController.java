@@ -49,9 +49,7 @@ public class BoardController {
 					mav.setViewName("board/RoomViewPage");
 				}
 			}
-			
 		}
-		
 		return mav;
 	}
 
@@ -375,10 +373,10 @@ public class BoardController {
 	 
 	 //게시글 작성 페이지 이동 
 	 @RequestMapping ( value = "/loadToBoardWrite")
-	 public ModelAndView loadToBoardWrite(String bdcategory) {
+	 public ModelAndView loadToBoardWrite(String bdcategory, String bdrgcode, String bdrgname) {
 		 System.out.println("게시글 작성페이지 이동 요청");
 		 
-		 ModelAndView mav = bsvc.loadToBoardWrite(bdcategory);
+		 ModelAndView mav = bsvc.loadToBoardWrite(bdcategory, bdrgcode, bdrgname);
 		 
 		 return mav;
 	 }

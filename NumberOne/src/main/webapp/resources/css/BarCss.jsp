@@ -205,6 +205,7 @@
 	.sideregion_tags tr td {
 		padding-right: 0.5rem;
 		font-weight: bold;
+		font-size: 17px;
 	}
 	
 	/* 열었을 때 햄버거 */

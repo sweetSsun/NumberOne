@@ -314,6 +314,31 @@
 		actionForm.submit();
 	});
 </script>
+
+<script type="text/javascript">
+	//선택한 검색 select option 으로 선택되도록 하기 
+	var searchOption = $("#searchTypeSel option");
+	var searchType = "${paging.searchType}";
+	if ( searchType.length > 0 ){
+		for ( var i = 0; i<searchOption.length; i++){
+			if (searchOption.eq(i).val() == searchType){
+				searchOption.eq(i).attr("selected", "selected");
+			}
+		}	
+	}
+	//선택한 정렬 select option으로 선택되도록 하기
+	var searchValOption = $("#searchValSel option");
+	var searchVal = "${paging.searchVal}";
+	if (searchVal.length > 0) {
+		for (var i = 0; i < searchValOption.length; i++){
+			if (searchValOption.eq(i).val() == searchVal){
+				searchValOption.eq(i).attr("selected", "selected");
+			}
+		}
+	}
+</script>
+
+
 <script type="text/javascript">
 	var checkMsg = '${msg}';
 	if ( checkMsg.length > 0 ){

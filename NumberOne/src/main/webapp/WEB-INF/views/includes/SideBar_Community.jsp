@@ -46,52 +46,25 @@
 				</div>
 				<div class="sideclose_room">
 					<span>
-						<a href="selectFreeBoardList" title="자유방"><i class="fa-solid fa-comments"></i></a>
+						<a href="selectCategoryBoardList?searchVal=자유" title="자유방"><i class="fa-solid fa-comments"></i></a>
 					</span>
 				</div>
 				<div class="sideclose_room">
 					<span>
-						<a href="selectQuestionBoardList" title="질문방"><i class="fa-solid fa-circle-question"></i></a>
+						<a href="selectCategoryBoardList?searchVal=질문" title="질문방"><i class="fa-solid fa-circle-question"></i></a>
 					</span>
 				</div>
 				<div class="sideclose_room">
 					<span>
-						<a href="selectInfoBoardList" title="정보방"><i class="fa-solid fa-head-side-virus"></i></a>
+						<a href="selectCategoryBoardList?searchVal=정보" title="정보방"><i class="fa-solid fa-head-side-virus"></i></a>
 					</span>
 				</div>
 				<div class="sideclose_room">
 					<span>
-						<a href="selectReviewBoardList" title="후기방"><i class="fa-solid fa-pen-to-square"></i></a>
+						<a href="selectCategoryBoardList?searchVal=후기" title="후기방"><i class="fa-solid fa-pen-to-square"></i></a>
 					</span>
 				</div>
 			</div>
-			
-			<!-- 지역 드래그앤드롭 넣고싶어용 -->
-			<!-- <div class="sideregion">
-				<div class="sideregion_title">
-					<span>지역</span>
-				</div>
-						
-				<div>
-					<table class="sideregion_tags">
-						<tr>
-							<td><a href="#">전체</a></td>
-							<td><a href="#">서울</a></td>
-							<td><a href="#">인천</a></td>
-						</tr>
-						<tr>
-							<td><a href="#">경기</a></td>
-							<td><a href="#">경상</a></td>
-							<td><a href="#">전라</a></td>
-						</tr>
-						<tr>
-							<td><a href="#">충청</a></td>
-							<td><a href="#">강원</a></td>
-							<td><a href="#">제주</a></td>
-						</tr>
-					</table>
-				</div>
-			</div> -->
 			
 		</div>
 		

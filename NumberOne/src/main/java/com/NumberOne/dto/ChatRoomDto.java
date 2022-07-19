@@ -15,6 +15,7 @@ public class ChatRoomDto {
 	private String recentCmcontents;	//가장 최신 메세지 (chatmessage 조인)
 	private String recentCmdate;		//가장 최신 메세지의 날짜,시간 (chatmessage 조인)
 	private String crfrmnickname;		//상대방 닉네임 (members 조인)
+	private String crfrmprofile;		//상대방 프로필이미지 (members 조인)
 	
 	public String getCrcode() {
 		return crcode;

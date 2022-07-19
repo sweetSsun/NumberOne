@@ -66,19 +66,25 @@ public class MemberController {
 	
 	//로그인 페이지 이동
 	@RequestMapping(value="/loadToLogin")
-	public ModelAndView loadToLogin(String afterUrl) {
+	public ModelAndView loadToLogin(String afterUrl, RedirectAttributes ra) {
 		System.out.println("로그인 페이지 요청");
 		mav = new ModelAndView();
 		//System.out.println("afterUrl: "+afterUrl);
 		
-		if(afterUrl != null) {
-			session.setAttribute("afterUrl", afterUrl);						
-		} 
-		
-		System.out.println((String)session.getAttribute("afterUrl"));
-		mav.setViewName("member/MemberLoginForm");
+		if(session.getAttribute("loginId")!=null) {
+			//System.out.println("로그인되어있어서 메인으로");
+			ra.addFlashAttribute("msg" , "이미 로그인 상태입니다.");
+			mav.setViewName("redirect:/");
+			
+		} else {
+			if(afterUrl != null) {
+				session.setAttribute("afterUrl", afterUrl);						
+			}
+			System.out.println((String)session.getAttribute("afterUrl"));
+			mav.setViewName("member/MemberLoginForm");
+		}
 		return mav;
-	}	
+	}
 	
 	//로그인 요청
 	  @RequestMapping("/selectMemberLogin")
