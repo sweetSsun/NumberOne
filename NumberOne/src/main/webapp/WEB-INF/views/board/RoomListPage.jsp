@@ -1115,7 +1115,7 @@ function adminRpBan(){
 			data : { "rpcode" : nowRpcode, "rpmid":nowRpmid},
 			async : false,
 			success : function(updateResult){
-				if( updateResult == 0 ){
+				if( updateResult == 1 ){
 					console.log("댓글 삭제 성공!");
 					replyPrint('top');
 					
@@ -1128,7 +1128,7 @@ function adminRpBan(){
 					console.log("댓글 작성자가 아님!");
 					alert("댓글 작성자만 삭제할 수 있습니다!");
 					return;
-				}
+				} 
 			}
 		});	
 	}
@@ -1315,6 +1315,14 @@ function adminRpBan(){
 	
 	function deleteRoomView(){
 		console.log(nowBdcode+"글 삭제 요청");
+		
+		console.log('${sessionScope.loginId}');
+		console.log(nowBdmid);
+		if(nowBdmid != '${sessionScope.loginId}'){
+			alert("글 작성자만 삭제할 수 있습니다!");
+			return;
+		}
+		
 		var confirmCh = confirm("해당 글을 삭제하시겠습니까?");
 		if(confirmCh == false){
 			return;
