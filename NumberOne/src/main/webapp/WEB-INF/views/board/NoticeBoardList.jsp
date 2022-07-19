@@ -88,7 +88,7 @@
 		
 		<section>
 		<!-- 본문 -->
-			<form action="selectNoticeBoard" method="get" id="actionForm" >
+			<form action="selectNoticeBoardList" method="get" id="actionForm">
 			<!-- <input type="hidden" name="searchVal" value="all"> -->
 			<div class="container">
 				<div class="row" style="margin:auto;">
@@ -193,7 +193,7 @@
 	                			<li class=""><a class="active">${num }</a></li>
 	                		</c:when>
 	                		<c:otherwise>
-	                			<li class="paginate_button "><a href="${num }" >${num }</a></li>
+	                			<li class="paginate_button"><a href="${num }" >${num }</a></li>
 	                		</c:otherwise>
 	                	</c:choose>
 	               	</c:forEach>
