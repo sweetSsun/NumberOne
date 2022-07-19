@@ -39,6 +39,7 @@
 		border-radius: 5px;
 		border: solid gray 2px;
 		font-size: 19px;
+		resize: none;
 	}
 	.btn-wrapper{
 		width: 100%;

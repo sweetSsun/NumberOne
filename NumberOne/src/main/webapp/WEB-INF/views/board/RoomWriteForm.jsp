@@ -1,136 +1,215 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 자취방 자랑 글수정</title>
-
 <%@ include file="/resources/css/BarCss.jsp" %>
-<!-- 부트스트랩 
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">-->
-
+<!-- 폰트어썸 -->
+<script src="https://kit.fontawesome.com/86a85cd392.js" crossorigin="anonymous"></script>
+<title>1인자 - 게시글 작성페이지</title>
+<!-- Jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <style type="text/css">
-	#roomWriteTable{
-		width:80%;
-		border:1px solid black;
-		margin-left: auto; 
-		margin-right: auto;
-		padding : 10%;
-	};
-
-	.roomtxtarea{
-		width=:65%;
+	section{
+		max-width: 70%;
+		margin: auto;
+		margin-top: 0%;
 	}
-	
-	.mainfile{
-		border-style: inherit;
-    	border-color: internal-light-dark;
-		padding: 6px;
-		background-color: #BDB4A3;	
-		color: white;
-		border-radius: 6px;
+	select{
+		width: 200px;
+		text-align : center;
+		border : none;
+		color : #004804;
 	}
-	
-	.d_none{ display:none; }
-	
-	.tableHead{ 
-		padding-top: 10px; 
-		padding-bottom: 10px; 
-		padding-left: 30px;
+	option{
+		color : #00bcd4;
+		font-weight: bold;
+	}
+	.bdtitle{
+		border: none;
+		font-weight: bold;
+		font-size: 20px;
+		margin: auto;
+		height: 22px;
+	}
+	.bdcontents{
+		border-radius: 5px;
+		border: solid gray 2px;
+		font-size: 19px;
+		resize: none;
+	}
+	.btn-wrapper{
+		width: 100%;
+		text-align: center;
+		display:inline-block;
+	}
+	.buttons{
+		margin: auto; /* 수평 */
+		display: block; /* 수직 */
 		
 	}
-
-	section{
-      max-width: 70%;
-      margin: auto;
-      margin-top: 0%;
-    }
-	
-	.title{ width : 13%; }
-	
-	.d_none{display : none;}
+	.selectPlaceHolder{
+		display: none;
+	}
+	textarea{
+		spellcheck: false;
+		resize: none;
+		
+	}
+	textarea:focus {
+ 	   outline: none;
+	}
+	input:focus{
+	   outline: none;	
+	}
+	.bdCategoryList{
+		color : #00bcd4;
+		border: none;
+		font-size: 20px;
+	}
+	.bdRegionSel{
+		color : #00bcd4;
+		border: none;
+		font-size: 20px;
+	}
+	.nickname{
+		color : #00bcd4;
+		border: none;
+		font-size: 20px;
+		margin-left: 20px;
+	}
 </style>
-
 </head>
-<!-- jquery -->
-<script type="text/javascript" src="resources/js/jquery-3.3.1.min.js"></script>
 <body>
-	<!-- TobBar -->
-	<%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
-	<!-- End of TobBar -->
+	    <!-- TopBar -->
+        <c:choose>
+            <c:when test="${sessionScope.loginId != 'admin'}">
+                    <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
+            </c:when>
+            <c:otherwise>
+                    <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
+            </c:otherwise>
+        </c:choose>
+        <!-- End of TopBar -->
 	
 	<main>
 		<!-- 사이드바 -->
 		<%@ include file="/WEB-INF/views/includes/SideBar_Mypage.jsp" %>
 		
 		<section>
-		<!-- 본문 -->
-			<div class="container-fluid" >
-			<br>
-				<h1 class="text-center">자취방 자랑 글작성 페이지</h1>
-				<div>
+			<!-- 본문 -->
+			<div class="container">
+				<h2 class="text-center">자취방자랑 글작성 페이지</h2>
 				<form action="insertRoomWrite" method="post" enctype="multipart/form-data" onsubmit="return roomRegisterCh()">
-				<table id="roomWriteTable">
-					<tr>
-						<th class="tableHead">작성자</th>
-						<!-- session의 로그인 닉네임로 출력 -->
-						<td colspan="5">${sessionScope.loginNickname}</td>						
-					</tr>
-					
-					<tr>
-						<!-- th, td에 패딩, 마진을 주고 싶은데 먹히지 않아서 tableHead 클래스로 여백 줬슴당 -->
-						<th class="tableHead title">제목</th>
-						<td colspan="5">
-							<input name="bdtitle" id="bdtitle" type="text" placeholder="제목을 입력하세요" style="width:90%">
-						</td>
-					</tr>
-					<tr>
-						<th class="tableHead title">내용</th>
-						<td colspan="5">
-							<textarea id="bdcontents" style="width:90%; height:300px;" name="bdcontents" placeholder="내용을 입력하세요"></textarea>
-						</td>
-					</tr>
-					<tr>
-						<th class="tableHead title">대표사진</th>
-						<td colspan="5">
-							<!--  
-							<input type="text" id="mainImgScreen"> <span class="mainfile"><label for="mainImg">대표사진 선택</label></span>
-							-->
-							<div id="bdimgScreen" style="width:200px; height:150px;" class="d_none"><img id='previewBdmig' style="width:100%; height:100%;"></img></div>
-							<input type="file" id="mainImg" name="bdimgfile" accept="image/*"> 
-						</td>
-					</tr>
-					<tr>
-						<th class="tableHead title">상세사진</th>
-						<td colspan="5">
-							<!--  
-							<input type="text" id="detailImgScreen"> <span class="mainfile"><label for="detailImg">상세사진 선택</label></span>
-							-->
-							<div id="bddetailimgScreen" style="width:100%;" class="row"></div>
-							<input type="file" multiple="multiple" id="detailImg" name="bddetailimgfile" onclick="return mainimgCh()" accept="image/*">
-						</td>
-					</tr>
-					<tr>
-						<th colspan="6" class="tableHead">
-						<center>
-							<input type="submit" value="등록">
-							<input type="button" onclick="location.href='${pageContext.request.contextPath}/selectRoomList'" value="취소">
-						</center>
-						</th>
-					</tr>
-				</table>
-				</form>
+					<input type="hidden" name="bdmid" value="${sessionScope.loginId }">
+				<div class="row">
+					<div class="col-6">
+						<span style="font-size:20px;">게시판</span><span class="text-danger">*</span>
+						<select name="bdcategory"  class="bdCategoryList" >
+							<option value="자랑" class="selectPlaceHolder">자랑</option>
+							<option value="자랑">자랑</option>
+
+						</select>
+					</div>
+					<div class="col-2">
+						<span style="font-size:20px;">작성자</span>
+					</div>
+					<div class="col-4">
+						<input class="nickname" value="${sessionScope.loginNickname}">
+					</div>
 				</div>
-			</div>
+				<hr>
+				<div class="row">
+					<input id="bdtitle" class="bdtitle" name="bdtitle" type="text" >
+				</div>
+				<hr>
+				<div class="row">
+					<textarea id="bdcontents" class="bdcontents" rows="17" cols="80" name="bdcontents"></textarea>
+				</div>
+				
+				<!--  자취방자랑 대표사진  -->
+				<div class="row" style="margin-top: 3%;">
+					<div id="bdimgScreen" style="width:200px; height:150px;" class="d_none">
+					<img id='previewBdmig' style="width:100%; height:100%;"></img>
+					</div>
+					<input type="file" id="mainImg" name="bdimgfile" accept="image/*"> 
+				</div>					
+				
+				<!-- 자취방자랑 상세사진 -->
+				<div class="row" style="margin-top: 3%;">
+				<div id="bddetailimgScreen" style="width:100%;" class="row"></div>
+				<input type="file" multiple="multiple" id="detailImg" name="bddetailimgfile" onclick="return mainimgCh()" accept="image/*">
+				</div>
+				
+				<!-- 작성/취소 버튼 -->				
+				<div class="row mt-4">
+					<div class="col btn-wrapper">
+						<input class="btn btn-lg buttons fw-bold text-white" style="background-color:#00bcd4;" type="submit" value="작성">
+						<input onclick="bdWriteCancelCheckModal()" style="background-color:#00bcd4;" class="btn btn-lg buttons fw-bold text-white" type="button" value="취소">
+					</div>
+				</div>
+			</form>
+			</div>	
 		</section>
 	</main>
 	
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
-
+	
+	<!-- 게시글 작성 취소 확인 -->
+	<div class="modal fade" id="bdWriteCancelCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"> 게시글 작성 취소 </h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" >
+                	<span class="fw-bold">게시글 작성을 취소하시겠습니까?</span>
+                	<br>
+                	<span class="fw-bold">이 페이지를 벗어나면 작성된 내용은 저장되지 않습니다.</span>
+                </div>	
+                <div class="modal-footer">
+                	<input type="hidden" >
+                    <button class="close btn btn-info text-white"  onclick="location.href='${pageContext.request.contextPath}/selectRoomList'" >네</button>
+                    <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
+                </div>
+            </div>
+        </div>
+    </div>
+	
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
+
+<script type="text/javascript">
+	
+</script>
+
+<script type="text/javascript">
+	//현재 로그인중인 아이디
+	var loginId = '${sessionScope.loginId}';
+	
+</script>
+<script type="text/javascript">
+		// 게시글 작성 취소 경고 모달창 close 하는 스크립트
+ 		var modal = $(".modal");
+		var close = $(".close");
+		for (var i = 0; i < close.length; i++){
+			close[i].addEventListener("click", function(){
+				$("#bdWriteCancelCheckModal").modal("hide");
+			});
+		}
+	function bdWriteCancelCheckModal(){
+		/* 게시글 작성 취소버튼 클릭시 모달 출력 */
+		$("#bdWriteCancelCheckModal").modal('show');
+	}
+</script>
+
 <script type="text/javascript">
 //bdimg 미리보기
 function readBdimg(input) {
@@ -280,27 +359,9 @@ inputMultipleImage.addEventListener("change", e => {
 	}
 </script>
 
+
+
+
+
+
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

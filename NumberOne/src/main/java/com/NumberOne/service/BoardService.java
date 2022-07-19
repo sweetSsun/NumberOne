@@ -42,6 +42,106 @@ public class BoardService {
 
 	// 일반게시판 이미지 등록 경로
 	private String boardSavePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\board";
+	
+	//로그인 확인 (파라미터: ra/리턴: mav)
+	public ModelAndView loginChToFail(RedirectAttributes ra) {
+		ModelAndView mav = new ModelAndView();
+		String loginId = (String) session.getAttribute("loginId");
+		
+		if(loginId == null) {
+			System.out.println("비로그인");
+			
+			//메세지
+			ra.addFlashAttribute("msg", "로그인 후 이용가능합니다");
+			
+			//실패페이지로 이돌(msg alert 띄우고, history back)
+			mav.setViewName("redirect:loadToFail");
+			
+			//session에 loginCh = 0으로 저장(리턴 받은 곳에서 loginCh 확인하고
+			//0이면 session.removeAttribute("loginCh"); 으로 세션에 정보 삭제
+			//return mav;로 메소드 종료
+			session.setAttribute("loginCh", 0);
+		
+		} else {
+			System.out.println("로그인");
+			
+			//session에 loginCh = 1으로 저장(리턴 받은 곳에서 loginCh 확인하고
+			//1이면 session.removeAttribute("loginCh"); 으로 세션에 정보 삭제
+			//다음 메소드 진행
+			session.setAttribute("loginCh", 1);
+		}
+		
+		//호출한 곳에 들어갈 내용
+		/*
+		//로그인 확인
+		ModelAndView mav = bsvc.loginChToFail(ra);
+		int loginCh = (int) session.getAttribute("loginCh");
+		if(loginCh == 0) {
+			session.removeAttribute("loginCh");
+			return mav;
+		}	
+		session.removeAttribute("loginCh");
+		*/
+		
+		return mav;
+	}
+	
+	//작성자 확인 (파라미터: ra, 작성자 아이디/리턴: mav)
+	public ModelAndView writerChToFail(RedirectAttributes ra, String checkId ) {
+		System.out.println("service.writerChToFail 호출");
+		ModelAndView mav = new ModelAndView();
+		String loginId = (String) session.getAttribute("loginId");
+		
+		if(loginId == null) {
+			System.out.println("비로그인");
+			
+			//메세지
+			ra.addFlashAttribute("msg", "로그인 후 이용가능합니다");
+			
+			//실패페이지로 이돌(msg alert 띄우고, history back)
+			mav.setViewName("redirect:loadToFail");
+			
+			//session에 loginCh = 0으로 저장(리턴 받은 곳에서 loginCh 확인하고
+			//0이면 session.removeAttribute("loginCh"); 으로 세션에 정보 삭제
+			//return mav;로 메소드 종료
+			session.setAttribute("loginCh", 0);
+		} else if (loginId != null && ! loginId.equals(checkId)) {
+			System.out.println("작성자 본인 아님");
+				
+			//메세지
+			ra.addFlashAttribute("msg", "작성자가 아닙니다");
+				
+			//실패페이지로 이돌(msg alert 띄우고, history back)
+			mav.setViewName("redirect:loadToFail");
+			
+			//session에 loginCh = 0으로 저장(리턴 받은 곳에서 loginCh 확인하고
+			//0이면 session.removeAttribute("loginCh"); 으로 세션에 정보 삭제
+			//return mav;로 메소드 종료
+			session.setAttribute("loginCh", 0);
+				
+		} else {
+			System.out.println("작성자 본인");
+			//session에 loginCh = 1으로 저장(리턴 받은 곳에서 loginCh 확인하고
+			//1이면 session.removeAttribute("loginCh"); 으로 세션에 정보 삭제
+			//다음 메소드 진행
+			session.setAttribute("loginCh", 1);
+			
+		} 
+		
+		//호출한 곳에 들어갈 내용
+		/*
+		//작성자 확인
+		mav = bsvc.writerChToFail(ra, board.getBdmid());
+		int loginCh = (int) session.getAttribute("loginCh");
+		if(loginCh == 0) {
+			session.removeAttribute("loginCh");
+			return mav;
+		}
+		session.removeAttribute("loginCh");
+		*/
+		
+		return mav;
+	}
 
 	// 자취방자랑 글 등록
 	public ModelAndView insertRoomWrite(BoardDto room, RedirectAttributes ra)
@@ -727,26 +827,51 @@ public class BoardService {
 	}
 
 	// 게시글 수정 페이지 이동 요청
-	public ModelAndView loadToBoardModify(String bdcode, String bdcategory) {
+	public ModelAndView loadToBoardModify(String bdcode, String bdcategory, RedirectAttributes ra) {
 		System.out.println("BoardService.loadToBoardModify() 호출");
 		ModelAndView mav = new ModelAndView();
 		System.out.println(bdcode + ", " + bdcategory);
-
+		
 		// 수정할 게시글 정보
 		BoardDto board;
-
 		if (bdcategory == null || bdcategory.equals("후기")) {
 			// 일반글
 			board = bdao.selectBoardView(bdcode);
-			String bdcontents = board.getBdcontents().replace("&nbsp;", " ");
-			bdcontents = board.getBdcontents().replace("<br>", "\r\n");
-			board.setBdcontents(bdcontents);
-		
 		}else {
 			// 자랑글(selec문 분리);
 			board = bdao.selectRoomModify(bdcode);
+		}
+		
+		
+		//작성자 확인
+		mav = writerChToFail(ra, board.getBdmid());
+		int loginCh = (int) session.getAttribute("loginCh");
+		if(loginCh == 0) {
+			session.removeAttribute("loginCh");
+			return mav;
+		}
+		session.removeAttribute("loginCh");
+		
+		
+		//작성 페이지로 이동
+		if (bdcategory == null || bdcategory.equals("후기")) {
+			// 일반글
+			System.out.println("일반글 수정 페이지로 이동 요청");
+			String bdcontents = board.getBdcontents().replace("&nbsp;", " ");
+			bdcontents = board.getBdcontents().replace("<br>", "\r\n");
+			board.setBdcontents(bdcontents);
 			
-			//디테일 이미지가 있는 경우 이미지이름 배열 생성
+			if(bdcategory != null && bdcategory.equals("후기")) {
+				mav.setViewName("board/ReviewBoardModifyForm");
+			} else {
+				mav.setViewName("board/BoardModifyForm");
+			}
+	
+		}else {
+			// 자랑글
+			System.out.println("자랑글 수정 페이지로 이동 요청");
+						
+			//디테일 이미지가 있는 경우 이미지 이름 배열 생성
 			if(board.getBddetailimg()!=null) {
 				System.out.println(board.getBddetailimg());
 				String[] roomdetailimgs = board.getBddetailimg().split("___");
@@ -756,66 +881,107 @@ public class BoardService {
 				mav.addObject("roomdetailimgs", roomdetailimgs);
 				//상세 이미지 개수
 				mav.addObject("detailCount", roomdetailimgs.length);
-			}
-			
+			}			
+			mav.setViewName("board/RoomModifyForm");
 		}
+		
 		mav.addObject("board", board);
 		
-		//페이지 이동 
-		if (bdcategory != null) {
-			mav.setViewName("board/RoomModifyForm");
-			if( bdcategory.equals("후기") ) {
-				mav.setViewName("board/ReviewBoardModifyForm");
-			}
-		} else {
-			mav.setViewName("board/BoardModifyForm");
-		}
-
 		return mav;
 	}
 
-	   // 게시글 수정
-	   public ModelAndView updateBoardModify(BoardDto board, RedirectAttributes ra)
-	         throws IllegalStateException, IOException {
-	      System.out.println("BoardService.updateBoardModify() 호출");
-	      ModelAndView mav = new ModelAndView();
-	      System.out.println(board);
+    // 게시글 수정
+    public ModelAndView updateBoardModify(BoardDto board, String del_bdimg, RedirectAttributes ra)
+          throws IllegalStateException, IOException {
+       System.out.println("BoardService.updateBoardModify() 호출");
+       ModelAndView mav = new ModelAndView();
+       System.out.println(board);
+       
+    
+    //작성자 확인
+    mav = writerChToFail(ra, board.getBdmid());
+    int loginCh = (int) session.getAttribute("loginCh");
+    if(loginCh == 0) {
+       session.removeAttribute("loginCh");
+       return mav;
+    }
+    session.removeAttribute("loginCh");
+    
+    //이미지 저장 
+     String bdimgfile = "";
+     if (!board.getBdimgfile().isEmpty()) {// 업로드한 이미지가 있을 경우
+          System.out.println("첨부파일 있음");
+          // 파일 가져오기
+          MultipartFile bfile = board.getBdimgfile();// 파일 자체를 가져오기
 
-	      //이미지 저장 
-	      String bdimgfile = "";
-	      if (!board.getBdimgfile().isEmpty()) {// 업로드한 이미지가 있을 경우
-	         System.out.println("첨부파일 있음");
-	         // 파일 가져오기
-	         MultipartFile bfile = board.getBdimgfile();// 파일 자체를 가져오기
+          UUID uuid = UUID.randomUUID();
 
-	         UUID uuid = UUID.randomUUID();
+          // 파일명 생성
+          bdimgfile = uuid.toString() + "_" + board.getBdimgfile().getOriginalFilename();
+          // 파일 저장
+          // 파일저장 경로 :
+          // "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\board"
+          bfile.transferTo(new File(boardSavePath, bdimgfile));
+          
+          board.setBdimg(bdimgfile);
 
-	         // 파일명 생성
-	         bdimgfile = uuid.toString() + "_" + board.getBdimgfile().getOriginalFilename();
-	         // 파일 저장
-	         // 파일저장 경로 :
-	         // "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\board"
-	         bfile.transferTo(new File(boardSavePath, bdimgfile));
+          int updateResult = bdao.updateBoardModify(board);
+          if( updateResult > 0 ) {
+             ra.addFlashAttribute("msg", "글이 수정되었습니다.");
+             File delFile;
+             delFile =  new File(boardSavePath, del_bdimg);
+             if( delFile.exists() ) {
+                if( delFile.delete() ) {
+                   System.out.println("파일삭제 성공");
+                }else {
+                   System.out.println("파일삭제 실패");
+                }
+                
+             }else {
+                System.out.println("존재하지 않는 파일입니다.");
+             }
+          }
+          
+       }else {
+          System.out.println("첨부파일 없음");
+          if ( del_bdimg != null) { //삭제파일 있음 
+             System.out.println("삭제파일 있음");
+             board.setBdimg("");
+             int updateResult = bdao.updateBoardModify(board);
+             if ( updateResult > 0 ) {
+                File delFile;
+                delFile =  new File(boardSavePath, del_bdimg);
+                if( delFile.exists() ) {
+                   if( delFile.delete() ) {
+                      System.out.println("파일삭제 성공");
+                   }else {
+                      System.out.println("파일삭제 실패");
+                   }
+                   
+                }else {
+                   System.out.println("존재하지 않는 파일입니다.");
+                }
+                 ra.addFlashAttribute("msg", "글이 수정되었습니다.");
+             }
+          
+       }else {//삭제파일 없음
+          System.out.println("삭제파일 없음");
+          int updateResult = bdao.updateBoardModify(board);
+          ra.addFlashAttribute("msg", "글이 수정되었습니다.");
+       }
+          
+       }
+       
+       // 글수정 후 다시 글 상세페이지로 이동
+       if( board.getBdcategory().equals("후기") ) {
+          mav.setViewName("redirect:/selectReviewBoardView?bdcode=" + board.getBdcode());
+       }else {
+          mav.setViewName("redirect:/selectBoardView?bdcode=" + board.getBdcode());
+       }
 
-	      }
-	      System.out.println(bdimgfile);
-	      board.setBdimg(bdimgfile);
-
-	      int updateResult = bdao.updateBoardModify(board);
-	      if( updateResult > 0 ) {
-	         ra.addFlashAttribute("msg", "글이 수정되었습니다.");
-	      }
-	      
-	      // 글수정 후 다시 글 상세페이지로 이동
-	      if( board.getBdcategory().equals("후기") ) {
-	         mav.setViewName("redirect:/selectReviewBoardView?bdcode=" + board.getBdcode());
-	      }else {
-	         mav.setViewName("redirect:/selectBoardView?bdcode=" + board.getBdcode());
-	      }
-
-	      return mav;
-	   }
-
+       return mav;
+    }
+    
 	// 자랑글 현재 추천,스크랩,신고 상태 조회
 	public String currentRchistory(String bdcode, String history) {
 		System.out.println("BoardService.currentRchistory() 호출");
@@ -857,11 +1023,7 @@ public class BoardService {
 		if ( board.getBdrgcode() == null ) {
 			board.setBdrgcode("ALL");
 		}
-//		//게시글 띄어쓰기, 줄바꿈 
-//		String bdcontents = board.getBdcontents().replace(" ", "&nbsp;");
-//		bdcontents = board.getBdcontents().replace("\r\n", "<br>");
-//		board.setBdcontents(bdcontents);
-		
+
 		String bdcode = bdao.selectMaxBdcode();
 		System.out.println("maxBdcode: " + bdcode);
 		int bdcodeNum = Integer.parseInt(bdcode.substring(2)) + 1;
@@ -896,21 +1058,25 @@ public class BoardService {
 			bfile.transferTo(new File(boardSavePath, bdimgfile));
 
 		}
-		System.out.println(bdimgfile);
-		ra.addFlashAttribute("msg", "글이 작성되었습니다");
+		//System.out.println(bdimgfile);
 		board.setBdimg(bdimgfile);
 		//System.out.println(board);
 		
-		//글작성
-		int insertResult = bdao.insertBoard(board);
+		//글작성 - 로그인 상태 확인
+		if( session.getAttribute("loginId") != null ) {
+			int insertResult = bdao.insertBoard(board);
+			ra.addFlashAttribute("msg", "글이 작성되었습니다");
 		
-		//글작성 후 글상세페이지로 이동 
-		if( board.getBdcategory().equals("후기") ) {
-			mav.setViewName("redirect:/selectReviewBoardView?bdcode="+bdcode);
+			//글작성 후 글상세페이지로 이동 
+			if( board.getBdcategory().equals("후기") ) {
+				mav.setViewName("redirect:/selectReviewBoardView?bdcode="+bdcode);
+			}else {
+				mav.setViewName("redirect:/selectBoardView?bdcode="+bdcode);
+			}
 		}else {
-			mav.setViewName("redirect:/selectBoardView?bdcode="+bdcode);
+			ra.addFlashAttribute("msg", "로그인 상태가 아닙니다.");
+			mav.setViewName("redirect:/loadToLogin");
 		}
-
 		return mav;
 	}
 
@@ -1052,7 +1218,8 @@ public class BoardService {
 		mav.addObject("regionList", regionList);
 		mav.addObject("paging", paging);
 		
-		mav.setViewName("board/Region_"+paging.getSearchVal()+"Board");
+		//mav.setViewName("board/Region_"+paging.getSearchVal()+"Board");
+		mav.setViewName("board/Region_DetailBoardList");
 		
 		return mav;
 	}
