@@ -890,7 +890,6 @@ public class BoardService {
 		return mav;
 	}
 
-
     // 게시글 수정
     public ModelAndView updateBoardModify(BoardDto board, String del_bdimg, RedirectAttributes ra)
           throws IllegalStateException, IOException {
@@ -982,7 +981,6 @@ public class BoardService {
 
        return mav;
     }
-
     
 	// 자랑글 현재 추천,스크랩,신고 상태 조회
 	public String currentRchistory(String bdcode, String history) {
@@ -1025,11 +1023,7 @@ public class BoardService {
 		if ( board.getBdrgcode() == null ) {
 			board.setBdrgcode("ALL");
 		}
-//		//게시글 띄어쓰기, 줄바꿈 
-//		String bdcontents = board.getBdcontents().replace(" ", "&nbsp;");
-//		bdcontents = board.getBdcontents().replace("\r\n", "<br>");
-//		board.setBdcontents(bdcontents);
-		
+
 		String bdcode = bdao.selectMaxBdcode();
 		System.out.println("maxBdcode: " + bdcode);
 		int bdcodeNum = Integer.parseInt(bdcode.substring(2)) + 1;
@@ -1064,21 +1058,25 @@ public class BoardService {
 			bfile.transferTo(new File(boardSavePath, bdimgfile));
 
 		}
-		System.out.println(bdimgfile);
-		ra.addFlashAttribute("msg", "글이 작성되었습니다");
+		//System.out.println(bdimgfile);
 		board.setBdimg(bdimgfile);
 		//System.out.println(board);
 		
 		//글작성
-		int insertResult = bdao.insertBoard(board);
+		if( session.getAttribute("loginId") != null ) {
+			int insertResult = bdao.insertBoard(board);
+			ra.addFlashAttribute("msg", "글이 작성되었습니다");
 		
-		//글작성 후 글상세페이지로 이동 
-		if( board.getBdcategory().equals("후기") ) {
-			mav.setViewName("redirect:/selectReviewBoardView?bdcode="+bdcode);
+			//글작성 후 글상세페이지로 이동 
+			if( board.getBdcategory().equals("후기") ) {
+				mav.setViewName("redirect:/selectReviewBoardView?bdcode="+bdcode);
+			}else {
+				mav.setViewName("redirect:/selectBoardView?bdcode="+bdcode);
+			}
 		}else {
-			mav.setViewName("redirect:/selectBoardView?bdcode="+bdcode);
+			ra.addFlashAttribute("msg", "로그인 상태가 아닙니다.");
+			mav.setViewName("redirect:/loadToLogin");
 		}
-
 		return mav;
 	}
 
@@ -1220,7 +1218,8 @@ public class BoardService {
 		mav.addObject("regionList", regionList);
 		mav.addObject("paging", paging);
 		
-		mav.setViewName("board/Region_"+paging.getSearchVal()+"Board");
+		//mav.setViewName("board/Region_"+paging.getSearchVal()+"Board");
+		mav.setViewName("board/Region_DetailBoardList");
 		
 		return mav;
 	}

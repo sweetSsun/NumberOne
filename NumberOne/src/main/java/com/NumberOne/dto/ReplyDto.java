@@ -96,12 +96,18 @@ public class ReplyDto {
 	public void setRpmstate(String rpmstate) {
 		this.rpmstate = rpmstate;
 	}
+	public String getBdstate() {
+		return bdstate;
+	}
+	public void setBdstate(String bdstate) {
+		this.bdstate = bdstate;
+	}
 	@Override
 	public String toString() {
 		return "ReplyDto [rpcode=" + rpcode + ", rpbdcode=" + rpbdcode + ", rpcontents=" + rpcontents + ", rpmid="
 				+ rpmid + ", rpdate=" + rpdate + ", rpstate=" + rpstate + ", rpbdtitle=" + rpbdtitle + ", rpbdcategory="
 				+ rpbdcategory + ", rpnickname=" + rpnickname + ", rpprofile=" + rpprofile + ", rpmprofile="
-				+ rpmprofile + ", rpmstate=" + rpmstate + "]";
+				+ rpmprofile + ", rpmstate=" + rpmstate + ", bdstate=" + bdstate + "]";
 	}
 	
 	

@@ -144,6 +144,12 @@ public class UsedBoardDto {
 	public void setUbprofile(String ubprofile) {
 		this.ubprofile = ubprofile;
 	}
+	public String getUbgdname() {
+		return ubgdname;
+	}
+	public void setUbgdname(String ubgdname) {
+		this.ubgdname = ubgdname;
+	}
 	@Override
 	public String toString() {
 		return "UsedBoardDto [ubcode=" + ubcode + ", ubrgcode=" + ubrgcode + ", ubsellbuy=" + ubsellbuy + ", ubmid="
@@ -151,7 +157,8 @@ public class UsedBoardDto {
 				+ ubmainimg + ", ubdetailimg=" + ubdetailimg + ", ubstate=" + ubstate + ", ubrecommend=" + ubrecommend
 				+ ", ubwarning=" + ubwarning + ", ubzzim=" + ubzzim + ", ubnickname=" + ubnickname + ", ubprofile="
 				+ ubprofile + ", ubmainimgfile=" + ubmainimgfile + ", ubdetailimgfile="
-				+ Arrays.toString(ubdetailimgfile) + ", ubdetailimg_list=" + Arrays.toString(ubdetailimg_list) + "]";
+				+ Arrays.toString(ubdetailimgfile) + ", ubdetailimg_list=" + Arrays.toString(ubdetailimg_list)
+				+ ", ubgdname=" + ubgdname + "]";
 	}
 	
 	
