@@ -265,7 +265,7 @@ a{
 	<!-- 프로필 -->
 
 	<div class="row">
-
+	<form action="insertResellChat">
 		<%-- <c:forEach items="${memberInfo }" var="memberInfo"> --%>
 		<div class="parent"  style="margin-bottom : 0px;">
 		<c:choose>
@@ -304,6 +304,17 @@ a{
 			</div>
 		</div>
 		<%-- </c:forEach> --%>
+		
+		<input type="hidden" name="cmfrmid" value="${sessionScope.loginId }">
+		<input type="hidden" name="cmfrmnickname" value="${sessionScope.loginNickname }">
+		
+		<input type="hidden" name="cmtomnickname" value="${memberInfo.mnickname }"> 
+		<input type="hidden" name="cmtomid"	value="${memberInfo.mid }">
+		
+		<!-- output 안으로~! -->
+		<%-- <input type="hidden" name="gdtitle" value="${ublist.ubtitle }"> --%>
+		
+	</form>
 	</div>	 
 </div>	 
 
@@ -411,7 +422,7 @@ function boardreplySwitch(type){
 	    		output+="<a href=\"selectRoomList?bdcode="+ReplyList[i].rpbdcode+"&jsp=view\" target=\"_blank\">"
 	      		output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; color:black; \" >"+ReplyList[i].rpcontents+"</p>"
 	      		output+="</a>"
-	      		output+="</li></ul>"      
+	      		output+="</li></ul>"
 	      
 		   }else {
 		      	output+="<ul><li>"
@@ -456,11 +467,13 @@ function boardreplySwitch(type){
 	        	   output+="<div>"
 	           output+="&nbsp;&nbsp;&nbsp;"
 	        	   output+="<a href=\"selectResellView?ubcode="+ubList[i].ubbdcode+"&ubsellbuy=S&modifyCheck=LIST\" target=\"_blank\">"
-	        	   output+="<input type=\"checkbox\" onclick=\"clickBox(this, "+ubList[i].ubgdname+")\" name="+ubList[i].ubgdname+" value="+ubList[i].ubgdname+">"
+	        	   output+="<input type=\"checkbox\" onclick=\"clickBox(this, "+ubList[i].ubgdname+")\" name=\"ubname\" value="+ubList[i].ubgdname+">"
 	        	   output+="&nbsp;&nbsp;&nbsp;"
 	       	   output+="<img style=\"height: 70px; width: 70px; border: 1px solid #949494; border-radius:5px; padding: 1px;\" src=\"${pageContext.request.contextPath }/resources/img/resell/"+ubList[i].ubmainimg+"\">"
 	           output+="<span class=\"pText\" style=\"background-color: #F2F2FF; border: 0px; outline:none; color:black; \" >&nbsp;&nbsp;&nbsp; "+ubList[i].ubgdname+"</span>"
 	           		output+="</a>"
+           			output+="<input type=\"text\" name=\"ubtitle\" value="+ubList[i].ubtitle+">"
+           			output+="<input type=\"text\" name=\"ubprice\" value="+ubList[i].gdprice+">"
 	           output+="<div><hr>"
 	          /*  output+="</li></ul>"    */   
 	        }
@@ -473,10 +486,66 @@ function boardreplySwitch(type){
 	        	
  } 
 
-
-
 </script>
 
+<script type="text/javascript">
+const loginId = '${sessionScope.loginId}'; //로그인된 아이디
+const tomid = '${memberInfo.mid}'; //작성자아이디
+
+/* 체크박스 클릭 이벤트 */
+let ub_names = [];
+const cmfrmid = loginId;
+const cmfrmnickname = document.getElementsByName("cmfrmnickname")[0].value;
+const cmtomnickname = document.getElementsByName("cmtomnickname")[0].value;
+const cmtomid = tomid;
+const ubtitle = document.getElementsByName("ubtitle").value;
+
+function clickBox(sel_boxTag, selOp) {
+	console.log(selOp);
+	if (sel_boxTag.checked == true) {
+		// 클릭이벤트 발생 시 체크박스가 checked 된 경우에만 실행
+		ub_names.push(selOp);	// checked 되었을 때 상품명을 gd_names 변수에 push 해서 담아준다.
+
+		/* 데이터 확인 */
+		console.log("선택된체크박스 : ", sel_boxTag);
+		console.log("보내는아이디 : ", cmfrmid);
+		console.log("보내는닉네임 : ", cmfrmnickname);
+		console.log("받는닉네임 : ", cmtomnickname);
+		console.log("받는아이디 : ", cmtomid);
+		console.log("상품이름 : ", ub_names);
+		console.log("글 제목 : ", ubtitle);
+	}
+}
+
+
+function chatInsert_Ajax() {
+
+	$.ajax({
+		type : 'post',
+		url : 'insertResellChat',
+		traditional : true,  	// 배열 전송위해서 필요.  
+		async : false,
+		data : {
+			'ub_names' : ub_names,
+			'cmfrmid' : cmfrmid,
+			'cmfrmnickname' : cmfrmnickname,
+			'cmtomnickname' : cmtomnickname,
+			'cmtomid' : cmtomid,
+			'ubtitle' : ubtitle
+		},
+		dataType : 'json',
+		success : function(chatResult) {
+			alert('성공');
+			console.log("chatResult : ", chatResult);
+
+			popupChat(chatResult);
+
+		}
+
+	})
+}
+
+</script>
 
 </body>
 </html>
