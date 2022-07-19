@@ -78,7 +78,7 @@
 								</div>
 							</div>
 							<div class="">
-								<button onclick="searchKeyword(1)" type="button"></button>
+								<button onclick="searchKeyword(1)" type="button" value="검색"></button>
 							</div>
 						</div>
 

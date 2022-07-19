@@ -114,10 +114,10 @@ public class AdminController {
 	}
 	
 	@RequestMapping (value="admin_selectNoticeModify")
-	public ModelAndView admin_selectNoticeModify(String codeIdx, Paging paging) {
+	public ModelAndView admin_selectNoticeModify(String codeIdx, Paging paging, RedirectAttributes ra) {
 		System.out.println("공지 수정페이지 이동 요청");
 		System.out.println("codeIdx : " + codeIdx);
-		mav = asvc.admin_selectNoticeModify(codeIdx, paging);
+		mav = asvc.admin_selectNoticeModify(codeIdx, paging, ra);
 		return mav;
 	}
 	

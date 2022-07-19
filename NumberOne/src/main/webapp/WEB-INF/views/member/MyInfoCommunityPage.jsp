@@ -7,8 +7,8 @@
 <meta charset="UTF-8">
 <title>1인자 - 마이페이지 커뮤니티</title>
 
-<script type="text/javascript">
 
+<script type="text/javascript">
    var wMemberPopup = "";
   
    
@@ -75,6 +75,7 @@
    }
    
 </script>
+
 
 
 

@@ -31,6 +31,7 @@
 		text-align: right;
 		font-size: 16px;
 	}
+
 	
 	.nav_chat .nav_list-link{
 		position: relative;
@@ -74,6 +75,7 @@
 		overflow: hidden;
 	}
 
+
 	@keyframes blink-effect {
 		  50% {
 	    opacity: 0;
@@ -87,6 +89,7 @@
 	.d_none{
       display: none;
     }
+
 </style>
 
 </head>
@@ -156,7 +159,7 @@
 					
 				<!-- 로그인, 회원가입, 고객센터 -->
 				<div class="col-lg-7 col-md-6 col-sm-6 menubar_right">
-					<ul class="">
+					<ul>
 						<c:choose>
 	                    <c:when test="${sessionScope.loginId == null && sessionScope.kakaoId == null}">
 							<li style="margin-right: 15px;" ><a href="loadToRegister">회원가입</a></li>
@@ -164,11 +167,11 @@
 	                    </c:when>
 						<c:otherwise>
 							<!-- 찜 -->
-							<li style="margin-right: 15px;"><a href="#" title="찜목록"><i class="fa-solid fa-heart" style="font-size: large;"></i></a></li>
+							<li style="margin-right: 15px;"><a href="#" title="찜목록"><i class="fa-solid fa-heart"></i></a></li>
 							<!-- 채팅 -->
-							<li style="margin-right: 15px;" class="dropdown nav_list-link" >
+							<li style="margin-right: 15px;" class="dropdown" >
 								<a href="#" title="1:1채팅" class="nav_chat" id="dropdownChat" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-									<i class="fa-solid fa-comment-dots" style="font-size: large;"></i>
+									<i class="fa-solid fa-comment-dots"></i>
 									<!-- 안읽은 채팅메세지 표시 -->
 									<!-- badge 클래스 끌어와야함 -->
 									<span id="chat-badge" class="nav_chat-badge"></span>
@@ -358,7 +361,12 @@
 	               },2000);
 	    });
 	}
+	
 </script>
+
+
+
+
 
 
 </html>
