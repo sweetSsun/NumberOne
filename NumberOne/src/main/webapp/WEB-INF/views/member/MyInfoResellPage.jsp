@@ -231,7 +231,8 @@
 								<td><a href="selectResellView?ubcode=${zzim.zzubcode }&ubsellbuy=B&modifyCheck=LIST">${zzim.ubtitle }</a></td>						
 							</c:otherwise>
 							</c:choose> 
-								<td>${zzim.mnickname }</td>
+								<td><span onclick="writeMemberSellbuy('${zzim.mnickname }')"
+								style="text-align: center; cursor: pointer;">${zzim.mnickname }</span></td>
 								<td>${zzim.ubdate }</td>
 							</tr>
 						</c:otherwise> 

@@ -114,10 +114,10 @@ public class AdminController {
 	}
 	
 	@RequestMapping (value="admin_selectNoticeModify")
-	public ModelAndView admin_selectNoticeModify(String codeIdx, Paging paging) {
+	public ModelAndView admin_selectNoticeModify(String codeIdx, Paging paging, RedirectAttributes ra) {
 		System.out.println("공지 수정페이지 이동 요청");
 		System.out.println("codeIdx : " + codeIdx);
-		mav = asvc.admin_selectNoticeModify(codeIdx, paging);
+		mav = asvc.admin_selectNoticeModify(codeIdx, paging, ra);
 		return mav;
 	}
 	
@@ -198,6 +198,13 @@ public class AdminController {
 		System.out.println("배너 고정 변경 요청");
 		int updateResult = asvc.admin_updateBdfix_ajax(bdcode, bdfix);
 		return updateResult;
+	}
+	
+	@RequestMapping (value="admin_selectReviewBoardView")
+	public ModelAndView admin_selectReviewBoardView(Paging paging, String codeIdx, String check) {
+		System.out.println("커뮤니티 후기 상세페이지 이동 요청_관리자");
+		mav = asvc.admin_selectReviewBoardView(paging, codeIdx, check);
+		return mav;
 	}
 	
 	@RequestMapping (value="admin_selectBoardView")

@@ -304,7 +304,7 @@
 		}
 		/* 라디오 버튼 체크 확인 */
 		if( $(':radio[name="bdrate"]:checked').length <1 ){
-			alert("별점을 선택해주세요!");
+			alert("별점을 선택해주세요.");
 			
 			return false;
 		}

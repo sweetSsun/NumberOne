@@ -139,9 +139,9 @@ background-color: #00BCD4;
 								문의 내용 </td>							
 							</tr>							
 							<tr style="border-bottom: solid #E0E0E0 1px; height: 100px;" class="d_none" id="${contact.ctcode }_contents">
-								<td colspan="3" style=" padding-left: 30px;" >${contact.ctcontents }</td>							
+								<td colspan="3" style="padding-left: 30px;">${contact.ctcontents }</td>
 							</tr>
-							<!-- 답변 -->							
+							<!-- 답변 -->			
 								<c:choose>
 									<c:when test="${contact.ctans !=null}">
 							<tr style="border-bottom: solid #E0E0E0 1px; height: 50px; margin-bottom:30px; " class="d_none" id="${contact.ctcode }_replytitle">

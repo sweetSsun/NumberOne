@@ -66,19 +66,25 @@ public class MemberController {
 	
 	//로그인 페이지 이동
 	@RequestMapping(value="/loadToLogin")
-	public ModelAndView loadToLogin(String afterUrl) {
+	public ModelAndView loadToLogin(String afterUrl, RedirectAttributes ra) {
 		System.out.println("로그인 페이지 요청");
 		mav = new ModelAndView();
 		//System.out.println("afterUrl: "+afterUrl);
 		
-		if(afterUrl != null) {
-			session.setAttribute("afterUrl", afterUrl);						
-		} 
-		
-		System.out.println((String)session.getAttribute("afterUrl"));
-		mav.setViewName("member/MemberLoginForm");
+		if(session.getAttribute("loginId")!=null) {
+			//System.out.println("로그인되어있어서 메인으로");
+			ra.addFlashAttribute("msg" , "이미 로그인 상태입니다.");
+			mav.setViewName("redirect:/");
+			
+		} else {
+			if(afterUrl != null) {
+				session.setAttribute("afterUrl", afterUrl);						
+			}
+			System.out.println((String)session.getAttribute("afterUrl"));
+			mav.setViewName("member/MemberLoginForm");
+		}
 		return mav;
-	}	
+	}
 	
 	//로그인 요청
 	  @RequestMapping("/selectMemberLogin")
@@ -182,10 +188,10 @@ public class MemberController {
 		
 		//마이페이지 커뮤니티 
 		@RequestMapping(value = "/selectMyInfoCommunityView")
-		public ModelAndView selectMyInfoCommunityView() {
+		public ModelAndView selectMyInfoCommunityView(RedirectAttributes ra) {
 			System.out.println("마이페이지 커뮤니티");
 			mav = new ModelAndView();
-			mav = msvc.selectMyInfoCommunityView();
+			mav = msvc.selectMyInfoCommunityView(ra);
 			
 			return mav;
 			
@@ -194,10 +200,10 @@ public class MemberController {
 		//마이페이지 중고거래
 		
 		@RequestMapping(value = "/selectMyInfoResellView")
-		public ModelAndView selectMyInfoResellView() {
+		public ModelAndView selectMyInfoResellView(RedirectAttributes ra) {
 			System.out.println("마이페이지 중고거래");
 			mav = new ModelAndView();
-			mav = msvc.selectMyInfoResellView();
+			mav = msvc.selectMyInfoResellView(ra);
 			
 			return mav;
 	
@@ -207,10 +213,10 @@ public class MemberController {
 		//마이페이지 1:1 문의 내역 / 상세
 		
 		@RequestMapping(value = "/selectMyInfoQuestionListView")
-		public ModelAndView selectMyInfoQuestionListView() {
+		public ModelAndView selectMyInfoQuestionListView(RedirectAttributes ra) {
 			System.out.println("마이페이지 1:1 문의 목록 / 상세");
 			mav = new ModelAndView();
-			mav = msvc.selectMyInfoQuestionListView();
+			mav = msvc.selectMyInfoQuestionListView(ra);
 			
 			return mav;
 	
@@ -218,10 +224,10 @@ public class MemberController {
 		
 		//마이페이지 1:1 문의 작성페이지 이동 
 		@RequestMapping(value = "/loadToMyInfoQuestionForm")
-		public ModelAndView loadToMyInfoQuestionForm() {
+		public ModelAndView loadToMyInfoQuestionForm(RedirectAttributes ra) {
 			System.out.println("마이페이지 1:1 문의 작성페이지 이동");
 			mav = new ModelAndView();
-			mav = msvc.loadToMyInfoQuestionForm();
+			mav = msvc.loadToMyInfoQuestionForm(ra);
 			
 			return mav;
 	

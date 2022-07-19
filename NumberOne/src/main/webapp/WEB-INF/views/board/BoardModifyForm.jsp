@@ -93,7 +93,7 @@
 		color: white; 
 		position: absolute; 
 		top: 10px; 
-		right: 10px; 
+		right: 5px; 
 		cursor: pointer;
    }  
    
@@ -119,7 +119,7 @@
 			<!-- 본문 -->
 			<div class="container">
 				<h2 class="text-center">게시판 글수정페이지 : BoardModifyForm.jsp</h2>
-				<form action="updateBoardModify" method="post" enctype="multipart/form-data">
+				<form action="updateBoardModify" method="post" enctype="multipart/form-data" >
 				<div class="row">
 					<input type="hidden" name="bdmid" value="${board.bdmid }">
 					<input type="hidden" name="bdcode" value="${board.bdcode }">
@@ -164,14 +164,15 @@
 				</div>
 				
 				<!-- 첨부파일! 나중에 경로 및 name 수정  -->
-				<c:if test="${board.bdimg != null || board.bdimg eq '' }">
+				<c:if test="${board.bdimg != null }">
 					<div class="img-container" id="img-container" style="position: relative;">
 						<img id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
 						<span class="x" onclick="currentImgStateUpdate()">&nbsp;X&nbsp;</span>
-						<input type="hidden" name="bdimg" id="bdimg" value="${board.bdimg }">
 					</div>				
 				</c:if >
 					<input id="bdImg" type="file" name="bdimgfile" accept="image/*"  >
+					<input type="hidden" name="del_bdimg" id="del_bdimg" >
+					<input type="hidden" name="bdimg" id="bdimg" value="${board.bdimg }">
 				
 				<div class="row mt-4">
 					<div class="col btn-wrapper">
@@ -249,16 +250,19 @@
 	
 	function currentImgStateUpdate(){
 		/* 이미지 삭제*/
-		var bdimg = $("#bdimg").val();
-		$("#bdimg").val("del_" + bdimg);
+		var bdimg = '${board.bdimg}';
+		$("#del_bdimg").val(bdimg);
 		
-		var delImgCheck = $("#bdimg").val();
+		var delImgCheck = $("#del_bdimg").val();
 		console.log(delImgCheck);
 		
 		$("#img-container").css("display", "none");
 	}
+
 	
 </script>
+
+
 
 
 </html>

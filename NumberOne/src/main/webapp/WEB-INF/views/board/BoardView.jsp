@@ -13,7 +13,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 <style type="text/css">
-	section{
+	section {
 		max-width: 70%;
 		margin: auto;
 		margin-top: 0%;
@@ -112,8 +112,8 @@
 		object-fit: cover;
 	}
 	.rpProfile_None{
-		height:40px; 
-		width:40px;
+		height:50px; 
+		width:50px;
 		object-fit: cover;
 	}
 	.icon{
@@ -145,30 +145,10 @@
    	height: 200px;
    	object-fit: cover;
    }
-   
-   /* 툴팁 */
-.tooltip {
-  position: relative;
-  display: #00bcd4;
-}
-
-.tooltip .tooltiptext {
-  visibility: hidden;       /* 이벤트가 없으면 툴팁 영역을 숨김 */
-  width: 120px;             /* 툴팁 영역의 넓이를 설정 */
-  background-color: black;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
-
-  position: absolute;       /* 절대 위치를 사용 */
-  z-index: 1;
-}
-
-.tooltip:hover .tooltiptext {
-  visibility: visible;      /* hover 이벤트 발생시 영역을 보여줌 */
-}
-
+   #inputModifyRpBox{
+   	border: solid #E0E0E0 2px; 
+   	border-radius:5px;
+   }
 </style>
 </head>
 <body>
@@ -233,7 +213,12 @@
 						</div>
 						
 						<div align="right"  class="col-3 offset-md-3">
-							<span class="boardDate">${board.bddate } | </span> 
+<<<<<<< HEAD
+							<span class="boardDate" id="bddate">${board.bddate} | </span> 
+=======
+							<%-- <span class="boardDate" id="bddate">${board.bddate } | </span>  --%>
+							<span class="boardDate" id="bddate"></span> 
+>>>>>>> c9258d2ef4ef6b8512a2c0582be23a5c5ae9f7a6
 							<span class="bdhit" style="right:0;"><i class="fa-regular fa-eye"></i>  ${board.bdhits } |</span> 
 							<i class="fa-regular fa-thumbs-up commentDate" ></i> <span class="commentDate" style="right:0;" id="BoardRecommendSum"></span>
 						</div>
@@ -336,7 +321,7 @@
                 </div>
                 <div class="modal-body" style="margin:auto;" >
 					<input type="hidden" id="inputRpcode">
-					<textarea rows="5" cols="50" id="inputModifyRp" style="border: solid #E0E0E0 2px; border-radius:5px;">
+					<textarea rows="5" cols="50" id="inputModifyRpBox" style="resize: none;">
 					
 					</textarea>                
                 </div>
@@ -434,20 +419,62 @@
 	}
 </script>
 
+
 <script type="text/javascript">
 	//선택한 글번호 
 	var bdcode = '${board.bdcode}';
 	//현재 로그인중인 아이디
 	var loginId = '${sessionScope.loginId}';
+	//글작성 시간 	
+	var bddate = '${board.bddate}';
 	
 	$(document).ready(function(){
 		selectReplyList();//게시글 댓글목록
 		selectReplyCount();//게시글 댓글수
 		updateBoardRecommendCount();//게시글 추천수 
 		checkBoardRecommend();//게시글 추천 확인
+<<<<<<< HEAD
+		checkBoardWarning();//게시글 신고 확인
+=======
 		checkBoardWarning();//게시글 신고 확인 
+		var bddate = timeForToday("${board.bddate }"); //게시글 작성 시간
+		//$("#bddate").text(bddate);
+>>>>>>> c9258d2ef4ef6b8512a2c0582be23a5c5ae9f7a6
 	});
+	
+	//시간 함수
+	function timeForToday(value) {
+		console.log("시간 변경 함수 호출")
+		
+        var today = new Date();
+        var timeValue = new Date(value);
+
+        var betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
+        console.log(betweenTime);
+        if (betweenTime < 1) return "방금전 | ";
+        if (betweenTime < 60) {
+            return betweenTime+"분전 | ";
+        }
+
+        const betweenTimeHour = Math.floor(betweenTime / 60);
+        console.log(betweenTimeHour);
+        if (betweenTimeHour < 24) {
+            return betweenTimeHour+"시간전 | ";
+        }
+		/*
+        const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+        if (betweenTimeDay < 365) {
+            return betweenTimeDay+"일전";
+        }
+        return Math.floor(betweenTimeDay / 365)+"년전";
+		*/
+		return value+" | ";
+		
+ 	}
+	
 </script>
+
+
 
 <script type="text/javascript">
 	/* 글목록 버튼 클릭 시 */
@@ -455,6 +482,7 @@
 		/* 넘어온 게시판으로 다시 이동 */
 		location.href="selectCategoryBoardList?searchVal=${board.bdcategory}";
 	}
+	
 </script>
 
 <script type="text/javascript">
@@ -697,8 +725,8 @@
 					if( replyList[i].rpmid == '${sessionScope.loginId}' ){//동일한 아이디 (댓글 수정, 삭제 버튼)
 						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;' >" /* 프로필영역 */
 
-						if( replyList[i].rpprofile != null ){//프로필 이미지가 있을 시 
-							if(  replyList[i].rpmstate == 9){//카카오 회원
+						if( replyList[i].rpprofile != 'nomprofile' ){//프로필 이미지가 있을 시 
+							if(  replyList[i].rpmstate == 9 ){//카카오 회원
 								output += "<img class=\"img-profile rounded-circle rpProfile\"  src='"+replyList[i].rpprofile + "'>"
 							}else{
 								output += "<img class=\"img-profile rounded-circle rpProfile\"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
@@ -731,7 +759,7 @@
 					}else{
 						
 						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;'>" /* 프로필영역 */
-						if( replyList[i].rpprofile != null ){//프로필 이미지가 있을 시 
+						if( replyList[i].rpprofile != 'nomprofile' ){//프로필 이미지가 있을 시 
 							if(  replyList[i].rpmstate == 9){//카카오 회원
 								output += "<img class=\"img-profile rounded-circle rpProfile\"  src='"+replyList[i].rpprofile + "'>"
 							}else{

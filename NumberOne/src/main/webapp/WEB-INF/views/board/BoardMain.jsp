@@ -301,48 +301,37 @@ section{
 					<div class="col-1">
 						<span style="font-size:17px;"> <a href="selectRegionBoardList"><i class="fa-solid fa-square-plus"></i>&nbsp;더보기</a></span>
 					</div>
+				</div>	
+					
+				<div class="row">
 					<div class="col ">
-						<div class="">
-							<a href="selectDetailBoardList?searchVal=SEL"> <span>서울</span> </a>
-						</div>
+						<a href="selectRegionBoardList"> <span>전체</span> </a>
 					</div>
 					<div class="col ">
-						<div class="">
-							<a href="selectDetailBoardList?searchVal=ICN"> <span>인천</span> </a>
-						</div>
+						<a href="selectDetailBoardList?searchVal=SEL"> <span>서울</span> </a>
 					</div>
 					<div class="col ">
-						<div class="">
-							<a href="selectDetailBoardList?searchVal=GGD"> <span>경기</span> </a>
-						</div>
+						<a href="selectDetailBoardList?searchVal=ICN"> <span>인천</span> </a>
+					</div>
+					<div class="col ">
+						<a href="selectDetailBoardList?searchVal=GGD"> <span>경기</span> </a>
 					</div>
 					<div class="col">
-						<div class="">
-							<a href="selectDetailBoardList?searchVal=GSD"> <span>경상</span> </a>
-						</div>
+						<a href="selectDetailBoardList?searchVal=GSD"> <span>경상</span> </a>
 					</div>
 					<div class="col ">
-						<div class="">
-							<a href="selectDetailBoardList?searchVal=JLD"> <span>전라</span> </a>
-						</div>
+						<a href="selectDetailBoardList?searchVal=JLD"> <span>전라</span> </a>
 					</div>
 					<div class="col ">
-						<div class="">
-							<a href="#"> <span>충청</span> </a>
-						</div>
+						<a href="selectDetailBoardList?searchVal=CCD"> <span>충청</span> </a>
 					</div>
 					<div class="col ">
-						<div class="">
-							<a href="#"> <span>강원</span> </a>
-						</div>
+						<a href="selectDetailBoardList?searchVal=GWD"> <span>강원</span> </a>
 					</div>
 					<div class="col ">
-						<div class="">
-							<a href="#"> <span>제주</span> </a>
-						</div>
+						<a href="selectDetailBoardList?searchVal=JJD"> <span>제주</span> </a>
 					</div>
 				</div>
-				
 			</div>
 			</section>
 	</main>

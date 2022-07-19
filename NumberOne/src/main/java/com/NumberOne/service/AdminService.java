@@ -254,6 +254,16 @@ public class AdminService {
 		System.out.println("AdminService.admin_insertNoticeWrite() 호출");
 		notice.setNbmid( (String) session.getAttribute("loginId")); // 세션id set
 		
+		mav = new ModelAndView();
+		
+		// 관리자 로그인 여부 체크
+		String loginId = (String)session.getAttribute("loginId");
+		if (loginId == null) {
+			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
+			mav.setViewName("redirect:/loadToLogin");	
+			return mav;
+		}
+		
 		// nbcode 생성
 		String maxNbcode = adao.admin_selectMaxNbcode();
 		int nbcodeNum = Integer.parseInt(maxNbcode.substring(3)) + 1;
@@ -283,12 +293,11 @@ public class AdminService {
 			nbimgfile.transferTo( new File(nbImgSavePath, nbimg) );
 		}
 		notice.setNbimg(nbimg); // 생성한 파일명 set
-		
+
 		// INSERT
 		System.out.println(notice);
 		int insertresult =  adao.admin_insertNoticeWrite(notice);
 		
-		mav = new ModelAndView();
 		if(insertresult > 0) {
 			ra.addFlashAttribute("msg", nbcode+" 공지가 작성되었습니다.");
 			ra.addAttribute("codeIdx", nbcode);
@@ -297,16 +306,25 @@ public class AdminService {
 			ra.addFlashAttribute("msg", "공지 작성에 실패했습니다.");
 			mav.setViewName("redirect:/loadToFail");
 		}
+
 		return mav;
 	}
 
 	// 공지 수정페이지 이동
-	public ModelAndView admin_selectNoticeModify(String nbcode, Paging paging) {
+	public ModelAndView admin_selectNoticeModify(String nbcode, Paging paging, RedirectAttributes ra) {
 		System.out.println("AdminService.admin_selectNoticeModify() 호출");
 		System.out.println("nbcode : " + nbcode);
 		System.out.println("paging : " + paging);
 		
 		mav = new ModelAndView();
+		
+		// 관리자 로그인 여부 체크
+		String loginId = (String)session.getAttribute("loginId");
+		if (loginId == null) {
+			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
+			mav.setViewName("redirect:/loadToLogin");	
+			return mav;
+		}
 		
 		NoticeDto noticeBoard = bdao.selectNoticeBoardView(nbcode);
 		System.out.println(noticeBoard);
@@ -323,7 +341,17 @@ public class AdminService {
 		System.out.println("AdminService.admin_updateNoticeModify() 호출");
 		System.out.println("originImg : " + modiNotice.getOriginImg());
 		System.out.println("paging : " + paging);
+
+		mav = new ModelAndView();
 		
+		// 관리자 로그인 여부 체크
+		String loginId = (String)session.getAttribute("loginId");
+		if (loginId == null) {
+			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
+			mav.setViewName("redirect:/loadToLogin");	
+			return mav;
+		}
+				
 		// 파일 등록
 		MultipartFile nbimgfile = modiNotice.getNbimgfile();
 		String nbimg = ""; // 파일명 저장할 변수명
@@ -345,7 +373,6 @@ public class AdminService {
 		System.out.println(modiNotice);
 		int updateresult =  adao.admin_updateNoticeModify(modiNotice);
 		
-		mav = new ModelAndView();
 		if(updateresult > 0) {
 			if(!nbimgfile.isEmpty() && modiNotice.getOriginImg().length() > 0) { // 파일을 수정하고 기존 첨부파일이 있었으면
 					File delFile = new File(nbImgSavePath, modiNotice.getOriginImg());
@@ -481,6 +508,23 @@ public class AdminService {
 		}
 	}	
 	
+	// 경고/정지 후기 상세페이지 이동 
+	public ModelAndView admin_selectReviewBoardView(Paging paging, String codeIdx, String check) {
+		System.out.println("AdminService.admin_selectReviewBoardView() 호출");
+		mav = new ModelAndView();
+		System.out.println("bdcode : " + codeIdx);
+		System.out.println("check : " + check);
+		
+		//글상세정보 조회 
+		BoardDto board = bdao.selectBoardView(codeIdx);
+		System.out.println(board);
+		
+		mav.addObject("board", board);
+		mav.setViewName("admin/Admin_ReviewBoardView");
+		
+		return mav;
+	}
+	
 	// 경고/정지 상세페이지 이동 
 	public ModelAndView admin_selectBoardView(Paging paging, String codeIdx, String check) {
 		System.out.println("AdminService.admin_selectBoardView() 호출");
@@ -497,6 +541,7 @@ public class AdminService {
 		
 		return mav;
 	}
+	
 	/* 배너 관리 */
 	// 배너 관리페이지 이동
 	public ModelAndView admin_selectBdfixList(Paging paging, RedirectAttributes ra) {

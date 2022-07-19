@@ -17,12 +17,8 @@ public class UsedBoardDto {
 	public void setUbdetailimg_originList(String[] ubdetailimg_originList) {
 		this.ubdetailimg_originList = ubdetailimg_originList;
 	}
-	public String getUbgdname() {
-		return ubgdname;
-	}
-	public void setUbgdname(String ubgdname) {
-		this.ubgdname = ubgdname;
-	}
+	
+
 	private String ubmid;		//작성자
 	private String ubtitle;		//제목
 	private String ubcontents;	//내용
@@ -148,15 +144,23 @@ public class UsedBoardDto {
 	public void setUbprofile(String ubprofile) {
 		this.ubprofile = ubprofile;
 	}
+	public String getUbgdname() {
+		return ubgdname;
+	}
+	public void setUbgdname(String ubgdname) {
+		this.ubgdname = ubgdname;
+	}
 	@Override
 	public String toString() {
 		return "UsedBoardDto [ubcode=" + ubcode + ", ubrgcode=" + ubrgcode + ", ubsellbuy=" + ubsellbuy + ", ubmid="
 				+ ubmid + ", ubtitle=" + ubtitle + ", ubcontents=" + ubcontents + ", ubdate=" + ubdate + ", ubmainimg="
+
 				+ ubmainimg + ", ubdetailimg=" + ubdetailimg + ", ubstate=" + ubstate + ", ubwarning=" + ubwarning
 				+ ", ubzzim=" + ubzzim + ", ubnickname=" + ubnickname + ", ubprofile=" + ubprofile + ", ubmainimgfile="
 				+ ubmainimgfile + ", ubdetailimgfile=" + Arrays.toString(ubdetailimgfile) + ", ubdetailimg_list="
 				+ Arrays.toString(ubdetailimg_list) + ", ubdetailimg_originList="
 				+ Arrays.toString(ubdetailimg_originList) + ", ubgdname=" + ubgdname + "]";
+
 	}
 	
 	
