@@ -110,9 +110,9 @@ public interface MemberDao {
 	@Select("SELECT MPROFILE, MNICKNAME, MREGION, MMESSAGE FROM MEMBERS WHERE MNICKNAME = #{nickname} ")
 	MemberDto selectWriteMemberInfo_member(String nickname);
 
-	//닉네임 별 작성 글 출력
+	//마이페이지 미니브라우저 닉네임 별 작성 글 출력
 	@Select("SELECT BD.BDCODE, BD.BDTITLE, BD.BDCATEGORY, M.MNICKNAME AS BDNICKNAME, M.MMESSAGE AS BDMESSAGE , M.MPROFILE AS BDMPROFILE, M.MREGION AS BDREGION "
-			+ "FROM BOARDS BD, MEMBERS M WHERE BD.BDMID = M.MID AND M.MNICKNAME = #{nickname} ORDER BY BDCODE DESC")
+			+ "FROM BOARDS BD, MEMBERS M WHERE BDSTATE = 1 AND BD.BDMID = M.MID AND M.MNICKNAME = #{nickname} ORDER BY BDCODE DESC")
 	ArrayList<BoardDto> selectWriteMemberInfo_ajax(String nickname);
 	
 	//카카오 회원가입 처리
@@ -128,8 +128,8 @@ public interface MemberDao {
 	@Update ("UPDATE MEMBERS SET MPW = #{mpw} WHERE MID = #{mid} AND MEMAIL = #{memail}")
 	void updatePw(@Param("mid")String checkMid, @Param("memail")String checkMemail, @Param("mpw")String temporaryPw);
 
-	//닉네임 별 작성 댓글 출력
-	@Select("SELECT RPBDCODE, RPCONTENTS FROM REPLY RP, MEMBERS M WHERE MID = RPMID AND MNICKNAME = #{nickname} ORDER BY RPBDCODE DESC")
+	//마이페이지 미니브라우저 닉네임 별 작성 댓글 출력
+	@Select("SELECT RPBDCODE, RPCONTENTS, BDCATEGORY AS RPBDCATEGORY FROM REPLY RP, MEMBERS M, BOARDS B WHERE RPSTATE =1 AND MID = RPMID AND RPBDCODE = BDCODE AND MNICKNAME = #{nickname} ORDER BY RPBDCODE DESC")
 	ArrayList<ReplyDto> selectWriteMemberInfoReply_ajax(String nickname);
 
 
