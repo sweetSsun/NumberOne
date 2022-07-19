@@ -307,10 +307,10 @@ public class BoardController {
 	 
 	 //게시글 수정 
 	 @RequestMapping ( value = "/updateBoardModify")
-	 public ModelAndView updateBoardModify(BoardDto board, RedirectAttributes ra) throws IllegalStateException, IOException {
+	 public ModelAndView updateBoardModify(BoardDto board, String del_bdimg, RedirectAttributes ra) throws IllegalStateException, IOException {
 		 System.out.println("게시글 수정 요청");
 		 
-		 ModelAndView mav = bsvc.updateBoardModify(board, ra);
+		 ModelAndView mav = bsvc.updateBoardModify(board, del_bdimg, ra);
 		 
 		 return mav;
 	 }

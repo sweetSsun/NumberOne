@@ -775,12 +775,12 @@ public class BoardService {
 	}
 
 	   // 게시글 수정
-	   public ModelAndView updateBoardModify(BoardDto board, RedirectAttributes ra)
+	   public ModelAndView updateBoardModify(BoardDto board, String del_bdimg, RedirectAttributes ra)
 	         throws IllegalStateException, IOException {
 	      System.out.println("BoardService.updateBoardModify() 호출");
 	      ModelAndView mav = new ModelAndView();
 	      System.out.println(board);
-
+	      
 	      //이미지 저장 
 	      String bdimgfile = "";
 	      if (!board.getBdimgfile().isEmpty()) {// 업로드한 이미지가 있을 경우
@@ -796,14 +796,54 @@ public class BoardService {
 	         // 파일저장 경로 :
 	         // "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\board"
 	         bfile.transferTo(new File(boardSavePath, bdimgfile));
+	         
+	         board.setBdimg(bdimgfile);
 
-	      }
-	      System.out.println(bdimgfile);
-	      board.setBdimg(bdimgfile);
-
-	      int updateResult = bdao.updateBoardModify(board);
-	      if( updateResult > 0 ) {
-	         ra.addFlashAttribute("msg", "글이 수정되었습니다.");
+	         int updateResult = bdao.updateBoardModify(board);
+	         if( updateResult > 0 ) {
+	        	 ra.addFlashAttribute("msg", "글이 수정되었습니다.");
+	        	 File delFile;
+					delFile =  new File(boardSavePath, del_bdimg);
+					if( delFile.exists() ) {
+						if( delFile.delete() ) {
+							System.out.println("파일삭제 성공");
+						}else {
+							System.out.println("파일삭제 실패");
+						}
+						
+					}else {
+						System.out.println("존재하지 않는 파일입니다.");
+					}
+	         }
+	         
+	      }else {
+	    	  System.out.println("첨부파일 없음");
+	    	  if ( del_bdimg != null) { //삭제파일 있음 
+	    		  System.out.println("삭제파일 있음");
+	    		  board.setBdimg("");
+	    		  int updateResult = bdao.updateBoardModify(board);
+	    		  if ( updateResult > 0 ) {
+	    			  File delFile;
+						delFile =  new File(boardSavePath, del_bdimg);
+						if( delFile.exists() ) {
+							if( delFile.delete() ) {
+								System.out.println("파일삭제 성공");
+							}else {
+								System.out.println("파일삭제 실패");
+							}
+							
+						}else {
+							System.out.println("존재하지 않는 파일입니다.");
+						}
+						 ra.addFlashAttribute("msg", "글이 수정되었습니다.");
+	    		  }
+				
+			}else {//삭제파일 없음
+				System.out.println("삭제파일 없음");
+				int updateResult = bdao.updateBoardModify(board);
+				ra.addFlashAttribute("msg", "글이 수정되었습니다.");
+			}
+	    	  
 	      }
 	      
 	      // 글수정 후 다시 글 상세페이지로 이동
@@ -857,11 +897,7 @@ public class BoardService {
 		if ( board.getBdrgcode() == null ) {
 			board.setBdrgcode("ALL");
 		}
-//		//게시글 띄어쓰기, 줄바꿈 
-//		String bdcontents = board.getBdcontents().replace(" ", "&nbsp;");
-//		bdcontents = board.getBdcontents().replace("\r\n", "<br>");
-//		board.setBdcontents(bdcontents);
-		
+
 		String bdcode = bdao.selectMaxBdcode();
 		System.out.println("maxBdcode: " + bdcode);
 		int bdcodeNum = Integer.parseInt(bdcode.substring(2)) + 1;
@@ -896,21 +932,25 @@ public class BoardService {
 			bfile.transferTo(new File(boardSavePath, bdimgfile));
 
 		}
-		System.out.println(bdimgfile);
-		ra.addFlashAttribute("msg", "글이 작성되었습니다");
+		//System.out.println(bdimgfile);
 		board.setBdimg(bdimgfile);
 		//System.out.println(board);
 		
 		//글작성
-		int insertResult = bdao.insertBoard(board);
+		if( session.getAttribute("loginId") != null ) {
+			int insertResult = bdao.insertBoard(board);
+			ra.addFlashAttribute("msg", "글이 작성되었습니다");
 		
-		//글작성 후 글상세페이지로 이동 
-		if( board.getBdcategory().equals("후기") ) {
-			mav.setViewName("redirect:/selectReviewBoardView?bdcode="+bdcode);
+			//글작성 후 글상세페이지로 이동 
+			if( board.getBdcategory().equals("후기") ) {
+				mav.setViewName("redirect:/selectReviewBoardView?bdcode="+bdcode);
+			}else {
+				mav.setViewName("redirect:/selectBoardView?bdcode="+bdcode);
+			}
 		}else {
-			mav.setViewName("redirect:/selectBoardView?bdcode="+bdcode);
+			ra.addFlashAttribute("msg", "로그인 상태가 아닙니다.");
+			mav.setViewName("redirect:/loadToLogin");
 		}
-
 		return mav;
 	}
 

@@ -112,8 +112,8 @@
 		object-fit: cover;
 	}
 	.rpProfile_None{
-		height:40px; 
-		width:40px;
+		height:50px; 
+		width:50px;
 		object-fit: cover;
 	}
 	.icon{
@@ -697,7 +697,7 @@
 					if( replyList[i].rpmid == '${sessionScope.loginId}' ){//동일한 아이디 (댓글 수정, 삭제 버튼)
 						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;' >" /* 프로필영역 */
 
-						if( replyList[i].rpprofile != null ){//프로필 이미지가 있을 시 
+						if( replyList[i].rpprofile != 'nomprofile' ){//프로필 이미지가 있을 시 
 							if(  replyList[i].rpmstate == 9){//카카오 회원
 								output += "<img class=\"img-profile rounded-circle rpProfile\"  src='"+replyList[i].rpprofile + "'>"
 							}else{
@@ -731,7 +731,7 @@
 					}else{
 						
 						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;'>" /* 프로필영역 */
-						if( replyList[i].rpprofile != null ){//프로필 이미지가 있을 시 
+						if( replyList[i].rpprofile != 'nomprofile' ){//프로필 이미지가 있을 시 
 							if(  replyList[i].rpmstate == 9){//카카오 회원
 								output += "<img class=\"img-profile rounded-circle rpProfile\"  src='"+replyList[i].rpprofile + "'>"
 							}else{
