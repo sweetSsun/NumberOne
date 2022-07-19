@@ -10,6 +10,13 @@
 <%@ include file="/resources/css/BarCss.jsp" %>
 <%-- <%@ include file="/resources/css/chatDropdownCss.css" %> --%>
 
+<%-- 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">	
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>	
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	  
+	<!-- Js Plugins -->
+    <script src="${pageContext.request.contextPath }/resources/js/mixitup.min.js"></script>
+ --%>
 <style type="text/css">
 
 /* 	.dropdown:hover .dropdown-menu {
@@ -184,11 +191,11 @@
 							<li style="margin-right: 15px;" class="dropdown" >
 								<a href="#" title="1:1채팅" class="nav_chat" id="dropdownChat" data-toggle="dropdown" aria-haspopup="" aria-expanded="">
 									<i class="fa-solid fa-comment-dots"></i>
-									안읽은 채팅메세지 표시
+									<!-- 안읽은 채팅메세지 갯수 표시 -->
 									<span id="chat-badge" class="nav_chat-badge"></span>
 								</a>
 
-								채팅방 목록 드롭다운
+								<!-- 채팅방 목록 드롭다운 -->
 								<div class="dropdown-list dropdown-menu dropdown-menu-right shadow" id="chatRoomList" aria-labelledby="dropdownChat">
 <%--                                 <h6 class="dropdown-header">
                                     채팅방 목록
