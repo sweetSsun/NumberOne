@@ -249,14 +249,17 @@
 </body>
 
 <script type="text/javascript">
-	var actionForm = $("#actionForm");
-	// $(".paginate_button a").click(function(e){ // click 이벤트는 동적 처리 불가능
-	$(document).on("click", ".paginate_button a", function(e){ // on 이벤트로 변경
-		e.preventDefault();
-		console.log("pageNum click");
-		$("#pageNum").val($(this).attr("href"));
-		console.log($("#pageNum").val());
-		actionForm.submit();
+	$(document).ready(function () {
+		// 페이지 넘버 a태그를 클릭하면 hidden input태그에 페이지 넘버 값을 넣고 submit 진행
+		var actionForm = $("#actionForm");
+		
+		$(document).on("click", ".paginate_button a", function(e){ // on 이벤트로 변경
+			e.preventDefault();
+			console.log("pageNum click");
+			$("#pageNum").val($(this).attr("href"));
+			console.log($("#pageNum").val());
+			actionForm.submit();
+		});
 	});
 </script>
 

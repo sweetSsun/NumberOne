@@ -73,12 +73,21 @@ public class ChatRoomDto {
 		this.crfrmnickname = crfrmnickname;
 	}
 
+	public String getCrfrmprofile() {
+		return crfrmprofile;
+	}
+
+	public void setCrfrmprofile(String crfrmprofile) {
+		this.crfrmprofile = crfrmprofile;
+	}
+
 	@Override
 	public String toString() {
 		return "ChatRoomDto [crcode=" + crcode + ", crfrmid=" + crfrmid + ", crtomid=" + crtomid + ", unreadCount="
 				+ unreadCount + ", recentCmcontents=" + recentCmcontents + ", recentCmdate=" + recentCmdate
-				+ ", crfrmnickname=" + crfrmnickname + "]";
+				+ ", crfrmnickname=" + crfrmnickname + ", crfrmprofile=" + crfrmprofile + "]";
 	}
+	
 	
 	
 	
