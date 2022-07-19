@@ -8,7 +8,15 @@
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <%@ include file="/resources/css/BarCss.jsp" %>
+<%-- <%@ include file="/resources/css/chatDropdownCss.css" %> --%>
 
+<%-- 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">	
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>	
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	  
+	<!-- Js Plugins -->
+    <script src="${pageContext.request.contextPath }/resources/js/mixitup.min.js"></script>
+ --%>
 <style type="text/css">
 
 /* 	.dropdown:hover .dropdown-menu {
@@ -158,7 +166,7 @@
 	
 					
 				<!-- 로그인, 회원가입, 고객센터 -->
-				<div class="col-lg-7 col-md-6 col-sm-6 menubar_right">
+				<div class="col-lg-7 col-md-6 col-sm-6 menubar_right dropdwn">
 					<ul>
 						<c:choose>
 	                    <c:when test="${sessionScope.loginId == null && sessionScope.kakaoId == null}">
@@ -169,11 +177,21 @@
 							<!-- 찜 -->
 							<li style="margin-right: 15px;"><a href="#" title="찜목록"><i class="fa-solid fa-heart"></i></a></li>
 							<!-- 채팅 -->
-							<li style="margin-right: 15px;" class="dropdown" >
-								<a href="#" title="1:1채팅" class="nav_chat" id="dropdownChat" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+<!-- 							<li style="margin-right: 15px;" class="" >
+								<a href="#" title="1:1채팅" class="dropBtn" id="dropdownChat" onclick="dp_menu()">
 									<i class="fa-solid fa-comment-dots"></i>
-									<!-- 안읽은 채팅메세지 표시 -->
-									<!-- badge 클래스 끌어와야함 -->
+									안읽은 채팅메세지 표시
+									<span id="chat-badge" class="nav_chat-badge"></span>
+								</a>
+
+								채팅방 목록 드롭다운
+								<div class="drop-content" id="chatRoomList" > -->
+
+							<!-- 채팅 -->
+							<li style="margin-right: 15px;" class="dropdown" >
+								<a href="#" title="1:1채팅" class="nav_chat" id="dropdownChat" data-toggle="dropdown" aria-haspopup="" aria-expanded="">
+									<i class="fa-solid fa-comment-dots"></i>
+									<!-- 안읽은 채팅메세지 갯수 표시 -->
 									<span id="chat-badge" class="nav_chat-badge"></span>
 								</a>
 
@@ -232,16 +250,19 @@
 	</header>
 	
 	
-	<form name="msgData" id="msgData" method="post">
-		<!-- 메세지 리스트 전달받고 팝업창으로 전달하는 부분(동적 생성) -->
-	</form>
 	
 	
+<!-- <script src="resources/js/chatDropdown.js"></script> -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 <script type="text/javascript">
 	console.log("스크립트 확인!");
 	
+</script>	
+	
+<!-- 채팅 관련 스크립트 -->
+<script type="text/javascript">
+/* 채팅관련 스크립트 */
 	var popChat;		 // 채팅팝업 이름
 	var popChatArr = []; // 현재 떠있는 채팅 팝업창을 담을 배열
 	
@@ -272,8 +293,16 @@
 				 	});
 					popChatArr.push(popChat); // 채팅팝업 배열에 담기
 				}
+				console.log("배열의 길이 : " + popChatArr.length);
 			}
 		});
+	}
+	
+	// 특정 채팅방(자식창) 닫힐 경우 배열에서 제거하는 함수
+	function closeChat(crcode){
+		console.log("채팅방 닫힘");
+		var openedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
+		popChatArr.splice(openedIdx, 1); // 채팅팝업 배열에서 제거
 	}
 	
 	// 채팅 아이콘 클릭하면 채팅방 목록 불러오고 드롭다운(안읽은 메세지 > 최신순)
@@ -289,6 +318,7 @@
 				outputDropdown(result);
 			}
 		});
+		myFunction();
 	});
 
 	// 드롭다운 채팅방목록 입력 함수
@@ -296,7 +326,7 @@
 		console.log("채팅방 목록 드롭다운 실행");
 		var dropdownList = "<h6 class=\"dropdown-header\">채팅방 목록</h6>";
 		for(var i = 0; i < data.length; i++){
-			if (i == 10){ // 최대 10개 목록까지만 출력
+			if (i == 5){ // 최대 5개 목록까지만 출력
 				break;
 			}
 			dropdownList += "<a class=\"dropdown-item d-flex align-items-center py-2\" href=\"#\" onclick=\"popupChat('" + data[i].crcode + "')\">";
@@ -326,11 +356,9 @@
 		$("#chatRoomList").html(dropdownList);
 	}
 
-</script>
 
-<!-- 안읽은 채팅메세지 확인 뱃지 -->
-<script type="text/javascript">
-	console.log('${sessionScope.loginId }');
+	<!-- 안읽은 채팅메세지 확인 뱃지 -->
+	//console.log('${sessionScope.loginId }');
 	if(${sessionScope.loginId != null}){
 	   $(window).on('load', function(){
 	         // 2초에 한번씩 채팅 목록 불러오기(실시간 알림 전용)
@@ -343,14 +371,13 @@
 	                     dataType:"json",
 	                     async:false, // async : false를 줌으로써 비동기를 동기로 처리 할 수 있다.
 	                     success:function(sumUnReadCount){
-	                       console.log(sumUnReadCount);
+	                       //console.log(sumUnReadCount);
 	                       $("#chat-badge").text(sumUnReadCount);
 	                      // 읽지 않은 메세지 총 갯수가 0개가 아니면
 	                      if(sumUnReadCount != 0){
 	                          // 채팅 icon 깜빡거리기
 	                          $('.nav_chat-badge').addClass('iconBlink');
 	                          $('.nav_chat-badge').removeClass('d_none');
-	                          play();
 	                      }else{
 	                          // 깜빡거림 없애기
 	                          $('.nav_chat-badge').removeClass('iconBlink');
@@ -365,8 +392,143 @@
 	
 </script>
 
+<!-- 마이페이지 미니브라우저 (커뮤니티부터!) -->
+<script type="text/javascript">
+
+   var wMemberPopup = "";
+  
+   
+   function writeMemberBoard(nickname){
+      console.log("팝업 스트립트 확인!!!");
+      let wMemberPopupUrl = "loadToWriteMemberBoard?nickname="+nickname;
+      let wMemberPopupOption = "width=660, height=820, top=300px, left=500px, scrollbars=no, resizable=no";
+      
+      
+      $.ajax({
+         url: "selectWriteMemberInfo_ajax",
+         data: {"nickname":nickname},
+         async:false,
+         dataType:"json",
+         success:function(result){
+           //console.log(result);
+            //console.log(nickname);
+            wMemberPopup = window.open(wMemberPopupUrl, "", wMemberPopupOption, nickname);
+            
+            wMemberPopup.window.addEventListener("load", function(){
+               wMemberPopup.writeMemberBoard(result);
+            });
+            
+         }
+      });
+   }
+
+      
+   function boardreplySwitch(nickname, type){
+         console.log("팝업 작성글 버튼 클릭!!!");
+         
+         var popUpUrl = "";
+         if(type == 'b'){
+            popUpUrl = "selectWriteMemberInfo_ajax";
+         }else if(type == 'r') {
+            popUpUrl = "selectWriteMemberInfoReply_ajax";
+         }else if(type == 's') {
+           popUpUrl = "selectWriteMemberInfoSellBuy_ajax"; 
+         }
+
+         $.ajax({
+            url: popUpUrl,   
+            data: {"nickname":nickname},
+            async:false,
+            dataType:"json",
+            success:function(result){
+               //console.log(result);
+               //console.log(nickname);
+                  
+               if(type == 'b'){
+                  wMemberPopup.writeMemberBoard(result);
+               }else if(type == 'r') {
+                  wMemberPopup.writeMemberReply(result);
+               }else if(type == 's') {
+                 wMemberPopup.writeMemberSellBuy(result); 
+               }
+
+            }
+         });
+      
+   }
+   
 
 
+</script>
+
+<!-- 마이페이지 미니브라우저 (중고거래부터!) -->
+<script type="text/javascript">
+
+   var wMemberPopup = "";
+  
+   
+   function writeMemberSellbuy(nickname){
+      console.log("(중고거래)팝업 스트립트 확인!!!");
+      let wMemberPopupUrl = "loadToWriteMemberBoard?nickname="+nickname;
+      let wMemberPopupOption = "width=660, height=820, top=300px, left=500px, scrollbars=no, resizable=no";
+      
+      
+      $.ajax({
+         url: "selectWriteMemberInfoSellBuy_ajax",
+         data: {"nickname":nickname},
+         async:false,
+         dataType:"json",
+         success:function(result){
+           //console.log(result);
+            //console.log(nickname);
+            wMemberPopup = window.open(wMemberPopupUrl, "", wMemberPopupOption, nickname);
+            
+            wMemberPopup.window.addEventListener("load", function(){
+               wMemberPopup.writeMemberSellBuy(result);
+            });
+            
+         }
+      });
+   }
+
+      
+   function boardreplySwitch(nickname, type){
+         console.log("팝업 작성글 버튼 클릭!!!");
+         
+         var popUpUrl = "";
+         if(type == 'b'){
+            popUpUrl = "selectWriteMemberInfo_ajax";
+         }else if(type == 'r') {
+            popUpUrl = "selectWriteMemberInfoReply_ajax";
+         }else if(type == 's') {
+           popUpUrl = "selectWriteMemberInfoSellBuy_ajax"; 
+         }
+
+         $.ajax({
+            url: popUpUrl,   
+            data: {"nickname":nickname},
+            async:false,
+            dataType:"json",
+            success:function(result){
+               //console.log(result);
+               //console.log(nickname);
+                  
+               if(type == 'b'){
+                  wMemberPopup.writeMemberBoard(result);
+               }else if(type == 'r') {
+                  wMemberPopup.writeMemberReply(result);
+               }else if(type == 's') {
+                 wMemberPopup.writeMemberSellBuy(result); 
+               }
+
+            }
+         });
+      
+   }
+   
+
+
+</script>
 
 
 </html>

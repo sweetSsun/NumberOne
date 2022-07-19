@@ -78,7 +78,7 @@
                </div>
             </div>
             
-            <!-- 게시글 목록 -->
+            <!-- 댓글 목록 -->
             <div class="row" style="margin-top: 20px;">
             <table style="table-layout: fixed;">
                <thead >
@@ -93,7 +93,7 @@
                </thead>
                <tbody id="rpListTbody">
 	               <c:forEach items="${replyList }" var="reply">
-	                   <!-- 회원관리 목록 -->
+	                   <!-- 댓글관리 목록 -->
 	                   <tr style="border-bottom: solid #E0E0E0 1px;">
 	                      <td class="overflow text-center">${reply.rpcode}</td>
 	                      <td class="category text-center">${reply.rpbdcategory}</td>
@@ -101,8 +101,13 @@
 	                      	<c:choose>
 					        	<c:when test="${reply.rpbdcategory.equals('자랑') }">
 						       		<!-- 자랑글 상세 -->
-						       		<!-- 수정 필요~~~~~~~~~~~ -->
 						        	<a href="selectRoomList?bdcode=${reply.rpbdcode }&jsp=view">
+						        		${reply.rpcontents}
+						        	</a>
+					        	</c:when>
+					        	<c:when test="${reply.rpbdcategory.equals('후기') }">
+						       		<!-- 후기글 상세 -->
+		                      		<a href="admin_selectReviewBoardView${paging.makeQueryPage(reply.rpbdcode, paging.page)}&check=replyList">
 						        		${reply.rpcontents}
 						        	</a>
 					        	</c:when>
