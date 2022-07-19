@@ -53,6 +53,8 @@ public interface ChatDao {
 
 	ChatMessageDto selectRecentMessage(String cmcrcode);
 
+	String selectCrfrMprofile(String mid);
+
 	
 	
 }

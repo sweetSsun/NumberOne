@@ -164,7 +164,7 @@
 								${board.bdrgname }
 							</td>
 							<td class="tableCell">
-							 	<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
+							 	<a href="selectBoardView?bdcode=${board.bdcode }&bdtype=region">${board.bdtitle} 
 							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
 							 </td>
 							<td class="text-center tableCell">
@@ -273,12 +273,13 @@
 
 <script type="text/javascript">
 
-	/* 글쓰기 버튼 클릭 */
-	function loadToBoardWrite(){
-		//글작성 페이지로 이동 
-		var bdcategory =  "";
-		location.href= "loadToBoardWrite?bdcategory="+bdcategory;
-	}
+/* 글쓰기 버튼 클릭 */
+function loadToBoardWrite(){
+	//글작성 페이지로 이동 
+	var bdrgcode = "${paging.searchVal}";
+	var bdrgname = "${paging.bdrgname}";
+	location.href= "loadToBoardWrite?bdrgcode="+bdrgcode+"&bdrgname="+bdrgname;
+}
 </script>
 
 </html>

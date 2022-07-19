@@ -59,4 +59,12 @@ public class ChatController {
 		return chatRoomList_json;
 	}
 	
+	@RequestMapping(value = "/selectSumUnReadCount")
+	public @ResponseBody int selectSumUnReadCount(String loginId) {
+		System.out.println("읽지않은 메세지 조회 요청");
+		int sumUnReadCount = chsvc.selectSumUnReadCount(loginId);
+			
+		return sumUnReadCount;
+	}
+	
 }

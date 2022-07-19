@@ -154,6 +154,7 @@ System.out.println(ubDto);
 		return mav;
 	}
 
+
 	/* 게시글 신고 */
 	// 게시글 신고 유무 확인
 	@RequestMapping(value = "/checkResellWarning_ajax")

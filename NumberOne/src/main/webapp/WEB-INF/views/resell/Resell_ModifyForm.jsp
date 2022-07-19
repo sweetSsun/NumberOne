@@ -9,20 +9,38 @@
 <%@ include file="/resources/css/BarCss.jsp"%>
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
-	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"
+>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/resell.css" type="text/css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
 	integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"
-	referrerpolicy="no-referrer"></script>
+	referrerpolicy="no-referrer"
+></script>
 <style type="text/css">
 .product-img {
-	max-width: 400px;
-	max-height: 300px;
+	max-width: 30%;
+	max-height: 30%;
+	objetFit: contain;
 }
 
 .line-through {
 	text-decoration: line-through;
 	font-size: 20px;
+}
+/* label 스타일 조정 */
+.button {
+	display: flex;
+	justify-content: center;
+}
+
+label {
+	cursor: pointer;
+	font-size: 1em;
+}
+
+/* 못생긴 기존 input 숨기기 */
+.chooseFile {
+	visibility: hidden;
 }
 </style>
 
@@ -33,14 +51,14 @@
 
 	<!-- TopBar -->
 
-        <c:choose>
-                <c:when test="${sessionScope.loginId != 'admin'}">
-                        <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
-                </c:when>
-                <c:otherwise>
-                        <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
-                </c:otherwise>
-        </c:choose>
+	<c:choose>
+		<c:when test="${sessionScope.loginId != 'admin'}">
+			<%@ include file="/WEB-INF/views/includes/TopBar.jsp"%>
+		</c:when>
+		<c:otherwise>
+			<%@ include file="/WEB-INF/views/includes/TopBar_Admin.jsp"%>
+		</c:otherwise>
+	</c:choose>
 
 	<!-- End of TopBar -->
 	<main>
@@ -53,7 +71,7 @@
 			<div class="container">
 				<h1 class="text-center" id="titleMsg"></h1>
 
-				<form action="updateResellModify" method="post" enctype="multipart/form-data"  onsubmit="return checkFormData()">
+				<form action="updateResellModify" method="post" enctype="multipart/form-data" onsubmit="return checkFormData()">
 					<input type="hidden" name="ubcode" value="${ub_resellView.ubcode}"> <input type="hidden" name="ubmid" value="${ub_resellView.ubmid}">
 					<input type="hidden" name="ubsellbuy" value="${ub_resellView.ubsellbuy}">
 
@@ -101,7 +119,8 @@
 
 									</div>
 									<input type="hidden" class="select_gdcode" name="gd_code" value="${gdList.gdcode }"> <input type="hidden" class="select_gdstate"
-										value="${gdList.gdstate }">
+										value="${gdList.gdstate }"
+									>
 									<div class="item-basis_2 gd_nameList">${gdList.gdname }</div>
 									<div class="item-basis_3 gd_priceList">${gdList.gdprice }</div>
 								</div>
@@ -127,28 +146,47 @@
 
 					<!-- 파일첨부  -->
 					<div class="container-footer ">
-						<div class="container-flex_1">
-							<div>
-								<img class="product-img" src="${pageContext.request.contextPath }/resources/img/resell/${ub_resellView.ubmainimg}" style="width: 100%">
-							</div>
-							<div>
-								<c:forEach items="${ub_resellView.ubdetailimg_list}" var="ubdetailimg_list">
-									<img class="product-img" src="${pageContext.request.contextPath }/resources/img/resell/${ubdetailimg_list}" style="width: 100%">
-								</c:forEach>
-							</div>
+						<div>
 							<div>사진첨부</div>
 							<div class="">
-								<input type="file" placeholder="메인사진 1개" name="ubmainimgfile" id="mainImgCheck"> <br> <span class="checkMsg"></span>
+								<div class="button">
+									<label for="chooseFile_id"> 👉 CLICK HERE! 👈 </label>
+								</div>
+								<input type="file" class="chooseFile" id="chooseFile_id" name="chooseFile" accept="image/*" onchange="loadFile(this)" name="ubmainimgfile">
+								<div id="image-show">
+									<img src="${pageContext.request.contextPath }/resources/img/resell/${ub_resellView.ubmainimg }" class="product-img">
+								</div>
+								<div id="fileName">${ub_resellView.ubmainimg }</div>
 							</div>
 
 							<div class="">
-								<input type="file" multiple="multiple" name="ubdetailimgfile">
+								<div class="button">
+									<label for="chooseMultiFile"> 👉 CLICK HERE! 👈 </label>
+								</div>
+								<input type="file" id="chooseMultiFile" class="chooseFile" onchange="loadMultiFile(this)" multiple="multiple" name="ubdetailimgfile">
+
+
+								<div id="image-show_multi">
+									<c:forEach items="${ub_resellView.ubdetailimg_list }" var="ubdetailimg_list" begin="1" varStatus="status">
+										<img src="${pageContext.request.contextPath }/resources/img/resell/${ubdetailimg_list}" class="product-img" id="detailimg${status.count }">
+										<input type="button" onclick="hide_Img(this,'${ubdetailimg_list}','${status.count }')" value="삭제">
+
+									</c:forEach>
+								</div>
+								<div id="fileName_multi">
+
+									<c:forEach items="${ub_resellView.ubdetailimg_list }" var="ubdetailimg_list" begin="1">
+
+										<span>${ubdetailimg_list }</span>
+									</c:forEach>
+								</div>
+
 							</div>
 						</div>
 					</div>
 					<div class="container-flex_1 flex-end">
 						<div>
-							<input type="button" id="cancelModify">수정취소
+							<input type="button" id="cancelModify" value="취소">
 						</div>
 
 						<div>
@@ -165,7 +203,8 @@
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp"%>
 
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"
+	></script>
 </body>
 <!-- 페이지로드시 실행할 코드 스크립트 -->
 <script type="text/javascript">
@@ -244,10 +283,8 @@
 	}
 </script>
 
-<!-- 상품 상태 확인 -->
-<script type="text/javascript">
-	
-</script>
+
+
 <!-- select태그 option선택 이벤트 -->
 <script type="text/javascript">
 	totalOp.addEventListener('change', selectOp_value);
@@ -294,7 +331,6 @@
 								gd_priceList[i].classList.add('line-through');
 								selectStates[i].setAttribute('disabled',
 										'disabled');
-								//selectStates[i].selectedIndex = '1';
 							}
 
 						} else {
@@ -330,27 +366,18 @@
 
 		totalOp.options[totalOp.selectedIndex].value == '9' ? document
 				.getElementById("titleMsg").innerText = "판매완료된 글입니다."
-		// 판매완료체크 하면 전체디서블드 처리?
 
 		: document.getElementById("titleMsg").innerText = "판매중";
 	}
 
-	//			이건 객체를 통째로 받아와서 스플릿 많이 해야함. 
+	//		시간나면 연습용. 	이건 객체를 통째로 받아와서 스플릿 많이 해야함.   
 	function resellState(selOP, geTest) {
 
 		console.log("글상태값 :", selOP.value);
 		console.log("코드 :", geTest);
-
 	}
 </script>
 
-
-<!-- 폼데이터 입력되었는지 체크하는 코드 스크립트  -->
-<script type="text/javascript">
-	/* 폼태그 데이터 공백 체크  */
-	/* onsubmit이벤트  false 일시 submit이벤트 취소*/
-	
-</script>
 
 <!-- 전페이지(상세페이지)로 돌아가기 -->
 <script type="text/javascript">
@@ -361,9 +388,10 @@
 	function backPage() {
 		console.log("수정취소버튼 클릭이벤트");
 		location.href = "selectResellView?ubcode=" + ubcode + "&ubsellbuy="
-				+ ubsellbuy + "$modifyCheck=LIST";
+				+ sellbuy + "&modifyCheck=LIST";
 	}
 </script>
+
 
 <!-- 상품 상태변경시 실행 스크립트  -->
 <script type="text/javascript">
@@ -374,7 +402,6 @@
 		console.log('매개변수확인(sel_tag) :', sel_tag.value);
 		console.log('매개변수확인(gd_code) :', gd_code);
 
-
 	}
 </script>
 
@@ -382,16 +409,15 @@
 <!-- 상품 상태변경 ajax  -->
 <script type="text/javascript">
 	//상품 상태변경 ajax 
-	
+
 	function gdUpdateState(gdcode, sel_tag) {
-	let gdstate = sel_tag.value;
-	
+		let gdstate = sel_tag.value;
+
 		$.ajax({
 			type : 'get',
 			url : 'updateResellState_GoodsAjax',
 			data : {
-				
-				
+
 				'gdcode' : gdcode,
 				'gdstate' : gdstate
 			},
@@ -400,62 +426,148 @@
 				if (result == 'SOLD') {
 					alert("상품판매완료")
 					sel_tag.selectedIndex = '1';
-								
-					for(let i=0; i<select_gdcode.length; i++){
-						if(select_gdcode[i].value===gdcode){
+
+					for (let i = 0; i < select_gdcode.length; i++) {
+						if (select_gdcode[i].value === gdcode) {
 							gd_nameList[i].classList.add('line-through');
 							gd_priceList[i].classList.add('line-through');
-							
-						}									
-								}
-				}
-				else{
+
+						}
+					}
+				} else {
 					alert("상품판매중")
-					for(let i=0; i<select_gdcode.length; i++){
-						if(select_gdcode[i].value===gdcode){
+					for (let i = 0; i < select_gdcode.length; i++) {
+						if (select_gdcode[i].value === gdcode) {
 							gd_nameList[i].classList.remove('line-through');
 							gd_priceList[i].classList.remove('line-through');
-							
-						}									
-								}
-					
+
+						}
+					}
 				}
 			}
 		})
 	}
 </script>
 
+
+<!-- 이미지파일 미리보기 스크립트 -->
+<script type="text/javascript">
+	/*<!-- 이미지파일 미리보기 이벤트핸들러 호출 -->  */
+	function loadFile(input) { // 함수가 호출된 태그를 인자로 받는다.( 여기선 input태그)
+
+		let file = input.files[0]; //선택된 파일 가져오기 (하나의 파일만 업로드가능하므로 첫번째 인덱스인 0번을 사용)
+
+		let name = document.getElementById('fileName');
+		name.textContent = file.name; //미리 만들어 놓은 div에 text(파일 이름) 추가  () 
+
+		//새로운 이미지 div 추가 (img태그 생성)
+		let newImage = document.createElement("img");
+
+		// img태그에 'class'를 key로, 'img'를 value 로 준다.
+		newImage.setAttribute("class", 'img');
+
+		//이미지 source 가져오기
+		newImage.src = URL.createObjectURL(file);
+
+		newImage.style.width = "30%";
+		newImage.style.height = "30%";
+		newImage.style.objectFit = "contain";
+
+		//이미지를 image-show div에 추가
+		let container = document.getElementById('image-show');
+		container.appendChild(newImage); //appendChild는 하나의 노드만 사용가능. 멀티플에는 사용하기어려움
+	};
+</script>
+
+<!-- 멀티플파일 이미지 미리보기 -->
+<script type="text/javascript">
+	/* 멀티플파일 이미지 미리보기 */
+	function loadMultiFile(input) {
+		console.log('loadMultiFile호출 인자 : ', input);
+
+		let name = document.getElementById('fileName_multi');
+		let container = document.getElementById('image-show_multi');
+
+		let newImage_ = [];
+
+		// input태그(type속성의 value가 files인 경우  
+		for (let i = 0; i < input.files.length; i++) {
+			name.append(input.files[i].name + ' ');
+
+			//배열에 push
+			newImage_.push(document.createElement("img"));
+
+			//만들어진 img 태그에 인덱스별로 class속성과 img 값을 준다.
+			//그리고 소스를 담아주고, 스타일도 지정해준다.
+
+			newImage_[i].setAttribute("class", 'img');
+			newImage_[i].src = URL.createObjectURL(input.files[i]);
+			newImage_[i].style.width = "30%";
+			newImage_[i].style.height = "30%";
+			newImage_[i].style.objectFit = "contain";
+
+			//img 태그를 모두출력
+			container.append(newImage_[i]);
+
+			console.log('newImage_ : ', newImage_[i]);
+			console.log('input.files : ', input.files[i]);
+		}
+
+	};
+</script>
+
 <!-- 폼데이터 입력되었는지 체크하는 코드 스크립트  -->
 <script type="text/javascript">
-/* 폼태그 데이터 공백 체크  */
-/* onsubmit이벤트  false 일시 submit이벤트 취소*/
-function checkFormData() {
-	let checkForm = true;
-	console.log("폼데이터 핸들러 호출");
-	if (document.getElementById("titleCheck").value == '') {		
-		document.getElementById("titleCheck").focus();
-		alert("제목을 입력해주세요.");
-		checkForm = false;
-	}  else if (document.getElementsByClassName("gdcheck_n")[0].value == '') {
-		alert("품목이름을 작성해주세요.");
-		document.getElementsByClassName("gdcheck_n")[0].focus();
-		
-		checkForm = false;
-	} else if (document.getElementsByClassName("gdcheck_p")[0].value == '') {
-		alert("품목가격을 작성해주세요.");
-		document.getElementsByClassName("gdcheck_p")[0].focus();
-		checkForm = false;
-	} else if (document.getElementById("contentsCheck").value == '') {
-		document.getElementById("contentsCheck").focus();
-		alert("내용을 작성해주세요.");
-		checkForm = false;
-	}else if (document.getElementById("mainImgCheck").value == '') {
-		alert("메인사진을 선택해주세요.");
-		document.getElementById("mainImgCheck").focus();
-		checkForm = false;
+	/* 폼태그 데이터 공백 체크  */
+	/* onsubmit이벤트  false 일시 submit이벤트 취소*/
+	function checkFormData() {
+		let checkForm = true;
+		console.log("폼데이터 핸들러 호출");
+		if (document.getElementById("titleCheck").value == '') {
+			document.getElementById("titleCheck").focus();
+			alert("제목을 입력해주세요.");
+			checkForm = false;
+		} else if (document.getElementsByClassName("gdcheck_n")[0].value == '') {
+			alert("품목이름을 작성해주세요.");
+			document.getElementsByClassName("gdcheck_n")[0].focus();
+
+			checkForm = false;
+		} else if (document.getElementsByClassName("gdcheck_p")[0].value == '') {
+			alert("품목가격을 작성해주세요.");
+			document.getElementsByClassName("gdcheck_p")[0].focus();
+			checkForm = false;
+		} else if (document.getElementById("contentsCheck").value == '') {
+			document.getElementById("contentsCheck").focus();
+			alert("내용을 작성해주세요.");
+			checkForm = false;
+		} else if (document.getElementById("mainImgCheck").value == '') {
+			alert("메인사진을 선택해주세요.");
+			document.getElementById("mainImgCheck").focus();
+			checkForm = false;
+		}
+		return checkForm;
 	}
-	return checkForm;
-}
 </script>
+
+<script type="text/javascript">
+
+
+function hide_Img(selectTag, detailImg, selectIndex) {
+	console.log('detailImgHide 호출 ');
+	
+	let detailImg = document.getElementById('detailImg' + ${selectIndex});
+	
+	
+	console.log('selectTag 호출 : ', selectTag);
+	console.log('detailImg 호출 : ', detailImg);
+	console.log('selectIndex 호출 : ', selectIndex);
+	console.log(' detailImg+selectIndex 호출 : ',  detailImg+selectIndex);
+	
+	
+	
+}
+
+</script>
+
 
 </html>

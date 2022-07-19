@@ -181,16 +181,12 @@ public class MemberService {
 			    
 				ra.addFlashAttribute("msg", "로그인 되었습니다.");
 				
-				String afterUrl = (String) session.getAttribute("afterUrl");
-				//System.out.println(afterUrl);
-				session.removeAttribute("afterUrl");
-				
-				if(afterUrl.equals("noUrl")) {
-					//afterUrl 없는 경우는 메인으로 이동
-					mav.setViewName("redirect:/");				
-				} else {					
-					//afterUrl 있는 경우는 해당페이지로 이동
+				if(session.getAttribute("afterUrl") != null) {
+					String afterUrl = (String) session.getAttribute("afterUrl");					
+					session.removeAttribute("afterUrl");
 					mav.setViewName("redirect:/"+afterUrl);
+				} else {					
+					mav.setViewName("redirect:/");
 				}
 	
 			}
@@ -208,11 +204,19 @@ public class MemberService {
 	//로그아웃
 	public ModelAndView selectMemberLogout(RedirectAttributes ra) {
 		System.out.println("MemberService.memberLogout() 호출");
-		session.invalidate();
-		ra.addFlashAttribute("msg", "로그아웃 되었습니다.");
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName("redirect:/");
+
+		if(session.getAttribute("loginId")!=null) {		
+			session.invalidate();
+			ra.addFlashAttribute("msg", "로그아웃 되었습니다.");
+			mav.setViewName("redirect:/");
+		}
+		else {
+			ra.addFlashAttribute("msg", "로그인 상태가 아닙니다.");
+			mav.setViewName("redirect:/loadToLogin");
+		}
 		return mav;
+		
 	}
 
 	
@@ -400,22 +404,25 @@ public class MemberService {
 		      member.setMemail(member.getMemailId()+"@"+member.getMemailDomain());
 		      
 		      
-		      
-
-		      int memberInfoModify = mdao.updateMyInfoMemberModify(member);
-
-		      if(memberInfoModify != 0) {
-
-					System.out.println("회원정보가 수정 성공");
-					session.setAttribute("loginProfile", member.getMprofile());
-					ra.addFlashAttribute("msg", "회원정보가 수정 되었습니다.");
-					mav.setViewName("redirect:/selectMyInfoMemberView");
-				}else {
-					System.out.println("회원정보가 수정 실패");
-					ra.addFlashAttribute("msg" , "회원 정보 수정을 실패하였습니다.");
-					mav.setViewName("member/MyInfoMemberPage");
-				}
-
+		      if(session.getAttribute("loginId")!=null) {		
+		    	  int memberInfoModify = mdao.updateMyInfoMemberModify(member);
+		    	  
+		    	  if(memberInfoModify != 0) {
+		    		  
+		    		  System.out.println("회원정보가 수정 성공");
+		    		  session.setAttribute("loginProfile", member.getMprofile());
+		    		  ra.addFlashAttribute("msg", "회원정보가 수정 되었습니다.");
+		    		  mav.setViewName("redirect:/selectMyInfoMemberView");
+		    	  }else {
+		    		  System.out.println("회원정보가 수정 실패");
+		    		  ra.addFlashAttribute("msg" , "회원 정보 수정을 실패하였습니다.");
+		    		  mav.setViewName("member/MyInfoMemberPage");
+		    	  }
+		    	  
+		      }else {
+		    	  ra.addFlashAttribute("msg", "로그인 상태가 아닙니다.");
+		    	  mav.setViewName("redirect:/loadToLogin");
+		      }
 			return mav;
 	}	
 	
@@ -603,10 +610,11 @@ public class MemberService {
 		
 		System.out.println(contact);
 
-	      int contactResult = mdao.insertMyInfoQuestionWrite(contact);
+		if(session.getAttribute("loginId")!=null) {
+	
+			int contactResult = mdao.insertMyInfoQuestionWrite(contact);
 
-	      if(contactResult != 0) {
-
+			if(contactResult != 0) {
 				System.out.println("문의 작성 성공");
 				ra.addFlashAttribute("msg", "문의글이 등록 되었습니다.");
 				mav.setViewName("redirect:/selectMyInfoQuestionListView");
@@ -615,7 +623,10 @@ public class MemberService {
 				ra.addFlashAttribute("msg" , "문의글 작성에 실패하였습니다.");
 				mav.setViewName("redirect:/");
 			}
-
+		} else {
+			ra.addFlashAttribute("msg", "로그인 상태가 아닙니다.");
+			mav.setViewName("redirect:/loadToLogin");
+		}
 		return mav;
 	}
 
