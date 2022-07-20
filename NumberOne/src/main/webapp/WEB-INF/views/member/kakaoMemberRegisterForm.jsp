@@ -7,6 +7,12 @@
 <meta charset="UTF-8">
 <title>1인자 - 필수정보입력</title>
 
+	
+	<!-- 스크립트 시작 -->
+	<!-- <script type="text/javascript" src="resources/js/jquery-3.3.1.min.js"></script> -->
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
+	
+
 <%@ include file="/resources/css/BarCss.jsp"%>
 <!-- 부트스트랩 -->
 <link
@@ -227,11 +233,7 @@ background-color: #00BCD4;
 	</main>
 
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp"%>
-	
-	<!-- 스크립트 시작 -->
-	<!-- <script type="text/javascript" src="resources/js/jquery-3.3.1.min.js"></script> -->
-	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
-	
+
 	<!-- 다음 우편번호 서비스 -->
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="${pageContext.request.contextPath }/resources/MemberJs/daumPostCode.js"></script>

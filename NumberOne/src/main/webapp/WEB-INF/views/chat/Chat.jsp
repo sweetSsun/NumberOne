@@ -107,7 +107,8 @@
 	    max-height: 410px;
 	    overflow-y: scroll;
 		width:-webkit-fill-available;
-		padding-right: 10px;
+		padding-right: 5px;
+		padding-left: 5px;
 	}
 	.listArea::-webkit-scrollbar {
 		background-color: #F2F2FF;
@@ -184,6 +185,10 @@
 	}
 	.outerDate{
 		vertical-align:middle; display:table-cell;
+	}
+	.dateLine{
+		background-color: #F6F6F6;
+    	border-radius: 6px;
 	}
 </style>
 
@@ -264,7 +269,7 @@
      	// 팝업창 ajax가 불가하므로 부모창(Topbar)에서 데이터 보내줌
       function enterRoom(msgList){
          for (var i = 0; i < msgList.length; i++){
-            console.log(msgList[i].cmcontents);
+            //console.log(msgList[i].cmcontents);
             checkLR(msgList[i], false); // DB 입력시간으로 출력하기 위한 boolean값 전송
          } 
       }
@@ -328,39 +333,44 @@
        function checkLR(data, dateCheck){
           var LR = (data.cmfrmid != "${sessionScope.loginId}") ? "left":"right";
           appendMessage(LR, data, dateCheck);
-          console.log("checkLR에서의 dateCheck : " + dateCheck);
+          //console.log("checkLR에서의 dateCheck : " + dateCheck);
        }
 	    
 	    
     // 메세지 append
+    var dateLine = []; // 날짜를 담을 배열
     function appendMessage(LR, data, dateCheck){
-       var message = "";
-       if (dateCheck){
-          var dateInfo = serverDate(); // 실시간이면 서버시간 받아오기
-       }
-
-      if (LR == "left"){ // 왼쪽일 때 (상대방이 전송했을 때)
-          message = "<div style=\"text-align:left;\"><span>"+data.cmfrmnickname+"</span><div>";
-          message += "<div class=\"outerDate\"><span class=\"chatRe\">"+data.cmcontents+"</span>";
-          // 실시간이면 서버시간 출력
-         if (dateCheck){
-             message += "<span class=\"chatDate\">"+ dateInfo +"</span></div>";
-         // DB에서 받아오는 메세지면 DB 입력시간 출력
-         } else {
-             message += "<span class=\"chatDate\">"+ data.cmdate +"</span></div>";
-         }
-       } else { // 오른쪽일 때 (자신이 전송했을 때)
-          message ="<div class=\"outerDate\" style=\"text-align:right; margin-top: 10px;\"><span class=\"chatSe\">"+data.cmcontents+"</span>";
-          // 실시간이면 서버시간 출력
-         if (dateCheck){
-             message += "<span class=\"chatDate\">"+ dateInfo +"</span></div>";
-         // DB에서 받아오는 메세지면 DB 입력시간 출력
-         } else {
-             message += "<span class=\"chatDate\">"+data.cmdate+"</span></div>";
-         }
-       }
-      $("#chatList").append(message);
-      $("#chatList").scrollTop( $("#chatList")[0].scrollHeight );
+    	//console.log(dateLine);
+      	var message = ""; // 입력해줄 output
+      	
+    	/* DB 저장 메세지인지 실시간인지 날짜와 시간 체크 */
+        if (dateCheck){
+        	var dateInfo = serverDate(); // 실시간이면 서버시간 받아오기
+       	} else {
+    	  	var dateInfo = data.cmdate; // 실시간이 아니면 DB 저장 날짜 받아오기
+       	}
+      	// 해당 메세지 날짜/시간 분리
+      	var date_split = dateInfo.split(" "); // dateInfo :: "월/일 시:분"
+	
+     	/* 배열에 해당 날짜가 없으면, 날짜 출력하고 배열에 담기 */
+     	// 날짜 한 번만 출력하기 위함
+      	if (!dateLine.includes(date_split[0])){ 
+    		dateLine.push(date_split[0]);
+    		console.log("dateLine 길이 : " + dateLine.length);
+    		console.log("출력할 날짜 : " + date_split[0]);
+    		message += "<div class=\"dateLine\">" + date_split[0] + "</div>";
+      	}
+    	  
+	    if (LR == "left"){ // 왼쪽일 때 (상대방이 전송했을 때)
+	        message += "<div style=\"text-align:left;\"><span>" + data.cmfrmnickname + "</span><div>";
+	        message += "<div class=\"outerDate\"><span class=\"chatRe\">" + data.cmcontents + "</span>";
+	        message += "<span class=\"chatDate\">" + date_split[1] + "</span></div>";
+	    } else { // 오른쪽일 때 (자신이 전송했을 때)
+	        message ="<div class=\"outerDate\" style=\"text-align:right; margin-top: 10px;\"><span class=\"chatSe\">" + data.cmcontents + "</span>";
+	        message += "<span class=\"chatDate\">" + date_split[1] + "</span></div>";
+	    }
+	    $("#chatList").append(message);
+	    $("#chatList").scrollTop( $("#chatList")[0].scrollHeight );
               
     }
 

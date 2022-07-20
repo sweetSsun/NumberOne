@@ -7,6 +7,11 @@
 <meta charset="UTF-8">
 <title>1인자 - 비밀번호찾기페이지</title>
 
+	<!-- 스크립트 시작 -->
+	<!-- <script type="text/javascript" src="resources/js/jquery-3.3.1.min.js"></script> -->
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> 
+
+
 <%@ include file="/resources/css/BarCss.jsp"%>
 <!-- 부트스트랩 -->
 <link
@@ -145,9 +150,7 @@ background-color: #00BCD4;
 
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp"%>
 	
-	<!-- 스크립트 시작 -->
-	<!-- <script type="text/javascript" src="resources/js/jquery-3.3.1.min.js"></script> -->
-	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
+  
 	
 	  <%--  현석 :  mail API 에러 때문에 주석처리 시작
 	<script type="text/javascript">

@@ -487,6 +487,7 @@ section{
 //관리자 스크립트
 function adminRvBan(){
 	console.log("관리자 자랑글 정지")
+	
 	var rvBanConfirm = confirm("해당 글을 정지하시겠습니까?");
 	
 	if(rvBanConfirm == 'false'){
@@ -502,7 +503,8 @@ function adminRvBan(){
 			success : function(updateResult){
 				if( updateResult > 0 ){
 					console.log("관리자 자랑글 정지 성공!");
-					//그 다음 페이지를 다시 로드하고 스크롤을 원하는 위치로...??
+					//일단 목록 페이지 다시 로드
+					location.href = "${pageContext.request.contextPath }/loadToLogin?afterUrl=selectRoomList";
 				}
 			}
 		});
@@ -527,7 +529,7 @@ function adminRpBan(){
 			async : false,
 			success : function(updateResult){
 				if( updateResult > 0 ){
-					console.log("관리자 댓글 삭제 성공!");
+					console.log("관리자 댓글 정지 성공!");
 					replyPrint('top');
 					
 					//목록 페이지 댓글수 업데이트 (-1)
@@ -611,7 +613,7 @@ roomView_ajax(nowBdcode)
 				
 				$("#roomimg").html(imgHtml);
 				//작성자 프로필	
-				var mprofileOutput = "<img class='product-img' style='width:30px; height:30px; border-radius:50%;'";
+				var mprofileOutput = "<img class='product-img' onclick='writeMemberBoard(\""+roomView.bdnickname+"\")' style='width:30px; height:30px; border-radius:50%;'";
 				if(roomView.bdmprofile != 'nomprofile'){
 					console.log("작성자 프로필 있음");
 					if(roomView.bdmid.substring(0,1) == "@"){
@@ -636,7 +638,12 @@ roomView_ajax(nowBdcode)
 				$("#roomMnickname").html(mnicknameOutput);
 
 				//글 내용
-				$("#roomContents").html("<textarea class='scroll rvcontents' readonly style='font-size:15px; resize:none;'>"+roomView.bdcontents+"</textarea>");
+				var roomContentsOutput = "<textarea class='scroll' readonly style='font-size:15px; resize:none;'>"+roomView.bdcontents+"</textarea>";
+				//시간 출력
+				roomContentsOutput += "<span style='font-size:15px; color:grey; margin:0px;'>"+timeForToday(roomView.bddate)+"</span>"
+				$("#roomContents").html(roomContentsOutput);
+				//$("#roomContents").html("<textarea class='scroll' readonly style='font-size:15px; resize:none;'>"+roomView.bdcontents+"</textarea>");
+				
 				//추천, 스크랩, 신고 출력
 				var roomInfoOutput = ""
 				//추천
@@ -645,7 +652,7 @@ roomView_ajax(nowBdcode)
 					roomInfoOutput += "<a onclick='log(\"rchistory\")' style='cursor:pointer;'><span id='"+roomView.bdcode+"_rchistory'><i class='fa-solid fa-heart'></i></span></a> ";
 				} else {					
 					console.log("추천 기록 없음")
-					roomInfoOutput += "<a onclick='log(\"rchistory\") style='cursor:pointer;'><span id='"+roomView.bdcode+"_rchistory'><i class='fa-regular fa-heart'></i></span></a> ";
+					roomInfoOutput += "<a onclick='log(\"rchistory\")' style='cursor:pointer;'><span id='"+roomView.bdcode+"_rchistory'><i class='fa-regular fa-heart'></i></span></a> ";
 				}
 				//스크랩
 				if(roomView.schistory != "n"){
@@ -685,6 +692,34 @@ roomView_ajax(nowBdcode)
 		
 	}
 
+	//시간 함수
+	function timeForToday(value) {
+		console.log("시간 변경 함수 호출")
+	
+    	var today = new Date();
+    	var timeValue = new Date(value);
+
+    	var betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
+    	if (betweenTime < 1) return "방금전";
+    	if (betweenTime < 60) {
+    		return betweenTime+"분전";
+    	}
+
+    	var betweenTimeHour = Math.floor(betweenTime / 60);
+    	if (betweenTimeHour < 24) {
+        	return betweenTimeHour+"시간전";
+    	}
+	
+    	var betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+    	if (betweenTimeDay < 365) {
+        	return betweenTimeDay+"일전";
+    	}
+    	return Math.floor(betweenTimeDay / 365)+"년전";
+	
+		return value;
+	}
+	
+	
 	//댓글 출력
 	function replyPrint(scroll){
 		$.ajax({
@@ -701,7 +736,7 @@ roomView_ajax(nowBdcode)
 					replyOutput += "<div id='reply_"+replys[i].rpcode+"' style='width:100%; margin-bottom:3px;' class='row' onmouseover='toggleReplyMenu(\""+replys[i].rpcode+"\", \"show\")' onmouseout='toggleReplyMenu(\""+replys[i].rpcode+"\", \"hide\")'>";
 					//댓글 작성자 프로필 이미지
 					replyOutput += "<div style='width:30px;'>";
-					replyOutput += "<img class='product-img' style='width:20px; height:20px; border-radius:50%;'";
+					replyOutput += "<img class='product-img' onclick='writeMemberBoard(\""+replys[i].rpnickname+"\")' style='width:20px; height:20px; border-radius:50%;'";
 					if(replys[i].rpprofile != 'nomprofile'){
 						//console.log(replys[i].rpprofile);
 						console.log("프로필 있음");
@@ -780,40 +815,7 @@ roomView_ajax(nowBdcode)
 		
 		$("#"+nowBdcode+"_"+logType).html(after+"&nbsp;");
 	}
-</script>
-</script>
-
-<script type="text/javascript">
-	function closeMenuModal(){
-		console.log("메뉴 모달 닫기 요청");
-		//nowRpcode 초기화
-		nowRpcode = "";
-		//모달창 닫기
-		$("#menuModal").css("display", "none");
-	}
 	
-	function replyDelete(){
-		console.log("리플 삭제 요청");
-		$.ajax({
-			type : "get",
-			url : "updateReplyState_ajax",
-			data : { "rpcode" : nowRpcode},
-			async : false,
-			success : function(updateResult){
-				if( updateResult > 0 ){
-					console.log("댓글 삭제 성공!");
-					replyPrint('top');
-					
-					//목록 페이지 댓글수 업데이트 (-1)
-					logUpdate('bdreplies', 'down');
-					
-					//메뉴 모달 닫기
-					closeMenuModal()
-				}
-			}
-		});	
-	}
-
 </script>
 
 <script type="text/javascript">
@@ -876,6 +878,50 @@ roomView_ajax(nowBdcode)
 		
 		$("#"+nowBdcode+"_"+logType).html(after+"&nbsp;");
 	}
+	
+	
+	function closeMenuModal(){
+		console.log("메뉴 모달 닫기 요청");
+		//nowRpcode 초기화
+		nowRpcode = "";
+		//모달창 닫기
+		$("#menuModal").css("display", "none");
+	}
+	
+	function replyDelete(){
+		console.log("댓글 삭제 요청");
+		console.log('${sessionScope.loginId}');
+		console.log(nowRpmid);
+		if(nowRpmid != '${sessionScope.loginId}'){
+			alert("script-작성자가 아닙니다");
+			return;
+		}
+		
+			
+		$.ajax({
+			type : "get",
+			url : "updateReplyState_ajax2",
+			data : { "rpcode" : nowRpcode, "rpmid":nowRpmid},
+			async : false,
+			success : function(updateResult){
+				if( updateResult == 1 ){
+					console.log("댓글 삭제 성공!");
+					replyPrint('top');
+					
+					//목록 페이지 댓글수 업데이트 (-1)
+					logUpdate('bdreplies', 'down');
+					
+					//메뉴 모달 닫기
+					closeMenuModal()
+				} else if (updateResult == 2){
+					console.log("댓글 작성자가 아님!");
+					alert("작성자가 아닙니다");
+					return;
+				} 
+			}
+		});	
+	}
+
 </script>
 
 <script type="text/javascript">
@@ -891,10 +937,10 @@ roomView_ajax(nowBdcode)
 		}
 			
 		if('${sessionScope.loginId}'==''){
-			var confirmResult = confirm("로그인 후 이용가능합니다."); 
+			var confirmResult = confirm("script-로그인 후 이용가능합니다"); 
 			console.log(confirmResult);
 			if(confirmResult==true){
-				location.href = '${pageContext.request.contextPath }/loadToLogin?afterUrl=selectRoomList';
+				location.href = '${pageContext.request.contextPath }/loadToLogin?afterUrl=selectRoomListbdcode='+nowBdcode;
 				return;
 			} else {
 				return;
@@ -910,6 +956,18 @@ roomView_ajax(nowBdcode)
 			async : false,
 			success: function(result){
 				console.log(result);
+				
+				if(result = "2"){
+					var confirmResult = confirm("로그인 후 이용가능합니다"); 
+					console.log(confirmResult);
+					if(confirmResult==true){
+						location.href = '${pageContext.request.contextPath }/loadToLogin?afterUrl=selectRoomList?bdcode='+nowBdcode;
+						return;
+					} else {
+						return;
+					}
+				}
+				
 				currentState = result;				
 			}
 		});
@@ -995,13 +1053,20 @@ roomView_ajax(nowBdcode)
 	
 	function deleteRoomView(){
 		console.log(nowBdcode+"글 삭제 요청");
+		
+		console.log('${sessionScope.loginId}');
+		console.log(nowBdmid);
+		if(nowBdmid != '${sessionScope.loginId}'){
+			alert("script-작성자가 아닙니다");
+			return;
+		}
+		
 		var confirmCh = confirm("해당 글을 삭제하시겠습니까?");
 		if(confirmCh == false){
 			return;
 		} 
 		
-		location.href = "updateBoardDelete?bdcode="+nowBdcode+"&bdcategory=자랑";
-
+		location.href = "updateBoardDelete?bdcode="+nowBdcode+"&bdcategory=자랑&bdmid="+nowBdmid;
 	}
 	
 	

@@ -159,7 +159,7 @@ textarea:focus { outline: none; }
 /* Modal Content (Image) */
 .modal-content {
   margin: auto;
-  display: block;
+  display: block;  
   width: 80%;
   max-width: 700px;
 }
@@ -212,7 +212,7 @@ div.menu{
 }
 
 /* The Close Button */
-.close {
+#modalClose {
   position: absolute;
   top: 15px;
   right: 35px;
@@ -346,7 +346,7 @@ input{
       font-size: 18px;
 }
 .pagination {
-	width: 20rem ! important;
+	/* width:  ! important; */
 	display: inline-block ! important;
 	margin-left: auto ! important;
 	margin-right: auto ! important; 
@@ -580,11 +580,11 @@ input{
   
   <!-- 양쪽 화살표 -->
   <a class='left carousel-control' id="prevArrow">
-  <span class='glyphicon glyphicon-chevron-left' onclick="modalChange('prev')" ></span>
+  <span class='glyphicon glyphicon-chevron-left' onclick="modalChange('prev')" style="cursor:pointer"></span>
   <span class='sr-only'>Previous</span>
   </a>
   <a class='right carousel-control' id="nextArrow">
-  <span class='glyphicon glyphicon-chevron-right'  onclick="modalChange('next')" ></span>
+  <span class='glyphicon glyphicon-chevron-right' onclick="modalChange('next')" style="cursor:pointer"></span>
   <span class='sr-only'>Next</span>
   </a>
   
@@ -594,12 +594,12 @@ input{
   			<div id="roomimg" class="product-img-div" style="width:100%; height:100%;"></div>
   		</div>
   		<div class="tb col-lg-4" style="background-color:white; padding:10px">
- 			<div class="row" style="height:32px; width:800px;" id="roomWriter">
+ 			<div class="row" style="height:32px; width:800px; padding-left:10px;" id="roomWriter">
  				<div id="roomMprofile" style="width:30px;"></div>
  				<div id="roomMnickname" style="width:372px; padding-bottom:10px;"></div>
  			</div>
  			<div id="roomContents"></div>
- 			<div id="reply" class="scroll">
+ 			<div id="reply" class="scroll" style="padding-left:10px;">
 				<!-- 댓글 영역 --> 			
  			</div>
  			<div id="roomInfo">
@@ -817,7 +817,7 @@ function adminRvBan(){
 			success : function(updateResult){
 				if( updateResult > 0 ){
 					console.log("관리자 자랑글 정지 성공!");
-					//그 다음 페이지를 다시 로드하고 스크롤을 원하는 위치로...??
+					location.href = "${pageContext.request.contextPath }/loadToLogin?afterUrl=selectRoomList";
 				}
 			}
 		});
@@ -842,7 +842,7 @@ function adminRpBan(){
 			async : false,
 			success : function(updateResult){
 				if( updateResult > 0 ){
-					console.log("관리자 댓글 삭제 성공!");
+					console.log("관리자 댓글 정지 성공!");
 					replyPrint('top');
 					
 					//목록 페이지 댓글수 업데이트 (-1)
@@ -988,7 +988,7 @@ function modalChange(type){
 		
 		$("#roomimg").html(imgHtml);
 		//작성자 프로필	
-		var mprofileOutput = "<img class='product-img' style='width:30px; height:30px; border-radius:50%;'";
+		var mprofileOutput = "<img onclick='writeMemberBoard(\""+roomView.bdnickname+"\")' class='product-img' style='width:30px; height:30px; border-radius:50%;'";
 		if(roomView.bdmprofile != 'nomprofile'){
 			console.log("작성자 프로필 있음");
 			if(roomView.bdmid.substring(0,1) == "@"){
@@ -1016,8 +1016,6 @@ function modalChange(type){
 		var roomContentsOutput = "<textarea class='scroll' readonly style='font-size:15px; resize:none;'>"+roomView.bdcontents+"</textarea>";
 		//시간 출력
 		roomContentsOutput += "<span style='font-size:15px; color:grey; margin:0px;'>"+timeForToday(roomView.bddate)+"</span>"
-		//roomContentsOutput +=
-		//roomContentsOutput += "</div>"
 		$("#roomContents").html(roomContentsOutput);
 		//$("#roomContents").html("<textarea class='scroll' readonly style='font-size:15px; resize:none;'>"+roomView.bdcontents+"</textarea>");
 		
@@ -1081,19 +1079,19 @@ function modalChange(type){
             return betweenTime+"분전";
         }
 
-        const betweenTimeHour = Math.floor(betweenTime / 60);
+        var betweenTimeHour = Math.floor(betweenTime / 60);
         if (betweenTimeHour < 24) {
             return betweenTimeHour+"시간전";
         }
 		
-        const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+        var betweenTimeDay = Math.floor(betweenTime / 60 / 24);
         if (betweenTimeDay < 365) {
             return betweenTimeDay+"일전";
         }
         return Math.floor(betweenTimeDay / 365)+"년전";
 		
 		return value;
- }
+ 	}
 	
 	//댓글 출력
 	function replyPrint(scroll){
@@ -1111,7 +1109,7 @@ function modalChange(type){
 					replyOutput += "<div id='reply_"+replys[i].rpcode+"' style='width:100%; margin-bottom:3px;' class='row' onmouseover='toggleReplyMenu(\""+replys[i].rpcode+"\", \"show\")' onmouseout='toggleReplyMenu(\""+replys[i].rpcode+"\", \"hide\")'>";
 					//댓글 작성자 프로필 이미지
 					replyOutput += "<div style='width:30px;'>";
-					replyOutput += "<img class='product-img' style='width:20px; height:20px; border-radius:50%; margin-top:10px;'";
+					replyOutput += "<img class='product-img' onclick='writeMemberBoard(\""+replys[i].rpnickname+"\")' style='width:20px; height:20px; border-radius:50%; margin-top:10px;'";
 					if(replys[i].rpprofile != 'nomprofile'){
 						console.log("프로필 있음")
 						if(replys[i].rpmid.substring(0, 1) == "@"){
@@ -1202,7 +1200,7 @@ function modalChange(type){
 		console.log('${sessionScope.loginId}');
 		console.log(nowRpmid);
 		if(nowRpmid != '${sessionScope.loginId}'){
-			alert("댓글 작성자만 삭제할 수 있습니다!");
+			alert("script-작성자가 아닙니다");
 			return;
 		}
 		
@@ -1224,7 +1222,7 @@ function modalChange(type){
 					closeMenuModal()
 				} else if (updateResult == 2){
 					console.log("댓글 작성자가 아님!");
-					alert("댓글 작성자만 삭제할 수 있습니다!");
+					alert("작성자가 아닙니다");
 					return;
 				} 
 			}
@@ -1278,8 +1276,7 @@ function modalChange(type){
 	}
 	
 
-
-	//모달창 닫는 X 눌렀을 때 실행된느 함수
+	//모달창 닫는 X 눌렀을 때 실행되는 함수
 	span.onclick = function() {
 	  modal.style.display = "none";
 
@@ -1325,10 +1322,10 @@ function modalChange(type){
 		}
 			
 		if('${sessionScope.loginId}'==''){
-			var confirmResult = confirm("로그인 후 이용가능합니다."); 
+			var confirmResult = confirm("script-로그인 후 이용가능합니다"); 
 			console.log(confirmResult);
 			if(confirmResult==true){
-				location.href = '${pageContext.request.contextPath }/loadToLogin?afterUrl=selectRoomList';
+				location.href = '${pageContext.request.contextPath }/loadToLogin?afterUrl=selectRoomList?bdcode='+nowBdcode;
 				return;
 			} else {
 				return;
@@ -1344,6 +1341,18 @@ function modalChange(type){
 			async : false,
 			success: function(result){
 				console.log(result);
+				
+				if(result = "2"){
+					var confirmResult = confirm("로그인 후 이용가능합니다"); 
+					console.log(confirmResult);
+					if(confirmResult==true){
+						location.href = '${pageContext.request.contextPath }/loadToLogin?afterUrl=selectRoomList?bdcode='+nowBdcode;
+						return;
+					} else {
+						return;
+					}
+				}
+				
 				currentState = result;				
 			}
 		});
@@ -1422,7 +1431,7 @@ function modalChange(type){
 							$("#menuModal").css("display", "none");
 						}						
 					}	
-				}	
+				} 
 			}
 		});		
 	}
@@ -1433,7 +1442,7 @@ function modalChange(type){
 		console.log('${sessionScope.loginId}');
 		console.log(nowBdmid);
 		if(nowBdmid != '${sessionScope.loginId}'){
-			alert("글 작성자만 삭제할 수 있습니다!");
+			alert("script-작성자가 아닙니다");
 			return;
 		}
 		
@@ -1497,6 +1506,12 @@ function modalChange(type){
 
 	function modifyRoomView(){
 		console.log("글 수정 버튼 클릭");
+		
+		var confirmCh = confirm("해당 글을 수정하시겠습니까?");
+		if(confirmCh == false){
+			return;
+		} 
+		
 		location.href = "${pageContext.request.contextPath}/loadToBoardModify?bdcode="+nowBdcode+"&bdcategory=자랑";
 	}
 </script>

@@ -188,7 +188,9 @@ public class MemberService {
 		             System.out.println((String) session.getAttribute("loginRegion"));
 		             System.out.println((String) session.getAttribute("loginProfile"));
 		             System.out.println((String) session.getAttribute("loginNickname"));
-		             System.out.println( session.getAttribute("sumUnReadCount"));
+
+		             System.out.println(session.getAttribute("sumUnReadCount"));
+
 			    
 				ra.addFlashAttribute("msg", "로그인 되었습니다.");
 				

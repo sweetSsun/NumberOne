@@ -268,7 +268,7 @@
 	$(document).on("click", "#dropdownChat", function(){
 		$.ajax({
 			type: "post",
-			url: "selectChatRoomList",
+			url: "selectChatRoomList2",
 			data: {"loginId": "${sessionScope.loginId}"},
 			async:false,
 			dataType: "json",
