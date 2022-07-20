@@ -34,7 +34,7 @@ public class UsedBoardDto {
 	private String[] ubdetailimg_list;			//출력용 상세사진목록
 
 	private String ubgdname; //마이페이지 출력용 굿즈명
-	private int gdprice;
+	private int gdprice;	 // 마이페이지 출력용 가격
 	
 	public String getUbcode() {
 		return ubcode;

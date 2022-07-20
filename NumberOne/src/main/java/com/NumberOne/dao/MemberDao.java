@@ -107,7 +107,7 @@ public interface MemberDao {
 	ArrayList<ZzimDto> selectMyInfoResellView_Zzim(String loginId);
 
 	//닉네임으로 회원정보 가져오기
-	@Select("SELECT MPROFILE, MNICKNAME, MREGION, MMESSAGE FROM MEMBERS WHERE MNICKNAME = #{nickname} ")
+	@Select("SELECT MID, MPROFILE, MNICKNAME, MREGION, MMESSAGE FROM MEMBERS WHERE MNICKNAME = #{nickname} ")
 	MemberDto selectWriteMemberInfo_member(String nickname);
 
 	//마이페이지 미니브라우저 닉네임 별 작성 글 출력
