@@ -54,8 +54,7 @@
 	}
 	
 	.nav_chat .chat-badge{
-		top: 5px;
-		right: 1px;
+		position: absolute;
 		color: white;
 		background-color: red;
 	}
@@ -70,7 +69,7 @@
 	.chat-badge{
 		font-size: 0.2rem;
 		border-radius: 10px;
-		min-width: 7px;
+		min-width: 15px;
 		text-align: center;
 	}
 	
@@ -342,7 +341,7 @@
 			dropdownList += "<div class=\"row nav_chat\" >";
 			dropdownList += "<div class=\"col-11 overflow\" style=\"font-size:1.25rem;\">" + data[i].recentCmcontents + "</div>";
 			if (data[i].unreadCount != 0){ // 안읽은 메세지가 있으면
-				dropdownList += "<div class=\"col-1 nav_list-link\"><span class=\"chat-badge\" style=\"\">" + data[i].unreadCount + "</span></div>";
+				dropdownList += "<div class=\"col-1 nav_chat\" style=\"width: 15px; height:15px; text-align: center;\"><span class=\"chat-badge\" style=\"\">" + data[i].unreadCount + "</span></div>";
 			}
 			dropdownList += "<div class=\"row\">";
 			dropdownList += "<div class=\"col-6 small\" style=\"color:gray; text-align:left;\">" + data[i].crfrmnickname + "</div>";
@@ -353,6 +352,9 @@
 			dropdownList += "</div>";
 			dropdownList += "</a>";
 		}
+		dropdownList += "<div class=\"text-center mt-1\">";
+		dropdownList += "<a class=\"dropdown-item pt-2\" href=\"selectMyInfoResellView#scroll-chat\">더보기</a>";
+		dropdownList += "</div>";
 		$("#chatRoomList").html(dropdownList);
 	}
 
@@ -386,7 +388,7 @@
 	                     }
 	              });
 	
-	               },2000);
+	               },3000);
 	    });
 	}
 	

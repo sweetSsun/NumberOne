@@ -265,7 +265,7 @@ a{
 	<!-- 프로필 -->
 
 	<div class="row">
-
+	<form action="insertResellChat">
 		<%-- <c:forEach items="${memberInfo }" var="memberInfo"> --%>
 		<div class="parent"  style="margin-bottom : 0px;">
 		<c:choose>
@@ -304,6 +304,17 @@ a{
 			</div>
 		</div>
 		<%-- </c:forEach> --%>
+		
+		<input type="hidden" name="cmfrmid" value="${sessionScope.loginId }">
+		<input type="hidden" name="cmfrmnickname" value="${sessionScope.loginNickname }">
+		
+		<input type="hidden" name="cmtomnickname" value="${memberInfo.mnickname }"> 
+		<input type="hidden" name="cmtomid"	value="${memberInfo.mid }">
+		
+		<!-- output 안으로 넣었는데// 채팅메소드는 고정된 타이틀, 판매자정보는 변동 타이틀이라 drop// title 대신 nickname 전송하기로 함 -->
+		<%-- <input type="hidden" name="gdtitle" value="${ublist.ubtitle }"> --%>
+		
+	</form>
 	</div>	 
 </div>	 
 
@@ -411,7 +422,7 @@ function boardreplySwitch(type){
 	    		output+="<a href=\"selectRoomList?bdcode="+ReplyList[i].rpbdcode+"&jsp=view\" target=\"_blank\">"
 	      		output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; color:black; \" >"+ReplyList[i].rpcontents+"</p>"
 	      		output+="</a>"
-	      		output+="</li></ul>"      
+	      		output+="</li></ul>"
 	      
 		   }else {
 		      	output+="<ul><li>"
@@ -451,32 +462,92 @@ function boardreplySwitch(type){
 	
 	    	  output+="<div class = \"msgTextarea col-lg-12 col-md-6 col-sm-6\" style=\"border-top:0px! important ; padding-top: 20px; border: 1px solid #949494; background-color: #F2F2FF;\" >"
       
-	        for (var i = 0; i < ubList.length; i++){
-	           /* output+="<ul><li>"  */
-	        	   output+="<div>"
-	           output+="&nbsp;&nbsp;&nbsp;"
-	        	   output+="<a href=\"selectResellView?ubcode="+ubList[i].ubbdcode+"&ubsellbuy=S&modifyCheck=LIST\" target=\"_blank\">"
-	        	   output+="<input type=\"checkbox\" onclick=\"clickBox(this, "+ubList[i].ubgdname+")\" name="+ubList[i].ubgdname+" value="+ubList[i].ubgdname+">"
-	        	   output+="&nbsp;&nbsp;&nbsp;"
-	       	   output+="<img style=\"height: 70px; width: 70px; border: 1px solid #949494; border-radius:5px; padding: 1px;\" src=\"${pageContext.request.contextPath }/resources/img/resell/"+ubList[i].ubmainimg+"\">"
-	           output+="<span class=\"pText\" style=\"background-color: #F2F2FF; border: 0px; outline:none; color:black; \" >&nbsp;&nbsp;&nbsp; "+ubList[i].ubgdname+"</span>"
-	           		output+="</a>"
-	           output+="<div><hr>"
-	          /*  output+="</li></ul>"    */   
+			for (var i = 0; i < ubList.length; i++){
+        		output+="<div>"
+				output+="&nbsp;&nbsp;&nbsp;"
+				output+="<a href=\"selectResellView?ubcode="+ubList[i].ubbdcode+"&ubsellbuy=S&modifyCheck=LIST\" target=\"_blank\">"
+				output+="<input type=\"checkbox\" onclick=\"clickBox(this, \'"+ubList[i].ubgdname+"\')\" name=\"ubname\" value="+ubList[i].ubgdname+">"
+				output+="&nbsp;&nbsp;&nbsp;"
+				output+="<img style=\"height: 70px; width: 70px; border: 1px solid #949494; border-radius:5px; padding: 1px;\" src=\"${pageContext.request.contextPath }/resources/img/resell/"+ubList[i].ubmainimg+"\">"
+				output+="<span class=\"pText\" style=\"background-color: #F2F2FF; border: 0px; outline:none; color:black; \" >&nbsp;&nbsp;&nbsp; "+ubList[i].ubgdname+"</span>"
+				output+="</a>"
+				output+="<span type=\"text\" style=\"float: right;\" name=\"ubprice\">"+ubList[i].gdprice+"</span>"
+           		/* output+="<input type=\"text\" name=\"ubtitle\" value="+ubList[i].ubtitle+">" */
+				output+="<div><hr>"
 	        }
-	        	output+="</div>"
-	        	output+="</div>"
-	        		output+="</div>"
+				output+="</div>"
+				output+="</div>"
+				output+="</div>"
 	           //console.log(output);
-	           $("#pageChange").html(output);
+				$("#pageChange").html(output);
 			
 	        	
  } 
 
-
-
 </script>
 
+<script type="text/javascript">
+const loginId = '${sessionScope.loginId}'; //로그인된 아이디
+const tomid =  $('input[name=cmtomid]').val(); // 작성자 아이디
+
+const chatBtn = document.getElementById("chatBtn"); //채팅버튼
+
+/* 체크박스 클릭 이벤트 */
+let ub_names = [];
+const cmfrmid = loginId;
+const cmfrmnickname = document.getElementsByName("cmfrmnickname")[0].value;
+const cmtomnickname = document.getElementsByName("cmtomnickname")[0].value;
+const cmtomid = tomid;
+/* const ubtitle = document.getElementsByName("ubtitle").value; //글제목 drop */
+const cmtomnicknameof = cmtomnickname+" 님의";
+
+function clickBox(sel_boxTag, selOp) {
+	console.log(selOp);
+	if (sel_boxTag.checked == true) {
+		// 클릭이벤트 발생 시 체크박스가 checked 된 경우에만 실행
+		ub_names.push(selOp);	// checked 되었을 때 상품명을 ub_names 변수에 push 해서 담아준다.
+
+		/* 데이터 확인 */
+		console.log("선택된체크박스 : ", sel_boxTag);
+		console.log("보내는아이디 : ", cmfrmid);
+		console.log("보내는닉네임 : ", cmfrmnickname);
+		console.log("받는닉네임 : ", cmtomnickname);
+		console.log("받는아이디 : ", cmtomid);
+		console.log("상품이름 : ", ub_names);
+	}
+}
+
+/* 챗버튼 클릭 */
+chatBtn.addEventListener('click', chatInsert_Ajax);
+
+function chatInsert_Ajax() {
+
+	$.ajax({
+		type : 'post',
+		url : 'insertResellChat',
+		traditional : true,  	// 배열 전송위해서 필요.  
+		async : false,
+		data : {
+			'gd_names' : ub_names,
+			'cmfrmid' : cmfrmid,
+			'cmfrmnickname' : cmfrmnickname,
+			'cmtomnickname' : cmtomnickname,
+			'cmtomid' : cmtomid,
+			'gdtitle' : cmtomnicknameof
+		},
+		dataType : 'json',
+		success : function(chatResult) {
+			alert('성공');
+			console.log("chatResult : ", chatResult);
+
+			popupChat(chatResult);
+
+		}
+
+	})
+}
+
+</script>
 
 </body>
 </html>

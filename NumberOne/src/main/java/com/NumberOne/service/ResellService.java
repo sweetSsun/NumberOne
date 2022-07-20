@@ -243,12 +243,6 @@ public ModelAndView selectResellPageList(Paging paging) {
 	System.out.println("selectResellPageList 서비스 호출");
 	ModelAndView mav = new ModelAndView();
 	
-	/*  페이지처음출력 시 전체목록출력용
-	if(paging.getSearchVal() == null || paging.getSearchVal() == "") {
-		
-		paging.setSearchVal("all");		
-	}
-	*/
 	String checkMethod = "NO";
 	
 

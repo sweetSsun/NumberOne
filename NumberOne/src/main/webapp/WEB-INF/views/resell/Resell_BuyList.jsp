@@ -264,13 +264,15 @@
 					}
 				})
 		
-		$.ajax({	// 페이지 번호 출력용 ajax
+			$
+				.ajax({ // 페이지 번호 출력용 ajax
 					type : "get",
 					url : "selectResellRegionList_ajax",
 					dataType : "json",
-					data : {					
+					async : false,
+					data : {
 						"searchVal" : selRegion,
-						"sellBuy" : 'B',
+						"sellBuy" : 'S',
 						"ajaxCheck" : 'PAGE',
 						"page" : page
 					},
@@ -280,14 +282,13 @@
 						output_pagerNum = '';
 						if (result.page <= 1) {
 							output_pagerNum = '[이전]';
-						}
-						else {
+						} else {
 							output_pagerNum = '<button onclick="selectRegion('
 									+ (result.page - 1) + ')">[이전]</button>';
 						}
 						for (var i = 1; i <= result.endPage; i++) {
 
-							if (result.endPage == i) {
+							if (result.page == i) {
 								output_pagerNum += '<span style=\"font-size: 20px\">&nbsp;'
 										+ i + '&nbsp;</span>';
 							} else {
@@ -295,16 +296,16 @@
 										+ i + ')">' + i + '</button>';
 							}
 						}
-						if (result.page >= result.maxPage) {
-							output_pagerNum += '[다음]';
-						} else {
+						if (result.next) {
 							output_pagerNum += '<button onclick="selectRegion('
-									+ (result.page + 1) + ')">[다음]</button>';
+								+ (result.page + 1) + ')">[다음]</button>';
+							
+						} else {
+							output_pagerNum += '[다음]';
 						}
 						document.getElementById("pageNumber").innerHTML = output_pagerNum;
 					}
 				})
-
 		document.getElementById("mregion").innerText = "[" + selRegion
 				+ "] 지역 목록입니다.";
 	}
@@ -336,45 +337,47 @@
 			}					
 	})
 	
-	$.ajax({	//검색된 목록의 페이지번호 출력을 위한 ajax
+		$
+				.ajax({ //검색된 목록의 페이지번호 출력을 위한 ajax
 					type : "get",
 					url : "selectResellRegionList_ajax",
 					dataType : "json",
+					async : false,
 					data : {
 						"keyword" : keyword,
 						"searchVal" : selRegion,
-						"sellBuy" : 'B',
+						"sellBuy" : 'S',
 						"ajaxCheck" : 'PAGE',
 						"page" : page,
-						 "searchType" : searchType
+						"searchType" : searchType
 					},
 					success : function(result) {
 						output_pagerNum = '';
 						alert("page_ajax");
 						console.log("결과페이지 : " + result.page);
-						
+
 						if (result.page <= 1) {
 							output_pagerNum = '[이전]';
+						} else {
+							output_pagerNum = '<button onclick=\"searchKeyword('
+									+ (result.page - 1) + ')\">[이전]</button>';
 						}
-						else {
-							output_pagerNum = '<button onclick="searchKeyword('
-									+ (result.page - 1) + ')">[이전]</button>';
-						}
-						for (var i = 1; i <= result.endPage; i++) {
+						for (var i = result.startPage; i <= result.endPage; i++) {
 
-							if (result.endPage == i) {
-								output_pagerNum += '<span style=\"font-size: 20px\">&nbsp;'
+							if (result.page == i) {
+								output_pagerNum += '<span>&nbsp;'
 										+ i + '&nbsp;</span>';
 							} else {
-								output_pagerNum += '<button onclick="searchKeyword('
-										+ i + ')">' + i + '</button>';
+								output_pagerNum += '<button onclick=\"searchKeyword('
+										+ i + ')\">' + i + '</button>';
 							}
 						}
-						if (result.page >= result.maxPage) {
-							output_pagerNum += '[다음]';
+						if (result.next) {
+							output_pagerNum += '<button onclick=\"searchKeyword('
+								+ (result.page + 1) + ')\">[다음]</button>';
+							
 						} else {
-							output_pagerNum += '<button onclick="searchKeyword('
-									+ (result.page + 1) + ')">[다음]</button>';
+							output_pagerNum += '[다음]';
 						}
 						document.getElementById("pageNumber").innerHTML = output_pagerNum;
 					}

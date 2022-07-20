@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.NumberOne.dto.ChatMessageDto;
 import com.NumberOne.dto.ContactDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.service.MemberService;
@@ -333,6 +334,7 @@ public class MemberController {
 			
 		}
 		
+
 
 }
 
