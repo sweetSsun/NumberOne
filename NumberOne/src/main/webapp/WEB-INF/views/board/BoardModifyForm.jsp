@@ -7,10 +7,9 @@
 <meta charset="UTF-8">
 <%@ include file="/resources/css/BarCss.jsp" %>
 <!-- 폰트어썸 -->
-<script src="https://kit.fontawesome.com/86a85cd392.js" crossorigin="anonymous"></script>
 <title>1인자 - 게시글 수정페이지</title>
 <!-- Jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
 
 <style type="text/css">
 	section{
@@ -76,7 +75,6 @@
      justify-content: center;
      border: solid #E0E0E0 2px;
      margin-top: 5%;
-     margin-bottom: 2%;
      width: 200px;
      height: 200px;
      
@@ -166,13 +164,25 @@
 				<!-- 첨부파일! 나중에 경로 및 name 수정  -->
 				<c:if test="${board.bdimg != null }">
 					<div class="img-container" id="img-container" style="position: relative;">
-						<img id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
+						<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
 						<span class="x" onclick="currentImgStateUpdate()">&nbsp;X&nbsp;</span>
-					</div>				
+					</div>
+					<div style="background-color: #00bcd4; width: 200px; color:white;" class="text-center fw-bold">
+						업로드 이미지
+					</div>			
 				</c:if >
-					<input id="bdImg" type="file" name="bdimgfile" accept="image/*"  >
 					<input type="hidden" name="del_bdimg" id="del_bdimg" >
 					<input type="hidden" name="bdimg" id="bdimg" value="${board.bdimg }">
+				
+				<div class="row" style="margin-top: 3%;">
+					<div class="image-container" style="width: 300px; heigth:300px;">
+	    				<img title="이미지 미리보기" style="width: 200px; heigth:200px;" id="preview-image" src="https://dummyimage.com/500x500/ffffff/000000.png&text=preview+image">
+						<!-- 파일선택 -->
+						<input id=input-image type="file" name="bdimgfile" accept="image/*"  >
+						<!-- <input type="file" style="display: block;" id="input-image" name="bdimgfile" accept="image/*" > -->
+					</div>
+				</div>
+				
 				
 				<div class="row mt-4">
 					<div class="col btn-wrapper">
@@ -258,6 +268,29 @@
 		
 		$("#img-container").css("display", "none");
 	}
+	
+	/* 이미지 미리보기 */
+	// input file에 change 이벤트 부여
+	const inputImage = document.getElementById("input-image")
+	inputImage.addEventListener("change", e => {
+	    readImage(e.target)
+	})
+	
+	function readImage(input) {
+    // 인풋 태그에 파일이 있는 경우
+    if(input.files && input.files[0]) {
+        // 이미지 파일인지 검사 (생략)
+        // FileReader 인스턴스 생성
+        const reader = new FileReader()
+        // 이미지가 로드가 된 경우
+        reader.onload = e => {
+            const previewImage = document.getElementById("preview-image")
+            previewImage.src = e.target.result
+        }
+        // reader가 이미지 읽도록 하기
+        reader.readAsDataURL(input.files[0])
+    }
+}	
 
 	
 </script>

@@ -77,11 +77,14 @@
 	text-decoration: none; 
 	}
 	
-	footer{
+/* 	
+footer{
+		margin-top: 10%;
 		height: 200px;
-		background-color: gray;
+		border-top: solid #9C9C9C 1px;
+		background-color: #F9F9F9;
 	}
-
+ */
 	
 	
 	/* ---------------------- */
