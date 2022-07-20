@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>1인자 - 공지게시판</title>
 <!-- Jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>  
 <%@ include file="/resources/css/BarCss.jsp" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 <style type="text/css">
@@ -260,6 +260,11 @@
 				searchOption.eq(i).attr("selected", "selected");
 			}
 		}
+	}
+	
+	var keyword = '${paging.keyword}';
+	if( keyword.length > 0 ){
+		$("#inputSearchText").val(keyword);
 	}
 	
 </script>

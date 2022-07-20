@@ -5,10 +5,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 게시판 글목록 페이지</title>
+<title>1인자 - ${paging.searchVal }게시판</title>
 <!-- Jquery -->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>  
 <%@ include file="/resources/css/BarCss.jsp" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 <style type="text/css">
@@ -16,8 +15,15 @@
 		max-width: 70%;
 		margin: auto;
 		margin-top: 0%;
+		background-color: white;
 	}
 	
+	.boardList{
+		margin: auto;
+	}
+	.tableCell{
+		font-size: 20px;
+	}
 	#board_column{
 		border-bottom: solid #E0E0E0 2px;
 	}
@@ -33,7 +39,7 @@
 	.bdCategoryList{
 		color : #00bcd4;
 		border: none;
-		font-size: 18px;
+		font-size: 20px;
 	}
 	.bdcategorySel{
 		font-weight: bold;
@@ -49,45 +55,41 @@
 	.searchType{
 		text-align: center;
 		border-radius: 5px;
-		font-size: 18px;
+		font-size: 20px;
 		border: solid 1px #00bcd4;
-	}
-	#searchText{
-		font-size: 18px;
 	}
 	.community{
 		background-color: #00bcd4;
 	}
-	.malmeori{
-		display: none;
+	#inputSearchText{
+		font-size: 18px;
 	}
-	
 </style>
 </head>
 <body>
 	    <!-- TopBar -->
         <c:choose>
             <c:when test="${sessionScope.loginId != 'admin'}">
-                    <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
+                  <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
             </c:when>
             <c:otherwise>
-                    <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
+                  <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
             </c:otherwise>
         </c:choose>
         <!-- End of TopBar -->
 	
 	<main>
-		
 		<!-- 사이드바 -->
 		<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
 		
 		<section>
 		<!-- 본문 -->
-			<form action="selectBoardList" method="get"  id="actionForm">
+			<form action="selectCategoryBoardList" method="get" id="actionForm">
 			<div class="container">
 				<div class="row" style="margin:auto;">
-					<h2 class="text-center">게시판 글목록 페이지 : BoardListPage.jsp</h2>
+					<h2 class="text-center">${paging.searchVal }게시판 : FreeBoardList.jsp</h2>
 				</div>
+				<input type="hidden" name="searchVal" value="${paging.searchVal }">
 					<div class="row ">
 						<!-- 검색기능 -->
 						<div class="col-5" align="right">
@@ -99,33 +101,17 @@
 								</select>
 						</div>
 						<div class="col-7 ">
-							<input type="text" name="keyword"  placeholder="검색어를 입력하세요" id="searchText">
+							<input type="text" name="keyword"  placeholder="검색어를 입력하세요" id="inputSearchText">
 							<button class="btn btn-sm btn-secondary">검색</button>
 						</div>
 					</div>		
-						
 				</div>
 				<div class="row" style="margin-top: 20px;">
-					<div class="col">
-						<!-- 말머리 정렬 -->
-						<select class="bdCategoryList" name="searchVal" id="searchValSel" onchange="bdCategorySel(this.value)">
-							<option class="bdcategorySel malmeori" value="" disabled selected >카테고리 선택</option>
-							<option class="bdcategorySel" value="">전체</option>
-							<option class="bdcategorySel" value="자유">자유</option>
-							<option class="bdcategorySel" value="질문">질문</option>
-							<option class="bdcategorySel" value="정보">정보</option>
-							<option class="bdcategorySel" value="후기">후기</option>
-						</select>
-					</div>
-					<%-- <div align="right" class="col">
-						<c:if test="${sessionScope.loginId != null }">
-								<button  onclick="loadToBoardWrite()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">글작성</button>
-						</c:if>
-					</div> --%>
+					
 				</div>
 				
 				<div class=" community" style="text-align:center;">
-					<span style="font-size:21px;" class="fw-bold text-white">전체게시판</span>
+					<span style="font-size:21px;" class="fw-bold text-white">${paging.searchVal }게시판</span>
 				</div>
 				
 				<!-- 게시글 목록 -->
@@ -147,9 +133,7 @@
 							<!-- 공지게시판 -->
 							<tr class="fw-bold" style="border-bottom: solid #E0E0E0 1px;">
 								<td class="text-center tableCell">${notice.nbcode}</td>
-								<td class="text-center tableCell">
-									<a href="selectNoticeBoardList">공지</a>
-								</td>
+								<td></td>
 								<td class="tableCell">
 									<a href="selectNoticeBoardView?nbcode=${notice.nbcode }">${notice.nbtitle}</a>
 								</td>
@@ -164,37 +148,22 @@
 					
 					<tbody id="bdCategoryList">
 					<!-- 일반게시판 목록 -->
+					
 					<c:forEach items="${boardList }" var="board">
-						<c:if test="${board.bdcategory != '자랑' }">
 						<tr style="border-bottom: solid #E0E0E0 1px;">
 							<td class="text-center tableCell">${board.bdcode}</td>
-							<td class="bdcategory text-center tableCell">
-								<a href="selectCategoryBoardList?searchVal=${board.bdcategory }">
-									${board.bdcategory}
-								</a>
-							
-							</td>
+							<td class="bdcategory text-center tableCell">${board.bdcategory}</td>
 							<td class="tableCell">
-								<c:choose>
-									<c:when test="${board.bdcategory == '후기'  }">
-										<a href="selectReviewBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
-									 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
-									</c:when>
-									
-									<c:otherwise>
-									 	<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
-									 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
-									</c:otherwise>
-								</c:choose>
+							 	<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
+							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
 							 </td>
 							<td class="text-center tableCell">
 								<span style="cursor: pointer" onclick="writeMemberBoard('${board.bdnickname}')">${board.bdnickname}</span>
 							</td>
-							<td class="text-center tableCell" id="bddate">${board.bddate}</td>
+							<td class="text-center tableCell">${board.bddate}</td>
 							<td class="text-center tableCell">${board.bdhits }</td>
 							<td class="fw-bold text-center tableCell" style="color: #00bcd4;">${board.bdrccount}</td>
 						</tr>
-						</c:if>
 					</c:forEach>
 					</tbody>
 				</table>
@@ -250,21 +219,15 @@
 </body>
 
 <script type="text/javascript">
-	$(document).ready(function () {
-		// 페이지 넘버 a태그를 클릭하면 hidden input태그에 페이지 넘버 값을 넣고 submit 진행
-		
-		var actionForm = $("#actionForm");
-		
-		$(document).on("click", ".paginate_button a", function(e){ // on 이벤트로 변경
-			e.preventDefault();
-			console.log("pageNum click");
-			$("#pageNum").val($(this).attr("href"));
-			console.log($("#pageNum").val());
-			actionForm.submit();
-		});
+	var actionForm = $("#actionForm");
+	// $(".paginate_button a").click(function(e){ // click 이벤트는 동적 처리 불가능
+	$(document).on("click", ".paginate_button a", function(e){ // on 이벤트로 변경
+		e.preventDefault();
+		console.log("pageNum click");
+		$("#pageNum").val($(this).attr("href"));
+		console.log($("#pageNum").val());
+		actionForm.submit();
 	});
-	
-	
 </script>
 
 <script type="text/javascript">
@@ -272,9 +235,7 @@
 	if ( checkMsg.length > 0 ){
 		alert(checkMsg);
 	}
-</script>
-
-<script type="text/javascript">
+	
 	//선택한 검색 select option 으로 선택되도록 하기 
 	var searchOption = $("#searchTypeSel option");
 	var searchType = "${paging.searchType}";
@@ -285,103 +246,23 @@
 			}
 		}	
 	}
-	//선택한 정렬 select option으로 선택되도록 하기
-	var searchValOption = $("#searchValSel option");
-	var searchVal = "${paging.searchVal}";
-	if (searchVal.length > 0) {
-		for (var i = 0; i < searchValOption.length; i++){
-			if (searchValOption.eq(i).val() == searchVal){
-				searchValOption.eq(i).attr("selected", "selected");
-			}
-		}
-	}
 	
 	var keyword = '${paging.keyword}';
 	if( keyword.length > 0 ){
-		$("#searchText").val(keyword);
+		$("#inputSearchText").val(keyword);
 	}
 	
 </script>
-
 <script type="text/javascript">
-
+	
+	console.log('${paging.searchVal}');
 	/* 글쓰기 버튼 클릭 */
 	function loadToBoardWrite(){
 		//글작성 페이지로 이동 
-		var bdcategory =  "";
+		var bdcategory = "${paging.searchVal}";
 		location.href= "loadToBoardWrite?bdcategory="+bdcategory;
 	}
-	
-	/* 게시판 카테고리 선택 */
-	function bdCategorySel(categorySel){
-		console.log("categorySel: " + categorySel);
-		var searchType = $("#searchTypeSel").val();
-		var searchText = $("#searchText").val(); 
-		
-		var output = "";
-		$.ajax({
-			type : "get",
-			url : "selectBoardCategoryList_ajax",
-			data : { "searchVal" : categorySel, "searchType" : searchType, "keyword" : searchText, "ajaxCheck"  : "list"},
-			dataType : "json",
-			async : false,
-			success : function(bdCategoryList){
-				console.log(bdCategoryList);
-				
-				for(var i = 0; i< bdCategoryList.length; i++ ){
-					output += "<tr style=\"border-bottom: solid #E0E0E0 1px;\">";
-					output += "<td class=\"text-center tableCell\">" + bdCategoryList[i].bdcode + "</td>";
-					output += "<td class=\"bdcategory text-center tableCell \">" + bdCategoryList[i].bdcategory + "</td>";
-					output += "<td class=\"tableCell\"><a href='selectBoardView?bdcode=" + bdCategoryList[i].bdcode + "'>" + bdCategoryList[i].bdtitle + "</a>"
-					output += "<span class=\"fw-bold tableCell \" style=\"font-size:15px; color:#00bcd4;\">&nbsp;&nbsp;" +bdCategoryList[i].bdrpcount + "</span></td>"
-					output += "<td class=\"text-center tableCell\"><a href=\"#\">" + bdCategoryList[i].bdnickname + "</a></td>";
-					output += "<td class=\"text-center tableCell\">" + bdCategoryList[i].bddate + "</td>";
-					output += "<td class=\"text-center tableCell\">" + bdCategoryList[i].bdhits + "</td>";
-					output += "<td class=\"text-center text-info fw-bold\">" + bdCategoryList[i].bdrccount + "</td>";
-					output += "</tr>";
-				}
-			}
-		});
-		$("#bdCategoryList").html(output);
-		
-		// 페이지에서 출력할 페이지번호 받아오기
-		$.ajax({
-			type: "get",
-			data: { "searchVal" : categorySel, "searchType" : searchType, "keyword" : searchText, "ajaxCheck":"page"},
-			url: "selectBoardCategoryList_ajax",
-			dataType: "json",
-			success: function(result){
-				console.log("요청 페이지 : " + result.page);
-				$("#pageList").text("");
-				// 페이징 번호 출력
-				var pageList = "<ul class='pagination'>";
-				if (result.prev) {
-					pageList += "<li class='paginate_button'><a href='"+ (result.page - 1) + "'>이전</a></li>";
-				} else {
-					pageList += "<li class='paginate_button'><span>이전</span></li>"
-				}
-				for (var i = result.startPage; i <= result.endPage; i++){
-					if (result.page == i){
-						pageList += "<li><a class='active'>"+ i + "</a></li>";
-					} else {
-						pageList += "<li class='paginate_button'><a href='"+ i + "' >" + i + "</a></li>";
-					}
-				}
-				if (result.next){
-					pageList += "<li class='paginate_button'><a href='"+ (result.page + 1) + "' >다음</a></li>";
-				} else {
-					pageList += "<li class='paginate_button'><span>다음</span></li>"
-				}
-				$("#pageList").html(pageList);
-			},
-			error: function(){
-				alert("페이징넘버링 실패");
-			}
-		})
-		
-		
-	}
-	
 </script>
+
 
 </html>

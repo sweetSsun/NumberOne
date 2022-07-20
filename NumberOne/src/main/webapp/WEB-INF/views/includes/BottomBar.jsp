@@ -5,8 +5,28 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="/resources/css/BarCss.jsp" %>
+<style type="text/css">
+footer{
+	margin-top: 10%;
+	height: 180px;
+	border-top: solid #9C9C9C 1px;
+	background-color: #F9F9F9;
+	inline-height: 180px;
+}
+</style>
 </head>
 <body>
-	<footer class="text-center">하단바</footer>
+	<footer class="text-center">
+	
+	<div class="row">
+		<div class="col">
+			전공자없조		
+		</div>
+	</div>
+	
+	
+	
+	
+	</footer>
 </body>
 </html>

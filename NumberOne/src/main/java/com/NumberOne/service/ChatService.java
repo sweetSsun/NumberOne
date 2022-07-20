@@ -87,6 +87,8 @@ public class ChatService {
 		// 안읽은 메세지 숫자 0으로 변경
 		String mid = (String) session.getAttribute("loginId");
 		chdao.updateCmread(crcode, mid);
+		int sumUnReadCount = selectSumUnReadCount(mid);
+		session.setAttribute("sumUnReadCount", sumUnReadCount);
 		
 		// 메세지 보낸 사람의 닉네임 조회 후 set
 		for (int i = 0; i < msgList.size(); i++) {
