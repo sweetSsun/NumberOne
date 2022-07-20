@@ -5,9 +5,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 정보게시판</title>
+<title>1인자 - ${paging.searchVal }게시판</title>
 <!-- Jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>  
 <%@ include file="/resources/css/BarCss.jsp" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 <style type="text/css">
@@ -79,7 +79,6 @@
         <!-- End of TopBar -->
 	
 	<main>
-		
 		<!-- 사이드바 -->
 		<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
 		
@@ -88,9 +87,9 @@
 			<form action="selectCategoryBoardList" method="get" id="actionForm">
 			<div class="container">
 				<div class="row" style="margin:auto;">
-					<h2 class="text-center">정보게시판 : InfomationBoardList.jsp</h2>
+					<h2 class="text-center">${paging.searchVal }게시판 : ${paging.searchVal }BoardList.jsp</h2>
 				</div>
-				<input type="hidden" name="searchVal" value="정보">
+				<input type="hidden" name="searchVal" value="${paging.searchVal }">
 					<div class="row ">
 						<!-- 검색기능 -->
 						<div class="col-5" align="right">
@@ -102,7 +101,7 @@
 								</select>
 						</div>
 						<div class="col-7 ">
-							<input type="text" name="keyword" placeholder="검색어를 입력하세요" id="inputSearchText">
+							<input type="text" name="keyword"  placeholder="검색어를 입력하세요" id="inputSearchText">
 							<button class="btn btn-sm btn-secondary">검색</button>
 						</div>
 					</div>		
@@ -112,7 +111,7 @@
 				</div>
 				
 				<div class=" community" style="text-align:center;">
-					<span style="font-size:21px;" class="fw-bold text-white">정보게시판</span>
+					<span style="font-size:21px;" class="fw-bold text-white">${paging.searchVal }게시판</span>
 				</div>
 				
 				<!-- 게시글 목록 -->
@@ -149,6 +148,7 @@
 					
 					<tbody id="bdCategoryList">
 					<!-- 일반게시판 목록 -->
+					
 					<c:forEach items="${boardList }" var="board">
 						<tr style="border-bottom: solid #E0E0E0 1px;">
 							<td class="text-center tableCell">${board.bdcode}</td>
@@ -158,7 +158,7 @@
 							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
 							 </td>
 							<td class="text-center tableCell">
-								<a href="#">${board.bdnickname}</a>
+								<span style="cursor: pointer" onclick="writeMemberBoard('${board.bdnickname}')">${board.bdnickname}</span>
 							</td>
 							<td class="text-center tableCell">${board.bddate}</td>
 							<td class="text-center tableCell">${board.bdhits }</td>
@@ -205,7 +205,7 @@
 		           		<c:otherwise>
 	           				<li class="paginate_button"><span>다음</span></li>
 		           		</c:otherwise>
-  					</c:choose>					    
+  					</c:choose>
 					</ul>
 				</div>
 				<!-- 페이징 끝 -->
@@ -229,6 +229,7 @@
 		actionForm.submit();
 	});
 </script>
+
 <script type="text/javascript">
 	var checkMsg = '${msg}';
 	if ( checkMsg.length > 0 ){
@@ -246,60 +247,22 @@
 		}	
 	}
 	
+	var keyword = '${paging.keyword}';
+	if( keyword.length > 0 ){
+		$("#inputSearchText").val(keyword);
+	}
+	
 </script>
-
 <script type="text/javascript">
-
-/* 글쓰기 버튼 클릭 */
+	
+	console.log('${paging.searchVal}');
+	/* 글쓰기 버튼 클릭 */
 	function loadToBoardWrite(){
 		//글작성 페이지로 이동 
 		var bdcategory = "${paging.searchVal}";
 		location.href= "loadToBoardWrite?bdcategory="+bdcategory;
 	}
+</script>
 
-	/* 게시판 말머리 선택 */
-	function bdCategorySel(categorySel){
-		console.log("categorySel: " + categorySel);
-		
-		var output = "";
-		$.ajax({
-			type : "get",
-			url : "getBoardCategoryList_ajax",
-			data : { "bdcategory" : categorySel},
-			dataType : "json",
-			async : false,
-			success : function(bdCategoryList){
-				console.log(bdCategoryList);
-				
-				for(var i = 0; i< bdCategoryList.length; i++ ){
-					output += "<tr style=\"border-bottom: solid #E0E0E0 1px;\">";
-					output += "<td class=\"text-center\">" + bdCategoryList[i].bdcode + "</td>";
-					output += "<td class=\"bdcategory text-center\">" + bdCategoryList[i].bdcategory + "</td>";
-					output += "<td><a href='selectBoardView?bdcode=" + bdCategoryList[i].bdcode + "'>" + bdCategoryList[i].bdtitle + "</a>"
-					output += "<span class=\"fw-bold\" style=\"font-size:15px; color:#00bcd4;\">&nbsp;" + bdCategoryList[i].bdrpcount + "</span></td>"
-					output += "<td class=\"text-center\"><a href=\"#\">" + bdCategoryList[i].bdnickname + "</a></td>";
-					output += "<td class=\"text-center\">" + bdCategoryList[i].bddate + "</td>";
-					output += "<td class=\"text-center\">" + bdCategoryList[i].bdhits + "</td>";
-					output += "<td class=\"text-center text-info fw-bold\">" + bdCategoryList[i].bdrccount + "</td>";
-					output += "</tr>";
-				}
-			}
-		});
-		$("#bdCategoryList").html(output);
-	}
-	
-</script>
-<script type="text/javascript">
-	function searchTextCheck(){
-		/* 검색어 입력유무 확인 */
-		var inputSearchText = $("#inputSearchText").val();
-		
-		if( inputSearchText.length == 0 ){//검색어를 입력하지 않았으면 
-			alert("검색어를 입력해주세요!");
-		
-			return false;
-		}
-	}
-</script>
 
 </html>

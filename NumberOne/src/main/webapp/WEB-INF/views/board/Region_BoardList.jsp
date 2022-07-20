@@ -7,7 +7,7 @@
 <meta charset="UTF-8">
 <title>1인자 - 지역게시판 전체글목록 페이지</title>
 <!-- Jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>  
 <%@ include file="/resources/css/BarCss.jsp" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 <style type="text/css">
@@ -102,8 +102,6 @@
 							<button class="btn btn-sm btn-secondary">검색</button>
 						</div>
 					</div>		
-				
-						
 				</div>
 				<div class="row" style="margin-top: 20px;">
 					<div class="col">
@@ -202,7 +200,7 @@
 								</c:choose>
 							 </td>
 							<td class="text-center tableCell">
-								<a href="#">${board.bdnickname}</a>
+								<span style="cursor: pointer" onclick="writeMemberBoard('${board.bdnickname}')">${board.bdnickname}</span>
 							</td>
 							<td class="text-center tableCell">${board.bddate}</td>
 							<td class="text-center tableCell">${board.bdhits }</td>
@@ -305,6 +303,12 @@
 			}
 		}
 	}
+	
+	var keyword = '${paging.keyword}';
+	if( keyword.length > 0 ){
+		$("#searchText").val(keyword);
+	}
+	
 </script>
 
 <script type="text/javascript">

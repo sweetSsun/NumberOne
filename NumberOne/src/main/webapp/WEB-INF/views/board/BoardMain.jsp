@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>1인자 - 커뮤니티 메인</title>
 <!-- 부트스트랩 -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <%@ include file="/resources/css/BarCss.jsp" %>
 
@@ -75,7 +76,31 @@ section{
      height: auto;
      font-size: 24px;
    }
-
+	.region_sel{
+	 margin: auto;
+	 margin-right: 15px;
+	 text-align: center;
+	 border: solid #E0E0E0 1px;
+	 border-radius: 5px;
+	 background-color: #eaf8ff; 
+	 height: 70px;
+	 line-height: 70px;
+	}
+	
+	.region_sel a {
+	 color: #00bcd4;
+	 font-size: 20px;
+	 font-weight: bold;
+	}
+	
+	.region_sel:hover{
+	 background-color: #00bcd4; 
+		color: white;	
+	}
+	
+	.region_sel a:hover{
+	  color: white;		
+	}
 </style>
 
 </head>
@@ -304,32 +329,32 @@ section{
 				</div>	
 					
 				<div class="row">
-					<div class="col ">
-						<a href="selectRegionBoardList"> <span>전체</span> </a>
+					<div class="col region_sel">
+						<a href="selectRegionBoardList">전체</a>
 					</div>
-					<div class="col ">
-						<a href="selectDetailBoardList?searchVal=SEL"> <span>서울</span> </a>
+					<div class="col region_sel">
+						<a href="selectDetailBoardList?searchVal=SEL">서울</a>
 					</div>
-					<div class="col ">
-						<a href="selectDetailBoardList?searchVal=ICN"> <span>인천</span> </a>
+					<div class="col region_sel">
+						<a href="selectDetailBoardList?searchVal=ICN">인천</a>
 					</div>
-					<div class="col ">
-						<a href="selectDetailBoardList?searchVal=GGD"> <span>경기</span> </a>
+					<div class="col region_sel">
+						<a href="selectDetailBoardList?searchVal=GGD">경기</a>
 					</div>
-					<div class="col">
-						<a href="selectDetailBoardList?searchVal=GSD"> <span>경상</span> </a>
+					<div class="col region_sel">
+						<a href="selectDetailBoardList?searchVal=GSD">경상</a>
 					</div>
-					<div class="col ">
-						<a href="selectDetailBoardList?searchVal=JLD"> <span>전라</span> </a>
+					<div class="col region_sel">
+						<a href="selectDetailBoardList?searchVal=JLD">전라</a>
 					</div>
-					<div class="col ">
-						<a href="selectDetailBoardList?searchVal=CCD"> <span>충청</span> </a>
+					<div class="col region_sel">
+						<a href="selectDetailBoardList?searchVal=CCD">충청</a>
 					</div>
-					<div class="col ">
-						<a href="selectDetailBoardList?searchVal=GWD"> <span>강원</span> </a>
+					<div class="col region_sel">
+						<a href="selectDetailBoardList?searchVal=GWD">강원</a>
 					</div>
-					<div class="col ">
-						<a href="selectDetailBoardList?searchVal=JJD"> <span>제주</span> </a>
+					<div class="col region_sel">
+						<a href="selectDetailBoardList?searchVal=JJD">제주</a>
 					</div>
 				</div>
 			</div>

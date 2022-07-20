@@ -342,7 +342,9 @@ public class BoardService {
 		    //일반글 목록 조회 
 		    ArrayList<BoardDto> boardList = bdao.selectBoardList_Paging(paging);
 		    
-		    //자유 ~ 후기 게시판 이동
+
+		    /*
+		    자유 ~ 후기 게시판 이동
 		   	if( paging.getSearchVal().equals("자유") ) {
 		   		mav.setViewName("board/FreeBoardList");
 		   	}else if( paging.getSearchVal().equals("질문") ) {
@@ -350,6 +352,13 @@ public class BoardService {
 		   	}else if( paging.getSearchVal().equals("정보") ) {
 		   		mav.setViewName("board/InfomationBoardList");
 		   	}else {//후기게시판
+		   		mav.setViewName("board/ReviewBoardList");
+		   	}
+		   	*/
+		   	
+		   	if( paging.getSearchVal() != "후기" ) {
+		   		mav.setViewName("board/DetailBoardList");
+		   	}else {
 		   		mav.setViewName("board/ReviewBoardList");
 		   	}
 		   	
