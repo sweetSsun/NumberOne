@@ -261,11 +261,11 @@
 
 
 <script type="text/javascript">
-	//페이지로드시 실행
 	
 		/* 로그인된 회원인지 체크 */
-		let loginCheck = '${sessionScope.loginId}';
-		if (loginCheck.length == 0) {
+		const loginCheck = '${sessionScope.loginId}';
+		console.log("로그인된 아이디 ", loginCheck);
+		if (loginCheck === '' || loginCheck === null) {
 			alert("잘못된 접근입니다.");
 			location.href = "loadToLogin"
 
@@ -641,42 +641,72 @@ if(ubmid === loginId){
 			console.log("받는닉네임 : ", cmtomnickname);
 			console.log("받는아이디 : ", cmtomid);
 			console.log("상품이름 : ", gd_names);
-			console.log("글 제목 : ", gdtitle);
-		}
+			console.log("글 제목 : ", gdtitle);			
+	
+	} else {
+        var ubIdx = gd_names.findIndex( (element) => element === selOp );
+        console.log(ubIdx);
+        gd_names.splice(ubIdx, 1);   // checked 해제 했을 때 상품명을 ub_names 변수에서 빼준다.
+        
+        /* 데이터 확인 */
+        console.log("<"+selOp+" 해제>");
+        console.log("상품이름 : ", gd_names);
 	}
-
+	}
 </script>
 
 <!--채팅 활성화  -->
 <script type="text/javascript">
 chatBtn.addEventListener('click', chatInsert_Ajax);
+
 /* 챗버튼 클릭 이벤트핸들러 */
 function chatInsert_Ajax() {
-
-	$.ajax({
-
-		type : 'post',
-		url : 'insertResellChat',
-		traditional : true,  	// 배열 전송위해서 필요.  
-		async : false,
-		data : {
-			'gd_names' : gd_names,
-			'cmfrmid' : cmfrmid,
-			'cmfrmnickname' : cmfrmnickname,
-			'cmtomnickname' : cmtomnickname,
-			'cmtomid' : cmtomid,
-			'gdtitle' : gdtitle
-		},
-		dataType : 'json',
-		success : function(chatResult) {
-			alert('성공');
-			console.log("chatResult : ", chatResult);
-
-			popupChat(chatResult);
-
-		}
-
-	})
+   // 로그인 확인
+   $.ajax({
+      type : 'get',
+      url : 'selectLoginOut_ajax',
+      async : false,
+      success : function(result){
+         if (result == "2"){ 
+            if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+               location.href = "loadToLogin"
+               return;
+            }
+            return;
+         }
+         
+         // 체크 확인
+         if(gd_names.length == 0){
+            alert('관심있는 상품을 선택해주세요');
+            return;
+         }
+         
+         
+         $.ajax({
+   
+            type : 'post',
+            url : 'insertResellChat',
+            traditional : true,     // 배열 전송위해서 필요.  
+            async : false,
+            data : {
+               'gd_names' : gd_names,
+               'cmfrmid' : cmfrmid,
+               'cmfrmnickname' : cmfrmnickname,
+               'cmtomnickname' : cmtomnickname,
+               'cmtomid' : cmtomid,
+               'gdtitle' : gdtitle
+            },
+            dataType : 'json',
+            success : function(chatResult) {
+               alert('바르고 고운 말을 써주세요.');
+               console.log("chatResult : ", chatResult);
+      
+               popupChat(chatResult);
+      
+            }
+         })
+      }
+   })
 }
 
 </script>
