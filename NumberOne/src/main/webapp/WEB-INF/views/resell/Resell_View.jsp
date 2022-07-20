@@ -11,7 +11,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
 	integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"
 	referrerpolicy="no-referrer"
->chatBtn.addEventListener('click', chatInsert_Ajax);
+>
 
 </script>
 
@@ -649,6 +649,7 @@ if(ubmid === loginId){
 
 <!--채팅 활성화  -->
 <script type="text/javascript">
+chatBtn.addEventListener('click', chatInsert_Ajax);
 
 /* 챗버튼 클릭 이벤트핸들러 */
 function chatInsert_Ajax() {
