@@ -49,6 +49,9 @@
 	input:focus{
 	   outline: none;	
 	}
+	.d_none{
+		display: none;
+	}
 </style>
 
 </head>
@@ -87,10 +90,18 @@
 						maxlength="2000" placeholder="내용을 입력하세요">${noticeBoard.nbcontents }</textarea>
 				</div>
 				<div class="row mt-4">
+					<!-- 기존 이미지가 있으면 -->
 					<c:if test="${noticeBoard.nbimg != null }">
-						<img src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg}" style="max-width:100px;">
+						<div id="originImgScreen" style="width:200px; height:200px;" class="">
+							<img src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg}" style="width:100%; height:100%;"
+								id="originImg">
+						</div>
 					</c:if>
-					<input type="file" id="nbImg" name="nbimgfile" class="" accept="image/*" onchange="checkFileType(this)"> 
+					<!-- 이미지 변경시 -->
+					<div id="imgScreen" style="width:200px; height:200px;" class="d_none">
+						<img id='previewImg' style="width:100%; height:100%;"></img>
+					</div>
+					<input type="file" id="nbImg" name="nbimgfile" class="" accept="image/*" onchange="readImg(this)"> 
 				</div>
 				<div class="row mt-4 mb-2">
 					<div class="col btn-wrapper">
@@ -99,44 +110,6 @@
 					</div>
 				</div>	
  				
- 				<%-- <table>
-					<tr class="tableRow">
-						<th class="tableHead">작성자</th>
-						<!-- imhido 부분은 나중에 로그인 아이디로 출력 -->
-						<td colspan="3">${nbnickname}</td>						
-					</tr>
-					<tr class="tableRow">
-						<!-- th, td에 패딩, 마진을 주고 싶은데 먹히지 않아서 tableHead 클래스로 여백 줬슴당 -->
-						<th class="tableHead">제목</th>
-						<td colspan="3">
-							<input type="text" id="title" name="nbtitle" placeholder="제목을 입력하세요" size="35%" value="${noticeBoard.nbtitle }">
-						</td>
-					</tr>
-					<tr class="tableRow">
-						<th class="tableHead">내용</th>
-						<td colspan="3">
-							<textarea rows="15" cols="40" id="contents" name="nbcontents" placeholder="내용을 입력하세요">${noticeBoard.nbcontents }</textarea>
-						</td>
-					</tr>
-					<tr class="tableRow">
-						<th class="tableHead">대표사진</th>
-						<td colspan="3">
-							<c:if test="${noticeBoard.nbimg != null }">
-								<img src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg}" style="max-width:100px;">
-							</c:if>
-							<input type="file" id="nbImg" name="nbimgfile" class="" accept="image/*" onchange="checkFileType(this)"> 
-						</td>
-					</tr>
-					<tr class="tableRow">
-						<th colspan="4">
-							<center>
-							<button type="submit">수정</button> 
-							<!-- 취소하면 돌아갈 페이지가 없어서 취소는 function 연결만 되어 있음-->
-							<button type="button" onclick="withdraw()">취소</button>
-							</center>
-						</th>
-					</tr>
-				</table> --%>
 				</form>
             </div>
 
@@ -209,8 +182,28 @@
 		}
 	}
 	
-	// 이미지 파일을 업로드 했는지 확인
-	function checkFileType(obj) {
+	// 이미지 파일을 업로드 했는지 확인하고 이미지 미리보기
+	function readImg(obj) {
+		if(obj.files && obj.files[0]){
+			var reader = new FileReader();
+			
+			reader.onload = (e) => {
+				console.log(obj.files[0].type);
+				// 이미지 파일인지 검사
+				if (!obj.files[0].type.match("image.*")){
+					console.log("이미지 파일이 아님");
+					alert('이미지 파일만 선택할 수 있습니다.');
+					$("#previewImg").attr("src","");
+					$("#imgScreen").addClass("d_none");
+					return;
+				}
+				$("#previewImg").attr("src",e.target.result);
+				$("#originImgScreen").addClass("d_none");
+				$("#imgScreen").removeClass("d_none");
+			}
+			reader.readAsDataURL(obj.files[0]);
+		}
+		
 		var file_kind = obj.value.lastIndexOf('.');
 		var file_name = obj.value.substring(file_kind+1, obj.length);
 		var file_type = file_name.toLowerCase();

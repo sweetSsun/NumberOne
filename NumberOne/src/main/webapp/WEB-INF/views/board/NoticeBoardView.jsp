@@ -7,10 +7,9 @@
 <meta charset="UTF-8">
 <%@ include file="/resources/css/BarCss.jsp" %>
 <!-- 폰트어썸 -->
-<script src="https://kit.fontawesome.com/86a85cd392.js" crossorigin="anonymous"></script>
 <title>${board.bdtitle } - 1인자:공지글 상세 페이지</title>
 <!-- Jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>  
 
 <style type="text/css">
 	section{
@@ -134,8 +133,7 @@
      align-items: center;
      justify-content: center;
      border: solid #E0E0E0 2px;
-     margin-top: 5%;
-     margin-bottom: 5%;
+     margin-top: 2%;
      width: 200px;
      height: 200px;
      
@@ -145,29 +143,8 @@
    	height: 200px;
    	object-fit: cover;
    }
-   
-   /* 툴팁 */
-.tooltip {
-  position: relative;
-  display: #00bcd4;
-}
 
-.tooltip .tooltiptext {
-  visibility: hidden;       /* 이벤트가 없으면 툴팁 영역을 숨김 */
-  width: 120px;             /* 툴팁 영역의 넓이를 설정 */
-  background-color: black;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
 
-  position: absolute;       /* 절대 위치를 사용 */
-  z-index: 1;
-}
-
-.tooltip:hover .tooltiptext {
-  visibility: visible;      /* hover 이벤트 발생시 영역을 보여줌 */
-}
 
 </style>
 </head>
@@ -268,9 +245,12 @@
 				</c:choose>
 				</div>
 				
-				<c:if test="${board.bdimg != null }">
+				<c:if test="${noticeBoard.nbimg != null }">
 					<div class="img-container" >
-						<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
+						<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg }">
+					</div>
+					<div style="background-color: #00bcd4; width: 200px; color:white;  margin-bottom: 2%;" class="text-center fw-bold">
+						업로드 이미지
 					</div>				
 				</c:if >
 				

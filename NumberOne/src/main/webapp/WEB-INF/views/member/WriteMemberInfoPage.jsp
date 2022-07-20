@@ -11,246 +11,242 @@
 </head>
 
 <!-- Jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> 
 
 <!-- 부트스트랩 -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-	crossorigin="anonymous">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
 <body>
 <style>
-
-/* 폰트 : 프리텐다드 */
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
-
-html {overflow:hidden;} 
-
-body {
-	font-family : pretendard;
-}
-
-.table {
- 	padding : 10px 20px;
-	border: 1px solid #949494;
-	border-radius:5px;
-	height: 50px;
-	font-size: 15px;
-}
-
-p {
-	width: 90px;
-	color: #00BCD4; 
-	margin: 2px;
-}
-
-.pText {
-	font-family : pretendard;
-	width : 290px;
-	height: 25px;
-	font-size: 15px;
-	font-weight: bold;
-	width : 500px;
-	border-bottom: 1px solid #D2D2D2;
-	/* border: 0px; */
-}
-
-.pText a{
-	color:black;
-	text-decoration: none;
 	
-}
-
-.spanText {
-	font-family : pretendard;
-	/* width : 500px; */
-	height: 25px;
-	font-size: 15px;
-	font-weight: bold;
-	border: 0px;
-}
-
-
-.btn {
-	border : 0px;
-  -webkit-border-radius: 5;
-  -moz-border-radius: 5;
-  border-radius: 5px;
-  font-family : pretendard;
-  color: white;
-  font-size: 15px;
-  font-weight:bold;
-  background: #00BCD4;
-  padding: 10px 20px;
-  text-decoration: none;
-  float: right;
-}
-
-.btn:hover {
-  background: #396e8f;
-  text-decoration: none;
-}
-
-
-#list{ resize:none; overflow-y:scroll; }
-
-	.listArea{
-	    overflow-y: scroll;
-		width:-webkit-fill-available;
-		padding-right: 10px;
+	/* 폰트 : 프리텐다드 */
+	@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
+	
+	html {overflow:hidden;} 
+	
+	body {
+		font-family : pretendard;
 	}
-	.listArea::-webkit-scrollbar {
-		background-color: #F2F2FF;
+	
+	.table {
+	 	padding : 10px 20px;
+		border: 1px solid #949494;
+		border-radius:5px;
+		height: 50px;
+		font-size: 15px;
 	}
-	.listArea::-webkit-scrollbar-thumb {
-   		background-color: #00a5ba;
-   		border-radius: 10px;
- 	}
 	
-	.listArea::-webkit-scrollbar-track {
-		border-radius: 10px;
- 	}
- 	
-
- 
- li input {
-	font-size: 17px;
-	font-weight: bold; 
-	border: 0px;
- }
- 
- .msgTextarea {
- border: 1px solid black;
-	height: 550px;
-	width: 640px;
-	padding:10px;
-	resize: none;
-  	overflow-y: scroll;
-  	margin-left: 2px;
-}
-
-.msgTextarea::-webkit-scrollbar {
-    width: 10px;  /* 스크롤바의 너비 */
-    
-}
-
-.msgTextarea::-webkit-scrollbar-thumb {
-    height: 470px; /* 스크롤바의 길이 */
-    background:  #999999; /* 스크롤바의 색상 */
-    
-    border-radius: 10px;
-}
-
-.msgTextarea::-webkit-scrollbar-track {
-    background: #EAEAEA;  /*스크롤바 뒷 배경 색상*/
-}
-
-ul li a {
+	p {
+		width: 90px;
+		color: #00BCD4; 
+		margin: 2px;
+	}
 	
-}
-
- .msgTextarea2 {
- border-left: 1px solid #949494;
- border-right: 1px solid #949494;
-	/* height: 550px; */
-	width: 640px;
-	padding:10px;
-	resize: none;
-  	/* overflow-y: scroll; */
-  	margin-left: 2px;
-}
-
-
-#inputMmessage {
-  display:block; 
-  overflow:hidden; 
-  width:100%; 
-  height:2rem; 
-  /* padding-left:1rem;
-  padding-top:0.8rem; */
-  font-size:1rem; 
-  font-weight:bold;
-  color:#000; 
-  border:1px;
-  resize:none;
-  border-radius : 4px;
- }
- 
- 
-.parent{
-    width: 640px;
-    margin: 20px;
-    display: flex;
-}
-
-.first {
-    /* border: 1px solid red; */
-    flex:1;
-    width:20%;
-    box-sizing: border-box;
-}
-
-.second{
-    /* border: 1px solid green; */
-    flex:5;
-    padding: 10px 20px;
-    width:40%;
-    box-sizing: border-box;
-}
-
-.third{
-    /* border: 1px solid blue; */ 
-    flex:1;
-    width:20%;
-    box-sizing: border-box;
-}
-
-.spantitle{
-
-color:#00bcd4; 
-display:inline-block; 
-width: 130px; 
-text-align: right; 
-font-weight: bold;
-
-}
-
-.spantitle2{
-
-display:inline-block; 
-width: 250px; 
-text-align: right; 
-
-
-}
-
-.sTextarea {
-
-	resize: none;
-  	overflow-y: scroll;
-}
-
-.sTextarea::-webkit-scrollbar {
-    width: 5px;  /* 스크롤바의 너비 */
-    
-}
-
-.sTextarea::-webkit-scrollbar-thumb {
-    height: 3%; /* 스크롤바의 길이 */
-    background:  #999999; /* 스크롤바의 색상 */
-    
-    border-radius: 10px;
-}
-
-.sTextarea::-webkit-scrollbar-track {
-    background: white;  /*스크롤바 뒷 배경 색상*/
-}
-
-a{
-	text-decoration: none;
-}
+	.pText {
+		font-family : pretendard;
+		width : 290px;
+		height: 25px;
+		font-size: 15px;
+		font-weight: bold;
+		width : 500px;
+		border-bottom: 1px solid #D2D2D2;
+		/* border: 0px; */
+	}
+	
+	.pText a{
+		color:black;
+		text-decoration: none;
+		
+	}
+	
+	.spanText {
+		font-family : pretendard;
+		/* width : 500px; */
+		height: 25px;
+		font-size: 15px;
+		font-weight: bold;
+		border: 0px;
+	}
+	
+	
+	.btn {
+		border : 0px;
+	  -webkit-border-radius: 5;
+	  -moz-border-radius: 5;
+	  border-radius: 5px;
+	  font-family : pretendard;
+	  color: white;
+	  font-size: 15px;
+	  font-weight:bold;
+	  background: #00BCD4;
+	  padding: 10px 20px;
+	  text-decoration: none;
+	  float: right;
+	}
+	
+	.btn:hover {
+	  background: #396e8f;
+	  text-decoration: none;
+	}
+	
+	
+	#list{ resize:none; overflow-y:scroll; }
+	
+		.listArea{
+		    overflow-y: scroll;
+			width:-webkit-fill-available;
+			padding-right: 10px;
+		}
+		.listArea::-webkit-scrollbar {
+			background-color: #F2F2FF;
+		}
+		.listArea::-webkit-scrollbar-thumb {
+	   		background-color: #00a5ba;
+	   		border-radius: 10px;
+	 	}
+		
+		.listArea::-webkit-scrollbar-track {
+			border-radius: 10px;
+	 	}
+	 	
+	
+	 
+	 li input {
+		font-size: 17px;
+		font-weight: bold; 
+		border: 0px;
+	 }
+	 
+	 .msgTextarea {
+	 border: 1px solid black;
+		height: 550px;
+		width: 640px;
+		padding:10px;
+		resize: none;
+	  	overflow-y: scroll;
+	  	margin-left: 2px;
+	}
+	
+	.msgTextarea::-webkit-scrollbar {
+	    width: 10px;  /* 스크롤바의 너비 */
+	    
+	}
+	
+	.msgTextarea::-webkit-scrollbar-thumb {
+	    height: 470px; /* 스크롤바의 길이 */
+	    background:  #999999; /* 스크롤바의 색상 */
+	    
+	    border-radius: 10px;
+	}
+	
+	.msgTextarea::-webkit-scrollbar-track {
+	    background: #EAEAEA;  /*스크롤바 뒷 배경 색상*/
+	}
+	
+	ul li a {
+		
+	}
+	
+	 .msgTextarea2 {
+	 border-left: 1px solid #949494;
+	 border-right: 1px solid #949494;
+		/* height: 550px; */
+		width: 640px;
+		padding:10px;
+		resize: none;
+	  	/* overflow-y: scroll; */
+	  	margin-left: 2px;
+	}
+	
+	
+	#inputMmessage {
+	  display:block; 
+	  overflow:hidden; 
+	  width:100%; 
+	  height:2rem; 
+	  /* padding-left:1rem;
+	  padding-top:0.8rem; */
+	  font-size:1rem; 
+	  font-weight:bold;
+	  color:#000; 
+	  border:1px;
+	  resize:none;
+	  border-radius : 4px;
+	 }
+	 
+	 
+	.parent{
+	    width: 640px;
+	    margin: 20px;
+	    display: flex;
+	}
+	
+	.first {
+	    /* border: 1px solid red; */
+	    flex:1;
+	    width:20%;
+	    box-sizing: border-box;
+	}
+	
+	.second{
+	    /* border: 1px solid green; */
+	    flex:5;
+	    padding: 10px 20px;
+	    width:40%;
+	    box-sizing: border-box;
+	}
+	
+	.third{
+	    /* border: 1px solid blue; */ 
+	    flex:1;
+	    width:20%;
+	    box-sizing: border-box;
+	}
+	
+	.spantitle{
+	
+	color:#00bcd4; 
+	display:inline-block; 
+	width: 130px; 
+	text-align: right; 
+	font-weight: bold;
+	
+	}
+	
+	.spantitle2{
+	
+	display:inline-block; 
+	width: 250px; 
+	text-align: right; 
+	
+	
+	}
+	
+	.sTextarea {
+	
+		resize: none;
+	  	overflow-y: scroll;
+	}
+	
+	.sTextarea::-webkit-scrollbar {
+	    width: 5px;  /* 스크롤바의 너비 */
+	    
+	}
+	
+	.sTextarea::-webkit-scrollbar-thumb {
+	    height: 3%; /* 스크롤바의 길이 */
+	    background:  #999999; /* 스크롤바의 색상 */
+	    
+	    border-radius: 10px;
+	}
+	
+	.sTextarea::-webkit-scrollbar-track {
+	    background: white;  /*스크롤바 뒷 배경 색상*/
+	}
+	
+	a{
+		text-decoration: none;
+	}
 
 </style>
 
@@ -265,7 +261,7 @@ a{
 	<!-- 프로필 -->
 
 	<div class="row">
-
+	<form action="insertResellChat">
 		<%-- <c:forEach items="${memberInfo }" var="memberInfo"> --%>
 		<div class="parent"  style="margin-bottom : 0px;">
 		<c:choose>
@@ -304,6 +300,17 @@ a{
 			</div>
 		</div>
 		<%-- </c:forEach> --%>
+		
+		<input type="hidden" name="cmfrmid" value="${sessionScope.loginId }">
+		<input type="hidden" name="cmfrmnickname" value="${sessionScope.loginNickname }">
+		
+		<input type="hidden" name="cmtomnickname" value="${memberInfo.mnickname }"> 
+		<input type="hidden" name="cmtomid"	value="${memberInfo.mid }">
+		
+		<!-- output 안으로 넣었는데// 채팅메소드는 고정된 타이틀, 판매자정보는 변동 타이틀이라 drop// title 대신 nickname 전송하기로 함 -->
+		<%-- <input type="hidden" name="gdtitle" value="${ublist.ubtitle }"> --%>
+		
+	</form>
 	</div>	 
 </div>	 
 
@@ -315,8 +322,16 @@ a{
 
 
 <script type="text/javascript">
+window.onload = function() {
+	/* 로그인된 회원인지 체크 */
+	let loginCheck = '${sessionScope.loginId}';
+	if (loginCheck.length == 0) {
+		alert("잘못된 접근입니다.");
+		location.href = "loadToLogin"
+	}
+</script>
 
-
+<script type="text/javascript">
  console.log("스크립트 확인!!!")
 
 function boardreplySwitch(type){
@@ -411,7 +426,7 @@ function boardreplySwitch(type){
 	    		output+="<a href=\"selectRoomList?bdcode="+ReplyList[i].rpbdcode+"&jsp=view\" target=\"_blank\">"
 	      		output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; color:black; \" >"+ReplyList[i].rpcontents+"</p>"
 	      		output+="</a>"
-	      		output+="</li></ul>"      
+	      		output+="</li></ul>"
 	      
 		   }else {
 		      	output+="<ul><li>"
@@ -451,32 +466,123 @@ function boardreplySwitch(type){
 	
 	    	  output+="<div class = \"msgTextarea col-lg-12 col-md-6 col-sm-6\" style=\"border-top:0px! important ; padding-top: 20px; border: 1px solid #949494; background-color: #F2F2FF;\" >"
       
-	        for (var i = 0; i < ubList.length; i++){
-	           /* output+="<ul><li>"  */
-	        	   output+="<div>"
-	           output+="&nbsp;&nbsp;&nbsp;"
-	        	   output+="<a href=\"selectResellView?ubcode="+ubList[i].ubbdcode+"&ubsellbuy=S&modifyCheck=LIST\" target=\"_blank\">"
-	        	   output+="<input type=\"checkbox\" onclick=\"clickBox(this, "+ubList[i].ubgdname+")\" name="+ubList[i].ubgdname+" value="+ubList[i].ubgdname+">"
-	        	   output+="&nbsp;&nbsp;&nbsp;"
-	       	   output+="<img style=\"height: 70px; width: 70px; border: 1px solid #949494; border-radius:5px; padding: 1px;\" src=\"${pageContext.request.contextPath }/resources/img/resell/"+ubList[i].ubmainimg+"\">"
-	           output+="<span class=\"pText\" style=\"background-color: #F2F2FF; border: 0px; outline:none; color:black; \" >&nbsp;&nbsp;&nbsp; "+ubList[i].ubgdname+"</span>"
-	           		output+="</a>"
-	           output+="<div><hr>"
-	          /*  output+="</li></ul>"    */   
+			for (var i = 0; i < ubList.length; i++){
+        		output+="<div>"
+				output+="&nbsp;&nbsp;&nbsp;"
+				output+="<a href=\"selectResellView?ubcode="+ubList[i].ubbdcode+"&ubsellbuy=S&modifyCheck=LIST\" target=\"_blank\">"
+				output+="<input type=\"checkbox\" onclick=\"clickBox(this, \'"+ubList[i].ubgdname+"\')\" name=\"ubname\" value="+ubList[i].ubgdname+">"
+				output+="&nbsp;&nbsp;&nbsp;"
+				output+="<img style=\"height: 70px; width: 70px; border: 1px solid #949494; border-radius:5px; padding: 1px;\" src=\"${pageContext.request.contextPath }/resources/img/resell/"+ubList[i].ubmainimg+"\">"
+				output+="<span class=\"pText\" style=\"background-color: #F2F2FF; border: 0px; outline:none; color:black; \" >&nbsp;&nbsp;&nbsp; "+ubList[i].ubgdname+"</span>"
+				output+="</a>"
+				output+="<span type=\"text\" style=\"float: right;\" name=\"ubprice\">"+ubList[i].gdprice+"</span>"
+           		/* output+="<input type=\"text\" name=\"ubtitle\" value="+ubList[i].ubtitle+">" */
+				output+="<div><hr>"
 	        }
-	        	output+="</div>"
-	        	output+="</div>"
-	        		output+="</div>"
+				output+="</div>"
+				output+="</div>"
+				output+="</div>"
 	           //console.log(output);
-	           $("#pageChange").html(output);
+				$("#pageChange").html(output);
 			
 	        	
  } 
 
-
-
 </script>
 
+<script type="text/javascript">
+const loginId = '${sessionScope.loginId}'; //로그인된 아이디
+const tomid =  $('input[name=cmtomid]').val(); // 작성자 아이디
+
+const chatBtn = document.getElementById("chatBtn"); //채팅버튼
+
+/* 체크박스 클릭 이벤트 */
+let ub_names = [];
+const cmfrmid = loginId;
+const cmfrmnickname = document.getElementsByName("cmfrmnickname")[0].value;
+const cmtomnickname = document.getElementsByName("cmtomnickname")[0].value;
+const cmtomid = tomid;
+/* const ubtitle = document.getElementsByName("ubtitle").value; //글제목 drop */
+const cmtomnicknameof = cmtomnickname+" 님의";
+
+function clickBox(sel_boxTag, selOp) {
+	if (sel_boxTag.checked == true) {
+		console.log("<"+selOp+">");
+		// 클릭이벤트 발생 시 체크박스가 checked 된 경우에만 실행
+		ub_names.push(selOp);	// checked 되었을 때 상품명을 ub_names 변수에 push 해서 담아준다.
+
+		/* 데이터 확인 */
+		console.log("선택된체크박스 : ", sel_boxTag);
+		console.log("보내는아이디 : ", cmfrmid);
+		console.log("보내는닉네임 : ", cmfrmnickname);
+		console.log("받는닉네임 : ", cmtomnickname);
+		console.log("받는아이디 : ", cmtomid);
+		console.log("상품이름 : ", ub_names);
+	} else {
+		var ubIdx = ub_names.findIndex( (element) => element === selOp );
+		console.log(ubIdx);
+		ub_names.splice(ubIdx, 1);	// checked 해제 했을 때 상품명을 ub_names 변수에서 빼준다.
+		
+		/* 데이터 확인 */
+		console.log("<"+selOp+" 해제>");
+		console.log("상품이름 : ", ub_names);
+	}
+}
+
+/* 챗버튼 클릭 */
+chatBtn.addEventListener('click', chatInsert_Ajax);
+
+function chatInsert_Ajax() {
+	
+	// 로그인 확인
+	$.ajax({
+		type : 'get',
+		url : 'selectLoginOut_ajax',
+		async : false,
+		success : function(result){
+			if (result == "2"){ 
+				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+					opener.location.href = "loadToLogin"
+					window.close();
+					return;
+				}
+				return;
+			}
+			
+			// 체크 확인
+			if(ub_names.length == 0){
+				alert('관심있는 상품을 선택해주세요');
+				return;
+			}
+			
+			// 원래 목적인 채팅 기능
+			$.ajax({
+				type : 'post',
+				url : 'insertResellChat',
+				traditional : true,  	// 배열 전송위해서 필요.  
+				async : false,
+				data : {
+					'gd_names' : ub_names,
+					'cmfrmid' : cmfrmid,
+					'cmfrmnickname' : cmfrmnickname,
+					'cmtomnickname' : cmtomnickname,
+					'cmtomid' : cmtomid,
+					'gdtitle' : cmtomnicknameof
+				},
+				dataType : 'json',
+				success : function(chatResult) {
+					alert('바르고 고운 말을 써주세요.');
+					console.log("chatResult : ", chatResult);
+		
+					window.opener.popupChat(chatResult);
+					}
+				})
+		}
+	})
+	
+}
+
+</script>
 
 </body>
 </html>

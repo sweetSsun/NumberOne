@@ -1,5 +1,7 @@
 package com.NumberOne.controller;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -7,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.NumberOne.dto.ChatMessageDto;
+import com.NumberOne.service.BoardService;
 import com.NumberOne.service.ChatService;
 
 @Controller
@@ -14,6 +17,8 @@ public class ChatController {
 
 	@Autowired
 	private ChatService chsvc;
+	@Autowired
+	private HttpSession session;
 	private ModelAndView mav;
 	
 	@RequestMapping(value="/loadToChat")
@@ -64,6 +69,26 @@ public class ChatController {
 		int sumUnReadCount = chsvc.selectSumUnReadCount(loginId);
 			
 		return sumUnReadCount;
+	}
+	
+	// 채팅목록 남이 보낸 안읽은 메세지가 상단으로 오게 테스트
+	@RequestMapping(value = "/selectChatRoomList2")
+	public @ResponseBody String selectChatRoomListTest() {
+		System.out.println("특정 사용자의 채팅방 목록 조회 요청 (테스트)");
+		
+		//로그인 체크
+		String loginId = (String) session.getAttribute("loginId");
+		if(loginId == null) {
+			System.out.println("비로그인 사용자 채팅목록 접근 시도!");
+			//script에서 처리
+			return "2";
+		}
+		
+		//로그인 회원이면 채팅 목록 조회
+		String chatRoomList_json = chsvc.selectChatRoomList2(loginId);
+
+		return chatRoomList_json;
+		//return null;
 	}
 	
 }

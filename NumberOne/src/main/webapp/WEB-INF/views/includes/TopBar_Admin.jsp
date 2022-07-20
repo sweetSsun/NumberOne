@@ -98,6 +98,142 @@ function popupChat(){
 };
 
 </script>
+<!-- 마이페이지 미니브라우저 (커뮤니티부터!) -->
+<script type="text/javascript">
 
+   var wMemberPopup = "";
+  
+   
+   function writeMemberBoard(nickname){
+      console.log("팝업 스트립트 확인!!!");
+      let wMemberPopupUrl = "loadToWriteMemberBoard?nickname="+nickname;
+      let wMemberPopupOption = "width=660, height=820, top=300px, left=500px, scrollbars=no, resizable=no";
+      
+      
+      $.ajax({
+         url: "selectWriteMemberInfo_ajax",
+         data: {"nickname":nickname},
+         async:false,
+         dataType:"json",
+         success:function(result){
+           //console.log(result);
+            //console.log(nickname);
+            wMemberPopup = window.open(wMemberPopupUrl, "", wMemberPopupOption, nickname);
+            
+            wMemberPopup.window.addEventListener("load", function(){
+               wMemberPopup.writeMemberBoard(result);
+            });
+            
+         }
+      });
+   }
+
+      
+   function boardreplySwitch(nickname, type){
+         console.log("팝업 작성글 버튼 클릭!!!");
+         
+         var popUpUrl = "";
+         if(type == 'b'){
+            popUpUrl = "selectWriteMemberInfo_ajax";
+         }else if(type == 'r') {
+            popUpUrl = "selectWriteMemberInfoReply_ajax";
+         }else if(type == 's') {
+           popUpUrl = "selectWriteMemberInfoSellBuy_ajax"; 
+         }
+
+         $.ajax({
+            url: popUpUrl,   
+            data: {"nickname":nickname},
+            async:false,
+            dataType:"json",
+            success:function(result){
+               //console.log(result);
+               //console.log(nickname);
+                  
+               if(type == 'b'){
+                  wMemberPopup.writeMemberBoard(result);
+               }else if(type == 'r') {
+                  wMemberPopup.writeMemberReply(result);
+               }else if(type == 's') {
+                 wMemberPopup.writeMemberSellBuy(result); 
+               }
+
+            }
+         });
+      
+   }
+   
+
+
+</script>
+
+<!-- 마이페이지 미니브라우저 (중고거래부터!) -->
+<script type="text/javascript">
+
+   var wMemberPopup = "";
+  
+   
+   function writeMemberSellbuy(nickname){
+      console.log("(중고거래)팝업 스트립트 확인!!!");
+      let wMemberPopupUrl = "loadToWriteMemberBoard?nickname="+nickname;
+      let wMemberPopupOption = "width=660, height=820, top=300px, left=500px, scrollbars=no, resizable=no";
+      
+      
+      $.ajax({
+         url: "selectWriteMemberInfoSellBuy_ajax",
+         data: {"nickname":nickname},
+         async:false,
+         dataType:"json",
+         success:function(result){
+           //console.log(result);
+            //console.log(nickname);
+            wMemberPopup = window.open(wMemberPopupUrl, "", wMemberPopupOption, nickname);
+            
+            wMemberPopup.window.addEventListener("load", function(){
+               wMemberPopup.writeMemberSellBuy(result);
+            });
+            
+         }
+      });
+   }
+
+      
+   function boardreplySwitch(nickname, type){
+         console.log("팝업 작성글 버튼 클릭!!!");
+         
+         var popUpUrl = "";
+         if(type == 'b'){
+            popUpUrl = "selectWriteMemberInfo_ajax";
+         }else if(type == 'r') {
+            popUpUrl = "selectWriteMemberInfoReply_ajax";
+         }else if(type == 's') {
+           popUpUrl = "selectWriteMemberInfoSellBuy_ajax"; 
+         }
+
+         $.ajax({
+            url: popUpUrl,   
+            data: {"nickname":nickname},
+            async:false,
+            dataType:"json",
+            success:function(result){
+               //console.log(result);
+               //console.log(nickname);
+                  
+               if(type == 'b'){
+                  wMemberPopup.writeMemberBoard(result);
+               }else if(type == 'r') {
+                  wMemberPopup.writeMemberReply(result);
+               }else if(type == 's') {
+                 wMemberPopup.writeMemberSellBuy(result); 
+               }
+
+            }
+         });
+      
+   }
+   
+
+
+</script>
 
 </html>

@@ -57,12 +57,19 @@ public class ContactDto {
 	public void setCtansdate(String ctansdate) {
 		this.ctansdate = ctansdate;
 	}
+	public String getCtnickname() {
+		return ctnickname;
+	}
+	public void setCtnickname(String ctnickname) {
+		this.ctnickname = ctnickname;
+	}
 	@Override
 	public String toString() {
 		return "ContactDto [ctcode=" + ctcode + ", cttitle=" + cttitle + ", ctcontents=" + ctcontents + ", ctmid="
-				+ ctmid + ", ctdate=" + ctdate + ", ctans=" + ctans + ", ctansdate=" + ctansdate + "]";
+				+ ctmid + ", ctdate=" + ctdate + ", ctans=" + ctans + ", ctansdate=" + ctansdate + ", ctnickname="
+				+ ctnickname + "]";
 	}
-	
+
 	
 	
 }

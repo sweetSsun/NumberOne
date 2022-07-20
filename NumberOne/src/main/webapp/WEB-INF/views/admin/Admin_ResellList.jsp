@@ -104,7 +104,7 @@
 	                      		class="img-fluid" style="width:60px; height:60px; object-fit:fill;"></td>
 	                      <td class="overflow"><a href="#">
 	                      ${usedBoard.ubtitle}</a></td>
-	                      <td class="text-center overflow">${usedBoard.ubnickname}</td>
+	                      <td class="text-center overflow pointer" onclick="writeMemberSellbuy('${usedBoard.ubnickname}')">${usedBoard.ubnickname}</td>
 	                      <td class="text-center overflow">${usedBoard.ubdate}</td>
 	                      <td class="text-center">${usedBoard.ubwarning}</td>
 	                      <td>
@@ -318,7 +318,7 @@
 						output += "<td class='text-center'><img src='${pageContext.request.contextPath }/resources/img/resell/" + result[i].ubmainimg
 						+ "' class='img-fluid' style='width:60px; height:60px;  object-fit:fill;'></td>";
 						output += "<td class='overflow'><a href='admin_selectResellView?ubcode=" + result[i].ubcode + "'>" + result[i].ubtitle + "</a></td>";
-						output += "<td class='text-center overflow'>" + result[i].ubnickname + "</td>";
+						output += "<td class='text-center overflow pointer' onclick='writeMemberSellbuy(\"" + result[i].ubnickname + "\")'>" + result[i].ubnickname + "</td>";
 						output += "<td class='text-center overflow'>" + result[i].ubdate + "</td>";
 						output += "<td class='text-center'>" + result[i].ubwarning + "</td>";
 						output += "<td class='text-center'>"

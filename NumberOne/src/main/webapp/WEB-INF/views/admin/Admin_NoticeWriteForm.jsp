@@ -50,6 +50,9 @@
 	input:focus{
 	   outline: none;	
 	}
+	.d_none{
+		display: none;
+	}
 </style>
 
 </head>
@@ -84,7 +87,7 @@
 						maxlength="2000"  placeholder="내용을 입력하세요"></textarea>
 				</div>
 				<div class="row mt-4">
-					<div id="imgScreen" style="width:200px; height:150px;" class="d_none"><img id='previewImg' style="width:100%; height:100%;"></img></div>
+					<div id="imgScreen" style="width:200px; height:200px;" class="d_none"><img id='previewImg' style="width:100%; height:100%;"></img></div>
 					<input type="file" id="nbImg" name="nbimgfile" class="" accept="image/*" onchange="readImg(this)"> 
 				</div>
 				<div class="row mt-4 mb-2">
@@ -94,42 +97,6 @@
 					</div>
 				</div>		
 				
-								
-				
-<%-- 				<table>
-					<tr class="tableRow">
-						<th class="tableHead">작성자</th>
-						<td colspan="3">${sessionScope.loginNickname}</td>						
-					</tr>
-					<tr class="tableRow">
-						<!-- th, td에 패딩, 마진을 주고 싶은데 먹히지 않아서 tableHead 클래스로 여백 줬슴당 -->
-						<th class="tableHead">제목</th>
-						<td colspan="3">
-							<input type="text" id="title" name="nbtitle" placeholder="제목을 입력하세요" size="35%" maxlength="50">
-						</td>
-					</tr>
-					<tr class="tableRow">
-						<th class="tableHead">내용</th>
-						<td colspan="3">
-							<textarea rows="15" cols="40" id="contents" name="nbcontents" placeholder="내용을 입력하세요"></textarea>
-						</td>
-					</tr>
-					<tr class="tableRow">
-						<th class="tableHead">대표사진</th>
-						<td colspan="3">
-							<input type="file" id="nbImg" name="nbimgfile" class="" accept="image/*" onchange="checkFileType(this)"> 
-						</td>
-					</tr>
-					<tr class="tableRow">
-						<th colspan="4">
-							<center>
-							<button type="submit">등록</button> 
-							<!-- 취소하면 돌아갈 페이지가 없어서 취소는 function 연결만 되어 있음-->
-							<button type="button" onclick="withdraw()">취소</button>
-							</center>
-						</th>
-					</tr>
-				</table> --%>
 				</form>
             </div>
 
@@ -219,7 +186,7 @@
 					return;
 				}
 				$("#previewImg").attr("src",e.target.result);
-				$("#bdimgScreen").removeClass("d_none");
+				$("#imgScreen").removeClass("d_none");
 			}
 			reader.readAsDataURL(obj.files[0]);
 		}

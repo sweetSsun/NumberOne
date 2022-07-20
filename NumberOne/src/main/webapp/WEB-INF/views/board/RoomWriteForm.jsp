@@ -354,6 +354,7 @@ inputMultipleImage.addEventListener("change", e => {
 			return false;
 		} else if ($("#mainImg").val()==""){
 			alert("대표 사진은 필수 사항입니다!");
+			return false;
 		}
 		return true;
 	}

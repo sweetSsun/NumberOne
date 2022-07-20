@@ -6,12 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="/resources/css/BarCss.jsp" %>
-<!-- 폰트어썸 -->
-<script src="https://kit.fontawesome.com/86a85cd392.js" crossorigin="anonymous"></script>
 <title>${board.bdtitle } - 1인자:후기글 상세페이지</title>
 <!-- Jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
 <style type="text/css">
 	section{
 		max-width: 70%;
@@ -495,7 +492,8 @@
         }
         return Math.floor(betweenTimeDay / 365)+"년전";
 		*/
-		return value+" | ";
+        var time = value.substring(0, 16);
+		return time+" | ";
  	}
 		
 
