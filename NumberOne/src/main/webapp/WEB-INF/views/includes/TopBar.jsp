@@ -5,25 +5,25 @@
 <head>
 <meta charset="UTF-8">
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ include file="/resources/css/BarCss.jsp" %>
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-<%@ include file="/resources/css/BarCss.jsp" %>
-<%-- <%@ include file="/resources/css/chatDropdownCss.css" %> --%>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">	
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<!-- Js Plugins -->
+<script src="${pageContext.request.contextPath }/resources/js/mixitup.min.js"></script>
 
-<%-- 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">	
-	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>	
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-	  
-	<!-- Js Plugins -->
-    <script src="${pageContext.request.contextPath }/resources/js/mixitup.min.js"></script>
- --%>
 <style type="text/css">
 
 /* 	.dropdown:hover .dropdown-menu {
 	    display: block;
 	    margin-top: 0;
 	} */
-	
+	.overflow{
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+	}
 	.logoimg{
 		margin-top: 2%;
         padding-left: 45%;    
@@ -165,7 +165,7 @@
 	
 					
 				<!-- 로그인, 회원가입, 고객센터 -->
-				<div class="col-lg-7 col-md-6 col-sm-6 menubar_right dropdwn">
+				<div class="col-lg-7 col-md-6 col-sm-6 menubar_right">
 					<ul>
 						<c:choose>
 	                    <c:when test="${sessionScope.loginId == null && sessionScope.kakaoId == null}">
@@ -188,7 +188,7 @@
 
 							<!-- 채팅 -->
 							<li style="margin-right: 15px;" class="dropdown" >
-								<a href="#" title="1:1채팅" class="nav_chat" id="dropdownChat" data-toggle="dropdown" aria-haspopup="" aria-expanded="">
+								<a href="#" title="1:1채팅" class="nav_chat" id="dropdownChat" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									<i class="fa-solid fa-comment-dots"></i>
 									<!-- 안읽은 채팅메세지 갯수 표시 -->
 									<span id="chat-badge" class="nav_chat-badge"></span>
@@ -251,7 +251,6 @@
 	
 	
 	
-<!-- <script src="resources/js/chatDropdown.js"></script> -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 <script type="text/javascript">
@@ -317,7 +316,6 @@
 				outputDropdown(result);
 			}
 		});
-		myFunction();
 	});
 
 	// 드롭다운 채팅방목록 입력 함수

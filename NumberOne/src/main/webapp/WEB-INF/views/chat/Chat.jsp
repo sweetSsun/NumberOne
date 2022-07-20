@@ -272,7 +272,7 @@
 	// enter키 이벤트
 	$(document).on("keydown", $("#inputMsg"), function(e){
 		if(e.keyCode == 13 && !e.shiftKey){
-			e.preventDefault(); // 엔터키 입력 막기
+			e.preventDefault(); // 엔터키 입력 막기 (혹시 모를 중복전송을 막기 위함)
 			sendBtn(); // Talk 버튼 클릭한 것과 동일한 함수 호출
 		}
 	});
