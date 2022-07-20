@@ -8,9 +8,9 @@
 <title>1인자 - 자취방 자랑 메인</title>
 
 <%-- <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css"> --%>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
+<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
 <%@ include file="/resources/css/BarCss.jsp"%>
 <style type="text/css">
 	#board_column{
@@ -697,8 +697,6 @@ input{
 	
 	});
 
-	
-	
 	
 	// 정렬 select하면 ajax로 글목록 받고 페이지 다시 로드(ajax 실패)
 	function roomOrderBy(orderBy){
