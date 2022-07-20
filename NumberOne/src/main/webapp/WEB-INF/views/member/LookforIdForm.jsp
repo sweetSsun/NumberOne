@@ -7,7 +7,14 @@
 <meta charset="UTF-8">
 <title>1인자 - 아이디찾기페이지</title>
 
+	
+	<!-- 스크립트 시작 -->
+	<!-- <script type="text/javascript" src="resources/js/jquery-3.3.1.min.js"></script> -->
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
+	
+
 <%@ include file="/resources/css/BarCss.jsp"%>
+
 <!-- 부트스트랩 -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
@@ -153,9 +160,7 @@ background-color: #00BCD4;
 
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp"%>
 	
-	<!-- 스크립트 시작 -->
-	<!-- <script type="text/javascript" src="resources/js/jquery-3.3.1.min.js"></script> -->
-	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
+  
 	
 	<script type="text/javascript">
 

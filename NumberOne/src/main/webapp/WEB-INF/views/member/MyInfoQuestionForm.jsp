@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>1인자 - 1:1문의 작성 페이지</title>
 
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <%@ include file="/resources/css/BarCss.jsp"%>
 <!-- 부트스트랩 -->
 <link
@@ -15,7 +16,7 @@
 	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
 	crossorigin="anonymous">
 
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
+   
 
 <!-- ogani css -->
     <%-- <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/bootstrap.min.css" type="text/css">  --%>

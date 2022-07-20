@@ -127,8 +127,10 @@ background-color: #00BCD4;
 							<!-- 글제목 -->
 							<c:choose>
 							<c:when test="${contact.ctans !=null}">
-								<td onclick="showContents('${contact.ctcode }')" class="buttonPoint">${contact.cttitle } &nbsp;
-								<i class="fa-solid fa-comment-dots"></i></td>
+								<td onclick="showContents('${contact.ctcode }')" class="buttonPoint">
+								<i style="color:red;" class="fa-solid fa-check"></i>
+								 &nbsp;${contact.cttitle }
+								</td>
 							</c:when>
 							<c:otherwise>
 								<td onclick="showContents('${contact.ctcode }')" class="buttonPoint">${contact.cttitle }</td>

@@ -7,6 +7,10 @@
 <meta charset="UTF-8">
 <title>1인자 - 마이페이지 회원정보</title>
 
+	<!-- 스크립트 시작 -->
+	<!-- <script type="text/javascript" src="resources/js/jquery-3.3.1.min.js"></script> -->
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
+
 <%@ include file="/resources/css/BarCss.jsp"%>
 <!-- 부트스트랩 -->
 <link
@@ -70,13 +74,14 @@ background-color: #00BCD4;
 }
 
 .textarea {
+font-size: 15px;
   display:block; 
   overflow:hidden; 
   width:100%; 
   height:2rem; 
   padding-left:1rem;
   padding-top:0.8rem;
-  font-size:1rem; 
+  /* font-size:1rem;  */
   font-weight:bold;
   color:#000; 
   border:1px solid #808080; 
@@ -272,9 +277,7 @@ background-color: #00BCD4;
 
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp"%>
 	
-	<!-- 스크립트 시작 -->
-	<!-- <script type="text/javascript" src="resources/js/jquery-3.3.1.min.js"></script> -->
-	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
+
 	
 	<!-- textarea 길이 조절 -->
 <script>
