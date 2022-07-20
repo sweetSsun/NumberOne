@@ -49,6 +49,9 @@
 	input:focus{
 	   outline: none;	
 	}
+	.d_none{
+		display: none;
+	}
 </style>
 
 </head>

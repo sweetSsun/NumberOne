@@ -107,7 +107,7 @@ public interface MemberDao {
 	ArrayList<ZzimDto> selectMyInfoResellView_Zzim(String loginId);
 
 	//닉네임으로 회원정보 가져오기
-	@Select("SELECT MPROFILE, MNICKNAME, MREGION, MMESSAGE FROM MEMBERS WHERE MNICKNAME = #{nickname} ")
+	@Select("SELECT MID, MPROFILE, MNICKNAME, MREGION, MMESSAGE FROM MEMBERS WHERE MNICKNAME = #{nickname} ")
 	MemberDto selectWriteMemberInfo_member(String nickname);
 
 	//마이페이지 미니브라우저 닉네임 별 작성 글 출력
@@ -134,7 +134,7 @@ public interface MemberDao {
 
 
 	//마이페이지 미니브라우저 중고거래
-	@Select("SELECT UB.UBMAINIMG, UB.UBCODE , GD.GDNAME AS UBGDNAME, M.MNICKNAME AS UBNICKNAME "
+	@Select("SELECT UB.UBMAINIMG, UB.UBCODE, UB.UBTITLE, GD.GDNAME AS UBGDNAME, GD.GDPRICE, M.MNICKNAME AS UBNICKNAME "
 			+ "FROM USEDBOARDS UB,GOODS GD, MEMBERS M "
 			+ "WHERE UB.UBSTATE=1 AND UB.UBCODE = GD.GDUBCODE AND UB.UBSELLBUY = 'S' AND UB.UBMID = M.MID AND M.MNICKNAME= #{nickname}")
 	ArrayList<UsedBoardDto> selectWriteMemberInfoSellBuy_ajax(String nickname);

@@ -122,7 +122,7 @@
 							</c:choose>
 	                      	<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span>
 	                      </td>
-	                      <td class="text-center overflow">${board.bdnickname}</td>
+	                      <td class="text-center overflow pointer" onclick="writeMemberBoard'${board.bdnickname}')">${board.bdnickname}</td>
 	                      <td class="text-center overflow">${board.bddate}</td>
 	                      <td class="text-center">${board.bdhits}</td>
 	                      <td class="text-center">${board.bdrccount}</td>
@@ -288,7 +288,6 @@
 	});
 	</script>
 	
-	
 	<script type="text/javascript">
 		// 선택한 검색 select option으로 선택되도록 하기
 		var searchOption = $("#searchTypeSel option");
@@ -350,7 +349,7 @@
 									+"</a>";
 						}
 						output += "</td>";
-						output += "<td class='text-center overflow'>" + result[i].bdnickname + "</td>";
+						output += "<td class='text-center overflow pointer' onclick='writeMemberBoard(\"" + result[i].bdnickname + "\")'>" + result[i].bdnickname + "</td>";
 						output += "<td class='text-center overflow'>" + result[i].bddate + "</td>";
 						output += "<td class='text-center'>" + result[i].bdhits + "</td>";
 						output += "<td class='text-center'>" + result[i].bdrccount + "</td>";

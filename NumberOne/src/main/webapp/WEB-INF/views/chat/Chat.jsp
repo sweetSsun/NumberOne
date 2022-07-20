@@ -272,14 +272,15 @@
 	// enter키 이벤트
 	$(document).on("keydown", $("#inputMsg"), function(e){
 		if(e.keyCode == 13 && !e.shiftKey){
-			e.preventDefault(); // 엔터키 입력 막기
+			e.preventDefault(); // 엔터키 입력 막기 (혹시 모를 중복전송을 막기 위함)
 			sendBtn(); // Talk 버튼 클릭한 것과 동일한 함수 호출
 		}
 	});
 	
 	// Talk 버튼 클릭
 	function sendBtn(){
-		const cmcontents = $("#inputMsg").val();	// 현재 입력된 메세지 저장
+		const originContents = $("#inputMsg").val();	// 현재 입력된 메세지 저장
+		const cmcontents = originContents.replaceAll(/(\n|\r\n)/g, "<br>");
 		if(cmcontents.trim().length > 0){	// 공백 제외 입력한 글이 있을 때 send
 			sendMessage(cmcontents);
 		}

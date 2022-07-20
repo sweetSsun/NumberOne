@@ -23,11 +23,14 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/owl.carousel.min.css" type="text/css">
     
     <!-- Bootstrap cdn 설정 -->	
+   
 	  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">	
+	    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>	
+<%-- TopBar에 붙여넣음
+	  <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> 
 	  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css">	
+    --%>
 	  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">	
-	  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>	
-	  <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 	  
 	<!-- Js Plugins -->
     <script src="${pageContext.request.contextPath }/resources/js/jquery-3.3.1.min.js"></script>
@@ -35,7 +38,7 @@
     <script src="${pageContext.request.contextPath }/resources/js/jquery.nice-select.min.js"></script>
     <script src="${pageContext.request.contextPath }/resources/js/jquery-ui.min.js"></script>
     <script src="${pageContext.request.contextPath }/resources/js/jquery.slicknav.js"></script>
-    <script src="${pageContext.request.contextPath }/resources/js/mixitup.min.js"></script>
+    <script src="${pageContext.request.contextPath }/resources/js/mixitup.min.js"></script> 
     <script src="${pageContext.request.contextPath }/resources/js/owl.carousel.min.js"></script>
     <script src="${pageContext.request.contextPath }/resources/js/main.js"></script>
 	
@@ -106,7 +109,7 @@
 	    	border-color: #00bcd4;
 	    }
    
-   	    .overflow{
+   	    .overflow_twoline{
 		    overflow: hidden;
 			text-overflow: ellipsis;
 			display: -webkit-box;
@@ -292,7 +295,7 @@
             	<c:forEach items="${boardList }" end="5" var="boardList">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;border-right: solid 20px white">
                         <div class="row">
-                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow">
+                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
                         		<h3><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList.bdcode}">${boardList.bdtitle }</a></h3>
                         	</div>
                         	<div class="col-lg-4 col-md-4 col-sm-4">	
@@ -309,7 +312,7 @@
             	<c:forEach items="${boardList_free }" end="5" var="boardList_free">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row">
-                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow">
+                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
                         		<h3><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList_free.bdcode}">${boardList_free.bdtitle }</a></h3>
                         	</div>
                         	<div class="col-lg-4 col-md-4 col-sm-4">	
@@ -326,7 +329,7 @@
             	<c:forEach items="${boardList_qa }" end="5" var="boardList_qa">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row">
-                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow">
+                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
                         		<h3><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList_qa.bdcode}">${boardList_qa.bdtitle }</a></h3>
                         	</div>
                         	<div class="col-lg-4 col-md-4 col-sm-4">	
@@ -343,7 +346,7 @@
             	<c:forEach items="${boardList_info }" end="5" var="boardList_info">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row">
-                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow">
+                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
                         		<h3><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList_info.bdcode}">${boardList_info.bdtitle }</a></h3>
                         	</div>
                         	<div class="col-lg-4 col-md-4 col-sm-4">	
@@ -360,7 +363,7 @@
             	<c:forEach items="${boardList_review }" end="5" var="boardList_review">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row">
-                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow">
+                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
                         		<h3><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList_review.bdcode}">${boardList_review.bdtitle }</a></h3>
                         	</div>
                         	<div class="col-lg-4 col-md-4 col-sm-4">	
@@ -377,7 +380,7 @@
             	<c:forEach items="${noticeList }" end="5" var="noticeList">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row">
-                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow">
+                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
                         		<h3><a href="${pageContext.request.contextPath }/selectNoticeBoardView?nbcode=${noticeList.nbcode}">${noticeList.nbtitle }</a></h3>
                         	</div>
                         	<div class="col-lg-4 col-md-4 col-sm-4">	
@@ -425,7 +428,7 @@
 			                        </div>
 			                        <div style="margin-top: 10px; font-size: 16px; height:20%">
 			                        	<div>
-				                        	<span class="overflow">${SellList.ubtitle }</span>
+				                        	<span class="overflow_twoline">${SellList.ubtitle }</span>
 			                        	</div>
 				                        <div>
 			                        		<span>${SellList.ubnickname }</span>
@@ -452,7 +455,7 @@
 			                        </div>
 			                        <div style="margin-top: 10px; font-size: 16px; height:20%">
 			                        	<div>
-				                        	<span class="overflow">${buyList.ubtitle }</span>
+				                        	<span class="overflow_twoline">${buyList.ubtitle }</span>
 			                        	</div>
 				                        <div>
 			                        		<span>${buyList.ubnickname }</span>

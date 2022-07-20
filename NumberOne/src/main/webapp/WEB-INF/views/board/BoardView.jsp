@@ -433,15 +433,10 @@
 		selectReplyCount();//게시글 댓글수
 		updateBoardRecommendCount();//게시글 추천수 
 		checkBoardRecommend();//게시글 추천 확인
-<<<<<<< HEAD
-		checkBoardWarning();//게시글 신고 확인
-=======
 		checkBoardWarning();//게시글 신고 확인 
 		var bddate = timeForToday("${board.bddate }"); //게시글 작성 시간
-		//$("#bddate").text(bddate);
->>>>>>> c9258d2ef4ef6b8512a2c0582be23a5c5ae9f7a6
-	});
-	
+		$("#bddate").text(bddate);
+
 	//시간 함수
 	function timeForToday(value) {
 		console.log("시간 변경 함수 호출")
@@ -456,7 +451,7 @@
             return betweenTime+"분전 | ";
         }
 
-        const betweenTimeHour = Math.floor(betweenTime / 60);
+        var betweenTimeHour = Math.floor(betweenTime / 60);
         console.log(betweenTimeHour);
         if (betweenTimeHour < 24) {
             return betweenTimeHour+"시간전 | ";
@@ -468,7 +463,8 @@
         }
         return Math.floor(betweenTimeDay / 365)+"년전";
 		*/
-		return value+" | ";
+		var time = value.substring(0, 16);
+		return time+" | ";
 		
  	}
 	
