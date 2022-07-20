@@ -310,11 +310,6 @@ public class MemberController {
 		public @ResponseBody String selectWriteMemberInfo_ajax (String nickname) {
 			System.out.println("작성자 상세페이지 _ selectWriteMemberInfo");
 			System.out.println("controller.nickname : " + nickname);
-			
-			// 로그아웃 확인
-			if(session.getAttribute("loginId")==null) {
-				return "0";
-			}
 			String boardList_gson = msvc.selectWriteMemberInfo_ajax(nickname);
 			return boardList_gson;
 			
