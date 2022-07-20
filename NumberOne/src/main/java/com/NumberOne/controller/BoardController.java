@@ -433,15 +433,7 @@ public class BoardController {
 	 @RequestMapping ( value = "/updateLog")
 	 public @ResponseBody String updateRbrecommend(String bdcode, String history, String currentState ) {
 		 System.out.println(bdcode+"번 자랑글 "+history+"업데이트 요청 현재상태: "+currentState);
-
-		 String loginId = (String) session.getAttribute("loginId");
-		
-		 if(loginId == null) {
-			 //비로그인
-			 return "2";
-		 }
-
-		 
+	 
 		 int updateResult = bsvc.updateLog(bdcode, history, currentState);
 		 
 		 return updateResult+"";
@@ -452,6 +444,15 @@ public class BoardController {
 	 public @ResponseBody String currentRchistory(String bdcode, String history) {
 		 System.out.print(bdcode+"번글 ");
 		 System.out.println(history+"의 현재 상태 요청");
+		 
+		 //로그인 확인
+		 String loginId = (String) session.getAttribute("loginId");
+		 if(loginId == null) {
+			 //로그인 하지 않거나 본인 댓글이 아닌 경우
+			 return 2+"";
+		 }
+		 
+		 
 		 String currnetState = bsvc.currentRchistory(bdcode, history);
 
 		 return currnetState;
@@ -509,8 +510,7 @@ public class BoardController {
 		 System.out.println("댓글삭제 요청_ajax2");
 		 
 		 String loginId = (String) session.getAttribute("loginId");
-		 
-		 if(loginId == null || loginId.equals(rpmid)) {
+		 if(loginId == null || ! loginId.equals(rpmid)) {
 			 //로그인 하지 않거나 본인 댓글이 아닌 경우
 			 return 2;
 		 }

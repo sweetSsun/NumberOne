@@ -35,6 +35,8 @@ public interface ChatDao {
 
 	String selectCrfrMprofile(String mid);
 
-	
+	ArrayList<ChatRoomDto> selectChatRoomList2(String loginId);
+
+
 	
 }
