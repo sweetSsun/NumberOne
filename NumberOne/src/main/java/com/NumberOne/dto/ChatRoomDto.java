@@ -17,6 +17,9 @@ public class ChatRoomDto {
 	private String crfrmnickname;		//상대방 닉네임 (members 조인)
 	private String crfrmprofile;		//상대방 프로필이미지 (members 조인)
 	
+	//테스트 용 마지막 메세지 보낸 사람
+	private String recentmid;
+	
 	public String getCrcode() {
 		return crcode;
 	}
