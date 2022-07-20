@@ -356,11 +356,11 @@
 	}
 	
 	<!-- 로그인 시 세션에 담긴 채팅메세지 갯수 뱃지 출력 -->
-/* 	if (${sessionScope.sumUnReadCount != 0 }){
+ 	if (${sessionScope.sumUnReadCount != 0 }){
 		var loginUnReadCount = ${sessionScope.sumUnReadCount};
 		console.log("안읽은 채팅 메세지 수 : " + loginUnReadCount);
 		$("#chat-badge").text(loginUnReadCount);
-	} */
+	}
 </script>
 
 <!-- 마이페이지 미니브라우저 (커뮤니티부터!) -->
