@@ -84,7 +84,8 @@
 						maxlength="2000"  placeholder="내용을 입력하세요"></textarea>
 				</div>
 				<div class="row mt-4">
-					<input type="file" id="nbImg" name="nbimgfile" class="" accept="image/*" onchange="checkFileType(this)"> 
+					<div id="imgScreen" style="width:200px; height:150px;" class="d_none"><img id='previewImg' style="width:100%; height:100%;"></img></div>
+					<input type="file" id="nbImg" name="nbimgfile" class="" accept="image/*" onchange="readImg(this)"> 
 				</div>
 				<div class="row mt-4 mb-2">
 					<div class="col btn-wrapper">
@@ -202,8 +203,27 @@
 		}
 	}
 	
-	// 이미지 파일을 업로드 했는지 확인
-	function checkFileType(obj) {
+	// 이미지 파일을 업로드 했는지 확인하고 이미지 미리보기
+	function readImg(obj) {
+		if(obj.files && obj.files[0]){
+			var reader = new FileReader();
+			
+			reader.onload = (e) => {
+				console.log(obj.files[0].type);
+				// 이미지 파일인지 검사
+				if (!obj.files[0].type.match("image.*")){
+					console.log("이미지 파일이 아님");
+					alert('이미지 파일만 선택할 수 있습니다.');
+					$("#previewImg").attr("src","");
+					$("#imgScreen").addClass("d_none");
+					return;
+				}
+				$("#previewImg").attr("src",e.target.result);
+				$("#bdimgScreen").removeClass("d_none");
+			}
+			reader.readAsDataURL(obj.files[0]);
+		}
+		
 		var file_kind = obj.value.lastIndexOf('.');
 		var file_name = obj.value.substring(file_kind+1, obj.length);
 		var file_type = file_name.toLowerCase();

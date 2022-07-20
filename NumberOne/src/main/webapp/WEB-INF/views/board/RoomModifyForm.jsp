@@ -8,7 +8,7 @@
 <%@ include file="/resources/css/BarCss.jsp" %>
 <!-- 폰트어썸 -->
 <script src="https://kit.fontawesome.com/86a85cd392.js" crossorigin="anonymous"></script>
-<title>1인자 - 게시글 수정페이지</title>
+<title>1인자 - 자취방 자랑 글수정</title>
 <!-- Jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
@@ -39,6 +39,7 @@
 		border-radius: 5px;
 		border: solid gray 2px;
 		font-size: 19px;
+		resize:none;
 	}
 	.btn-wrapper{
 		width: 100%;
@@ -64,28 +65,27 @@
 		border: none;
 		font-size: 20px;
 	}
-	.bdRegionSel{
+	.nickname{
 		color : #00bcd4;
 		border: none;
 		font-size: 20px;
+		margin-left: 20px;
 	}
-	.img-container{
-     overflow: hidden;
-     display: flex;
-     align-items: center;
-     justify-content: center;
-     border: solid #E0E0E0 2px;
-     margin-top: 5%;
-     margin-bottom: 2%;
-     width: 200px;
-     height: 200px;
-     
-   }
-   #upload_Img{
-   	width: 200px;
-   	height: 200px;
-   	object-fit: cover;
-   }
+	
+/*    		자랑방 CSS		*/
+	.mainfile{
+		border-style: inherit;
+    	border-color: internal-light-dark;
+		padding: 6px;
+		background-color: #BDB4A3;	
+		color: white;
+		border-radius: 6px;
+	}
+	
+	.d_none{ display:none; }
+	
+	.img{ height : 190px; width: 260px;}
+	
 	span.x{ 
 		/* 사진 X 버튼 */
 		background-color: #00bcd4; 
@@ -93,10 +93,15 @@
 		color: white; 
 		position: absolute; 
 		top: 10px; 
-		right: 10px; 
+		right: 5px; 
 		cursor: pointer;
-   }  
-   
+	}
+	
+	div.detailimageBox{ 
+		/* position: relative; */
+		height : 190px; width: 260px;
+		display : inline-block; 
+	}
 </style>
 </head>
 <body>
@@ -118,8 +123,8 @@
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h2 class="text-center">게시판 글수정페이지 : BoardModifyForm.jsp</h2>
-				<form action="updateBoardModify" method="post" enctype="multipart/form-data" >
+				<h2 class="text-center">자취방 자랑 글수정 페이지</h2>
+				<form action="updateRoomView" method="post" enctype="multipart/form-data" onsubmit="return roomModifyCh(${detailCount})">
 				<div class="row">
 					<input type="hidden" name="bdmid" value="${board.bdmid }">
 					<input type="hidden" name="bdcode" value="${board.bdcode }">
@@ -129,29 +134,17 @@
 				
 				<div class="row">
 					<div class="col-6">
-						 <span style="font-size:20px;">게시판</span><span class="text-danger">*</span>
-						<select name="bdcategory"  class="bdCategoryList" required="required">
-							<option value="${board.bdcategory}"  class="selectPlaceHolder">${board.bdcategory }</option>
-							<option value="자유">자유</option>
-							<option value="질문">질문</option>
-							<option value="정보">정보</option>
-							<option value="후기">후기</option>
+						<span style="font-size:20px;">게시판</span><span class="text-danger">*</span>
+						<select name="bdcategory" class="bdCategoryList" >
+							<option value="자랑" class="selectPlaceHolder">자랑</option>
+							<option value="자랑">자랑</option>
 						</select>
 					</div>
-					<div class="col-6">
-						<span style="font-size:20px;">지역</span>
-						<select name="bdrgcode" class="bdRegionSel">
-							<option value="${board.bdrgcode }"  class="selectPlaceHolder">${board.bdrgname }</option>
-							<option value="ALL">전국</option>
-							<option value="SEL">서울</option>
-							<option value="ICN">인천</option>
-							<option value="GWD">강원</option>
-							<option value="CCD">충청</option>
-							<option value="GGD">경기</option>
-							<option value="JLD">전라</option>
-							<option value="GSD">경상</option>
-							<option value="JJD">제주</option>
-						</select>
+					<div class="col-2">
+						<span style="font-size:20px;">작성자</span>
+					</div>
+					<div class="col-4">
+						<input class="nickname" value="${sessionScope.loginNickname}">
 					</div>
 				</div>
 				<hr>
@@ -163,18 +156,39 @@
 					<textarea class="bdcontents" rows="17" cols="80" name="bdcontents">${board.bdcontents }</textarea>
 				</div>
 				
-				<!-- 첨부파일! 나중에 경로 및 name 수정  -->
-				<c:if test="${board.bdimg != null }">
-					<div class="img-container" id="img-container" style="position: relative;">
-						<img id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
-						<span class="x" onclick="currentImgStateUpdate()">&nbsp;X&nbsp;</span>
-					</div>				
-				</c:if >
-					<input id="bdImg" type="file" name="bdimgfile" accept="image/*"  >
-					<input type="hidden" name="del_bdimg" id="del_bdimg" >
-					<input type="hidden" name="bdimg" id="bdimg" value="${board.bdimg }">
+				<!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  --><!--  -->
+				
+				<!-- 대표사진 -->
+				<div class="row" style="height:190px; width: 260px; margin-top: 15px;">
+					<img class="img" alt="대표사진" src="${pageContext.request.contextPath }/resources/img/room/${board.bdimg }" id="currentBdimg_screen"><br>
+					<input type="hidden" value="${board.bdimg }" id="currentBdimg" name="bdimg">
+				</div>
+				
+				<!-- 대표사진 수정 -->	
+				<div class="row">
+					<span>대표사진 수정</span> <input type="file" id="mainImg" name="bdimgfile" accept="image/*">  
+				</div>
+				
+				<!-- 상세사진 -->
+				<div class="row" style="margin-top: 15px;">
+					<c:forEach items="${roomdetailimgs }" var="detail" varStatus="status">
+						<div class="detailimageBox" id="${status.index }_currentDetailimg_screen" style="position: relative;">
+							<img class="img" alt='상세사진' src='${pageContext.request.contextPath }/resources/img/room/${detail }'>
+							<span class="x" onclick="currentImgStateUpdate('${status.index }_currentDetailimg')">&nbsp;X&nbsp;</span>
+							<input type="hidden" id="${status.index }_currentDetailimg" value="${detail }">
+						</div>
+					</c:forEach> 	
+					<input type="hidden" id="bddetailimg" name="bddetailimg" placeholder="현재상세이미지 파일명을 모을 input">
+				</div>
+				
+				<!-- 상세사진 추가-->
+				<div class="row">
+					<span>상세사진 추가</span>
+					<input type="file" multiple="multiple" id="detailImg" name="bddetailimgfile" accept="image/*" onclick="return mainimgCh()"> 
+				</div>
 				
 				
+				<!-- 수정/취소 버튼 -->
 				<div class="row mt-4">
 					<div class="col btn-wrapper">
 						<input class="btn btn-lg buttons fw-bold text-white" style="background-color:#00bcd4;" type="submit" value="수정">
@@ -207,7 +221,7 @@
                 </div>	
                 <div class="modal-footer">
                 	<input type="hidden" >
-                    <button class="close btn btn-info text-white" onclick="modifyBoardCancel()" >네</button>
+                    <button class="close btn btn-info text-white" onclick="location.href='${pageContext.request.contextPath}/selectRoomList'" >네</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
             </div>
@@ -217,13 +231,6 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 
-<script type="text/javascript">
-	//선택한 글번호 
-	var bdcode = '${board.bdcode}';
-	//현재 로그인중인 아이디
-	var loginId = '${sessionScope.loginId}';
-	
-</script>
 
 <script type="text/javascript">
 	function bdWriteCancelCheckModal(){
@@ -244,26 +251,79 @@
 </script>
 
 <script type="text/javascript">
-	function modifyBoardCancel(){
-		/* 수정취소 */
-		history.back();
-	}
-	
-	function currentImgStateUpdate(){
-		/* 이미지 삭제*/
-		var bdimg = '${board.bdimg}';
-		$("#del_bdimg").val(bdimg);
+
+	function currentImgStateUpdate(id){
+		console.log(id+"현재 이미지 파일 변경 요청");
+		var imgname = $("#"+id).val();
+		console.log(imgname);
+		$("#"+id).val("del_"+imgname);
+		$("#"+id+"_screen").css("display", "none");
 		
-		var delImgCheck = $("#del_bdimg").val();
-		console.log(delImgCheck);
-		
-		$("#img-container").css("display", "none");
 	}
 
+	if('${sessionScope.loginId}'==null){
+		console.log("로그인 후 이용가능합니다.");
+		location.href = "loadTologin?afterUrl=loadTowriteRoom";
+	}
 	
+	$("#mainImg").change(function(){
+		var mainImg = $("#mainImg").val().split("path")[1];
+		mainImg = mainImg.substring(1);
+		console.log("선택된메인이미지: "+mainImg);
+		$("#mainImgScreen").val(mainImg);
+	})
+		
+	$("#detailImg").change(function(){
+		
+		var detailImg = $("#detailImg")[0].files;
+		console.log(detailImg);
+		var output = "";
+		for(var i=0; i<detailImg.length; i++){
+			output += "<div>"+detailImg[i].name+"</div>";
+		}
+		$("#detailImgList").html(output);
+	})
+	
+	function withdraw(){
+		console.log("취소 버튼 클릭");
+	}
+	
+	//메인 이미지 없이 상세 이미지 등록하는 경우(현재는 그럴 수 없음 주석처리)
+	/*
+	function mainimgCh(){
+		console.log("메인이미지 확인 함수");
+		var mainImg = $("#mainImg").val();
+		console.log(mainImg);
+		if(mainImg==""){
+			if($("#currentBdimg").val()==""){
+				alert("대표 사진을 먼저 선택하세요!");			
+				return false;
+			}
+		}
+	} 
+	*/
+	function  roomModifyCh(currentDetailCount){
+		console.log("자취방 자랑글 수정 확인");
+		console.log(currentDetailCount);
+		
+		var detailImg = "";
+		for(var i=0; i<currentDetailCount; i++){
+			detailImg += $("#"+i+"_currentDetailimg").val();
+			detailImg +="___";
+		}
+		//console.log(detailImg);
+		$("#bddetailimg").val(detailImg);
+		
+		if($("#bdtitle").val()==""){
+			alert("제목을 입력하세요");
+			return false;
+		} else if ($("#bdcontents").val()==""){
+			alert("내용을 입력하세요");
+			return false;
+		}
+		return true;
+	}
 </script>
-
-
 
 
 </html>

@@ -15,8 +15,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.NumberOne.dao.ChatDao;
 import com.NumberOne.dao.MemberDao;
 import com.NumberOne.dto.BoardDto;
+import com.NumberOne.dto.ChatMessageDto;
+import com.NumberOne.dto.ChatRoomDto;
 import com.NumberOne.dto.ContactDto;
 import com.NumberOne.dto.GoodsDto;
 import com.NumberOne.dto.MemberDto;
@@ -33,6 +36,9 @@ public class MemberService {
 	
 	@Autowired
 	private MemberDao mdao;
+	
+	@Autowired
+	private ChatDao chdao;
 	
 	/*	현석 :  mail API 에러 때문에 주석처리 시작 
 	@Autowired
@@ -297,7 +303,7 @@ public class MemberService {
 		  System.out.println("MemberService.loadToMyInfoModifyForm() 호출"); 
 		  String loginId = (String) session.getAttribute("loginId");
 			/*String loginId;
-			if((String) session.getAttribute("loginId")!=null) {			
+			if((String) session.getAttribute("loginId")!=null) {
 				loginId = (String) session.getAttribute("loginId");
 			} else {
 				loginId = (String) session.getAttribute("kakaoId");			
@@ -458,7 +464,7 @@ public class MemberService {
 	
 
 	//마이페이지 커뮤니티
-	public ModelAndView selectMyInfoCommunityView() {
+	public ModelAndView selectMyInfoCommunityView(RedirectAttributes ra) {
 		ModelAndView mav = new ModelAndView();
 		System.out.println("MemberService.selectMyInfoCommunityView 호출");
 		  //String loginId = (String) session.getAttribute("loginId");
@@ -470,27 +476,35 @@ public class MemberService {
 			}
 		System.out.println("로그인 된 아이디 : " + loginId);
 		
-		//작성글
-		ArrayList<BoardDto> board = mdao.selectMyInfoMemberView_Boards(loginId);
-		System.out.println(board);
+		// 로그인여부 확인
+		if(session.getAttribute("loginId")!=null) {
+			//작성글
+			ArrayList<BoardDto> board = mdao.selectMyInfoMemberView_Boards(loginId);
+			System.out.println(board);
+	
+			//댓글작성한 글
+			ArrayList<ReplyDto> reply = mdao.selectMyInfoMemberView_Reply(loginId);
+			System.out.println(reply);
+	
+			//스크랩 글 목록
+			ArrayList<ScrapDto> scrap = mdao.selectMyInfoMemberView_scrap(loginId);
+			System.out.println(scrap);
+	
+			mav.addObject("board", board);
+			mav.addObject("reply", reply);
+			mav.addObject("scrap", scrap);
+			mav.setViewName("member/MyInfoCommunityPage");
+			
+		}else {
+			ra.addFlashAttribute("msg", "로그인 상태가 아닙니다.");
+			mav.setViewName("redirect:/loadToLogin");
+		}
 
-		//댓글작성한 글
-		ArrayList<ReplyDto> reply = mdao.selectMyInfoMemberView_Reply(loginId);
-		System.out.println(reply);
-
-		//스크랩 글 목록
-		ArrayList<ScrapDto> scrap = mdao.selectMyInfoMemberView_scrap(loginId);
-		System.out.println(scrap);
-
-		mav.addObject("board", board);
-		mav.addObject("reply", reply);
-		mav.addObject("scrap", scrap);
-		mav.setViewName("member/MyInfoCommunityPage");
 		return mav;
 	}
 
 	//마이페이지 중고거래
-	public ModelAndView selectMyInfoResellView() {
+	public ModelAndView selectMyInfoResellView(RedirectAttributes ra) {
 		
 		ModelAndView mav = new ModelAndView();
 		System.out.println("MemberService.selectMyInfoResellView 호출");
@@ -503,37 +517,69 @@ public class MemberService {
 			}
 		System.out.println("로그인 된 아이디 : " + loginId);
 		
-		//팔구
-		ArrayList<UsedBoardDto> sellBoard = mdao.selectMyInfoResellView_Sell(loginId);
-		System.out.println(sellBoard);		
+		// 로그인여부 확인
+		if(session.getAttribute("loginId")!=null) {
+			//팔구
+			ArrayList<UsedBoardDto> sellBoard = mdao.selectMyInfoResellView_Sell(loginId);
+			System.out.println(sellBoard);		
+			
+			//사구
+			ArrayList<UsedBoardDto> buyBoard = mdao.selectMyInfoResellView_Buy(loginId);
+			System.out.println(buyBoard);	
+			
+			//찜목록
+			ArrayList<ZzimDto> zzimBoard = mdao.selectMyInfoResellView_Zzim(loginId);
+			System.out.println(zzimBoard);	
+			
+			//채팅 목록
+			ArrayList<ChatRoomDto> chatRoomList = chdao.selectChatRoomList(loginId);
+			System.out.println(chatRoomList);
+			for (int i = 0; i < chatRoomList.size(); i++) {
+				// 특정 채팅방의 안읽은 메세지 수 조회
+				String cmcrcode = chatRoomList.get(i).getCrcode();
+				int unReadCount = chdao.selectUnReadCount(loginId, cmcrcode);
+				chatRoomList.get(i).setUnreadCount(unReadCount);
+
+				// 특정 채팅방의 가장 최신 메세지 조회
+				ChatMessageDto recentMsg = chdao.selectRecentMessage(cmcrcode);
+				chatRoomList.get(i).setRecentCmcontents(recentMsg.getCmcontents());
+				chatRoomList.get(i).setRecentCmdate(recentMsg.getCmdate());
+				
+				// 특정 채팅방의 상대방 닉네임 조회
+				String mid = ""; // 로그인한 사람이 아닌 상대방의 아이디 뽑기
+				if (loginId.equals(chatRoomList.get(i).getCrfrmid())) {
+					mid = chatRoomList.get(i).getCrtomid();
+				} else {
+					mid = chatRoomList.get(i).getCrfrmid();
+				}
+				String cmfrmnickname = chdao.selectMnickname(mid);
+				chatRoomList.get(i).setCrfrmnickname(cmfrmnickname);
+			}
+			System.out.println("chatRoomList : " + chatRoomList);
+			
+//
+			mav.addObject("chatRoomList", chatRoomList);
+			mav.addObject("sellBoard", sellBoard);
+			mav.addObject("buyBoard", buyBoard);
+			mav.addObject("zzimBoard", zzimBoard);
+			
+			if(sellBoard.size() > buyBoard.size()) {			
+				mav.addObject("sellbuySize", sellBoard.size());
+			} else {
+				mav.addObject("sellbuySize", buyBoard.size());
+			}			
+			mav.setViewName("member/MyInfoResellPage");
 		
-		//사구
-		ArrayList<UsedBoardDto> buyBoard = mdao.selectMyInfoResellView_Buy(loginId);
-		System.out.println(buyBoard);	
-		
-		//찜목록
-		ArrayList<ZzimDto> zzimBoard = mdao.selectMyInfoResellView_Zzim(loginId);
-		System.out.println(zzimBoard);	
-		
-		
-		mav.addObject("sellBoard", sellBoard);
-		mav.addObject("buyBoard", buyBoard);
-		mav.addObject("zzimBoard", zzimBoard);
-		
-		if(sellBoard.size() > buyBoard.size()) {			
-			mav.addObject("sellbuySize", sellBoard.size());
-		} else {
-			mav.addObject("sellbuySize", buyBoard.size());
+		}else {
+			ra.addFlashAttribute("msg", "로그인 상태가 아닙니다.");
+			mav.setViewName("redirect:/loadToLogin");
 		}
-		
-		
-		mav.setViewName("member/MyInfoResellPage");
 		return mav;
 	}
 
 
 	//마이페이지 1:1 문의 내역 / 상세
-	public ModelAndView selectMyInfoQuestionListView() {
+	public ModelAndView selectMyInfoQuestionListView(RedirectAttributes ra) {
 		ModelAndView mav = new ModelAndView();
 		System.out.println("MemberService.selectMyInfoQuestionListView 호출");
 		  //String loginId = (String) session.getAttribute("loginId");
@@ -545,16 +591,22 @@ public class MemberService {
 			}
 		System.out.println("로그인 된 아이디 : " + loginId);
 		
-		ArrayList<ContactDto> contact = mdao.selectMyInfoQuestionListView(loginId);
-		System.out.println(contact);
-		
-		mav.addObject("contact", contact);
-		mav.setViewName("member/MyInfoQuestionListPage");
+		// 로그인여부 확인
+		if(session.getAttribute("loginId")!=null) {
+			ArrayList<ContactDto> contact = mdao.selectMyInfoQuestionListView(loginId);
+			System.out.println(contact);
+			
+			mav.addObject("contact", contact);
+			mav.setViewName("member/MyInfoQuestionListPage");
+		}else {
+			ra.addFlashAttribute("msg", "로그인 상태가 아닙니다.");
+			mav.setViewName("redirect:/loadToLogin");
+		}
 		return mav;
 	}
 
 	//마이페이지 1:1 문의 작성 페이지
-	public ModelAndView loadToMyInfoQuestionForm() {
+	public ModelAndView loadToMyInfoQuestionForm(RedirectAttributes ra) {
 		ModelAndView mav = new ModelAndView();
 		System.out.println("MemberService.loadToMyInfoQuestionForm() 호출");
 		  //String loginId = (String) session.getAttribute("loginId");
@@ -566,9 +618,13 @@ public class MemberService {
 			}
 		System.out.println("로그인 된 아이디 : " + loginId);
 		
-		
-		
-		mav.setViewName("member/MyInfoQuestionForm");
+		// 로그인여부 확인
+		if(session.getAttribute("loginId")!=null) {
+			mav.setViewName("member/MyInfoQuestionForm");
+		}else {
+			ra.addFlashAttribute("msg", "로그인 상태가 아닙니다.");
+			mav.setViewName("redirect:/loadToLogin");
+		}
 		return mav;
 	}
 
@@ -608,6 +664,12 @@ public class MemberService {
 		//로그인된 아이디 작성자에 저장
 		contact.setCtmid(loginId);
 		
+		//문의내용 개행문자처리
+		String contents = contact.getCtcontents();
+		contents = contents.replace(" ", "&nbsp;");
+		contents = contents.replace("\r\n", "<br>");
+		contact.setCtcontents(contents);
+		
 		System.out.println(contact);
 
 		if(session.getAttribute("loginId")!=null) {
@@ -629,49 +691,6 @@ public class MemberService {
 		}
 		return mav;
 	}
-
-
-	//(삭제 예정)회원정보 상세페이지 (미니브라우저)
-	/*public ModelAndView selectWriteMemberInfo(String nickname) {
-			ModelAndView mav = new ModelAndView();
-			System.out.println("MemberService.selectWriteMemberInfo() 호출");
-			  //String loginId = (String) session.getAttribute("loginId");
-				String loginId;
-				if((String) session.getAttribute("loginId")!=null) {			
-					loginId = (String) session.getAttribute("loginId");
-				} else {
-					loginId = (String) session.getAttribute("kakaoId");			
-				}
-			System.out.println("로그인 된 아이디 : " + loginId);
-			
-			
-			System.out.println("service.nickname : " + nickname);
-			//닉네임 회원정보
-			MemberDto memberInfo = mdao.selectWriteMemberInfo_member(nickname);
-			System.out.println(memberInfo);
-			
-			
-			//닉네임 별 작성 글 제목 출력
-			ArrayList<BoardDto> Board = mdao.selectWriteMemberInfo_ajax(nickname);
-			System.out.println(Board);
-			
-			//닉네임 별  작성 댓글 내용 출력
-			ArrayList<ReplyDto> Reply = mdao.selectWriteMemberInfo_Reply(nickname);
-			System.out.println(Reply);			
-			
-			
-			
-			mav.addObject("memberInfo", memberInfo);
-			mav.addObject("Board",Board);
-			mav.addObject("Reply",Reply);
-			
-			mav.setViewName("member/WriteMemberInfoPage");
-			
-			return mav;
-
-
-
-	}*/
 
 	//카카오 로그인
 		public ModelAndView memberKakaoLogin(MemberDto member, RedirectAttributes ra) {
@@ -898,7 +917,6 @@ public class MemberService {
 			
 			return ubList_gson;
 		}
-
 
 
 }

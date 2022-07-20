@@ -93,7 +93,7 @@
 		color: white; 
 		position: absolute; 
 		top: 10px; 
-		right: 10px; 
+		right: 5px; 
 		cursor: pointer;
    }  
    
@@ -173,7 +173,6 @@
 					<input id="bdImg" type="file" name="bdimgfile" accept="image/*"  >
 					<input type="hidden" name="del_bdimg" id="del_bdimg" >
 					<input type="hidden" name="bdimg" id="bdimg" value="${board.bdimg }">
-				
 				
 				<div class="row mt-4">
 					<div class="col btn-wrapper">

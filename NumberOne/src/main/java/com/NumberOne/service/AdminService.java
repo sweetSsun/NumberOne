@@ -508,6 +508,23 @@ public class AdminService {
 		}
 	}	
 	
+	// 경고/정지 후기 상세페이지 이동 
+	public ModelAndView admin_selectReviewBoardView(Paging paging, String codeIdx, String check) {
+		System.out.println("AdminService.admin_selectReviewBoardView() 호출");
+		mav = new ModelAndView();
+		System.out.println("bdcode : " + codeIdx);
+		System.out.println("check : " + check);
+		
+		//글상세정보 조회 
+		BoardDto board = bdao.selectBoardView(codeIdx);
+		System.out.println(board);
+		
+		mav.addObject("board", board);
+		mav.setViewName("admin/Admin_ReviewBoardView");
+		
+		return mav;
+	}
+	
 	// 경고/정지 상세페이지 이동 
 	public ModelAndView admin_selectBoardView(Paging paging, String codeIdx, String check) {
 		System.out.println("AdminService.admin_selectBoardView() 호출");
@@ -524,6 +541,7 @@ public class AdminService {
 		
 		return mav;
 	}
+	
 	/* 배너 관리 */
 	// 배너 관리페이지 이동
 	public ModelAndView admin_selectBdfixList(Paging paging, RedirectAttributes ra) {

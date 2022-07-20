@@ -97,18 +97,18 @@
 	
 	<main>
 		<!-- 사이드바 -->
-		<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
+		<%@ include file="/WEB-INF/views/includes/SideBar_Mypage.jsp" %>
 		
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h2 class="text-center">자취방자랑 작성글 수정중</h2>
+				<h2 class="text-center">자취방자랑 글작성 페이지</h2>
 				<form action="insertRoomWrite" method="post" enctype="multipart/form-data" onsubmit="return roomRegisterCh()">
 					<input type="hidden" name="bdmid" value="${sessionScope.loginId }">
 				<div class="row">
 					<div class="col-6">
 						<span style="font-size:20px;">게시판</span><span class="text-danger">*</span>
-						<select name="bdcategory" onchange="bdcategorySel(this.value)" class="bdCategoryList" required="required">
+						<select name="bdcategory"  class="bdCategoryList" >
 							<option value="자랑" class="selectPlaceHolder">자랑</option>
 							<option value="자랑">자랑</option>
 

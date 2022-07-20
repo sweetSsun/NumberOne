@@ -121,7 +121,7 @@
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h4 class="text-center">커뮤니티 상세페이지 : Admin_BoardView.jsp</h4>
+				<h4 class="text-center">관리자 커뮤니티 상세페이지 : Admin_BoardView.jsp</h4>
 				<form action="">
 					<div class="row">
 						<div class="col">
@@ -136,7 +136,20 @@
 					</div>
 					<div class="row idDateHits">
 						<div class="col-6">
-							<a href="selectWriteMemberInfo?nickname=${board.bdnickname }" target="_blank"><span class="fw-bold bdnickname">${board.bdnickname }</span></a> 
+							<c:choose>
+								<c:when test="${board.bdmprofile != null && board.bdmstate == 1 }">
+									<img class="img-profile rounded-circle" style="height: 45px; width:45px;" src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/${board.bdmprofile}">
+								</c:when>
+								
+								<c:when test="${board.bdmprofile != null && board.bdmstate == 9 }">
+									<img class="img-profile rounded-circle" style="height: 40px; width:40px;" src="${board.bdmprofile}">
+								</c:when>
+								
+								<c:otherwise>
+									<img class="img-profile rounded-circle" style="height: 45px; width:45px;" src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png">
+								</c:otherwise>
+							</c:choose>
+							<a href="#"><span class="fw-bold bdnickname">${board.bdnickname }</span></a> 
 						</div>
 						
 						<div align="right"  class="col-3 offset-md-3">
@@ -145,7 +158,6 @@
 							<i class="fa-regular fa-thumbs-up commentDate" ></i> <span class="commentDate" style="right:0;" id="BoardRecommendSum"></span>
 						</div>
 					</div>
-					<!-- 실험 -->
 					
 					
 					<!-- 본문 글 내용-->
@@ -334,25 +346,6 @@
 </script>
 
 <script type="text/javascript">
-	/* 게시글 수정, 삭제 */
-	function loadToBoardModify(){
-		/* 게시글 수정 페이지 이동  */
-		location.href="loadToBoardModify?bdcode="+bdcode;
-	}
-	
-	function bdDeleteCheckModal(){
-		/* 게시글 삭제버튼 클릭 시 모달 출력 */
-		$("#bdDeleteCheckModal").modal('show');
-	}
-	function updateBoardDelete(){
-		/* 게시글 삭제(상태변경) */
-		//모달창에서 "네" 버튼 클릭 시 삭제
-		location.href="updateBoardDelete?bdcode="+bdcode+"&bdcategory="+'${board.bdcategory }';
-	}
-	
-</script>
-
-<script type="text/javascript">
 	/* 댓글관련 메소드 */	
 
 	/* 댓글입력_ajax */
@@ -393,12 +386,16 @@
 					
 					if( replyList[i].rpmid == '${sessionScope.loginId}' ){//동일한 아이디
 						
-						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;\ margin-right:-20px;' >" /* 프로필영역 */
-						if( replyList[i].rpprofile != null ){
-							output += "<img class=\"img-profile rounded-circle \" style=\"height:55px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
-						}else{
-							output += "<img class=\"img-profile rounded-circle \" style=\"height:40px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
-						}
+						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;'>" /* 프로필영역 */
+							if( replyList[i].rpprofile != "nomprofile" ){//프로필 이미지가 있을 시 
+								if(  replyList[i].rpmstate == 9){//카카오 회원
+									output += "<img class=\"img-profile rounded-circle \" style=\"height:45px; width:45px;\" src='"+replyList[i].rpprofile + "'>"
+								}else{
+									output += "<img class=\"img-profile rounded-circle \" style=\"height:45px; width:45px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+								}
+							}else{//프로필 이미지가 없을 시 
+								output += "<img class=\"img-profile rounded-circle\" style=\"height:45px; width:45px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
+							}
 						output += "</div>"
 						
 						output += "<div class=\"col-11\" style='border-bottom: solid #E0E0E0 1px;\'>"
@@ -421,12 +418,16 @@
 						
 					}else{
 						
-						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px; margin-right:-20px;'>" /* 프로필영역 */
-						if( replyList[i].rpprofile != null ){
-							output += "<img class=\"img-profile rounded-circle \" style=\"height:55px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
-						}else{
-							output += "<img class=\"img-profile rounded-circle\" style=\"height:40px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
-						}
+						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;'>" /* 프로필영역 */
+							if( replyList[i].rpprofile != "nomprofile" ){//프로필 이미지가 있을 시 
+								if(  replyList[i].rpmstate == 9){//카카오 회원
+									output += "<img class=\"img-profile rounded-circle \" style=\"height:45px; width:45px;\" src='"+replyList[i].rpprofile + "'>"
+								}else{
+									output += "<img class=\"img-profile rounded-circle \" style=\"height:45px; width:45px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+								}
+							}else{//프로필 이미지가 없을 시 
+								output += "<img class=\"img-profile rounded-circle\" style=\"height:45px; width:45px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
+							}
 						output += "</div>"
 							
 						output += "<div class=\"col-11\" style='border-bottom: solid #E0E0E0 1px;\'>"

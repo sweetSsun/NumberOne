@@ -243,12 +243,6 @@ public ModelAndView selectResellPageList(Paging paging) {
 	System.out.println("selectResellPageList 서비스 호출");
 	ModelAndView mav = new ModelAndView();
 	
-	/*  페이지처음출력 시 전체목록출력용
-	if(paging.getSearchVal() == null || paging.getSearchVal() == "") {
-		
-		paging.setSearchVal("all");		
-	}
-	*/
 	String checkMethod = "NO";
 	
 
@@ -308,9 +302,12 @@ public ModelAndView selectResellPageList(Paging paging) {
 		 * if(paging.getSearchType()!=null) { checkMethod = "search"; }
 		 */
 		System.out.println("checkMethod : "+checkMethod);
+		
 		int totalCount = rdao.selectPageTotalCount(paging);
+		
 		paging.setTotalCount(totalCount);
 		paging.calc();
+		
 		System.out.println(paging);
 		
 		ArrayList<UsedBoardDto> sellbuyList = rdao.selectResellRegionList_ajax(paging);
@@ -343,7 +340,7 @@ public ModelAndView selectResellPageList(Paging paging) {
 
 		ArrayList<GoodsDto> gd_resellView = rdao.selectResellView_goods(ubDto);
 
-		ArrayList<UsedBoardDto> memberSellList = rdao.selectResellView_List(ub_resellView.getUbmid(), ub_resellView.getUbcode());
+		ArrayList<UsedBoardDto> memberSellList = rdao.selectResellView_List(ub_resellView.getUbmid(), ubDto.getUbcode());
 		String zzimCheck = rdao.selectZzimCheck(loginId, ubDto.getUbcode());
 		
 		String zzim_Check;
@@ -353,6 +350,7 @@ public ModelAndView selectResellPageList(Paging paging) {
 		else {
 			zzim_Check = "UNCHECK";
 		}
+		
 		String[] ubDetailImg;
 		
 		if(ub_resellView.getUbdetailimg()!=null) {
@@ -362,6 +360,7 @@ public ModelAndView selectResellPageList(Paging paging) {
 			System.out.println("디테일이미지들 : " +dimg);
 						
 		}
+		
 		ub_resellView.setUbdetailimg_list(ubDetailImg);
 		
 					}
@@ -544,6 +543,7 @@ public ModelAndView selectResellPageList(Paging paging) {
 		String ubmainimg = "";
 	
 		//대표이미지 있는지 확인 (비어있지않으면) 
+		
 		if (!ubMainFile.isEmpty()) {  
 			System.out.println("대표 이미지 있음");
 			
@@ -568,8 +568,8 @@ public ModelAndView selectResellPageList(Paging paging) {
 		
 
 		// 상세이미지의 파일명을 담을 변수 공백(빈값)으로 초기화
+		
 		String uddetailimg = "";
-
 		
 		// 상세이미지 파일 처리
 		// System.out.println("상세이미지개수: "+bddetailimgfile.length);
@@ -591,6 +591,12 @@ public ModelAndView selectResellPageList(Paging paging) {
 			}
 
 			System.out.println("uddetailimg : " + uddetailimg);
+		}
+		
+		else {	// 상세사진을 변경, 추가하지않고  등록 눌렀을 때 이전 이미지를 DB에 저장
+			for (int i = 0; i < ubDto.getUbdetailimg_originList().length; i++)
+			uddetailimg += "___" +ubDto.getUbdetailimg_originList()[i];
+			
 		}
 
 		ubDto.setUbdetailimg(uddetailimg);

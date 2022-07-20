@@ -23,6 +23,10 @@
 	objetFit: contain;
 }
 
+.d_none {
+	display: none;
+}
+
 .line-through {
 	text-decoration: line-through;
 	font-size: 20px;
@@ -112,7 +116,7 @@ label {
 								<div class="container-card_goods_2">
 									<div class="item-basis_1 wrap">
 
-										<select class="selectState" name="gd_state" onchange="select_option(this, '${gdList.gdcode }','')">
+										<select class="selectStates" name="gd_state" onchange="gdUpdateState( '${gdList.gdcode }',this)">
 											<option value="1">판매중</option>
 											<option value="0">판매완료</option>
 										</select>
@@ -150,34 +154,40 @@ label {
 							<div>사진첨부</div>
 							<div class="">
 								<div class="button">
-									<label for="chooseFile_id"> 👉 CLICK HERE! 👈 </label>
+									<label for="chooseFile_id"> 👉 메인사진변경! 👈 </label>
 								</div>
-								<input type="file" class="chooseFile" id="chooseFile_id" name="chooseFile" accept="image/*" onchange="loadFile(this)" name="ubmainimgfile">
+								<input type="file" class="chooseFile" id="chooseFile_id" accept="image/*" onchange="loadFile(this)" name="ubmainimgfile">
 								<div id="image-show">
-									<img src="${pageContext.request.contextPath }/resources/img/resell/${ub_resellView.ubmainimg }" class="product-img">
+									<img src="${pageContext.request.contextPath }/resources/img/resell/${ub_resellView.ubmainimg }" class="product-img" id="mainImg">
 								</div>
 								<div id="fileName">${ub_resellView.ubmainimg }</div>
 							</div>
 
 							<div class="">
 								<div class="button">
-									<label for="chooseMultiFile"> 👉 CLICK HERE! 👈 </label>
+									<label for="chooseMultiFile"> 👉 상세사진변경! 👈 </label>
 								</div>
 								<input type="file" id="chooseMultiFile" class="chooseFile" onchange="loadMultiFile(this)" multiple="multiple" name="ubdetailimgfile">
 
 
 								<div id="image-show_multi">
 									<c:forEach items="${ub_resellView.ubdetailimg_list }" var="ubdetailimg_list" begin="1" varStatus="status">
-										<img src="${pageContext.request.contextPath }/resources/img/resell/${ubdetailimg_list}" class="product-img" id="detailimg${status.count }">
-										<input type="button" onclick="hide_Img(this,'${ubdetailimg_list}','${status.count }')" value="삭제">
-
+										<div class="detailImg_">
+											<img src="${pageContext.request.contextPath }/resources/img/resell/${ubdetailimg_list}" class="product-img"> 
+											<span class="hide_ImgBtn"> <input type="button"
+												onclick="hide_Img(this,'${ubdetailimg_list}')" value="삭제">
+												</span>
+												
+												
+										</div>
 									</c:forEach>
 								</div>
 								<div id="fileName_multi">
 
 									<c:forEach items="${ub_resellView.ubdetailimg_list }" var="ubdetailimg_list" begin="1">
 
-										<span>${ubdetailimg_list }</span>
+										<span class="ubdetailImg_origin detailImg_ detailImg_Arry">${ubdetailimg_list }</span>
+
 									</c:forEach>
 								</div>
 
@@ -193,6 +203,11 @@ label {
 							<button type="submit">등록</button>
 						</div>
 					</div>
+
+					<input type="hidden" value="${ubdetailimg_list }" name="ubdetailimg_originList">
+
+
+
 				</form>
 
 
@@ -212,7 +227,7 @@ label {
 	const totalOp = document.getElementById("totalOp"); // 글 상태 select태그
 	const ubcode = '${ub_resellView.ubcode}'; //글번호
 	const sellbuy = '${ub_resellView.ubsellbuy}'; //사구,팔구 확인
-	const selectStates = document.querySelectorAll(".selectState"); // 상품 상태 select태그 (복수 , c:forEach태그안에 있음) 
+	const selectStates = document.querySelectorAll(".selectStates"); // 상품 상태 select태그 (복수 , c:forEach태그안에 있음) 
 	const select_gdcode = document.querySelectorAll(".select_gdcode"); //상품코드	(복수 , c:forEach태그안에 있음) 
 	const select_gdstate = document.querySelectorAll(".select_gdstate");//상품상태 (복수 , c:forEach태그안에 있음) 
 	const gd_nameList = document.querySelectorAll(".gd_nameList"); //상품명 (복수 , c:forEach태그안에 있음)
@@ -221,37 +236,42 @@ label {
 
 
 <script type="text/javascript">
-	//페이지로드시 무조건실행
+	/* 로그인된 회원인지 체크 */
+	let loginCheck = '${sessionScope.loginId}';
+	if (loginCheck.length == 0) {
+		alert("잘못된 접근입니다.");
+		location.href = "loadToLogin"
+
+	}
+</script>
+
+<script type="text/javascript">
+	/* 페이지로드시 글의 판매상태체크 */
 	window.onload = function() {
-		/* 로그인된 회원인지 체크 */
-		let loginCheck = '${sessionScope.loginId}';
-		if (loginCheck.length == 0) {
-			alert("잘못된 접근입니다.");
-			location.href = "loadToLogin"
 
-		}
-
-		/* 페이지로드시 글의 판매상태체크 */
-
-		for (var i = 0; i < totalOp.options.length; i++) {
+		for (let i = 0; i < totalOp.options.length; i++) {
 			if (totalOp.options[i].value == ubstate) {
+				console.log('totalOp.options[i].value',
+						totalOp.options[i].value);
 				/* 글의 판매상태 option (9:판매완료 ,1:판매중)와 
 				페이지 이동시 넘어온 글의 상태값 파라메터가 같을 경우 그 option에 selected 속성 추가*/
 				totalOp.options[i].selected = 'true';
 
 				if (ubstate == '9') { // 글의 상태값이 9(판매완료)이면 실행.
+					console.log('ubstate', ubstate);
 					document.getElementById("titleMsg").innerText = "판매완료된 글입니다.";
 
-					for (var j = 0; j < select_gdstate.length; j++) {
+					for (let i = 0; i < gd_nameList.length; i++) {
 
-						selectStates[j].selectedIndex = '0';
-						// 모든 상품들의 상태 값을 0(판매완료)으로 변경.
+						gd_nameList[i].classList.add('line-through');
+						gd_priceList[i].classList.add('line-through');
+						selectStates[i].setAttribute('disabled', 'disabled');
 					}
 
 				} else { //글의 상태값이 1(판매중)이면 실행
 					document.getElementById("titleMsg").innerText = "판매중";
 
-					for (var j = 0; j < select_gdstate.length; j++) {
+					for (let j = 0; j < select_gdstate.length; j++) {
 						console.log("selectStates[j].selectedIndex : ",
 								selectStates[j].selectedIndex);
 						console.log("select_gdstate[j].value : ",
@@ -284,7 +304,6 @@ label {
 </script>
 
 
-
 <!-- select태그 option선택 이벤트 -->
 <script type="text/javascript">
 	totalOp.addEventListener('change', selectOp_value);
@@ -295,7 +314,7 @@ label {
 		let gd_code = [];
 		let select_ubstate = e.target.value;
 
-		for ( var i in select_gdstate) {
+		for ( let i in select_gdstate) {
 			console.log(select_gdstate[i].value);
 			console.log(select_gdcode[i].value);
 			if (select_gdstate[i].value != undefined) {
@@ -325,7 +344,7 @@ label {
 							alert("변경성공 = 판매완료");
 							document.getElementById("titleMsg").innerText = "판매완료된 글입니다.";
 
-							for (let i = 0; i < selectStates.length; i++) {
+							for (let i = 0; i < gd_nameList.length; i++) {
 
 								gd_nameList[i].classList.add('line-through');
 								gd_priceList[i].classList.add('line-through');
@@ -336,7 +355,7 @@ label {
 						} else {
 							alert("변경성공 = 판매중");
 							document.getElementById("titleMsg").innerText = "판매중";
-							for (let i = 0; i < selectStates.length; i++) {
+							for (let i = 0; i < gd_nameList.length; i++) {
 								selectStates[i].removeAttribute('disabled');
 								gd_nameList[i].classList.remove('line-through');
 								gd_priceList[i].classList
@@ -412,7 +431,7 @@ label {
 
 	function gdUpdateState(gdcode, sel_tag) {
 		let gdstate = sel_tag.value;
-
+		console.log('gdstate', gdstate);
 		$.ajax({
 			type : 'get',
 			url : 'updateResellState_GoodsAjax',
@@ -454,30 +473,45 @@ label {
 <script type="text/javascript">
 	/*<!-- 이미지파일 미리보기 이벤트핸들러 호출 -->  */
 	function loadFile(input) { // 함수가 호출된 태그를 인자로 받는다.( 여기선 input태그)
+		
+		let container =document.getElementById('image-show');	 
+		let newImage = document.createElement("img");
+		newImage.setAttribute("class", 'img');
+		
+		 
+		if(container.hasChildNodes()){
+			console.log("확인");
+			console.log("container.hasChildNodes ", container.hasChildNodes());
+			
 
-		let file = input.files[0]; //선택된 파일 가져오기 (하나의 파일만 업로드가능하므로 첫번째 인덱스인 0번을 사용)
+		}
+	
+		let mainImg = document.getElementById('mainImg');
+		mainImg.setAttribute('class', 'd_none');	
+		 file = input.files[0]; //선택된 파일 가져오기 (하나의 파일만 업로드가능하므로 첫번째 인덱스인 0번을 사용)
 
 		let name = document.getElementById('fileName');
 		name.textContent = file.name; //미리 만들어 놓은 div에 text(파일 이름) 추가  () 
 
 		//새로운 이미지 div 추가 (img태그 생성)
-		let newImage = document.createElement("img");
 
 		// img태그에 'class'를 key로, 'img'를 value 로 준다.
-		newImage.setAttribute("class", 'img');
-
+	
 		//이미지 source 가져오기
 		newImage.src = URL.createObjectURL(file);
 
 		newImage.style.width = "30%";
 		newImage.style.height = "30%";
 		newImage.style.objectFit = "contain";
-
+		
 		//이미지를 image-show div에 추가
-		let container = document.getElementById('image-show');
 		container.appendChild(newImage); //appendChild는 하나의 노드만 사용가능. 멀티플에는 사용하기어려움
+		
+
+		
 	};
 </script>
+
 
 <!-- 멀티플파일 이미지 미리보기 -->
 <script type="text/javascript">
@@ -485,13 +519,20 @@ label {
 	function loadMultiFile(input) {
 		console.log('loadMultiFile호출 인자 : ', input);
 
-		let name = document.getElementById('fileName_multi');
-		let container = document.getElementById('image-show_multi');
-
+		let name = document.getElementById('fileName_multi'); 	//이미지 명 div
+		let container = document.getElementById('image-show_multi'); 	//이미지 출력 div
+		let detailImg = document.getElementsByClassName('detailImg_');	//
+		for(detailImgHide of detailImg){
+			detailImgHide.setAttribute('class', 'd_none');	
+					}
+		
 		let newImage_ = [];
 
 		// input태그(type속성의 value가 files인 경우  
 		for (let i = 0; i < input.files.length; i++) {
+			
+			
+			
 			name.append(input.files[i].name + ' ');
 
 			//배열에 push
@@ -511,9 +552,41 @@ label {
 
 			console.log('newImage_ : ', newImage_[i]);
 			console.log('input.files : ', input.files[i]);
+			
+			
 		}
 
 	};
+</script>
+
+
+
+<!-- 이미지 삭제 스크립트 -->
+<script type="text/javascript">
+/* 삭제 버튼 클릭 이벤트핸들러 */
+	function hide_Img(selectTag, detailName) {
+		let detailImg_Arry = document.getElementsByClassName('detailImg_Arry');
+		let deleteImage = [];
+		console.log('detailImgHide 호출 ');
+		console.log('selectTag 선택된태그 : ', selectTag);
+		console.log('detailImg 선택된이미지명 : ', detailName);
+		
+	
+		for(let i = 0; i< detailImg_Arry.length; i++){
+			console.log('detailImg_Arry 상세이미지명 : ', detailImg_Arry[i].innerText);
+			if(detailImg_Arry[i].innerText===detailName){
+							
+				deleteImage.push(detailName);
+				
+			}
+			
+		}
+for(dImage of deleteImage){		 //배열에 데이터 들어갔는지 확인
+			console.log("dImage 전송안할 이미지: ", dImage);
+}
+	
+	}
+	
 </script>
 
 <!-- 폼데이터 입력되었는지 체크하는 코드 스크립트  -->
@@ -521,53 +594,34 @@ label {
 	/* 폼태그 데이터 공백 체크  */
 	/* onsubmit이벤트  false 일시 submit이벤트 취소*/
 	function checkFormData() {
-		let checkForm = true;
+		let checkForm = true;		
 		console.log("폼데이터 핸들러 호출");
-		if (document.getElementById("titleCheck").value == '') {
-			document.getElementById("titleCheck").focus();
-			alert("제목을 입력해주세요.");
-			checkForm = false;
-		} else if (document.getElementsByClassName("gdcheck_n")[0].value == '') {
-			alert("품목이름을 작성해주세요.");
-			document.getElementsByClassName("gdcheck_n")[0].focus();
-
-			checkForm = false;
-		} else if (document.getElementsByClassName("gdcheck_p")[0].value == '') {
-			alert("품목가격을 작성해주세요.");
-			document.getElementsByClassName("gdcheck_p")[0].focus();
-			checkForm = false;
-		} else if (document.getElementById("contentsCheck").value == '') {
+		<%-- 
+		let input_detailImgTag = [];
+		for(let i = 0; i < deleteImage.length; i++{
+			input_detailImgTag.push(document.createElement('input'));  // 배열길이 만큼 input태그만들기
+			input_detailImgTag[i].value = deleteImage[i];
+			console.log("input태그 VALUE : " , input_detailImgTag[i].value);
+			
+		}
+		--%>
+		
+		
+		
+		
+		
+		
+		if (document.getElementById("contentsCheck").value == '') {
 			document.getElementById("contentsCheck").focus();
 			alert("내용을 작성해주세요.");
 			checkForm = false;
-		} else if (document.getElementById("mainImgCheck").value == '') {
+
+		} else if (document.getElementById("fileName").value == '') {
 			alert("메인사진을 선택해주세요.");
-			document.getElementById("mainImgCheck").focus();
+			document.getElementById("chooseFile_id").focus();
 			checkForm = false;
 		}
 		return checkForm;
 	}
 </script>
-
-<script type="text/javascript">
-
-
-function hide_Img(selectTag, detailImg, selectIndex) {
-	console.log('detailImgHide 호출 ');
-	
-	let detailImg = document.getElementById('detailImg' + ${selectIndex});
-	
-	
-	console.log('selectTag 호출 : ', selectTag);
-	console.log('detailImg 호출 : ', detailImg);
-	console.log('selectIndex 호출 : ', selectIndex);
-	console.log(' detailImg+selectIndex 호출 : ',  detailImg+selectIndex);
-	
-	
-	
-}
-
-</script>
-
-
 </html>

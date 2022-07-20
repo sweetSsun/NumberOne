@@ -1062,7 +1062,7 @@ public class BoardService {
 		board.setBdimg(bdimgfile);
 		//System.out.println(board);
 		
-		//글작성
+		//글작성 - 로그인 상태 확인
 		if( session.getAttribute("loginId") != null ) {
 			int insertResult = bdao.insertBoard(board);
 			ra.addFlashAttribute("msg", "글이 작성되었습니다");
