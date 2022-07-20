@@ -165,22 +165,15 @@
 							<td>최신채팅글</td>						
 							<td>날짜</td>
 						</tr>
-<%-- 						<c:forEach items="${zzimBoard }" var="zzim"> 
-							<!-- 찜한 목록 -->
+ 						<c:forEach items="${chatRoomList }" var="chat"> 
+							
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center; ">
-							<c:choose>
-							<c:when test="${zzim.ubsellbuy == 'S' }">
-								<td><a href="selectResellView?ubcode=${zzim.zzubcode }&ubsellbuy=S&modifyCheck=LIST">${zzim.ubtitle }</a></td>
-							</c:when>
-							<c:otherwise>
-								<td><a href="selectResellView?ubcode=${zzim.zzubcode }&ubsellbuy=B&modifyCheck=LIST">${zzim.ubtitle }</a></td>						
-							</c:otherwise>
-							</c:choose> 
-								<td>${zzim.mnickname }</td>
-								<td>${zzim.ubdate }</td>
+								<td>${chat.crfrmnickname }</td>
+								<td>${chat.recentCmcontents }</td>
+								<td>${chat.recentCmdate }</td>
 							</tr>
 														
-						</c:forEach> --%>
+						</c:forEach> 
 				</table>
 				<!-- 여백 -->				
 				<div style="min-height: 700px;"></div>
@@ -254,10 +247,7 @@
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+
 </body>
-
-<!--  -->
-
-
-
 </html>
