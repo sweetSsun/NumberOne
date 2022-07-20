@@ -40,12 +40,13 @@
 		UBDETAILIMG, UBSTATE,
 		NVL(ZZIMCOUNT, 0) UBZZIM
 		FROM (SELECT ROWNUM
-		RN, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE,
+		RN,
+		UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE,
 		UBCONTENTS,
 		UBDATE,
 		UBMAINIMG, UBDETAILIMG, UBSTATE
-		FROM (SELECT * FROM USEDBOARDS 
-				<choose>
+		FROM (SELECT * FROM USEDBOARDS
+		<choose>
 			<when
 				test="paging.searchType == 'total' or paging.searchType == 'sell' or paging.searchType == 'buy'">
 				WHERE UBTITLE LIKE '%'||#{paging.keyword}||'%' OR
@@ -58,31 +59,34 @@
 				WHERE UBMID IN (SELECT MID
 				FROM MEMBERS
 				WHERE
-				MNICKNAME LIKE '%'||#{paging.keyword}||'%')
+				MNICKNAME
+				LIKE '%'||#{paging.keyword}||'%')
 			</when>
 
 			<when test="paging.searchType == 'ubtitle'">
-					WHERE UBTITLE LIKE '%'||#{paging.keyword}||'%'
-				</when>
+				WHERE UBTITLE LIKE '%'||#{paging.keyword}||'%'
+			</when>
 		</choose>
-		 ORDER BY
+		ORDER BY
 		UBDATE DESC)
-		
+
 		WHERE
 
 		<if test="paging.searchVal !='all'">
 			UBRGCODE = #{paging.searchVal} AND
 		</if>
-		
+
 		UBSELLBUY = #{paging.sellBuy} AND
 		UBSTATE = 1 OR UBSTATE = 9
 
 
-		) LEFT OUTER JOIN ZZIM_VIEW
+		) LEFT
+		OUTER JOIN ZZIM_VIEW
 		ON UBCODE = ZZUBCODE,
 		MNICKNAME_VIEW
 		WHERE
-		MID = UBMID
+		MID =
+		UBMID
 
 		<choose>
 			<when test="checkMethod=='Main'">
@@ -106,7 +110,8 @@
 		UBDETAILIMG, UBSTATE,
 		NVL(ZZIMCOUNT, 0) UBZZIM
 		FROM (SELECT ROWNUM
-		RN, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE,
+		RN,
+		UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE,
 		UBCONTENTS,
 		UBDATE,
 		UBMAINIMG, UBDETAILIMG, UBSTATE
@@ -115,18 +120,19 @@
 			<choose>
 				<when
 					test="searchType == 'total' or searchType == 'sell' or searchType == 'buy'">
-					 WHERE UBTITLE LIKE '%'||#{keyword}||'%' OR UBCONTENTS
+					WHERE UBTITLE LIKE '%'||#{keyword}||'%' OR UBCONTENTS
 					LIKE
 					'%'||#{keyword}||'%'
 				</when>
 				<when test="searchType == 'ubmid'">
-					 WHERE UBMID IN (SELECT MID
+					WHERE UBMID IN (SELECT MID
 					FROM MEMBERS
 					WHERE
-					MNICKNAME LIKE '%'||#{keyword}||'%')
+					MNICKNAME LIKE
+					'%'||#{keyword}||'%')
 				</when>
 				<when test="searchType == 'ubtitle'">
-					 WHERE UBTITLE LIKE '%'||#{keyword}||'%'
+					WHERE UBTITLE LIKE '%'||#{keyword}||'%'
 				</when>
 			</choose>
 
@@ -140,12 +146,13 @@
 		</if>
 		UBSELLBUY = #{sellBuy} AND
 		UBSTATE = 1 OR UBSTATE = 9
-		
+
 		) LEFT OUTER JOIN ZZIM_VIEW
 		ON UBCODE = ZZUBCODE,
 		MNICKNAME_VIEW
 		WHERE
-		MID = UBMID AND RN BETWEEN #{startRow} AND
+		MID
+		= UBMID AND RN BETWEEN #{startRow} AND
 		#{endRow}
 
 	</select>
@@ -155,31 +162,38 @@
 	<select id="selectPageTotalCount" resultType="int">
 		SELECT COUNT(UBCODE)
 		FROM (SELECT *
-		FROM USEDBOARDS
-		WHERE
-		<if test="searchVal !='all'">
-			UBRGCODE = #{searchVal} AND
-		</if>
-		UBSELLBUY = #{sellBuy} AND UBSTATE = 1 OR UBSTATE = 9
+
+		FROM (SELECT * FROM USEDBOARDS
 		<if test="searchType != null or searchType != ''">
 			<choose>
 				<when
 					test="searchType == 'total' or searchType == 'sell' or searchType == 'buy'">
-					AND UBTITLE LIKE '%'||#{keyword}||'%' OR UBCONTENTS
+					WHERE UBTITLE LIKE '%'||#{keyword}||'%' OR UBCONTENTS
 					LIKE
 					'%'||#{keyword}||'%'
 				</when>
+				
 				<when test="searchType == 'ubmid'">
-					AND UBMID LIKE (SELECT MID
+					WHERE UBMID IN (SELECT MID
 					FROM MEMBERS
 					WHERE
 					MNICKNAME LIKE '%'||#{keyword}||'%')
 				</when>
+				
 				<when test="searchType == 'ubtitle'">
-					AND UBTITLE LIKE '%'||#{keyword}||'%'
+					WHERE UBTITLE LIKE '%'||#{keyword}||'%'
 				</when>
 			</choose>
 		</if>
+		
+		)
+		WHERE
+		<if test="searchVal !='all'">
+			UBRGCODE = #{searchVal} AND
+		</if>
+
+		UBSELLBUY = #{sellBuy} AND UBSTATE = 1 OR UBSTATE = 9
+
 		),MNICKNAME_VIEW
 		WHERE MID = UBMID
 
@@ -196,7 +210,7 @@
 		AND
 		UBSELLBUY = #{ubsellbuy}
 		ORDER BY GDUBCODE
-		
+
 	</select>
 
 	<!-- 글 상세정보 -->
@@ -209,7 +223,8 @@
 		UBDATE, UBMAINIMG,
 		UBDETAILIMG, UBSTATE,
 		NVL(ZZIMCOUNT, 0) UBZZIM
-		FROM (SELECT ROWNUM
+		FROM
+		(SELECT ROWNUM
 		RN, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE,
 		UBCONTENTS,
 		UBDATE,
@@ -219,7 +234,8 @@
 		UBCODE)
 		WHERE UBSELLBUY =
 		#{ubsellbuy} AND
-		UBSTATE = 1 OR UBSTATE = 9
+		UBSTATE = 1
+		OR UBSTATE = 9
 		) LEFT OUTER JOIN ZZIM_VIEW
 		ON UBCODE = ZZUBCODE,
 		MNICKNAME_VIEW
@@ -235,26 +251,30 @@
 
 	<select id="selectResellView_List"
 		resultType="com.NumberOne.dto.UsedBoardDto">
-	SELECT UBNICKNAME, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE,
+		SELECT UBNICKNAME, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE,
 		UBCONTENTS,
 		TO_CHAR(UBDATE, 'YYYY-MM-DD') UBDATE, UBMAINIMG,
 		UBDETAILIMG, UBSTATE,
 		NVL(ZZIMCOUNT, 0) UBZZIM
 		FROM (SELECT ROWNUM
-		RN, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE,
+		RN, UBCODE, UBRGCODE,
+		UBSELLBUY, UBMID, UBTITLE,
 		UBCONTENTS,
 		UBDATE,
-		UBMAINIMG, UBDETAILIMG, UBSTATE
-		FROM (SELECT * FROM USEDBOARDS WHERE UBMID = #{ubmid} 
+		UBMAINIMG, UBDETAILIMG,
+		UBSTATE
+		FROM (SELECT * FROM USEDBOARDS WHERE UBMID = #{ubmid}
 		AND UBCODE != #{ubcode} ORDER BY
 		UBDATE DESC )
-        WHERE UBSELLBUY = 'S' AND
+		WHERE UBSELLBUY = 'S' AND
 		UBSTATE = 1 OR UBSTATE = 9
-		) LEFT OUTER JOIN ZZIM_VIEW
+		) LEFT OUTER JOIN
+		ZZIM_VIEW
 		ON UBCODE = ZZUBCODE,
 		MNICKNAME_VIEW
 		WHERE
-		MID = UBMID AND RN BETWEEN 1 AND 8	
+		MID = UBMID AND RN
+		BETWEEN 1 AND 8
 
 	</select>
 
@@ -264,13 +284,15 @@
 		SELECT WUEDUBCODE
 		FROM WARNINGUSEDBOARDS
 		WHERE WUMID = #{loginId}
-		AND WUEDUBCODE = #{ubcode}
+		AND
+		WUEDUBCODE = #{ubcode}
 	</select>
 
 	<insert id="insertResellWarning_ajax">
 		<!-- 게시글 신고 -->
 		INSERT INTO WARNINGUSEDBOARDS (WUMID, WUEDUBCODE)
-		VALUES ( #{loginId}, #{ubcode} )
+		VALUES ( #{loginId},
+		#{ubcode} )
 	</insert>
 
 	<!-- 중고거래 글작성 상품 insert -->
@@ -291,25 +313,29 @@
 	</insert>
 
 	<insert id="zzimClick_ajax_insert">
-		INSERT INTO ZZIM(ZZMID, ZZUBCODE) VALUES(#{zzmid}, #{zzubcode})
+		INSERT INTO ZZIM(ZZMID, ZZUBCODE) VALUES(#{zzmid},
+		#{zzubcode})
 	</insert>
 
 	<delete id="zzimClick_ajax_delete">
 		DELETE FROM ZZIM
-		WHERE ZZMID = #{zzmid} AND ZZUBCODE = #{zzubcode}
+		WHERE ZZMID = #{zzmid} AND ZZUBCODE =
+		#{zzubcode}
 	</delete>
 
 	<delete id="deleteResellWarning_ajax">
 		<!-- 게시글 신고 취소 -->
 		DELETE FROM WARNINGUSEDBOARDS
 		WHERE WUMID = #{loginId}
-		AND WUEDUBCODE = #{ubcode}
+		AND WUEDUBCODE =
+		#{ubcode}
 	</delete>
 
 	<update id="updateResellDelete_ub">
 		UPDATE USEDBOARDS
 		SET UBSTATE = 2
-		WHERE UBCODE = #{ubcode}
+		WHERE UBCODE =
+		#{ubcode}
 	</update>
 
 	<update id="updateResellDelete_gd">
@@ -322,27 +348,31 @@
 	<update id="updateResellState_usedBoardAjax">
 		UPDATE USEDBOARDS
 		SET UBSTATE = #{ubstate}
-		WHERE UBCODE = #{ubcode}
+		WHERE UBCODE
+		= #{ubcode}
 	</update>
 
 	<update id="updateResellState_GoodsAjax">
-	UPDATE GOODS
-	SET GDSTATE = #{gdstate}
-	WHERE GDCODE = #{gdcode}  
+		UPDATE GOODS
+		SET GDSTATE = #{gdstate}
+		WHERE GDCODE = #{gdcode}
 	</update>
-	
+
 	<update id="updateResellModify_ub">
 		UPDATE USEDBOARDS
-		SET UBSTATE = #{ubstate}, UBCONTENTS = #{ubcontents}, UBRGCODE =
+		SET UBSTATE = #{ubstate}, UBCONTENTS
+		= #{ubcontents}, UBRGCODE =
 		#{ubrgcode},
-		UBMAINIMG = #{ubmainimg}, UBDETAILIMG = #{ubdetailimg}
+		UBMAINIMG = #{ubmainimg},
+		UBDETAILIMG = #{ubdetailimg}
 		WHERE UBCODE = #{ubcode}
 	</update>
 
 	<update id="updateResellModify_gd">
 		UPDATE GOODS
 		SET GDSTATE = #{gdstate}
-		WHERE GDCODE = #{gdcode}
+		WHERE GDCODE =
+		#{gdcode}
 	</update>
 
 </mapper>
