@@ -112,7 +112,7 @@
 							<tr style="border-bottom: solid #E0E0E0 1px; height: 40px;">
 								<td class="overflow text-center">${contact.ctcode }</td>
 								<td onclick="showContents('${contact.ctcode }')" class="buttonPoint overflow">${contact.cttitle }</td>
-								<td class="overflow text-center">${contact.ctnickname }</td>
+								<td class="overflow text-center pointer" onclick="writeMemberBoard('${contact.ctnickname}')">${contact.ctnickname }</td>
 								<td class="overflow text-center">${contact.ctdate }</td>
 								<c:choose>
 									<c:when test="${contact.ctans != null}">
@@ -301,7 +301,7 @@ $(document).ready(function () {
 					output += "<tr style='border-bottom: solid #E0E0E0 1px; height: 40px;'>";
 					output += "<td class='overflow text-center'>" + result[i].ctcode + "</td>";
 					output += "<td onclick='showContents(\"" + result[i].ctcode + "\")' class='buttonPoint overflow'>" + result[i].cttitle + "</td>";
-					output += "<td class='overflow text-center'>" + result[i].ctnickname + "</td>";
+					output += "<td class='overflow text-center pointer' onclick='writeMemberBoard(\"" + result[i].ctnickname + "\")'>" + result[i].ctnickname + "</td>";
 					output += "<td class='overflow text-center'>" + result[i].ctdate + "</td>";
 					if (result[i].ctans != null){
 						output += "<td class='text-center'>완료</td>";

@@ -279,7 +279,8 @@
 	
 	// Talk 버튼 클릭
 	function sendBtn(){
-		const cmcontents = $("#inputMsg").val();	// 현재 입력된 메세지 저장
+		const originContents = $("#inputMsg").val();	// 현재 입력된 메세지 저장
+		const cmcontents = originContents.replaceAll(/(\n|\r\n)/g, "<br>");
 		if(cmcontents.trim().length > 0){	// 공백 제외 입력한 글이 있을 때 send
 			sendMessage(cmcontents);
 		}

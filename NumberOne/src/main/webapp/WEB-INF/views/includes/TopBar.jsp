@@ -19,11 +19,13 @@
 	    display: block;
 	    margin-top: 0;
 	} */
-	.overflow{
-		white-space: nowrap;
-		overflow: hidden;
+	.overflow_twoline{
+	    overflow: hidden;
 		text-overflow: ellipsis;
-	}
+		display: -webkit-box;
+		-webkit-line-clamp: 1;
+		-webkit-box-orient: vertical;
+    }
 	.logoimg{
 		margin-top: 2%;
         padding-left: 45%;    
@@ -297,7 +299,7 @@
 			dropdownList += "</div>";
 			dropdownList += "<div class=\"col-10\" >";
 			dropdownList += "<div class=\"row nav_chat\" style=\"\">";
-			dropdownList += "<div class=\"col-11 overflow px-0\" style=\"font-size:1.25rem;\">" + data[i].recentCmcontents + "</div>";
+			dropdownList += "<div class=\"col-11 overflow_twoline px-0\" style=\"font-size:1.25rem;\">" + data[i].recentCmcontents + "</div>";
 			dropdownList += "<div class=\"col-1 nav_chat\" style=\"width: 15px; height:15px; text-align: center;\">";
 			if (data[i].unreadCount != 0){ // 안읽은 메세지가 있으면
 				dropdownList += "<span class=\"chat-badge\" style=\"\">" + data[i].unreadCount + "</span>";
@@ -354,11 +356,11 @@
 	}
 	
 	<!-- 로그인 시 세션에 담긴 채팅메세지 갯수 뱃지 출력 -->
-	var loginUnReadCount = ${sessionScope.sumUnReadCount};
-	if (loginUnReadCount != 0){
+/* 	if (${sessionScope.sumUnReadCount != 0 }){
+		var loginUnReadCount = ${sessionScope.sumUnReadCount};
 		console.log("안읽은 채팅 메세지 수 : " + loginUnReadCount);
 		$("#chat-badge").text(loginUnReadCount);
-	}
+	} */
 </script>
 
 <!-- 마이페이지 미니브라우저 (커뮤니티부터!) -->
