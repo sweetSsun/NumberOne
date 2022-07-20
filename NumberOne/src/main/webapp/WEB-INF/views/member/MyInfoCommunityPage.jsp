@@ -48,8 +48,8 @@
 	}
 	
 	td {
-
-	padding: 10px;
+	
+	padding: 50px;
 	}
 	
 	.text_leng {
@@ -77,7 +77,7 @@
 	overflow:hidden;
 	white-space : nowrap;	
 	text-decoration: none;
-	color:black;
+	color:gray;
 	}	
 	
 </style>
