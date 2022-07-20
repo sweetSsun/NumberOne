@@ -5,9 +5,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 자유게시판</title>
+<title>1인자 - ${paging.searchVal }게시판</title>
 <!-- Jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>  
 <%@ include file="/resources/css/BarCss.jsp" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 <style type="text/css">
@@ -87,9 +87,9 @@
 			<form action="selectCategoryBoardList" method="get" id="actionForm">
 			<div class="container">
 				<div class="row" style="margin:auto;">
-					<h2 class="text-center">자유게시판 : FreeBoardList.jsp</h2>
+					<h2 class="text-center">${paging.searchVal }게시판 : ${paging.searchVal }BoardList.jsp</h2>
 				</div>
-				<input type="hidden" name="searchVal" value="자유">
+				<input type="hidden" name="searchVal" value="${paging.searchVal }">
 					<div class="row ">
 						<!-- 검색기능 -->
 						<div class="col-5" align="right">
@@ -158,7 +158,7 @@
 							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
 							 </td>
 							<td class="text-center tableCell">
-								<a href="#">${board.bdnickname}</a>
+								<span style="cursor: pointer" onclick="writeMemberBoard('${board.bdnickname}')">${board.bdnickname}</span>
 							</td>
 							<td class="text-center tableCell">${board.bddate}</td>
 							<td class="text-center tableCell">${board.bdhits }</td>

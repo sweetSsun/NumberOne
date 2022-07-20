@@ -7,11 +7,9 @@
 <meta charset="UTF-8">
 <%@ include file="/resources/css/BarCss.jsp" %>
 <!-- 폰트어썸 -->
-<script src="https://kit.fontawesome.com/86a85cd392.js" crossorigin="anonymous"></script>
 <title>${board.bdtitle } - 1인자:게시판 글상세 페이지</title>
 <!-- Jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>  
 <style type="text/css">
 	section {
 		max-width: 70%;
@@ -134,8 +132,7 @@
      align-items: center;
      justify-content: center;
      border: solid #E0E0E0 2px;
-     margin-top: 5%;
-     margin-bottom: 5%;
+     margin-top: 2%;
      width: 200px;
      height: 200px;
      
@@ -264,6 +261,9 @@
 				<c:if test="${board.bdimg != null }">
 					<div class="img-container" >
 						<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
+					</div>
+					<div style="background-color: #00bcd4; width: 200px; color:white; margin-bottom: 2%;" class="text-center fw-bold">
+						업로드 이미지
 					</div>				
 				</c:if >
 				
@@ -465,8 +465,6 @@
  	}
 	
 </script>
-
-
 
 <script type="text/javascript">
 	/* 글목록 버튼 클릭 시 */
