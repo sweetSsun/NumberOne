@@ -147,6 +147,12 @@ ol {
   border-radius: 5px;
   color: white;
 }
+.pointer{
+	cursor: pointer;
+}
+.pointer:hover{
+	color: #00bcd4;
+}
 
 /*---------------------
   Helper CSS

@@ -8,9 +8,10 @@
 <title>1인자 - 자취방 자랑 상세</title>
 
 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
 <%@ include file="/resources/css/BarCss.jsp" %>
 <style type="text/css">
 	#board_column{
@@ -428,8 +429,7 @@ section{
 						<c:forEach items="${roomList}" var="room">
 							<li>
 								<a class="" onclick="roomView_ajax('${room.bdcode}')">
-									<div class="screen">
-										 
+									<div class="screen"> 
 										<div class="top">${room.bdtitle}</div>
 										<div class="bottom">${room.bddate }</div>
 										<c:choose>

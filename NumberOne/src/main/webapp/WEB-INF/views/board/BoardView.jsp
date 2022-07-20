@@ -431,9 +431,14 @@
 		checkBoardRecommend();//게시글 추천 확인
 		checkBoardWarning();//게시글 신고 확인 
 		var bddate = timeForToday("${board.bddate }"); //게시글 작성 시간
+
+		$("#bddate").text(bddate);
+
+
 		//$("#bddate").text(bddate);
 	});
 	
+
 	//시간 함수
 	function timeForToday(value) {
 		console.log("시간 변경 함수 호출")
@@ -448,7 +453,7 @@
             return betweenTime+"분전 | ";
         }
 
-        const betweenTimeHour = Math.floor(betweenTime / 60);
+        var betweenTimeHour = Math.floor(betweenTime / 60);
         console.log(betweenTimeHour);
         if (betweenTimeHour < 24) {
             return betweenTimeHour+"시간전 | ";
@@ -460,7 +465,8 @@
         }
         return Math.floor(betweenTimeDay / 365)+"년전";
 		*/
-		return value+" | ";
+		var time = value.substring(0, 16);
+		return time+" | ";
 		
  	}
 	

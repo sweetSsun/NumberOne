@@ -8,6 +8,7 @@
 <title>1인자 - 마이페이지 중고거래</title>
 
 <%@ include file="/resources/css/BarCss.jsp"%>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
 <!-- 부트스트랩 -->
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
@@ -56,6 +57,15 @@
 		margin-top: 500px;
 } */
 
+	.buttonPoint {
+		cursor: pointer;
+		
+	}
+	
+	.buttonPoint:hover {
+		color : #00BCD4;
+		font-weight: bold;
+	}
 
 
 </style>
@@ -168,8 +178,8 @@
  						<c:forEach items="${chatRoomList }" var="chat"> 
 							
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center; ">
-								<td>${chat.crfrmnickname }</td>
-								<td>${chat.recentCmcontents }</td>
+								<td><div onclick="writeMemberSellbuy('${chat.crfrmnickname }')" class="buttonPoint">${chat.crfrmnickname }</div></td>
+								<td><div onclick="popupChat('${chat.crcode }')" class="buttonPoint">${chat.recentCmcontents }</div></td>
 								<td>${chat.recentCmdate }</td>
 							</tr>
 														
@@ -224,15 +234,15 @@
 								<td><a href="selectResellView?ubcode=${zzim.zzubcode }&ubsellbuy=B&modifyCheck=LIST">${zzim.ubtitle }</a></td>						
 							</c:otherwise>
 							</c:choose> 
-								<td><span onclick="writeMemberSellbuy('${zzim.mnickname }')"
-								style="text-align: center; cursor: pointer;">${zzim.mnickname }</span></td>
+								<td><div onclick="writeMemberSellbuy('${zzim.mnickname }')"
+								class="buttonPoint">${zzim.mnickname }</div></td>
 								<td>${zzim.ubdate }</td>
 							</tr>
 						</c:otherwise> 
 						
 						</c:choose>
 						 
-							<!-- 찜한 목록 -->
+					<!-- 찜한 목록 끝 -->
 														
 						</c:forEach>
 				</table>
@@ -250,4 +260,10 @@
 
 
 </body>
+
+
+
+
+
+
 </html>
