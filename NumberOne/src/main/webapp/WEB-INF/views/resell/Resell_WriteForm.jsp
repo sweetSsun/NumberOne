@@ -17,22 +17,79 @@
 	referrerpolicy="no-referrer"
 ></script>
 <style type="text/css">
-/* label 스타일 조정 */
-.button {
-	display: flex;
-	justify-content: center;
-}
-
-label {
-	cursor: pointer;
-	font-size: 1em;
-}
-
-/* 못생긴 기존 input 숨기기 */
-.chooseFile {
-	visibility: hidden;
-}
+	section{
+		max-width: 70%;
+		margin: auto;
+		margin-top: 0%;
+	}
+	select{
+		width: 200px;
+		text-align : center;
+		border : none;
+		color : #004804;
+	}
+	option{
+		color : #00bcd4;
+		font-weight: bold;
+	}
+	.bdtitle{
+		border: none;
+		font-weight: bold;
+		font-size: 20px;
+		margin: auto;
+		height: 22px;
+	}
+	.bdcontents{
+		border-radius: 5px;
+		border: solid gray 2px;
+		font-size: 19px;
+		resize: none;
+	}
+	.btn-wrapper{
+		width: 100%;
+		text-align: center;
+		display:inline-block;
+	}
+	.buttons{
+		margin: auto; /* 수평 */
+		display: block; /* 수직 */
+		
+	}
+	.selectPlaceHolder{
+		display: none;
+	}
+	textarea{
+		spellcheck: false;
+		resize: none;
+		
+	}
+	textarea:focus {
+ 	   outline: none;
+	}
+	input:focus{
+	   outline: none;	
+	}
+	.bdCategoryList{
+		color : #00bcd4;
+		border: none;
+		font-size: 20px;
+	}
+	.bdRegionSel{
+		color : #00bcd4;
+		border: none;
+		font-size: 20px;
+	}
+	.nickname{
+		color : #00bcd4;
+		border: none;
+		font-size: 20px;
+		margin-left: 20px;
+	}
+	.d_none{
+	display: none;
+	}
 </style>
+
 
 </head>
 
@@ -60,13 +117,13 @@ label {
 
 				<form action="insertResellWrite" method="post" enctype="multipart/form-data" onsubmit="return checkFormData()">
 					<div class="container-header">
-						<div class="container-flex_1 flex_between">
-							<div class="item_start">
-								<span> <select class="select-size" id="boardTitle" name="ubsellbuy">
+					<div class="row">
+					<div class="col-6">
+								<span> <select class="bdCategoryList" id="resellTitle" name="ubsellbuy">
 										<option value="S">팔구</option>
 										<option value="B">사구</option>
 								</select>
-								</span> <span> <select class="select-size" name="ubrgcode">
+								</span>  <select class="bdCategoryList" name="ubrgcode">
 										<option value="ALL">전국</option>
 										<option value="SEL">서울</option>
 										<option value="ICN">인천</option>
@@ -77,147 +134,128 @@ label {
 										<option value="GSD">경상</option>
 										<option value="JJD">제주</option>
 								</select>
-								</span>
-							</div>
+								
+								
+</div>
 
-							<div class="item_end">작성자 : ${mNickname }</div>
+							<div class="col-2">작성자  </div>
 
+						
+
+						<div class="col-4">
+							${mNickname }
 						</div>
 
-						<div>
-							글제목 <input type="text" size="60" style="margin-left: 40px;" id="titleCheck" name="ubtitle"> <span class="checkMsg"></span>
+</div>
+<hr>
+	<div class="row">
+<input type="text" size="60" style="margin-left: 40px;" id="titleCheck" name="ubtitle"> <span class="checkMsg"></span> 
+</div>
+<hr>
+	<div class="row">
+		<div class="col-8">
+		<input type="text" name="gd_names" size="60" placeholder="품목명" class="gdcheck_n">
+		</div>
+		
+		<div class="col-4">
+		<input type="text" size="20" placeholder="가격" name="gd_price" class="gdcheck_p">
 						</div>
-
-
-						<div class="container-card_goods">
-
-							<div class="container-card_goods_2">
-								<div class="item-basis_7 flex-shrink">
-									<input type="text" name="gd_names" size="60" placeholder="품목명" class="gdcheck_n">
-								</div>
-								<div class="item-basis_3 flex-shrink">
-									<input type="text" size="20" placeholder="가격" name="gd_price" class="gdcheck_p">
-								</div>
-
-							</div>
-							<div class="container-flex_1 flex-end flex-shrink">
-								<div class="addBtn">+추가</div>
-							</div>
-
-							<div class="d_none btn_d-none">
-								<div class="container-card_goods_2">
-									<div class="item-basis_7 flex-shrink">
-										<input type="text" size="60" placeholder="품목명" class="gdcheck_n">
-									</div>
-									<div class="item-basis_3 flex-shrink">
-										<input type="text" size="20" placeholder="가격" class="gdcheck_p">
-									</div>
-
-								</div>
-
-								<div class="container-flex_1 flex-end">
-									<div class="addBtn">+추가</div>
-									<div class="removeBtn">제거</div>
-								</div>
-							</div>
-
-							<div class="d_none btn_d-none">
-								<div class="container-card_goods_2">
-									<div class="item-basis_7 flex-shrink">
-										<input type="text" size="60" placeholder="품목명" class="gdcheck_n">
-									</div>
-									<div class="item-basis_3 flex-shrink">
-										<input type="text" size="20" placeholder="가격" class="gdcheck_p">
-									</div>
-
-
-								</div>
-								<div class="container-flex_1 flex-end flex-shrink">
-									<div class="addBtn">+추가</div>
-									<div class="removeBtn">제거</div>
-								</div>
-							</div>
-
-							<div class="d_none btn_d-none">
-
-								<div class="container-card_goods_2">
-									<div class="item-basis_7 flex-shrink">
-										<input type="text" size="60" placeholder="품목명" class="gdcheck_n">
-									</div>
-									<div class="item-basis_3 flex-shrink">
-										<input type="text" size="20" placeholder="가격" class="gdcheck_p">
-									</div>
-								</div>
-								<div class="container-flex_1 flex-end">
-									<div class="addBtn">+추가</div>
-									<div class="removeBtn">제거</div>
-								</div>
-							</div>
-
-							<div class="d_none btn_d-none">
-								<div class="container-card_goods_2">
-									<div class="item-basis_7 flex-shrink">
-										<input type="text" size="60" placeholder="품목명" class="gdcheck_n">
-									</div>
-									<div class="item-basis_3 flex-shrink">
-										<input type="text" size="20" placeholder="가격" class="gdcheck_p">
-									</div>
-								</div>
-
-								<div class="container-flex_1 flex-end">
-									<div class="removeBtn">제거</div>
-								</div>
-							</div>
+	<hr>
+	<div class="addBtn">+추가</div>
+		
+	</div>
+	<hr>
+		<div class="row d_none">
+		<div class="col-8">
+		<input type="text" name="gd_names" size="60" placeholder="품목명" class="gdcheck_n">
+		</div>
+		
+		<div class="col-4">
+		<input type="text" size="20" placeholder="가격" name="gd_price" class="gdcheck_p">
 						</div>
+	<hr>
+	<div class="addBtn">+추가</div>
+			<div class="removeBtn">제거</div>
+	</div>
+	<hr>
+		<div class="row d_none">
+		<div class="col-8">
+		<input type="text" name="gd_names" size="60" placeholder="품목명" class="gdcheck_n">
+		</div>
+		
+		<div class="col-4">
+		<input type="text" size="20" placeholder="가격" name="gd_price" class="gdcheck_p">
+						</div>
+	<hr>
+	<div class="addBtn">+추가</div>
+			<div class="removeBtn">제거</div>
+	</div>
+	<hr>
+		<div class="row d_none">
+		<div class="col-8">
+		<input type="text" name="gd_names" size="60" placeholder="품목명" class="gdcheck_n">
+		</div>
+		
+		<div class="col-4">
+		<input type="text" size="20" placeholder="가격" name="gd_price" class="gdcheck_p">
+						</div>
+	<hr>
+	<div class="addBtn">+추가</div>
+			<div class="removeBtn">제거</div>
+	</div>
+	<hr>
+		<div class="row d_none">
+		<div class="col-8">
+		<input type="text" name="gd_names" size="60" placeholder="품목명" class="gdcheck_n">
+		</div>
+		
+		<div class="col-4 ">
+		<input type="text" size="20" placeholder="가격" name="gd_price" class="gdcheck_p">
+						</div>
+	<hr>
+			<div class="removeBtn">제거</div>
+	</div>
+	<hr>
+	
+	
+	
+	
+	<div class="row">
+				<textarea rows="17" cols="80" name="ubcontents" id="contentsCheck">상품상세설명</textarea>
+				</div>		
+						
 					</div>
 
 
 
-					<div class="container-body">
-						<!-- 품목명  -->
 
 
-
-						<!-- 상품 설명  -->
-						<div class="container-flex_1">
-							<textarea rows="4" cols="80" style="resize: none" name="ubcontents" id="contentsCheck">상품상세설명</textarea>
-
-						</div>
-
+					<!-- 이미지첨부  -->
+					<!-- 메인사진 -->
+							<div class="row" style="margin-top: 3%;">
+					<div id="bdimgScreen" style="width:200px; height:150px;" class="d_none">
+					<img id='previewBdmig' style="width:100%; height:100%;"></img>
 					</div>
-
-
-					<!-- 파일첨부  -->
-					<div class="container-footer ">
-						<div>
-							<div>사진첨부</div>
-							<div class="">
-								<div class="button">
-									<label for="chooseFile_id"> 👉 CLICK HERE! 👈 </label>
-								</div>
-								<input type="file" class="chooseFile" id="chooseFile_id"  accept="image/*" onchange="loadFile(this)" name="ubmainimgfile">
-								<div id="image-show"></div>
-								<div id="fileName"></div>
-							</div>
-
-							<div class="">
-								<div class="button">
-									<label for="chooseMultiFile"> 👉 CLICK HERE! 👈 </label>
-								</div>
-								<input type="file" id="chooseMultiFile" class="chooseFile" onchange="loadMultiFile(this)" multiple="multiple" name="ubdetailimgfile">
-								<div id="image-show_multi"></div>
-								<div id="fileName_multi"></div>
-							</div>
-						</div>
+					<input type="file" id="mainImg" name="bdimgfile" accept="image/*"> 
+				</div>	
+				
+				
+				<!-- 상세사진 -->
+					<div class="row" style="margin-top: 3%;">
+				<div id="bddetailimgScreen" style="width:100%;" class="row"></div>
+				<input type="file" multiple="multiple" id="detailImg" name="bddetailimgfile" onclick="return mainimgCh()" accept="image/*">
+				</div>
+				
+				<!-- 작성취소버튼 -->
+					<div class="row mt-4">
+					<div class="col btn-wrapper">
+						<input class="btn btn-lg buttons fw-bold text-white" style="background-color:#00bcd4;" type="submit" value="작성">
+						<input onclick="bdWriteCancelCheckModal()" style="background-color:#00bcd4;" class="btn btn-lg buttons fw-bold text-white" type="button" value="취소">
 					</div>
-					<div class="container-flex_1 flex-end">
-						<div>취소</div>
-						<div>
-							<button type="submit">등록</button>
-						</div>
-					</div>
-				</form>
-
+				</div>
+			</form>
+				
+	
 
 			</div>
 		</section>
@@ -225,32 +263,201 @@ label {
 
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp"%>
 
+<div class="modal fade" id="bdWriteCancelCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"> 게시글 작성 취소 </h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" >
+                	<span class="fw-bold">게시글 작성을 취소하시겠습니까?</span>
+                	<br>
+                	<span class="fw-bold">이 페이지를 벗어나면 작성된 내용은 저장되지 않습니다.</span>
+                </div>	
+                <div class="modal-footer">
+                	<input type="hidden" >
+                    <button class="close btn btn-info text-white"  onclick="cancelBtn()" >네</button>
+                    <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
+                </div>
+            </div>
+        </div>
+    </div>
+	
+
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"
 	></script>
 </body>
 <!-- 페이지로드시 실행할 코드 스크립트 -->
 <script type="text/javascript">
-	//페이지로드시 무조건실행
-	window.onload = function() {
+		// 게시글 작성 취소 경고 모달창 close 하는 스크립트
+ 		var modal = $(".modal");
+		var close = $(".close");
+		for (var i = 0; i < close.length; i++){
+			close[i].addEventListener("click", function(){
+				$("#bdWriteCancelCheckModal").modal("hide");
+			});
+		}
+	function bdWriteCancelCheckModal(){
+		/* 게시글 작성 취소버튼 클릭시 모달 출력 */
+		$("#bdWriteCancelCheckModal").modal('show');
+	}
+</script>
+<script type="text/javascript">
+//bdimg 미리보기
+function readBdimg(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        
+        reader.onload = (e) => {
+        	console.log(input.files[0].type)
+        	if(! input.files[0].type.match("image.*")){
+        		console.log("이미지 파일 아님");
+            	alert("이미지 파일만 등록 가능합니다!");
+            	$("#mainImg").val("");
+            	$("#previewBdimg").attr("src", "");
+            	$("#bdimgScreen").addClass("d_none");
+            	return;
+            	//$("#detailImg").replaceWith($("#detailImg").clone(true));
+        	}
+            var previewImage = document.getElementById('previewBdmig');
+            previewImage.src = e.target.result;
+            //previewImage.alt = input.files[0].name();
+            $("#bdimgScreen").removeClass("d_none");
+            
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+
+//bdmig input 파일 업로드 시 readBdimg 함수 호출하기
+document.getElementById('mainImg').addEventListener('change', (e) => {
+	readBdimg(e.target);
+})
+
+//bddetailimg input 파일 업로드 시 미리보기 보여주기
+function readMultipleImage(input) {
+	console.log("readMultipleImage() 호출");
+    const multipleContainer = document.getElementById("bddetailimgScreen");
+    $("#bddetailimgScreen").html("");
+    
+    // 인풋 태그에 파일들이 있는 경우
+    if(input.files) {
+        // 이미지 파일 검사 (생략)
+        // 유사배열을 배열로 변환 (forEach문으로 처리하기 위해)
+        const fileArr = Array.from(input.files);
+        
+        const $colDiv = document.createElement("div")
+        $colDiv.style.display = "inline-block";
+        
+        fileArr.forEach((file, index) => {
+        	console.log(file.type);
+            if(! file.type.match("image.*")){
+            	console.log("이미지 파일 아님");
+            	alert("이미지 파일만 등록 가능합니다!");
+            	$("#detailImg").val("");
+            	//$("#detailImg").replaceWith($("#detailImg").clone(true));
+            	return;
+            }
+        	
+        	const reader = new FileReader()
+            
+            const $imgDiv = document.createElement("div")   
+            $imgDiv.style.width = "200px";
+            $imgDiv.style.height = "150px";
+            $imgDiv.style.display = "inline-block";
+            const $img = document.createElement("img");
+            $imgDiv.appendChild($img)
+            
+            reader.onload = e => {
+                $img.src = e.target.result;
+                $img.alt = file.name;
+                $img.title = file.name;
+                $img.style.width = "100%";
+                $img.style.height = "100%";
+            }
+            
+            //console.log(file.name)
+            $colDiv.appendChild($imgDiv);
+
+            reader.readAsDataURL(file);
+        })
+        
+        multipleContainer.appendChild($colDiv);
+
+    }
+}
+
+const inputMultipleImage = document.getElementById("detailImg");
+inputMultipleImage.addEventListener("change", e => {
+    readMultipleImage(e.target);
+})
+
+</script>
+
+<script type="text/javascript">
+$("#mainImg").change(function(){
+	var mainImg = $("#mainImg").val().split("path")[1];
+	mainImg = mainImg.substring(1);
+	console.log("선택된메인이미지: "+mainImg);
+	$("#mainImgScreen").val(mainImg);
+})
+
+/*
+$("#detailImg").change(function(){
+	
+	var detailImg = $("#detailImg")[0].files;
+	console.log(detailImg);
+	var output = "";
+	for(var i=0; i<detailImg.length; i++){
+		output += "<div>"+detailImg[i].name+"</div>";
+	}
+	$("#detailImgList").html(output);
+})
+*/
+function withdraw(){
+	console.log("취소 버튼 클릭");
+}
+
+function mainimgCh(){
+	console.log("메인이미지 확인 함수");
+	var mainImg = $("#mainImg").val();
+	console.log(mainImg);
+	if(mainImg==""){
+		alert("대표 사진을 먼저 선택하세요!");
+		return false;
+	}
+} 
+
+
+</script>
+
+<script type="text/javascript">
 		/* 로그인된 회원인지 체크 */
-		var loginCheck = '${sessionScope.loginId}';
+		let loginCheck = '${sessionScope.loginId}';
 		if (loginCheck.length == 0) {
 			alert("잘못된 접근입니다.");
 			location.href = "loadToLogin";
 		}
 
-		var boardTitle = document.getElementById("boardTitle"); //select태그지정
+		
+		
+		
+		const resellTitle = document.getElementById("resellTitle"); //select태그지정
 
 		/* 페이지이동 시 어느게시판에서 넘어왔는지 파라메터를 통해 확인 */
-		var sell_buy = '${sell_buy}'; // 'S'  or  'B'
+		let sell_buy = '${sell_buy}'; // 'S'  or  'B'
 
 		/* 사구, 팔구 중 어느게시판에서 글작성눌렀는지 확인해서 출력  */
-		for (var i = 0; i < boardTitle.options.length; i++) {
+		for (let i = 0; i < resellTitle.options.length; i++) {
 			// select태그의 option태그 갯수(길이)만큼 for문 반복 실행
-			if (boardTitle.options[i].value == sell_buy) {
+			if (resellTitle.options[i].value == sell_buy) {
 				//option태그의 value 가 sell_buy 변수 값과 일치하는 option 찾기
-				boardTitle.options[i].selected = 'true'
+				resellTitle.options[i].selected = 'true'
 				//일치하는 option에 selected 속성을 준다.
 				sell_buy == 'B' ? document.getElementById("titleMsg").innerText = "사구게시판 글작성"
 						: document.getElementById("titleMsg").innerText = "팔구게시판 글작성";
@@ -259,22 +466,38 @@ label {
 				//일치하는 값을 찾으면 break 로 for문 종료
 			}
 		}
-	}
 </script>
 
 
 <!-- select태그 option선택 이벤트 -->
 <script type="text/javascript">
-	boardTitle.addEventListener('change', selectSB);
+	resellTitle.addEventListener('change', selectSB);
 
 	function selectSB() {
-
-		boardTitle.options[boardTitle.selectedIndex].value == 'B' ? document
-				.getElementById("titleMsg").innerText = "사구게시판 글작성" : document
-				.getElementById("titleMsg").innerText = "팔구게시판 글작성";
+if(resellTitle.options[resellTitle.selectedIndex].value == 'B'){
+	document.getElementById("titleMsg").innerText = "사구게시판 글작성";
+	sell_buy = 'B';
+}else{
+	 document.getElementById("titleMsg").innerText = "팔구게시판 글작성";
+	 sell_buy = 'S';
+}
+	
 	}
 </script>
-
+<script type="text/javascript">
+		// 게시글 작성 취소 경고 모달창 close 하는 스크립트
+ 		var modal = $(".modal");
+		var close = $(".close");
+		for (var i = 0; i < close.length; i++){
+			close[i].addEventListener("click", function(){
+				$("#bdWriteCancelCheckModal").modal("hide");
+			});
+		}
+	function bdWriteCancelCheckModal(){
+		/* 게시글 작성 취소버튼 클릭시 모달 출력 */
+		$("#bdWriteCancelCheckModal").modal('show');
+	}
+</script>
 
 <!-- 품목추가,제거 이벤트 -->
 <script type="text/javascript">
@@ -363,23 +586,23 @@ label {
 		console.log("폼데이터 핸들러 호출");
 		if (document.getElementById("titleCheck").value == '') {
 			document.getElementById("titleCheck").focus();
-			alert("제목을 입력해주세요.");
+			alert("제목을 입력하세요.");
 			checkForm = false;
 		} else if (document.getElementsByClassName("gdcheck_n")[0].value == '') {
-			alert("품목이름을 작성해주세요.");
+			alert("상품명을 입력하세요");
 			document.getElementsByClassName("gdcheck_n")[0].focus();
 
 			checkForm = false;
 		} else if (document.getElementsByClassName("gdcheck_p")[0].value == '') {
-			alert("품목가격을 작성해주세요.");
+			alert("상품의 가격을 입력하세요");
 			document.getElementsByClassName("gdcheck_p")[0].focus();
 			checkForm = false;
 		} else if (document.getElementById("contentsCheck").value == '') {
 			document.getElementById("contentsCheck").focus();
-			alert("내용을 작성해주세요.");
+			alert("내용을 입력하세요");
 			checkForm = false;
 		} else if (document.getElementById("mainImgCheck").value == '') {
-			alert("메인사진을 선택해주세요.");
+			alert("대표 사진은 필수 사항입니다!");
 			document.getElementById("mainImgCheck").focus();
 			checkForm = false;
 		}
@@ -451,8 +674,16 @@ label {
 			console.log('input.files : ', input.files[i]);
 
 		}
-
-
 	};
 </script>
+
+<script type="text/javascript">
+
+function cancelBtn() {
+	console.log('취소버튼');
+location.href = "selectResellPageList?sellBuy=" + sell_buy;
+}
+		</script>
+
+
 </html>

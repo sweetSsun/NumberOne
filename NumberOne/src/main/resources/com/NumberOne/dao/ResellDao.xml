@@ -66,6 +66,10 @@
 			<when test="paging.searchType == 'ubtitle'">
 				WHERE UBTITLE LIKE '%'||#{paging.keyword}||'%'
 			</when>
+			
+			<when test="paging.searchType == 'ubcontents'">
+				WHERE UBCONTENTS LIKE '%'||#{paging.keyword}||'%'
+			</when>
 		</choose>
 		ORDER BY
 		UBDATE DESC)
@@ -90,7 +94,7 @@
 
 		<choose>
 			<when test="checkMethod=='Main'">
-				AND RN BETWEEN 1 AND 8
+				AND RN BETWEEN 1 AND 9
 			</when>
 
 			<otherwise>
@@ -134,8 +138,11 @@
 				<when test="searchType == 'ubtitle'">
 					WHERE UBTITLE LIKE '%'||#{keyword}||'%'
 				</when>
+				<when test="searchType == 'ubcontents'">
+				WHERE UBCONTENTS LIKE '%'||#{keyword}||'%'
+			</when>
+			
 			</choose>
-
 		</if>
 		ORDER BY
 		UBDATE DESC)
@@ -183,6 +190,9 @@
 				<when test="searchType == 'ubtitle'">
 					WHERE UBTITLE LIKE '%'||#{keyword}||'%'
 				</when>
+						<when test="searchType == 'ubcontents'">
+				WHERE UBCONTENTS LIKE '%'||#{keyword}||'%'
+			</when>
 			</choose>
 		</if>
 		
