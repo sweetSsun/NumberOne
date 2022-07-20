@@ -98,7 +98,7 @@
 					<div class="row idDateHits">
 						<div class="col-6">
 							<!-- 닉네임 출력으로 바꾸기 -->
-							<a href="#"><span class="fw-bold bdnickname">${noticeBoard.nbnickname }</span></a> 
+							<span class="fw-bold bdnickname">${noticeBoard.nbnickname }</span>
 						</div>
 						
 						<div align="right" class="col-3 offset-md-3">

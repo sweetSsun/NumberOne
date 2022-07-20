@@ -188,12 +188,14 @@ public class MemberService {
 		             System.out.println((String) session.getAttribute("loginRegion"));
 		             System.out.println((String) session.getAttribute("loginProfile"));
 		             System.out.println((String) session.getAttribute("loginNickname"));
+
 		             System.out.println(session.getAttribute("sumUnReadCount"));
+
 			    
 				ra.addFlashAttribute("msg", "로그인 되었습니다.");
 				
 				if(session.getAttribute("afterUrl") != null) {
-					String afterUrl = (String) session.getAttribute("afterUrl");					
+					String afterUrl = (String) session.getAttribute("afterUrl");
 					session.removeAttribute("afterUrl");
 					mav.setViewName("redirect:/"+afterUrl);
 				} else {					
@@ -366,6 +368,14 @@ public class MemberService {
 		  
 		ModelAndView mav = new ModelAndView();
 		  System.out.println("MemberService.updateMyInfoMemberModify() 호출"); 
+		  
+		  //로그인 여부 확인
+		  if(session.getAttribute("loginId")==null) {
+			  ra.addFlashAttribute("msg", "로그인 후 이용가능합니다.");
+			  mav.setViewName("redirect:/loadToLogin");
+			  return mav;
+		  }
+		  
 		  String loginId = (String) session.getAttribute("loginId");
 			/*String loginId;
 			if((String) session.getAttribute("loginId")!=null) {			
@@ -415,26 +425,22 @@ public class MemberService {
 		      member.setMemail(member.getMemailId()+"@"+member.getMemailDomain());
 		      
 		      
-		      if(session.getAttribute("loginId")!=null) {		
-		    	  int memberInfoModify = mdao.updateMyInfoMemberModify(member);
-		    	  
-		    	  if(memberInfoModify != 0) {
-		    		  
-		    		  System.out.println("회원정보가 수정 성공");
-		    		  session.setAttribute("loginProfile", member.getMprofile());
-		    		  ra.addFlashAttribute("msg", "회원정보가 수정 되었습니다.");
-		    		  mav.setViewName("redirect:/selectMyInfoMemberView");
-		    	  }else {
-		    		  System.out.println("회원정보가 수정 실패");
-		    		  ra.addFlashAttribute("msg" , "회원 정보 수정을 실패하였습니다.");
-		    		  mav.setViewName("member/MyInfoMemberPage");
-		    	  }
-		    	  
-		      }else {
-		    	  ra.addFlashAttribute("msg", "로그인 상태가 아닙니다.");
-		    	  mav.setViewName("redirect:/loadToLogin");
-		      }
-			return mav;
+		      
+	    	  int memberInfoModify = mdao.updateMyInfoMemberModify(member);
+	    	  
+	    	  if(memberInfoModify != 0) {
+	    		  
+	    		  System.out.println("회원정보가 수정 성공");
+	    		  session.setAttribute("loginProfile", member.getMprofile());
+	    		  ra.addFlashAttribute("msg", "회원정보가 수정 되었습니다.");
+	    		  mav.setViewName("redirect:/selectMyInfoMemberView");
+	    	  }else {
+	    		  System.out.println("회원정보가 수정 실패");
+	    		  ra.addFlashAttribute("msg" , "회원 정보 수정을 실패하였습니다.");
+	    		  mav.setViewName("member/MyInfoMemberPage");
+	    	  }
+	    	  
+		return mav;
 	}	
 	
 	//회원탈퇴
@@ -472,38 +478,40 @@ public class MemberService {
 	public ModelAndView selectMyInfoCommunityView(RedirectAttributes ra) {
 		ModelAndView mav = new ModelAndView();
 		System.out.println("MemberService.selectMyInfoCommunityView 호출");
-		  //String loginId = (String) session.getAttribute("loginId");
-			String loginId;
-			if((String) session.getAttribute("loginId")!=null) {			
-				loginId = (String) session.getAttribute("loginId");
-			} else {
-				loginId = (String) session.getAttribute("kakaoId");			
-			}
+		
+		//로그인 여부 확인
+		if(session.getAttribute("loginId")==null) {
+			ra.addFlashAttribute("msg", "로그인 후 이용가능합니다.");
+			mav.setViewName("redirect:/loadToLogin");
+			return mav;
+		}
+		
+	    //String loginId = (String) session.getAttribute("loginId");
+		String loginId;
+		if((String) session.getAttribute("loginId")!=null) {			
+			loginId = (String) session.getAttribute("loginId");
+		} else {
+			loginId = (String) session.getAttribute("kakaoId");			
+		}
 		System.out.println("로그인 된 아이디 : " + loginId);
 		
-		// 로그인여부 확인
-		if(session.getAttribute("loginId")!=null) {
-			//작성글
-			ArrayList<BoardDto> board = mdao.selectMyInfoMemberView_Boards(loginId);
-			System.out.println(board);
-	
-			//댓글작성한 글
-			ArrayList<ReplyDto> reply = mdao.selectMyInfoMemberView_Reply(loginId);
-			System.out.println(reply);
-	
-			//스크랩 글 목록
-			ArrayList<ScrapDto> scrap = mdao.selectMyInfoMemberView_scrap(loginId);
-			System.out.println(scrap);
-	
-			mav.addObject("board", board);
-			mav.addObject("reply", reply);
-			mav.addObject("scrap", scrap);
-			mav.setViewName("member/MyInfoCommunityPage");
-			
-		}else {
-			ra.addFlashAttribute("msg", "로그인 상태가 아닙니다.");
-			mav.setViewName("redirect:/loadToLogin");
-		}
+
+		//작성글
+		ArrayList<BoardDto> board = mdao.selectMyInfoMemberView_Boards(loginId);
+		System.out.println(board);
+
+		//댓글작성한 글
+		ArrayList<ReplyDto> reply = mdao.selectMyInfoMemberView_Reply(loginId);
+		System.out.println(reply);
+
+		//스크랩 글 목록
+		ArrayList<ScrapDto> scrap = mdao.selectMyInfoMemberView_scrap(loginId);
+		System.out.println(scrap);
+
+		mav.addObject("board", board);
+		mav.addObject("reply", reply);
+		mav.addObject("scrap", scrap);
+		mav.setViewName("member/MyInfoCommunityPage");
 
 		return mav;
 	}
@@ -513,17 +521,24 @@ public class MemberService {
 		
 		ModelAndView mav = new ModelAndView();
 		System.out.println("MemberService.selectMyInfoResellView 호출");
-		  //String loginId = (String) session.getAttribute("loginId");
-			String loginId;
-			if((String) session.getAttribute("loginId")!=null) {			
-				loginId = (String) session.getAttribute("loginId");
-			} else {
-				loginId = (String) session.getAttribute("kakaoId");			
-			}
-		System.out.println("로그인 된 아이디 : " + loginId);
 		
-		// 로그인여부 확인
-		if(session.getAttribute("loginId")!=null) {
+		//로그인 여부 확인
+		if(session.getAttribute("loginId")==null) {
+			ra.addFlashAttribute("msg", "로그인 후 이용가능합니다.");
+			mav.setViewName("redirect:/loadToLogin");
+			return mav;
+		}
+		
+	    //String loginId = (String) session.getAttribute("loginId");
+		String loginId;
+		if((String) session.getAttribute("loginId")!=null) {			
+			loginId = (String) session.getAttribute("loginId");
+		} else {
+			loginId = (String) session.getAttribute("kakaoId");			
+		}
+		System.out.println("로그인 된 아이디 : " + loginId);
+
+		
 			//팔구
 			ArrayList<UsedBoardDto> sellBoard = mdao.selectMyInfoResellView_Sell(loginId);
 			System.out.println(sellBoard);		
@@ -561,8 +576,8 @@ public class MemberService {
 				chatRoomList.get(i).setCrfrmnickname(cmfrmnickname);
 			}
 			System.out.println("chatRoomList : " + chatRoomList);
+
 			
-//
 			mav.addObject("chatRoomList", chatRoomList);
 			mav.addObject("sellBoard", sellBoard);
 			mav.addObject("buyBoard", buyBoard);
@@ -574,11 +589,7 @@ public class MemberService {
 				mav.addObject("sellbuySize", buyBoard.size());
 			}			
 			mav.setViewName("member/MyInfoResellPage");
-		
-		}else {
-			ra.addFlashAttribute("msg", "로그인 상태가 아닙니다.");
-			mav.setViewName("redirect:/loadToLogin");
-		}
+
 		return mav;
 	}
 
@@ -587,26 +598,30 @@ public class MemberService {
 	public ModelAndView selectMyInfoQuestionListView(RedirectAttributes ra) {
 		ModelAndView mav = new ModelAndView();
 		System.out.println("MemberService.selectMyInfoQuestionListView 호출");
-		  //String loginId = (String) session.getAttribute("loginId");
-			String loginId;
-			if((String) session.getAttribute("loginId")!=null) {			
-				loginId = (String) session.getAttribute("loginId");
-			} else {
-				loginId = (String) session.getAttribute("kakaoId");			
-			}
+		
+		//로그인 여부 확인
+		if(session.getAttribute("loginId")==null) {
+			ra.addFlashAttribute("msg", "로그인 후 이용가능합니다.");
+			mav.setViewName("redirect:/loadToLogin");
+			return mav;
+		}
+		
+		//String loginId = (String) session.getAttribute("loginId");
+		String loginId;
+		if((String) session.getAttribute("loginId")!=null) {			
+			loginId = (String) session.getAttribute("loginId");
+		} else {
+			loginId = (String) session.getAttribute("kakaoId");			
+		}
 		System.out.println("로그인 된 아이디 : " + loginId);
 		
-		// 로그인여부 확인
-		if(session.getAttribute("loginId")!=null) {
-			ArrayList<ContactDto> contact = mdao.selectMyInfoQuestionListView(loginId);
-			System.out.println(contact);
-			
-			mav.addObject("contact", contact);
-			mav.setViewName("member/MyInfoQuestionListPage");
-		}else {
-			ra.addFlashAttribute("msg", "로그인 상태가 아닙니다.");
-			mav.setViewName("redirect:/loadToLogin");
-		}
+
+		ArrayList<ContactDto> contact = mdao.selectMyInfoQuestionListView(loginId);
+		System.out.println(contact);
+		
+		mav.addObject("contact", contact);
+		mav.setViewName("member/MyInfoQuestionListPage");
+
 		return mav;
 	}
 
@@ -614,22 +629,23 @@ public class MemberService {
 	public ModelAndView loadToMyInfoQuestionForm(RedirectAttributes ra) {
 		ModelAndView mav = new ModelAndView();
 		System.out.println("MemberService.loadToMyInfoQuestionForm() 호출");
-		  //String loginId = (String) session.getAttribute("loginId");
-			String loginId;
-			if((String) session.getAttribute("loginId")!=null) {			
-				loginId = (String) session.getAttribute("loginId");
-			} else {
-				loginId = (String) session.getAttribute("kakaoId");			
-			}
-		System.out.println("로그인 된 아이디 : " + loginId);
 		
-		// 로그인여부 확인
-		if(session.getAttribute("loginId")!=null) {
-			mav.setViewName("member/MyInfoQuestionForm");
-		}else {
-			ra.addFlashAttribute("msg", "로그인 상태가 아닙니다.");
+		//로그인 여부 확인
+		if(session.getAttribute("loginId")==null) {
+			ra.addFlashAttribute("msg", "로그인 후 이용가능합니다.");
 			mav.setViewName("redirect:/loadToLogin");
+			return mav;
 		}
+		
+	    //String loginId = (String) session.getAttribute("loginId");
+		String loginId;
+		if((String) session.getAttribute("loginId")!=null) {			
+			loginId = (String) session.getAttribute("loginId");
+		} else {
+			loginId = (String) session.getAttribute("kakaoId");			
+		}
+		System.out.println("로그인 된 아이디 : " + loginId);
+
 		return mav;
 	}
 
@@ -637,13 +653,21 @@ public class MemberService {
 	public ModelAndView insertMyInfoQuestionWrite(ContactDto contact, RedirectAttributes ra) throws IllegalStateException, IOException {
 		ModelAndView mav = new ModelAndView();
 		System.out.println("MemberService.loadToMyInfoQuestionForm() 호출");
-		  //String loginId = (String) session.getAttribute("loginId");
-			String loginId;
-			if((String) session.getAttribute("loginId")!=null) {			
-				loginId = (String) session.getAttribute("loginId");
-			} else {
-				loginId = (String) session.getAttribute("kakaoId");			
-			}
+		
+		//로그인 여부 확인
+		if(session.getAttribute("loginId")==null) {
+			ra.addFlashAttribute("msg", "로그인 후 이용가능합니다.");
+			mav.setViewName("redirect:/loadToLogin");
+			return mav;
+		}
+		
+	    //String loginId = (String) session.getAttribute("loginId");
+		String loginId;
+		if((String) session.getAttribute("loginId")!=null) {			
+			loginId = (String) session.getAttribute("loginId");
+		} else {
+			loginId = (String) session.getAttribute("kakaoId");			
+		}
 		System.out.println("로그인 된 아이디 : " + loginId);
 		
 		//글번호 생성(CT00001) 
@@ -677,23 +701,18 @@ public class MemberService {
 		
 		System.out.println(contact);
 
-		if(session.getAttribute("loginId")!=null) {
-	
-			int contactResult = mdao.insertMyInfoQuestionWrite(contact);
+		int contactResult = mdao.insertMyInfoQuestionWrite(contact);
 
-			if(contactResult != 0) {
-				System.out.println("문의 작성 성공");
-				ra.addFlashAttribute("msg", "문의글이 등록 되었습니다.");
-				mav.setViewName("redirect:/selectMyInfoQuestionListView");
-			}else {
-				System.out.println("문의 작성 실패");
-				ra.addFlashAttribute("msg" , "문의글 작성에 실패하였습니다.");
-				mav.setViewName("redirect:/");
-			}
-		} else {
-			ra.addFlashAttribute("msg", "로그인 상태가 아닙니다.");
-			mav.setViewName("redirect:/loadToLogin");
+		if(contactResult != 0) {
+			System.out.println("문의 작성 성공");
+			ra.addFlashAttribute("msg", "문의글이 등록 되었습니다.");
+			mav.setViewName("redirect:/selectMyInfoQuestionListView");
+		}else {
+			System.out.println("문의 작성 실패");
+			ra.addFlashAttribute("msg" , "문의글 작성에 실패하였습니다.");
+			mav.setViewName("redirect:/");
 		}
+
 		return mav;
 	}
 

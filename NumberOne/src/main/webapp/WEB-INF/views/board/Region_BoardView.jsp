@@ -6,12 +6,9 @@
 <head>
 <meta charset="UTF-8">
 <%@ include file="/resources/css/BarCss.jsp" %>
-<!-- 폰트어썸 -->
-<script src="https://kit.fontawesome.com/86a85cd392.js" crossorigin="anonymous"></script>
 <title>${board.bdtitle } - 1인자:지역글 상세페이지</title>
 <!-- Jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>  
 <style type="text/css">
 	section{
 		max-width: 70%;
@@ -124,8 +121,7 @@
      align-items: center;
      justify-content: center;
      border: solid #E0E0E0 2px;
-     margin-top: 5%;
-     margin-bottom: 5%;
+     margin-top: 2%;
      width: 200px;
      height: 200px;
      
@@ -194,7 +190,7 @@
 									<img class="img-profile rounded-circle" style="height: 45px; width:45px;" src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png">
 								</c:otherwise>
 							</c:choose>
-							<a href="#"><span class="fw-bold bdnickname">${board.bdnickname }</span></a> 
+							<a style="cursor: pointer" onclick="writeMemberBoard('${board.bdnickname}')"><span class="fw-bold bdnickname">${board.bdnickname }</span></a>
 						</div>
 						
 						<div align="right"  class="col-3 offset-md-3">
@@ -247,8 +243,11 @@
 				</div>
 
 				<c:if test="${board.bdimg != null }">
-					<div class="img-container">
-						<img id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
+					<div class="img-container" >
+						<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
+					</div>
+					<div style="background-color: #00bcd4; width: 200px; color:white;  margin-bottom: 2%;" class="text-center fw-bold">
+						업로드 이미지
 					</div>				
 				</c:if >			
 				

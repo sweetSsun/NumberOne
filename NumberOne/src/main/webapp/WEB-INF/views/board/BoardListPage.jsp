@@ -10,6 +10,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <%@ include file="/resources/css/BarCss.jsp" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/listCss.css" type="text/css">
 <style type="text/css">
 	section{
 		max-width: 70%;
@@ -187,9 +188,9 @@
 								</c:choose>
 							 </td>
 							<td class="text-center tableCell">
-								<a href="#">${board.bdnickname}</a>
+								<span style="cursor: pointer" onclick="writeMemberBoard('${board.bdnickname}')">${board.bdnickname}</span>
 							</td>
-							<td class="text-center tableCell">${board.bddate}</td>
+							<td class="text-center tableCell" id="bddate">${board.bddate}</td>
 							<td class="text-center tableCell">${board.bdhits }</td>
 							<td class="fw-bold text-center tableCell" style="color: #00bcd4;">${board.bdrccount}</td>
 						</tr>
@@ -294,6 +295,12 @@
 			}
 		}
 	}
+	
+	var keyword = '${paging.keyword}';
+	if( keyword.length > 0 ){
+		$("#searchText").val(keyword);
+	}
+	
 </script>
 
 <script type="text/javascript">

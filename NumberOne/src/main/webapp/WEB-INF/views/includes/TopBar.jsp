@@ -268,7 +268,7 @@
 	$(document).on("click", "#dropdownChat", function(){
 		$.ajax({
 			type: "post",
-			url: "selectChatRoomList",
+			url: "selectChatRoomList2",
 			data: {"loginId": "${sessionScope.loginId}"},
 			async:false,
 			dataType: "json",
@@ -374,23 +374,35 @@
       let wMemberPopupUrl = "loadToWriteMemberBoard?nickname="+nickname;
       let wMemberPopupOption = "width=660, height=820, top=300px, left=500px, scrollbars=no, resizable=no";
       
-      
-      $.ajax({
-         url: "selectWriteMemberInfo_ajax",
-         data: {"nickname":nickname},
-         async:false,
-         dataType:"json",
-         success:function(result){
-           //console.log(result);
-            //console.log(nickname);
-            wMemberPopup = window.open(wMemberPopupUrl, "", wMemberPopupOption, nickname);
-            
-            wMemberPopup.window.addEventListener("load", function(){
-               wMemberPopup.writeMemberBoard(result);
-            });
-            
-         }
-      });
+	   // 로그인 확인
+	  	$.ajax({
+	  		type : 'get',
+	  		url : 'selectLoginOut_ajax',
+	  		async : false,
+	  		success : function(result){
+	  			if (result == "2"){ 
+	  				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+	  					location.href = "loadToLogin"
+	  					return;
+	  				}
+	  				return;
+	  			}
+	  			
+	  			// 판매자정보 팝업
+			    $.ajax({
+			         url: "selectWriteMemberInfo_ajax",
+			         data: {"nickname":nickname},
+			         async:false,
+			         dataType:"json",
+			         success:function(result){
+			        	 wMemberPopup = window.open(wMemberPopupUrl, "", wMemberPopupOption, nickname);
+			        	 wMemberPopup.window.addEventListener("load", function(){
+			        		 wMemberPopup.writeMemberBoard(result);
+		        		 });
+		        	 }
+		         });
+	  		}
+	  	})
    }
 
       

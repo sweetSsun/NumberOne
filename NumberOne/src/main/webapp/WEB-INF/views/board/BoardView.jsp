@@ -7,11 +7,9 @@
 <meta charset="UTF-8">
 <%@ include file="/resources/css/BarCss.jsp" %>
 <!-- 폰트어썸 -->
-<script src="https://kit.fontawesome.com/86a85cd392.js" crossorigin="anonymous"></script>
 <title>${board.bdtitle } - 1인자:게시판 글상세 페이지</title>
 <!-- Jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>  
 <style type="text/css">
 	section {
 		max-width: 70%;
@@ -134,8 +132,7 @@
      align-items: center;
      justify-content: center;
      border: solid #E0E0E0 2px;
-     margin-top: 5%;
-     margin-bottom: 5%;
+     margin-top: 2%;
      width: 200px;
      height: 200px;
      
@@ -209,16 +206,13 @@
 									<img class="img-profile rounded-circle bdProfile"  src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png">
 								</c:otherwise>
 							</c:choose>
-							<a href="#"><span class="fw-bold bdnickname">${board.bdnickname }</span></a> 
+							<a style="cursor: pointer" onclick="writeMemberBoard('${board.bdnickname}')"><span class="fw-bold bdnickname">${board.bdnickname }</span></a> 
 						</div>
 						
 						<div align="right"  class="col-3 offset-md-3">
-<<<<<<< HEAD
-							<span class="boardDate" id="bddate">${board.bddate} | </span> 
-=======
+
 							<%-- <span class="boardDate" id="bddate">${board.bddate } | </span>  --%>
 							<span class="boardDate" id="bddate"></span> 
->>>>>>> c9258d2ef4ef6b8512a2c0582be23a5c5ae9f7a6
 							<span class="bdhit" style="right:0;"><i class="fa-regular fa-eye"></i>  ${board.bdhits } |</span> 
 							<i class="fa-regular fa-thumbs-up commentDate" ></i> <span class="commentDate" style="right:0;" id="BoardRecommendSum"></span>
 						</div>
@@ -267,6 +261,9 @@
 				<c:if test="${board.bdimg != null }">
 					<div class="img-container" >
 						<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
+					</div>
+					<div style="background-color: #00bcd4; width: 200px; color:white; margin-bottom: 2%;" class="text-center fw-bold">
+						업로드 이미지
 					</div>				
 				</c:if >
 				
@@ -425,9 +422,7 @@
 	var bdcode = '${board.bdcode}';
 	//현재 로그인중인 아이디
 	var loginId = '${sessionScope.loginId}';
-	//글작성 시간 	
-	var bddate = '${board.bddate}';
-	
+
 	$(document).ready(function(){
 		selectReplyList();//게시글 댓글목록
 		selectReplyCount();//게시글 댓글수
@@ -435,8 +430,12 @@
 		checkBoardRecommend();//게시글 추천 확인
 		checkBoardWarning();//게시글 신고 확인 
 		var bddate = timeForToday("${board.bddate }"); //게시글 작성 시간
+		
 		$("#bddate").text(bddate);
-
+		//$("#bddate").text(bddate);
+	});
+	
+	
 	//시간 함수
 	function timeForToday(value) {
 		console.log("시간 변경 함수 호출")
@@ -469,8 +468,6 @@
  	}
 	
 </script>
-
-
 
 <script type="text/javascript">
 	/* 글목록 버튼 클릭 시 */

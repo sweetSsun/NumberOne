@@ -18,8 +18,153 @@
 	referrerpolicy="no-referrer"></script>
 <script src="https://kit.fontawesome.com/dadeda074b.js" crossorigin="anonymous"></script>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/resell.css" type="text/css">
 
+<style type="text/css">
+* {
+	margin: 0;
+	padding: 0;
+}
+
+
+#regionList {
+	width: 100%;
+	height: 100%; 
+	margin: 50px auto; padding-top : 10px;
+	overflow: hidden;
+	padding-top: 10px;
+	
+}
+#pageList button {
+	display: none;
+}
+
+label {
+	cursor: pointer;
+}
+
+.float_ {
+	width: 33.3333333%;
+	float: left;
+	margin-bottom: 30px; 
+	margin-top: 30px;
+}
+
+.float_ img {
+	width: 90%;
+	height: 400px;
+	border-radius: 20px;
+}
+
+
+section {
+	max-width: 70%;
+	margin: auto;
+	margin-top: 0%;
+}
+
+.d_none {
+	display: none;
+}
+
+.scroll::-webkit-scrollbar {
+	width: 10px; /* 스크롤바의 너비 */
+	cursor: default;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+	height: 5%; /* 스크롤바의 길이 */
+	background: #999999; /* 스크롤바의 색상 */
+	border-radius: 10px;
+}
+
+.scroll::-webkit-scrollbar-track {
+	background: #EAEAEA; /*스크롤바 뒷 배경 색상*/
+}
+
+.bdcategory {
+	color: #00bcd4;
+}
+
+.bdCategoryList {
+	color: #00bcd4;
+	border: none;
+	font-size: 18px;
+}
+
+.bdcategorySel {
+	font-weight: bold;
+	text-align: center;
+	color: #00bcd4;
+}
+
+input {
+	border-radius: 3px;
+	border: solid #E0E0E0 2px;
+	height: 28px;
+	font-size: 20px;
+}
+
+.searchType {
+	text-align: center;
+	border-radius: 5px;
+	font-size: 18px;
+	border: solid 1px #00bcd4;
+}
+
+#inputSearchText {
+	font-size: 18px;
+}
+
+.pagination {
+	width: 20rem ! important;
+	display: inline-block ! important;
+	margin-left: auto ! important;
+	margin-right: auto ! important;
+	margin-top: 1rem ! important;
+	font-size: 18px ! important;
+}
+
+.pagination a {
+	color: black ! important;
+	padding: 6px 12px ! important;
+	text-decoration: none ! important;
+	border-radius: 5px ! important;
+}
+
+.pagination span {
+	color: black ! important;
+	padding: 6px 12px ! important;
+	text-decoration: none ! important;
+	border-radius: 5px ! important;
+}
+
+.pagination a.active {
+	background-color: #00bcd4 ! important;
+	border-radius: 5px ! important;
+	color: white ! important;
+}
+
+.bigger {
+	font-size: 2rem;
+}
+
+.bdCategoryList {
+	color: #00bcd4;
+	border: none;
+	font-size: 18px;
+	margin-left: 2%;
+}
+
+.bdcategorySel {
+	font-weight: bold;
+	text-align: center;
+	color: #00bcd4;
+}
+.bold {
+	font-weight: bold;
+}
+
+</style>
 </head>
 <body>
 	<!-- TopBar -->
@@ -42,106 +187,128 @@
 		<section>
 			<!-- 본문 -->
 			<div class="container">
+			
 				<h1 class="text-center">중고거래 메인 페이지</h1>
-				<div class="d_top">
-					<div id="my_region"></div>
-					<div class="flex_div flex_center flex-p0">
-
-						<div>
-							<select class="position_change select-size" id="searchType">
-								<option value="sell">팔구</option>
+									<div class="row">
+					<!-- 검색기능 -->
+					<div
+						class="col-5"
+						align="right"
+					>
+						<select
+							class="searchType bigger"
+							id="searchType"
+						>	<option value="sell">팔구</option>
 								<option value="buy">사구</option>
-							</select>
-						</div>
-						<div class="search-bar">
-							<div class="row_9">
-								<input class="search-bar_input" type="search" placeholder="검색" id="keyword">
-
-							</div>
-							<div class="row_1">
-								<button onclick="searchKeyword()">
-									<i class="fas fa-search"></i>
-								</button>
-							</div>
-
-
-						</div>
+						</select>
 					</div>
-
-					<div class="d_body">
-						<div class="flex_div flex_between flex-p0">
-							<div class="item_start font-l">팔구</div>
-							<div class="item_end font-m">
-								<a href="selectResellPageList?sellBuy=S"> 더보기+</a>
-							</div>
-
+					<div class="col-7 ">
+						<input
+							type="text"
+							class="bigger"
+							name="keyword"
+							placeholder="검색어를 입력하세요"
+							id="searchText"
+						>
+						<button
+							class="btn btn-secondary bigger"
+							onclick="searchE(1)"
+						>검색</button>
+						
 						</div>
-
-						<div class="flex_div flex_space-even flex-p2">
-
-							<c:forEach items="${SellList }" var="sList">
-								<div class="col_2-m flex_card">
-									<div class="card_top">
-										<a href="selectResellView?ubcode=${sList.ubcode }&ubsellbuy=${sList.ubsellbuy }&modifyCheck=LIST"><img alt=""
-											src="${pageContext.request.contextPath }/resources/img/resell/${sList.ubmainimg}" class="img_size"
-										></a>
-										<!--찜 기본  -->
-										<i class="fa-solid fa-heart-circle-plus zzim_size position_absolute"></i>
-										<!--찜하면 show  -->
-										<!-- <i class="fa-solid fa-heart-circle-check zzim_size position_absolute"></i> -->
-									</div>
-
-									<div class="card_body font-s text-right padding-right text-bold">
-										<a href="selectResellView?ubcode=${sList.ubcode }&ubsellbuy=${sList.ubsellbuy }&modifyCheck=LIST">${sList.ubtitle }</a>
-									</div>
-									<div class="card_body font-s text-right padding-right text-bold">${sList.ubnickname }</div>
-									<div class="card_footer font-s text-right padding-right">${sList.ubdate }</div>
-
-								</div>
-							</c:forEach>
-
-
-						</div>
-
-
+					
+						
+						
+		<div class="row">
+					<div class="col mb-2">
+						<h3>팔구</h3>
 					</div>
-					<!-- 팔구div끝  -->
-
-					<!--사구 div 시작  -->
-					<div class="d_footer">
-
-						<div class="flex_div flex_between flex-p0">
-							<div class="item_start font-l">사구</div>
-							<div class="item_end font-m">
-								<a href="selectResellPageList?sellBuy=B">더보기+</a>
-							</div>
-
-						</div>
-
-						<div class="flex_div flex_space-even flex-p2">
-
-							<c:forEach items="${buyList }" var="bList">
-								<div class="col_2-m flex_card">
-									<div class="card_top">
-										<a href="selectResellView?ubcode=${bList.ubcode }&ubsellbuy=${bList.ubsellbuy }&modifyCheck=LIST"> <img alt=""
-											src="${pageContext.request.contextPath }/resources/img/resell/${bList.ubmainimg }" class="img_size"
-										>
-										</a>
-									</div>
-									<div class="card_body font-s text-right padding-right text-bold">
-										<a href="selectResellView?ubcode=${bList.ubcode }&ubsellbuy=${bList.ubsellbuy }&modifyCheck=LIST">${bList.ubtitle }</a>
-									</div>
-									<div class="card_body font-s text-right padding-right text-bold">${bList.ubnickname }</div>
-									<div class="card_footer font-s text-right padding-right">${bList.ubdate }</div>
-
-								</div>
-							</c:forEach>
-
-
-						</div>
-
+					<div align="right" class="col">
+						<span style="font-size:17px;"> <a href="selectResellPageList?sellBuy=S"><i class="fa-solid fa-square-plus"></i>&nbsp;더보기</a></span>
 					</div>
 				</div>
+
+					
+					</div>
+				
+					
+				
+
+		<div id="regionList">
+
+				<c:forEach
+					items="${SellList}"
+					var="sellList"
+				>
+					<div class="float_">
+
+						<a href="selectResellView?ubcode=${sellList.ubcode }&ubsellbuy=${sellList.ubsellbuy }&modifyCheck=LIST">
+							<img
+								alt=""
+								src="${pageContext.request.contextPath }/resources/img/resell/${sellList.ubmainimg }"
+							>
+						</a>
+						<div class="bottom">
+							<span class="soldCheckMsg_ bold"></span>
+							<a href="selectResellView?ubcode=${sellList.ubcode }&ubsellbuy=${sellList.ubsellbuy }&modifyCheck=LIST">${sellList.ubtitle }</a>
+						</div>
+						<div class="bottom">${sellList.ubdate }</div>
+
+						<div class="bottom">${sellList.ubnickname }</div>
+
+					</div>
+				</c:forEach>
+
+<hr>
+
+					<!--사구 div 시작  -->
+
+					
+		<div class="row">
+					<div class="col mb-2">
+						<h3>사구</h3>
+					</div>
+					<div align="right" class="col">
+						<span style="font-size:17px;"> <a href="selectResellPageList?sellBuy=B"><i class="fa-solid fa-square-plus"></i>&nbsp;더보기</a></span>
+					</div>
+				</div>
+
+			<c:forEach
+					items="${buyList}"
+					var="buyList_"
+				>
+					<div class="float_">
+
+						<a href="selectResellView?ubcode=${buyList_.ubcode }&ubsellbuy=${buyList_.ubsellbuy }&modifyCheck=LIST">
+							<img
+								alt=""
+								src="${pageContext.request.contextPath }/resources/img/resell/${buyList_.ubmainimg }"
+							>
+						</a>
+						<div class="bottom">
+							<span class="soldCheckMsg_ bold"></span>
+							<a href="selectResellView?ubcode=${buyList_.ubcode }&ubsellbuy=${buyList_.ubsellbuy }&modifyCheck=LIST">${buyList_.ubtitle }</a>
+						</div>
+						<div class="bottom">${buyList_.ubdate }</div>
+
+						<div class="bottom">${buyList_.ubnickname }</div>
+
+						<input
+							type="hidden"
+							class="ubstate_"
+							value="${buyList_.ubstate }"
+						>
+					</div>
+				</c:forEach>
+
+
+
+
+			</div>
+			<div style="clear: left;"></div>
+
+					<!-- 팔구div끝  -->
+
 			</div>
 		</section>
 	</main>
@@ -154,14 +321,11 @@
 </body>
 <script type="text/javascript">
 
-window.onload = function() {
 	/* 로그인된 회원인지 체크 */
 	let loginCheck = '${sessionScope.loginId}';
 	if (loginCheck.length == 0) {
 		alert("잘못된 접근입니다.");
 		location.href = "loadToLogin"
-	}
-		
 
 	function searchKeyword() {
 		var searchType = document.getElementById("searchType").value;

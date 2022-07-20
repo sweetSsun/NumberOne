@@ -5,18 +5,26 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - ${paging.bdrgname }게시판</title>
+<title>1인자 - ${paging.searchVal }게시판</title>
 <!-- Jquery -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>  
 <%@ include file="/resources/css/BarCss.jsp" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/listCss.css" type="text/css">
 <style type="text/css">
 	section{
 		max-width: 70%;
 		margin: auto;
 		margin-top: 0%;
+		background-color: white;
 	}
 	
+	.boardList{
+		margin: auto;
+	}
+	.tableCell{
+		font-size: 20px;
+	}
 	#board_column{
 		border-bottom: solid #E0E0E0 2px;
 	}
@@ -32,7 +40,7 @@
 	.bdCategoryList{
 		color : #00bcd4;
 		border: none;
-		font-size: 18px;
+		font-size: 20px;
 	}
 	.bdcategorySel{
 		font-weight: bold;
@@ -48,47 +56,41 @@
 	.searchType{
 		text-align: center;
 		border-radius: 5px;
-		font-size: 18px;
+		font-size: 20px;
 		border: solid 1px #00bcd4;
-	}
-	#inputSearchText{
-		font-size: 18px;
 	}
 	.community{
 		background-color: #00bcd4;
 	}
-	.malmeori{
-		display: none;
+	#inputSearchText{
+		font-size: 18px;
 	}
-	
 </style>
 </head>
 <body>
 	    <!-- TopBar -->
         <c:choose>
             <c:when test="${sessionScope.loginId != 'admin'}">
-                    <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
+                  <%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
             </c:when>
             <c:otherwise>
-                    <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
+                  <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
             </c:otherwise>
         </c:choose>
         <!-- End of TopBar -->
 	
 	<main>
-		
 		<!-- 사이드바 -->
 		<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
 		
 		<section>
 		<!-- 본문 -->
-			<form action="selectDetailBoardList" method="get" id="actionForm">
-			<input type="hidden" name="searchVal" value="${paging.searchVal }">
-			<input type="hidden" name="bdrgname" value="${paging.bdrgname }">
+			<form action="selectCategoryBoardList" method="get" id="actionForm">
 			<div class="container">
 				<div class="row" style="margin:auto;">
-					<h2 class="text-center">${paging.bdrgname }게시판 글목록 페이지 : Region${paging.searchVal }Board.jsp</h2>
+					<h2 class="text-center">${paging.searchVal }게시판 : ${paging.searchVal }BoardList.jsp</h2>
 				</div>
+				<input type="hidden" name="searchVal" value="${paging.searchVal }">
 					<div class="row ">
 						<!-- 검색기능 -->
 						<div class="col-5" align="right">
@@ -100,26 +102,17 @@
 								</select>
 						</div>
 						<div class="col-7 ">
-							<input type="text" name="keyword" placeholder="검색어를 입력하세요" id="searchText">
+							<input type="text" name="keyword"  placeholder="검색어를 입력하세요" id="inputSearchText">
 							<button class="btn btn-sm btn-secondary">검색</button>
 						</div>
 					</div>		
 				</div>
 				<div class="row" style="margin-top: 20px;">
-					<div class="col">
-						<!-- 말머리 정렬 
-						<select class="bdCategoryList" onchange="bdCategorySel(this.value)">
-							<option class="bdcategorySel malmeori" value="" disabled selected >말머리 선택</option>
-							<option class="bdcategorySel" value="자유">자유</option>
-							<option class="bdcategorySel" value="질문">질문</option>
-							<option class="bdcategorySel" value="정보">정보</option>
-							<option class="bdcategorySel" value="후기">후기</option>
-						</select> -->
-					</div>
+					
 				</div>
 				
 				<div class=" community" style="text-align:center;">
-					<span style="font-size:21px;" class="fw-bold text-white">지역게시판 : ${paging.bdrgname }</span>
+					<span style="font-size:21px;" class="fw-bold text-white">${paging.searchVal }게시판</span>
 				</div>
 				
 				<!-- 게시글 목록 -->
@@ -128,7 +121,7 @@
 					<thead >
 						<tr class="text-center" id="board_column">
 							<td style="font-size: 17px;">글번호</td>
-							<td style="font-size: 17px;">지역</td>
+							<td style="font-size: 17px;">카테고리</td>
 							<td style="font-size: 17px;">제목</td>
 							<td style="font-size: 17px;">작성자</td>
 							<td style="font-size: 17px;">날짜</td>
@@ -157,15 +150,12 @@
 					<tbody id="bdCategoryList">
 					<!-- 일반게시판 목록 -->
 					
-					<c:forEach items="${regionList }" var="board">
-						<c:if test="${board.bdcategory != '자랑' }">
+					<c:forEach items="${boardList }" var="board">
 						<tr style="border-bottom: solid #E0E0E0 1px;">
 							<td class="text-center tableCell">${board.bdcode}</td>
-							<td class="bdcategory text-center tableCell">
-								${board.bdrgname }
-							</td>
+							<td class="bdcategory text-center tableCell">${board.bdcategory}</td>
 							<td class="tableCell">
-							 	<a href="selectBoardView?bdcode=${board.bdcode }&bdtype=region">${board.bdtitle} 
+							 	<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
 							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
 							 </td>
 							<td class="text-center tableCell">
@@ -175,7 +165,6 @@
 							<td class="text-center tableCell">${board.bdhits }</td>
 							<td class="fw-bold text-center tableCell" style="color: #00bcd4;">${board.bdrccount}</td>
 						</tr>
-						</c:if>
 					</c:forEach>
 					</tbody>
 				</table>
@@ -222,7 +211,6 @@
 				</div>
 				<!-- 페이징 끝 -->
 				</form>
-				
 		</section>
 	</main>
 	
@@ -248,8 +236,7 @@
 	if ( checkMsg.length > 0 ){
 		alert(checkMsg);
 	}
-</script>
-<script type="text/javascript">
+	
 	//선택한 검색 select option 으로 선택되도록 하기 
 	var searchOption = $("#searchTypeSel option");
 	var searchType = "${paging.searchType}";
@@ -260,33 +247,23 @@
 			}
 		}	
 	}
-	//선택한 정렬 select option으로 선택되도록 하기
-	var searchValOption = $("#searchValSel option");
-	var searchVal = "${paging.searchVal}";
-	if (searchVal.length > 0) {
-		for (var i = 0; i < searchValOption.length; i++){
-			if (searchValOption.eq(i).val() == searchVal){
-				searchValOption.eq(i).attr("selected", "selected");
-			}
-		}
-	}
 	
 	var keyword = '${paging.keyword}';
 	if( keyword.length > 0 ){
-		$("#searchText").val(keyword);
+		$("#inputSearchText").val(keyword);
 	}
 	
 </script>
-
 <script type="text/javascript">
-
-/* 글쓰기 버튼 클릭 */
-function loadToBoardWrite(){
-	//글작성 페이지로 이동 
-	var bdrgcode = "${paging.searchVal}";
-	var bdrgname = "${paging.bdrgname}";
-	location.href= "loadToBoardWrite?bdrgcode="+bdrgcode+"&bdrgname="+bdrgname;
-}
+	
+	console.log('${paging.searchVal}');
+	/* 글쓰기 버튼 클릭 */
+	function loadToBoardWrite(){
+		//글작성 페이지로 이동 
+		var bdcategory = "${paging.searchVal}";
+		location.href= "loadToBoardWrite?bdcategory="+bdcategory;
+	}
 </script>
+
 
 </html>
