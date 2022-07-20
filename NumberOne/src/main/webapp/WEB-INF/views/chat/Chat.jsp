@@ -350,7 +350,7 @@
     	  	var dateInfo = data.cmdate; // 실시간이 아니면 DB 저장 날짜 받아오기
        	}
       	// 해당 메세지 날짜/시간 분리
-      	var date_split = dateInfo.split(" "); 
+      	var date_split = dateInfo.split(" "); // dateInfo :: "월/일 시:분"
 	
      	/* 배열에 해당 날짜가 없으면, 날짜 출력하고 배열에 담기 */
      	// 날짜 한 번만 출력하기 위함
