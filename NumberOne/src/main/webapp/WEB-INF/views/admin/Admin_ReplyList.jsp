@@ -119,7 +119,7 @@
 								</c:otherwise>
 							</c:choose>
 	                      </td>
-	                      <td class="overflow text-center">${reply.rpnickname}</td>
+	                      <td class="overflow text-center pointer" onclick="writeMemberBoard('${reply.rpnickname}')">${reply.rpnickname}</td>
 	                      <td class="overflow text-center">${reply.rpdate}</td>
 	                      <td>
                    			  <button class="btn btn-sm btn-danger" type="button" onclick="showRpstateModal(this, '${reply.rpcode }')">정지</button>
@@ -334,7 +334,7 @@
 									+ "</a>";
 						}
 						output += "</td>";
-						output += "<td class='text-center overflow'>" + result[i].rpnickname + "</td>";
+						output += "<td class='text-center overflow pointer' onclick='writeMemberBoard(\"" + result[i].rpnickname + "\")'>" + result[i].rpnickname + "</td>";
 						output += "<td class='text-center overflow'>" + result[i].rpdate + "</td>";
 						output += "<td class='text-center'>"
 						output += "<button class='btn btn-sm btn-danger' type='button' onclick='showRpstateModal(this,\""+result[i].rpcode+"\")'>정지</button>";

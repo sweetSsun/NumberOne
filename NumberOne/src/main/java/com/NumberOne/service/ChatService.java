@@ -197,7 +197,6 @@ public class ChatService {
 	// 읽지않은 메세지 조회 요청
 	public int selectSumUnReadCount (String loginId) {
 		//System.out.println("ChatService.selectSumUnReadCount() 호출");
-
 		ArrayList<ChatRoomDto> chatRoomList = chdao.selectChatRoomList(loginId);
 		
 		int sumUnReadCount = 0;

@@ -5,25 +5,27 @@
 <head>
 <meta charset="UTF-8">
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ include file="/resources/css/BarCss.jsp" %>
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-<%@ include file="/resources/css/BarCss.jsp" %>
-<%-- <%@ include file="/resources/css/chatDropdownCss.css" %> --%>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">	
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<!-- Js Plugins -->
+<script src="${pageContext.request.contextPath }/resources/js/mixitup.min.js"></script>
 
-<%-- 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">	
-	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>	
-	<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-	  
-	<!-- Js Plugins -->
-    <script src="${pageContext.request.contextPath }/resources/js/mixitup.min.js"></script>
- --%>
 <style type="text/css">
 
 /* 	.dropdown:hover .dropdown-menu {
 	    display: block;
 	    margin-top: 0;
 	} */
-	
+	.overflow_twoline{
+	    overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 1;
+		-webkit-box-orient: vertical;
+    }
 	.logoimg{
 		margin-top: 2%;
         padding-left: 45%;    
@@ -38,11 +40,6 @@
 		margin-top: auto;
 		text-align: right;
 		font-size: 16px;
-	}
-
-	
-	.nav_chat .nav_list-link{
-		position: relative;
 	}
 	
 	.nav_chat .nav_chat-badge{
@@ -96,6 +93,14 @@
 	.d_none{
       display: none;
     }
+    .dropdown a:link {
+      text-decoration: none;
+   }
+   .dropdown a:visited {
+      text-decoration: none;
+   }
+   .dropdown a:hover {
+      text-decoration: none;
 
 </style>
 
@@ -165,7 +170,7 @@
 	
 					
 				<!-- 로그인, 회원가입, 고객센터 -->
-				<div class="col-lg-7 col-md-6 col-sm-6 menubar_right dropdwn">
+				<div class="col-lg-7 col-md-6 col-sm-6 menubar_right">
 					<ul>
 						<c:choose>
 	                    <c:when test="${sessionScope.loginId == null && sessionScope.kakaoId == null}">
@@ -175,63 +180,19 @@
 						<c:otherwise>
 							<!-- 찜 -->
 							<li style="margin-right: 15px;"><a href="#" title="찜목록"><i class="fa-solid fa-heart"></i></a></li>
-							<!-- 채팅 -->
-<!-- 							<li style="margin-right: 15px;" class="" >
-								<a href="#" title="1:1채팅" class="dropBtn" id="dropdownChat" onclick="dp_menu()">
-									<i class="fa-solid fa-comment-dots"></i>
-									안읽은 채팅메세지 표시
-									<span id="chat-badge" class="nav_chat-badge"></span>
-								</a>
-
-								채팅방 목록 드롭다운
-								<div class="drop-content" id="chatRoomList" > -->
 
 							<!-- 채팅 -->
 							<li style="margin-right: 15px;" class="dropdown" >
-								<a href="#" title="1:1채팅" class="nav_chat" id="dropdownChat" data-toggle="dropdown" aria-haspopup="" aria-expanded="">
+								<a href="#" title="1:1채팅" class="nav_chat" id="dropdownChat" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 									<i class="fa-solid fa-comment-dots"></i>
 									<!-- 안읽은 채팅메세지 갯수 표시 -->
 									<span id="chat-badge" class="nav_chat-badge"></span>
 								</a>
 
 								<!-- 채팅방 목록 드롭다운 -->
-								<div class="dropdown-list dropdown-menu dropdown-menu-right shadow" id="chatRoomList" aria-labelledby="dropdownChat">
-<%--                                 <h6 class="dropdown-header">
-                                    채팅방 목록
-                                </h6>
-                                <!-- 채팅방1 -->
-                                <a class="dropdown-item d-flex align-items-center" href="#" onclick="popupChat('CR00001')">
-                                    <div class="mr-3">
-                                    	<!-- 여기 글자가 있으면 이미지가 나오는데 없으면 왜 안나와????? -->
-                                    	<!-- 임시이미지 -->
-                                    	<img src="${pageContext.request.contextPath }/resources/img/logo_bada.png" alt="..."
-                                    		class="img-profile rounded-circle" style="height: 50px; width:50px;"> 
-                                    </div>
-                                    <div class="">
-                                        <div class="overflow">최신 메세지를 아주 길게아아아아아아웆아주아ㅜㅇ자우ㅏ아주길게아아아아아아웆아주아ㅜㅇ자우ㅏ아주길게 써볼게요~~~~~</div>
-                                        <div class="row">
-                                        <div class="col-6 small" style="color:gray; text-align:left;">상대방 닉네임</div>
-                                        <div class="col-6 small" style="color:gray; text-align:right;">날짜</div>
-                                        </div>
-                                    </div>
-                                </a>
-                                
-                                <!-- 채팅방2 -->
-                                <a class="dropdown-item d-flex align-items-center" href="#" onclick="popupChat('CR00002')">
-                                    <div class="mr-3">
-                                    	<!-- 여기 글자가 있으면 이미지가 나오는데 없으면 왜 안나와????? -->
-                                    	<!-- 임시이미지 -->
-                                    	<img src="${pageContext.request.contextPath }/resources/img/logo_bada.png" alt="..."
-                                    		class="img-profile rounded-circle" style="height: 50px; width:50px;"> 
-                                    </div>
-                                    <div class="">
-                                        <div class="overflow">채팅방2</div>
-                                        <div class="row">
-                                        <div class="col-6 small" style="color:gray; text-align:left;">상대방 닉네임</div>
-                                        <div class="col-6 small" style="color:gray; text-align:right;">날짜</div>
-                                        </div>
-                                    </div>
-                                </a> --%>
+								<div class="dropdown-list dropdown-menu dropdown-menu-right shadow" id="chatRoomList" aria-labelledby="dropdownChat"
+									style="width: 45rem;">
+									<!-- 회원의 채팅방 목록 ajax로 받고 출력되는 부분 -->
                                 </div>
 							</li>
 <!--  								
@@ -251,7 +212,6 @@
 	
 	
 	
-<!-- <script src="resources/js/chatDropdown.js"></script> -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 <script type="text/javascript">
@@ -317,7 +277,6 @@
 				outputDropdown(result);
 			}
 		});
-		myFunction();
 	});
 
 	// 드롭다운 채팅방목록 입력 함수
@@ -328,8 +287,9 @@
 			if (i == 5){ // 최대 5개 목록까지만 출력
 				break;
 			}
-			dropdownList += "<a class=\"dropdown-item d-flex align-items-center py-2\" href=\"#\" onclick=\"popupChat('" + data[i].crcode + "')\">";
-			dropdownList += "<div class=\"row\" style=\"min-width: 35rem;\">";
+			dropdownList += "<div class=\"dropdown-item\" >";
+			dropdownList += "<a class=\" d-flex align-items-center py-2\" href=\"#\" onclick=\"popupChat('" + data[i].crcode + "')\">";
+			dropdownList += "<div class=\"row\" style=\"width: 100%;\">";
 			dropdownList += "<div class=\"col-2 pr-0 text-center\">";
 			if (data[i].crfrmprofile != null){ // 상대방 이미지가 있으면
 				dropdownList += "<img src=\"${pageContext.request.contextPath }/resources/img/mprofileUpLoad/" + data[i].crfrmprofile + "\" alt=\"프로필\" class=\"rounded-circle chat-profile\">";
@@ -338,19 +298,22 @@
 			}
 			dropdownList += "</div>";
 			dropdownList += "<div class=\"col-10\" >";
-			dropdownList += "<div class=\"row nav_chat\" >";
-			dropdownList += "<div class=\"col-11 overflow\" style=\"font-size:1.25rem;\">" + data[i].recentCmcontents + "</div>";
+			dropdownList += "<div class=\"row nav_chat\" style=\"\">";
+			dropdownList += "<div class=\"col-11 overflow_twoline px-0\" style=\"font-size:1.25rem;\">" + data[i].recentCmcontents + "</div>";
+			dropdownList += "<div class=\"col-1 nav_chat\" style=\"width: 15px; height:15px; text-align: center;\">";
 			if (data[i].unreadCount != 0){ // 안읽은 메세지가 있으면
-				dropdownList += "<div class=\"col-1 nav_chat\" style=\"width: 15px; height:15px; text-align: center;\"><span class=\"chat-badge\" style=\"\">" + data[i].unreadCount + "</span></div>";
+				dropdownList += "<span class=\"chat-badge\" style=\"\">" + data[i].unreadCount + "</span>";
 			}
-			dropdownList += "<div class=\"row\">";
+			dropdownList += "</div>";
+			dropdownList += "<div class=\"row\"style=\"width: 100%;\">";
 			dropdownList += "<div class=\"col-6 small\" style=\"color:gray; text-align:left;\">" + data[i].crfrmnickname + "</div>";
-			dropdownList += "<div class=\"col-6 small\" style=\"color:gray; text-align:right;\">" + data[i].recentCmdate + "</div>";
+			dropdownList += "<div class=\"col-6 small px-0\" style=\"color:gray; text-align:right;\">" + data[i].recentCmdate + "</div>";
 			dropdownList += "</div>";
 			dropdownList += "</div>";
 			dropdownList += "</div>";
 			dropdownList += "</div>";
 			dropdownList += "</a>";
+			dropdownList += "</div>";
 		}
 		dropdownList += "<div class=\"text-center mt-1\">";
 		dropdownList += "<a class=\"dropdown-item pt-2\" href=\"selectMyInfoResellView#scroll-chat\">더보기</a>";
@@ -392,6 +355,12 @@
 	    });
 	}
 	
+	<!-- 로그인 시 세션에 담긴 채팅메세지 갯수 뱃지 출력 -->
+ 	if (${sessionScope.sumUnReadCount != 0 }){
+		var loginUnReadCount = ${sessionScope.sumUnReadCount};
+		console.log("안읽은 채팅 메세지 수 : " + loginUnReadCount);
+		$("#chat-badge").text(loginUnReadCount);
+	}
 </script>
 
 <!-- 마이페이지 미니브라우저 (커뮤니티부터!) -->
@@ -412,14 +381,19 @@
          async:false,
          dataType:"json",
          success:function(result){
-           //console.log(result);
-            //console.log(nickname);
-            wMemberPopup = window.open(wMemberPopupUrl, "", wMemberPopupOption, nickname);
-            
-            wMemberPopup.window.addEventListener("load", function(){
-               wMemberPopup.writeMemberBoard(result);
-            });
-            
+        	 console.log(result);
+        	 if (result == "0"){        	 
+				alert("로그인 후 이용가능합니다.");
+        		location.href = "loadToLogin"
+        		return;
+        	 }
+        	 
+        	 wMemberPopup = window.open(wMemberPopupUrl, "", wMemberPopupOption, nickname);
+        	 wMemberPopup.window.addEventListener("load", function(){
+        		 wMemberPopup.writeMemberBoard(result);
+
+        	 });
+        	 
          }
       });
    }

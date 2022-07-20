@@ -95,6 +95,7 @@ public class ChatWebSocketMsg extends TextWebSocketHandler {
 		
 		// 채팅메세지 입력 시
 		else if (RoomList.get(chatRoom.getCrcode()) != null && !chatMessage.getCmcontents().equals("ENTER-CHAT") && chatRoom != null) {
+			
 			// 보낸 사람 닉네임 조회
 			String cmfrmnickname = chdao.selectMnickname(chatMessage.getCmfrmid());
 			chatMessage.setCmfrmnickname(cmfrmnickname);
@@ -114,10 +115,11 @@ public class ChatWebSocketMsg extends TextWebSocketHandler {
 			// cmcode 생성
 			int cmcode = chsvc.createCmcode();
 			chatMessage.setCmcode(cmcode);
+			
 			// DB에 메세지 저장
 			int insertResult = chdao.insertChatMessage(chatMessage);
 			
-			System.out.println("DB입력 결과 : " + insertResult);
+			//System.out.println("DB입력 결과 : " + insertResult);
 		}
 
 	}

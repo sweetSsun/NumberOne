@@ -25,7 +25,7 @@
 <!-- Jquery -->
 <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
  -->
-
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
 
 <style type="text/css">
 
@@ -47,20 +47,37 @@
 	}
 	
 	td {
-	overflow:hidden;		
-	white-space : nowrap;		
-	text-overflow: ellipsis;
-	padding: 10px;
-	
 
+	padding: 10px;
 	}
 	
-.site-btn {
-
-background-color: #00BCD4;
-
-}	
+	.text_leng {
 	
+	text-overflow: ellipsis;
+	overflow:hidden;
+	white-space : nowrap;	
+	text-decoration: none;
+	color:black;
+	}
+	
+	.text_leng:hover {
+		color : #00BCD4;
+		font-weight: bold;
+	}
+
+	.write:hover {
+		color : #00BCD4;
+		font-weight: bold;	
+	}
+	
+	.delete_leng {
+	
+	text-overflow: ellipsis;
+	overflow:hidden;
+	white-space : nowrap;	
+	text-decoration: none;
+	color:black;
+	}	
 	
 </style>
 </head>
@@ -108,7 +125,7 @@ background-color: #00BCD4;
 						<c:when test="${board.bdstate == 2 }">
 							<tr style="border-bottom: solid #E0E0E0 1px; color : gray;">
 								<td style="text-align: center;">삭제</td>
-								<td style="text-align: center; text-decoration : line-through;">${board.bdtitle}</td>	
+								<td class="delete_leng" style="text-align: center; text-decoration : line-through;">${board.bdtitle}</td>	
 								<td style="text-align: center; text-decoration : line-through;">${board.bdreply }</td>
 								<td style="text-align: center; text-decoration : line-through;">${board.bddate }</td>								
 							</tr>
@@ -116,7 +133,7 @@ background-color: #00BCD4;
 						<c:when test="${board.bdstate == 0 }">
 							<tr style="border-bottom: solid #E0E0E0 1px; color : gray;">
 								<td style="text-align: center;">정지</td>
-								<td style="text-align: center; text-decoration : line-through;">${board.bdtitle}</td>	
+								<td class="delete_leng" style="text-align: center; text-decoration : line-through;">${board.bdtitle}</td>	
 								<td style="text-align: center; text-decoration : line-through;">${board.bdreply }</td>
 								<td style="text-align: center; text-decoration : line-through;">${board.bddate }</td>								
 							</tr>
@@ -125,16 +142,15 @@ background-color: #00BCD4;
 							
 							<tr style="border-bottom: solid #E0E0E0 1px;">
 								<td style="text-align: center;">${board.bdcode }</td>
-								<td style="text-align: center;">
+								<td style="text-align: center;" >
 									<c:choose>
 										<c:when test="${board.bdcategory.equals('자랑') }">
 											<!-- 자랑글 상세 -->
-											<a href="selectRoomList?bdcode=${board.bdcode }&jsp=view">
-											${board.bdtitle}</a>
+											<a href="selectRoomList?bdcode=${board.bdcode }&jsp=view"><div class="text_leng">${board.bdtitle}</div></a>
 										</c:when>
 										<c:otherwise>
 											<!-- 일반글 상세 -->										
-											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}</a>
+											<a href="selectBoardView?bdcode=${board.bdcode }"><div class="text_leng">${board.bdtitle}</div></a>
 										</c:otherwise>
 									</c:choose>
 								</td>	
@@ -193,7 +209,7 @@ background-color: #00BCD4;
 					</c:choose>
 				
 				<td style="color:gray;">정지된 글입니다.</td>
-				<td style="text-decoration : line-through; color:gray;">${reply.rpcontents}</td>
+				<td class="delete_leng" style="text-decoration : line-through; color:gray;">${reply.rpcontents}</td>
 				<td style="text-decoration : line-through; color:gray;">${reply.rpdate }</td>
 				</c:when>
 
@@ -241,12 +257,12 @@ background-color: #00BCD4;
 										<c:when test="${reply.rpbdcategory.equals('자랑') }">
 											<!-- 자랑 댓글 원본 글 상세 -->
 											<a href="selectRoomList?bdcode=${reply.rpbdcode }&jsp=view">
-											<span style="text-overflow : ellipsis;">${reply.rpbdtitle}</span>
+											<span style="text-overflow : ellipsis;"><div class="text_leng">${reply.rpbdtitle}</div></span>
 											</a>
 										</c:when>
 										<c:otherwise>
 											<!-- 일반 댓글 원본 글 상세 -->										
-											<a href="selectBoardView?bdcode=${reply.rpbdcode }">${reply.rpbdtitle}</a>
+											<a href="selectBoardView?bdcode=${reply.rpbdcode }"><div class="text_leng">${reply.rpbdtitle}</div></a>
 										</c:otherwise>
 									</c:choose>
 								</td>
@@ -265,11 +281,11 @@ background-color: #00BCD4;
 									<c:choose>
 										<c:when test="${reply.rpbdcategory.equals('자랑') }">
 											<!-- 자랑 댓글 원본 글 상세 -->
-											<a href="selectRoomList?bdcode=${reply.rpbdcode }&jsp=view">${reply.rpcontents }</a>
+											<a href="selectRoomList?bdcode=${reply.rpbdcode }&jsp=view"><div class="text_leng">${reply.rpcontents }</div></a>
 										</c:when>
 										<c:otherwise>
 											<!-- 일반 댓글 원본 글 상세 -->										
-											<a href="selectBoardView?bdcode=${reply.rpbdcode }">${reply.rpcontents }</a>
+											<a href="selectBoardView?bdcode=${reply.rpbdcode }"><div class="text_leng">${reply.rpcontents }</div></a>
 										</c:otherwise>
 									</c:choose>
 								</td>
@@ -341,11 +357,11 @@ background-color: #00BCD4;
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center; ">
 								<td>${scrap.scbdcode }</td>
 								<td>
-								<a href="selectRoomList?bdcode=${scrap.scbdcode }&jsp=view">
-								${scrap.bdtitle }</a></td>
+								<a href="selectRoomList?bdcode=${scrap.scbdcode }&jsp=view"><div class="text_leng">
+								${scrap.bdtitle }</div></a></td>
 								<td>${scrap.bdreply }</td>
 								<td>
-								<span onclick="writeMemberBoard('${scrap.mnickname }')"
+								<span onclick="writeMemberBoard('${scrap.mnickname }')" class="write"
 								style="text-align: center; cursor: pointer;">${scrap.mnickname }</span></td>
 								<td>${scrap.bddate }</td>								
 							</tr>														
@@ -364,9 +380,6 @@ background-color: #00BCD4;
 	</main>
 	
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
-
-
-
 
 
 </body>

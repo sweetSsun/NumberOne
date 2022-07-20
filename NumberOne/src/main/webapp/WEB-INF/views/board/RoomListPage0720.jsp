@@ -8,9 +8,9 @@
 <title>1인자 - 자취방 자랑 메인</title>
 
 <%-- <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css"> --%>
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
-<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <%@ include file="/resources/css/BarCss.jsp"%>
 <style type="text/css">
 	#board_column{
@@ -221,7 +221,6 @@ div.menu{
   font-weight: bold;
   transition: 0.3s;
   opacity: 0.9;
-  z-index:1;
 }
 
 .close:hover,
@@ -371,19 +370,8 @@ input{
   border-radius: 5px ! important;
   color: white ! important;
 }
-.bigger { font-size : 2rem;}
-.bdCategoryList{
-	color : #00bcd4;
-	border: none;
-	font-size: 18px;
-	margin-left: 2%;
-}
-.bdcategorySel{
-	font-weight: bold;
-	text-align : center;
-	color : #00bcd4;
-}
 
+.bigger { font-size : 2rem;}
 </style>
 </head>
 <body>
@@ -416,7 +404,7 @@ input{
 		<form action="selectRoomList" method="get" id="actionForm">
 			<div class="container">
 				<div style="padding-left:auto; padding-right:auto;">
-					<center><span style="font-size:2rem; cursor:pointer; margin-left:auto; margin-right:auto;" onclick="location.href='selectRoomList'">자랑방 글목록 페이지 : RoomListPage.jsp</span></center>
+					<center><span style="font-size:3.5rem; cursor:pointer; margin-left:auto; margin-right:auto;" onclick="location.href='selectRoomList'">자랑방 글목록 페이지 : RoomListPage.jsp</span></center>
 				</div>
 				
 					<div class="row ">
@@ -440,13 +428,13 @@ input{
 						
 			</div>
 			 
-			<div class="row" style="margin-top: 20px;">
+			<div class="row" style="margin-top: 20px; margin-left:8%;">
 				<div class="col">
-					<select class="roomOrderBy bigger bdCategoryList" onchange="roomOrderBy(this.value)" name="searchVal" id="orderBySel">
-						<option class="roomOrderBy bigger bdcategorySel" value="bdcode">최신순</option>
-						<option class="roomOrderBy bigger bdcategorySel" value="bdhits">조회수순</option>
-						<option class="roomOrderBy bigger bdcategorySel" value="bdrecommend">좋아요순</option>
-						<option class="roomOrderBy bigger bdcategorySel" value="bdreply">댓글순</option>
+					<select class="roomOrderBy bigger" onchange="roomOrderBy(this.value)" name="searchVal" id="orderBySel" style="border:1px #D2D2D2 solid; border-radius:3px;">
+						<option class="roomOrderBy bigger" value="bdcode">최신순</option>
+						<option class="roomOrderBy bigger" value="bdhits">조회수순</option>
+						<option class="roomOrderBy bigger" value="bdrecommend">좋아요순</option>
+						<option class="roomOrderBy bigger" value="bdreply">댓글순</option>
 					</select>
 				</div>
 			</div>
@@ -490,11 +478,11 @@ input{
 				<!-- 자취방 자랑글 목록 -->
 				<div class="gallerylist" id="galleryList">
 					<ul>
-						<c:forEach items="${roomList}" var="room" varStatus="status">
+						<c:forEach items="${roomList}" var="room">
 							<li>
 								<a class="" onclick="roomView_ajax('${room.bdcode}')">
 									<div class="screen">
-										<input type="hidden" class="${status.index}" value="${room.bdcode}" id="modalNum_${room.bdcode }"> 
+										 
 										<div class="top">${room.bdtitle}</div>
 										<div class="bottom">${room.bddate }</div>
 										<c:choose>
@@ -576,18 +564,8 @@ input{
 <div id="myModal" class="modal">
 
   <!-- The Close Button -->
-  <span class="close" id="modalClose">&times;</span>
-  
-  <!-- 양쪽 화살표 -->
-  <a class='left carousel-control' id="prevArrow">
-  <span class='glyphicon glyphicon-chevron-left' onclick="modalChange('prev')" ></span>
-  <span class='sr-only'>Previous</span>
-  </a>
-  <a class='right carousel-control' id="nextArrow">
-  <span class='glyphicon glyphicon-chevron-right'  onclick="modalChange('next')" ></span>
-  <span class='sr-only'>Next</span>
-  </a>
-  
+  <span class="close">&times;</span>
+
   <!-- Modal Content -->
   <div class="row" style="width:1200px; height:600px;" id="modalContents">
   		<div class="product-title tb col-lg-8">
@@ -697,6 +675,8 @@ input{
 	
 	});
 
+	
+	
 	
 	// 정렬 select하면 ajax로 글목록 받고 페이지 다시 로드(ajax 실패)
 	function roomOrderBy(orderBy){
@@ -856,32 +836,6 @@ function adminRpBan(){
 }
 </script>
 
-<script type="text/javascript">
-function modalChange(type){
-	console.log("modalChange("+type+") 호출");
-
-	//현재 인덱스
-	//console.log(nowModalNum);
-	
-	//인덱스 변경
-	var transModalNum;
-	var transBdcode;
-	if(type == 'prev'){		
-		transModalNum = parseInt(nowModalNum) - 1;
-		//console.log(transModalNum);	
-	} else {
-		transModalNum = parseInt(nowModalNum) + 1;
-		//console.log(transModalNum);		
-	}
-	
-	//모달창 내용 바꾸기
-	transBdcode = $("."+transModalNum).val();
-	roomView_ajax(transBdcode);
-	
-} 
-</script>
-
-
 
 <script type="text/javascript">
 
@@ -898,24 +852,10 @@ function modalChange(type){
 	var nowWb = "";
 	var modal = document.getElementById("myModal");
 	var span = document.getElementsByClassName("close")[0];
-	var nowModalNum;
 
 	function roomView_ajax(bdcode){
 		console.log(bdcode+"번글 roomView() 호출");
 		nowBdcode = bdcode; 
-		nowModalNum = $("#modalNum_"+nowBdcode).attr("class");
-		//console.log(nowBdcode+"/"+nowModalNum)
-		
-		if(nowModalNum == 0){
-			$("#prevArrow").addClass("d_none");
-			$("#nextArrow").removeClass("d_none");
-		} else if (nowModalNum == 9){
-			$("#prevArrow").removeClass("d_none");
-			$("#nextArrow").addClass("d_none");
-		} else {
-			$("#prevArrow").removeClass("d_none");
-			$("#nextArrow").removeClass("d_none");
-		}
 		
 		$.ajax({
 			type : "get",
@@ -931,12 +871,9 @@ function modalChange(type){
 	
 	//자랑글 상세 출력
 	function roomViewPrint(roomView){
-		//console.log(roomView);
-
+		console.log(roomView);
 		//글작성자 아이디 필드에 저장
 		nowBdmid = roomView.bdmid;
-
-		
 		//글 이미지
 		var imgHtml = "";
 		
@@ -1297,22 +1234,6 @@ function modalChange(type){
 	  
 	}
 	
-	//모달 닫기 다른 방법
-	$(document).on("click", "#modalClose", function(e){ // on 이벤트로 변경
-		modal.style.display = "none";
-
-		  //모달창 비우기
-		  $("#roomMprofile").html("");
-		  $("#roomMnickname").html("");
-		  $("#roomContents").html("");
-		  $("#reply").html("");
-		  $("#reply").html("");
-		  nowBdcode = "";
-		  nowBdmid = "";
-		  nowRpcode = "";
-		  nowRpmid = "";
-		  nowWb = "";
-	});	
 	
 	function log(history){
 		console.log("log 함수 호출");
