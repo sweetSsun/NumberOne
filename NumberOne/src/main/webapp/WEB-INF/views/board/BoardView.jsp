@@ -448,7 +448,7 @@
 		checkBoardRecommend();//게시글 추천 확인
 		checkBoardWarning();//게시글 신고 확인 
 		var bddate = timeForToday("${board.bddate }"); //게시글 작성 시간
-		//$("#bddate").text(bddate);
+		$("#bddate").text(bddate);
 	});
 	
 	//시간 함수

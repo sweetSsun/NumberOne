@@ -428,8 +428,7 @@ section{
 						<c:forEach items="${roomList}" var="room">
 							<li>
 								<a class="" onclick="roomView_ajax('${room.bdcode}')">
-									<div class="screen">
-										 
+									<div class="screen"> 
 										<div class="top">${room.bdtitle}</div>
 										<div class="bottom">${room.bddate }</div>
 										<c:choose>
