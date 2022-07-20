@@ -40,6 +40,9 @@ public class MemberService {
 	@Autowired
 	private ChatDao chdao;
 	
+	@Autowired
+	   private ChatService chsvc;
+	
 	/*	현석 :  mail API 에러 때문에 주석처리 시작 
 	@Autowired
 	private JavaMailSender mailSender;
@@ -173,17 +176,19 @@ public class MemberService {
 				mav.setViewName("redirect:/loadToLogin");				
 			
 			}else {
-
-				//로그인 성공
-				session.setAttribute("loginId", loginMember.getMid());
-				session.setAttribute("loginProfile", loginMember.getMprofile());
-				session.setAttribute("loginRegion", loginMember.getMregion());
-				session.setAttribute("loginNickname", loginMember.getMnickname());
-				
-				System.out.println((String) session.getAttribute("loginId"));
-			    System.out.println((String) session.getAttribute("loginRegion"));
-			    System.out.println((String) session.getAttribute("loginProfile"));
-			    System.out.println((String) session.getAttribute("loginNickname"));
+				 int sumUnReadCount = chsvc.selectSumUnReadCount(loginMember.getMid());
+		            //로그인 성공
+		            session.setAttribute("loginId", loginMember.getMid());
+		            session.setAttribute("loginProfile", loginMember.getMprofile());
+		            session.setAttribute("loginRegion", loginMember.getMregion());
+		            session.setAttribute("loginNickname", loginMember.getMnickname());
+		            session.setAttribute("sumUnReadCount", sumUnReadCount);
+		            
+		            System.out.println((String) session.getAttribute("loginId"));
+		             System.out.println((String) session.getAttribute("loginRegion"));
+		             System.out.println((String) session.getAttribute("loginProfile"));
+		             System.out.println((String) session.getAttribute("loginNickname"));
+		             System.out.println((String) session.getAttribute("sumUnReadCount"));
 			    
 				ra.addFlashAttribute("msg", "로그인 되었습니다.");
 				
