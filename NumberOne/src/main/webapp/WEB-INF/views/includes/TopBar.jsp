@@ -381,14 +381,19 @@
          async:false,
          dataType:"json",
          success:function(result){
-           //console.log(result);
-            //console.log(nickname);
-            wMemberPopup = window.open(wMemberPopupUrl, "", wMemberPopupOption, nickname);
-            
-            wMemberPopup.window.addEventListener("load", function(){
-               wMemberPopup.writeMemberBoard(result);
-            });
-            
+        	 console.log(result);
+        	 if (result == "0"){        	 
+				alert("로그인 후 이용가능합니다.");
+        		location.href = "loadToLogin"
+        		return;
+        	 }
+        	 
+        	 wMemberPopup = window.open(wMemberPopupUrl, "", wMemberPopupOption, nickname);
+        	 wMemberPopup.window.addEventListener("load", function(){
+        		 wMemberPopup.writeMemberBoard(result);
+
+        	 });
+        	 
          }
       });
    }
