@@ -39,6 +39,7 @@
 		border-radius: 5px;
 		border: solid gray 2px;
 		font-size: 19px;
+		resize: none;
 	}
 	.btn-wrapper{
 		width: 100%;
@@ -96,7 +97,7 @@
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h2 class="text-center">게시판 글작성페이지 : BoardWriteForm.jsp</h2>
+				<h2 class="text-center"> 게시글 작성 페이지 : BoardWriteForm.jsp</h2>
 				<form action="insertBoardWrite" method="post" enctype="multipart/form-data" onsubmit="return writeFormCheck();">
 					<input type="hidden" name="bdmid" value="${sessionScope.loginId }">
 				<div class="row">
@@ -105,7 +106,7 @@
 						<select name="bdcategory" onchange="bdcategorySel(this.value)" class="bdCategoryList" required="required">
 							<c:choose>
 								<c:when test="${bdcategory eq '' }">
-									<option value="" disabled selected class="selectPlaceHolder">필수</option>
+									<option value="" class="selectPlaceHolder">필수</option>
 								</c:when>
 								
 								<c:otherwise>
@@ -265,6 +266,7 @@
 			
 			return false;
 		}
+		
 	}
 </script>
 

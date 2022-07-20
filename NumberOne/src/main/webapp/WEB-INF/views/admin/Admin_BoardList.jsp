@@ -107,6 +107,12 @@
 						        		<span class="overflow">${board.bdtitle}</span>
 						        	</a>
 					        	</c:when>
+					        	<c:when test="${board.bdcategory.equals('후기') }">
+						       		<!-- 후기글 상세 -->
+		                      		<a href="admin_selectReviewBoardView${paging.makeQueryPage(board.bdcode, paging.page)}">
+						        		<span class="overflow">${board.bdtitle}</span>
+						        	</a>
+					        	</c:when>
 					        	<c:otherwise>
 						        	<!-- 일반글 상세 -->										
 		                      		<a href="admin_selectBoardView${paging.makeQueryPage(board.bdcode, paging.page)}">

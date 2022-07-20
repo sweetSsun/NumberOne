@@ -614,7 +614,7 @@ roomView_ajax(nowBdcode)
 				var mprofileOutput = "<img class='product-img' style='width:30px; height:30px; border-radius:50%;'";
 				if(roomView.bdmprofile != 'nomprofile'){
 					console.log("작성자 프로필 있음");
-					if(roomView.bdmstate == 9){
+					if(roomView.bdmid.substring(0,1) == "@"){
 						//카카오 로그인
 						console.log("작성자 카카오 회원 사진 출력")
 						mprofileOutput += "src='"+roomView.bdmprofile+"'>";							
