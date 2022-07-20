@@ -129,7 +129,17 @@ public class HomeController {
 		
 	}
 	
-	
+	// login/logout 확인작업입니다. 결과값이 "2"인 경우로 조건을 줘야합니다.
+	@RequestMapping(value = "/selectLoginOut_ajax")
+	public @ResponseBody String selectLoginOut_ajax () {
+		System.out.println("로그인/로그아웃 확인 요청");
+		
+		// 로그아웃 확인
+		if(session.getAttribute("loginId")==null) {
+			return "2";
+		}
+		return "1";
+	}
 	
 	@RequestMapping(value="/loadToFail")
 	public String loadToFail() {

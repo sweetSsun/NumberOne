@@ -533,41 +533,53 @@ function clickBox(sel_boxTag, selOp) {
 chatBtn.addEventListener('click', chatInsert_Ajax);
 
 function chatInsert_Ajax() {
-	if (loginId.length == 0) {
-		alert("로그인 후 이용가능합니다.");
-		opener.location.href = "loadToLogin"
-		window.close();
-		return;
-	}
 	
-	if(ub_names.length == 0){
-		alert('관심있는 상품을 선택해주세요');
-		return;
-	}
-	
+	// 로그인 확인
 	$.ajax({
-		type : 'post',
-		url : 'insertResellChat',
-		traditional : true,  	// 배열 전송위해서 필요.  
+		type : 'get',
+		url : 'selectLoginOut_ajax',
 		async : false,
-		data : {
-			'gd_names' : ub_names,
-			'cmfrmid' : cmfrmid,
-			'cmfrmnickname' : cmfrmnickname,
-			'cmtomnickname' : cmtomnickname,
-			'cmtomid' : cmtomid,
-			'gdtitle' : cmtomnicknameof
-		},
-		dataType : 'json',
-		success : function(chatResult) {
-			alert('성공');
-			console.log("chatResult : ", chatResult);
-
-			window.opener.popupChat(chatResult);
-
+		success : function(result){
+			if (result == "2"){ 
+				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+					opener.location.href = "loadToLogin"
+					window.close();
+					return;
+				}
+				return;
+			}
+			
+			// 체크 확인
+			if(ub_names.length == 0){
+				alert('관심있는 상품을 선택해주세요');
+				return;
+			}
+			
+			// 원래 목적인 채팅 기능
+			$.ajax({
+				type : 'post',
+				url : 'insertResellChat',
+				traditional : true,  	// 배열 전송위해서 필요.  
+				async : false,
+				data : {
+					'gd_names' : ub_names,
+					'cmfrmid' : cmfrmid,
+					'cmfrmnickname' : cmfrmnickname,
+					'cmtomnickname' : cmtomnickname,
+					'cmtomid' : cmtomid,
+					'gdtitle' : cmtomnicknameof
+				},
+				dataType : 'json',
+				success : function(chatResult) {
+					alert('바르고 고운 말을 써주세요.');
+					console.log("chatResult : ", chatResult);
+		
+					window.opener.popupChat(chatResult);
+					}
+				})
 		}
-
 	})
+	
 }
 
 </script>
