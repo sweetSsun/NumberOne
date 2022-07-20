@@ -445,7 +445,8 @@
         }
         return Math.floor(betweenTimeDay / 365)+"년전";
 		*/
-		return value+" | ";
+        var time = value.substring(0, 16);
+		return time+" | ";
  	}
 
 </script>
