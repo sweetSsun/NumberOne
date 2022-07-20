@@ -465,7 +465,7 @@
             return betweenTime+"분전 | ";
         }
 
-        const betweenTimeHour = Math.floor(betweenTime / 60);
+        var betweenTimeHour = Math.floor(betweenTime / 60);
         console.log(betweenTimeHour);
         if (betweenTimeHour < 24) {
             return betweenTimeHour+"시간전 | ";
@@ -477,7 +477,8 @@
         }
         return Math.floor(betweenTimeDay / 365)+"년전";
 		*/
-		return value+" | ";
+		var time = value.substring(0, 16);
+		return time+" | ";
 		
  	}
 	
