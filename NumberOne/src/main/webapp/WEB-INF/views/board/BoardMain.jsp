@@ -75,7 +75,20 @@ section{
      height: auto;
      font-size: 24px;
    }
-
+	.region_sel{
+	 margin: auto;
+	 margin-right: 15px;
+	 text-align: center;
+	 /* border: solid #E0E0E0 2px; */
+	 border-radius: 5px;
+	 background-color: #eaf8ff; 
+	 height: 50px;
+	 line-height: 50px;
+	}
+	
+	.region_sel > span{
+	 text: #00bcd4;
+	}
 </style>
 
 </head>
@@ -304,31 +317,31 @@ section{
 				</div>	
 					
 				<div class="row">
-					<div class="col ">
+					<div class="col region_sel">
 						<a href="selectRegionBoardList"> <span>전체</span> </a>
 					</div>
-					<div class="col ">
+					<div class="col region_sel">
 						<a href="selectDetailBoardList?searchVal=SEL"> <span>서울</span> </a>
 					</div>
-					<div class="col ">
+					<div class="col region_sel">
 						<a href="selectDetailBoardList?searchVal=ICN"> <span>인천</span> </a>
 					</div>
-					<div class="col ">
+					<div class="col region_sel">
 						<a href="selectDetailBoardList?searchVal=GGD"> <span>경기</span> </a>
 					</div>
-					<div class="col">
+					<div class="col region_sel">
 						<a href="selectDetailBoardList?searchVal=GSD"> <span>경상</span> </a>
 					</div>
-					<div class="col ">
+					<div class="col region_sel">
 						<a href="selectDetailBoardList?searchVal=JLD"> <span>전라</span> </a>
 					</div>
-					<div class="col ">
+					<div class="col region_sel">
 						<a href="selectDetailBoardList?searchVal=CCD"> <span>충청</span> </a>
 					</div>
-					<div class="col ">
+					<div class="col region_sel">
 						<a href="selectDetailBoardList?searchVal=GWD"> <span>강원</span> </a>
 					</div>
-					<div class="col ">
+					<div class="col region_sel">
 						<a href="selectDetailBoardList?searchVal=JJD"> <span>제주</span> </a>
 					</div>
 				</div>

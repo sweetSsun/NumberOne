@@ -189,7 +189,7 @@
 							<td class="text-center tableCell">
 								<a href="#">${board.bdnickname}</a>
 							</td>
-							<td class="text-center tableCell">${board.bddate}</td>
+							<td class="text-center tableCell" id="bddate">${board.bddate}</td>
 							<td class="text-center tableCell">${board.bdhits }</td>
 							<td class="fw-bold text-center tableCell" style="color: #00bcd4;">${board.bdrccount}</td>
 						</tr>
@@ -294,6 +294,12 @@
 			}
 		}
 	}
+	
+	var keyword = '${paging.keyword}';
+	if( keyword.length > 0 ){
+		$("#searchText").val(keyword);
+	}
+	
 </script>
 
 <script type="text/javascript">

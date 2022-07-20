@@ -270,6 +270,12 @@
 			}
 		}
 	}
+	
+	var keyword = '${paging.keyword}';
+	if( keyword.length > 0 ){
+		$("#searchText").val(keyword);
+	}
+	
 </script>
 
 <script type="text/javascript">

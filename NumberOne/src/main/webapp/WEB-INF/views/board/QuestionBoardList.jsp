@@ -247,6 +247,11 @@
 		}	
 	}
 	
+	var keyword = '${paging.keyword}';
+	if( keyword.length > 0 ){
+		$("#inputSearchText").val(keyword);
+	}
+	
 </script>
 
 <script type="text/javascript">
@@ -257,20 +262,8 @@
 		var bdcategory = "${paging.searchVal}";
 		location.href= "loadToBoardWrite?bdcategory="+bdcategory;
 	}
-
 	
 </script>
-<script type="text/javascript">
-	function searchTextCheck(){
-		/* 검색어 입력유무 확인 */
-		var inputSearchText = $("#inputSearchText").val();
-		
-		if( inputSearchText.length == 0 ){//검색어를 입력하지 않았으면 
-			alert("검색어를 입력해주세요!");
-		
-			return false;
-		}
-	}
-</script>
+
 
 </html>

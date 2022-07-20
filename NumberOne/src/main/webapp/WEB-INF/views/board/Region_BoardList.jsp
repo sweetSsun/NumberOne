@@ -102,8 +102,6 @@
 							<button class="btn btn-sm btn-secondary">검색</button>
 						</div>
 					</div>		
-				
-						
 				</div>
 				<div class="row" style="margin-top: 20px;">
 					<div class="col">
@@ -305,6 +303,12 @@
 			}
 		}
 	}
+	
+	var keyword = '${paging.keyword}';
+	if( keyword.length > 0 ){
+		$("#searchText").val(keyword);
+	}
+	
 </script>
 
 <script type="text/javascript">

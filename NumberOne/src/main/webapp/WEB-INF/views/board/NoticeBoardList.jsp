@@ -262,6 +262,11 @@
 		}
 	}
 	
+	var keyword = '${paging.keyword}';
+	if( keyword.length > 0 ){
+		$("#inputSearchText").val(keyword);
+	}
+	
 </script>
 
 

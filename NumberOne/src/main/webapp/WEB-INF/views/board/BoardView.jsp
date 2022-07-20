@@ -213,12 +213,9 @@
 						</div>
 						
 						<div align="right"  class="col-3 offset-md-3">
-<<<<<<< HEAD
-							<span class="boardDate" id="bddate">${board.bddate} | </span> 
-=======
+
 							<%-- <span class="boardDate" id="bddate">${board.bddate } | </span>  --%>
 							<span class="boardDate" id="bddate"></span> 
->>>>>>> c9258d2ef4ef6b8512a2c0582be23a5c5ae9f7a6
 							<span class="bdhit" style="right:0;"><i class="fa-regular fa-eye"></i>  ${board.bdhits } |</span> 
 							<i class="fa-regular fa-thumbs-up commentDate" ></i> <span class="commentDate" style="right:0;" id="BoardRecommendSum"></span>
 						</div>
@@ -425,21 +422,16 @@
 	var bdcode = '${board.bdcode}';
 	//현재 로그인중인 아이디
 	var loginId = '${sessionScope.loginId}';
-	//글작성 시간 	
-	var bddate = '${board.bddate}';
+
 	
 	$(document).ready(function(){
 		selectReplyList();//게시글 댓글목록
 		selectReplyCount();//게시글 댓글수
 		updateBoardRecommendCount();//게시글 추천수 
 		checkBoardRecommend();//게시글 추천 확인
-<<<<<<< HEAD
-		checkBoardWarning();//게시글 신고 확인
-=======
 		checkBoardWarning();//게시글 신고 확인 
 		var bddate = timeForToday("${board.bddate }"); //게시글 작성 시간
 		//$("#bddate").text(bddate);
->>>>>>> c9258d2ef4ef6b8512a2c0582be23a5c5ae9f7a6
 	});
 	
 	//시간 함수
