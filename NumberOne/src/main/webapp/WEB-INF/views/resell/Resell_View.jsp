@@ -650,6 +650,7 @@ if(ubmid === loginId){
 <!--채팅 활성화  -->
 <script type="text/javascript">
 chatBtn.addEventListener('click', chatInsert_Ajax);
+
 /* 챗버튼 클릭 이벤트핸들러 */
 function chatInsert_Ajax() {
 
