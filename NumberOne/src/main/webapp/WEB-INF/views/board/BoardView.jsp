@@ -206,7 +206,7 @@
 									<img class="img-profile rounded-circle bdProfile"  src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png">
 								</c:otherwise>
 							</c:choose>
-							<a href="#"><span class="fw-bold bdnickname">${board.bdnickname }</span></a> 
+							<a style="cursor: pointer" onclick="writeMemberBoard('${board.bdnickname}')"><span class="fw-bold bdnickname">${board.bdnickname }</span></a> 
 						</div>
 						
 						<div align="right"  class="col-3 offset-md-3">
@@ -423,7 +423,6 @@
 	//현재 로그인중인 아이디
 	var loginId = '${sessionScope.loginId}';
 
-	
 	$(document).ready(function(){
 		selectReplyList();//게시글 댓글목록
 		selectReplyCount();//게시글 댓글수
