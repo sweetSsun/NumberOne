@@ -5,12 +5,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@ include file="/resources/css/BarCss.jsp" %>
-<!-- 폰트어썸 -->
-<script src="https://kit.fontawesome.com/86a85cd392.js" crossorigin="anonymous"></script>
 <title>${board.bdtitle } - 1인자:커뮤니티</title>
-<!-- Jquery -->
+
+<!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- 부트스트랩 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
 <style type="text/css">
 	section{
@@ -349,8 +349,8 @@
     </div>
     
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+	<!-- 부트스트랩 -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 
 <script type="text/javascript">
@@ -523,7 +523,7 @@
 								
 							output += "<div class=\"col-11\" style='border-bottom: solid #E0E0E0 1px;\'>"
 							/* 닉네임, 시간 */
-							output += "<span class=\"fw-bold rpnickname pointer\" onclick='writeMemberBoard(\"" + result[i].bdnickname + "\")'>" + replyList[i].rpnickname + "</span>"
+							output += "<span class=\"fw-bold rpnickname pointer\" onclick='writeMemberBoard(\"" + replyList[i].rpnickname + "\")'>" + replyList[i].rpnickname + "</span>"
 							output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span> "
 							
 							if( '${sessionScope.loginId}' == 'admin'){
