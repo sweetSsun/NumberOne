@@ -110,10 +110,11 @@
 							<div class=item-basis_5>
 								<div>
 									<p style="font-size: 12.5px">
-										<a href="selectMyInfoMemberView" id ="memberInfo">${ub_resellView.ubnickname} &nbsp;&nbsp; <img class="img-profile rounded-circle" style="width: 50px"
+										<span onclick="writeMemberSellbuy('${zzim.mnickname }')">${zzim.mnickname }</span> &nbsp;&nbsp; <img class="img-profile rounded-circle" style="width: 50px"
 											src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/${ub_resellView.ubprofile }"
 										>
-										</a>
+										
+									
 									</p>
 								</div>
 
@@ -710,33 +711,4 @@ function chatInsert_Ajax() {
 }
 
 </script>
-
-<!-- 작성자정보스크립트 -->
-<script type="text/javascript">
-let memberInfo = document.getElementById('memberInfo');
-
-memberInfo.addEventListener('click', memberInfoView)
-
-
-function memberInfoView(e){
-	e.preventDefault();
-	
-$.ajax({
-	type : 'get',
-	url : 'selectMyInfoResellView',
-	data : {'ubmid' : ubmid},
-	type : 'json',
-	async : false,
-	success : function(mInfo){		
-		alert('성공');
-		console.log('판매자정보',mInfo );
-				}
-		
-})
-
-}
-
-
-</script>
-
 </html>
