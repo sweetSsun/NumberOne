@@ -177,7 +177,8 @@
 
 							<!-- 채팅 -->
 							<li style="margin-right: 15px;" class="dropdown" >
-								<a href="#" title="1:1채팅" class="nav_chat" id="dropdownChat" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
+								<a href="#" title="1:1채팅" class="nav_chat" id="dropdownChat" role="button" data-bs-toggle="dropdown" aria-expanded="false" 
+									style="display: inline-block !important;">
 									<i class="fa-solid fa-comment-dots"></i>
 									<!-- 안읽은 채팅메세지 갯수 표시 -->
 									<span id="chat-badge" class="nav_chat-badge"></span>
@@ -185,7 +186,7 @@
 
 								<!-- 채팅방 목록 드롭다운 -->
 								<div class="dropdown-menu  shadow" id="chatRoomList" aria-labelledby="dropdownChat"
-									style="width: 30rem;">
+									style="width: 500px;">
 									<!-- 회원의 채팅방 목록 ajax로 받고 출력되는 부분 -->
                                 </div>
 							</li>
@@ -287,7 +288,7 @@
 	// 드롭다운 채팅방목록 입력 함수
 	function outputDropdown(data){
 		console.log("채팅방 목록 드롭다운 실행");
-		var dropdownList = "<h6 class=\"dropdown-header\">채팅방 목록</h6>";
+		var dropdownList = "<p class=\"dropdown-header\" style=\"font-size:11px;\">채팅방 목록</p>";
 		for(var i = 0; i < data.length; i++){
 			if (i == 5){ // 최대 5개 목록까지만 출력
 				break;
@@ -304,15 +305,15 @@
 			dropdownList += "</div>";
 			dropdownList += "<div class=\"col-11\" style=\"\">";
 			dropdownList += "<div class=\"row nav_chat\" style=\"--bs-gutter-x: 0; margin-left: 10px;\">";
-			dropdownList += "<div class=\"col-11 overflow_twoline px-0 small\" style=\"\">" + data[i].recentCmcontents + "</div>";
+			dropdownList += "<div class=\"col-11 overflow_twoline px-0 \" style=\"font-size:13px;\">" + data[i].recentCmcontents + "</div>";
 			dropdownList += "<div class=\"col-1 nav_chat\" style=\"text-align: center;\">";
 			if (data[i].unreadCount != 0){ // 안읽은 메세지가 있으면
 				dropdownList += "<span class=\"chat-badge\" style=\"\">" + data[i].unreadCount + "</span>";
 			}
 			dropdownList += "</div>";
 			dropdownList += "<div class=\"row\"style=\"width: 100%; --bs-gutter-x: 0;\">";
-			dropdownList += "<div class=\"col-6 small\" style=\"color:gray; text-align:left; font-size:0.75rem;\">" + data[i].crfrmnickname + "</div>";
-			dropdownList += "<div class=\"col-6 small px-0\" style=\"color:gray; text-align:right; font-size:0.75rem;\">" + data[i].recentCmdate + "</div>";
+			dropdownList += "<div class=\"col-6 \" style=\"color:gray; text-align:left; font-size:9px;\">" + data[i].crfrmnickname + "</div>";
+			dropdownList += "<div class=\"col-6  px-0\" style=\"color:gray; text-align:right; font-size:9px;\">" + data[i].recentCmdate + "</div>";
 			dropdownList += "</div>";
 			dropdownList += "</div>";
 			dropdownList += "</div>";
@@ -321,7 +322,7 @@
 			dropdownList += "</div>";
 		}
 		dropdownList += "<div class=\"text-center mt-1\">";
-		dropdownList += "<a class=\"dropdown-item pt-2 small\" href=\"selectMyInfoResellView#scroll-chat\" style=\"color: gray;\">더보기</a>";
+		dropdownList += "<a class=\"dropdown-item pt-2\" href=\"selectMyInfoResellView#scroll-chat\" style=\"color: gray; font-size:13px;\">더보기</a>";
 		dropdownList += "</div>";
 		$("#chatRoomList").html(dropdownList);
 	}

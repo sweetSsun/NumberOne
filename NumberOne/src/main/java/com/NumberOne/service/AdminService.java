@@ -50,7 +50,7 @@ public class AdminService {
 	    mav = new ModelAndView();
 	    String loginId = (String) session.getAttribute("loginId");
 	      
-	    if(loginId == null || loginId != "admin"){
+	    if(loginId == null || !loginId.equals("admin")){
 	       //비로그인이거나, 관리자가 아닌 경우
 		    System.out.println("관리자 아님");
 	        //메세지 전송
@@ -68,8 +68,8 @@ public class AdminService {
 		mav = new ModelAndView();
 		// 관리자 로그인 여부 체크
 		mav = loginAdminChToFail(ra);
-		//System.out.println(mav.getViewName().equals("redirect:loadToLogin"));
-		if(mav.getViewName().equals("redirect:/loadToLogin")) {
+		//System.out.println(mav.getViewName().equals("redirect:/loadToLogin"));
+		if(mav.getViewName() != null) {
 		   return mav;
 		}
 		
@@ -150,7 +150,7 @@ public class AdminService {
 		// 관리자 로그인 여부 체크
 		mav = loginAdminChToFail(ra);
 		//System.out.println(mav.getViewName().equals("redirect:/loadToLogin"));
-		if(mav.getViewName().equals("redirect:/loadToLogin")) {
+		if(mav.getViewName() != null) {
 		   return mav;
 		}
 
@@ -254,7 +254,7 @@ public class AdminService {
 		// 관리자 로그인 여부 체크
 		mav = loginAdminChToFail(ra);
 		//System.out.println(mav.getViewName().equals("redirect:/loadToLogin"));
-		if(mav.getViewName().equals("redirect:/loadToLogin")) {
+		if(mav.getViewName() != null) {
 		   return mav;
 		}
 		mav.setViewName("admin/Admin_NoticeWriteForm");
@@ -272,7 +272,7 @@ public class AdminService {
 		// 관리자 로그인 여부 체크
 		mav = loginAdminChToFail(ra);
 		//System.out.println(mav.getViewName().equals("redirect:/loadToLogin"));
-		if(mav.getViewName().equals("redirect:/loadToLogin")) {
+		if(mav.getViewName() != null) {
 		   return mav;
 		}
 		
@@ -333,7 +333,7 @@ public class AdminService {
 		// 관리자 로그인 여부 체크
 		mav = loginAdminChToFail(ra);
 		//System.out.println(mav.getViewName().equals("redirect:/loadToLogin"));
-		if(mav.getViewName().equals("redirect:/loadToLogin")) {
+		if(mav.getViewName() != null) {
 		   return mav;
 		}
 		
@@ -358,7 +358,7 @@ public class AdminService {
 		// 관리자 로그인 여부 체크
 		mav = loginAdminChToFail(ra);
 		//System.out.println(mav.getViewName().equals("redirect:/loadToLogin"));
-		if(mav.getViewName().equals("redirect:/loadToLogin")) {
+		if(mav.getViewName() != null) {
 		   return mav;
 		}
 				
@@ -406,7 +406,7 @@ public class AdminService {
 		// 관리자 로그인 여부 체크
 		mav = loginAdminChToFail(ra);
 		//System.out.println(mav.getViewName().equals("redirect:/loadToLogin"));
-		if(mav.getViewName().equals("redirect:/loadToLogin")) {
+		if(mav.getViewName() != null) {
 		   return mav;
 		}
 			
@@ -466,7 +466,7 @@ public class AdminService {
 		// 관리자 로그인 여부 체크
 		mav = loginAdminChToFail(ra);
 		//System.out.println(mav.getViewName().equals("redirect:/loadToLogin"));
-		if(mav.getViewName().equals("redirect:/loadToLogin")) {
+		if(mav.getViewName() != null) {
 		   return mav;
 		}
 		
@@ -558,7 +558,7 @@ public class AdminService {
 		// 관리자 로그인 여부 체크
 		mav = loginAdminChToFail(ra);
 		//System.out.println(mav.getViewName().equals("redirect:/loadToLogin"));
-		if(mav.getViewName().equals("redirect:/loadToLogin")) {
+		if(mav.getViewName() != null) {
 		   return mav;
 		}
 		
@@ -616,7 +616,7 @@ public class AdminService {
 		// 관리자 로그인 여부 체크
 		mav = loginAdminChToFail(ra);
 		//System.out.println(mav.getViewName().equals("redirect:/loadToLogin"));
-		if(mav.getViewName().equals("redirect:/loadToLogin")) {
+		if(mav.getViewName() != null) {
 		   return mav;
 		}
 		
@@ -674,7 +674,7 @@ public class AdminService {
 		// 관리자 로그인 여부 체크
 		mav = loginAdminChToFail(ra);
 		//System.out.println(mav.getViewName().equals("redirect:/loadToLogin"));
-		if(mav.getViewName().equals("redirect:/loadToLogin")) {
+		if(mav.getViewName() != null) {
 		   return mav;
 		}
 		
