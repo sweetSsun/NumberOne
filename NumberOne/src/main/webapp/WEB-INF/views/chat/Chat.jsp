@@ -366,7 +366,7 @@
 	        message += "<div class=\"outerDate\"><span class=\"chatRe\">" + data.cmcontents + "</span>";
 	        message += "<span class=\"chatDate\">" + date_split[1] + "</span></div>";
 	    } else { // 오른쪽일 때 (자신이 전송했을 때)
-	        message ="<div class=\"outerDate\" style=\"text-align:right; margin-top: 10px;\"><span class=\"chatSe\">" + data.cmcontents + "</span>";
+	        message += "<div class=\"outerDate\" style=\"text-align:right; margin-top: 10px;\"><span class=\"chatSe\">" + data.cmcontents + "</span>";
 	        message += "<span class=\"chatDate\">" + date_split[1] + "</span></div>";
 	    }
 	    $("#chatList").append(message);
@@ -381,6 +381,9 @@
 		var now = new Date();
 			
   		let month = now.getMonth()+1; 	// 월
+		if (month < 10) {
+			month = "0" + month;
+		}
   		let date = now.getDate();  	// 일
 		let hour = now.getHours();		// 시간
 		if (hour < 10) {

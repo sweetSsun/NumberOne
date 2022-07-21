@@ -18,29 +18,30 @@
 
     <!-- Css Styles -->
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
-    
-	<!-- 배너 -->    
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/owl.carousel.min.css" type="text/css">
-    
-    <!-- Bootstrap cdn 설정 -->	
+	
+	<!-- jQuery -->    
 	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>	
+
+    <!-- Bootstrap cdn 설정 -->	
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">	
 	<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> 
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css">	
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 	  
 	<!-- Js Plugins -->
+	  <%-- 위에 jquery 3.4.1 있어서 없어도 됨
     <script src="${pageContext.request.contextPath }/resources/js/jquery-3.3.1.min.js"></script>
+	   --%>
+	   
+	<!-- 배너 -->    
     <script src="${pageContext.request.contextPath }/resources/js/jquery.nice-select.min.js"></script>
     <script src="${pageContext.request.contextPath }/resources/js/jquery-ui.min.js"></script>
     <script src="${pageContext.request.contextPath }/resources/js/jquery.slicknav.js"></script>
-    <script src="${pageContext.request.contextPath }/resources/js/mixitup.min.js"></script> 
+    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/owl.carousel.min.css" type="text/css">
     <script src="${pageContext.request.contextPath }/resources/js/owl.carousel.min.js"></script>
+    <script src="${pageContext.request.contextPath }/resources/js/mixitup.min.js"></script> 
     <script src="${pageContext.request.contextPath }/resources/js/main.js"></script>
-	
-	
-	<!-- 부트스트랩 -->
-<%--     <script src="${pageContext.request.contextPath }/resources/js/bootstrap.min.js"></script> --%>
+    
 	
 	<style type="text/css">
 	
@@ -280,6 +281,20 @@
                         <li data-filter=".review">후기</li>
                         <li data-filter=".notice">공지</li>
                     </ul>
+                    <!-- <ul id="selectList" style="font-size: 20px; padding-left: 0;">
+                   		<li>All</li>
+                        <li>공지</li>
+                        <li>자유</li>
+                        <li>질문</li>
+                        <li>정보</li>
+                        <li>후기</li>
+                        <li id="selAll" onclick="selectList()">All</li>
+                        <li id="selNotice" onclick="selectList()">공지</li>
+                        <li id="selFree" onclick="selectList()">자유</li>
+                        <li id="selQuestion" onclick="selectList()">질문</li>
+                        <li id="selInfo" onclick="selectList()">정보</li>
+                        <li id="selReview" onclick="selectList()">후기</li>
+                    </ul> -->
                 </div>
             </div>
             
@@ -489,6 +504,7 @@
      }
 </script>
 
+<!-- 상단 배너 슬라이딩 -->
 <script type="text/javascript">
 	$(function(){
 		$('#carousel-example-generic').carousel({
@@ -515,7 +531,36 @@
 	    nav: true,
 	    
 	})
+</script>
+
+<!-- 중간 커뮤니티 d-none -->
+<!-- <script type="text/javascript">
+	$("#selectList li").on("click", function(){
+		var selLi = $(this).text();
+		var selAll = $('#selAll').html();
+		console.log(selLi);
+		console.log(selAll);
+		
+		/*if(selLi=="All"){
+			 $(".all").removeClass("display_none");
+			$(".free").addClass("display_none");
+			$(".featured__filter").html("$selAll");
+		}
+		/* 사구목록 display_none */
+		
+		/* $("#resell").removeClass("display_none");
+		$("#rebuy").addClass("display_none");
+		$("#selRebuy").removeClass('title_color');
+		$("#selResell").addClass('title_color'); */
 	
+		
+		
+	});
+	
+</script> -->
+	
+<!-- 하단 팔구/사구 슬라이딩 -->	
+<script type="text/javascript">	
 	$('#owl-banner_resell').owlCarousel({
 	    items : 6, //화면에 표시 할 슬라이드 수
 	    animateOut : 'fadeOut', // 사라질때의 애니메이션
@@ -578,6 +623,7 @@
 	})
 </script>
 
+<!-- 하단 /ㅅ팔사구 d-none -->
 <script type="text/javascript">
 function selectResell(){
 	console.log("팔구목록on 사구목록off")

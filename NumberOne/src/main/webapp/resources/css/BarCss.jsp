@@ -188,12 +188,8 @@ footer{
 	
 	/* 사이드메뉴 - 지역 */
 	
-	.sideregion {
-		text-align: center;
-		color: #4C4C4C;
-	}
-	
 	.sideregion_title {
+		text-align: center;
 		padding-bottom: 5%;
 		margin-bottom: 5%;
 	    border-bottom: solid 1px;
@@ -253,22 +249,36 @@ footer{
 	/* ------- sidebar_중고거래페이지 ------ */
 	/* --------------------------------- */
 	
-	.dropdown-menu {
-	list-style:none;
+	.sidetitle_resell{
+		border: none;
 	}
-	.dropdown-menu li {
+	
+	.accordion-button {
+		background-color: #F2F2FF;
+	}
+	
+	.accordion-button:not(.collapsed) {
+		color: #00bcd4! important;
+		background-color: #F2F2FF! important;
+	}
+	.accordion-button:focus {
+		outline: none;
+	}
+	
+	
+	.accordion-body {
+		padding: 0px;
+		margin-bottom: 10px;
+	}
+	.accordion-menu {
+		list-style:none;
+	    margin: auto;
+    	padding: 0;
+	}
+	.accordion-menu li {
 		width: 130px;
 	}
-	#drop_buy.padding_plus, #chatroom.padding_plus {
-		padding-top: 100px;
-	}
-	
-	#drop_sell, #drop_buy { display:none; }
-	#drop_sell.sideon, #drop_buy.sideon { display: block; padding-bottom: 0px; margin-bottom: 0px;}
 
-	
-	
-	
 	/* -------------------------------- */
 	/* ------- sidebar_관리자페이지 ------ */
 	/* -------------------------------- */
