@@ -10,6 +10,9 @@
 <title>${board.bdtitle } - 1인자:게시판 글상세 페이지</title>
 <!-- Jquery -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>  
+
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
+
 <style type="text/css">
 	section {
 		max-width: 70%;
@@ -347,6 +350,47 @@
 						</div>
 					</div>
 					
+					
+					
+					
+					
+					
+					<!-- 수정/삭제/정지 버튼 -->
+					<c:choose>
+						<%-- 작성자 본인일 때 --%>
+						<c:when test="${ub_resellView.ubmid == sessionScope.loginId}">
+							<div class="card_in-icon">
+								<select class="select-size" id="totalOp">
+									<option value="1">판매중</option>
+									<option value="9">판매완료</option>
+								</select>
+							</div>
+							<div class="card_in-icon">
+								<button onclick="resellModifyForm()" type="button" class="btn-numberone btn-sm fw-bold">수정</button>
+							</div>
+							<div class="card_in-icon">
+								<input onclick="ubDeleteCheckModal()" type="button" style="background-color: #00bcd4;" class="btn-numberone btn-sm fw-bold" value="삭제">
+							</div>
+						</c:when>
+						<%-- 관리자일 때 --%>
+						<c:when test="${sessionScope.loginId == 'admin' }">
+							<div align="right" class="col">
+								<input onclick="adminBoardStop('${ub_resellView.ubcode}')" type="button" style="left:0;" class="btn btn-sm bg-secondary fw-bold text-white" value="정지">
+							</div>
+						</c:when>
+						<%-- 작성자가 본인이 아니고 일반사용자일 때 --%>
+						<c:otherwise>
+							<div class="item-basis_4">
+								<i id="ubWarning" onclick="ubWarningCheckModal()" class='fa-solid fa-land-mine-on  fa-2x icon' style="margin-right: 2px; font-size: 40px"></i>
+							</div>
+							<div class="item-basis_4">
+								<button id="chatBtn" type="button">채팅</button>
+							</div>
+						</c:otherwise>
+					</c:choose>
+					
+					
+					
 				</form>
 				
 				
@@ -391,6 +435,14 @@
 	
 </script>
 
+<!-- 관리자용 -->
+<script type="text/javascript">
+	function adminBoardStop(ubcode){
+		/* 관리자 - 게시글 정지  */
+		console.log(ubcode);
+		location.href="admin_updateResellStop?ubcode="+ubcode+"&ubsellbuy=${ub_resellView.ubsellbuy}";
+	}
+</script>
 
 <!-- 슬라이드배너  -->
 <script type="text/javascript">
