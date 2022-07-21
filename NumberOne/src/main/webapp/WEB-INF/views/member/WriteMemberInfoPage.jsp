@@ -8,13 +8,14 @@
 <head>
 <meta charset="UTF-8">
 <title>1인자 - 작성자 상세 페이지 (Board)</title>
-</head>
 
-<!-- Jquery -->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> 
-
-<!-- 부트스트랩 -->
+<!--jquery & bootstrap(5css)-->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+
+
+</head>
 
 
 <style>
@@ -100,21 +101,21 @@
 		font-family : pretendard;
 		font-size: 15px;
 		font-weight:bold;
-		background: #F2F2FF;
-		color:#00BCD4;
-		padding: 10px 20px;
+		background: #00BCD4;
+		color:#F2F2FF;
 		text-decoration: none;
-		width: 130px;
-		height: 43px;
+		width: 110px;
+		height: 35px;
 		border: 2px solid #00BCD4;
+		
 	}
 	
 	.viewBtn:hover {
-	  background: #00BCD4;
+	  background: #F2F2FF;
 	  border: 2px solid #00BCD4;
 	  text-decoration: none;
-	  color: #F2F2FF;
-	  height: 43px;
+	  color: #00BCD4;
+	  height: 35px;
 	}	
 	
 /* 스크롤 */	
@@ -383,11 +384,11 @@ function boardreplySwitch(type){
 		   output+="</div>"
 		   output+="<div class=\"row\"  style=\"width: 650px; margin-left: 9px;\">"
 		   
-		   output+="<div class = \"msgTextarea2\" style=\"background-color: #F2F2FF; padding-left: 15px;\">"
+		   output+="<div class = \"msgTextarea2\" style=\"background-color: #F2F2FF; padding-left: 30px;\">"
 		   output+="<span style=\"width: 500px; text-align: center;\">"
-		   output+="<button class=\"viewBtn\" onclick=\"boardreplySwitch('b')\" id=\"board\">작성글보기</button> "
+		   output+="<button class=\"viewBtn\" onclick=\"boardreplySwitch('b')\" id=\"board\">작성글</button> "
 		   output+="&nbsp;&nbsp;&nbsp; "
-		   output+="<button class=\"viewBtn\" id=\"reply\" onclick=\"boardreplySwitch('r')\">작성댓글보기</button></span></div>"
+		   output+="<button class=\"viewBtn\" id=\"reply\" onclick=\"boardreplySwitch('r')\">작성댓글</button></span></div>"
 		   
 		   output+="<div class = \"msgTextarea col-lg-12 col-md-6 col-sm-6\" style=\"border-top:0px! important ; padding-top: 20px; border: 1px solid #949494; background-color: #F2F2FF;\" >"
 		output+="<div id=\"WmemberBoard\"></div>"
@@ -437,11 +438,11 @@ function boardreplySwitch(type){
 		   output+="</div>"
 		   output+="<div class=\"row\"  style=\"width: 650px; margin-left: 9px;\">"
 		   
-		   output+="<div class = \"msgTextarea2\" style=\"background-color: #F2F2FF; padding-left: 15px;\">"
+		   output+="<div class = \"msgTextarea2\" style=\"background-color: #F2F2FF; padding-left: 30px;\">"
 		   output+="<span style=\"width: 500px; text-align: center;\">"
-		   output+="<button class=\"viewBtn\" onclick=\"boardreplySwitch('b')\" id=\"board\">작성글보기</button> "
+		   output+="<button class=\"viewBtn\" onclick=\"boardreplySwitch('b')\" id=\"board\">작성글</button> "
 		   output+="&nbsp;&nbsp;&nbsp; "
-		   output+="<button class=\"viewBtn\" id=\"reply\" onclick=\"boardreplySwitch('r')\">작성댓글보기</button></span></div>"
+		   output+="<button class=\"viewBtn\" id=\"reply\" onclick=\"boardreplySwitch('r')\">작성댓글</button></span></div>"
 		   
 		   output+="<div class = \"msgTextarea col-lg-12 col-md-6 col-sm-6\" style=\"border-top:0px! important ; padding-top: 20px; border: 1px solid #949494; background-color: #F2F2FF;\" >"
 		output+="<div id=\"WmemberBoard\"></div>"
