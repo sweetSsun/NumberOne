@@ -360,7 +360,7 @@ public ModelAndView selectResellPageList(Paging paging) {
 			System.out.println("디테일이미지들 : " +dimg);
 						
 		}
-		
+		mav.addObject("detailLength", ubDetailImg.length);
 		ub_resellView.setUbdetailimg_list(ubDetailImg);
 		
 					}
@@ -371,10 +371,15 @@ public ModelAndView selectResellPageList(Paging paging) {
 				System.out.println("판매자의 다른상품 : " +memberSellList);  	//작성자의 다른 판매글목록
 				
 				
+				
+				
 		mav.addObject("zzim_Check", zzim_Check);  
 		mav.addObject("gd_resellView", gd_resellView);
 		mav.addObject("ub_resellView", ub_resellView);	
 		mav.addObject("memberSellList", memberSellList);	
+		
+		
+		
 		
 		if(modifyCheck.equals("LIST")) {
 			mav.setViewName("resell/Resell_View");
@@ -536,15 +541,19 @@ public ModelAndView selectResellPageList(Paging paging) {
 		ModelAndView mav = new ModelAndView();
 		
 		//CV로 SAVEPATH 선언되어있음
-		
+		ArrayList<String> deleteFile = new ArrayList<>();
 		MultipartFile ubMainFile = ubDto.getUbmainimgfile();
 				
-		// 대표이미지의 파일명담을 변수 공백으로 초기화
-		String ubmainimg = "";
 	
-		//대표이미지 있는지 확인 (비어있지않으면) 
-		
+		// 대표이미지의 파일명담을 변수 공백으로 초기화
+	
+	
+		//대표이미지 있는지 확인 (비어있지않으면) 		
 		if (!ubMainFile.isEmpty()) {  
+			String ubmainimg = "";
+			//기존 대표 이미지명 deleteFile에 저장
+			deleteFile.add(ubDto.getUbmainimg());
+ 			
 			System.out.println("대표 이미지 있음");
 			
 			UUID uuid = UUID.randomUUID();
@@ -558,18 +567,41 @@ public ModelAndView selectResellPageList(Paging paging) {
 			ubMainFile.transferTo(new File(savePath, ubmainimg));
 
 			
-			System.out.println("ubmainimg : " + ubmainimg);
-			
+			ubDto.setUbmainimg(ubmainimg);
+			System.out.println("메인이미지"+ubmainimg);
 		}
-		ubDto.setUbmainimg(ubmainimg);
-		System.out.println("메인이미지"+ubmainimg);
+		
+		// 상세 이미지 del_ 이 붙으면 삭제하는 파일 아니면 유지
+		String[] currentDetailImg = ubDto.getUbdetailimg().split("___");
+		
+		String ubdetailimg = "";
+		
+		for (int i = 0; i < currentDetailImg.length; i++) {
+			System.out.println(i+"번 상세 이미지명: "+currentDetailImg[i].length());
+			if(currentDetailImg[i].length() != 0) {	
+				
+				if (!currentDetailImg[i].substring(0, 4).equals("del_")) {
+					System.out.println(i+"번 상세 유지: "+currentDetailImg[i]);
+					//유지파일
+					ubdetailimg +=   "___" + currentDetailImg[i];
+					System.out.println("ubdetailimg: "+ubdetailimg);
+				} else {
+					//삭제파일
+					deleteFile.add(currentDetailImg[i].substring(4));
+					System.out.println("ubdetailimg: "+ubdetailimg);
+				}
+			}
+		}
+		//System.out.println("bddetailimg: "+bddetailimg);
+		System.out.println("deleteFile.size(): "+deleteFile.size());
+		
+
 		// 상세이미지 파일 담을 인스턴스배열 생성
 		MultipartFile[] ubdetailimgfile = ubDto.getUbdetailimgfile();
 		
 
 		// 상세이미지의 파일명을 담을 변수 공백(빈값)으로 초기화
 		
-		String uddetailimg = "";
 		
 		// 상세이미지 파일 처리
 		// System.out.println("상세이미지개수: "+bddetailimgfile.length);
@@ -587,19 +619,14 @@ public ModelAndView selectResellPageList(Paging paging) {
 				String uddetailimgname = uuid.toString() + ubdetailimgfile[i].getOriginalFilename();
 				// 상세 이미지 파일 저장
 				ubdetailimgfile[i].transferTo(new File(savePath, uddetailimgname));
-				uddetailimg += "___" + uddetailimgname; //이미지가 여러개를 한열에 담고, 이미지끼리 구분할 수 있도록 구분할 수 있는 특수문자사용해서 변수에 담는다.
+				ubdetailimg += "___" + uddetailimgname; //이미지가 여러개를 한열에 담고, 이미지끼리 구분할 수 있도록 구분할 수 있는 특수문자사용해서 변수에 담는다.
 			}
 
-			System.out.println("uddetailimg : " + uddetailimg);
+			System.out.println("uddetailimg : " + ubdetailimg);
 		}
 		
-		else {	// 상세사진을 변경, 추가하지않고  등록 눌렀을 때 이전 이미지를 DB에 저장
-			for (int i = 0; i < ubDto.getUbdetailimg_originList().length; i++)
-			uddetailimg += "___" +ubDto.getUbdetailimg_originList()[i];
-			
-		}
 
-		ubDto.setUbdetailimg(uddetailimg);
+		ubDto.setUbdetailimg(ubdetailimg);
 		
 	
 		int gdStateUPdateResult = 0;
@@ -619,7 +646,7 @@ public ModelAndView selectResellPageList(Paging paging) {
 		
 		System.out.println("글번호 : "+ubDto.getUbcode());
 		System.out.println(ubDto);
-		System.out.println("글 업데이트결과 : " + ubStateUpdateResult); //글 업데이트 계속 실패 (7월14일)
+		System.out.println("글 업데이트결과 : " + ubStateUpdateResult); //글 업데이트 계속 실패 (7월14일) 해결
 	
 		
 		//상세페이지 이동을 위한 파라메터들
@@ -634,7 +661,19 @@ public ModelAndView selectResellPageList(Paging paging) {
 			
 			ra.addFlashAttribute("msg", "글이 수정되었습니다.");
 			
-			mav.setViewName("redirect:/selectResellView?ubcode="+ubcode+"&ubmid="+ubmid+"&ubsellbuy="+ubsellbuy+"&modifyCheck="+modifyCheck);	
+			mav.setViewName("redirect:/selectResellView?ubcode="+ubcode+"&ubmid="+ubmid+"&ubsellbuy="+ubsellbuy+"&modifyCheck="+modifyCheck);
+			
+			//기존 파일 삭제
+			File delFile;
+			for(int i=0; i<deleteFile.size(); i++) {
+				System.out.println(deleteFile.get(i));
+				delFile = new File(savePath, deleteFile.get(i)) ;
+				if(delFile.exists()) { //해당 파일 있는지 확인 후
+					System.out.println(deleteFile.get(i)+"파일 삭제");
+					delFile.delete(); //삭제
+				}
+				
+			}
 		}
 		else {
 			System.out.println("수정실패");
