@@ -326,7 +326,7 @@
 	function regionSel(region){
 		console.log("선택 지역 : " + region);
 		var searchType = $("#searchTypeSel").val();
-		var searchText = $("#inputSearchText").val(); 
+		var searchText = $("#searchText").val(); 
 		
 		var output = "";
 		$.ajax({
