@@ -5,10 +5,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@ include file="/resources/css/BarCss.jsp" %>
 <title>1인자 - 후기글 수정페이지</title>
 <!-- Jquery -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
+<!-- 부트스트랩 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
 <style type="text/css">
 	section{
@@ -238,7 +239,6 @@
 		</section>
 	</main>
 	
-	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
 	
 	<!-- 게시글 작성 취소 확인 -->
 	<div class="modal fade" id="bdWriteCancelCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -264,8 +264,10 @@
             </div>
         </div>
     </div>
-	
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
+	<!-- 부트스트랩 -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 
 <script type="text/javascript">

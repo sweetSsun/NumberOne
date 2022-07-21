@@ -226,6 +226,18 @@ public class BoardDto {
 	public void setBdrate(int bdrate) {
 		this.bdrate = bdrate;
 	}
+	public String getBdmessage() {
+		return bdmessage;
+	}
+	public void setBdmessage(String bdmessage) {
+		this.bdmessage = bdmessage;
+	}
+	public String getBdregion() {
+		return bdregion;
+	}
+	public void setBdregion(String bdregion) {
+		this.bdregion = bdregion;
+	}
 	@Override
 	public String toString() {
 		return "BoardDto [bdcode=" + bdcode + ", bdrgcode=" + bdrgcode + ", bdrgname=" + bdrgname + ", bdcategory="
@@ -235,8 +247,10 @@ public class BoardDto {
 				+ ", bdreply=" + bdreply + ", bdscrap=" + bdscrap + ", bdimgfile=" + bdimgfile + ", bddetailimgfile="
 				+ Arrays.toString(bddetailimgfile) + ", bdnickname=" + bdnickname + ", bdmprofile=" + bdmprofile
 				+ ", bdmstate=" + bdmstate + ", rchistory=" + rchistory + ", schistory=" + schistory + ", wbhistory="
-				+ wbhistory + ", bdrpcount=" + bdrpcount + ", bdrccount=" + bdrccount + ", bdrate=" + bdrate + "]";
+				+ wbhistory + ", bdrpcount=" + bdrpcount + ", bdrccount=" + bdrccount + ", bdrate=" + bdrate
+				+ ", bdmessage=" + bdmessage + ", bdregion=" + bdregion + "]";
 	}
+	
 	
 
 }

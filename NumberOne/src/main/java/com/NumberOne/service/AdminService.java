@@ -45,17 +45,32 @@ public class AdminService {
 	// 파일 저장 경로
 	String nbImgSavePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\noticeUpLoad";
 	
+	/* 관리자 로그인 확인 (파라미터: ra/리턴: mav) */
+	public ModelAndView loginChToFail(RedirectAttributes ra) {
+	    mav = new ModelAndView();
+	    String loginId = (String) session.getAttribute("loginId");
+	      
+	    if(loginId == null || loginId != "admin"){
+	       //비로그인이거나, 관리자가 아닌 경우
+		    System.out.println("관리자 아님");
+	        //메세지 전송
+	        ra.addFlashAttribute("msg", "관리자 로그인 후 이용가능합니다");
+	        //실패페이지로 이동(msg alert 띄우고, history back)
+	        mav.setViewName("redirect:loadToFail");
+	    }
+        return mav;
+    }
+	
 	/* 회원 관리 */
 	// 회원 관리페이지 이동
 	public ModelAndView admin_selectMemberList(Paging paging, RedirectAttributes ra) {
 		System.out.println("AdminService.admin_selectMemberList() 호출");
 		mav = new ModelAndView();
 		// 관리자 로그인 여부 체크
-		String loginId = (String)session.getAttribute("loginId");
-		if (loginId == null) {
-			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
-			mav.setViewName("redirect:/loadToLogin");	
-			return mav;
+		mav = loginChToFail(ra);
+		//System.out.println(mav.getViewName().equals("redirect:loadToFail"));
+		if(mav.getViewName().equals("redirect:loadToFail")) {
+		   return mav;
 		}
 		
 		// 페이징
@@ -133,11 +148,10 @@ public class AdminService {
 		System.out.println("AdminService.admin_selectNoticeList() 호출");
 		mav = new ModelAndView();
 		// 관리자 로그인 여부 체크
-		String loginId = (String)session.getAttribute("loginId");
-		if (loginId == null) {
-			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
-			mav.setViewName("redirect:/loadToLogin");	
-			return mav;
+		mav = loginChToFail(ra);
+		//System.out.println(mav.getViewName().equals("redirect:loadToFail"));
+		if(mav.getViewName().equals("redirect:loadToFail")) {
+		   return mav;
 		}
 
 		// 페이징
@@ -238,11 +252,10 @@ public class AdminService {
 		mav = new ModelAndView();
 		
 		// 관리자 로그인 여부 체크
-		String loginId = (String)session.getAttribute("loginId");
-		if (loginId == null) {
-			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
-			mav.setViewName("redirect:/loadToLogin");	
-			return mav;
+		mav = loginChToFail(ra);
+		//System.out.println(mav.getViewName().equals("redirect:loadToFail"));
+		if(mav.getViewName().equals("redirect:loadToFail")) {
+		   return mav;
 		}
 		mav.setViewName("admin/Admin_NoticeWriteForm");
 		
@@ -257,11 +270,10 @@ public class AdminService {
 		mav = new ModelAndView();
 		
 		// 관리자 로그인 여부 체크
-		String loginId = (String)session.getAttribute("loginId");
-		if (loginId == null) {
-			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
-			mav.setViewName("redirect:/loadToLogin");	
-			return mav;
+		mav = loginChToFail(ra);
+		//System.out.println(mav.getViewName().equals("redirect:loadToFail"));
+		if(mav.getViewName().equals("redirect:loadToFail")) {
+		   return mav;
 		}
 		
 		// nbcode 생성
@@ -319,11 +331,10 @@ public class AdminService {
 		mav = new ModelAndView();
 		
 		// 관리자 로그인 여부 체크
-		String loginId = (String)session.getAttribute("loginId");
-		if (loginId == null) {
-			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
-			mav.setViewName("redirect:/loadToLogin");	
-			return mav;
+		mav = loginChToFail(ra);
+		//System.out.println(mav.getViewName().equals("redirect:loadToFail"));
+		if(mav.getViewName().equals("redirect:loadToFail")) {
+		   return mav;
 		}
 		
 		NoticeDto noticeBoard = bdao.selectNoticeBoardView(nbcode);
@@ -345,11 +356,10 @@ public class AdminService {
 		mav = new ModelAndView();
 		
 		// 관리자 로그인 여부 체크
-		String loginId = (String)session.getAttribute("loginId");
-		if (loginId == null) {
-			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
-			mav.setViewName("redirect:/loadToLogin");	
-			return mav;
+		mav = loginChToFail(ra);
+		//System.out.println(mav.getViewName().equals("redirect:loadToFail"));
+		if(mav.getViewName().equals("redirect:loadToFail")) {
+		   return mav;
 		}
 				
 		// 파일 등록
@@ -394,11 +404,10 @@ public class AdminService {
 		mav = new ModelAndView();
 		
 		// 관리자 로그인 여부 체크
-		String loginId = (String)session.getAttribute("loginId");
-		if (loginId == null) {
-			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
-			mav.setViewName("redirect:/loadToLogin");	
-			return mav;
+		mav = loginChToFail(ra);
+		//System.out.println(mav.getViewName().equals("redirect:loadToFail"));
+		if(mav.getViewName().equals("redirect:loadToFail")) {
+		   return mav;
 		}
 			
 		if(paging.getKeyword() == null) {
@@ -455,11 +464,10 @@ public class AdminService {
 		System.out.println("AdminService.admin_selectBoardList() 호출");
 		mav = new ModelAndView();
 		// 관리자 로그인 여부 체크
-		String loginId = (String)session.getAttribute("loginId");
-		if (loginId == null) {
-			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
-			mav.setViewName("redirect:/loadToLogin");	
-			return mav;
+		mav = loginChToFail(ra);
+		//System.out.println(mav.getViewName().equals("redirect:loadToFail"));
+		if(mav.getViewName().equals("redirect:loadToFail")) {
+		   return mav;
 		}
 		
 		if(paging.getKeyword() == null) {
@@ -548,11 +556,10 @@ public class AdminService {
 		System.out.println("AdminService.admin_selectBdfixList() 호출");
 		mav = new ModelAndView();
 		// 관리자 로그인 여부 체크
-		String loginId = (String)session.getAttribute("loginId");
-		if (loginId == null) {
-			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
-			mav.setViewName("redirect:/loadToLogin");	
-			return mav;
+		mav = loginChToFail(ra);
+		//System.out.println(mav.getViewName().equals("redirect:loadToFail"));
+		if(mav.getViewName().equals("redirect:loadToFail")) {
+		   return mav;
 		}
 		
 		if(paging.getKeyword() == null) {
@@ -607,11 +614,10 @@ public class AdminService {
 		System.out.println("AdminService.admin_selectReplyList() 호출");
 		mav = new ModelAndView();
 		// 관리자 로그인 여부 체크
-		String loginId = (String)session.getAttribute("loginId");
-		if (loginId == null) {
-			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
-			mav.setViewName("redirect:/loadToLogin");	
-			return mav;
+		mav = loginChToFail(ra);
+		//System.out.println(mav.getViewName().equals("redirect:loadToFail"));
+		if(mav.getViewName().equals("redirect:loadToFail")) {
+		   return mav;
 		}
 		
 		if(paging.getKeyword() == null) {
@@ -666,11 +672,10 @@ public class AdminService {
 		System.out.println("AdminService.admin_selectQuestionList() 호출");
 		mav = new ModelAndView();
 		// 관리자 로그인 여부 체크
-		String loginId = (String)session.getAttribute("loginId");
-		if (loginId == null) {
-			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
-			mav.setViewName("redirect:/loadToLogin");	
-			return mav;
+		mav = loginChToFail(ra);
+		//System.out.println(mav.getViewName().equals("redirect:loadToFail"));
+		if(mav.getViewName().equals("redirect:loadToFail")) {
+		   return mav;
 		}
 		
 		int totalCount = adao.admin_selectContactTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
