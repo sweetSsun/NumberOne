@@ -84,12 +84,23 @@ public class ChatRoomDto {
 		this.crfrmprofile = crfrmprofile;
 	}
 
+	public String getRecentmid() {
+		return recentmid;
+	}
+
+	public void setRecentmid(String recentmid) {
+		this.recentmid = recentmid;
+	}
+
 	@Override
 	public String toString() {
 		return "ChatRoomDto [crcode=" + crcode + ", crfrmid=" + crfrmid + ", crtomid=" + crtomid + ", unreadCount="
 				+ unreadCount + ", recentCmcontents=" + recentCmcontents + ", recentCmdate=" + recentCmdate
-				+ ", crfrmnickname=" + crfrmnickname + ", crfrmprofile=" + crfrmprofile + "]";
+				+ ", crfrmnickname=" + crfrmnickname + ", crfrmprofile=" + crfrmprofile + ", recentmid=" + recentmid
+				+ "]";
 	}
+
+	
 	
 	
 	
