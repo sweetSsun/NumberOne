@@ -7,9 +7,10 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ include file="/resources/css/BarCss.jsp" %>
 <!-- 부트스트랩 -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<%--
+ --%>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">	
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <!-- Js Plugins -->
 <script src="${pageContext.request.contextPath }/resources/js/mixitup.min.js"></script>
 
@@ -212,7 +213,9 @@
 	
 	
 	
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
 </body>
 <script type="text/javascript">
 	console.log("스크립트 확인!");
@@ -374,35 +377,28 @@
       let wMemberPopupUrl = "loadToWriteMemberBoard?nickname="+nickname;
       let wMemberPopupOption = "width=660, height=820, top=300px, left=500px, scrollbars=no, resizable=no";
       
-	   // 로그인 확인
-	  	$.ajax({
-	  		type : 'get',
-	  		url : 'selectLoginOut_ajax',
-	  		async : false,
-	  		success : function(result){
-	  			if (result == "2"){ 
-	  				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
-	  					location.href = "loadToLogin"
-	  					return;
-	  				}
-	  				return;
-	  			}
-	  			
-	  			// 판매자정보 팝업
-			    $.ajax({
-			         url: "selectWriteMemberInfo_ajax",
-			         data: {"nickname":nickname},
-			         async:false,
-			         dataType:"json",
-			         success:function(result){
-			        	 wMemberPopup = window.open(wMemberPopupUrl, "", wMemberPopupOption, nickname);
-			        	 wMemberPopup.window.addEventListener("load", function(){
-			        		 wMemberPopup.writeMemberBoard(result);
-		        		 });
-		        	 }
-		         });
-	  		}
-	  	})
+      
+      $.ajax({
+         url: "selectWriteMemberInfo_ajax",
+         data: {"nickname":nickname},
+         async:false,
+         dataType:"json",
+         success:function(result){
+        	 console.log(result);
+        	 if (result == "0"){        	 
+				alert("로그인 후 이용가능합니다.");
+        		location.href = "loadToLogin"
+        		return;
+        	 }
+        	 
+        	 wMemberPopup = window.open(wMemberPopupUrl, "", wMemberPopupOption, nickname);
+        	 wMemberPopup.window.addEventListener("load", function(){
+        		 wMemberPopup.writeMemberBoard(result);
+
+        	 });
+        	 
+         }
+      });
    }
 
       
