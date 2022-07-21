@@ -6,13 +6,6 @@
 <meta charset="UTF-8">
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ include file="/resources/css/BarCss.jsp" %>
-<!-- 부트스트랩 -->
-<%--
- --%>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">	
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-<!-- Js Plugins -->
-<script src="${pageContext.request.contextPath }/resources/js/mixitup.min.js"></script>
 
 <style type="text/css">
 
@@ -184,15 +177,15 @@
 
 							<!-- 채팅 -->
 							<li style="margin-right: 15px;" class="dropdown" >
-								<a href="#" title="1:1채팅" class="nav_chat" id="dropdownChat" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<a href="#" title="1:1채팅" class="nav_chat" id="dropdownChat" role="button" data-bs-toggle="dropdown" aria-expanded="false" >
 									<i class="fa-solid fa-comment-dots"></i>
 									<!-- 안읽은 채팅메세지 갯수 표시 -->
 									<span id="chat-badge" class="nav_chat-badge"></span>
 								</a>
 
 								<!-- 채팅방 목록 드롭다운 -->
-								<div class="dropdown-list dropdown-menu dropdown-menu-right shadow" id="chatRoomList" aria-labelledby="dropdownChat"
-									style="width: 45rem;">
+								<div class="dropdown-menu  shadow" id="chatRoomList" aria-labelledby="dropdownChat"
+									style="width: 30rem;">
 									<!-- 회원의 채팅방 목록 ajax로 받고 출력되는 부분 -->
                                 </div>
 							</li>
@@ -210,16 +203,12 @@
 		</div>
 	</header>
 	
-	
-	
-	
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
 </body>
 <script type="text/javascript">
 	console.log("스크립트 확인!");
 	
+
 </script>	
 	
 <!-- 채팅 관련 스크립트 -->
@@ -268,7 +257,16 @@
 	}
 	
 	// 채팅 아이콘 클릭하면 채팅방 목록 불러오고 드롭다운(안읽은 메세지 > 최신순)
-	$(document).on("click", "#dropdownChat", function(){
+	$(document).on("click", "#dropdownChat", function(e){
+		
+	
+ /* 	     var menuItem = $(e.currentTarget);
+		console.log($("#dropdownChat").attr("aria-expanded"));
+	     if ($("#dropdownChat").attr("aria-expanded") === 'true') {
+				$("#dropdownChat").attr('aria-expanded', 'false');
+				$("#chatRoomList").removeClass('mixitup-control-active');
+	     } else { */
+	    	 
 		$.ajax({
 			type: "post",
 			url: "selectChatRoomList2",
@@ -278,8 +276,12 @@
 			success: function(result){
 				console.log(result);
 				outputDropdown(result);
+				
 			}
 		});
+/* 				$("#dropdownChat").attr('aria-expanded', 'true');
+				$("#chatRoomList").addClass('mixitup-control-active');
+	     }  */
 	});
 
 	// 드롭다운 채팅방목록 입력 함수
@@ -290,27 +292,27 @@
 			if (i == 5){ // 최대 5개 목록까지만 출력
 				break;
 			}
-			dropdownList += "<div class=\"dropdown-item\" >";
-			dropdownList += "<a class=\" d-flex align-items-center py-2\" href=\"#\" onclick=\"popupChat('" + data[i].crcode + "')\">";
-			dropdownList += "<div class=\"row\" style=\"width: 100%;\">";
-			dropdownList += "<div class=\"col-2 pr-0 text-center\">";
+			dropdownList += "<div class=\"\" >";
+			dropdownList += "<a class=\" dropdown-item d-flex align-items-center py-2\" href=\"#\" onclick=\"popupChat('" + data[i].crcode + "')\">";
+			dropdownList += "<div class=\"row\" style=\"width: 100%; --bs-gutter-x: 0;\">";
+			dropdownList += "<div class=\"col-1 text-center\">";
 			if (data[i].crfrmprofile != null){ // 상대방 이미지가 있으면
 				dropdownList += "<img src=\"${pageContext.request.contextPath }/resources/img/mprofileUpLoad/" + data[i].crfrmprofile + "\" alt=\"프로필\" class=\"rounded-circle chat-profile\">";
 			} else { // 없으면
 				dropdownList += "<img src=\"${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png\" alt=\"프로필\" class=\"rounded-circle chat-profile\">";
 			}
 			dropdownList += "</div>";
-			dropdownList += "<div class=\"col-10\" >";
-			dropdownList += "<div class=\"row nav_chat\" style=\"\">";
-			dropdownList += "<div class=\"col-11 overflow_twoline px-0\" style=\"font-size:1.25rem;\">" + data[i].recentCmcontents + "</div>";
-			dropdownList += "<div class=\"col-1 nav_chat\" style=\"width: 15px; height:15px; text-align: center;\">";
+			dropdownList += "<div class=\"col-11\" style=\"\">";
+			dropdownList += "<div class=\"row nav_chat\" style=\"--bs-gutter-x: 0; margin-left: 10px;\">";
+			dropdownList += "<div class=\"col-11 overflow_twoline px-0 small\" style=\"\">" + data[i].recentCmcontents + "</div>";
+			dropdownList += "<div class=\"col-1 nav_chat\" style=\"text-align: center;\">";
 			if (data[i].unreadCount != 0){ // 안읽은 메세지가 있으면
 				dropdownList += "<span class=\"chat-badge\" style=\"\">" + data[i].unreadCount + "</span>";
 			}
 			dropdownList += "</div>";
-			dropdownList += "<div class=\"row\"style=\"width: 100%;\">";
-			dropdownList += "<div class=\"col-6 small\" style=\"color:gray; text-align:left;\">" + data[i].crfrmnickname + "</div>";
-			dropdownList += "<div class=\"col-6 small px-0\" style=\"color:gray; text-align:right;\">" + data[i].recentCmdate + "</div>";
+			dropdownList += "<div class=\"row\"style=\"width: 100%; --bs-gutter-x: 0;\">";
+			dropdownList += "<div class=\"col-6 small\" style=\"color:gray; text-align:left; font-size:0.75rem;\">" + data[i].crfrmnickname + "</div>";
+			dropdownList += "<div class=\"col-6 small px-0\" style=\"color:gray; text-align:right; font-size:0.75rem;\">" + data[i].recentCmdate + "</div>";
 			dropdownList += "</div>";
 			dropdownList += "</div>";
 			dropdownList += "</div>";
@@ -319,7 +321,7 @@
 			dropdownList += "</div>";
 		}
 		dropdownList += "<div class=\"text-center mt-1\">";
-		dropdownList += "<a class=\"dropdown-item pt-2\" href=\"selectMyInfoResellView#scroll-chat\">더보기</a>";
+		dropdownList += "<a class=\"dropdown-item pt-2 small\" href=\"selectMyInfoResellView#scroll-chat\" style=\"color: gray;\">더보기</a>";
 		dropdownList += "</div>";
 		$("#chatRoomList").html(dropdownList);
 	}
