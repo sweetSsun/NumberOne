@@ -105,7 +105,7 @@
 		<%@ include file="/WEB-INF/views/includes/SideBar_Mypage.jsp" %>
 		
 		<section>
-		<div style="min-height: 40px;" id="scroll-sellbuy"></div>
+		<div style="min-height: 60px;" id="scroll-sellbuy"></div>
 		<!-- 본문 -->
 			<div class="container">
 				<br>
@@ -282,6 +282,7 @@
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
 <!--jquery & bootstrap(5js)-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
 </body>
 
 

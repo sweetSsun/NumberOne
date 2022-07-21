@@ -34,7 +34,7 @@
 	
 	}
 	table{
-		margin: 20px;
+		margin: 10px;
 		font-size: 18px;
 		table-layout: fixed;
 		border-left: 20px; 
@@ -42,7 +42,7 @@
 	
 	td {
 	
-	padding: 50px;
+	padding: 10px;
 	}
 	
 	.text_leng {
@@ -98,7 +98,7 @@
 		<%@ include file="/WEB-INF/views/includes/SideBar_Mypage.jsp" %>
 		
 		<section>
-		<div style="min-height: 50px;" id="scroll-board"></div>
+		<div style="min-height: 80px;" id="scroll-board"></div>
 		<!-- 본문 -->
 			<div class="container">
 				<div class="checkout__form" style="margin-top: 30px;"><h4>마이페이지 커뮤니티</h4></div>
