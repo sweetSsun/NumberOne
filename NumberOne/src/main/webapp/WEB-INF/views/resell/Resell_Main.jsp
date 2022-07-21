@@ -318,6 +318,14 @@ input {
 		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"
 	></script>
 </body>
+
+<script type="text/javascript">
+	var checkMsg = '${msg}';
+	if ( checkMsg.length > 0 ){
+		alert(checkMsg);
+	}
+</script>
+
 <script type="text/javascript">
 
 	/* 로그인된 회원인지 체크 */

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@ include file="/resources/css/BarCss.jsp" %>
+
 <style type="text/css">
 footer{
 	margin-top: 10%;

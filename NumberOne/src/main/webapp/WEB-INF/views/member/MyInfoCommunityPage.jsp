@@ -7,25 +7,19 @@
 <meta charset="UTF-8">
 <title>1인자 - 마이페이지 커뮤니티</title>
 
+<!--jquery & bootstrap(5css)-->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-<%@ include file="/resources/css/BarCss.jsp"%>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">        
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
-<!-- 부트스트랩 -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-	crossorigin="anonymous">
 
 <!-- ogani css -->
     <%-- <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/bootstrap.min.css" type="text/css">  --%>
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/nice-select.css" type="text/css">         
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
-
-<!-- Jquery -->
-<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
- -->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
+  
 
 <style type="text/css">
 
@@ -47,8 +41,8 @@
 	}
 	
 	td {
-
-	padding: 10px;
+	
+	padding: 50px;
 	}
 	
 	.text_leng {
@@ -76,11 +70,15 @@
 	overflow:hidden;
 	white-space : nowrap;	
 	text-decoration: none;
-	color:black;
+	color:gray;
 	}	
 	
 </style>
 </head>
+
+
+
+
 <body>
         <!-- TobBar -->
         <c:choose>
@@ -228,7 +226,7 @@
 					</c:choose>
 				
 				<td style="color:gray;">삭제된 글입니다.</td>
-				<td style="text-decoration : line-through; color:gray;">${reply.rpcontents}</td>
+				<td class="delete_leng" style="text-decoration : line-through; color:gray;">${reply.rpcontents}</td>
 				<td style="text-decoration : line-through; color:gray;">${reply.rpdate }</td>
 				</c:when>
 
@@ -270,10 +268,10 @@
 							<!-- 댓글 내용 -->	
 							<c:choose>
 							<c:when test="${reply.rpstate == 0}">
-								<td style="text-decoration : line-through; color:gray;">${reply.rpcontents }</td>
+								<td class="delete_leng" style="text-decoration : line-through; color:gray;">${reply.rpcontents }</td>
 							</c:when>
 							<c:when test="${reply.rpstate == 2 }">
-								<td style="text-decoration : line-through; color:gray;">${reply.rpcontents }</td>
+								<td class="delete_leng" style="text-decoration : line-through; color:gray;">${reply.rpcontents }</td>
 							</c:when>							
 							<c:otherwise>							
 							
@@ -337,7 +335,7 @@
 						<c:when test="${scrap.bdstate == 2 }">
 							<tr style="border-bottom: solid #E0E0E0 1px; color : gray;">
 								<td style="text-align: center;">삭제</td>
-								<td style="text-align: center; text-decoration : line-through;">${scrap.bdtitle }</td>	
+								<td class="delete_leng" style="text-align: center; text-decoration : line-through;">${scrap.bdtitle }</td>	
 								<td style="text-align: center; text-decoration : line-through;">${scrap.bdreply }</td>
 								<td style="text-align: center; text-decoration : line-through;">${scrap.mnickname }</td>
 								<td style="text-align: center; text-decoration : line-through;">${scrap.bddate }</td>																
@@ -346,7 +344,7 @@
 						<c:when test="${scrap.bdstate == 0 }">
 							<tr style="border-bottom: solid #E0E0E0 1px; color : gray;">
 								<td style="text-align: center;">정지</td>
-								<td style="text-align: center; text-decoration : line-through;">${scrap.bdtitle }</td>	
+								<td class="delete_leng" style="text-align: center; text-decoration : line-through;">${scrap.bdtitle }</td>	
 								<td style="text-align: center; text-decoration : line-through;">${scrap.bdreply }</td>
 								<td style="text-align: center; text-decoration : line-through;">${scrap.mnickname }</td>
 								<td style="text-align: center; text-decoration : line-through;">${scrap.bddate }</td>																
@@ -380,6 +378,8 @@
 	</main>
 	
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
+	<!--jquery & bootstrap(5js)-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
 
 </body>
