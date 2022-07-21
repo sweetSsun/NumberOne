@@ -14,7 +14,6 @@
 <meta charset="UTF-8">
 <title>1인자 - 중고거래 팔구게시판</title>
 
-<%@ include file="/resources/css/BarCss.jsp"%>
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
 	integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
@@ -28,10 +27,6 @@
 	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
 	crossorigin="anonymous"
 >
-<script
-	src="https://kit.fontawesome.com/dadeda074b.js"
-	crossorigin="anonymous"
-></script>
 
 
 <style type="text/css">
@@ -246,12 +241,14 @@ input {
 					<select
 						class="bdCategoryList"
 						onchange="selectRegion(1)"
+						
 						id="regionInfo"
 					>
 						<option value="전국">전국</option>
 						<option value="서울">서울</option>
 						<option value="인천">인천</option>
 						<option value="경기">경기</option>
+						<option value="강원">강원</option>
 						<option value="충청">충청</option>
 						<option value="전라">전라</option>
 						<option value="경상">경상</option>
