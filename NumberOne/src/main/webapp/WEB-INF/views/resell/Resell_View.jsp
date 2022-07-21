@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<%@ include file="/resources/css/BarCss.jsp" %>
 <!-- 폰트어썸 -->
 <title>${board.bdtitle } - 1인자:게시판 글상세 페이지</title>
 <!-- Jquery -->
@@ -254,7 +254,7 @@
 									<button id="next" onclick="next()"> &gt; </button> -->
 							</div>
 						</div>
-						<div class="col-7" style="background-color: #eaf8ff;">
+						<div class="col-7" style="background-color: #eaf8ff">
 							<!-- 본문 글 내용-->
 							<textarea id="inputReply" rows="10%" cols="30%" readonly>${ub_resellView.ubcontents}</textarea>
 						</div>	
