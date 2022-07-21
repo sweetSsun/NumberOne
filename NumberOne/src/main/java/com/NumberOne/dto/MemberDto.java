@@ -159,6 +159,12 @@ public class MemberDto {
 	public void setMemailDomain(String memailDomain) {
 		this.memailDomain = memailDomain;
 	}
+	public String getBdtitle() {
+		return bdtitle;
+	}
+	public void setBdtitle(String bdtitle) {
+		this.bdtitle = bdtitle;
+	}
 	@Override
 	public String toString() {
 		return "MemberDto [mid=" + mid + ", mpw=" + mpw + ", mname=" + mname + ", mnickname=" + mnickname + ", mphone="
@@ -166,8 +172,10 @@ public class MemberDto {
 				+ ", mmessage=" + mmessage + ", mstate=" + mstate + ", mjoindate=" + mjoindate + ", mwarning="
 				+ mwarning + ", mfile=" + mfile + ", mpostcode=" + mpostcode + ", maddress=" + maddress
 				+ ", mdetailAddr=" + mdetailAddr + ", mextraAddr=" + mextraAddr + ", memailId=" + memailId
-				+ ", memailDomain=" + memailDomain + "]";
+				+ ", memailDomain=" + memailDomain + ", bdtitle=" + bdtitle + "]";
 	}
+	
+	
 	
 	
 	
