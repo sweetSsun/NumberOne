@@ -361,6 +361,14 @@ input {
 		crossorigin="anonymous"
 	></script>
 </body>
+
+<script type="text/javascript">
+	var checkMsg = '${msg}';
+	if ( checkMsg.length > 0 ){
+		alert(checkMsg);
+	}
+</script>
+
 <script type="text/javascript">
 		// ID가 'regionInfo'인 select태그의 option들 중 선택된 인덱스의 option태그 value를 변수에 저장
 		const loginRegion = '${sessionScope.loginRegion}'; 
