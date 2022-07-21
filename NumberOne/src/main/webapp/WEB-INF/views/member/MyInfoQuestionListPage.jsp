@@ -97,7 +97,7 @@ background-color: #00BCD4;
 					<div class="col-lg-3"  style=" margin:0px; padding-right: 50px;">					                      
 					<!-- 작성하기 버튼 -->    
                        <button class="site-btn" style="border-radius: 4px; float: right;"
-                       onclick = "location.href = 'loadToMyInfoQuestionForm' " >                        
+                       onclick = "location.href = 'loadToMyInfoQuestionForm'" >                        
                         작성하기</button>
 					</div>					
 				</div> <br>

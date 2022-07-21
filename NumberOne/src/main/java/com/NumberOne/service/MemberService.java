@@ -645,6 +645,7 @@ public class MemberService {
 			loginId = (String) session.getAttribute("kakaoId");			
 		}
 		System.out.println("로그인 된 아이디 : " + loginId);
+		mav.setViewName("member/MyInfoQuestionForm");
 
 		return mav;
 	}

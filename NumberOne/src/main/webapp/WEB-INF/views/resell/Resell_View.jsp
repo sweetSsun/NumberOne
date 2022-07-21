@@ -7,10 +7,10 @@
 <meta charset="UTF-8">
 
 <!-- 폰트어썸 -->
-<title>${board.bdtitle } - 1인자:게시판 글상세 페이지</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <!-- Jquery -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>  
+<title>${board.bdtitle } - 1인자:게시판 글상세 페이지</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 
@@ -456,27 +456,6 @@
 	if ( checkMsg.length > 0 ){
 		alert(checkMsg);
 	}
-</script>
-<script type="text/javascript">
-	var images = document.querySelectorAll(".Resell_img_container img");
-	let i = images[0]; // current slide
-	console.log(i);
-	let j = images.length; // total slides
-	console.log(j);
-	
-	function next(){
-	    document.getElementByClss("content" + (i+1)).classList.remove("active");
-	    i = ( j + i + 1) % j;
-	    document.getElementById("content" + (i+1)).classList.add("active");
-	    indicator( i+ 1 );
-	}
-	function prev(){
-	    document.getElementById("content" + (i+1)).classList.remove("active");
-	    i = (j + i - 1) % j;
-	    document.getElementById("content" + (i+1)).classList.add("active");
-	    indicator(i+1);
-	}
-	
 </script>
 
 <!-- 관리자용 -->
