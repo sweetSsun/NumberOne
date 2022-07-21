@@ -4,12 +4,6 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<!-- jQuery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<!-- 부트스트랩 -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
-<%@ include file="/resources/css/BarCss.jsp" %>
 
 <style type="text/css">
 
@@ -50,11 +44,6 @@
 						<a href="selectResellPageList?sellBuy=B" title="사구"><i class="fa-solid fa-cart-shopping"></i></a>
 					</span>
 				</div>
-				<div class="sideclose_room">
-					<span>
-						<a href="#" title="채팅"><i class="fa-solid fa-comment-dots"></i></a>
-					</span>
-				</div>
 				
 			</div>
 		</div>
@@ -70,82 +59,87 @@
 				</div>
 				
 				
-				<div class="dropdown sideroom">
-					  <a id="drop_sell" class="sideregion_title dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="true">
-					    <i class="fa-solid fa-store"></i>&nbsp;&nbsp;팔구
-					  </a>
+				<div class="accordion" id="accordionPanelsStayOpenExample">
+					<div class="accordion-item sidetitle_resell">
+						<h2 class="accordion-header" id="panelsStayOpen-headingOne">
+							<button class="accordion-button sideregion_title" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+								<i class="fa-solid fa-store"></i>&nbsp;&nbsp;팔구
+							</button>
+						</h2>
+						
+						<div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingOne">
+							<div class="accordion-body">
+								<ul class="accordion-menu">
+								  	<li>
+								    	<table class="sideregion_tags">
+								    		<tr>
+												<td><a href="selectResellPageList?sellBuy=S">전체</a></td>
+												<td><a href="selectResellPageList?searchVal=SEL&sellBuy=S">서울</a></td>
+												<td><a href="selectResellPageList?searchVal=ICN&sellBuy=S">인천</a></td>
+											</tr>
+											<tr>
+												<td><a href="selectResellPageList?searchVal=GGD&sellBuy=S">경기</a></td>
+												<td><a href="selectResellPageList?searchVal=GSD&sellBuy=S">경상</a></td>
+												<td><a href="selectResellPageList?searchVal=JLD&sellBuy=S">전라</a></td>
+											</tr>
+											<tr>
+												<td><a href="selectResellPageList?searchVal=CCD&sellBuy=S">충청</a></td>
+												<td><a href="selectResellPageList?searchVal=GWD&sellBuy=S">강원</a></td>
+												<td><a href="selectResellPageList?searchVal=JJD&sellBuy=S">제주</a></td>
+											</tr>
+										</table>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
 					
-					  <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-					  	<li>
-					    	<table class="sideregion_tags">
-					    		<tr>
-									<td><a href="selectResellPageList?sellBuy=S">전체</a></td>
-									<td><a href="selectResellPageList?searchVal=SEL&sellBuy=S">서울</a></td>
-									<td><a href="selectResellPageList?searchVal=ICN&sellBuy=S">인천</a></td>
-								</tr>
-								<tr>
-									<td><a href="selectResellPageList?searchVal=GGD&sellBuy=S">경기</a></td>
-									<td><a href="selectResellPageList?searchVal=GSD&sellBuy=S">경상</a></td>
-									<td><a href="selectResellPageList?searchVal=JLD&sellBuy=S">전라</a></td>
-								</tr>
-								<tr>
-									<td><a href="selectResellPageList?searchVal=CCD&sellBuy=S">충청</a></td>
-									<td><a href="selectResellPageList?searchVal=GWD&sellBuy=S">강원</a></td>
-									<td><a href="selectResellPageList?searchVal=JJD&sellBuy=S">제주</a></td>
-								</tr>
-							</table>
-					    </li>
-					  </ul>
-				</div>
-				
-				
-				<div class="dropdown sideroom">
-					  <a id="drop_buy" class="sideregion_title dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" data-bs-auto-close="true">
-					    <i class="fa-solid fa-cart-shopping"></i>&nbsp;&nbsp;사구
-					  </a>
 					
-					  <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
-					  	<li>
-					    	<table class="sideregion_tags">
-					    		<tr>
-									<td><a href="selectResellPageList?sellBuy=B">전체</a></td>
-									<td><a href="selectResellPageList?searchVal=SEL&sellBuy=B">서울</a></td>
-									<td><a href="selectResellPageList?searchVal=ICN&sellBuy=B">인천</a></td>
-								</tr>
-								<tr>
-									<td><a href="selectResellPageList?searchVal=GGD&sellBuy=B">경기</a></td>
-									<td><a href="selectResellPageList?searchVal=GSD&sellBuy=B">경상</a></td>
-									<td><a href="selectResellPageList?searchVal=JLD&sellBuy=B">전라</a></td>
-								</tr>
-								<tr>
-									<td><a href="selectResellPageList?searchVal=CCD&sellBuy=B">충청</a></td>
-									<td><a href="selectResellPageList?searchVal=GWD&sellBuy=B">강원</a></td>
-									<td><a href="selectResellPageList?searchVal=JJD&sellBuy=B">제주</a></td>
-								</tr>
-							</table>
-					    </li>
-					  </ul>
-				</div>	
-				
-				
-				<div id="chatroom" class="sideroom">
-					<span>
-						<a href="#"><i class="fa-solid fa-comment-dots"></i>&nbsp;&nbsp;채팅</a>
-					</span>
+					<div class="accordion-item sideroom_region">
+						<h2 class="accordion-header" id="panelsStayOpen-headingTwo">
+							<button class="accordion-button sideregion_title collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+								<i class="fa-solid fa-cart-shopping"></i>&nbsp;&nbsp;사구
+							</button>
+						</h2>
+						
+						<div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingTwo">
+							<div class="accordion-body">
+								<ul class="accordion-menu">
+								  	<li>
+								    	<table class="sideregion_tags">
+								    		<tr>
+												<td><a href="selectResellPageList?sellBuy=S">전체</a></td>
+												<td><a href="selectResellPageList?searchVal=SEL&sellBuy=S">서울</a></td>
+												<td><a href="selectResellPageList?searchVal=ICN&sellBuy=S">인천</a></td>
+											</tr>
+											<tr>
+												<td><a href="selectResellPageList?searchVal=GGD&sellBuy=S">경기</a></td>
+												<td><a href="selectResellPageList?searchVal=GSD&sellBuy=S">경상</a></td>
+												<td><a href="selectResellPageList?searchVal=JLD&sellBuy=S">전라</a></td>
+											</tr>
+											<tr>
+												<td><a href="selectResellPageList?searchVal=CCD&sellBuy=S">충청</a></td>
+												<td><a href="selectResellPageList?searchVal=GWD&sellBuy=S">강원</a></td>
+												<td><a href="selectResellPageList?searchVal=JJD&sellBuy=S">제주</a></td>
+											</tr>
+										</table>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+  
 				</div>
-				
+			
 			</div>
-			
-			
 		</div>
 	</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>	
+	
 
 </body>
 
 <script type="text/javascript">
-
+	
 $('#sidebar-toggleOff').click(function() {    
     $("#sidebar, #sideList, #sidebar-toggleOff, #sideclose, #drop_sell, #drop_buy").removeClass('sideon')
     console.log("off");
@@ -156,35 +150,6 @@ $('#sidebar-toggleOn').click(function() {
     console.log("on");
 });
 
-
-
-$('#drop_sell').click(function() {
-	if($("#drop_buy").hasClass('padding_plus')){		
-		$("#drop_buy").removeClass('padding_plus')
-		$("#chatroom").removeClass('padding_plus')
-	} else{
-		$("#drop_buy").addClass('padding_plus')
-		$("#chatroom").addClass('padding_plus')
-	}
-	
-});
-
-$('#drop_buy').click(function(){
-	if($("#drop_buy").hasClass('padding_plus')){
-		if($("#chatroom").hasClass('padding_plus')){
-			$("#drop_buy").removeClass('padding_plus')
-			$(".dropdown-menu").css("transform","translate(0px, 43px)");
-		}
-	} else {
-		if($("#chatroom").hasClass('padding_plus')){
-			$("#chatroom").removeClass('padding_plus')
-		} else{
-		$("#chatroom").addClass('padding_plus')
-		}
-	}
-});
-
-	
 </script>
 
 </html>

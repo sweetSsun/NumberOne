@@ -221,10 +221,80 @@
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h2 class="text-center">중고거래 상세페이지 : Resell_View</h2>
-				<form action="insertResellChat">
-					<div class="row">
-						<div class="col">
+				<h1 class="text-center">중고거래 상세페이지</h1>
+
+
+				<div class="container-header container-card_w100 slider">
+
+					<div class="w3-content w3-display-container">
+						<img class="mySlides" src="${pageContext.request.contextPath }/resources/img/resell/${ub_resellView.ubmainimg}" style="width: 100%">
+
+						<c:forEach items="${ub_resellView.ubdetailimg_list}" var="ubdetailimg_list" begin="1">
+							<img class="mySlides" src="${pageContext.request.contextPath }/resources/img/resell/${ubdetailimg_list}" style="width: 100%">
+						</c:forEach>
+						<div class="w3-left position-left" onclick="plusDivs(-1)">&#10094;</div>
+						<div class="w3-right position-right" onclick="plusDivs(1)">&#10095;</div>
+
+						<!--  -->
+					</div>
+
+
+				</div>
+
+
+
+				<div class="container-body">
+					<!-- 품목명  -->
+					<form action="insertResellChat">
+						<div class="container-card_goods container-card_w100">
+							<c:forEach items="${gd_resellView}" var="gdList">
+
+								<div class="container-card_goods_2">
+									<div class="item-basis_1">
+
+										<input type="checkbox" class="selectCheckBox" onclick="clickBox(this, '${gdList.gdname }')" value="${gdList.gdname }">
+									</div>
+									<div class="item-basis_2 gd_nameList">${gdList.gdname }</div>
+									<div class="item-basis_3 gd_priceList">${gdList.gdprice }</div>
+									<input type="hidden" class="select_gdcode" value="${gdList.gdcode }"> <input type="hidden" class="select_gdstate"
+										value="${gdList.gdstate }"
+									>
+								</div>
+
+							</c:forEach>
+
+
+							<input type="hidden" name="cmfrmid" value="${sessionScope.loginId }"> <input type="hidden" name="cmfrmnickname"
+								value="${sessionScope.loginNickname }"
+							> <input type="hidden" name="cmtomnickname" value="${ub_resellView.ubnickname}"> <input type="hidden" name="cmtomid"
+								value="${ub_resellView.ubmid}"
+							> <input type="hidden" name="gdtitle" value="${ub_resellView.ubtitle }">
+
+
+						</div>
+
+
+						<div class="container-flex_2">
+
+							<div class=item-basis_5>
+								<div>
+									<p style="font-size: 12.5px">
+										<span onclick="writeMemberSellbuy('${zzim.mnickname }')">${zzim.mnickname }</span> &nbsp;&nbsp; <img class="img-profile rounded-circle" style="width: 50px"
+											src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/${ub_resellView.ubprofile }"
+										>
+										
+									
+									</p>
+								</div>
+
+							</div>
+
+							<div class=" item-basis_4">
+								<button id="sellBuyList" type="button">글목록</button>
+							</div>
+							<div class="item-basis_4">
+								<button id="zzimBtn" type="button">찜</button> <span id="zzimCount">${ub_resellView.ubzzim }</span>
+							</div>
 							<c:choose>
 								<c:when test="${ub_resellView.ubsellbuy == 's' }">
 									<a href=""><span class="fw-bold boardCategory"> | 사구 </span></a> 
@@ -374,7 +444,271 @@
 	}
 </script>
 
+<!-- 슬라이드배너  -->
+<script type="text/javascript">
+	var slideIndex = 1;
+	showDivs(slideIndex);
+
+	function plusDivs(n) {
+		showDivs(slideIndex += n);
+	}
+
+	function currentDiv(n) {
+		showDivs(slideIndex = n);
+	}
+
+	function showDivs(n) {
+		var i;
+		var x = document.getElementsByClassName("mySlides");
+		var dots = document.getElementsByClassName("demo");
+		if (n > x.length) {
+			slideIndex = 1
+		}
+		if (n < 1) {
+			slideIndex = x.length
+		}
+		;
+		for (i = 0; i < x.length; i++) {
+			x[i].style.display = "none";
+		}
+		for (i = 0; i < dots.length; i++) {
+			dots[i].className = dots[i].className.replace(" w3-white", "");
+		}
+		x[slideIndex - 1].style.display = "block";
+		//dots[slideIndex - 1].className += " w3-white";
+	}
+</script>
+
+<script type="text/javascript">
+	// 게시글 경고 모달창 close 하는 스크립트
+	var modal = $(".modal");
+	var close = $(".close");
+	for (var i = 0; i < close.length; i++) {
+		close[i].addEventListener("click", function() {
+			$("#ubWarningCheckModal").modal("hide");
+		});
+	}
+</script>
+
+<!--신고 스크립트  -->
+<script type="text/javascript">
+	window.onload = function(){
+		checkResellWarning();
+	}
+	
+	function checkResellWarning() {
+		/* 게시글 신고 확인 */
+		$.ajax({
+			type : "get",
+			url : "checkResellWarning_ajax",
+			data : {
+				"loginId" : loginId,
+				"ubcode" : ubcode
+			},
+			async : false,
+			success : function(wnCheck) {
+				console.log("신고유무 확인 : " + wnCheck);
+				if (wnCheck == "Yes") {
+					$("#ubWarning").addClass("text-danger");
+				}
+			}
+		});
+	}
 
 
+///////////////////////////[신고]/////////////////////////////////
+	function ubWarningCheckModal() {
+		/* 게시글 신고 클릭 시 모달창 출력 */
+		if ($("#ubWarning").hasClass("text-danger")) {
+			alert("이미 신고접수된 게시물입니다.");
+		} else {
+			$("#ubWarningCheckModal").modal('show');
+		}
+	}
 
+
+	function insertResellWarning() {
+		/* 게시글 신고 */
+		console.log("게시글 신고자 : " + loginId);
+		console.log("신고할 글번호 : " + ubcode);
+		if ($("#ubWarning").hasClass("text-danger")) {
+			deleteResellWarning();
+		} else {
+			$.ajax({
+				type : "get",
+				url : "insertResellWarning_ajax",
+				data : {
+					"loginId" : loginId,
+					"ubcode" : ubcode
+				},
+				async : false,
+				success : function(insertResult) {
+					console.log(insertResult);
+					if (insertResult > 0) {
+						alert("게시글 신고가 접수되었습니다.")
+						$("#ubWarning").addClass("text-danger");
+					}
+				}
+			});
+		}
+	}
+
+	function deleteResellWarning() {
+		/* 신고 취소 // 22.07.06 신고취소 안되도록 수정 */
+		$("#ubWarning").removeClass("text-danger");
+		$.ajax({
+			type : "get",
+			url : "deleteResellWarning_ajax",
+			data : {
+				"loginId" : loginId,
+				"ubcode" : ubcode
+			},
+			async : false,
+			success : function(deleteResult) {
+				console.log(deleteResult);
+			}
+		});
+	}
+</script>
+
+<script type="text/javascript">
+	// 게시글 삭제 경고 모달창 close 하는 스크립트
+	var modal = $(".modal");
+	var close = $(".close");
+	for (var i = 0; i < close.length; i++) {
+		close[i].addEventListener("click", function() {
+			$("#ubDeleteCheckModal").modal("hide");
+		});
+	}
+</script>
+
+
+<script type="text/javascript">
+	/* 게시글 수정, 삭제 */
+	function resellModifyForm() {
+		/* 게시글 수정 페이지 이동  */
+		let modifyCheck = 'MODIFY';
+		location.href = "loadToResellModifyForm?ubcode=" + ubcode
+				+ "&ubsellbuy=" + ubsellbuy + "&modifyCheck=" + modifyCheck;
+	}
+
+	function ubDeleteCheckModal() {
+		/* 게시글 삭제버튼 클릭 시 모달 출력 */
+		$("#ubDeleteCheckModal").modal('show');
+	}
+	function updateResellDelete() {
+		/* 게시글 삭제(상태변경) */
+		//모달창에서 "네" 버튼 클릭 시 삭제
+		location.href = "updateResellDelete?ubcode=" + ubcode + "&ubsellbuy="
+				+ ubsellbuy;
+	}
+</script>
+
+<!-- 글목록으로 돌아가기 -->
+<script type="text/javascript">
+	let sellbuy_List = document.querySelector("#sellBuyList");
+	//console.log(sellbuy_List);
+	
+	sellbuy_List.addEventListener("click", backList);
+	
+	function backList() {
+		console.log("글목록버튼 클릭이벤트");
+		location.href = "selectResellPageList?sellBuy=" + ubsellbuy;
+	}
+
+</script>
+
+<!-- 체크박스 선택이벤트 스크립트  -->
+<script type="text/javascript">
+	/* 체크박스 클릭 이벤트 */
+	let gd_names = [];
+	const cmfrmid = loginId;
+	const cmfrmnickname = document.getElementsByName("cmfrmnickname")[0].value;
+	const cmtomnickname = document.getElementsByName("cmtomnickname")[0].value;
+	const cmtomid = ubmid;
+	const gdtitle = document.getElementsByName("gdtitle")[0].value;
+	
+
+	function clickBox(sel_boxTag, selOp) {
+		if (sel_boxTag.checked == true) {
+			// 클릭이벤트 발생 시 체크박스가 checked 된 경우에만 실행
+			gd_names.push(selOp);	// checked 되었을 때 상품명을 gd_names 변수에 push 해서 담아준다.
+
+			/* 데이터 확인 */
+			console.log("선택된체크박스 : ", sel_boxTag);
+			console.log("보내는아이디 : ", cmfrmid);
+			console.log("보내는닉네임 : ", cmfrmnickname);
+			console.log("받는닉네임 : ", cmtomnickname);
+			console.log("받는아이디 : ", cmtomid);
+			console.log("상품이름 : ", gd_names);
+			console.log("글 제목 : ", gdtitle);			
+	
+	} else {
+        var ubIdx = gd_names.findIndex( (element) => element === selOp );
+        console.log(ubIdx);
+        gd_names.splice(ubIdx, 1);   // checked 해제 했을 때 상품명을 ub_names 변수에서 빼준다.
+        
+        /* 데이터 확인 */
+        console.log("<"+selOp+" 해제>");
+        console.log("상품이름 : ", gd_names);
+	}
+	}
+</script>
+
+<!--채팅 활성화  -->
+<script type="text/javascript">
+chatBtn.addEventListener('click', chatInsert_Ajax);
+
+/* 챗버튼 클릭 이벤트핸들러 */
+function chatInsert_Ajax() {
+   // 로그인 확인
+   $.ajax({
+      type : 'get',
+      url : 'selectLoginOut_ajax',
+      async : false,
+      success : function(result){
+         if (result == "2"){ 
+            if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+               location.href = "loadToLogin"
+               return;
+            }
+            return;
+         }
+         
+         // 체크 확인
+         if(gd_names.length == 0){
+            alert('관심있는 상품을 선택해주세요');
+            return;
+         }
+         
+         
+         $.ajax({
+   
+            type : 'post',
+            url : 'insertResellChat',
+            traditional : true,     // 배열 전송위해서 필요.  
+            async : false,
+            data : {
+               'gd_names' : gd_names,
+               'cmfrmid' : cmfrmid,
+               'cmfrmnickname' : cmfrmnickname,
+               'cmtomnickname' : cmtomnickname,
+               'cmtomid' : cmtomid,
+               'gdtitle' : gdtitle
+            },
+            dataType : 'json',
+            success : function(chatResult) {
+               alert('바르고 고운 말을 써주세요.');
+               console.log("chatResult : ", chatResult);
+      
+               popupChat(chatResult);
+      
+            }
+         })
+      }
+   })
+}
+
+</script>
 </html>
+

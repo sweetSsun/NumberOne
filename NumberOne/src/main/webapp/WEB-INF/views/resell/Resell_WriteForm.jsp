@@ -11,12 +11,14 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
 	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous"
 >
-<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/resell.css" type="text/css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
 	integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous"
 	referrerpolicy="no-referrer"
 ></script>
 <style type="text/css">
+		div .d_none{
+	display: none;
+	}
 	section{
 		max-width: 70%;
 		margin: auto;
@@ -39,7 +41,7 @@
 		margin: auto;
 		height: 22px;
 	}
-	.bdcontents{
+	.ubcontents{
 		border-radius: 5px;
 		border: solid gray 2px;
 		font-size: 19px;
@@ -49,6 +51,8 @@
 		width: 100%;
 		text-align: center;
 		display:inline-block;
+		
+		
 	}
 	.buttons{
 		margin: auto; /* 수평 */
@@ -85,9 +89,7 @@
 		font-size: 20px;
 		margin-left: 20px;
 	}
-	.d_none{
-	display: none;
-	}
+
 </style>
 
 
@@ -164,53 +166,47 @@
 	<div class="addBtn">+추가</div>
 		
 	</div>
-	<hr>
-		<div class="row d_none">
+		<div class="row d_none btn_d-none">
 		<div class="col-8">
-		<input type="text" name="gd_names" size="60" placeholder="품목명" class="gdcheck_n">
+		<input type="text" name="" size="60" placeholder="품목명" class="gdcheck_n">
 		</div>
 		
 		<div class="col-4">
-		<input type="text" size="20" placeholder="가격" name="gd_price" class="gdcheck_p">
+		<input type="text" size="20" placeholder="가격" name="" class="gdcheck_p">
+						</div>
+	<div class="addBtn">+추가</div>
+			<div class="removeBtn">제거</div>
+	</div>
+		<div class="row d_none btn_d-none">
+		<div class="col-8">
+		<input type="text" name="" size="60" placeholder="품목명" class="gdcheck_n">
+		</div>
+		
+		<div class="col-4">
+		<input type="text" size="20" placeholder="가격" name="" class="gdcheck_p">
+						</div>
+	<div class="addBtn">+추가</div>
+			<div class="removeBtn">제거</div>
+	</div>
+		<div class="row d_none btn_d-none">
+		<div class="col-8">
+		<input type="text" name="" size="60" placeholder="품목명" class="gdcheck_n">
+		</div>
+		
+		<div class="col-4">
+		<input type="text" size="20" placeholder="가격" name="" class="gdcheck_p">
 						</div>
 	<hr>
 	<div class="addBtn">+추가</div>
 			<div class="removeBtn">제거</div>
 	</div>
-	<hr>
-		<div class="row d_none">
+		<div class="row d_none btn_d-none">
 		<div class="col-8">
-		<input type="text" name="gd_names" size="60" placeholder="품목명" class="gdcheck_n">
-		</div>
-		
-		<div class="col-4">
-		<input type="text" size="20" placeholder="가격" name="gd_price" class="gdcheck_p">
-						</div>
-	<hr>
-	<div class="addBtn">+추가</div>
-			<div class="removeBtn">제거</div>
-	</div>
-	<hr>
-		<div class="row d_none">
-		<div class="col-8">
-		<input type="text" name="gd_names" size="60" placeholder="품목명" class="gdcheck_n">
-		</div>
-		
-		<div class="col-4">
-		<input type="text" size="20" placeholder="가격" name="gd_price" class="gdcheck_p">
-						</div>
-	<hr>
-	<div class="addBtn">+추가</div>
-			<div class="removeBtn">제거</div>
-	</div>
-	<hr>
-		<div class="row d_none">
-		<div class="col-8">
-		<input type="text" name="gd_names" size="60" placeholder="품목명" class="gdcheck_n">
+		<input type="text" name="" size="60" placeholder="품목명" class="gdcheck_n">
 		</div>
 		
 		<div class="col-4 ">
-		<input type="text" size="20" placeholder="가격" name="gd_price" class="gdcheck_p">
+		<input type="text" size="20" placeholder="가격" name="" class="gdcheck_p">
 						</div>
 	<hr>
 			<div class="removeBtn">제거</div>
@@ -221,7 +217,7 @@
 	
 	
 	<div class="row">
-				<textarea rows="17" cols="80" name="ubcontents" id="contentsCheck">상품상세설명</textarea>
+				<textarea rows="17" cols="80" name="ubcontents" id="contentsCheck" class="ubcontents" placeholder="상품상세설명"></textarea>
 				</div>		
 						
 					</div>
@@ -236,14 +232,14 @@
 					<div id="bdimgScreen" style="width:200px; height:150px;" class="d_none">
 					<img id='previewBdmig' style="width:100%; height:100%;"></img>
 					</div>
-					<input type="file" id="mainImg" name="bdimgfile" accept="image/*"> 
+					<input type="file" id="mainImg" name="ubmainimgfile" accept="image/*"> 
 				</div>	
 				
 				
 				<!-- 상세사진 -->
 					<div class="row" style="margin-top: 3%;">
 				<div id="bddetailimgScreen" style="width:100%;" class="row"></div>
-				<input type="file" multiple="multiple" id="detailImg" name="bddetailimgfile" onclick="return mainimgCh()" accept="image/*">
+				<input type="file" multiple="multiple" id="detailImg" name="ubdetailimgfile" onclick="return mainimgCh()" accept="image/*">
 				</div>
 				
 				<!-- 작성취소버튼 -->
@@ -502,34 +498,34 @@ if(resellTitle.options[resellTitle.selectedIndex].value == 'B'){
 <!-- 품목추가,제거 이벤트 -->
 <script type="text/javascript">
 	/* 추가버튼 변수 */
-	var addBtn0 = document.getElementsByClassName("addBtn")[0];
-	var addBtn1 = document.getElementsByClassName("addBtn")[1];
-	var addBtn2 = document.getElementsByClassName("addBtn")[2];
-	var addBtn3 = document.getElementsByClassName("addBtn")[3];
+	let addBtn0 = document.getElementsByClassName("addBtn")[0];
+	let addBtn1 = document.getElementsByClassName("addBtn")[1];
+	let addBtn2 = document.getElementsByClassName("addBtn")[2];
+	let addBtn3 = document.getElementsByClassName("addBtn")[3];
 
 	/* 제거버튼 변수*/
-	var removeBtn0 = document.getElementsByClassName("removeBtn")[0];
-	var removeBtn1 = document.getElementsByClassName("removeBtn")[1];
-	var removeBtn2 = document.getElementsByClassName("removeBtn")[2];
-	var removeBtn3 = document.getElementsByClassName("removeBtn")[3];
+	let removeBtn0 = document.getElementsByClassName("removeBtn")[0];
+	let removeBtn1 = document.getElementsByClassName("removeBtn")[1];
+	let removeBtn2 = document.getElementsByClassName("removeBtn")[2];
+	let removeBtn3 = document.getElementsByClassName("removeBtn")[3];
 
 	/* input태그의 부모div */
-	var dsiplay_btn0 = document.getElementsByClassName("btn_d-none")[0];
-	var dsiplay_btn1 = document.getElementsByClassName("btn_d-none")[1];
-	var dsiplay_btn2 = document.getElementsByClassName("btn_d-none")[2];
-	var dsiplay_btn3 = document.getElementsByClassName("btn_d-none")[3];
+	let dsiplay_btn0 = document.getElementsByClassName("btn_d-none")[0];
+	let dsiplay_btn1 = document.getElementsByClassName("btn_d-none")[1];
+	let dsiplay_btn2 = document.getElementsByClassName("btn_d-none")[2];
+	let dsiplay_btn3 = document.getElementsByClassName("btn_d-none")[3];
 
 	/* 품목이름 변수 */
-	var gdcheck_n1 = document.getElementsByClassName("gdcheck_n")[1];
-	var gdcheck_n2 = document.getElementsByClassName("gdcheck_n")[2];
-	var gdcheck_n3 = document.getElementsByClassName("gdcheck_n")[3];
-	var gdcheck_n4 = document.getElementsByClassName("gdcheck_n")[4];
+	let gdcheck_n1 = document.getElementsByClassName("gdcheck_n")[1];
+	let gdcheck_n2 = document.getElementsByClassName("gdcheck_n")[2];
+	let gdcheck_n3 = document.getElementsByClassName("gdcheck_n")[3];
+	let gdcheck_n4 = document.getElementsByClassName("gdcheck_n")[4];
 
 	/* 품목가격 변수  */
-	var gdcheck_p1 = document.getElementsByClassName("gdcheck_p")[1];
-	var gdcheck_p2 = document.getElementsByClassName("gdcheck_p")[2];
-	var gdcheck_p3 = document.getElementsByClassName("gdcheck_p")[3];
-	var gdcheck_p4 = document.getElementsByClassName("gdcheck_p")[4];
+	let gdcheck_p1 = document.getElementsByClassName("gdcheck_p")[1];
+	let gdcheck_p2 = document.getElementsByClassName("gdcheck_p")[2];
+	let gdcheck_p3 = document.getElementsByClassName("gdcheck_p")[3];
+	let gdcheck_p4 = document.getElementsByClassName("gdcheck_p")[4];
 
 	/* 추가, 제거 버튼 클릭시 이벤트 */
 	addBtn0.onclick = function() {
@@ -538,22 +534,22 @@ if(resellTitle.options[resellTitle.selectedIndex].value == 'B'){
 		gdcheck_n1.setAttribute("name", "gd_names");
 		gdcheck_p1.setAttribute("name", "gd_price");
 
-	};
+	}
 	addBtn1.onclick = function() {
 		dsiplay_btn1.classList.remove("d_none");
 		gdcheck_n2.setAttribute("name", "gd_names");
 		gdcheck_p2.setAttribute("name", "gd_price");
-	};
+	}
 	addBtn2.onclick = function() {
 		dsiplay_btn2.classList.remove("d_none");
 		gdcheck_n3.setAttribute("name", "gd_names");
 		gdcheck_p3.setAttribute("name", "gd_price");
-	};
+	}
 	addBtn3.onclick = function() {
 		dsiplay_btn3.classList.remove("d_none");
 		gdcheck_n4.setAttribute("name", "gd_names");
 		gdcheck_p4.setAttribute("name", "gd_price");
-	};
+	}
 	removeBtn3.onclick = function() {
 		dsiplay_btn3.classList.add("d_none");
 		gdcheck_n4.removeAttribute("name", "gd_names");
@@ -588,28 +584,30 @@ if(resellTitle.options[resellTitle.selectedIndex].value == 'B'){
 			document.getElementById("titleCheck").focus();
 			alert("제목을 입력하세요.");
 			checkForm = false;
-		} else if (document.getElementsByClassName("gdcheck_n")[0].value == '') {
-			alert("상품명을 입력하세요");
-			document.getElementsByClassName("gdcheck_n")[0].focus();
-
-			checkForm = false;
-		} else if (document.getElementsByClassName("gdcheck_p")[0].value == '') {
-			alert("상품의 가격을 입력하세요");
-			document.getElementsByClassName("gdcheck_p")[0].focus();
-			checkForm = false;
 		} else if (document.getElementById("contentsCheck").value == '') {
 			document.getElementById("contentsCheck").focus();
 			alert("내용을 입력하세요");
 			checkForm = false;
-		} else if (document.getElementById("mainImgCheck").value == '') {
+		} else if (document.getElementById("mainImg").value == '') {
 			alert("대표 사진은 필수 사항입니다!");
-			document.getElementById("mainImgCheck").focus();
+			document.getElementById("mainImg").focus();
 			checkForm = false;
 		}
 		return checkForm;
 	}
 </script>
 
+
+<script type="text/javascript">
+
+function cancelBtn() {
+	console.log('취소버튼');
+location.href = "selectResellPageList?sellBuy=" + sell_buy;
+}
+		</script>
+
+
+<%--
 <!-- 이미지파일 미리보기 스크립트 -->
 <script type="text/javascript">
 /*<!-- 이미지파일 미리보기 이벤트핸들러 호출 -->  */
@@ -640,7 +638,8 @@ if(resellTitle.options[resellTitle.selectedIndex].value == 'B'){
 	};
 </script>
 
-<!-- 멀티플파일 이미지 미리보기 -->
+
+ <!-- 멀티플파일 이미지 미리보기 -->
 <script type="text/javascript">
 	/* 멀티플파일 이미지 미리보기 */
 	function loadMultiFile(input) {
@@ -676,14 +675,5 @@ if(resellTitle.options[resellTitle.selectedIndex].value == 'B'){
 		}
 	};
 </script>
-
-<script type="text/javascript">
-
-function cancelBtn() {
-	console.log('취소버튼');
-location.href = "selectResellPageList?sellBuy=" + sell_buy;
-}
-		</script>
-
-
+  --%>
 </html>
