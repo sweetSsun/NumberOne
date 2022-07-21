@@ -357,6 +357,13 @@ input {
 	></script>
 </body>
 <script type="text/javascript">
+	var checkMsg = '${msg}';
+	if ( checkMsg.length > 0 ){
+		alert(checkMsg);
+	}
+</script>
+
+<script type="text/javascript">
 	window.onload = function() {
 		soldCheck();
 

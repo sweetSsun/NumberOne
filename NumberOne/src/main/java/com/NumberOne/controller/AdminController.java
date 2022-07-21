@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.NumberOne.dto.NoticeDto;
 import com.NumberOne.dto.Paging;
+import com.NumberOne.dto.UsedBoardDto;
 import com.NumberOne.service.AdminService;
 
 @Controller
@@ -278,9 +279,9 @@ public class AdminController {
 	}
 	
 	@RequestMapping (value="admin_updateResellStop")
-	public ModelAndView admin_updateResellStop(String ubcode, Paging paging, RedirectAttributes ra) {
+	public ModelAndView admin_updateResellStop(UsedBoardDto ubDto, Paging paging, String check, RedirectAttributes ra) {
 		System.out.println("중고거래 글 정지 요청");
-		mav = asvc.admin_updateResellStop(ubcode, paging, ra);
+		mav = asvc.admin_updateResellStop(ubDto, paging, check, ra);
 		return mav;
 		// 글목록으로 돌아가는 url 만들어서 매개변수 생기면 수정 필요
 	}
