@@ -83,7 +83,6 @@
 		UBSELLBUY = #{paging.sellBuy} AND
 		UBSTATE = 1 OR UBSTATE = 9
 
-
 		) LEFT
 		OUTER JOIN ZZIM_VIEW
 		ON UBCODE = ZZUBCODE,
@@ -370,8 +369,19 @@
 		SET GDSTATE = #{gdstate}, GDPRICE = #{gdprice}, 
 		GDNAME = #{gdname}
 		WHERE GDCODE =
-		#{gdcode}
-		
+		#{gdcode}		
+	</update>
+	
+		<update id="updateResellState_usedBoardAjax">
+		UPDATE USEDBOARDS
+		SET UBSTATE = #{ubstate}
+		WHERE UBCODE = #{ubcode}
+	</update>
+
+	<update id="updateResellState_GoodsAjax">
+		UPDATE GOODS
+		SET GDSTATE = #{gdstate}
+		WHERE GDCODE = #{gdcode}
 	</update>
 
 </mapper>

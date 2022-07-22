@@ -148,7 +148,7 @@ System.out.println(ubDto);
 	}
 
 	@RequestMapping(value = "/selectResellPageList")
-	public ModelAndView selectResellPageList(Paging paging) {
+	public ModelAndView selectResellPageList(Paging paging) throws ParseException {
 		System.out.println("selectResellPageList 호출");
 
 		ModelAndView mav = new ModelAndView();

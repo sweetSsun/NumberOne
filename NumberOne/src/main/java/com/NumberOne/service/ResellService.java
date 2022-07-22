@@ -255,7 +255,7 @@ public class ResellService {
 	}
 
 //  사구 팔구 통합
-	public ModelAndView selectResellPageList(Paging paging) {
+	public ModelAndView selectResellPageList(Paging paging) throws ParseException {
 
 		System.out.println("selectResellPageList 서비스 호출");
 		ModelAndView mav = new ModelAndView();
@@ -281,7 +281,16 @@ public class ResellService {
 		paging.calc();
 
 		ArrayList<UsedBoardDto> sell_buyList = rdao.selectResellPageList(paging, checkMethod);
-
+		for (int i = 0; i < sell_buyList.size(); i++) {
+			//현재시간 - 작성시간
+			String ubdatedef = timeFuction(sell_buyList.get(i).getUbdate());
+			//ubdatedef 객체에 저장
+			sell_buyList.get(i).setUbdatedef(ubdatedef);
+			//ubdate 분까지만 객체에 저장
+			sell_buyList.get(i).getUbdate().substring(0,  16);	
+		}
+		
+		
 		System.out.println(sell_buyList);
 		System.out.println(paging);
 		mav.addObject("sell_buyList", sell_buyList);
@@ -299,6 +308,7 @@ public class ResellService {
 
 	}
 
+	
 //   중고거래리스트 selected 지역으로 조회
 	public String selectResellRegionList_ajax(Paging paging) {
 		System.out.println("selectResellRegionList_ajax 서비스 호출");
@@ -306,8 +316,10 @@ public class ResellService {
 		System.out.println("검색타입(searchType) : " + paging.getSearchType());
 		System.out.println("검색어(keyword) : " + paging.getKeyword());
 
-		String mregion = rdao.selectRegionCode(paging.getSearchVal());
+		String mregion = rdao.selectRegionCode(paging.getSearchVal());  
+		
 		String checkMethod = "NO";
+		
 		if (mregion.equals("ALL")) {
 			mregion = mregion.toLowerCase();
 		}
