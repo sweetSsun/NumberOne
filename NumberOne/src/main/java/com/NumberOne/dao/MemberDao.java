@@ -64,7 +64,7 @@ public interface MemberDao {
 
 	//회원탈퇴
 	@Update("UPDATE MEMBERS SET MSTATE = 2 WHERE MID = #{loginId}")
-	int updateMemberWithdraw(String loginId);
+	int updateMemberWithdraw(@Param("loginId")String loginId);
 
 	//1:1문의 글 번호 생성 (최대값)
 	@Select("SELECT NVL(MAX(CTCODE), 'CT00000') FROM CONTACT")
@@ -136,7 +136,7 @@ public interface MemberDao {
 	//마이페이지 미니브라우저 중고거래
 	@Select("SELECT UB.UBMAINIMG, UB.UBCODE, UB.UBTITLE, GD.GDNAME AS UBGDNAME, GD.GDPRICE, M.MNICKNAME AS UBNICKNAME "
 			+ "FROM USEDBOARDS UB,GOODS GD, MEMBERS M "
-			+ "WHERE UB.UBSTATE=1 AND UB.UBCODE = GD.GDUBCODE AND UB.UBSELLBUY = 'S' AND UB.UBMID = M.MID AND M.MNICKNAME= #{nickname}")
+			+ "WHERE UB.UBSTATE=1 AND UB.UBCODE = GD.GDUBCODE AND UB.UBSELLBUY = 'S' AND UB.UBMID = M.MID AND M.MNICKNAME= #{nickname} ORDER BY UBCODE DESC")
 	ArrayList<UsedBoardDto> selectWriteMemberInfoSellBuy_ajax(String nickname);
 	
 
