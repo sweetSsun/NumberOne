@@ -137,8 +137,8 @@
 												<textarea id="${contact.ctcode }_ctans" class="textareaSt" rows="3" cols="80" placeholder="문의글에 대한 답변을 작성해주세요."></textarea>
 											</div>	
 										</td>
-										<td>
-											<button type="button" onclick="insertReply('${contact.ctcode}')" class="btn-numberone fw-bold">등록</button>
+										<td class="text-center">
+											<button type="button" onclick="insertReply('${contact.ctcode}')" class="btn-numberone btn-sm fw-bold">등록</button>
 										</td>
 									</c:when>
 									<%-- 답변 있을 때 --%>
@@ -330,8 +330,8 @@ $(document).ready(function () {
 								+ "<textarea id='" + result[i].ctcode + "_ctans' class='textareaSt' rows='3' cols='80' placeholder='문의글에 대한 답변을 작성해주세요.'></textarea>"
 								+ "</div>"
 								+ "</td>";
-						output += "<td>";
-						output += "<button type='button' onclick='insertReply(\"" + result[i].ctcode + "\")' class='btn-numberone fw-bold'>등록</button>";
+						output += "<td class='text-center'>";
+						output += "<button type='button' onclick='insertReply(\"" + result[i].ctcode + "\")' class='btn-numberone btn-sm fw-bold'>등록</button>";
 						output += "</td>";
 					} else {
 						output += "<td colspan='5' class='p-4'>" + result[i].ctans + "</td>";

@@ -106,8 +106,8 @@
 				</div>
 				<div class="row mt-4 mb-2">
 					<div class="col btn-wrapper">
-						<input class="btn-numberone btn-md fw-bold text-white" type="submit" value="수정">
-						<input onclick="$('#nbWriteCancelCheckModal').modal('show')" class="btn-numberone btn-md fw-bold text-white" type="button" value="취소">
+						<input class="btn-numberone btn fw-bold text-white" type="submit" value="수정">
+						<input onclick="$('#nbWriteCancelCheckModal').modal('show')" class="btn-numberone btn fw-bold text-white" type="button" value="취소">
 					</div>
 				</div>	
  				
@@ -137,7 +137,7 @@
                 </div>	
                 <div class="modal-footer">
                 	<input type="hidden" >
-                    <button class="close btn-numberone text-white" onclick="writeBoardCancel()" >네</button>
+                    <button class="close btn-numberone text-white" onclick="writeBoardCancel()" style="padding: 0.375rem 0.75rem;" >네</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
             </div>

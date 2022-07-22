@@ -174,7 +174,19 @@
 	                    </c:when>
 						<c:otherwise>
 							<!-- 찜 -->
-							<li style="margin-right: 15px;"><a href="#" title="찜목록"><i class="fa-solid fa-heart"></i></a></li>
+							<li style="margin-right: 15px;" class="dropdown" >
+								<a href="#" title="찜목록" id="dropdownZzim" role="button" data-bs-toggle="dropdown" aria-expanded="false" 
+									style="display: inline-block !important;">
+									<i class="fa-solid fa-heart"></i>
+								</a>
+								
+								<!-- 찜목록 드롭다운 -->
+								<div class="dropdown-menu shadow" id="zzimList" aria-labelledby="dropdownZzim"
+									style="width: 500px;">
+									<div>찜목록 나올거지롱</div>
+									<!-- 회원의 찜목록 ajax로 받고 출력되는 부분 -->
+                                </div>
+							</li>
 
 							<!-- 채팅 -->
 							<li style="margin-right: 15px;" class="dropdown" >
@@ -295,7 +307,7 @@
 					dataType: "json",
 					success: function(result){
 						console.log(result);
-						outputDropdown(result);
+						outputChatRoomList(result);
 					}
 				});
 			}
@@ -303,7 +315,7 @@
 	});
 
 	// 드롭다운 채팅방목록 입력 함수
-	function outputDropdown(data){
+	function outputChatRoomList(data){
 		console.log("채팅방 목록 드롭다운 실행");
 		var dropdownList = "<p class=\"dropdown-header\" style=\"font-size:11px;\">채팅방 목록</p>";
 		for(var i = 0; i < data.length; i++){
@@ -531,10 +543,81 @@
          });
       
    }
-   
-
-
 </script>
 
+<!-- 찜목록 관련 스크립트 -->
+<script type="text/javascript">
+	// 찜 아이콘 클릭하면 찜목록 불러오고 드롭다운(최신순 5개까지 + 더보기)
+	$(document).on("click", "#dropdownZzim", function(e){
+	  	$.ajax({
+	  		type : 'get',
+	  		url : 'selectLoginOut_ajax',
+	  		async : false,
+	  		success : function(result){
+	  			if (result == "2"){ 
+	  				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+	  					location.href = "loadToLogin"
+	  				}
+	  				return;
+	  			}
+	  			
+				$.ajax({
+					type: "post",
+					url: "selectZzimList",
+					data: {"loginId": "${sessionScope.loginId}"},
+					async:false,
+					dataType: "json",
+					success: function(result){
+						console.log(result);
+						outputZzimList(result);
+					}
+				});
+			}
+		});
+	});
+	
+	// 드롭다운 채팅방목록 입력 함수
+	function outputZzimList(data){
+		console.log("찜목록 드롭다운 실행");
+		var dropdownList = "<p class=\"dropdown-header\" style=\"font-size:11px;\">찜 목록</p>";
+		for(var i = 0; i < data.length; i++){
+			if (i == 5){ // 최대 5개 목록까지만 출력
+				break;
+			}
+			dropdownList += "<div class=\"\" >";
+			dropdownList += "<a class=\" dropdown-item d-flex align-items-center py-2\" href=\"#\" onclick=\"location.href=\"selectResellView?ubcode=" + data[i].ubcode + "&ubsellbuy=" + data[i].ubsellbuy+ ">";
+			dropdownList += "<div class=\"row\" style=\"width: 100%; --bs-gutter-x: 0;\">";
+			dropdownList += "<div class=\"col-1 text-center\">";
+			if (data[i].crfrmprofile != null){ // 상대방 이미지가 있으면
+				dropdownList += "<img src=\"${pageContext.request.contextPath }/resources/img/mprofileUpLoad/" + data[i].crfrmprofile + "\" alt=\"프로필\" class=\"rounded-circle chat-profile\">";
+			} else { // 없으면
+				dropdownList += "<img src=\"${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png\" alt=\"프로필\" class=\"rounded-circle chat-profile\">";
+			}
+			dropdownList += "</div>";
+			dropdownList += "<div class=\"col-11\" style=\"\">";
+			dropdownList += "<div class=\"row nav_chat\" style=\"--bs-gutter-x: 0; margin-left: 10px;\">";
+			dropdownList += "<div class=\"col-11 overflow_twoline px-0 \" style=\"font-size:13px;\">" + data[i].recentCmcontents + "</div>";
+			dropdownList += "<div class=\"col-1 nav_chat\" style=\"text-align: center;\">";
+			if (data[i].unreadCount != 0){ // 안읽은 메세지가 있으면
+				dropdownList += "<span class=\"chat-badge\" style=\"\">" + data[i].unreadCount + "</span>";
+			}
+			dropdownList += "</div>";
+			dropdownList += "<div class=\"row\"style=\"width: 100%; --bs-gutter-x: 0;\">";
+			dropdownList += "<div class=\"col-6 \" style=\"color:gray; text-align:left; font-size:9px;\">" + data[i].crfrmnickname + "</div>";
+			dropdownList += "<div class=\"col-6  px-0\" style=\"color:gray; text-align:right; font-size:9px;\">" + data[i].recentCmdate + "</div>";
+			dropdownList += "</div>";
+			dropdownList += "</div>";
+			dropdownList += "</div>";
+			dropdownList += "</div>";
+			dropdownList += "</a>";
+			dropdownList += "</div>";
+		}
+		dropdownList += "<div class=\"text-center mt-1\">";
+		dropdownList += "<a class=\"dropdown-item pt-2\" href=\"selectMyInfoResellView#scroll-chat\" style=\"color: gray; font-size:13px;\">더보기</a>";
+		dropdownList += "</div>";
+		$("#chatRoomList").html(dropdownList);
+	}
+
+</script>
 
 </html>

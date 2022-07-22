@@ -26,6 +26,10 @@
 	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
 	crossorigin="anonymous"
 	>
+	
+<!-- Css Styles -->
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
+
 <style type="text/css">
 .product-img {
 	max-width: 30%;
@@ -82,13 +86,6 @@ option {
 	height: 22px;
 	margin: auto;
 }
-.gdtitle {
-	border: none;
-	font-size: 20px;
-	height: 22px;
-	margin: auto;
-	width:100%;
-}
 
 .bdcontents {
 	border-radius: 5px;
@@ -97,12 +94,20 @@ option {
 	resize: none;
 }
 
+/* 새로 추가한 부분 (여기부터 input:disabled까지) */
 .container-gd {
 	border: 2px solid #00bcd4;
 	border-radius: 7px;
 	
 }
 
+.gdtitle {
+	border: none;
+	font-size: 20px;
+	height: 22px;
+	margin: auto;
+	width:100%;
+}
 .gd-header{
 	display: block;
 	border-radius: 5px 5px 0 0;
@@ -111,6 +116,10 @@ option {
 	color: white;
 	font-weight: bold;
 	text-align: center;
+}
+
+input[type="text"]:disabled {
+ 	background-color: white;
 }
 
 .btn-wrapper {
@@ -185,9 +194,7 @@ div.detailimageBox {
 	width: 260px;
 	display: inline-block;
 }
-input[type="text"]:disabled {
- 	background-color: white;
-}
+
 </style>
 
 </head>
@@ -475,15 +482,13 @@ input[type="text"]:disabled {
 					<div class="row mt-4">
 						<div class="col btn-wrapper">
 							<input
-								class="btn btn-lg buttons fw-bold text-white"
-								style="background-color: #00bcd4;"
+								class="btn btn-numberone btn-lg fw-bold"
 								type="submit"
 								value="수정"
 							>
 							<input
 								onclick="bdWriteCancelCheckModal()"
-								class="btn btn-lg buttons fw-bold text-white"
-								style="background-color: #00bcd4;"
+								class="btn btn-numberone btn-lg fw-bold"
 								type="button"
 								value="취소"
 							>
