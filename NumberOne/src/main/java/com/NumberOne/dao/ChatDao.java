@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.NumberOne.dto.ChatMessageDto;
 import com.NumberOne.dto.ChatRoomDto;
+import com.NumberOne.dto.MemberDto;
 
 public interface ChatDao {
 	
@@ -27,15 +28,15 @@ public interface ChatDao {
 
 	void updateCmread(@Param ("crcode") String crcode, @Param ("mid") String mid);
 
+//	ArrayList<ChatRoomDto> selectChatRoomList(String loginId);
 	ArrayList<ChatRoomDto> selectChatRoomList(String loginId);
 
 	int selectUnReadCount(@Param ("loginId") String loginId, @Param ("cmcrcode") String cmcrcode);
 
 	ChatMessageDto selectRecentMessage(String cmcrcode);
 
-	String selectCrfrMprofile(String mid);
+	MemberDto selectCrfrMember(String mid);
 
-	ArrayList<ChatRoomDto> selectChatRoomList2(String loginId);
 
 
 	

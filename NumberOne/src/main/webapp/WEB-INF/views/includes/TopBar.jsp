@@ -222,7 +222,7 @@
 	// 채팅 버튼 클릭시 채팅창 팝업되면서 기존 채팅방 메세지 목록 데이터 보내주는 함수
 	function popupChat(crcode){
 		console.log("popupChat 호출");
-		let popOption = "width=450px, height=550px, top=300px, left=500px, scrollbars=no, resizable=no";
+		let popOption = "width=450px, height=560px, top=300px, left=500px, scrollbars=no, resizable=no";
 		let openUrl = "loadToChat?crcode="+crcode;
 		$.ajax({
 			url: "selectChatRoomMessage",
@@ -260,30 +260,31 @@
 	
 	// 채팅 아이콘 클릭하면 채팅방 목록 불러오고 드롭다운(안읽은 메세지 > 최신순)
 	$(document).on("click", "#dropdownChat", function(e){
-		
-	
- /* 	     var menuItem = $(e.currentTarget);
-		console.log($("#dropdownChat").attr("aria-expanded"));
-	     if ($("#dropdownChat").attr("aria-expanded") === 'true') {
-				$("#dropdownChat").attr('aria-expanded', 'false');
-				$("#chatRoomList").removeClass('mixitup-control-active');
-	     } else { */
-	    	 
-		$.ajax({
-			type: "post",
-			url: "selectChatRoomList2",
-			data: {"loginId": "${sessionScope.loginId}"},
-			async:false,
-			dataType: "json",
-			success: function(result){
-				console.log(result);
-				outputDropdown(result);
-				
+	  	$.ajax({
+	  		type : 'get',
+	  		url : 'selectLoginOut_ajax',
+	  		async : false,
+	  		success : function(result){
+	  			if (result == "2"){ 
+	  				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+	  					location.href = "loadToLogin"
+	  					return;
+	  				}
+	  				return;
+	  			}
+				$.ajax({
+					type: "post",
+					url: "selectChatRoomList",
+					data: {"loginId": "${sessionScope.loginId}"},
+					async:false,
+					dataType: "json",
+					success: function(result){
+						console.log(result);
+						outputDropdown(result);
+					}
+				});
 			}
 		});
-/* 				$("#dropdownChat").attr('aria-expanded', 'true');
-				$("#chatRoomList").addClass('mixitup-control-active');
-	     }  */
 	});
 
 	// 드롭다운 채팅방목록 입력 함수
