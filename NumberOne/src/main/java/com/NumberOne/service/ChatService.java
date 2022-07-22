@@ -13,6 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.NumberOne.dao.ChatDao;
 import com.NumberOne.dto.ChatMessageDto;
 import com.NumberOne.dto.ChatRoomDto;
+import com.NumberOne.dto.MemberDto;
 import com.google.gson.Gson;
 
 @Service
@@ -155,6 +156,46 @@ public class ChatService {
 	}
 
 	// 특정 사용자의 채팅방 목록 조회 요청
+//	public String selectChatRoomList(String loginId) {
+//		System.out.println("ChatService.selectChatRoomList() 호출");
+//		
+//		// 채팅방 목록 조회
+//		System.out.println(loginId);
+//		ArrayList<ChatRoomDto> chatRoomList = chdao.selectChatRoomList(loginId);
+//		
+//		for (int i = 0; i < chatRoomList.size(); i++) {
+//			// 특정 채팅방의 안읽은 메세지 수 조회
+//			String cmcrcode = chatRoomList.get(i).getCrcode();
+//			int unReadCount = chdao.selectUnReadCount(loginId, cmcrcode);
+//			chatRoomList.get(i).setUnreadCount(unReadCount);
+//
+//			// 특정 채팅방의 가장 최신 메세지 조회
+//			ChatMessageDto recentMsg = chdao.selectRecentMessage(cmcrcode);
+//			chatRoomList.get(i).setRecentCmcontents(recentMsg.getCmcontents());
+//			chatRoomList.get(i).setRecentCmdate(recentMsg.getCmdate());
+//			
+//			// 특정 채팅방의 상대방 닉네임/프로필 조회
+//			String mid = ""; // 로그인한 사람이 아닌 상대방의 아이디 뽑기
+//			if (loginId.equals(chatRoomList.get(i).getCrfrmid())) {
+//				mid = chatRoomList.get(i).getCrtomid();
+//			} else {
+//				mid = chatRoomList.get(i).getCrfrmid();
+//			}
+//			MemberDto crfrMember = chdao.selectCrfrMember(mid);
+//			chatRoomList.get(i).setCrfrmnickname(crfrMember.getMnickname());
+//			chatRoomList.get(i).setCrfrmprofile(crfrMember.getMprofile());
+//		}
+//		
+//		System.out.println("chatRoomList : " + chatRoomList);
+//		
+//		Gson gson = new Gson();
+//		String chatRoomList_json = gson.toJson(chatRoomList);
+//		
+//		return chatRoomList_json;
+//	}
+	
+	// 특정 사용자의 채팅방 목록 조회 요청
+	// 남이 보낸 안읽은 메세지가 상단으로 오게	
 	public String selectChatRoomList(String loginId) {
 		System.out.println("ChatService.selectChatRoomList() 호출");
 		
@@ -167,25 +208,17 @@ public class ChatService {
 			String cmcrcode = chatRoomList.get(i).getCrcode();
 			int unReadCount = chdao.selectUnReadCount(loginId, cmcrcode);
 			chatRoomList.get(i).setUnreadCount(unReadCount);
-
-			// 특정 채팅방의 가장 최신 메세지 조회
-			ChatMessageDto recentMsg = chdao.selectRecentMessage(cmcrcode);
-			chatRoomList.get(i).setRecentCmcontents(recentMsg.getCmcontents());
-			chatRoomList.get(i).setRecentCmdate(recentMsg.getCmdate());
 			
-			// 특정 채팅방의 상대방 닉네임 조회
+			// 특정 채팅방의 상대방 닉네임/프로필 조회
 			String mid = ""; // 로그인한 사람이 아닌 상대방의 아이디 뽑기
 			if (loginId.equals(chatRoomList.get(i).getCrfrmid())) {
 				mid = chatRoomList.get(i).getCrtomid();
 			} else {
 				mid = chatRoomList.get(i).getCrfrmid();
 			}
-			String cmfrmnickname = chdao.selectMnickname(mid);
-			chatRoomList.get(i).setCrfrmnickname(cmfrmnickname);
-
-			// 채팅방의 상대방 프로필이미지 조회
-			String crfrMprofile = chdao.selectCrfrMprofile(mid);
-			chatRoomList.get(i).setCrfrmprofile(crfrMprofile);
+			MemberDto crfrMember = chdao.selectCrfrMember(mid);
+			chatRoomList.get(i).setCrfrmnickname(crfrMember.getMnickname());
+			chatRoomList.get(i).setCrfrmprofile(crfrMember.getMprofile());
 		}
 		
 		System.out.println("chatRoomList : " + chatRoomList);
@@ -193,7 +226,7 @@ public class ChatService {
 		Gson gson = new Gson();
 		String chatRoomList_json = gson.toJson(chatRoomList);
 		
-		return chatRoomList_json;
+		return chatRoomList_json;		
 	}
 	
 	// 읽지않은 메세지 조회 요청
@@ -214,48 +247,6 @@ public class ChatService {
 		return sumUnReadCount;
 	}
 
-	// 남이 보낸 안읽은 메세지가 상단으로 오게 테스트	
-	public String selectChatRoomList2(String loginId) {
-		System.out.println("ChatService.selectChatRoomList2() 호출");
-		
-		// 채팅방 목록 조회
-		System.out.println(loginId);
-		ArrayList<ChatRoomDto> chatRoomList = chdao.selectChatRoomList2(loginId);
-				
-		for (int i = 0; i < chatRoomList.size(); i++) {
-			// 특정 채팅방의 안읽은 메세지 수 조회
-			String cmcrcode = chatRoomList.get(i).getCrcode();
-			int unReadCount = chdao.selectUnReadCount(loginId, cmcrcode);
-			chatRoomList.get(i).setUnreadCount(unReadCount);
-				
-			// 특정 채팅방의 가장 최신 메세지 조회
-			//ChatMessageDto recentMsg = chdao.selectRecentMessage(cmcrcode);		
-			//chatRoomList.get(i).setRecentCmcontents(recentMsg.getCmcontents());
-			//chatRoomList.get(i).setRecentCmdate(recentMsg.getCmdate());
-					
-			// 특정 채팅방의 상대방 닉네임 조회
-			String mid = ""; // 로그인한 사람이 아닌 상대방의 아이디 뽑기
-			if (loginId.equals(chatRoomList.get(i).getCrfrmid())) {
-				mid = chatRoomList.get(i).getCrtomid();
-			} else {
-				mid = chatRoomList.get(i).getCrfrmid();
-			}
-			
-			String cmfrmnickname = chdao.selectMnickname(mid);
-			chatRoomList.get(i).setCrfrmnickname(cmfrmnickname);
-
-			// 채팅방의 상대방 프로필이미지 조회
-			String crfrMprofile = chdao.selectCrfrMprofile(mid);
-			chatRoomList.get(i).setCrfrmprofile(crfrMprofile);
-		}
-				
-		System.out.println("chatRoomList : " + chatRoomList);
-				
-		Gson gson = new Gson();
-		String chatRoomList_json = gson.toJson(chatRoomList);
-				
-		return chatRoomList_json;		
-	}
 
 	
 }

@@ -146,20 +146,48 @@
 	// 공지글 삭제 요청 (nbstate 0으로 변경)
 	$("#deleteBtn").click(function(){
 		console.log("공지 삭제 요청");
-		var nbstate = 2;
-		var nbcode = '${noticeBoard.nbcode}';
-		console.log("nbcode : " + nbcode);
-		location.href="admin_updateNbstate?nbcode="+nbcode+"&nbstate="+nbstate;
+		$.ajax({
+	  		type : 'get',
+	  		url : 'Admin_selectLoginOut_ajax',
+	  		async : false,
+	  		success : function(result){
+	  			if (result == "2"){ 
+	  				if(confirm("관리자 로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+	  					location.href = "loadToLogin";
+	  				}
+	  				return;
+	  			}
+	  			
+				var nbstate = 2;
+				var nbcode = '${noticeBoard.nbcode}';
+				console.log("nbcode : " + nbcode);
+				location.href="admin_updateNbstate?nbcode="+nbcode+"&nbstate="+nbstate;
+	  		}
+		});
 	});
 	
 	$("#modifyBtn").click(function(){
 		console.log("공지 수정 요청");
-		var nbcode = '${noticeBoard.nbcode}';
-		console.log("nbcode : " + nbcode);
-		//console.log("paging : " + ${paging});
-		var url = "admin_selectNoticeModify${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}";
-		console.log(url);
-		location.href="admin_selectNoticeModify${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}";
+		$.ajax({
+	  		type : 'get',
+	  		url : 'Admin_selectLoginOut_ajax',
+	  		async : false,
+	  		success : function(result){
+	  			if (result == "2"){ 
+	  				if(confirm("관리자 로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+	  					location.href = "loadToLogin";
+	  				}
+	  				return;
+	  			}
+	  			
+				var nbcode = '${noticeBoard.nbcode}';
+				console.log("nbcode : " + nbcode);
+				//console.log("paging : " + ${paging});
+				var url = "admin_selectNoticeModify${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}";
+				console.log(url);
+				location.href="admin_selectNoticeModify${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}";
+	  		}
+		});
 	});
 	
 </script>

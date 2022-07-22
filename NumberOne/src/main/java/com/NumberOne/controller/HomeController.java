@@ -141,6 +141,18 @@ public class HomeController {
 		return "1";
 	}
 	
+	// 관리자용 login/logout 확인작업. 결과값이 "2"인 경우로 조건을 줘야합니다.
+	@RequestMapping(value = "/Admin_selectLoginOut_ajax")
+	public @ResponseBody String Admin_selectLoginOut_ajax () {
+		System.out.println("관리자 로그인/로그아웃 확인 요청");
+		String loginId = (String) session.getAttribute("loginId");
+		// 로그아웃 확인
+		if(loginId == null || !loginId.equals("admin")) {
+			return "2";
+		}
+		return "1";
+	}
+	
 	@RequestMapping(value="/loadToFail")
 	public String loadToFail() {
 		System.out.println("실패 페이지로 이동");

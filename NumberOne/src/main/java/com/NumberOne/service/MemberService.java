@@ -962,6 +962,21 @@ public class MemberService {
 		}
 
 
+		// 회원 찜목록 조회
+		public String selectZzimList_ajax(String loginId) {
+			System.out.println("service.selectZzimList_ajax() 호출");
+			System.out.println("loginId : " + loginId);
+			
+			ArrayList<UsedBoardDto> zzList = mdao.selectZzimList_ajax(loginId);
+			System.out.println("zzList : " + zzList);
+			
+			Gson gson = new Gson();
+			String zzList_gson = gson.toJson(zzList);
+			
+			return zzList_gson;
+		}
+
+
 }
 
 
