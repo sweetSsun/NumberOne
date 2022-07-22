@@ -498,13 +498,14 @@ function boardreplySwitch(type){
 			for (var i = 0; i < ubList.length; i++){
         		output+="<div>"
 				output+="&nbsp;&nbsp;&nbsp;"
-				output+="<a href=\"selectResellView?ubcode="+ubList[i].ubbdcode+"&ubsellbuy=S&modifyCheck=LIST\" target=\"_blank\">"
+				output+="<a href=\"selectResellView?ubcode="+ubList[i].ubcode+"&ubsellbuy=S&modifyCheck=LIST\" target=\"_blank\">"
 				output+="<input type=\"checkbox\" onclick=\"clickBox(this, \'"+ubList[i].ubgdname+"\')\" name=\"ubname\" value="+ubList[i].ubgdname+">"
 				output+="&nbsp;&nbsp;&nbsp;"
 				output+="<img style=\"height: 70px; width: 70px; border: 1px solid #949494; border-radius:5px; padding: 1px;\" src=\"${pageContext.request.contextPath }/resources/img/resell/"+ubList[i].ubmainimg+"\">"
 				output+="<span class=\"pText\" style=\"background-color: #F2F2FF; border: 0px; outline:none; color:black; \" >&nbsp;&nbsp;&nbsp; "+ubList[i].ubgdname+"</span>"
 				output+="</a>"
-				output+="<span type=\"text\" style=\"float: right;\" name=\"ubprice\">"+ubList[i].gdprice+"</span>"
+				output+="<span type=\"text\" style=\"float: right; padding:20px; font-weight:bold;\" name=\"ubprice\" id=\"price\">"+"₩"+ubList[i].gdprice2+"</span>" 
+				/*  output+="<input type=\"text\" style=\"float: right; padding:20px; font-weight:bold;\" name=\"ubprice\" id=\"price\" value="+"₩"+ubList[i].gdprice+">" */
            		/* output+="<input type=\"text\" name=\"ubtitle\" value="+ubList[i].ubtitle+">" */
 				output+="<div><hr>"
 	        }
@@ -518,6 +519,7 @@ function boardreplySwitch(type){
  } 
 
 </script>
+
 
 <script type="text/javascript">
 const loginId = '${sessionScope.loginId}'; //로그인된 아이디
