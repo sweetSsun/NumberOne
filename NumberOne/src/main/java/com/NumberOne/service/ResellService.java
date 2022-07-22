@@ -636,6 +636,9 @@ public ModelAndView selectResellPageList(Paging paging) {
 			
 			gdDto.setGdcode(gdDto.getGd_code()[i]);
 			gdDto.setGdstate(gdDto.getGd_state()[i]);
+			gdDto.setGdprice(gdDto.getGd_price()[i]);
+			gdDto.setGdname(gdDto.getGd_names()[i]);
+			
 			gdStateUPdateResult = rdao.updateResellModify_gd(gdDto);
 						
 		}

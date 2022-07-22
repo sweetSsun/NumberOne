@@ -243,7 +243,6 @@ div.detailimageBox {
 									class="bdCategoryList"
 									name="ubrgcode"
 								>
-									<option value="ALL">전국</option>
 									<option value="SEL">서울</option>
 									<option value="ICN">인천</option>
 									<option value="GGD">경기</option>
@@ -503,7 +502,7 @@ div.detailimageBox {
 					<input type="hidden">
 					<button
 						class="close btn btn-info text-white"
-						onclick="updateResellDelete()"
+						onclick="cancelBtn()"
 					>네</button>
 					<button
 						class="close btn btn-secondary"
@@ -527,7 +526,7 @@ div.detailimageBox {
 	const ubstate = '${ub_resellView.ubstate}'; // 글 상태 값 
 	const totalOp = document.getElementById("totalOp"); // 글 상태 select태그
 	const ubcode = '${ub_resellView.ubcode}'; //글번호
-	const sellbuy = '${ub_resellView.ubsellbuy}'; //사구,팔구 확인
+	const ubsellbuy = '${ub_resellView.ubsellbuy}'; //사구,팔구 확인
 	const selectStates = document.querySelectorAll(".selectStates"); // 상품 상태 select태그 
 	const select_gdcode = document.querySelectorAll(".select_gdcode"); //상품코드	
 	const select_gdstate = document.querySelectorAll(".select_gdstate");//상품상태 
@@ -602,6 +601,7 @@ div.detailimageBox {
 						
 						selectStates[j].removeAttribute('disabled');
 						
+						
 
 						//상품별로 상태값에 따라 option을 selected
 
@@ -618,19 +618,15 @@ div.detailimageBox {
 							gd_priceList[j].classList.remove('d_none');
 							
 							gd_names[j].classList.add('d_none');
-							gd_price[j].classList.add('d_none');
-							
-							
+							gd_price[j].classList.add('d_none');						
+						
 						} else {
+							
+							
+							
 							selectStates[j].selectedIndex = '0';
 							//0번인덱스를 selected	(판매중선택)
-							
-							gd_nameList[j].classList.add('d_none');
-							gd_priceList[j].classList.add('d_none');
-							
-							gd_names[j].classList.remove('d_none');
-							gd_price[j].classList.remove('d_none');
-					
+										
 						}
 					}
 				}
@@ -640,7 +636,7 @@ div.detailimageBox {
 </script>
 
 
-<!-- select태그 option선택 이벤트 -->
+<!-- 글상태 option선택 이벤트 -->
 <script type="text/javascript">
 	totalOp.addEventListener('change', selectOp_value);
 
@@ -649,35 +645,10 @@ div.detailimageBox {
 		let gd_state = [];
 		let gd_code = [];
 		let select_ubstate = e.target.value;
+console.log("선택된 상품의 상태값 : ", select_ubstate);
+	
 
-		for ( let i in select_gdstate) {
-			console.log(select_gdstate[i].value);
-			console.log(select_gdcode[i].value);
-			if (select_gdstate[i].value != undefined) {
-
-				gd_state.push(select_gdstate[i].value);
-
-				gd_code.push(select_gdcode[i].value);
-
-			}
-		}
-		console.log("상품의 상태 : ", gd_state);
-		console.log("상품의 번호 : ", gd_code);
-		console.log("글 번호 : ", ubcode);
-		console.log("글 상태 : ", select_ubstate)
-		$
-				.ajax({
-					type : 'get',
-					url : 'updateResellState_usedBoardAjax',
-					data : {
-						'ubcode' : ubcode,
-						'ubstate' : select_ubstate
-					},
-
-					success : function(result) {
-						console.log("결과", result);
-						if (result === 'SOLD') {
-							alert("변경성공 = 판매완료");
+						if (select_ubstate === '9') {
 							document.getElementById("titleMsg").innerText = "판매완료된 글입니다.";
 
 							for (let i = 0; i < gd_nameList.length; i++) {
@@ -688,18 +659,19 @@ div.detailimageBox {
 								gd_names[i].classList.add('d_none');
 								gd_price[i].classList.add('d_none');
 								
-								
+								selectStates[i].selectedIndex = '1';
 								selectStates[i].setAttribute('disabled', 'disabled');
 							}
 
 						} else {
-							alert("변경성공 = 판매중");
 							document.getElementById("titleMsg").innerText = "판매중";
-							for (let i = 0; i < gd_nameList.length; i++) {
-								selectStates[i].removeAttribute('disabled');
+						
 							
-								
-								if (select_gdstate[i].value == 0) {
+							for (let i = 0; i < gd_nameList.length; i++) {
+							
+								selectStates[i].removeAttribute('disabled');
+															
+								if (select_gdstate[i].value === '0') {
 									console.log("상품판매완료");
 									selectStates[i].selectedIndex = '1';
 									
@@ -707,8 +679,7 @@ div.detailimageBox {
 									gd_priceList[i].classList.remove('d_none');
 									
 									gd_names[i].classList.add('d_none');
-									gd_price[i].classList.add('d_none');
-									
+									gd_price[i].classList.add('d_none');									
 									
 
 								} else {
@@ -724,8 +695,7 @@ div.detailimageBox {
 								}
 							}
 						}
-					}
-				})
+				
 
 		totalOp.options[totalOp.selectedIndex].value == '9' ? document
 				.getElementById("titleMsg").innerText = "판매완료된 글입니다."
@@ -765,7 +735,7 @@ div.detailimageBox {
 	function backPage() {
 		console.log("수정취소버튼 클릭이벤트");
 		location.href = "selectResellView?ubcode=" + ubcode + "&ubsellbuy="
-				+ sellbuy + "&modifyCheck=LIST";
+				+ ubsellbuy + "&modifyCheck=LIST";
 	}
 </script>
  --%>
@@ -777,17 +747,8 @@ div.detailimageBox {
 	function gdUpdateState(gdcode, sel_tag) {
 		let gdstate = sel_tag.value;
 		console.log('gdstate', gdstate);
-		$.ajax({
-			type : 'get',
-			url : 'updateResellState_GoodsAjax',
-			data : {
-				'gdcode' : gdcode,
-				'gdstate' : gdstate
-			},
-			success : function(result) {
-				console.log(result);
-				if (result == 'SOLD') {
-					alert("상품판매완료")
+		
+				if (gdstate === '0') {
 					sel_tag.selectedIndex = '1';
 
 					for (let i = 0; i < select_gdcode.length; i++) {
@@ -799,11 +760,9 @@ div.detailimageBox {
 							gd_names[i].classList.add('d_none');
 							gd_price[i].classList.add('d_none');
 							
-							
 						}
 					}
 				} else {
-					alert("상품판매중")
 					for (let i = 0; i < select_gdcode.length; i++) {
 						if (select_gdcode[i].value === gdcode) {
 							
@@ -815,8 +774,6 @@ div.detailimageBox {
 						}
 					}
 				}
-			}
-		})
 	}
 </script>
 
@@ -839,7 +796,8 @@ div.detailimageBox {
 			alert("메인사진을 선택해주세요.");
 			document.getElementById("chooseFile_id").focus();
 			checkForm = false;
-		}
+		} 
+		
 		return checkForm;
 	}
 </script>
@@ -896,11 +854,9 @@ div.detailimageBox {
 		console.log("취소 버튼 클릭");
 	}
 	
-	function updateResellDelete() {
-		/* 게시글 삭제(상태변경) */
-		//모달창에서 "네" 버튼 클릭 시 삭제
-		location.href = "updateResellDelete?ubcode=" + ubcode + "&ubsellbuy="
-				+ ubsellbuy;
+	function cancelBtn() {
+		console.log('취소버튼');
+	location.href = 'selectResellView?ubcode='+ubcode+'&ubsellbuy='+ubsellbuy+'&modifyCheck=LIST'
 	}
 
 	function  roomModifyCh(currentDetailCount){
@@ -946,7 +902,6 @@ div.detailimageBox {
 			console.log("확인");
 			console.log("container.hasChildNodes ", container.hasChildNodes());
 			
-
 		}
 	
 		let mainImg = document.getElementById('mainImg');
