@@ -7,11 +7,20 @@
 
 <style type="text/css">
 
-.sideroom a{
-	border: none;
-}
-
-
+	.sideroom a{
+		border: none;
+	}
+	
+	.accordion-button:not(.collapsed){
+		color: #00bcd4;
+		background-color: #F2F2FF;
+	}
+	
+	.accordion-button:not(.collapsed)::after{
+		color: #00bcd4;
+		background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2300bcd4'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+	}
+	 
 </style>
 
 </head>
@@ -59,10 +68,11 @@
 				</div>
 				
 				
+				  
 				<div class="accordion" id="accordionPanelsStayOpenExample">
 					<div class="accordion-item sidetitle_resell">
 						<h2 class="accordion-header" id="panelsStayOpen-headingOne">
-							<button class="accordion-button sideregion_title" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+							<button class="accordion-button collapsed sideresell_title" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
 								<i class="fa-solid fa-store"></i>&nbsp;&nbsp;팔구
 							</button>
 						</h2>
@@ -95,9 +105,9 @@
 					</div>
 					
 					
-					<div class="accordion-item sideroom_region">
+					<div class="accordion-item sidetitle_resell">
 						<h2 class="accordion-header" id="panelsStayOpen-headingTwo">
-							<button class="accordion-button sideregion_title collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+							<button class="accordion-button sideresell_title collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
 								<i class="fa-solid fa-cart-shopping"></i>&nbsp;&nbsp;사구
 							</button>
 						</h2>
@@ -141,12 +151,12 @@
 <script type="text/javascript">
 	
 $('#sidebar-toggleOff').click(function() {    
-    $("#sidebar, #sideList, #sidebar-toggleOff, #sideclose, #drop_sell, #drop_buy").removeClass('sideon')
+    $("#sidebar, #sideList, #sidebar-toggleOff, #sideclose, .sideresell_title").removeClass('sideon')
     console.log("off");
 });
 
 $('#sidebar-toggleOn').click(function() {
-    $("#sidebar, #sideList, #sidebar-toggleOff, #sideclose, #drop_sell, #drop_buy").addClass('sideon')
+    $("#sidebar, #sideList, #sidebar-toggleOff, #sideclose, .sideresell_title").addClass('sideon')
     console.log("on");
 });
 
