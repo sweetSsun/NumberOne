@@ -165,13 +165,17 @@
 	top: 50px;
 }
 .Resell_img_container{
-
 	text-align: center;
 	overflow: hidden;
 	width: 600px;
 	height: 430px;
 	position: relative;
-}   
+	
+	/* 이미지 슬라이더 */
+	overflow: hidden;
+	
+}
+
 .Resell_img{
     position: relative;
     width: 600px;
@@ -233,6 +237,9 @@
 	border-radius: 5px;
 	background-color: #00a5ba;	
 }
+
+
+
 </style>
 </head>
 <body>
@@ -309,23 +316,57 @@
 						</div>
 					</div>
 					
-					<!-- 중고거래 사진 / 본문  -->
-					<div class="row" style="margin-top: 40px; ">
-						<!-- 사진 -->
+					<!-- 중고거래 사진  -->
+					<div class="row" style="margin-top: 40px; height:430px;">
+						<!-- 상품 사진 -->
 						<div class="col-7">
-							<div class="Resell_img_container">
-								<img style="object-fit: cover;" class="active Resell_img" src="${pageContext.request.contextPath }/resources/img/resell/${ub_resellView.ubmainimg}" >
-									<c:forEach items="${ub_resellView.ubdetailimg_list}" var="ubdetailimg_list" begin="1">
-										<img style="object-fit: cover;" class="Resell_img" src="${pageContext.request.contextPath }/resources/img/resell/${ubdetailimg_list}">
-									</c:forEach>
-	<!-- 							<button id="prev" onclick="prev()"> &lt; </button>
-									<button id="next" onclick="next()"> &gt; </button> -->
+<%-- 						<div class="Resell_img_container carousel slide" id="carousel-example-generic">
+								<ol  class="carousel-indicators">
+									<li><img style="object-fit: cover;" class="active Resell_img" src="${pageContext.request.contextPath }/resources/img/resell/${ub_resellView.ubmainimg}" ></li>
+									
+								<c:forEach items="${ub_resellView.ubdetailimg_list}" var="ubdetailimg_list" begin="1">
+									<li><img style="object-fit: cover;" class="Resell_img" src="${pageContext.request.contextPath }/resources/img/resell/${ubdetailimg_list}"></li>
+								</c:forEach>
+								</ol> 
+						</div> --%>
+						
+							<!-- 중고거래 상품 사진 : 이미지 슬라이드 (캐러셀) -->
+							<div id="carouselExampleControlsNoTouching" class="carousel slide" data-bs-touch="false" data-bs-interval="false">
+							    
+ 							    <div class="carousel-indicators">
+								    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+								    <c:forEach items="${ub_resellView.ubdetailimg_list}" begin="1" varStatus="status">
+									    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="${status.count }" aria-label="Slide 2"></button>
+								    </c:forEach>
+								 </div>
+							  <div class="carousel-inner">
+							  	<!-- 1번 사진 -->
+							    <div class="carousel-item active">
+							      <img style="object-fit: cover;" class="active Resell_img d-block w-100" src="${pageContext.request.contextPath }/resources/img/resell/${ub_resellView.ubmainimg}" >
+							    </div>
+							    
+							    <c:forEach items="${ub_resellView.ubdetailimg_list}" var="ubdetailimg_list" begin="1">
+								    <div class="carousel-item">
+								      <img style="object-fit: cover;" class="Resell_img d-block w-100" src="${pageContext.request.contextPath }/resources/img/resell/${ubdetailimg_list}">
+								    </div>
+							    </c:forEach>
+							    
+							  </div>
+							  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="prev">
+							    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+							    <span class="visually-hidden">Previous</span>
+							  </button>
+							  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="next">
+							    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+							    <span class="visually-hidden">Next</span>
+							  </button>
 							</div>
-						</div>
+						</div>	
+						
+						<!-- 판매자 정보  / 본문-->
 						<div class="col-5" >
 							<div class="row">
 								<div class="col seller_and_buttons">
-									<!-- 판매자 정보 -->
 									<!-- 프로필 -->
 									<c:choose>
 										<c:when test="${ub_resellView.ubprofile != null && ub_resellView.ubstate == 1 }">
@@ -345,11 +386,11 @@
 									<a id="memberInfo" style="cursor: pointer" onclick="writeMemberBoard('${ub_resellView.ubnickname}')"><span class="fw-bold bdnickname">${ub_resellView.ubnickname}</span></a> 
 								</div>
 							</div>
-							<!-- 본문 글 내용-->
-							<textarea style="margin-top:10px;" id="inputReply" rows="15%"  readonly>${ub_resellView.ubcontents}</textarea>
+								<!-- 본문 글 내용-->
+								<textarea style="margin-top:10px; font-size:18px;" id="inputReply" rows="15%"  readonly>${ub_resellView.ubcontents}</textarea>
 						</div>	
+						
 					</div>
-					
 					<!--  --><!-- 파라미터 값 --><!--  -->
 					<input type="hidden" name="cmfrmid" value="${sessionScope.loginId }"> 
 					<input type="hidden" name="cmfrmnickname"value="${sessionScope.loginNickname }"> 
@@ -524,7 +565,6 @@
 
 
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 
@@ -534,7 +574,11 @@
 	if ( checkMsg.length > 0 ){
 		alert(checkMsg);
 	}
+	
+	
 </script>
+
+
 
 <script type="text/javascript">
 	let zzim_Check = '${zzim_Check}';
@@ -567,7 +611,19 @@
 			$("#ubWarningCheckModal").modal("hide");
 		});
 	}
+	
+	
+	//이미지 슬라이드 컨트롤
+	$(function(){
+		$("#carousel-example-generic").carousel({
+			
+			interval: false, //false면 자동 순환 X
+		});
+	});
 </script>
+
+
+
 
 <!--신고 스크립트  -->
 <script type="text/javascript">
