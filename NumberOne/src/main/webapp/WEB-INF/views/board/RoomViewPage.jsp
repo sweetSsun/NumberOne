@@ -7,13 +7,12 @@
 <meta charset="UTF-8">
 <title>1인자 - 자취방 자랑 상세</title>
 
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script> -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<%-- <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css"> --%>
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-<%-- <%@ include file="/resources/css/BarCss.jsp" %> --%>
+<%-- <%@ include file="/resources/css/BarCss.jsp"%> --%>
 <style type="text/css">
 	#board_column{
 		border-bottom: solid gray 3px;
@@ -143,9 +142,9 @@
 	transition:all .35s;
 }
 
-textarea.rvcontents {
+#roomContents > textarea {
 	 width:100%; 
-	 height:100%; 
+	 height:86%; 
 	 overflow-y:scroll; 
 	 color:black;
 	 border: none;
@@ -157,20 +156,6 @@ textarea.rvcontents {
 textarea.rvcontents :focus { 
 	outline: none; 
 	background-color: black;
-}
-
-#inputReply{
-	 width:100%; 
-	 height:100%; 
-	 overflow-y:scroll; 
-	 color:black;
-	 border: none;
-	 padding-right:6px; 
-	 font-size: 15px;
-	 resize: none;
-	 border: 1px solid black;
-	 border-radius : 5px;
-	 
 }
 
 .gallerylist > ul > li > a:hover .top {bottom:36%;}
@@ -272,7 +257,7 @@ div.menu{
 
 #roomContents{
 	padding-top:10px;
-	height:200px; 
+	height:220px; 
 	color:black;
 	margin-bottom:5px;
 	border-bottom: solid 1px #DCDCDC;
@@ -335,6 +320,22 @@ section{
     background: #EAEAEA;  /*스크롤바 뒷 배경 색상*/
 }
 
+#inputReply{
+	height : 100px;
+	width : 100%;
+	resize : none;
+	padding-top:0;
+	margin-top:0;
+	border : 1px solid #DCDCDC;
+	font-size : 15px; 
+}
+
+#replyWriteForm > button{
+	background-color:#4cadcc;
+	color:white;
+	font-weight:600;
+	font-size:initial;
+}
 </style>
 </head>
 <body>
@@ -399,31 +400,41 @@ section{
 				
 				<!-- 자취방 상세보기 -->
 				<div class="row" style="width:1200px; height:600px;" id="modalContents">
+					<!-- 자취방 상세 이미지(슬라이드) -->
   					<div class="product-title tb col-lg-8">
   						<div id="roomimg" class="product-img-div" style="width:100%; height:100%;"></div>
   					</div>
+  					<!-- 내용 -->
   					<div class="tb col-lg-4" style="background-color:white; padding:10px">
+ 						<!-- 작성자 프로핖 -->
  						<div class="row" style="height:32px; width:800px;" id="roomWriter">
+ 							<!-- 작성자 프로필 사진 -->
  							<div id="roomMprofile" style="width:30px;"></div>
+ 							<!-- 작성자 닉네임 -->
  							<div id="roomMnickname" style="width:372px; padding-bottom:10px;"></div>
  						</div>
+ 						<!-- 작성글 -->
  						<div id="roomContents"></div>
- 						<div id="reply" class="scroll"><!-- 댓글 영역 --></div>
- 						<div id="roomInfo"><!-- 추천, 스크랩, 신고 --></div>
- 						<div id="likes_date"><!-- 좋아요수, 날짜 --></div>
- 						<div id="replyWriteForm" class="row">
- 						
+ 						<!-- 댓글 -->
+ 						<div id="reply" class="scroll"></div>
+ 						<!-- 추천, 스크랩, 신고 여부 출력-->
+ 						<div id="roomInfo"></div>
+ 						<!-- 좋아요수-->
+ 						<div id="likes_date"></div>
+ 					
+ 						<!-- 댓글 입력 폼 -->
+ 						<div id="replyWriteForm" class="row">	
  							<!-- 댓글 입력 영역 -->
  							<c:choose>
  								<c:when test="${sessionScope.loginId != null }">
-		 							<input id="inputReply" type="text" placeholder="댓글 달기..." style="height:60px;" onkeydown="replyEnter(event)">&nbsp;&nbsp;
+		 							<textarea class="scroll" id="inputReply" placeholder="댓글 달기..." style="height:60px;" onkeydown="replyEnter(event)"></textarea>&nbsp;&nbsp;
 		 							<button onclick='replyResister()'>게시</button>
- 								</c:when>
+			 					</c:when>
  								<c:otherwise>
-		 							<input id="inputReply" type="text" readonly="readonly" placeholder="로그인 후 이용 가능합니다" style="height:60px;">&nbsp;&nbsp;
+		 							<textarea class="scroll" id="inputReply" type="text" readonly="readonly" placeholder="로그인 후 이용 가능합니다" style="height:60px;"></textarea>&nbsp;&nbsp;
 		 							<button onclick='replyResister()' disabled="disabled">게시</button>
  								</c:otherwise>
- 							</c:choose>
+ 							</c:choose>	
  							
  						</div>		
   					</div>	
@@ -744,7 +755,7 @@ roomView_ajax(nowBdcode)
 					console.log(replys[i]);
 					replyOutput += "<div id='reply_"+replys[i].rpcode+"' style='width:100%; margin-bottom:3px;' class='row' onmouseover='toggleReplyMenu(\""+replys[i].rpcode+"\", \"show\")' onmouseout='toggleReplyMenu(\""+replys[i].rpcode+"\", \"hide\")'>";
 					//댓글 작성자 프로필 이미지
-					replyOutput += "<div style='width:30px;'>";
+					replyOutput += "<div style='width:30px; padding-top: 10px'>";
 					replyOutput += "<img class='product-img' onclick='writeMemberBoard(\""+replys[i].rpnickname+"\")' style='width:20px; height:20px; border-radius:50%;'";
 					if(replys[i].rpprofile != 'nomprofile'){
 						//console.log(replys[i].rpprofile);
