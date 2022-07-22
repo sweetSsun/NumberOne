@@ -144,7 +144,7 @@
 						<span style="font-size:20px;">작성자</span>
 					</div>
 					<div class="col-4">
-						<input class="nickname" value="${sessionScope.loginNickname}">
+						<input class="nickname" value="${sessionScope.loginNickname}" readonly>
 					</div>
 				</div>
 				<hr>
