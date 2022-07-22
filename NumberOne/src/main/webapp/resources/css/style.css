@@ -122,13 +122,16 @@ ol {
 }
 
 .pagination {
-	width: 32rem;
-	display: inline-block;
+	width: 300px;
+	/*display: inline-block;*/
 	margin-left: auto;
 	margin-right: auto;	 
 	margin-top: 1rem;
 	font-size: 18px;
-	
+}
+
+.paginate_button{
+	display: block;
 }
 
 .pagination a {
