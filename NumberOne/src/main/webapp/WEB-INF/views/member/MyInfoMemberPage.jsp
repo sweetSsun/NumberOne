@@ -258,7 +258,8 @@ font-size: 15px;
                         		onclick = "location.href = 'loadToMyInfoModifyForm' " >
                         		수정</button>
                         		<button type="submit" class="site-btn" style="width: 130px; border-radius: 4px;"
-                        		onclick = "location.href = 'updateMemberWithdraw' " > 
+                        		onclick = "showModal('${memberInfo.mnickname }')" > 
+                        		<!-- onclick = "location.href = 'updateMemberWithdraw' " >  -->
                         		탈퇴</button>                        
                         	</div>
                          </div>
@@ -269,12 +270,7 @@ font-size: 15px;
     </section>
 	</main>
 
-	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp"%>
-	<!--jquery & bootstrap(5js)-->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
-	
 
-	
 	<!-- textarea 길이 조절 -->
 <script>
     var txtArea = $(".textarea");

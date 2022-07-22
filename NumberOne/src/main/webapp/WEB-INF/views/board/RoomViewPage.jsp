@@ -411,13 +411,20 @@ section{
  						<div id="reply" class="scroll"><!-- 댓글 영역 --></div>
  						<div id="roomInfo"><!-- 추천, 스크랩, 신고 --></div>
  						<div id="likes_date"><!-- 좋아요수, 날짜 --></div>
- 						<div id="replyWriteForm" class="row"><!-- 댓글 입력 영역 -->
- 							<div class="col-10" style="border:none;">
- 								<textarea class="scroll" id="inputReply" placeholder="댓글 달기..." onkeydown="replyEnter(event)"></textarea>
- 							</div>
- 							<div class="col-2">
- 								<button onclick='replyResister()' style="margin-top:85%;">게시</button>
- 							</div>
+ 						<div id="replyWriteForm" class="row">
+ 						
+ 							<!-- 댓글 입력 영역 -->
+ 							<c:choose>
+ 								<c:when test="${sessionScope.loginId != null }">
+		 							<input id="inputReply" type="text" placeholder="댓글 달기..." style="height:60px;" onkeydown="replyEnter(event)">&nbsp;&nbsp;
+		 							<button onclick='replyResister()'>게시</button>
+ 								</c:when>
+ 								<c:otherwise>
+		 							<input id="inputReply" type="text" readonly="readonly" placeholder="로그인 후 이용 가능합니다" style="height:60px;">&nbsp;&nbsp;
+		 							<button onclick='replyResister()' disabled="disabled">게시</button>
+ 								</c:otherwise>
+ 							</c:choose>
+ 							
  						</div>		
   					</div>	
   				</div>
@@ -632,7 +639,7 @@ roomView_ajax(nowBdcode)
 				}
 				mprofileOutput += "</img>";
 				$("#roomMprofile").html(mprofileOutput);
-				mnicknameOutput = "<div id='mnickname' style='font-size:22px; margin-left:5px; padding-bottom:2px; color: black;'>"+roomView.bdnickname;
+				mnicknameOutput = "<div id='mnickname' style='font-size:18px; margin-left:8px; padding-bottom:2px; color: black;'>"+roomView.bdnickname;
 				//메뉴 출력 할 수 있는 ...
 				//로그인 아이디에 따라 메뉴는 다르게 출력됨 
 				mnicknameOutput += "<span  style='position:absolute; right:20px; cursor:pointer;' onclick='menuModal(\""+nowBdcode+"\", \"${sessionScope.loginId}\")' style='font-size:15px; color:black; padding-rignt:10px;'>&#8943;</span>";
@@ -677,7 +684,7 @@ roomView_ajax(nowBdcode)
 				
 				//좋아요수, 날짜 출력
 				var likesDateOutput = "<span style='color:black; font-size:18px; font-weight:bold;'>좋아요&nbsp;<span id='likesNum'>"+roomView.bdrecommend+"</span>개</span><br>";
-				likesDateOutput += "<span style='color:grey; font-size:15px;'>"+roomView.bddate+"</span>"
+				//likesDateOutput += "<span style='color:grey; font-size:15px;'>"+roomView.bddate+"</span>"
 				$("#likes_date").html(likesDateOutput);
 				
 				//댓글 출력
@@ -959,7 +966,7 @@ roomView_ajax(nowBdcode)
 			success: function(result){
 				console.log(result);
 				
-				if(result = "2"){
+				if(result == "2"){
 					var confirmResult = confirm("로그인 후 이용가능합니다"); 
 					console.log(confirmResult);
 					if(confirmResult==true){

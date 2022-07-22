@@ -497,7 +497,7 @@
          async:false,
          dataType:"json",
          success:function(result){
-           //console.log(result);
+           console.log(result);
             //console.log(nickname);
             wMemberPopup = window.open(wMemberPopupUrl, "", wMemberPopupOption, nickname);
             
