@@ -563,7 +563,7 @@
 	  			
 				$.ajax({
 					type: "post",
-					url: "selectZzimList",
+					url: "selectZzimList_ajax",
 					data: {"loginId": "${sessionScope.loginId}"},
 					async:false,
 					dataType: "json",
@@ -579,43 +579,36 @@
 	// 드롭다운 채팅방목록 입력 함수
 	function outputZzimList(data){
 		console.log("찜목록 드롭다운 실행");
-		var dropdownList = "<p class=\"dropdown-header\" style=\"font-size:11px;\">찜 목록</p>";
+		var zzimList = "<p class=\"dropdown-header\" style=\"font-size:11px;\">찜 목록</p>";
 		for(var i = 0; i < data.length; i++){
 			if (i == 5){ // 최대 5개 목록까지만 출력
 				break;
 			}
-			dropdownList += "<div class=\"\" >";
-			dropdownList += "<a class=\" dropdown-item d-flex align-items-center py-2\" href=\"#\" onclick=\"location.href=\"selectResellView?ubcode=" + data[i].ubcode + "&ubsellbuy=" + data[i].ubsellbuy+ ">";
-			dropdownList += "<div class=\"row\" style=\"width: 100%; --bs-gutter-x: 0;\">";
-			dropdownList += "<div class=\"col-1 text-center\">";
-			if (data[i].crfrmprofile != null){ // 상대방 이미지가 있으면
-				dropdownList += "<img src=\"${pageContext.request.contextPath }/resources/img/mprofileUpLoad/" + data[i].crfrmprofile + "\" alt=\"프로필\" class=\"rounded-circle chat-profile\">";
-			} else { // 없으면
-				dropdownList += "<img src=\"${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png\" alt=\"프로필\" class=\"rounded-circle chat-profile\">";
-			}
-			dropdownList += "</div>";
-			dropdownList += "<div class=\"col-11\" style=\"\">";
-			dropdownList += "<div class=\"row nav_chat\" style=\"--bs-gutter-x: 0; margin-left: 10px;\">";
-			dropdownList += "<div class=\"col-11 overflow_twoline px-0 \" style=\"font-size:13px;\">" + data[i].recentCmcontents + "</div>";
-			dropdownList += "<div class=\"col-1 nav_chat\" style=\"text-align: center;\">";
-			if (data[i].unreadCount != 0){ // 안읽은 메세지가 있으면
-				dropdownList += "<span class=\"chat-badge\" style=\"\">" + data[i].unreadCount + "</span>";
-			}
-			dropdownList += "</div>";
-			dropdownList += "<div class=\"row\"style=\"width: 100%; --bs-gutter-x: 0;\">";
-			dropdownList += "<div class=\"col-6 \" style=\"color:gray; text-align:left; font-size:9px;\">" + data[i].crfrmnickname + "</div>";
-			dropdownList += "<div class=\"col-6  px-0\" style=\"color:gray; text-align:right; font-size:9px;\">" + data[i].recentCmdate + "</div>";
-			dropdownList += "</div>";
-			dropdownList += "</div>";
-			dropdownList += "</div>";
-			dropdownList += "</div>";
-			dropdownList += "</a>";
-			dropdownList += "</div>";
+			zzimList += "<div class=\"\" >";
+			zzimList += "<a class=\" dropdown-item d-flex align-items-center py-2\" href=\"#\" onclick=\"location.href=\"selectResellView?ubcode=" + data[i].ubcode + "&ubsellbuy=" + data[i].ubsellbuy+ ">";
+			zzimList += "<div class=\"row\" style=\"width: 100%; --bs-gutter-x: 0;\">";
+			zzimList += "<div class=\"col-1 text-center\">";
+			zzimList += "<img src=\"${pageContext.request.contextPath }/resources/img/resell/" + data[i].ubmainimg + "\" alt=\"메인사진\" class=\" chat-profile\">";
+			zzimList += "</div>";
+			zzimList += "<div class=\"col-11\" style=\"\">";
+			zzimList += "<div class=\"row nav_chat\" style=\"--bs-gutter-x: 0; margin-left: 10px;\">";
+			zzimList += "<div class=\"col-11 overflow_twoline px-0 \" style=\"font-size:13px;\">" + data[i].ubtitle + "</div>";
+			zzimList += "<div class=\"col-1 nav_chat\" style=\"text-align: center;\">";
+			zzimList += "</div>";
+			zzimList += "<div class=\"row\"style=\"width: 100%; --bs-gutter-x: 0;\">";
+			zzimList += "<div class=\"col-6 \" style=\"color:gray; text-align:left; font-size:9px;\">" + data[i].ubrgcode + "</div>";
+			zzimList += "<div class=\"col-6  px-0\" style=\"color:gray; text-align:right; font-size:9px;\">" + data[i].ubnickname + "</div>";
+			zzimList += "</div>";
+			zzimList += "</div>";
+			zzimList += "</div>";
+			zzimList += "</div>";
+			zzimList += "</a>";
+			zzimList += "</div>";
 		}
-		dropdownList += "<div class=\"text-center mt-1\">";
-		dropdownList += "<a class=\"dropdown-item pt-2\" href=\"selectMyInfoResellView#scroll-chat\" style=\"color: gray; font-size:13px;\">더보기</a>";
-		dropdownList += "</div>";
-		$("#chatRoomList").html(dropdownList);
+		zzimList += "<div class=\"text-center mt-1\">";
+		zzimList += "<a class=\"dropdown-item pt-2\" href=\"selectMyInfoResellView#scroll-zzim\" style=\"color: gray; font-size:13px;\">더보기</a>";
+		zzimList += "</div>";
+		$("#zzimList").html(zzimList);
 	}
 
 </script>
