@@ -200,15 +200,11 @@
 
 		
 		/* 두번째 배너 */
-		.owl-carousel .owl-item img {
+		.owl-carousel .owl-item img, .owl-stage-outer {
 			border-radius: 30px;
 		}
-/* 		.owl-carousel:hover .item {
-			background-color: #00bcd4;
-			border: none;
-			font-weight: bold;
-		} */
-
+		
+		/* 두번째 배너 화살표 */
 		#banner_second:hover button {
 			opacity: 1! important;
 		}
@@ -238,6 +234,19 @@
 			width: 40px;
 			height: 40px;
 			padding-top: 30%;
+		}
+		
+		/* 줌인 */
+		.owl-carousel .owl-item img {
+		-webkit-transform: scale(1);
+		transform: scale(1);
+		-webkit-transition: .3s ease-in-out;
+		transition: .3s ease-in-out;
+		}
+		
+		.owl-carousel .owl-item:hover img {
+		  -webkit-transform: scale(1.1);
+		  transform: scale(1.1);
 		}
 		
 		
