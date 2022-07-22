@@ -192,8 +192,6 @@ footer{
 		text-align: center;
 		padding-bottom: 5%;
 		margin-bottom: 5%;
-	    border-bottom: solid 1px;
-	    border-color: #4cadcc;
 	    font-weight: bold;
 		font-size: 20px;
 	}

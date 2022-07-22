@@ -95,7 +95,7 @@
 					</div>
 					
 					
-					<div class="accordion-item sideroom_region">
+					<div class="accordion-item sidetitle_resell">
 						<h2 class="accordion-header" id="panelsStayOpen-headingTwo">
 							<button class="accordion-button sideregion_title collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
 								<i class="fa-solid fa-cart-shopping"></i>&nbsp;&nbsp;사구
