@@ -7,11 +7,13 @@
 <meta charset="UTF-8">
 <title>1인자 - 자취방 자랑 메인</title>
 
-<%-- <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css"> --%>
-<!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
-<!-- <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> -->
-<%@ include file="/resources/css/BarCss.jsp"%>
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> 
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
+<%-- <%@ include file="/resources/css/BarCss.jsp"%> --%>
 <style type="text/css">
 	#board_column{
 		border-bottom: solid gray 3px;
@@ -384,6 +386,13 @@ input{
 	color : #00bcd4;
 }
 
+#inputReply{
+	height : 80px;
+	width : 85%;
+	resize : none;
+	border : 1px solid #DCDCDC;
+	font-size : 15px; 
+}
 </style>
 </head>
 <body>
@@ -612,11 +621,11 @@ input{
  				<!-- 댓글 입력 영역 -->
  				<c:choose>
  					<c:when test="${sessionScope.loginId != null }">
-		 				<input id="inputReply" type="text" placeholder="댓글 달기..." onkeydown="replyEnter(event)">
+		 				<textarea class="scroll" id="inputReply" placeholder="댓글 달기..." style="height:60px;" onkeydown="replyEnter(event)"></textarea>&nbsp;&nbsp;
 		 				<button onclick='replyResister()'>게시</button>
  					</c:when>
  					<c:otherwise>
-		 				<input id="inputReply" type="text" readonly="readonly" placeholder="로그인 후 이용 가능합니다">
+		 				<textarea class="scroll" id="inputReply" type="text" readonly="readonly" placeholder="로그인 후 이용 가능합니다" style="height:60px;"></textarea>&nbsp;&nbsp;
 		 				<button onclick='replyResister()' disabled="disabled">게시</button>
  					</c:otherwise>
  				</c:choose>	
@@ -1005,7 +1014,7 @@ function modalChange(type){
 		}
 		mprofileOutput += "</img>";
 		$("#roomMprofile").html(mprofileOutput);
-		mnicknameOutput = "<div id='mnickname' style='font-size:22px; margin-left:5px; padding-bottom:2px; color: black;'>"+roomView.bdnickname;
+		mnicknameOutput = "<div id='mnickname' style='font-size:18px; margin-left:8px; padding-bottom:2px; color: black;'>"+roomView.bdnickname;
 		//메뉴 출력 할 수 있는 ...
 		//로그인 아이디에 따라 메뉴는 다르게 출력됨 
 		mnicknameOutput += "<span  style='position:absolute; right:20px; cursor:pointer;' onclick='menuModal(\""+roomView.bdcode+"\", \""+roomView.bdmid+"\")' style='font-size:15px; color:black; padding-rignt:10px;'>&#8943;</span>";
@@ -1051,7 +1060,7 @@ function modalChange(type){
 		
 		//좋아요수, 날짜 출력
 		var likesDateOutput = "<span style='color:black; font-size:18px; font-weight:bold;'>좋아요&nbsp;<span id='likesNum'>"+roomView.bdrecommend+"</span>개</span><br>";
-		likesDateOutput += "<span style='color:grey; font-size:15px;'>"+roomView.bddate+"</span>"
+		//likesDateOutput += "<span style='color:grey; font-size:15px;'>"+roomView.bddate+"</span>"
 		$("#likes_date").html(likesDateOutput);
 		
 		//댓글 출력
@@ -1342,7 +1351,7 @@ function modalChange(type){
 			success: function(result){
 				console.log(result);
 				
-				if(result = "2"){
+				if(result == "2"){
 					var confirmResult = confirm("로그인 후 이용가능합니다"); 
 					console.log(confirmResult);
 					if(confirmResult==true){

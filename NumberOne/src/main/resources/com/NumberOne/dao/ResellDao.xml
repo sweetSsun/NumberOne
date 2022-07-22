@@ -36,7 +36,7 @@
 		resultType="com.NumberOne.dto.UsedBoardDto">
 		SELECT UBNICKNAME, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE,
 		UBCONTENTS,
-		TO_CHAR(UBDATE, 'YYYY-MM-DD') UBDATE, UBMAINIMG,
+		TO_CHAR(UBDATE, 'YYYY-MM-DD HH24:MI:SS') UBDATE, UBMAINIMG,
 		UBDETAILIMG, UBSTATE,
 		NVL(ZZIMCOUNT, 0) UBZZIM
 		FROM (SELECT ROWNUM
@@ -94,7 +94,7 @@
 
 		<choose>
 			<when test="checkMethod=='Main'">
-				AND RN BETWEEN 1 AND 9
+				AND RN BETWEEN 1 AND 3
 			</when>
 
 			<otherwise>

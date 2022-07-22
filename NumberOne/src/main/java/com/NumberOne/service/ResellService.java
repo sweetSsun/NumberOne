@@ -2,7 +2,10 @@ package com.NumberOne.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
@@ -36,7 +39,8 @@ public class ResellService {
 
 	public static String savePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\resell";
 
-	public ModelAndView selectResellMainPage(Paging paging) {
+	
+	public ModelAndView selectResellMainPage(Paging paging) throws ParseException {
 		System.out.println("selectResellMainPage 서비스 호출");
 		ModelAndView mav = new ModelAndView();
 
@@ -56,18 +60,36 @@ public class ResellService {
 		paging.setSellBuy("S");
 //		팔구리스트
 		ArrayList<UsedBoardDto> SellList = rdao.selectResellPageList(paging, checkMethod);
+		for (int i = 0; i < SellList.size(); i++) {
+			//현재시간 - 작성시간
+			String ubdatedef = timeFuction(SellList.get(i).getUbdate());
+			//ubdatedef 객체에 저장
+			SellList.get(i).setUbdatedef(ubdatedef);
+			//ubdate 분까지만 객체에 저장
+			SellList.get(i).getUbdate().substring(0,  16);	
+		}
+		
 		System.out.println("팔구DTO : " + paging);
 
 //		사구리스트
 		paging.setSellBuy("B");
-		ArrayList<UsedBoardDto> buyList = rdao.selectResellPageList(paging, checkMethod);
+		ArrayList<UsedBoardDto> BuyList = rdao.selectResellPageList(paging, checkMethod);
+		for (int i = 0; i < BuyList.size(); i++) {
+			//현재시간 - 작성시간
+			String ubdatedef = timeFuction(BuyList.get(i).getUbdate());
+			//ubdatedef 객체에 저장
+			BuyList.get(i).setUbdatedef(ubdatedef);
+			//ubdate 분까지만 객체에 저장
+			BuyList.get(i).getUbdate().substring(0,  16);	
+		}
 		System.out.println("사구DTO : " + paging);
 
 		mav.addObject("SellList", SellList);
-		mav.addObject("buyList", buyList);
-		System.out.println("팔구목록 : " + SellList);
-		System.out.println("사구목록 : " + buyList);
 
+		mav.addObject("BuyList", BuyList);
+		System.out.println("팔구목록 : " +SellList);
+		System.out.println("사구목록 : " + BuyList);
+		
 		mav.setViewName("resell/Resell_Main");
 
 		return mav;
@@ -667,5 +689,44 @@ public class ResellService {
 		}
 		return mav;
 	}
+
+	public String timeFuction(String ubdate) throws ParseException {
+		System.out.println("ResellService.timeFuction 호출");
+		System.out.println(ubdate);
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		
+		Date time = sdf.parse(ubdate);
+		System.out.println(time);
+		long timeMin = time.getTime(); 
+		System.out.println(timeMin);
+		
+		Date now = new Date();
+		System.out.println(now);
+		long nowMin = now.getTime();
+		System.out.println(nowMin);
+				
+		long betweenTime = (nowMin - timeMin)/60000;
+		System.out.println(betweenTime);
+
+		
+        if (betweenTime < 1) return "방금전";
+        if (betweenTime < 60) {
+            return betweenTime+"분전";
+        }
+
+        long betweenTimeHour = betweenTime / 60;
+        if (betweenTimeHour < 24) {
+            return betweenTimeHour+"시간전";
+        }
+		
+        long betweenTimeDay = betweenTime / 60 / 24;
+        if (betweenTimeDay < 31) {
+            return betweenTimeDay+"일전";
+        }
+        
+        return ubdate.substring(0, 16);
+	}
+	
+
 
 }

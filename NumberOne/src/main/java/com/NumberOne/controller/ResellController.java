@@ -1,6 +1,7 @@
 package com.NumberOne.controller;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,7 +26,7 @@ public class ResellController {
 	
 		
 	@RequestMapping(value = "/selectResellMainPage")
-	public ModelAndView selectResellMainPage(Paging paging) {
+	public ModelAndView selectResellMainPage(Paging paging) throws ParseException {
 		System.out.println("selectResellMainPage 호출");
 		ModelAndView mav = new ModelAndView();
 

@@ -545,31 +545,57 @@
 <script type="text/javascript">
 	function adminBoardStop(bdcode){
 		/* 관리자 - 게시글 정지  */
-		console.log(bdcode);
-		var check = "adminPage"; // 관리자페이지에서 넘어왔음을 확인
-		location.href="admin_updateBoardStop${paging.makeQueryPage(paging.page)}&bdcode="+bdcode+"&check="+check;
+		$.ajax({
+	  		type : 'get',
+	  		url : 'Admin_selectLoginOut_ajax',
+	  		async : false,
+	  		success : function(result){
+	  			if (result == "2"){ 
+	  				if(confirm("관리자 로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+	  					location.href = "loadToLogin";
+	  				}
+	  				return;
+	  			}
+	  			
+				console.log(bdcode);
+				var check = "adminPage"; // 관리자페이지에서 넘어왔음을 확인
+				location.href="admin_updateBoardStop${paging.makeQueryPage(paging.page)}&bdcode="+bdcode+"&check="+check;
+	  		}
+		});
 	}
 
 	function adminReplyStop(rpcode){
 		/* 관리자 - 댓글 정지 */
-		console.log(rpcode);
-		
-		//ajax
 		$.ajax({
-			type : "get",
-			url : "admin_updateReplyStop_ajax",
-			data : { "rpcode" : rpcode },
-			async : false,
-			success : function(adminRpStop){
-				if ( adminRpStop > 0 ){
-					//댓글목록 및 댓글 개수 새로 출력 
-					alert(rpcode + "번 댓글이 정지되었습니다.");
-					selectReplyList();
-					selectReplyCount();	
-				}
-			}
+	  		type : 'get',
+	  		url : 'Admin_selectLoginOut_ajax',
+	  		async : false,
+	  		success : function(result){
+	  			if (result == "2"){ 
+	  				if(confirm("관리자 로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+	  					location.href = "loadToLogin";
+	  				}
+	  				return;
+	  			}	
+	  			
+				console.log(rpcode);
+				//ajax
+				$.ajax({
+					type : "get",
+					url : "admin_updateReplyStop_ajax",
+					data : { "rpcode" : rpcode },
+					async : false,
+					success : function(adminRpStop){
+						if ( adminRpStop > 0 ){
+							//댓글목록 및 댓글 개수 새로 출력 
+							alert(rpcode + "번 댓글이 정지되었습니다.");
+							selectReplyList();
+							selectReplyCount();	
+						}
+					}
+				});
+	  		}
 		});
-		
 	}
 	
 </script>

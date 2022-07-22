@@ -15,6 +15,9 @@
 	td{
 		font-size: 20px;
 	}
+	a:hover{
+		color : #00bcd4;
+	}
 	.category{
 		color : #00bcd4;
 	}

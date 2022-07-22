@@ -16,8 +16,7 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
 	integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
 	crossorigin="anonymous"
-	referrerpolicy="no-referrer"
-></script>
+	referrerpolicy="no-referrer"></script>
 
 
 <!-- 부트스트랩 -->
@@ -26,7 +25,11 @@
 	rel="stylesheet"
 	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
 	crossorigin="anonymous"
->
+	>
+	
+<!-- Css Styles -->
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
+
 <style type="text/css">
 .product-img {
 	max-width: 30%;
@@ -89,6 +92,34 @@ option {
 	border: solid gray 2px;
 	font-size: 19px;
 	resize: none;
+}
+
+/* 새로 추가한 부분 (여기부터 input:disabled까지) */
+.container-gd {
+	border: 2px solid #00bcd4;
+	border-radius: 7px;
+	
+}
+
+.gdtitle {
+	border: none;
+	font-size: 20px;
+	height: 22px;
+	margin: auto;
+	width:100%;
+}
+.gd-header{
+	display: block;
+	border-radius: 5px 5px 0 0;
+	background-color: #00bcd4;
+	font-size: 18px;
+	color: white;
+	font-weight: bold;
+	text-align: center;
+}
+
+input[type="text"]:disabled {
+ 	background-color: white;
 }
 
 .btn-wrapper {
@@ -163,6 +194,7 @@ div.detailimageBox {
 	width: 260px;
 	display: inline-block;
 }
+
 </style>
 
 </head>
@@ -190,6 +222,7 @@ div.detailimageBox {
 		<section>
 			<!-- 본문 -->
 			<div class="container">
+				<h2 class="text-center">중고거래 글수정페이지 : Resell_ModifyForm.jsp</h2>
 				<h1
 					class="text-center"
 					id="titleMsg"
@@ -229,20 +262,22 @@ div.detailimageBox {
 					<div class="container-header">
 						<div class="row">
 							<div class="col-6">
-								<span> <select
-										class="bdCategoryList"
-										id="totalOp"
-										name="ubstate"
-										onchange="resellState(this,'${gd_resellView}')"
-									>
-										<option value="1">판매중</option>
-										<option value="9">판매완료</option>
-									</select>
-								</span>
+								<span style="font-size:20px;">글상태 </span><span class="text-danger">*</span>
 								<select
 									class="bdCategoryList"
-									name="ubrgcode"
-								>
+									id="totalOp"
+									name="ubstate"
+									onchange="resellState(this,'${gd_resellView}')">
+									<option value="1">판매중</option>
+									<option value="9">판매완료</option>
+								</select>
+							</div>
+							<div class="col-6">
+								<span style="font-size:20px;">지역 </span><span class="text-danger">*</span>
+								<select
+									class="bdCategoryList"
+									id = "ubrgOp"
+									name="ubrgcode">
 									<option value="SEL">서울</option>
 									<option value="ICN">인천</option>
 									<option value="GGD">경기</option>
@@ -252,25 +287,23 @@ div.detailimageBox {
 									<option value="GSD">경상</option>
 									<option value="JJD">제주</option>
 								</select>
-
-
 							</div>
-
+<%-- 
 							<div class="col-2">작성자</div>
-
-
-
 							<div class="col-4">${ub_resellView.ubnickname }</div>
-
-						</div>
+ --%>
+ 						</div>
 						<hr>
-						<!-- 품목명  -->
-
+						
+						<!-- 글 제목  -->
 						<div class="row">
 							<input
 								type="text"
+								<%-- 
 								size="60"
 								style="margin-left: 40px;"
+								 --%>
+								class="bdtitle" 
 								id="titleCheck"
 								name="ubtitle"
 								value="${ub_resellView.ubtitle }"
@@ -278,63 +311,69 @@ div.detailimageBox {
 							<span class="checkMsg"></span>
 						</div>
 						<hr>
-
-						<c:forEach
-							items="${gd_resellView}"
-							var="gdList"
-						>
-							<div class="row">
-								<div class="col-2">
-									<select
-										class="bdCategoryList selectStates"
-										name="gd_state"
-										onchange="gdUpdateState('${gdList.gdcode }',this)"
-									>
-										<option value="1">판매중</option>
-										<option value="0">판매완료</option>
-									</select>
-
-								</div>
-								<div class="col-6">
+						
+						<!-- 품목 -->
+						<div class="container-gd mb-3">
+							<!-- <span class="gd-header">판매물품</span> -->
+						
+							<c:forEach
+								items="${gd_resellView}"
+								var="gdList"
+							>
+								<div class="row my-3" style="">
+									<div class="col-2">
+										<select
+											class="bdCategoryList selectStates"
+											name="gd_state"
+											onchange="gdUpdateState('${gdList.gdcode }',this)"
+											style="width:130px;"
+										>
+											<option value="1">판매중</option>
+											<option value="0">판매완료</option>
+										</select>
+	
+									</div>
+									<div class="col-7">
+										<input
+											type="text"
+											class="gdtitle"
+											name="gd_names"
+											value="${gdList.gdname }"
+										>
+										<input disabled class="d_none gdtitle gd_nameList line-through"
+											type="text" value="${gdList.gdname }">
+									</div>
+	
+									<div class="col-3">
+	
+										<input
+											type="text"
+											class="gdtitle"
+											name="gd_price"
+											value="${gdList.gdprice }"
+										>
+										<input disabled class="d_none gdtitle gd_priceList line-through" 
+											 type="text" value="${gdList.gdprice }">
+									</div>
+	
+	
+	
 									<input
-										type="text"
-										name="gd_names"
-										size="60"
-										value="${gdList.gdname }"
+										type="hidden"
+										class="select_gdcode"
+										name="gd_code"
+										value="${gdList.gdcode }"
 									>
-									<span class="d_none gd_nameList line-through">${gdList.gdname }</span>
-								</div>
-
-								<div class="col-4">
-
 									<input
-										type="text"
-										size="20"
-										name="gd_price"
-										value="${gdList.gdprice }"
+										type="hidden"
+										class="select_gdstate"
+										value="${gdList.gdstate }"
 									>
-									<span class="d_none gd_priceList line-through">${gdList.gdprice }</span>
+	
 								</div>
-
-
-								<hr>
-
-								<input
-									type="hidden"
-									class="select_gdcode"
-									name="gd_code"
-									value="${gdList.gdcode }"
-								>
-								<input
-									type="hidden"
-									class="select_gdstate"
-									value="${gdList.gdstate }"
-								>
-
-							</div>
-
-						</c:forEach>
-
+	
+							</c:forEach>
+						</div>
 
 
 					</div>
@@ -343,10 +382,10 @@ div.detailimageBox {
 
 
 					<!-- 상품 설명  -->
-					<div class="row">
+					<div class="row" style="width:100%; margin-left:0;">
 						<textarea
 							class="bdcontents"
-							rows="17"
+							rows="16"
 							cols="80"
 							name="ubcontents"
 							id="ubcontents"
@@ -443,15 +482,13 @@ div.detailimageBox {
 					<div class="row mt-4">
 						<div class="col btn-wrapper">
 							<input
-								class="btn btn-lg buttons fw-bold text-white"
-								style="background-color: #00bcd4;"
+								class="btn btn-numberone btn-lg fw-bold"
 								type="submit"
 								value="수정"
 							>
 							<input
 								onclick="bdWriteCancelCheckModal()"
-								class="btn btn-lg buttons fw-bold text-white"
-								style="background-color: #00bcd4;"
+								class="btn btn-numberone btn-lg fw-bold"
 								type="button"
 								value="취소"
 							>
@@ -525,6 +562,8 @@ div.detailimageBox {
 <script type="text/javascript">
 	const ubstate = '${ub_resellView.ubstate}'; // 글 상태 값 
 	const totalOp = document.getElementById("totalOp"); // 글 상태 select태그
+	const ubrgcode = '${ub_resellView.ubrgcode}'; // 지역코드
+	const ubrgOp = document.getElementById("ubrgOp") // 지역 select태그
 	const ubcode = '${ub_resellView.ubcode}'; //글번호
 	const ubsellbuy = '${ub_resellView.ubsellbuy}'; //사구,팔구 확인
 	const selectStates = document.querySelectorAll(".selectStates"); // 상품 상태 select태그 
@@ -562,6 +601,14 @@ div.detailimageBox {
 </script>
 
 <script type="text/javascript">
+	/* 페이지로드시 기존 글 지역 select */
+	for (let i = 0; i < ubrgOp.options.length; i++){
+		if (ubrgOp.options[i].value === ubrgcode) {
+			ubrgOp.options[i].selected = 'true';
+		}
+		
+	}
+
 	/* 페이지로드시 글의 판매상태체크 */
 		for (let i = 0; i < totalOp.options.length; i++) {
 			if (totalOp.options[i].value === ubstate) {
@@ -573,7 +620,8 @@ div.detailimageBox {
 
 				if (ubstate === '9') { // 글의 상태값이 9(판매완료)이면 실행.
 					console.log('ubstate', ubstate);
-					document.getElementById("titleMsg").innerText = "판매완료된 글입니다.";
+					document.getElementById("titleCheck").classList.add("line-through")
+					document.getElementById("titleCheck").setAttribute("disabled", "disabled");
 
 					for (let i = 0; i < gd_nameList.length; i++) {
 
@@ -590,7 +638,8 @@ div.detailimageBox {
 					
 
 				} else { //글의 상태값이 1(판매중)이면 실행
-					document.getElementById("titleMsg").innerText = "판매중";
+					document.getElementById("titleCheck").classList.remove("line-through")
+					document.getElementById("titleCheck").removeAttribute("disabled");
 
 					for (let j = 0; j < select_gdstate.length; j++) {
 						
@@ -649,8 +698,9 @@ console.log("선택된 상품의 상태값 : ", select_ubstate);
 	
 
 						if (select_ubstate === '9') {
-							document.getElementById("titleMsg").innerText = "판매완료된 글입니다.";
-
+							document.getElementById("titleCheck").classList.add("line-through")
+							document.getElementById("titleCheck").setAttribute("disabled", "disabled");
+							
 							for (let i = 0; i < gd_nameList.length; i++) {
 
 								gd_nameList[i].classList.remove('d_none');
@@ -664,7 +714,8 @@ console.log("선택된 상품의 상태값 : ", select_ubstate);
 							}
 
 						} else {
-							document.getElementById("titleMsg").innerText = "판매중";
+							document.getElementById("titleCheck").classList.remove("line-through")
+							document.getElementById("titleCheck").removeAttribute("disabled");
 						
 							
 							for (let i = 0; i < gd_nameList.length; i++) {
@@ -697,10 +748,13 @@ console.log("선택된 상품의 상태값 : ", select_ubstate);
 						}
 				
 
-		totalOp.options[totalOp.selectedIndex].value == '9' ? document
-				.getElementById("titleMsg").innerText = "판매완료된 글입니다."
-
-		: document.getElementById("titleMsg").innerText = "판매중";
+		if (totalOp.options[totalOp.selectedIndex].value == '9'){
+			document.getElementById("titleCheck").classList.add("line-through")
+			document.getElementById("titleCheck").setAttribute("disabled", "disabled");
+		} else {
+			document.getElementById("titleCheck").classList.remove("line-through")
+			document.getElementById("titleCheck").removeAttribute("disabled");
+		}
 	}
 
 	

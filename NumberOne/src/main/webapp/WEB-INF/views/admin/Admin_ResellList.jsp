@@ -224,34 +224,47 @@
 		// 거래글 상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
 		function updateUbstate(){
 			console.log("updateUbstate() 실행");
-			var ubcode = $("#ubcode").val();
-			console.log(btnObj.text());
-			if (btnObj.text() == "경고"){
-				var ubstate = 0;				
-			} else {
-				var ubstate = 1;				
-			}
 			$.ajax({
-				type: "get",
-				data: {"ubcode":ubcode, "ubstate":ubstate},
-				url: "admin_updateUbstate_ajax",
-				dataType: "json",
-				success: function(result){
-					if(result > 0){
-						if (ubstate == 0){
-							btnObj.text("정지").addClass("btn-danger").removeClass("btn-warning");
-						} else {
-							btnObj.text("경고").addClass("btn-warning").removeClass("btn-danger");
-						}
+		  		type : 'get',
+		  		url : 'Admin_selectLoginOut_ajax',
+		  		async : false,
+		  		success : function(result){
+		  			if (result == "2"){ 
+		  				if(confirm("관리자 로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+		  					location.href = "loadToLogin";
+		  				}
+		  				return;
+		  			}
+		  			
+					var ubcode = $("#ubcode").val();
+					console.log(btnObj.text());
+					if (btnObj.text() == "경고"){
+						var ubstate = 0;				
+					} else {
+						var ubstate = 1;				
 					}
-					$("#updateUbstateModal").modal("hide");
-				},
-				error: function(){
-					$("#updateUbstateModal").modal("hide");
-					alert("글상태 변경에 실패했습니다.");
-				}
+					$.ajax({
+						type: "get",
+						data: {"ubcode":ubcode, "ubstate":ubstate},
+						url: "admin_updateUbstate_ajax",
+						dataType: "json",
+						success: function(result){
+							if(result > 0){
+								if (ubstate == 0){
+									btnObj.text("정지").addClass("btn-danger").removeClass("btn-warning");
+								} else {
+									btnObj.text("경고").addClass("btn-warning").removeClass("btn-danger");
+								}
+							}
+							$("#updateUbstateModal").modal("hide");
+						},
+						error: function(){
+							$("#updateUbstateModal").modal("hide");
+							alert("글상태 변경에 실패했습니다.");
+						}
+					});
+		  		}
 			});
-			
 		}
 	</script>
 		

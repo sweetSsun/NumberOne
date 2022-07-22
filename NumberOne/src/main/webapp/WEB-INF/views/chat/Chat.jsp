@@ -129,7 +129,7 @@
 	}
 	.insertChat::-webkit-scrollbar {
 		background-color: #F2F2FF;
-		width: 10px;
+		width: 8px;
 	}
 	.insertChat::-webkit-scrollbar-thumb {
    		background-color: #00a5ba;
@@ -225,12 +225,12 @@
 			<div class="subtitle" style="margin-bottom: 0.5rem;">
 	        	<div>
 	            	<div class="row">
-	                	<div class="col-9" style="padding-right: 0px;">
+	                	<div class="col-9" style="padding-right: 2px;">
 		                    <textarea class="insertChat" id="inputMsg" placeholder="메세지입력"
-		                    style="padding-left: 5px; border: none; background-color: #F2F2FF;"></textarea>
+		                    style="padding-left: 5px; border: none; background-color: #F2F2FF; resize: none;"></textarea>
 	                    </div>
 	                    <div class="col-3" style="padding-left:0;">
-	                    	<input type="button" class="btn btn-lg insertBtn" onclick="sendBtn()" value="Talk" style="width:100%;">
+	                    	<input type="button" class="btn btn-lg insertBtn" onclick="sendBtn()" value="Talk" style="width:100%; height:80px;">
 	                    	
 	                    	
 	                    	<!-- onkeydown을 통해서 엔터키로도 입력되도록 설정. -->
@@ -284,13 +284,31 @@
 	
 	// Talk 버튼 클릭
 	function sendBtn(){
-		const originContents = $("#inputMsg").val();	// 현재 입력된 메세지 저장
-		const cmcontents = originContents.replaceAll(/(\n|\r\n)/g, "<br>");
-		if(cmcontents.trim().length > 0){	// 공백 제외 입력한 글이 있을 때 send
-			sendMessage(cmcontents);
-		}
-		$("#inputMsg").val(""); // 입력창 초기화
-		$("#inputMsg").focus();
+	  	$.ajax({
+	  		type : 'get',
+	  		url : 'selectLoginOut_ajax',
+	  		async : false,
+	  		success : function(result){
+	  			if (result == "2"){ 
+	  				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+	  					opener.closeChat(crcode);
+	  					opener.location.href = "loadToLogin";
+	  					opener.focus();
+	  					window.close();
+	  					return;
+	  				}
+	  				return;
+	  			}
+
+				const originContents = $("#inputMsg").val();	// 현재 입력된 메세지 저장
+				const cmcontents = originContents.replaceAll(/(\n|\r\n)/g, "<br>");
+				if(cmcontents.trim().length > 0){	// 공백 제외 입력한 글이 있을 때 send
+					sendMessage(cmcontents);
+				}
+				$("#inputMsg").val(""); // 입력창 초기화
+				$("#inputMsg").focus();
+			}
+		});
 	}
 	
 		

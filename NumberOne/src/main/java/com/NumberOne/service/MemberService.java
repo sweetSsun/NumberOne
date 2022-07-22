@@ -2,6 +2,7 @@ package com.NumberOne.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.UUID;
@@ -456,8 +457,9 @@ public class MemberService {
 				loginId = (String) session.getAttribute("kakaoId");			
 			}
 		  System.out.println("로그인 된 아이디 : " + loginId);
-		
+
 		  int updateMemberWithdraw = mdao.updateMemberWithdraw(loginId);
+		  
 		  
 		  //로그아웃 시킴
 			session.invalidate();
@@ -645,6 +647,7 @@ public class MemberService {
 			loginId = (String) session.getAttribute("kakaoId");			
 		}
 		System.out.println("로그인 된 아이디 : " + loginId);
+		mav.setViewName("member/MyInfoQuestionForm");
 
 		return mav;
 	}
@@ -932,14 +935,45 @@ public class MemberService {
 		//미니브라우저 중고거래 부분
 		public String selectWriteMemberInfoSellBuy_ajax(String nickname) {
 			System.out.println("service.selectWriteMemberInfoSellBuy_ajax() 호출");
+			
 			ArrayList<UsedBoardDto> ubList = mdao.selectWriteMemberInfoSellBuy_ajax(nickname); 
+			
+			// 금액 천단위 ','
+			for (int i = 0; i < ubList.size(); i++) {
+
+				int price = ubList.get(i).getGdprice();
+
+				NumberFormat numberFormat = NumberFormat.getInstance();
+				
+				String price2 = numberFormat.format(price);
+				System.out.println("price2 : "+price2);
+				
+				ubList.get(i).setGdprice2(price2);
+			}
+			
 			System.out.println("ubList : " + ubList);
+
 			
 			Gson gson = new Gson();
 			String ubList_gson = gson.toJson(ubList);
 			System.out.println(ubList_gson);
 			
 			return ubList_gson;
+		}
+
+
+		// 회원 찜목록 조회
+		public String selectZzimList_ajax(String loginId) {
+			System.out.println("service.selectZzimList_ajax() 호출");
+			System.out.println("loginId : " + loginId);
+			
+			ArrayList<UsedBoardDto> zzList = mdao.selectZzimList_ajax(loginId);
+			System.out.println("zzList : " + zzList);
+			
+			Gson gson = new Gson();
+			String zzList_gson = gson.toJson(zzList);
+			
+			return zzList_gson;
 		}
 
 

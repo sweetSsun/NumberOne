@@ -174,7 +174,19 @@
 	                    </c:when>
 						<c:otherwise>
 							<!-- 찜 -->
-							<li style="margin-right: 15px;"><a href="#" title="찜목록"><i class="fa-solid fa-heart"></i></a></li>
+							<li style="margin-right: 15px;" class="dropdown" >
+								<a href="#" title="찜목록" id="dropdownZzim" role="button" data-bs-toggle="dropdown" aria-expanded="false" 
+									style="display: inline-block !important;">
+									<i class="fa-solid fa-heart"></i>
+								</a>
+								
+								<!-- 찜목록 드롭다운 -->
+								<div class="dropdown-menu shadow" id="zzimList" aria-labelledby="dropdownZzim"
+									style="width: 500px;">
+									<div>찜목록 나올거지롱</div>
+									<!-- 회원의 찜목록 ajax로 받고 출력되는 부분 -->
+                                </div>
+							</li>
 
 							<!-- 채팅 -->
 							<li style="margin-right: 15px;" class="dropdown" >
@@ -222,31 +234,46 @@
 	// 채팅 버튼 클릭시 채팅창 팝업되면서 기존 채팅방 메세지 목록 데이터 보내주는 함수
 	function popupChat(crcode){
 		console.log("popupChat 호출");
-		let popOption = "width=450px, height=550px, top=300px, left=500px, scrollbars=no, resizable=no";
+		let popOption = "width=450px, height=560px, top=300px, left=500px, scrollbars=no, resizable=no";
 		let openUrl = "loadToChat?crcode="+crcode;
-		$.ajax({
-			url: "selectChatRoomMessage",
-			data: {"crcode":crcode},
-			async:false,
-			dataType:"json",
-			success:function(data){
-				console.log(popChatArr.some(popChat => popChat.name === crcode));
-				// 해당 채팅방 팝업이 열려있으면
-				if (popChatArr.some(popChat => popChat.name === crcode)) { 
-					var openedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
-					//console.log(popChatArr[openedIdx]);
-					popChatArr[openedIdx].focus(); // 해당 채팅창 팝업에 focus
-				} 
-				
-				// 열려있지 않으면
-				else { 
-					popChat = window.open(openUrl, crcode, popOption); // 팝업창 열기
-					popChat.window.addEventListener("load", function(){
-						popChat.enterRoom(data); // 채팅방 목록 불러오기
-				 	});
-					popChatArr.push(popChat); // 채팅팝업 배열에 담기
-				}
-				console.log("배열의 길이 : " + popChatArr.length);
+	  	$.ajax({
+	  		type : 'get',
+	  		url : 'selectLoginOut_ajax',
+	  		async : false,
+	  		success : function(result){
+	  			if (result == "2"){ 
+	  				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+	  					location.href = "loadToLogin"
+	  					return;
+	  				}
+	  				return;
+	  			}
+
+				$.ajax({
+					url: "selectChatRoomMessage",
+					data: {"crcode":crcode},
+					async:false,
+					dataType:"json",
+					success:function(data){
+						console.log(popChatArr.some(popChat => popChat.name === crcode));
+						// 해당 채팅방 팝업이 열려있으면
+						if (popChatArr.some(popChat => popChat.name === crcode)) { 
+							var openedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
+							//console.log(popChatArr[openedIdx]);
+							popChatArr[openedIdx].focus(); // 해당 채팅창 팝업에 focus
+						} 
+						
+						// 열려있지 않으면
+						else { 
+							popChat = window.open(openUrl, crcode, popOption); // 팝업창 열기
+							popChat.window.addEventListener("load", function(){
+								popChat.enterRoom(data); // 채팅방 목록 불러오기
+						 	});
+							popChatArr.push(popChat); // 채팅팝업 배열에 담기
+						}
+						console.log("배열의 길이 : " + popChatArr.length);
+					}
+				});
 			}
 		});
 	}
@@ -260,34 +287,35 @@
 	
 	// 채팅 아이콘 클릭하면 채팅방 목록 불러오고 드롭다운(안읽은 메세지 > 최신순)
 	$(document).on("click", "#dropdownChat", function(e){
-		
-	
- /* 	     var menuItem = $(e.currentTarget);
-		console.log($("#dropdownChat").attr("aria-expanded"));
-	     if ($("#dropdownChat").attr("aria-expanded") === 'true') {
-				$("#dropdownChat").attr('aria-expanded', 'false');
-				$("#chatRoomList").removeClass('mixitup-control-active');
-	     } else { */
-	    	 
-		$.ajax({
-			type: "post",
-			url: "selectChatRoomList2",
-			data: {"loginId": "${sessionScope.loginId}"},
-			async:false,
-			dataType: "json",
-			success: function(result){
-				console.log(result);
-				outputDropdown(result);
-				
+	  	$.ajax({
+	  		type : 'get',
+	  		url : 'selectLoginOut_ajax',
+	  		async : false,
+	  		success : function(result){
+	  			if (result == "2"){ 
+	  				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+	  					location.href = "loadToLogin"
+	  					return;
+	  				}
+	  				return;
+	  			}
+				$.ajax({
+					type: "post",
+					url: "selectChatRoomList",
+					data: {"loginId": "${sessionScope.loginId}"},
+					async:false,
+					dataType: "json",
+					success: function(result){
+						console.log(result);
+						outputChatRoomList(result);
+					}
+				});
 			}
 		});
-/* 				$("#dropdownChat").attr('aria-expanded', 'true');
-				$("#chatRoomList").addClass('mixitup-control-active');
-	     }  */
 	});
 
 	// 드롭다운 채팅방목록 입력 함수
-	function outputDropdown(data){
+	function outputChatRoomList(data){
 		console.log("채팅방 목록 드롭다운 실행");
 		var dropdownList = "<p class=\"dropdown-header\" style=\"font-size:11px;\">채팅방 목록</p>";
 		for(var i = 0; i < data.length; i++){
@@ -469,7 +497,7 @@
          async:false,
          dataType:"json",
          success:function(result){
-           //console.log(result);
+           console.log(result);
             //console.log(nickname);
             wMemberPopup = window.open(wMemberPopupUrl, "", wMemberPopupOption, nickname);
             
@@ -515,10 +543,74 @@
          });
       
    }
-   
-
-
 </script>
 
+<!-- 찜목록 관련 스크립트 -->
+<script type="text/javascript">
+	// 찜 아이콘 클릭하면 찜목록 불러오고 드롭다운(최신순 5개까지 + 더보기)
+	$(document).on("click", "#dropdownZzim", function(e){
+	  	$.ajax({
+	  		type : 'get',
+	  		url : 'selectLoginOut_ajax',
+	  		async : false,
+	  		success : function(result){
+	  			if (result == "2"){ 
+	  				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+	  					location.href = "loadToLogin"
+	  				}
+	  				return;
+	  			}
+	  			
+				$.ajax({
+					type: "post",
+					url: "selectZzimList_ajax",
+					data: {"loginId": "${sessionScope.loginId}"},
+					async:false,
+					dataType: "json",
+					success: function(result){
+						console.log(result);
+						outputZzimList(result);
+					}
+				});
+			}
+		});
+	});
+	
+	// 드롭다운 채팅방목록 입력 함수
+	function outputZzimList(data){
+		console.log("찜목록 드롭다운 실행");
+		var zzimList = "<p class=\"dropdown-header\" style=\"font-size:11px;\">찜 목록</p>";
+		for(var i = 0; i < data.length; i++){
+			if (i == 5){ // 최대 5개 목록까지만 출력
+				break;
+			}
+			zzimList += "<div class=\"\" >";
+			zzimList += "<a class=\" dropdown-item d-flex align-items-center py-2\" href=\"#\" onclick=\"location.href=\"selectResellView?ubcode=" + data[i].ubcode + "&ubsellbuy=" + data[i].ubsellbuy+ ">";
+			zzimList += "<div class=\"row\" style=\"width: 100%; --bs-gutter-x: 0;\">";
+			zzimList += "<div class=\"col-1 text-center\">";
+			zzimList += "<img src=\"${pageContext.request.contextPath }/resources/img/resell/" + data[i].ubmainimg + "\" alt=\"메인사진\" class=\" chat-profile\">";
+			zzimList += "</div>";
+			zzimList += "<div class=\"col-11\" style=\"\">";
+			zzimList += "<div class=\"row nav_chat\" style=\"--bs-gutter-x: 0; margin-left: 10px;\">";
+			zzimList += "<div class=\"col-11 overflow_twoline px-0 \" style=\"font-size:13px;\">" + data[i].ubtitle + "</div>";
+			zzimList += "<div class=\"col-1 nav_chat\" style=\"text-align: center;\">";
+			zzimList += "</div>";
+			zzimList += "<div class=\"row\"style=\"width: 100%; --bs-gutter-x: 0;\">";
+			zzimList += "<div class=\"col-6 \" style=\"color:gray; text-align:left; font-size:9px;\">" + data[i].ubrgcode + "</div>";
+			zzimList += "<div class=\"col-6  px-0\" style=\"color:gray; text-align:right; font-size:9px;\">" + data[i].ubnickname + "</div>";
+			zzimList += "</div>";
+			zzimList += "</div>";
+			zzimList += "</div>";
+			zzimList += "</div>";
+			zzimList += "</a>";
+			zzimList += "</div>";
+		}
+		zzimList += "<div class=\"text-center mt-1\">";
+		zzimList += "<a class=\"dropdown-item pt-2\" href=\"selectMyInfoResellView#scroll-zzim\" style=\"color: gray; font-size:13px;\">더보기</a>";
+		zzimList += "</div>";
+		$("#zzimList").html(zzimList);
+	}
+
+</script>
 
 </html>
