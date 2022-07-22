@@ -21,6 +21,7 @@
 	referrerpolicy="no-referrer"
 ></script>
 <!-- 부트스트랩 -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> 
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
 	rel="stylesheet"
@@ -171,6 +172,64 @@ input {
 	font-weight: bold;
 }
 
+/* List CSS */
+
+#regionList {
+	width: 100%;
+	height: 100%; 
+	margin: auto; 
+	padding-top : 10px;
+	overflow: hidden;
+	padding-top: 10px;
+	
+}
+
+div.row.sellbuyhead{
+	margin-top : 2 rem;
+	background-color : #00bcd4;
+	margin-left : 0%; 
+	margin-right : 0%; 	
+	height : 3.2rem;
+}
+
+
+div.col.mb-2 h3{ color : white; }
+
+.float_ {
+	width: 33.3333333%;
+	height: 40rem;
+	float: left;
+	padding: 1%; 
+
+}
+
+#sellbuyscreen{
+	width: 100%;
+	height: 34rem;
+	margin-bottom: 10px;
+}
+
+#sellbuyscreen > a > img {
+	width: 100%;
+	height: 100%;
+	border-radius: 5px;
+	object-fit:cover;
+}
+
+.bottom {
+	font-size:2rem; 
+	padding: 0px;
+	margin: 0px 0px;
+	width : 100%;
+	height: 2.4rem;
+	overflow: hidden;
+	color: initial;
+}
+
+#sellList, #buyList{
+	height : 43rem;
+	/* border : 1px solid  #00bcd4; */
+}
 </style>
 
 </head>
@@ -252,39 +311,48 @@ input {
 					</select>
 					</div>
 				</div>
-			</div>
 
 			<!-- 글목록 -->
 
 			<div id="regionList">
-
-				<c:forEach
-					items="${sell_buyList}"
-					var="sell_List"
-				>
+	<div class="row sellbuyhead">
+					<div class="col mb-2" style="padding-top:0.2rem;">
+						<h3 style="font-size:2.3rem; font-weight:700;">팔구</h3>
+					</div>
+					</div>
+				
+<div id="sellList">
+				<c:forEach items="${sell_buyList}" var="sellList">
 					<div class="float_">
-
-						<a href="selectResellView?ubcode=${sell_List.ubcode }&ubsellbuy=${sell_List.ubsellbuy }&modifyCheck=LIST">
+						<div id="sellbuyscreen">
+						<a href="selectResellView?ubcode=${sellList.ubcode }&ubsellbuy=${sellList.ubsellbuy }&modifyCheck=LIST">
 							<img
 								alt=""
-								src="${pageContext.request.contextPath }/resources/img/resell/${sell_List.ubmainimg }"
+								src="${pageContext.request.contextPath }/resources/img/resell/${sellList.ubmainimg }"
 							>
 						</a>
-						<div class="bottom">
-							<span class="soldCheckMsg_ bold"></span>
-							<a href="selectResellView?ubcode=${sell_List.ubcode }&ubsellbuy=${sell_List.ubsellbuy }&modifyCheck=LIST">${sell_List.ubtitle }</a>
+						
 						</div>
-						<div class="bottom">${sell_List.ubdate }</div>
-
-						<div class="bottom">${sell_List.ubnickname }</div>
-
-						<input
-							type="hidden"
-							class="ubstate_"
-							value="${sell_List.ubstate }"
-						>
+						<div class="bottom" style="font-weight:600; position:relative;">
+							<span class="soldCheckMsg_ bold"></span>
+							<a href="selectResellView?ubcode=${sellList.ubcode }&ubsellbuy=${sellList.ubsellbuy }&modifyCheck=LIST">${sellList.ubtitle }</a>
+						</div>
+						
+						<div style="height:2rem; font-size:1.6rem; padding:0; color:grey;">${sellList.ubdatedef }&nbsp;
+							<span style="color:red; font-size:1.8rem;">
+								<i class='fa-regular fa-heart'></i>
+							</span>
+						</div>
+						<div class="bottom" style="font-size:1.7rem; font-weight:600; position:relative;">
+							<span onclick="writeMemberSellbuy('${sellList.ubnickname }')" style="height:1.8rem; font-size:1.6rem; padding:0; color:initial; cursor:pointer;">${sell_List.ubnickname }</span>
+						</div>
 					</div>
 				</c:forEach>
+
+				<div style="height: 20px; float: left; width: 33.3333333%;"></div>
+			</div>
+
+
 
 			</div>
 			<div style="clear: left;"></div>
