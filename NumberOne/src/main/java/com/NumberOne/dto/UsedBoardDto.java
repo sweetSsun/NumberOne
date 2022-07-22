@@ -42,6 +42,8 @@ public class UsedBoardDto {
 	private String ubgdname; //마이페이지 출력용 굿즈명
 	private int gdprice;	 // 마이페이지 출력용 가격
 	
+	private String ubdatedef; //메인에서 시간 출력용(현재시간-작성시간)
+	
 	public String getUbcode() {
 		return ubcode;
 	}
