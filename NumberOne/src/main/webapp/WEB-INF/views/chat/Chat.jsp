@@ -129,7 +129,7 @@
 	}
 	.insertChat::-webkit-scrollbar {
 		background-color: #F2F2FF;
-		width: 10px;
+		width: 8px;
 	}
 	.insertChat::-webkit-scrollbar-thumb {
    		background-color: #00a5ba;
@@ -225,12 +225,12 @@
 			<div class="subtitle" style="margin-bottom: 0.5rem;">
 	        	<div>
 	            	<div class="row">
-	                	<div class="col-9" style="padding-right: 0px;">
+	                	<div class="col-9" style="padding-right: 2px;">
 		                    <textarea class="insertChat" id="inputMsg" placeholder="메세지입력"
-		                    style="padding-left: 5px; border: none; background-color: #F2F2FF;"></textarea>
+		                    style="padding-left: 5px; border: none; background-color: #F2F2FF; resize: none;"></textarea>
 	                    </div>
 	                    <div class="col-3" style="padding-left:0;">
-	                    	<input type="button" class="btn btn-lg insertBtn" onclick="sendBtn()" value="Talk" style="width:100%;">
+	                    	<input type="button" class="btn btn-lg insertBtn" onclick="sendBtn()" value="Talk" style="width:100%; height:80px;">
 	                    	
 	                    	
 	                    	<!-- onkeydown을 통해서 엔터키로도 입력되도록 설정. -->
