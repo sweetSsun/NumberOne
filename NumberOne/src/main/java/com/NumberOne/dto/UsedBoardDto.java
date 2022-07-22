@@ -41,6 +41,7 @@ public class UsedBoardDto {
 	private String[] ubdetailimg_originList;	//수정전 상세사진목록
 	private String ubgdname; //마이페이지 출력용 굿즈명
 	private int gdprice;	 // 마이페이지 출력용 가격
+	private String gdprice2; // 마이페이지 출력용 가격 (천단위마다 ,)
 	
 	public String getUbcode() {
 		return ubcode;
@@ -157,6 +158,15 @@ public class UsedBoardDto {
 	public void setGdprice(int gdprice) {
 		this.gdprice = gdprice;
 	}
+	
+	public String getGdprice2() {
+		return gdprice2;
+	}
+	public void setGdprice2(String gdprice2) {
+		this.gdprice2 = gdprice2;
+	}
+	
+	
 	@Override
 	public String toString() {
 		return "UsedBoardDto [ubcode=" + ubcode + ", ubrgcode=" + ubrgcode + ", ubsellbuy=" + ubsellbuy + ", ubmid="
@@ -165,7 +175,8 @@ public class UsedBoardDto {
 				+ ", ubzzim=" + ubzzim + ", ubnickname=" + ubnickname + ", ubprofile=" + ubprofile + ", ubmainimgfile="
 				+ ubmainimgfile + ", ubdetailimgfile=" + Arrays.toString(ubdetailimgfile) + ", ubdetailimg_list="
 				+ Arrays.toString(ubdetailimg_list) + ", ubdetailimg_originList="
-				+ Arrays.toString(ubdetailimg_originList) + ", ubgdname=" + ubgdname + ", gdprice=" + gdprice + "]";
+				+ Arrays.toString(ubdetailimg_originList) + ", ubgdname=" + ubgdname + ", gdprice=" + gdprice
+				+ ", gdprice2=" + gdprice2 + "]";
 	}
 	
 	
