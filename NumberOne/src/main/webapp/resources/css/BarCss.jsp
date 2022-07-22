@@ -92,8 +92,8 @@ footer{
 	/* ---------------------- */
 	
 	
-	/* 사이드바 기본 설정 */
-	#sidebar, #sideList, #sidebar-toggleOff {
+	/* 사이드바 기본 설정 (닫힘) */
+	#sidebar, #sideList, #sidebar-toggleOff, .sideresell_title {
 		-webkit-transition: all 0.2s;
 		-moz-transition: all 0.2s;
 		-ms-transition:all 0.2s;
@@ -249,34 +249,36 @@ footer{
 	/* ------- sidebar_중고거래페이지 ------ */
 	/* --------------------------------- */
 	
+	.sideresell_title.sideon {
+		text-align: center;
+		padding-bottom: 5%;
+		margin-bottom: 5%;	    
+	    font-weight: bold;
+		font-size: 20px;
+		padding-left: 20px;
+	}
 	.sidetitle_resell{
 		border: none;
 	}
 	
 	.accordion-button {
 		background-color: #F2F2FF;
-	}
-	
-	.accordion-button:not(.collapsed) {
-		color: #00bcd4! important;
-		background-color: #F2F2FF! important;
-	}
-	.accordion-button:focus {
-		outline: none;
-	}
-	
+	}	
 	
 	.accordion-body {
+		height: 100px;
 		padding: 0px;
-		margin-bottom: 10px;
 	}
+	
 	.accordion-menu {
 		list-style:none;
-	    margin: auto;
     	padding: 0;
 	}
+	
 	.accordion-menu li {
 		width: 130px;
+		padding-left: 8px;
+		padding-top: 8px;
 	}
 
 	/* -------------------------------- */
