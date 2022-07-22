@@ -111,9 +111,9 @@
 								<div>
 									<p style="font-size: 12.5px">
 
-										<a href="selectMyInfoMemberView" id ="memberInfo">${ub_resellView.ubnickname} &nbsp;&nbsp; <img class="img-profile rounded-circle" style="width: 50px"
-											src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/${ub_resellView.ubprofile }"
-										>
+										<a href="selectMyInfoMemberView" id ="memberInfo">${ub_resellView.ubnickname} &nbsp;&nbsp; 
+										<img class="img-profile rounded-circle" style="width: 50px"
+											src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/${ub_resellView.ubprofile }">
 										</a>
 
 										<span onclick="writeMemberSellbuy('${zzim.mnickname }')">${zzim.mnickname }</span> &nbsp;&nbsp; <img class="img-profile rounded-circle" style="width: 50px"
@@ -337,9 +337,6 @@
 		});
 	}
 
-
-<<<<<<< HEAD
-<script type="text/javascript">
 	
 		/* 로그인된 회원인지 체크 */
 		const loginCheck = '${sessionScope.loginId}';
@@ -819,8 +816,7 @@ $.ajax({
 </script>
 
 </html>
-=======
-///////////////////////////[신고]/////////////////////////////////
+<script type="text/javascript">
 	function ubWarningCheckModal() {
 		/* 게시글 신고 클릭 시 모달창 출력 */
 		if ($("#ubWarning").hasClass("text-danger")) {
@@ -1016,4 +1012,3 @@ function chatInsert_Ajax() {
 </script>
 </html>
 
->>>>>>> 3cba758c58b2ec8cfba61bc533e49a11a69d061a
