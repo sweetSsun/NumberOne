@@ -144,9 +144,14 @@
 									<div class="item-basis_4">
 										<i id="ubWarning" onclick="ubWarningCheckModal()" class='fa-solid fa-land-mine-on  fa-2x icon' style="margin-right: 2px; font-size: 40px"></i>
 									</div>
+									
+								
 									<div class="item-basis_4">
 										<button id="chatBtn" type="button">채팅</button>
 									</div>
+									
+									
+									
 								</c:otherwise>
 							</c:choose>
 
@@ -337,7 +342,6 @@
 		if (loginCheck === '' || loginCheck === null) {
 			alert("잘못된 접근입니다.");
 			location.href = "loadToLogin"
-
 		}
 		
 		/* 로그인한 회원이 현재 글에 찜을 했는지 여부를 확인 */

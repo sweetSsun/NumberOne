@@ -21,16 +21,17 @@ public class ResellController {
 
 	@Autowired
 	private ResellService rsvc;
-
+	
+	
+		
 	@RequestMapping(value = "/selectResellMainPage")
 	public ModelAndView selectResellMainPage(Paging paging) {
 		System.out.println("selectResellMainPage 호출");
 		ModelAndView mav = new ModelAndView();
 
 		mav = rsvc.selectResellMainPage(paging);
-
+		
 		return mav;
-
 	}
 
 	@RequestMapping(value = "/selectResellView")
@@ -45,12 +46,13 @@ public class ResellController {
 	}
 
 	@RequestMapping(value = "/loadToResellWriteForm")
-	public ModelAndView loadToResellWriteForm(String sell_buy) {
+	public ModelAndView loadToResellWriteForm(String sell_buy, RedirectAttributes ra) {
+		
 		System.out.println("loadToResellWriteForm 호출");
 		ModelAndView mav = new ModelAndView();
 		System.out.println("타이틀체크 : " + sell_buy);
 
-		mav = rsvc.loadToResellWriteForm(sell_buy);
+		mav = rsvc.loadToResellWriteForm(sell_buy, ra);
 
 		return mav;
 	}
