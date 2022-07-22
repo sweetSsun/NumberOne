@@ -224,29 +224,44 @@
 		console.log("popupChat 호출");
 		let popOption = "width=450px, height=560px, top=300px, left=500px, scrollbars=no, resizable=no";
 		let openUrl = "loadToChat?crcode="+crcode;
-		$.ajax({
-			url: "selectChatRoomMessage",
-			data: {"crcode":crcode},
-			async:false,
-			dataType:"json",
-			success:function(data){
-				console.log(popChatArr.some(popChat => popChat.name === crcode));
-				// 해당 채팅방 팝업이 열려있으면
-				if (popChatArr.some(popChat => popChat.name === crcode)) { 
-					var openedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
-					//console.log(popChatArr[openedIdx]);
-					popChatArr[openedIdx].focus(); // 해당 채팅창 팝업에 focus
-				} 
-				
-				// 열려있지 않으면
-				else { 
-					popChat = window.open(openUrl, crcode, popOption); // 팝업창 열기
-					popChat.window.addEventListener("load", function(){
-						popChat.enterRoom(data); // 채팅방 목록 불러오기
-				 	});
-					popChatArr.push(popChat); // 채팅팝업 배열에 담기
-				}
-				console.log("배열의 길이 : " + popChatArr.length);
+	  	$.ajax({
+	  		type : 'get',
+	  		url : 'selectLoginOut_ajax',
+	  		async : false,
+	  		success : function(result){
+	  			if (result == "2"){ 
+	  				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+	  					location.href = "loadToLogin"
+	  					return;
+	  				}
+	  				return;
+	  			}
+
+				$.ajax({
+					url: "selectChatRoomMessage",
+					data: {"crcode":crcode},
+					async:false,
+					dataType:"json",
+					success:function(data){
+						console.log(popChatArr.some(popChat => popChat.name === crcode));
+						// 해당 채팅방 팝업이 열려있으면
+						if (popChatArr.some(popChat => popChat.name === crcode)) { 
+							var openedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
+							//console.log(popChatArr[openedIdx]);
+							popChatArr[openedIdx].focus(); // 해당 채팅창 팝업에 focus
+						} 
+						
+						// 열려있지 않으면
+						else { 
+							popChat = window.open(openUrl, crcode, popOption); // 팝업창 열기
+							popChat.window.addEventListener("load", function(){
+								popChat.enterRoom(data); // 채팅방 목록 불러오기
+						 	});
+							popChatArr.push(popChat); // 채팅팝업 배열에 담기
+						}
+						console.log("배열의 길이 : " + popChatArr.length);
+					}
+				});
 			}
 		});
 	}

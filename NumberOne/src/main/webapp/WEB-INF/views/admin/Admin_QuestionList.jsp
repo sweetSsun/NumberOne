@@ -221,31 +221,45 @@
 	// 문의에 답변 달기
 	function insertReply(ctcode){
 		console.log("insertReply() 실행");
-		console.log("문의코드 : " + ctcode);
-		var ctans = $("#"+ctcode+"_ctans").val().replaceAll("\n", "<br>").replaceAll(" ", "&nbsp;");
-		console.log("답변 : " + ctans);
-		// 답변내용 CONTACT 테이블에 insert
 		$.ajax({
-			type: "post",
-			data: {"ctcode":ctcode, "ctans":ctans},
-			url: "admin_updateQuestionAns_ajax",
-			dataType: "json",
-			success: function(result){
-				if (result > 0) {
-					alert(ctcode + " 문의글에 답변이 작성되었습니다.");
-				} else {
-					alert("답변 작성에 실패했습니다.");
-				}
-			},
-			error: function(){
-				alert("연결 실패");
-			}
+	  		type : 'get',
+	  		url : 'Admin_selectLoginOut_ajax',
+	  		async : false,
+	  		success : function(result){
+	  			if (result == "2"){ 
+	  				if(confirm("관리자 로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+	  					location.href = "loadToLogin";
+	  				}
+	  				return;
+	  			}
+	  			
+				console.log("문의코드 : " + ctcode);
+				var ctans = $("#"+ctcode+"_ctans").val().replaceAll("\n", "<br>").replaceAll(" ", "&nbsp;");
+				console.log("답변 : " + ctans);
+				// 답변내용 CONTACT 테이블에 insert
+				$.ajax({
+					type: "post",
+					data: {"ctcode":ctcode, "ctans":ctans},
+					url: "admin_updateQuestionAns_ajax",
+					dataType: "json",
+					success: function(result){
+						if (result > 0) {
+							alert(ctcode + " 문의글에 답변이 작성되었습니다.");
+						} else {
+							alert("답변 작성에 실패했습니다.");
+						}
+					},
+					error: function(){
+						alert("연결 실패");
+					}
+				});
+				
+				// 답변 textarea 없애고 단 것처럼 출력
+				var output = "<td colspan='5' class='p-4'>" + ctans + "</td>";
+				$("#"+ctcode+"_replycontents").text("").html(output);
+				$("#"+ctcode+"_state").text("완료");
+	  		}
 		});
-		
-		// 답변 textarea 없애고 단 것처럼 출력
-		var output = "<td colspan='5' class='p-4'>" + ctans + "</td>";
-		$("#"+ctcode+"_replycontents").text("").html(output);
-		$("#"+ctcode+"_state").text("완료");
 	}
 	
 

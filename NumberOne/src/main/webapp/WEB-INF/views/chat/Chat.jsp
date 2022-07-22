@@ -284,13 +284,31 @@
 	
 	// Talk 버튼 클릭
 	function sendBtn(){
-		const originContents = $("#inputMsg").val();	// 현재 입력된 메세지 저장
-		const cmcontents = originContents.replaceAll(/(\n|\r\n)/g, "<br>");
-		if(cmcontents.trim().length > 0){	// 공백 제외 입력한 글이 있을 때 send
-			sendMessage(cmcontents);
-		}
-		$("#inputMsg").val(""); // 입력창 초기화
-		$("#inputMsg").focus();
+	  	$.ajax({
+	  		type : 'get',
+	  		url : 'selectLoginOut_ajax',
+	  		async : false,
+	  		success : function(result){
+	  			if (result == "2"){ 
+	  				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+	  					opener.closeChat(crcode);
+	  					opener.location.href = "loadToLogin";
+	  					opener.focus();
+	  					window.close();
+	  					return;
+	  				}
+	  				return;
+	  			}
+
+				const originContents = $("#inputMsg").val();	// 현재 입력된 메세지 저장
+				const cmcontents = originContents.replaceAll(/(\n|\r\n)/g, "<br>");
+				if(cmcontents.trim().length > 0){	// 공백 제외 입력한 글이 있을 때 send
+					sendMessage(cmcontents);
+				}
+				$("#inputMsg").val(""); // 입력창 초기화
+				$("#inputMsg").focus();
+			}
+		});
 	}
 	
 		

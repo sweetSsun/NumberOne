@@ -231,34 +231,47 @@
 		// 댓글상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
 		function updateRpstate(){
 			console.log("updateRpstate() 실행");
-			var rpcode = $("#rpcode").val();
-			console.log(btnObj.text());
-			if (btnObj.text() == "활성"){
-				var rpstate = 0;				
-			} else {
-				var rpstate = 1;				
-			}
 			$.ajax({
-				type: "get",
-				data: {"rpcode":rpcode, "rpstate":rpstate},
-				url: "admin_updateRpstate_ajax",
-				dataType: "json",
-				success: function(result){
-					if(result > 0){
-						if (rpstate == 0){
-							btnObj.text("정지").addClass("btn-danger").removeClass("btn-primary");
-						} else {
-							btnObj.text("활성").addClass("btn-primary").removeClass("btn-danger");
-						}
+		  		type : 'get',
+		  		url : 'Admin_selectLoginOut_ajax',
+		  		async : false,
+		  		success : function(result){
+		  			if (result == "2"){ 
+		  				if(confirm("관리자 로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+		  					location.href = "loadToLogin";
+		  				}
+		  				return;
+		  			}
+		  			
+					var rpcode = $("#rpcode").val();
+					console.log(btnObj.text());
+					if (btnObj.text() == "활성"){
+						var rpstate = 0;				
+					} else {
+						var rpstate = 1;				
 					}
-					$("#updateRpstateModal").modal("hide");
-				},
-				error: function(){
-					$("#updateRpstateModal").modal("hide");
-					alert("댓글상태 변경에 실패했습니다.");
-				}
+					$.ajax({
+						type: "get",
+						data: {"rpcode":rpcode, "rpstate":rpstate},
+						url: "admin_updateRpstate_ajax",
+						dataType: "json",
+						success: function(result){
+							if(result > 0){
+								if (rpstate == 0){
+									btnObj.text("정지").addClass("btn-danger").removeClass("btn-primary");
+								} else {
+									btnObj.text("활성").addClass("btn-primary").removeClass("btn-danger");
+								}
+							}
+							$("#updateRpstateModal").modal("hide");
+						},
+						error: function(){
+							$("#updateRpstateModal").modal("hide");
+							alert("댓글상태 변경에 실패했습니다.");
+						}
+					});
+		  		}
 			});
-			
 		}
 	</script>
 		
