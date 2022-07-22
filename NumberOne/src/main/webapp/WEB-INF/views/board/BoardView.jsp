@@ -812,7 +812,7 @@
 			async : false,
 			success : function(reply){
 				
-				$("#inputModifyRp").text(reply.rpcontents);
+				$("#inputModifyRpBox").text(reply.rpcontents);
 				$("#inputRpcode").val(reply.rpcode);
 			}
 		});

@@ -5,11 +5,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@ include file="/resources/css/BarCss.jsp" %>
 <!-- 폰트어썸 -->
-<title>${board.bdtitle } - 1인자:게시판 글상세 페이지</title>
+<title>${ub_resellView.ubtitle } - 1인자:게시판 글상세 페이지</title>
 <!-- Jquery -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>  
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 
@@ -248,19 +248,52 @@
 								</c:otherwise>
 							</c:choose>
 							<span class="fw-bold" style="color:gray; font-size:20px">/</span> 
-								<a href="selectRegionBoardList"><span class="bdregion">${ub_resellView.ubrgcode }</span></a>
+								<c:choose>
+									<c:when test="${ub_resellView.ubrgcode == 'ALL' }">
+										<a href="#"><span class="bdregion">전국</span></a>
+									</c:when>
+
+									<c:when test="${ub_resellView.ubrgcode == 'SEL' }">
+										<a href="#"><span class="bdregion">서울</span></a>
+									</c:when>
+									<c:when test="${ub_resellView.ubrgcode == 'ICN' }">
+										<a href="#"><span class="bdregion">서울</span></a>
+									</c:when>
+									<c:when test="${ub_resellView.ubrgcode == 'GGD' }">
+										<a href="#"><span class="bdregion">경기</span></a>
+									</c:when>
+									<c:when test="${ub_resellView.ubrgcode == 'GSD' }">
+										<a href="#"><span class="bdregion">경상</span></a>
+									</c:when>
+									<c:when test="${ub_resellView.ubrgcode == 'JLD' }">
+										<a href="#"><span class="bdregion">전라</span></a>
+									</c:when>
+									<c:when test="${ub_resellView.ubrgcode == 'CCD' }">
+										<a href="#"><span class="bdregion">충청</span></a>
+									</c:when>
+									<c:when test="${ub_resellView.ubrgcode == 'GWD' }">
+										<a href="#"><span class="bdregion">강원</span></a>
+									</c:when>
+									<c:when test="${ub_resellView.ubrgcode == 'JJD' }">
+										<a href="#"><span class="bdregion">제주</span></a>
+									</c:when>
+									
+								</c:choose>
+								
+								<a href="selectRegionBoardList"><span class="bdregion">(지역코드 확인)_${ub_resellView.ubrgcode }</span></a>
 						</div>
 					</div>
 					<div class="row idDateHits">
 						<div class="col">
 							<span class="fw-bold boardTitle">${ub_resellView.ubtitle }</span>  
+							<span style="float:right;"class="boardDate">${ub_resellView.ubdate }</span>
 						</div>
 					</div>
 					
 					<!-- 중고거래 사진 / 본문  -->
 					<div class="row" style="margin-top: 40px; border-bottom: solid 1px #E0E0E0">
 						<!-- 사진 -->
-						<div class="col-6">
+						<div class="col-7">
 							<div class="Resell_img_container">
 								<img class="active Resell_img" src="${pageContext.request.contextPath }/resources/img/resell/${ub_resellView.ubmainimg}" >
 									<c:forEach items="${ub_resellView.ubdetailimg_list}" var="ubdetailimg_list" begin="1">
@@ -270,7 +303,7 @@
 									<button id="next" onclick="next()"> &gt; </button> -->
 							</div>
 						</div>
-						<div class="col-6" >
+						<div class="col-5" >
 							<div class="row">
 								<div class="col seller_and_buttons">
 									<!-- 판매자 정보 -->
@@ -304,10 +337,9 @@
 						<div class="col-1">
 							<div class="square">
 								<c:choose>
-								<c:when test="${ub_resellView.ubsellbuy == 's' }">
+								<c:when test="${ub_resellView.ubsellbuy == 'B' }">
 									구매상품
 								</c:when>
-								
 								<c:otherwise>
 									판매상품
 								</c:otherwise>
@@ -330,7 +362,7 @@
 						</div>
 					</div>
 					
-					<input type="hidden" name="cmfrmid" value="${sessionScope.loginId }"> 
+					<input type="hidden" name="cmfrmid" value="${sessionScope.loginId }">
 					<input type="hidden" name="cmfrmnickname" value="${sessionScope.loginNickname }"> 
 					<input type="hidden" name="cmtomnickname" value="${ub_resellView.ubnickname}"> <input type="hidden" name="cmtomid"
 								value="${ub_resellView.ubmid}"> 
@@ -456,27 +488,7 @@
 		alert(checkMsg);
 	}
 </script>
-<script type="text/javascript">
-	var images = document.querySelectorAll(".Resell_img_container img");
-	let i = images[0]; // current slide
-	console.log(i);
-	let j = images.length; // total slides
-	console.log(j);
-	
-	function next(){
-	    document.getElementByClss("content" + (i+1)).classList.remove("active");
-	    i = ( j + i + 1) % j;
-	    document.getElementById("content" + (i+1)).classList.add("active");
-	    indicator( i+ 1 );
-	}
-	function prev(){
-	    document.getElementById("content" + (i+1)).classList.remove("active");
-	    i = (j + i - 1) % j;
-	    document.getElementById("content" + (i+1)).classList.add("active");
-	    indicator(i+1);
-	}
-	
-</script>
+
 
 <!-- 관리자용 -->
 <script type="text/javascript">

@@ -43,6 +43,8 @@ public class UsedBoardDto {
 	private int gdprice;	 // 마이페이지 출력용 가격
 	private String gdprice2; // 마이페이지 출력용 가격 (천단위마다 ,)
 	
+	private String ubdatedef; //메인에서 시간 출력용(현재시간-작성시간)
+	
 	public String getUbcode() {
 		return ubcode;
 	}
