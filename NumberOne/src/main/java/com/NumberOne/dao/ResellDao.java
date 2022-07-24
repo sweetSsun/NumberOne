@@ -42,7 +42,7 @@ public interface ResellDao {
 
 	String selectMemberId(String keyword);
 
-	ArrayList<UsedBoardDto> selectResellView_List(String ubmid);
+	ArrayList<UsedBoardDto> selectResellView_List(@Param("ubmid") String ubmid, @Param("ubcode") String ubcode);
 
 	String checkResellWarning_ajax(@Param("loginId") String loginId, @Param("ubcode") String ubcode);
 

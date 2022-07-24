@@ -7,9 +7,12 @@
 <meta charset="UTF-8">
 <title>1인자 - 게시판 글목록 페이지</title>
 <!-- Jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<%@ include file="/resources/css/BarCss.jsp" %>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>  
+<!-- 부트스트랩 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/listCss.css" type="text/css">
 <style type="text/css">
 	section{
 		max-width: 70%;
@@ -146,7 +149,9 @@
 							<!-- 공지게시판 -->
 							<tr class="fw-bold" style="border-bottom: solid #E0E0E0 1px;">
 								<td class="text-center tableCell">${notice.nbcode}</td>
-								<td></td>
+								<td class="text-center tableCell">
+									<a href="selectNoticeBoardList">공지</a>
+								</td>
 								<td class="tableCell">
 									<a href="selectNoticeBoardView?nbcode=${notice.nbcode }">${notice.nbtitle}</a>
 								</td>
@@ -165,15 +170,29 @@
 						<c:if test="${board.bdcategory != '자랑' }">
 						<tr style="border-bottom: solid #E0E0E0 1px;">
 							<td class="text-center tableCell">${board.bdcode}</td>
-							<td class="bdcategory text-center tableCell">${board.bdcategory}</td>
+							<td class="bdcategory text-center tableCell">
+								<a href="selectCategoryBoardList?searchVal=${board.bdcategory }">
+									${board.bdcategory}
+								</a>
+							
+							</td>
 							<td class="tableCell">
-							 	<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
-							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
+								<c:choose>
+									<c:when test="${board.bdcategory == '후기'  }">
+										<a href="selectReviewBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
+									 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
+									</c:when>
+									
+									<c:otherwise>
+									 	<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
+									 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
+									</c:otherwise>
+								</c:choose>
 							 </td>
 							<td class="text-center tableCell">
-								<a href="#">${board.bdnickname}</a>
+								<span style="cursor: pointer" onclick="writeMemberBoard('${board.bdnickname}')">${board.bdnickname}</span>
 							</td>
-							<td class="text-center tableCell">${board.bddate}</td>
+							<td class="text-center tableCell" id="bddate">${board.bddate}</td>
 							<td class="text-center tableCell">${board.bdhits }</td>
 							<td class="fw-bold text-center tableCell" style="color: #00bcd4;">${board.bdrccount}</td>
 						</tr>
@@ -228,20 +247,26 @@
 	</main>
 	
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+	<!-- 부트스트랩 -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 
 <script type="text/javascript">
-	var actionForm = $("#actionForm");
-	// $(".paginate_button a").click(function(e){ // click 이벤트는 동적 처리 불가능
-	$(document).on("click", ".paginate_button a", function(e){ // on 이벤트로 변경
-		e.preventDefault();
-		console.log("pageNum click");
-		$("#pageNum").val($(this).attr("href"));
-		console.log($("#pageNum").val());
-		actionForm.submit();
+	$(document).ready(function () {
+		// 페이지 넘버 a태그를 클릭하면 hidden input태그에 페이지 넘버 값을 넣고 submit 진행
+		
+		var actionForm = $("#actionForm");
+		
+		$(document).on("click", ".paginate_button a", function(e){ // on 이벤트로 변경
+			e.preventDefault();
+			console.log("pageNum click");
+			$("#pageNum").val($(this).attr("href"));
+			console.log($("#pageNum").val());
+			actionForm.submit();
+		});
 	});
+	
+	
 </script>
 
 <script type="text/javascript">
@@ -272,6 +297,12 @@
 			}
 		}
 	}
+	
+	var keyword = '${paging.keyword}';
+	if( keyword.length > 0 ){
+		$("#searchText").val(keyword);
+	}
+	
 </script>
 
 <script type="text/javascript">
@@ -314,6 +345,43 @@
 			}
 		});
 		$("#bdCategoryList").html(output);
+		
+		// 페이지에서 출력할 페이지번호 받아오기
+		$.ajax({
+			type: "get",
+			data: { "searchVal" : categorySel, "searchType" : searchType, "keyword" : searchText, "ajaxCheck":"page"},
+			url: "selectBoardCategoryList_ajax",
+			dataType: "json",
+			success: function(result){
+				console.log("요청 페이지 : " + result.page);
+				$("#pageList").text("");
+				// 페이징 번호 출력
+				var pageList = "<ul class='pagination'>";
+				if (result.prev) {
+					pageList += "<li class='paginate_button'><a href='"+ (result.page - 1) + "'>이전</a></li>";
+				} else {
+					pageList += "<li class='paginate_button'><span>이전</span></li>"
+				}
+				for (var i = result.startPage; i <= result.endPage; i++){
+					if (result.page == i){
+						pageList += "<li><a class='active'>"+ i + "</a></li>";
+					} else {
+						pageList += "<li class='paginate_button'><a href='"+ i + "' >" + i + "</a></li>";
+					}
+				}
+				if (result.next){
+					pageList += "<li class='paginate_button'><a href='"+ (result.page + 1) + "' >다음</a></li>";
+				} else {
+					pageList += "<li class='paginate_button'><span>다음</span></li>"
+				}
+				$("#pageList").html(pageList);
+			},
+			error: function(){
+				alert("페이징넘버링 실패");
+			}
+		})
+		
+		
 	}
 	
 </script>

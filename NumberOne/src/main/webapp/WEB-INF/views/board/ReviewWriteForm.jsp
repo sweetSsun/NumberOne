@@ -5,13 +5,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@ include file="/resources/css/BarCss.jsp" %>
-<!-- 폰트어썸 -->
-<script src="https://kit.fontawesome.com/86a85cd392.js" crossorigin="anonymous"></script>
 <title>1인자 - 게시글 작성페이지</title>
 <!-- Jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>  
+<!-- 부트스트랩 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+ 
 <style type="text/css">
 	section{
 		max-width: 70%;
@@ -136,8 +135,11 @@
 				<div class="row">
 					<div class="col-6">
 						<span style="font-size:20px;">게시판</span>
-						<select name="bdcategory" class="bdCategoryList" required="required">
-							<option value="후기">후기</option>
+						<select name="bdcategory" onchange="bdcategorySel(this.value)" class="bdCategoryList" required="required">
+							<option value="자유">자유</option>
+							<option value="질문">질문</option>
+							<option value="정보">정보</option>
+							<option value="후기" selected>후기</option>
 						</select>
 					</div>
 					<div class="col-6">
@@ -174,7 +176,7 @@
 								for="rate3">★</label>
 							<input type="radio" name="bdrate" value="2" id="rate4"><label
 								for="rate4">★</label>
-							<input type="radio" name="bdrate" onclick="NoRate(this);" value="1" id="rate5"><label
+							<input type="radio" name="bdrate" value="1" id="rate5"><label
 								for="rate5">★</label>
 						</fieldset>
 					</div>
@@ -182,10 +184,12 @@
 				<div class="row">
 					<textarea id="bdcontents" class="bdcontents" rows="17" cols="80" name="bdcontents"></textarea>
 				</div>
-				<div class="row mt-4">
+				<div class="row" style="margin-top: 3%;">
+				<div class="image-container" style="width: 300px; heigth:300px;">
+    				<img title="이미지 미리보기" style="width: 200px; heigth:200px;" id="preview-image" src="https://dummyimage.com/500x500/ffffff/000000.png&text=preview+image">
 					<!-- 파일선택 -->
-					<div id="image_container"></div>
-					<input id="bdImg" type="file" name="bdimgfile" accept="image/*" onchange="setThumbnail(event);" >
+					<input type="file" style="display: block;" id="input-image" name="bdimgfile" accept="image/*" >
+				</div>
 				</div>
 				<div class="row mt-4">
 					<div class="col btn-wrapper">
@@ -199,7 +203,6 @@
 		</section>
 	</main>
 	
-	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
 	
 	<!-- 게시글 작성 취소 확인 -->
 	<div class="modal fade" id="bdWriteCancelCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -226,7 +229,9 @@
         </div>
     </div>
 	
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
+	<!-- 부트스트랩 -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 
 <script type="text/javascript">
@@ -259,6 +264,32 @@
 		history.back();
 		
 	}
+	
+	/* 이미지 미리보기 */
+	// input file에 change 이벤트 부여
+	const inputImage = document.getElementById("input-image")
+	inputImage.addEventListener("change", e => {
+	    readImage(e.target)
+	})
+	
+	function readImage(input) {
+    // 인풋 태그에 파일이 있는 경우
+    if(input.files && input.files[0]) {
+        // 이미지 파일인지 검사 (생략)
+        // FileReader 인스턴스 생성
+        const reader = new FileReader()
+        // 이미지가 로드가 된 경우
+        reader.onload = e => {
+            const previewImage = document.getElementById("preview-image")
+            previewImage.src = e.target.result
+        }
+        // reader가 이미지 읽도록 하기
+        reader.readAsDataURL(input.files[0])
+    }
+}
+	
+	
+	
 </script>
 
 <script type="text/javascript">
@@ -271,28 +302,33 @@
 			alert("제목을 입력하세요.");
 			return false;
 		}
+		/* 라디오 버튼 체크 확인 */
+		if( $(':radio[name="bdrate"]:checked').length <1 ){
+			alert("별점을 선택해주세요.");
+			
+			return false;
+		}
 		
 		if ( inputContents.length == 0 ){
 			alert("내용을 입력하세요.");
 			
 			return false;
 		}
+		
 	}
 </script>
+
+
 
 <script type="text/javascript">
-	/* 업로드 이미지 미리보기 기능 */
-	function setThumbnail(event){
-		var reader = new FileReader();
-		
-		reader.onload = function(event){
-			var img = document.createElement("img");
-			img.setAttribute("src", event.target.result);
-			document.querySelector("div#image_container").appendChild(img);
-		};
-		 reader.readAsDataURL(event.target.files[0]);
+	/* 자유,질문,후기 게시판 선택 시  */
+	function bdcategorySel(selVal){
+		if( selVal != "후기" ){
+			location.href="loadToBoardWrite?bdcategory="+selVal;
+		}
 	}
+	
+	
 </script>
-
 
 </html>

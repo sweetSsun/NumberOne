@@ -9,8 +9,9 @@
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- 부트스트랩 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <!-- Css Styles -->
-<%@ include file="/resources/css/BarCss.jsp" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/listCss.css" type="text/css">
 
@@ -107,6 +108,12 @@
 						        		<span class="overflow">${board.bdtitle}</span>
 						        	</a>
 					        	</c:when>
+					        	<c:when test="${board.bdcategory.equals('후기') }">
+						       		<!-- 후기글 상세 -->
+		                      		<a href="admin_selectReviewBoardView${paging.makeQueryPage(board.bdcode, paging.page)}">
+						        		<span class="overflow">${board.bdtitle}</span>
+						        	</a>
+					        	</c:when>
 					        	<c:otherwise>
 						        	<!-- 일반글 상세 -->										
 		                      		<a href="admin_selectBoardView${paging.makeQueryPage(board.bdcode, paging.page)}">
@@ -116,7 +123,7 @@
 							</c:choose>
 	                      	<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span>
 	                      </td>
-	                      <td class="text-center overflow">${board.bdnickname}</td>
+	                      <td class="text-center overflow pointer" onclick="writeMemberBoard'${board.bdnickname}')">${board.bdnickname}</td>
 	                      <td class="text-center overflow">${board.bddate}</td>
 	                      <td class="text-center">${board.bdhits}</td>
 	                      <td class="text-center">${board.bdrccount}</td>
@@ -205,7 +212,7 @@
 
 	
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
-
+	<!-- 부트스트랩 -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 	
 	<script type="text/javascript">
@@ -237,33 +244,48 @@
 		// 글상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
 		function updateBdstate(){
 			console.log("updateBdstate() 실행");
-			var bdcode = $("#bdcode").val();
-			console.log(btnObj.text());
-			if (btnObj.text() == "경고"){
-				var bdstate = 0;				
-			} else {
-				var bdstate = 1;				
-			}
-			$.ajax({
-				type: "get",
-				data: {"bdcode":bdcode, "bdstate":bdstate},
-				url: "admin_updateBdstate_ajax",
-				dataType: "json",
-				success: function(result){
-					if(result > 0){
-						if (bdstate == 0){
-							btnObj.text("정지").addClass("btn-danger").removeClass("btn-warning");
-						} else {
-							btnObj.text("경고").addClass("btn-warning").removeClass("btn-danger");
-						}
+		  	$.ajax({
+		  		type : 'get',
+		  		url : 'Admin_selectLoginOut_ajax',
+		  		async : false,
+		  		success : function(result){
+		  			if (result == "2"){ 
+		  				if(confirm("관리자 로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+		  					$("#updateBdstateModal").modal("hide");
+		  					location.href = "loadToLogin";
+		  				}
+		  				return;
+		  			}
+		  			
+					var bdcode = $("#bdcode").val();
+					console.log(btnObj.text());
+					if (btnObj.text() == "경고"){
+						var bdstate = 0;				
+					} else {
+						var bdstate = 1;				
 					}
-					$("#updateBdstateModal").modal("hide");
-				},
-				error: function(){
-					$("#updateBdstateModal").modal("hide");
-					alert("글상태 변경에 실패했습니다.");
-				}
-			});
+					$.ajax({
+						type: "get",
+						data: {"bdcode":bdcode, "bdstate":bdstate},
+						url: "admin_updateBdstate_ajax",
+						dataType: "json",
+						success: function(result){
+							if(result > 0){
+								if (bdstate == 0){
+									btnObj.text("정지").addClass("btn-danger").removeClass("btn-warning");
+								} else {
+									btnObj.text("경고").addClass("btn-warning").removeClass("btn-danger");
+								}
+							}
+							$("#updateBdstateModal").modal("hide");
+						},
+						error: function(){
+							$("#updateBdstateModal").modal("hide");
+							alert("글상태 변경에 실패했습니다.");
+						}
+					});
+		  		}
+		  	});
 		}
 	</script>
 	
@@ -281,7 +303,6 @@
 		});
 	});
 	</script>
-	
 	
 	<script type="text/javascript">
 		// 선택한 검색 select option으로 선택되도록 하기
@@ -344,7 +365,7 @@
 									+"</a>";
 						}
 						output += "</td>";
-						output += "<td class='text-center overflow'>" + result[i].bdnickname + "</td>";
+						output += "<td class='text-center overflow pointer' onclick='writeMemberBoard(\"" + result[i].bdnickname + "\")'>" + result[i].bdnickname + "</td>";
 						output += "<td class='text-center overflow'>" + result[i].bddate + "</td>";
 						output += "<td class='text-center'>" + result[i].bdhits + "</td>";
 						output += "<td class='text-center'>" + result[i].bdrccount + "</td>";

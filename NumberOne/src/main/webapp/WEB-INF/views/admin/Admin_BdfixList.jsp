@@ -9,7 +9,8 @@
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<%@ include file="/resources/css/BarCss.jsp" %>
+<!-- 부트스트랩 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <!-- Css Styles -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/listCss.css" type="text/css">
@@ -21,6 +22,7 @@
 	label{
 		cursor: pointer;
 	}
+
 </style>
 
 <script type="text/javascript">
@@ -107,7 +109,7 @@
 					       		</a>
 					        	<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span>
 	                      	</td>
-	                      	<td class="text-center overflow">${board.bdnickname}</td>
+	                      	<td class="text-center overflow pointer" onclick="writeMemberBoard('${board.bdnickname}')">${board.bdnickname}</td>
 	                      	<td class="text-center overflow">${board.bddate}</td>
 	                      	<td class="text-center">${board.bdhits}</td>
 	                      	<td class="text-center">${board.bdrccount}</td>
@@ -196,7 +198,7 @@
 
 	
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
-
+	<!-- 부트스트랩 -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 	
 	<script type="text/javascript">
@@ -228,31 +230,47 @@
 		// 배너고정 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
 		function updateBdfix(){
 			console.log("updateBdfix() 실행");
-			var bdcode = $("#bdcode").val();
-			console.log(btnObj.text());
-			if (btnObj.text() == "배너"){
-				var bdfix = 0;				
-			} else {
-				var bdfix = 1;				
-			}
-			$.ajax({
-				type: "get",
-				data: {"bdcode":bdcode, "bdfix":bdfix},
-				url: "admin_updateBdfix_ajax",
-				dataType: "json",
-				success: function(result){
-					if(result > 0){
-						if (bdfix == 0){
-							btnObj.text("일반").addClass("btn-secondary").removeClass("btn-numberone").toggleClass("btn");
-						} else {
-							btnObj.text("배너").addClass("btn-numberone").removeClass("btn-secondary").toggleClass("btn");
-						}
+		  	$.ajax({
+		  		type : 'get',
+		  		url : 'Admin_selectLoginOut_ajax',
+		  		async : false,
+		  		success : function(result){
+		  			if (result == "2"){ 
+		  				if(confirm("관리자 로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+		  					$("#updateBdfixModal").modal("hide");
+		  					location.href = "loadToLogin";
+		  				}
+		  				return;
+		  			}
+
+					var bdcode = $("#bdcode").val();
+					console.log(btnObj.text());
+					if (btnObj.text() == "배너"){
+						var bdfix = 0;				
+					} else {
+						var bdfix = 1;				
 					}
-					$("#updateBdfixModal").modal("hide");
-				},
-				error: function(){
-					$("#updateBdfixModal").modal("hide");
-					alert("글상태 변경에 실패했습니다.");
+					$.ajax({
+						type: "get",
+						data: {"bdcode":bdcode, "bdfix":bdfix},
+						url: "admin_updateBdfix_ajax",
+						dataType: "json",
+						success: function(result){
+							if(result > 0){
+								if (bdfix == 0){
+									btnObj.text("일반").addClass("btn-secondary").removeClass("btn-numberone").toggleClass("btn");
+								} else {
+									btnObj.text("배너").addClass("btn-numberone").removeClass("btn-secondary").toggleClass("btn");
+								}
+							}
+							$("#updateBdfixModal").modal("hide");
+						},
+						error: function(){
+							$("#updateBdfixModal").modal("hide");
+							alert("글상태 변경에 실패했습니다.");
+						}
+					});
+			
 				}
 			});
 		}
@@ -272,7 +290,6 @@
 		});
 	});
 	</script>
-	
 	
 	<script type="text/javascript">
 		// 선택한 검색 select option으로 선택되도록 하기
@@ -299,6 +316,7 @@
 			}
 		}
 	</script>
+	
 	<script type="text/javascript">
 		// 정렬 select하면 ajax로 게시글목록 받고 출력을 바꿔주는 함수
 		function bdSearchFix(searchVal){
@@ -326,7 +344,7 @@
 								+"<span class='overflow'>" + result[i].bdtitle + "</span>"
 								+"<span class='fw-bold' style='font-size:15px; color:#00bcd4;'>&nbsp;" + result[i].bdrpcount + "</span>"			
 								+"</a></td>";
-						output += "<td class='text-center overflow'>" + result[i].bdnickname + "</td>";
+						output += "<td class='text-center overflow pointer' onclick='writeMemberBoard(\"" + result[i].bdnickname + "\")'>" + result[i].bdnickname + "</td>";
 						output += "<td class='text-center overflow'>" + result[i].bddate + "</td>";
 						output += "<td class='text-center'>" + result[i].bdhits + "</td>";
 						output += "<td class='text-center'>" + result[i].bdrccount + "</td>";
@@ -379,9 +397,6 @@
 			})
 			
 		}	
-
-			
-
 	</script>
 	
 	

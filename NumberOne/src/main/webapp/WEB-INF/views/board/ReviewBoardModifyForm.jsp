@@ -5,12 +5,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@ include file="/resources/css/BarCss.jsp" %>
-<!-- 폰트어썸 -->
-<script src="https://kit.fontawesome.com/86a85cd392.js" crossorigin="anonymous"></script>
 <title>1인자 - 후기글 수정페이지</title>
 <!-- Jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
+<!-- 부트스트랩 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
 <style type="text/css">
 	section{
@@ -99,6 +98,33 @@
     text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
     color: #00bcd4;
 }
+	.img-container{
+     overflow: hidden;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     border: solid #E0E0E0 2px;
+     margin-top: 5%;
+     width: 200px;
+     height: 200px;
+     
+   }
+   #upload_Img{
+   	width: 200px;
+   	height: 200px;
+   	object-fit: cover;
+   }
+	span.x{ 
+		/* 사진 X 버튼 */
+		background-color: #00bcd4; 
+		border-radius: 100%; 
+		color: white; 
+		position: absolute; 
+		top: 10px; 
+		right: 5px; 
+		cursor: pointer;
+   }  
+   
 </style>
 </head>
 <body>
@@ -121,7 +147,7 @@
 			<!-- 본문 -->
 			<div class="container">
 				<h2 class="text-center">후기글 수정페이지 : ReviewBoardModifyForm.jsp</h2>
-				<form action="updateBoardModify" method="post" enctype="multipart/form-data">
+				<form action="updateBoardModify" method="post" enctype="multipart/form-data" >
 				<div class="row">
 					<input type="hidden" name="bdmid" value="${board.bdmid }">
 					<input type="hidden" name="bdcode" value="${board.bdcode }">
@@ -177,12 +203,30 @@
 				<div class="row">
 					<textarea class="bdcontents" rows="17" cols="80" name="bdcontents">${board.bdcontents }</textarea>
 				</div>
-				<div class="row mt-4">
-					<%-- <img style="max-height:200px; max-width:200px;" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg}"> --%>
-					<!-- 첨부파일! 나중에 경로 및 name 수정  -->
-					<div id="image_container"></div>
-					<input id="bdImg" type="file" name="bdimgfile" accept="image/*"  >
+				
+				<!-- 첨부파일! 나중에 경로 및 name 수정  -->
+				<c:if test="${board.bdimg != null }">
+					<div class="img-container" id="img-container" style="position: relative;">
+						<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
+						<span class="x" onclick="currentImgStateUpdate()">&nbsp;X&nbsp;</span>
+					</div>
+					<div style="background-color: #00bcd4; width: 200px; color:white;" class="text-center fw-bold">
+						업로드 이미지
+					</div>			
+				</c:if >
+					<input type="hidden" name="del_bdimg" id="del_bdimg" >
+					<input type="hidden" name="bdimg" id="bdimg" value="${board.bdimg }">
+				
+				<div class="row" style="margin-top: 3%;">
+					<div class="image-container" style="width: 300px; heigth:300px;">
+	    				<img title="이미지 미리보기" style="width: 200px; heigth:200px;" id="preview-image" src="https://dummyimage.com/500x500/ffffff/000000.png&text=preview+image">
+						<!-- 파일선택 -->
+						<input id=input-image type="file" name="bdimgfile" accept="image/*"  >
+						<!-- <input type="file" style="display: block;" id="input-image" name="bdimgfile" accept="image/*" > -->
+					</div>
 				</div>
+				
+				<!-- 수정, 취소 버튼 -->
 				<div class="row mt-4">
 					<div class="col btn-wrapper">
 						<input class="btn btn-lg buttons fw-bold text-white" style="background-color:#00bcd4;" type="submit" value="수정">
@@ -195,7 +239,6 @@
 		</section>
 	</main>
 	
-	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
 	
 	<!-- 게시글 작성 취소 확인 -->
 	<div class="modal fade" id="bdWriteCancelCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -221,8 +264,10 @@
             </div>
         </div>
     </div>
-	
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
+	<!-- 부트스트랩 -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 
 <script type="text/javascript">
@@ -273,6 +318,17 @@
 	function modifyBoardCancel(){
 		/* 수정취소 */
 		history.back();
+	}
+	
+	function currentImgStateUpdate(){
+		/* 이미지 삭제*/
+		var bdimg = '${board.bdimg}';
+		$("#del_bdimg").val(bdimg);
+		
+		var delImgCheck = $("#del_bdimg").val();
+		console.log(delImgCheck);
+		
+		$("#img-container").css("display", "none");
 	}
 </script>
 

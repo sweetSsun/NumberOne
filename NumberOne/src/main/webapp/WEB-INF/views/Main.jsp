@@ -14,34 +14,34 @@
     <title>1인자</title>
 
     <!-- Google Font -->
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">	
 
     <!-- Css Styles -->
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
-    
-    
-	<!-- 배너 -->    
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/owl.carousel.min.css" type="text/css">
-    
+	
+	<!-- jQuery -->    
+	<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>	
+
     <!-- Bootstrap cdn 설정 -->	
-	  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">	
-	  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css">	
-	  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">	
-	  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>	
-	  <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">	
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script> 
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap-theme.min.css">	
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 	  
 	<!-- Js Plugins -->
+	  <%-- 위에 jquery 3.4.1 있어서 없어도 됨
     <script src="${pageContext.request.contextPath }/resources/js/jquery-3.3.1.min.js"></script>
-<%--     <script src="${pageContext.request.contextPath }/resources/js/bootstrap.min.js"></script> --%>
+	   --%>
+	   
+	<!-- 배너 -->    
     <script src="${pageContext.request.contextPath }/resources/js/jquery.nice-select.min.js"></script>
     <script src="${pageContext.request.contextPath }/resources/js/jquery-ui.min.js"></script>
     <script src="${pageContext.request.contextPath }/resources/js/jquery.slicknav.js"></script>
-    <script src="${pageContext.request.contextPath }/resources/js/mixitup.min.js"></script>
+    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/owl.carousel.min.css" type="text/css">
     <script src="${pageContext.request.contextPath }/resources/js/owl.carousel.min.js"></script>
+    <script src="${pageContext.request.contextPath }/resources/js/mixitup.min.js"></script> 
     <script src="${pageContext.request.contextPath }/resources/js/main.js"></script>
-	
-	
-	<!-- 부트스트랩 -->
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    
 	
 	<style type="text/css">
 	
@@ -51,26 +51,77 @@
 	    
 	    /* 메인배너*/
 	    .fixtext h2 {
-    	    font-size: 46px;
+	    	font-family: 'Jal_Onuel';
+    	    font-size: 4rem;
 		    color: #fff;
 		    line-height: 52px;
 		    font-weight: 700;
 		    margin: 10px 0;
+		    text-align: left;
 	    }
+	    
 	    .fixtext span {
-			font-size: 20px;
+	    	font-family: 'Jal_Onuel';
+			font-size: 2rem;
 			color: #00bcd4;
 			text-transform: uppercase;
 			font-weight: 700;
 			letter-spacing: 4px;
+			float: left;
 		}
 		
-	    .fixback {    
+		.fixbtn {
+		    border: solid 1px white;
+		    border-radius: 5px;
+		    font-size: 1.5rem;
+		    width: 120px;
+		    height: 45px;
+		    color: white;
+		    background-color: transparent;
+			margin-top: 50px;
+			margin-right: 50px;
+		}
+		
+	    .fixback {
+	    	padding-left: 40px;
 	    	background-color: white;
 	    	background-color: rgba( 0, 0, 0, 0.3 );
 	    	border-radius: 10px;
 	    }
 	    
+	    .carousel-control {
+	    	width: 5vw;
+	    	border-radius: 30px;
+	    }
+	    
+	    .carousel-control .glyphicon {
+	    	top: 10%;
+	    }
+	    
+   		.carousel-caption {
+			right: 0;
+			left: 8px;
+			width: 100%;
+		}
+		
+		.carousel-inner .item img {
+		-webkit-transform: scale(1);
+		transform: scale(1);
+		-webkit-transition: .3s ease-in-out;
+		transition: .3s ease-in-out;
+		}
+		
+		.carousel-inner .item:hover img {
+		  -webkit-transform: scale(1.3);
+		  transform: scale(1.3);
+		}
+		
+		.carousel-inner .item:hover .fixbtn {
+			background-color: #00bcd4;
+			border: none;
+			font-weight: bold;
+		}
+				
 	    
 		/* 커뮤니티 */
 		.fontOn{
@@ -106,7 +157,7 @@
 	    	border-color: #00bcd4;
 	    }
    
-   	    .overflow{
+   	    .overflow_twoline{
 		    overflow: hidden;
 			text-overflow: ellipsis;
 			display: -webkit-box;
@@ -115,7 +166,7 @@
 	    }
 		
 		
-		/* 중고거래 */
+		/* 중고거래 배너 화살표 */
 		.owl-prev, .owl-next {
 			position: absolute;
 	        height: 100px;
@@ -126,7 +177,7 @@
 	
 	    }
 	    .owl-prev i, .owl-next i {
-            font-size: 3rem;
+            font-size: 4rem;
             color: #00bcd4;
         }
 	
@@ -145,12 +196,59 @@
 		    width: auto;
 		    margin: auto;
 			border-radius: 20px;
-		}	    
-	    
-	
+		}
 
-
-
+		
+		/* 두번째 배너 */
+		.owl-carousel .owl-item img, .owl-stage-outer {
+			border-radius: 30px;
+		}
+		
+		/* 두번째 배너 화살표 */
+		#banner_second:hover button {
+			opacity: 1! important;
+		}
+		
+		#banner_second .owl-nav .owl-prev, #banner_second .owl-nav .owl-next {
+			width: 15px;
+		    height: 100px;
+		    position: absolute;
+		    top: 40%;
+		   /*  margin-left: 30%;
+		    margin-right: 39%; */
+		    display: block !important;
+		    border:0px solid black;
+		    opacity: 0;
+		    transition:0.5s all;
+		}
+		#banner_second .owl-nav .owl-prev {
+			left: -0.9vw;		
+		}
+		#banner_second .owl-nav .owl-next {
+			right: 0.3vw
+		}
+		#banner_second .owl-nav .owl-prev i, #banner_second .owl-nav .owl-next i{
+			font-size: 3rem;
+			background-color: white;
+			border-radius: 100%;
+			width: 40px;
+			height: 40px;
+			padding-top: 30%;
+		}
+		
+		/* 줌인 */
+		.owl-carousel .owl-item img {
+		-webkit-transform: scale(1);
+		transform: scale(1);
+		-webkit-transition: .3s ease-in-out;
+		transition: .3s ease-in-out;
+		}
+		
+		.owl-carousel .owl-item:hover img {
+		  -webkit-transform: scale(1.1);
+		  transform: scale(1.1);
+		}
+		
 		
 	</style>
 	
@@ -196,16 +294,19 @@
 						</ol>
 					
 					<!-- Wrapper for slides -->
-						<div class="carousel-inner" role="listbox" style="height:50vh">
+						<div class="carousel-inner" role="listbox" style="height:50vh; border-radius: 30px;">
 						    
 			                <c:forEach items="${fixList }" end="0" var="fixList">
 							    <div class="item active" style="height:100%">
-			                		<img style="width: 100%; height:100%;" alt="자랑방상세이동" src="${pageContext.request.contextPath }/resources/img/room/${fixList.bdimg}">
-							      	<div class="carousel-caption fixback" style="color:black;">
+			                		<img style="width: 100%; height:100%;" alt="자랑방고정" src="${pageContext.request.contextPath }/resources/img/room/${fixList.bdimg}">
+							      	<div class="row carousel-caption fixback">
 							      		
-				                        <div class="fixtext">
-				                            <span>${fixList.bdnickname } 님</span>				                    
+				                        <div class="col-lg-9 fixtext">
 				                            <h2>${fixList.bdtitle }</h2>
+				                            <span>${fixList.bdnickname } 님</span>			                    
+			                    		</div>
+			                    		<div class="col-lg-3">
+			                    			<a href="${pageContext.request.contextPath }/selectRoomList?bdcode=${fixList.bdcode}"><button class="fixbtn">보러가자</button></a>
 			                    		</div>
 							    	</div>
 							    </div>						      
@@ -213,12 +314,15 @@
 					        
 					        <c:forEach items="${fixList }" begin="1" var="fixList">
 							    <div class="item" style="height:100%">
-			                		<img style="width: 100%; height:100%;" alt="자랑방상세이동" src="${pageContext.request.contextPath }/resources/img/room/${fixList.bdimg}">
-							      	<div class="carousel-caption fixback" style="color:black;">
-					                        <div class="fixtext">				                            
-					                            <span>${fixList.bdnickname } 님</span>					                            
-					                            <h2>${fixList.bdtitle }</h2>
-					                        </div>
+			                		<img style="width: 100%; height:100%;" alt="자랑방고정" src="${pageContext.request.contextPath }/resources/img/room/${fixList.bdimg}">
+							      	<div class="row carousel-caption fixback">
+				                        <div class="col-lg-9 fixtext">				                            
+				                            <h2>${fixList.bdtitle }</h2>
+				                            <span>${fixList.bdnickname } 님</span>					                            
+				                        </div>
+				                        <div class="col-lg-3">
+			                    			<a href="${pageContext.request.contextPath }/selectRoomList?bdcode=${fixList.bdcode}"><button class="fixbtn">보러가자</button></a>
+			                    		</div>
 
 							    	</div>
 							    </div>						      
@@ -292,7 +396,7 @@
             	<c:forEach items="${boardList }" end="5" var="boardList">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;border-right: solid 20px white">
                         <div class="row">
-                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow">
+                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
                         		<h3><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList.bdcode}">${boardList.bdtitle }</a></h3>
                         	</div>
                         	<div class="col-lg-4 col-md-4 col-sm-4">	
@@ -309,7 +413,7 @@
             	<c:forEach items="${boardList_free }" end="5" var="boardList_free">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row">
-                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow">
+                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
                         		<h3><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList_free.bdcode}">${boardList_free.bdtitle }</a></h3>
                         	</div>
                         	<div class="col-lg-4 col-md-4 col-sm-4">	
@@ -326,7 +430,7 @@
             	<c:forEach items="${boardList_qa }" end="5" var="boardList_qa">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row">
-                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow">
+                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
                         		<h3><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList_qa.bdcode}">${boardList_qa.bdtitle }</a></h3>
                         	</div>
                         	<div class="col-lg-4 col-md-4 col-sm-4">	
@@ -343,7 +447,7 @@
             	<c:forEach items="${boardList_info }" end="5" var="boardList_info">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row">
-                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow">
+                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
                         		<h3><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList_info.bdcode}">${boardList_info.bdtitle }</a></h3>
                         	</div>
                         	<div class="col-lg-4 col-md-4 col-sm-4">	
@@ -360,7 +464,7 @@
             	<c:forEach items="${boardList_review }" end="5" var="boardList_review">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row">
-                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow">
+                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
                         		<h3><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList_review.bdcode}">${boardList_review.bdtitle }</a></h3>
                         	</div>
                         	<div class="col-lg-4 col-md-4 col-sm-4">	
@@ -377,7 +481,7 @@
             	<c:forEach items="${noticeList }" end="5" var="noticeList">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row">
-                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow">
+                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
                         		<h3><a href="${pageContext.request.contextPath }/selectNoticeBoardView?nbcode=${noticeList.nbcode}">${noticeList.nbtitle }</a></h3>
                         	</div>
                         	<div class="col-lg-4 col-md-4 col-sm-4">	
@@ -425,7 +529,7 @@
 			                        </div>
 			                        <div style="margin-top: 10px; font-size: 16px; height:20%">
 			                        	<div>
-				                        	<span class="overflow">${SellList.ubtitle }</span>
+				                        	<span class="overflow_twoline">${SellList.ubtitle }</span>
 			                        	</div>
 				                        <div>
 			                        		<span>${SellList.ubnickname }</span>
@@ -452,7 +556,7 @@
 			                        </div>
 			                        <div style="margin-top: 10px; font-size: 16px; height:20%">
 			                        	<div>
-				                        	<span class="overflow">${buyList.ubtitle }</span>
+				                        	<span class="overflow_twoline">${buyList.ubtitle }</span>
 			                        	</div>
 				                        <div>
 			                        		<span>${buyList.ubnickname }</span>
@@ -490,6 +594,7 @@
      }
 </script>
 
+<!-- 상단 배너 슬라이딩 -->
 <script type="text/javascript">
 	$(function(){
 		$('#carousel-example-generic').carousel({
@@ -505,6 +610,9 @@
 		});
 	});
 	
+	
+	/* 두번째 배너 슬라이딩 */
+	
 	$('#banner_second').owlCarousel({
 	    items : 1, //화면에 표시 할 슬라이드 수
 	    animateOut : 'fadeOut', // 사라질때의 애니메이션
@@ -514,9 +622,14 @@
 	    autoplayTimeout : 30000, // 자동 슬라이드 시간 (1초=1000)
 	    loop : true, // 무한 반복 여부
 	    nav: true,
-	    
+	    navText : ["<i class='fa fa-angle-left'><i/>", "<i class='fa fa-angle-right'><i/>"]
+	 
 	})
+</script>
+
 	
+<!-- 하단 팔구/사구 슬라이딩 -->	
+<script type="text/javascript">	
 	$('#owl-banner_resell').owlCarousel({
 	    items : 6, //화면에 표시 할 슬라이드 수
 	    animateOut : 'fadeOut', // 사라질때의 애니메이션
@@ -579,6 +692,7 @@
 	})
 </script>
 
+<!-- 하단 팔구/사구 d-none -->
 <script type="text/javascript">
 function selectResell(){
 	console.log("팔구목록on 사구목록off")

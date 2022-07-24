@@ -7,16 +7,14 @@
 <meta charset="UTF-8">
 <title>1인자 - 1:1 문의 내역 페이지</title>
 
-<%@ include file="/resources/css/BarCss.jsp"%>
-<!-- 부트스트랩 -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-	crossorigin="anonymous">
-<!-- jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
+<!--jquery & bootstrap(5css)-->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+ 
+ 
+ 
 <!-- ogani css -->
     <%-- <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/bootstrap.min.css" type="text/css">  --%>
     <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/nice-select.css" type="text/css">         
@@ -85,10 +83,11 @@ background-color: #00BCD4;
 		<%@ include file="/WEB-INF/views/includes/SideBar_Mypage.jsp" %>
 		
 		<section>
+		<div style="min-height: 30px;"></div>
 		<!-- 본문 -->
 			<div class="container">
 				<br>
-				<div class="checkout__form"><h4>마이페이지 1:1문의</h4></div>
+				<div class="checkout__form" style="margin-top: 30px;"><h4>마이페이지 1:1문의</h4></div>
 				<br>
 				<!-- 작성글 목록 -->
 				<div class="row">
@@ -98,7 +97,7 @@ background-color: #00BCD4;
 					<div class="col-lg-3"  style=" margin:0px; padding-right: 50px;">					                      
 					<!-- 작성하기 버튼 -->    
                        <button class="site-btn" style="border-radius: 4px; float: right;"
-                       onclick = "location.href = 'loadToMyInfoQuestionForm' " >                        
+                       onclick = "location.href = 'loadToMyInfoQuestionForm'" >                        
                         작성하기</button>
 					</div>					
 				</div> <br>
@@ -122,8 +121,10 @@ background-color: #00BCD4;
 							<!-- 글제목 -->
 							<c:choose>
 							<c:when test="${contact.ctans !=null}">
-								<td onclick="showContents('${contact.ctcode }')" class="buttonPoint">${contact.cttitle } &nbsp;
-								<i class="fa-solid fa-comment-dots"></i></td>
+								<td onclick="showContents('${contact.ctcode }')" class="buttonPoint">
+								<i style="color:red;" class="fa-solid fa-check"></i>
+								 &nbsp;${contact.cttitle }
+								</td>
 							</c:when>
 							<c:otherwise>
 								<td onclick="showContents('${contact.ctcode }')" class="buttonPoint">${contact.cttitle }</td>
@@ -138,9 +139,9 @@ background-color: #00BCD4;
 								문의 내용 </td>							
 							</tr>							
 							<tr style="border-bottom: solid #E0E0E0 1px; height: 100px;" class="d_none" id="${contact.ctcode }_contents">
-								<td colspan="3" style=" padding-left: 30px;" >${contact.ctcontents }</td>							
+								<td colspan="3" style="padding-left: 30px;">${contact.ctcontents }</td>
 							</tr>
-							<!-- 답변 -->							
+							<!-- 답변 -->			
 								<c:choose>
 									<c:when test="${contact.ctans !=null}">
 							<tr style="border-bottom: solid #E0E0E0 1px; height: 50px; margin-bottom:30px; " class="d_none" id="${contact.ctcode }_replytitle">
@@ -163,7 +164,7 @@ background-color: #00BCD4;
 	</main>
 	
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
-
+<!--jquery & bootstrap(5js)-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 

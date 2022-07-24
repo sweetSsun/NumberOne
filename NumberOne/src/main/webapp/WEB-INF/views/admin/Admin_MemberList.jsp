@@ -9,8 +9,9 @@
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- 부트스트랩 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <!-- Css Styles -->
-<%@ include file="/resources/css/BarCss.jsp" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/listCss.css" type="text/css">
 
@@ -277,10 +278,11 @@
 	
 	
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
-
+	<!-- 부트스트랩 -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 	
 	<script type="text/javascript">
+	
 		// 모달창 close 하는 스크립트
  		var modal = $(".modal");
 		var close = $(".close");
@@ -290,6 +292,7 @@
 				$("#memberInfoModal").modal("hide");
 			});
 		}
+		
 		
 		// 회원상태 변경 확인 모달창 출력
 		var btnObj;
@@ -310,37 +313,52 @@
 		// 회원상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
 		function updateMstate(){
 			console.log("updateMstate() 실행");
-			var mid = $("#mid").val();
-			console.log(btnObj.text());
-			if (btnObj.text() == "활동" || btnObj.text() == "경고" ){
-				var mstate = 0;				
-			} else {
-				if (mid.includes("@_")){
-					var mstate = 9;				
-				} else {
-					var mstate = 1;				
-				}
-			}
+			
 			$.ajax({
-				type: "get",
-				data: {"mid":mid, "mstate":mstate},
-				url: "admin_updateMstate_ajax",
-				dataType: "json",
-				success: function(result){
-					console.log(result);
-						if (result.mstate == 0){
-							btnObj.text("정지").addClass("btn-danger").removeClass("btn-secondary btn-primary btn-warning");
-						} else if (result.mwarning > 0){
-							btnObj.text("경고").addClass("btn-warning").removeClass("btn-secondary btn-danger btn-primary");
+		  		type : 'get',
+		  		url : 'Admin_selectLoginOut_ajax',
+		  		async : false,
+		  		success : function(result){
+		  			if (result == "2"){ 
+		  				if(confirm("관리자 로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+		  					location.href = "loadToLogin";
+		  				}
+		  				return;
+		  			}
+		  			
+					var mid = $("#mid").val();
+					console.log(btnObj.text());
+					if (btnObj.text() == "활동" || btnObj.text() == "경고" ){
+						var mstate = 0;				
+					} else {
+						if (mid.includes("@_")){
+							var mstate = 9;				
 						} else {
-							btnObj.text("활동").addClass("btn-primary").removeClass("btn-secondary btn-danger btn-warning");
+							var mstate = 1;				
 						}
-					$("#updateMstateModal").modal("hide");
-				},
-				error: function(){
-					$("#updateMstateModal").modal("hide");
-					alert("회원상태 변경에 실패했습니다.");
-				}
+					}
+					$.ajax({
+						type: "get",
+						data: {"mid":mid, "mstate":mstate},
+						url: "admin_updateMstate_ajax",
+						dataType: "json",
+						success: function(result){
+							console.log(result);
+								if (result.mstate == 0){
+									btnObj.text("정지").addClass("btn-danger").removeClass("btn-secondary btn-primary btn-warning");
+								} else if (result.mwarning > 0){
+									btnObj.text("경고").addClass("btn-warning").removeClass("btn-secondary btn-danger btn-primary");
+								} else {
+									btnObj.text("활동").addClass("btn-primary").removeClass("btn-secondary btn-danger btn-warning");
+								}
+							$("#updateMstateModal").modal("hide");
+						},
+						error: function(){
+							$("#updateMstateModal").modal("hide");
+							alert("회원상태 변경에 실패했습니다.");
+						}
+					});
+		  		}
 			});
 		}
 	</script>
@@ -400,10 +418,13 @@
 					$("#memberInfoModalLabel").text(mid + " 회원 상세정보");
 					$("#mI_mprofile").text("");
 					if (result.mprofile != null){
-						$("#mI_mprofile").html("<img class='img-account-profile rounded-circle' alt='프로필이미지' style='height: 200px; width: 200px; border: 1px solid #808080; object-fit: cover;' src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/" + result.mprofile + "'>");
+						if (result.mstate == 9){ // 카카오계정 가입회원 프로필
+							$("#mI_mprofile").html("<img class='img-account-profile rounded-circle' alt='프로필이미지' style='height: 200px; width: 200px; border: 1px solid #808080; object-fit: contain;' src='" + result.mprofile + "'>");
+						} else { // 일반 가입회원 프로필
+							$("#mI_mprofile").html("<img class='img-account-profile rounded-circle' alt='프로필이미지' style='height: 200px; width: 200px; border: 1px solid #808080; object-fit: cover;' src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/" + result.mprofile + "'>");
+						}
 					} else {
 						$("#mI_mprofile").html("<img class='img-account-profile rounded-circle' alt='프로필이미지' style='height: 200px; width: 200px; border: 1px solid #808080; object-fit: contain;' src='${pageContext.request.contextPath }/resources/img/logo.jpg'>");
-                       //class="img-account-profile rounded-circle mb-2"
 					}
 					$("#mI_mmessage").text(result.mmessage);
 					$("#mI_mid").text(result.mid);

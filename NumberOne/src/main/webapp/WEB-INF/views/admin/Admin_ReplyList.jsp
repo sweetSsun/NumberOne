@@ -9,8 +9,9 @@
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- 부트스트랩 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <!-- Css Styles -->
-<%@ include file="/resources/css/BarCss.jsp" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/listCss.css" type="text/css">
 
@@ -78,7 +79,7 @@
                </div>
             </div>
             
-            <!-- 게시글 목록 -->
+            <!-- 댓글 목록 -->
             <div class="row" style="margin-top: 20px;">
             <table style="table-layout: fixed;">
                <thead >
@@ -93,7 +94,7 @@
                </thead>
                <tbody id="rpListTbody">
 	               <c:forEach items="${replyList }" var="reply">
-	                   <!-- 회원관리 목록 -->
+	                   <!-- 댓글관리 목록 -->
 	                   <tr style="border-bottom: solid #E0E0E0 1px;">
 	                      <td class="overflow text-center">${reply.rpcode}</td>
 	                      <td class="category text-center">${reply.rpbdcategory}</td>
@@ -101,8 +102,13 @@
 	                      	<c:choose>
 					        	<c:when test="${reply.rpbdcategory.equals('자랑') }">
 						       		<!-- 자랑글 상세 -->
-						       		<!-- 수정 필요~~~~~~~~~~~ -->
 						        	<a href="selectRoomList?bdcode=${reply.rpbdcode }&jsp=view">
+						        		${reply.rpcontents}
+						        	</a>
+					        	</c:when>
+					        	<c:when test="${reply.rpbdcategory.equals('후기') }">
+						       		<!-- 후기글 상세 -->
+		                      		<a href="admin_selectReviewBoardView${paging.makeQueryPage(reply.rpbdcode, paging.page)}&check=replyList">
 						        		${reply.rpcontents}
 						        	</a>
 					        	</c:when>
@@ -114,7 +120,7 @@
 								</c:otherwise>
 							</c:choose>
 	                      </td>
-	                      <td class="overflow text-center">${reply.rpnickname}</td>
+	                      <td class="overflow text-center pointer" onclick="writeMemberBoard('${reply.rpnickname}')">${reply.rpnickname}</td>
 	                      <td class="overflow text-center">${reply.rpdate}</td>
 	                      <td>
                    			  <button class="btn btn-sm btn-danger" type="button" onclick="showRpstateModal(this, '${reply.rpcode }')">정지</button>
@@ -193,7 +199,7 @@
 
 	
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
-
+	<!-- 부트스트랩 -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 	
 	<script type="text/javascript">
@@ -225,34 +231,47 @@
 		// 댓글상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
 		function updateRpstate(){
 			console.log("updateRpstate() 실행");
-			var rpcode = $("#rpcode").val();
-			console.log(btnObj.text());
-			if (btnObj.text() == "활성"){
-				var rpstate = 0;				
-			} else {
-				var rpstate = 1;				
-			}
 			$.ajax({
-				type: "get",
-				data: {"rpcode":rpcode, "rpstate":rpstate},
-				url: "admin_updateRpstate_ajax",
-				dataType: "json",
-				success: function(result){
-					if(result > 0){
-						if (rpstate == 0){
-							btnObj.text("정지").addClass("btn-danger").removeClass("btn-primary");
-						} else {
-							btnObj.text("활성").addClass("btn-primary").removeClass("btn-danger");
-						}
+		  		type : 'get',
+		  		url : 'Admin_selectLoginOut_ajax',
+		  		async : false,
+		  		success : function(result){
+		  			if (result == "2"){ 
+		  				if(confirm("관리자 로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+		  					location.href = "loadToLogin";
+		  				}
+		  				return;
+		  			}
+		  			
+					var rpcode = $("#rpcode").val();
+					console.log(btnObj.text());
+					if (btnObj.text() == "활성"){
+						var rpstate = 0;				
+					} else {
+						var rpstate = 1;				
 					}
-					$("#updateRpstateModal").modal("hide");
-				},
-				error: function(){
-					$("#updateRpstateModal").modal("hide");
-					alert("댓글상태 변경에 실패했습니다.");
-				}
+					$.ajax({
+						type: "get",
+						data: {"rpcode":rpcode, "rpstate":rpstate},
+						url: "admin_updateRpstate_ajax",
+						dataType: "json",
+						success: function(result){
+							if(result > 0){
+								if (rpstate == 0){
+									btnObj.text("정지").addClass("btn-danger").removeClass("btn-primary");
+								} else {
+									btnObj.text("활성").addClass("btn-primary").removeClass("btn-danger");
+								}
+							}
+							$("#updateRpstateModal").modal("hide");
+						},
+						error: function(){
+							$("#updateRpstateModal").modal("hide");
+							alert("댓글상태 변경에 실패했습니다.");
+						}
+					});
+		  		}
 			});
-			
 		}
 	</script>
 		
@@ -329,7 +348,7 @@
 									+ "</a>";
 						}
 						output += "</td>";
-						output += "<td class='text-center overflow'>" + result[i].rpnickname + "</td>";
+						output += "<td class='text-center overflow pointer' onclick='writeMemberBoard(\"" + result[i].rpnickname + "\")'>" + result[i].rpnickname + "</td>";
 						output += "<td class='text-center overflow'>" + result[i].rpdate + "</td>";
 						output += "<td class='text-center'>"
 						output += "<button class='btn btn-sm btn-danger' type='button' onclick='showRpstateModal(this,\""+result[i].rpcode+"\")'>정지</button>";

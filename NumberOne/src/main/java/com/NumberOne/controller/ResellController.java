@@ -1,6 +1,7 @@
 package com.NumberOne.controller;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,16 +22,17 @@ public class ResellController {
 
 	@Autowired
 	private ResellService rsvc;
-
+	
+	
+		
 	@RequestMapping(value = "/selectResellMainPage")
-	public ModelAndView selectResellMainPage(Paging paging) {
+	public ModelAndView selectResellMainPage(Paging paging) throws ParseException {
 		System.out.println("selectResellMainPage 호출");
 		ModelAndView mav = new ModelAndView();
 
 		mav = rsvc.selectResellMainPage(paging);
-
+		
 		return mav;
-
 	}
 
 	@RequestMapping(value = "/selectResellView")
@@ -45,12 +47,13 @@ public class ResellController {
 	}
 
 	@RequestMapping(value = "/loadToResellWriteForm")
-	public ModelAndView loadToResellWriteForm(String sell_buy) {
+	public ModelAndView loadToResellWriteForm(String sell_buy, RedirectAttributes ra) {
+		
 		System.out.println("loadToResellWriteForm 호출");
 		ModelAndView mav = new ModelAndView();
 		System.out.println("타이틀체크 : " + sell_buy);
 
-		mav = rsvc.loadToResellWriteForm(sell_buy);
+		mav = rsvc.loadToResellWriteForm(sell_buy, ra);
 
 		return mav;
 	}
@@ -145,7 +148,7 @@ System.out.println(ubDto);
 	}
 
 	@RequestMapping(value = "/selectResellPageList")
-	public ModelAndView selectResellPageList(Paging paging) {
+	public ModelAndView selectResellPageList(Paging paging) throws ParseException {
 		System.out.println("selectResellPageList 호출");
 
 		ModelAndView mav = new ModelAndView();
@@ -153,6 +156,7 @@ System.out.println(ubDto);
 
 		return mav;
 	}
+
 
 	/* 게시글 신고 */
 	// 게시글 신고 유무 확인

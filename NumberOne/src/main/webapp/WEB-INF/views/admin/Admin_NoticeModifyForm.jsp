@@ -8,12 +8,13 @@
 <meta charset="UTF-8">
 <title>1인자 - 공지수정</title>
 
-<!-- Css Styles -->
-<%@ include file="/resources/css/BarCss.jsp" %>
-<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
-
+<!-- jquery -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+<!-- Css Styles -->
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 
 <style type="text/css">
 	section{
@@ -48,6 +49,9 @@
 	}
 	input:focus{
 	   outline: none;	
+	}
+	.d_none{
+		display: none;
 	}
 </style>
 
@@ -87,56 +91,26 @@
 						maxlength="2000" placeholder="내용을 입력하세요">${noticeBoard.nbcontents }</textarea>
 				</div>
 				<div class="row mt-4">
+					<!-- 기존 이미지가 있으면 -->
 					<c:if test="${noticeBoard.nbimg != null }">
-						<img src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg}" style="max-width:100px;">
+						<div id="originImgScreen" style="width:200px; height:200px;" class="">
+							<img src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg}" style="width:100%; height:100%;"
+								id="originImg">
+						</div>
 					</c:if>
-					<input type="file" id="nbImg" name="nbimgfile" class="" accept="image/*" onchange="checkFileType(this)"> 
+					<!-- 이미지 변경시 -->
+					<div id="imgScreen" style="width:200px; height:200px;" class="d_none">
+						<img id='previewImg' style="width:100%; height:100%;"></img>
+					</div>
+					<input type="file" id="nbImg" name="nbimgfile" class="" accept="image/*" onchange="readImg(this)"> 
 				</div>
 				<div class="row mt-4 mb-2">
 					<div class="col btn-wrapper">
-						<input class="btn-numberone btn-md fw-bold text-white" type="submit" value="수정">
-						<input onclick="$('#nbWriteCancelCheckModal').modal('show')" class="btn-numberone btn-md fw-bold text-white" type="button" value="취소">
+						<input class="btn-numberone btn fw-bold text-white" type="submit" value="수정">
+						<input onclick="$('#nbWriteCancelCheckModal').modal('show')" class="btn-numberone btn fw-bold text-white" type="button" value="취소">
 					</div>
 				</div>	
  				
- 				<%-- <table>
-					<tr class="tableRow">
-						<th class="tableHead">작성자</th>
-						<!-- imhido 부분은 나중에 로그인 아이디로 출력 -->
-						<td colspan="3">${nbnickname}</td>						
-					</tr>
-					<tr class="tableRow">
-						<!-- th, td에 패딩, 마진을 주고 싶은데 먹히지 않아서 tableHead 클래스로 여백 줬슴당 -->
-						<th class="tableHead">제목</th>
-						<td colspan="3">
-							<input type="text" id="title" name="nbtitle" placeholder="제목을 입력하세요" size="35%" value="${noticeBoard.nbtitle }">
-						</td>
-					</tr>
-					<tr class="tableRow">
-						<th class="tableHead">내용</th>
-						<td colspan="3">
-							<textarea rows="15" cols="40" id="contents" name="nbcontents" placeholder="내용을 입력하세요">${noticeBoard.nbcontents }</textarea>
-						</td>
-					</tr>
-					<tr class="tableRow">
-						<th class="tableHead">대표사진</th>
-						<td colspan="3">
-							<c:if test="${noticeBoard.nbimg != null }">
-								<img src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg}" style="max-width:100px;">
-							</c:if>
-							<input type="file" id="nbImg" name="nbimgfile" class="" accept="image/*" onchange="checkFileType(this)"> 
-						</td>
-					</tr>
-					<tr class="tableRow">
-						<th colspan="4">
-							<center>
-							<button type="submit">수정</button> 
-							<!-- 취소하면 돌아갈 페이지가 없어서 취소는 function 연결만 되어 있음-->
-							<button type="button" onclick="withdraw()">취소</button>
-							</center>
-						</th>
-					</tr>
-				</table> --%>
 				</form>
             </div>
 
@@ -144,7 +118,6 @@
 		</section>
 	</main>
 	
-	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
 	
 	<!-- 게시글 작성 취소 확인 -->
 	<div class="modal fade" id="nbWriteCancelCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -164,14 +137,16 @@
                 </div>	
                 <div class="modal-footer">
                 	<input type="hidden" >
-                    <button class="close btn-numberone text-white" onclick="writeBoardCancel()" >네</button>
+                    <button class="close btn-numberone text-white" onclick="writeBoardCancel()" style="padding: 0.375rem 0.75rem;" >네</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
             </div>
         </div>
     </div>
     
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
+	<!-- 부트스트랩 -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
 <script type="text/javascript">
 	// 공지글 수정 취소 경고 모달창 close 하는 스크립트
@@ -209,8 +184,28 @@
 		}
 	}
 	
-	// 이미지 파일을 업로드 했는지 확인
-	function checkFileType(obj) {
+	// 이미지 파일을 업로드 했는지 확인하고 이미지 미리보기
+	function readImg(obj) {
+		if(obj.files && obj.files[0]){
+			var reader = new FileReader();
+			
+			reader.onload = (e) => {
+				console.log(obj.files[0].type);
+				// 이미지 파일인지 검사
+				if (!obj.files[0].type.match("image.*")){
+					console.log("이미지 파일이 아님");
+					alert('이미지 파일만 선택할 수 있습니다.');
+					$("#previewImg").attr("src","");
+					$("#imgScreen").addClass("d_none");
+					return;
+				}
+				$("#previewImg").attr("src",e.target.result);
+				$("#originImgScreen").addClass("d_none");
+				$("#imgScreen").removeClass("d_none");
+			}
+			reader.readAsDataURL(obj.files[0]);
+		}
+		
 		var file_kind = obj.value.lastIndexOf('.');
 		var file_name = obj.value.substring(file_kind+1, obj.length);
 		var file_type = file_name.toLowerCase();

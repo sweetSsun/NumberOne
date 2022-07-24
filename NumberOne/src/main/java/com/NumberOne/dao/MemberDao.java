@@ -1,7 +1,6 @@
 package com.NumberOne.dao;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
@@ -10,6 +9,7 @@ import org.apache.ibatis.annotations.Update;
 
 import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.ContactDto;
+import com.NumberOne.dto.GoodsDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.ReplyDto;
 import com.NumberOne.dto.ScrapDto;
@@ -49,7 +49,7 @@ public interface MemberDao {
 	int updateMyInfoMemberModify(MemberDto member);
 	
 	//마이페이지 회원정보 _ 작성글
-	@Select("SELECT BD.BDCODE, BD.BDTITLE, BD.BDMID, TO_CHAR(BD.BDDATE,'YYYY-MM-DD') AS BDDATE, BD.BDCATEGORY, RP.BDREPLY, BD.BDSTATE FROM BOARDS BD left outer join (SELECT RPBDCODE, COUNT (RPBDCODE) AS BDREPLY FROM REPLY GROUP BY RPBDCODE) RP "
+	@Select("SELECT BD.BDCODE, BD.BDTITLE, BD.BDMID, TO_CHAR(BD.BDDATE,'YYYY-MM-DD') AS BDDATE, BD.BDCATEGORY, RP.BDREPLY, BD.BDSTATE FROM BOARDS BD left outer join (SELECT RPBDCODE, COUNT (RPBDCODE) AS BDREPLY FROM REPLY WHERE RPSTATE =1 GROUP BY RPBDCODE) RP "
 			+ "on BD.BDCODE = RP.RPBDCODE "
 			+ "where bdmid= #{loginId} "
 			+ "ORDER BY BD.BDCODE DESC" )
@@ -64,7 +64,7 @@ public interface MemberDao {
 
 	//회원탈퇴
 	@Update("UPDATE MEMBERS SET MSTATE = 2 WHERE MID = #{loginId}")
-	int updateMemberWithdraw(String loginId);
+	int updateMemberWithdraw(@Param("loginId")String loginId);
 
 	//1:1문의 글 번호 생성 (최대값)
 	@Select("SELECT NVL(MAX(CTCODE), 'CT00000') FROM CONTACT")
@@ -98,7 +98,7 @@ public interface MemberDao {
 			+ "FROM SCRAP SC "
 			+ "LEFT OUTER JOIN BOARDS BD ON BD.BDCODE = SC.SCBDCODE "
 			+ "LEFT OUTER JOIN MEMBERS M ON BD.BDMID = M.MID "
-			+ "LEFT OUTER JOIN (SELECT RPBDCODE, COUNT (RPBDCODE) AS BDREPLY FROM REPLY GROUP BY RPBDCODE) RP ON BD.BDCODE = RP.RPBDCODE "
+			+ "LEFT OUTER JOIN (SELECT RPBDCODE, COUNT (RPBDCODE) AS BDREPLY FROM REPLY WHERE RPSTATE =1 GROUP BY RPBDCODE) RP ON BD.BDCODE = RP.RPBDCODE "
 			+ "WHERE SCMID = #{loginId} ORDER BY BD.BDCODE DESC ")
 	ArrayList<ScrapDto> selectMyInfoMemberView_scrap(String loginId);
 
@@ -107,12 +107,12 @@ public interface MemberDao {
 	ArrayList<ZzimDto> selectMyInfoResellView_Zzim(String loginId);
 
 	//닉네임으로 회원정보 가져오기
-	@Select("SELECT MPROFILE, MNICKNAME, MREGION, MMESSAGE FROM MEMBERS WHERE MNICKNAME = #{nickname} ")
+	@Select("SELECT MID, MPROFILE, MNICKNAME, MREGION, MMESSAGE FROM MEMBERS WHERE MNICKNAME = #{nickname} ")
 	MemberDto selectWriteMemberInfo_member(String nickname);
 
-	//닉네임 별 작성 글 출력
-	@Select("SELECT BD.BDCODE, BD.BDTITLE, BD.BDCATEGORY, M.MNICKNAME, M.MMESSAGE, M.MPROFILE "
-			+ "FROM BOARDS BD, MEMBERS M WHERE BD.BDMID = M.MID AND M.MNICKNAME = #{nickname} ORDER BY BDCODE DESC")
+	//마이페이지 미니브라우저 닉네임 별 작성 글 출력
+	@Select("SELECT BD.BDCODE, BD.BDTITLE, BD.BDCATEGORY, M.MNICKNAME AS BDNICKNAME, M.MMESSAGE AS BDMESSAGE , M.MPROFILE AS BDMPROFILE, M.MREGION AS BDREGION "
+			+ "FROM BOARDS BD, MEMBERS M WHERE BDSTATE = 1 AND BD.BDMID = M.MID AND M.MNICKNAME = #{nickname} ORDER BY BDCODE DESC")
 	ArrayList<BoardDto> selectWriteMemberInfo_ajax(String nickname);
 	
 	//카카오 회원가입 처리
@@ -128,10 +128,21 @@ public interface MemberDao {
 	@Update ("UPDATE MEMBERS SET MPW = #{mpw} WHERE MID = #{mid} AND MEMAIL = #{memail}")
 	void updatePw(@Param("mid")String checkMid, @Param("memail")String checkMemail, @Param("mpw")String temporaryPw);
 
-	//닉네임 별 작성 댓글 출력
-	@Select("SELECT RPBDCODE, RPCONTENTS FROM REPLY RP, MEMBERS M WHERE MID = RPMID AND MNICKNAME = #{nickname} ORDER BY RPBDCODE DESC")
-	ArrayList<ReplyDto> selectWriteMemberInfo_Reply(String nickname);
+	//마이페이지 미니브라우저 닉네임 별 작성 댓글 출력
+	@Select("SELECT RPBDCODE, RPCONTENTS, BDCATEGORY AS RPBDCATEGORY FROM REPLY RP, MEMBERS M, BOARDS B WHERE RPSTATE =1 AND MID = RPMID AND RPBDCODE = BDCODE AND MNICKNAME = #{nickname} ORDER BY RPBDCODE DESC")
+	ArrayList<ReplyDto> selectWriteMemberInfoReply_ajax(String nickname);
 
+
+	//마이페이지 미니브라우저 중고거래
+	@Select("SELECT UB.UBMAINIMG, UB.UBCODE, UB.UBTITLE, GD.GDNAME AS UBGDNAME, GD.GDPRICE, M.MNICKNAME AS UBNICKNAME "
+			+ "FROM USEDBOARDS UB,GOODS GD, MEMBERS M "
+			+ "WHERE UB.UBSTATE=1 AND UB.UBCODE = GD.GDUBCODE AND UB.UBSELLBUY = 'S' AND UB.UBMID = M.MID AND M.MNICKNAME= #{nickname} ORDER BY UBCODE DESC")
+	ArrayList<UsedBoardDto> selectWriteMemberInfoSellBuy_ajax(String nickname);
+
+	//드롭다운 찜목록 조회
+	@Select("SELECT RGNAME AS UBRGCODE, UBSELLBUY, MNICKNAME AS UBNICKNAME, UBTITLE, UBMAINIMG, UBDATE FROM ZZIM ZZ INNER JOIN USEDBOARDS UB ON ZZ.ZZUBCODE = UB.UBCODE INNER JOIN REGION RG ON UB.UBRGCODE = RG.RGCODE INNER JOIN MEMBERS MB ON UB.UBMID = MB.MID WHERE ZZMID = #{loginId} AND UBSTATE = 1 ORDER BY UB.UBCODE DESC")
+	ArrayList<UsedBoardDto> selectZzimList_ajax(String loginId);
+	
 
 	
 	

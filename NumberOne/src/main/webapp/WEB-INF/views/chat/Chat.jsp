@@ -107,7 +107,8 @@
 	    max-height: 410px;
 	    overflow-y: scroll;
 		width:-webkit-fill-available;
-		padding-right: 10px;
+		padding-right: 5px;
+		padding-left: 5px;
 	}
 	.listArea::-webkit-scrollbar {
 		background-color: #F2F2FF;
@@ -128,7 +129,7 @@
 	}
 	.insertChat::-webkit-scrollbar {
 		background-color: #F2F2FF;
-		width: 10px;
+		width: 8px;
 	}
 	.insertChat::-webkit-scrollbar-thumb {
    		background-color: #00a5ba;
@@ -174,6 +175,21 @@
 		/* margin-right: 3px; */
 		color: #ffffff;
 	}
+	.chatDate{
+		/*vertical-align: bottom;
+   		display: inline-block; */
+		font-size: small;
+    	margin-left: 2px;
+    	margin-right: 2px;
+    	margin-top: 20px;
+	}
+	.outerDate{
+		vertical-align:middle; display:table-cell;
+	}
+	.dateLine{
+		background-color: #F6F6F6;
+    	border-radius: 6px;
+	}
 </style>
 
 </head>
@@ -209,12 +225,12 @@
 			<div class="subtitle" style="margin-bottom: 0.5rem;">
 	        	<div>
 	            	<div class="row">
-	                	<div class="col-9" style="padding-right: 0px;">
+	                	<div class="col-9" style="padding-right: 2px;">
 		                    <textarea class="insertChat" id="inputMsg" placeholder="메세지입력"
-		                    style="padding-left: 5px; border: none; background-color: #F2F2FF;"></textarea>
+		                    style="padding-left: 5px; border: none; background-color: #F2F2FF; resize: none;"></textarea>
 	                    </div>
 	                    <div class="col-3" style="padding-left:0;">
-	                    	<input type="button" class="btn btn-lg insertBtn" onclick="sendBtn()" value="Talk" style="width:100%;">
+	                    	<input type="button" class="btn btn-lg insertBtn" onclick="sendBtn()" value="Talk" style="width:100%; height:80px;">
 	                    	
 	                    	
 	                    	<!-- onkeydown을 통해서 엔터키로도 입력되도록 설정. -->
@@ -243,138 +259,177 @@
 
 
 <!-- 웹소캣 sockjs -->
-	<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 
-	<script type="text/javascript">
-		let crcode = "${param.crcode }";
-		console.log("해당 채팅방 코드 : " + crcode)
-		
-		// 채팅방 접속시 기존 채팅방의 대화목록 불러오기
-		// 팝업창 ajax가 불가하므로 부모창(Topbar)에서 데이터 보내줌
-		function enterRoom(msgList){
-			for (var i = 0; i < msgList.length; i++){
-				console.log(msgList[i].cmcontents);
-				checkLR(msgList[i]);
-			}
+<script type="text/javascript">
+	let crcode = "${param.crcode }";
+	console.log("해당 채팅방 코드 : " + crcode)
+	
+	// 채팅방 접속시 기존 채팅방의 대화목록 불러오기
+     	// 팝업창 ajax가 불가하므로 부모창(Topbar)에서 데이터 보내줌
+      function enterRoom(msgList){
+         for (var i = 0; i < msgList.length; i++){
+            //console.log(msgList[i].cmcontents);
+            checkLR(msgList[i], false); // DB 입력시간으로 출력하기 위한 boolean값 전송
+         } 
+      }
+	
+	// enter키 이벤트
+	$(document).on("keydown", $("#inputMsg"), function(e){
+		if(e.keyCode == 13 && !e.shiftKey){
+			e.preventDefault(); // 엔터키 입력 막기 (혹시 모를 중복전송을 막기 위함)
+			sendBtn(); // Talk 버튼 클릭한 것과 동일한 함수 호출
 		}
-		
-		// enter키 이벤트
-		$(document).on("keydown", $("#inputMsg"), function(e){
-			if(e.keyCode == 13 && !e.shiftKey){
-				e.preventDefault(); // 엔터키 입력 막기
-				sendBtn(); // Talk 버튼 클릭한 것과 동일한 함수 호출
+	});
+	
+	// Talk 버튼 클릭
+	function sendBtn(){
+	  	$.ajax({
+	  		type : 'get',
+	  		url : 'selectLoginOut_ajax',
+	  		async : false,
+	  		success : function(result){
+	  			if (result == "2"){ 
+	  				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+	  					opener.closeChat(crcode);
+	  					opener.location.href = "loadToLogin";
+	  					opener.focus();
+	  					window.close();
+	  					return;
+	  				}
+	  				return;
+	  			}
+
+				const originContents = $("#inputMsg").val();	// 현재 입력된 메세지 저장
+				const cmcontents = originContents.replaceAll(/(\n|\r\n)/g, "<br>");
+				if(cmcontents.trim().length > 0){	// 공백 제외 입력한 글이 있을 때 send
+					sendMessage(cmcontents);
+				}
+				$("#inputMsg").val(""); // 입력창 초기화
+				$("#inputMsg").focus();
 			}
 		});
-		
-		// Talk 버튼 클릭
-		function sendBtn(){
-			const cmcontents = $("#inputMsg").val();	// 현재 입력된 메세지 저장
-			if(cmcontents.trim().length > 0){	// 공백 제외 입력한 글이 있을 때 send
-				sendMessage(cmcontents);
-			}
-			$("#inputMsg").val(""); // 입력창 초기화
-			$("#inputMsg").focus();
-		}
+	}
 	
 		
-		var chatUrl = "${pageContext.request.contextPath }/chatWskMessage";
-		var chatWebSocket = new SockJS(chatUrl);
-		// 연결시 실행 (채팅방 입장)
-		chatWebSocket.onopen = function() {
-		    console.log("open");
-			// ENTER-CHAT 이라는 메세지를 보내 Java Map에 session을 추가한다.
-			const data = {
-					"cmcrcode" : crcode,
-					"cmfrmid" : "${sessionScope.loginId}",
-					"cmcontents" : "ENTER-CHAT"
-			}			
-			let jsonData = JSON.stringify(data);
-			chatWebSocket.send(jsonData);
-		}
-		
-		// 메세지 전송
-		function sendMessage(cmcontents){
-			var data = {
+	var chatUrl = "${pageContext.request.contextPath }/chatWskMessage";
+	var chatWebSocket = new SockJS(chatUrl);
+	// 연결시 실행 (채팅방 입장)
+	chatWebSocket.onopen = function() {
+	    console.log("open");
+		// ENTER-CHAT 이라는 메세지를 보내 Java Map에 session을 추가한다.
+		const data = {
 				"cmcrcode" : crcode,
 				"cmfrmid" : "${sessionScope.loginId}",
-				"cmcontents" : cmcontents
-			}
-			
-			checkLR(data); // 왼쪽, 오른쪽 출력 확인
-			
-			var jsonData = JSON.stringify(data);
-			chatWebSocket.send(jsonData);
+				"cmcontents" : "ENTER-CHAT"
+		}			
+		let jsonData = JSON.stringify(data);
+		chatWebSocket.send(jsonData);
+	}
+	
+	// 메세지 전송
+	function sendMessage(cmcontents){
+		// 단순히 전송만 함. 전송한 사람에게도 메세지를 다시 뿌려줄 것이고, 거기에서 checkLR 할거임! (시스템 시간 띄우는 것 때문에)
+		var data = {
+			"cmcrcode" : crcode,
+			"cmfrmid" : "${sessionScope.loginId}",
+			"cmcontents" : cmcontents
 		}
+		var jsonData = JSON.stringify(data);
+		chatWebSocket.send(jsonData);
+	}
 		
-		// 메세지 수신
-		chatWebSocket.onmessage = function(data) {
-	   		var receiveMsg = JSON.parse(data.data);
-	   		console.log("보낸 사람 닉네임 : " + receiveMsg.cmfrmnickname);
-		    
-	   		if (receiveMsg.cmfrmid != "${sessionScope.loginId}"){
-	   			checkLR(receiveMsg);
-	   		}
-	    };
-
-	    // 추가된 메세지의 보낸 사람이 나인지 상대방인지 확인
-	    function checkLR(data){
-	    	var LR = (data.cmfrmid != "${sessionScope.loginId}") ? "left":"right";
-	    	appendMessage(LR, data);
-	    }
+	// 메세지 수신
+	chatWebSocket.onmessage = function(data) {
+   		var receiveMsg = JSON.parse(data.data);
+   		console.log("보낸 사람 닉네임 : " + receiveMsg.cmfrmnickname);
 	    
-	    // 메세지 append
-	    function appendMessage(LR, data){
-	    	var message = "";
-	    	if (LR == "left"){
-			    message = "<div style=\"text-align:left;\"><span>"+data.cmfrmnickname+"</span><div>";
-			    message += "<div style=\"display: table;\"><span class=\"chatRe\">"+data.cmcontents+"</span>";
-			    message += "<span style=\"vertical-align: bottom; display: table-cell;\">"+data.cmdate+"</span></div>";
-	    	} else {
-	    		message ="<div style=\"text-align:right; margin-top: 10px;\"><span class=\"chatSe\">"+data.cmcontents+"</span>";
-	    		message += "<span style=\"vertical-align: bottom;\">"+data.cmdate+"</span></div>";
-	    	}
-			$("#chatList").append(message);
-			$("#chatList").scrollTop( $("#chatList")[0].scrollHeight );
-		    	    
+   		checkLR(receiveMsg, true); // 현재 서버시간으로 출력하기 위한 boolean값 전송
+    };
+    
+    // 추가된 메세지의 보낸 사람이 나인지 상대방인지 확인
+       function checkLR(data, dateCheck){
+          var LR = (data.cmfrmid != "${sessionScope.loginId}") ? "left":"right";
+          appendMessage(LR, data, dateCheck);
+          //console.log("checkLR에서의 dateCheck : " + dateCheck);
+       }
+	    
+	    
+    // 메세지 append
+    var dateLine = []; // 날짜를 담을 배열
+    function appendMessage(LR, data, dateCheck){
+    	//console.log(dateLine);
+      	var message = ""; // 입력해줄 output
+      	
+    	/* DB 저장 메세지인지 실시간인지 날짜와 시간 체크 */
+        if (dateCheck){
+        	var dateInfo = serverDate(); // 실시간이면 서버시간 받아오기
+       	} else {
+    	  	var dateInfo = data.cmdate; // 실시간이 아니면 DB 저장 날짜 받아오기
+       	}
+      	// 해당 메세지 날짜/시간 분리
+      	var date_split = dateInfo.split(" "); // dateInfo :: "월/일 시:분"
+	
+     	/* 배열에 해당 날짜가 없으면, 날짜 출력하고 배열에 담기 */
+     	// 날짜 한 번만 출력하기 위함
+      	if (!dateLine.includes(date_split[0])){ 
+    		dateLine.push(date_split[0]);
+    		console.log("dateLine 길이 : " + dateLine.length);
+    		console.log("출력할 날짜 : " + date_split[0]);
+    		message += "<div class=\"dateLine\">" + date_split[0] + "</div>";
+      	}
+    	  
+	    if (LR == "left"){ // 왼쪽일 때 (상대방이 전송했을 때)
+	        message += "<div style=\"text-align:left;\"><span>" + data.cmfrmnickname + "</span><div>";
+	        message += "<div class=\"outerDate\"><span class=\"chatRe\">" + data.cmcontents + "</span>";
+	        message += "<span class=\"chatDate\">" + date_split[1] + "</span></div>";
+	    } else { // 오른쪽일 때 (자신이 전송했을 때)
+	        message += "<div class=\"outerDate\" style=\"text-align:right; margin-top: 10px;\"><span class=\"chatSe\">" + data.cmcontents + "</span>";
+	        message += "<span class=\"chatDate\">" + date_split[1] + "</span></div>";
 	    }
+	    $("#chatList").append(message);
+	    $("#chatList").scrollTop( $("#chatList")[0].scrollHeight );
+              
+    }
 
 		    
 	    
-        // 연결이 끊어지면 실행되는 부분
-	    chatWebSocket.onclose = function(event) {
-	    	console.log("onclose event.data : " + event.data);
-		}
-		chatWebSocket.onerror = function(event){
-			  console.log(event);
-		}
-	</script>
-<!-- 
-	<script type="text/javascript">
-		function messageSend(){
-			var frmid = '${sessionScope.loginId}';
-			var tomid = 'chtest';
-			var contents = $("#inputMsg").val();
+    // 서버시간 return 함수
+    function serverDate(){
+		var now = new Date();
 			
-			if( contents.trim().length >0 ){
-
-				var sendData = {
-					chfrmid : frmid,
-					chcontents : contents,
-					chtomid : tomid
-				};
-				chatWebSocket.send(JSON.stringify(sendData));
-				var	sendMsg ="<div style=\"text-align:right; margin-top: 10px;\"><span class=\"chatSe\">"+sendData.chcontents+"</span>";
-
-				$("#chatList").append(sendMsg);
-				$("#chatList").scrollTop( $("#chatList")[0].scrollHeight );
-
-				console.log("보낸메세지 json : "+JSON.stringify(sendData));
-				// console.log("받는사람 닉네임 : "+ sendData.chtomnick);
-			}
-			$("#inputMsg").val(""); // 입력창 초기화
-			
-			//location.href="insertChat";
-			
+  		let month = now.getMonth()+1; 	// 월
+		if (month < 10) {
+			month = "0" + month;
 		}
-	</script> -->
+  		let date = now.getDate();  	// 일
+		let hour = now.getHours();		// 시간
+		if (hour < 10) {
+			hour = "0" + hour;
+		}
+		let minute = now.getMinutes();	// 분
+		if(minute < 10) {
+			minute = "0" + minute;
+		}
+		var dateInfo = month + "/" + date + " " + hour + ":" + minute;
+		
+		console.log(dateInfo);
+		return dateInfo;
+	}
+	    
+	    
+    // 연결이 끊어지면 실행되는 부분
+    chatWebSocket.onclose = function(event) {
+    	console.log("onclose event.data : " + event.data);
+	}
+	chatWebSocket.onerror = function(event){
+		  console.log(event);
+	}
+	
+	// 채팅방 닫힘 이벤트 (부모창의 배열에서 제거)
+	window.onbeforeunload = function() {
+		console.log("채팅방 닫힘");
+		opener.closeChat(crcode);
+	};
+</script>
 </html>

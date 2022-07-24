@@ -6,14 +6,12 @@
 <head>
 <meta charset="UTF-8">
 <title>1인자 - 회원가입페이지</title>
+	
+<!--jquery & bootstrap(5css)-->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-<%@ include file="/resources/css/BarCss.jsp"%>
-<!-- 부트스트랩 -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-	crossorigin="anonymous">
+
 
 <!-- ogani css -->
     <%-- <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/bootstrap.min.css" type="text/css">  --%>
@@ -165,7 +163,7 @@ background-color: #00BCD4;
                                 <div class="col-lg-6  col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p>아이디<span>*</span></p>
-                                        <input type="text" placeholder="특수문자 제외 영문&숫자 5~12자로 입력해주세요." id="inputMid" name="mid" 
+                                        <input type="text" placeholder="영문&숫자 5~12자 입력해주세요. (특수문자 제외) " id="inputMid" name="mid" 
                                         onkeyup="characterCheck(this)" onkeydown="characterCheck(this)">
                                         <span id="idCheckMsg" class="msg"></span>  
                                     </div>
@@ -353,9 +351,9 @@ background-color: #00BCD4;
 	</main>
 
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp"%>
-	
-	<!-- 스크립트 시작 -->
-	<script type="text/javascript" src="resources/js/jquery-3.3.1.min.js"></script>
+	<!--jquery & bootstrap(5js)-->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+  
 	
 	<!-- 다음 우편번호 서비스 -->
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
@@ -366,16 +364,29 @@ background-color: #00BCD4;
  <script type="text/javascript">
 	//특수문자 입력 방지
 	function characterCheck(obj){
-	var regExp = /[ \{\}\[\]\/?.,;:|\)*~`!^\-_+┼<>@\#$%&\'\"\\\(\=]/gi; 
+	var regExp = /[ \{\}\[\]\/?.,;:|\)*~`!^\-+┼<>@\#$%&\'\"\\\(\=]/gi; 
 	//허용할 특수문자는 여기서 삭제하면 됨
 	//지금은 띄어쓰기도 특수문자 처리됨 참고하셈
 	if( regExp.test(obj.value) ){
-		alert("특수문자는 입력하실수 없습니다.");
+		alert("특수문자는 입력하실 수 없습니다.");
 		obj.value = obj.value.substring( 0 , obj.value.length - 1 ); // 입력한 특수문자 한자리 지움
 		}
 	}
-</script>
-    
+
+
+	//아이디 한글 금지!
+ 	$("#inputMid").keyup(function(event){ 
+		if (!(event.keyCode >=37 && event.keyCode<=40)) { 
+			var inputVal = $(this).val(); 
+			var check = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/; 
+			if(check.test(inputVal)){ 
+				$(this).val(""); 
+				alert("영문으로 입력해주세요.");
+			} 
+		} 
+	});
+ 	</script>  
+ 	
 	<!-- 아이디 중복 체크 -->
     <script type="text/javascript">
     
@@ -643,10 +654,6 @@ background-color: #00BCD4;
 		}
 	</script>
 
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-		crossorigin="anonymous"></script>
 	
 	
 		

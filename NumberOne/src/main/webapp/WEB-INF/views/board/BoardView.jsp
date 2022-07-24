@@ -5,15 +5,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@ include file="/resources/css/BarCss.jsp" %>
-<!-- 폰트어썸 -->
-<script src="https://kit.fontawesome.com/86a85cd392.js" crossorigin="anonymous"></script>
 <title>${board.bdtitle } - 1인자:게시판 글상세 페이지</title>
 <!-- Jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>  
+<!-- 부트스트랩 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
 <style type="text/css">
-	section{
+	section {
 		max-width: 70%;
 		margin: auto;
 		margin-top: 0%;
@@ -53,6 +52,16 @@
 	.boardCategory{
 		color : #00a5ba;
 		font-size: 20px;
+	}
+	.bdProfile{
+		height: 40px;
+		width:40px;
+		object-fit: cover;
+	}
+	.bdProfile_Kakao{
+		height: 40px; 
+		width:40px;
+		object-fit: cover;
 	}
 	.bdnickname{
 		font-size: 20px;
@@ -96,6 +105,16 @@
 	.rpnickname{
 		font-size:20px;
 	}
+	.rpProfile{
+		height:50px;
+		width:50px;
+		object-fit: cover;
+	}
+	.rpProfile_None{
+		height:50px; 
+		width:50px;
+		object-fit: cover;
+	}
 	.icon{
 		border : solid gray 2px;
 		border-radius: 5px;
@@ -114,12 +133,19 @@
      align-items: center;
      justify-content: center;
      border: solid #E0E0E0 2px;
-     margin-top: 5%;
-     margin-bottom: 5%;
+     margin-top: 2%;
+     width: 200px;
+     height: 200px;
+     
    }
    #upload_Img{
-   	width: 100px;
-   	heigth: 100px;
+   	width: 200px;
+   	height: 200px;
+   	object-fit: cover;
+   }
+   #inputModifyRpBox{
+   	border: solid #E0E0E0 2px; 
+   	border-radius:5px;
    }
 </style>
 </head>
@@ -146,8 +172,18 @@
 				<form action="">
 					<div class="row">
 						<div class="col">
-							<a href="#"><span class="fw-bold boardCategory"> | ${board.bdcategory }게시판 </span></a> 
-							<span class="fw-bold" style="color:gray; font-size:20px">/</span> <a href="#"><span class="bdregion"> ${board.bdrgname}</span></a>
+							<a href="selectCategoryBoardList?searchVal=${board.bdcategory }"><span class="fw-bold boardCategory"> | ${board.bdcategory }게시판 </span></a> 
+							<span class="fw-bold" style="color:gray; font-size:20px">/</span> 
+							
+							<c:choose>
+								<c:when test="${board.bdrgcode == 'ALL' }">
+									<a href="selectRegionBoardList"><span class="bdregion"> ${board.bdrgname}</span></a>
+								</c:when>
+							
+								<c:otherwise>
+									<a href="selectDetailBoardList?searchVal=${board.bdrgcode }"><span class="bdregion"> ${board.bdrgname}</span></a>
+								</c:otherwise>
+							</c:choose>
 						</div>
 					</div>
 					<div class="row" >
@@ -159,28 +195,30 @@
 						<div class="col-6">
 							<c:choose>
 								<c:when test="${board.bdmprofile != null && board.bdmstate == 1 }">
-									<img class="img-profile rounded-circle" style="height: 45px; width:45px;" src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/${board.bdmprofile}">
+									<img class="img-profile rounded-circle bdProfile"  src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/${board.bdmprofile}">
 								</c:when>
 								
 								<c:when test="${board.bdmprofile != null && board.bdmstate == 9 }">
-									<img class="img-profile rounded-circle" style="height: 40px; width:40px;" src="${board.bdmprofile}">
+									<!-- 카카오 회원 -->
+									<img class="img-profile rounded-circle bdProfile_Kakao" src="${board.bdmprofile}">
 								</c:when>
 								
 								<c:otherwise>
-									<img class="img-profile rounded-circle" style="height: 45px; width:45px;" src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png">
+									<img class="img-profile rounded-circle bdProfile"  src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png">
 								</c:otherwise>
 							</c:choose>
-							<a href="#"><span class="fw-bold bdnickname">${board.bdnickname }</span></a> 
+							<a style="cursor: pointer" onclick="writeMemberBoard('${board.bdnickname}')"><span class="fw-bold bdnickname">${board.bdnickname }</span></a> 
 						</div>
 						
 						<div align="right"  class="col-3 offset-md-3">
-							<span class="boardDate">${board.bddate } | </span> 
+
+							<%-- <span class="boardDate" id="bddate">${board.bddate } | </span>  --%>
+							<span class="boardDate" id="bddate"></span> 
 							<span class="bdhit" style="right:0;"><i class="fa-regular fa-eye"></i>  ${board.bdhits } |</span> 
 							<i class="fa-regular fa-thumbs-up commentDate" ></i> <span class="commentDate" style="right:0;" id="BoardRecommendSum"></span>
 						</div>
 					</div>
 					<!-- 실험 -->
-					
 					
 					<!-- 본문 글 내용-->
 					<div class="row mt-3 mb-1 boardContents">
@@ -221,11 +259,14 @@
 				</c:choose>
 				</div>
 				
-
-				<div class="img-container">
-					<img id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
-				
-				</div>				
+				<c:if test="${board.bdimg != null }">
+					<div class="img-container" >
+						<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
+					</div>
+					<div style="background-color: #00bcd4; width: 200px; color:white; margin-bottom: 2%;" class="text-center fw-bold">
+						업로드 이미지
+					</div>				
+				</c:if >
 				
 				<!------------------ 댓글영역 ------------------->
 				<div class="mb-2" id="commentBox">
@@ -235,7 +276,6 @@
 							<i class="fa-regular fa-comment"></i> 댓글 <span class="text-info fw-bold" id="ReplyCount"></span>개
 						</div>
 					</div>
-					
 					
 					<!-- 댓글목록_ajax -->
 					<div class="row" id="replyList_ajax">
@@ -279,7 +319,7 @@
                 </div>
                 <div class="modal-body" style="margin:auto;" >
 					<input type="hidden" id="inputRpcode">
-					<textarea rows="5" cols="50" id="inputModifyRp" style="border: solid #E0E0E0 2px; border-radius:5px;">
+					<textarea rows="5" cols="50" id="inputModifyRpBox" style="resize: none;">
 					
 					</textarea>                
                 </div>
@@ -363,38 +403,80 @@
     </div>
     
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+	<!-- 부트스트랩 -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 
 <script type="text/javascript">
+	var boardCheck = "${bdcategory_none}";
+	console.log(boardCheck);
+	
 	var checkMsg = '${msg}';
 	if ( checkMsg.length > 0 ){
 		alert(checkMsg);
 	}
 </script>
 
+
 <script type="text/javascript">
 	//선택한 글번호 
 	var bdcode = '${board.bdcode}';
 	//현재 로그인중인 아이디
 	var loginId = '${sessionScope.loginId}';
-	
+
 	$(document).ready(function(){
 		selectReplyList();//게시글 댓글목록
 		selectReplyCount();//게시글 댓글수
 		updateBoardRecommendCount();//게시글 추천수 
 		checkBoardRecommend();//게시글 추천 확인
 		checkBoardWarning();//게시글 신고 확인 
+		var bddate = timeForToday("${board.bddate }"); //게시글 작성 시간
+		
+		$("#bddate").text(bddate);
+		//$("#bddate").text(bddate);
 	});
+	
+	
+	//시간 함수
+	function timeForToday(value) {
+		console.log("시간 변경 함수 호출")
+		
+        var today = new Date();
+        var timeValue = new Date(value);
+
+        var betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
+        console.log(betweenTime);
+        if (betweenTime < 1) return "방금전 | ";
+        if (betweenTime < 60) {
+            return betweenTime+"분전 | ";
+        }
+
+        var betweenTimeHour = Math.floor(betweenTime / 60);
+        console.log(betweenTimeHour);
+        if (betweenTimeHour < 24) {
+            return betweenTimeHour+"시간전 | ";
+        }
+		/*
+        const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+        if (betweenTimeDay < 365) {
+            return betweenTimeDay+"일전";
+        }
+        return Math.floor(betweenTimeDay / 365)+"년전";
+		*/
+		var time = value.substring(0, 16);
+		return time+" | ";
+		
+ 	}
+	
 </script>
 
 <script type="text/javascript">
 	/* 글목록 버튼 클릭 시 */
 	function boardList(){
-		history.back();
-		
+		/* 넘어온 게시판으로 다시 이동 */
+		location.href="selectCategoryBoardList?searchVal=${board.bdcategory}";
 	}
+	
 </script>
 
 <script type="text/javascript">
@@ -589,7 +671,8 @@
 	function updateBoardDelete(){
 		/* 게시글 삭제(상태변경) */
 		//모달창에서 "네" 버튼 클릭 시 삭제
-		location.href="updateBoardDelete?bdcode="+bdcode+"&bdcategory="+'${board.bdcategory }';
+		var bdcategory = '${board.bdcategory }';
+		location.href="updateBoardDelete?bdcode="+bdcode+"&bdcategory="+bdcategory;
 	}
 	
 </script>
@@ -636,16 +719,16 @@
 					if( replyList[i].rpmid == '${sessionScope.loginId}' ){//동일한 아이디 (댓글 수정, 삭제 버튼)
 						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;' >" /* 프로필영역 */
 
-						if( replyList[i].rpprofile != null ){//프로필 이미지가 있을 시 
-							if(  replyList[i].rpmstate == 9){//카카오 회원
-								output += "<img class=\"img-profile rounded-circle \" style=\"height:50px; width:50px;\" src='"+replyList[i].rpprofile + "'>"
+						if( replyList[i].rpprofile != 'nomprofile' ){//프로필 이미지가 있을 시 
+							if(  replyList[i].rpmstate == 9 ){//카카오 회원
+								output += "<img class=\"img-profile rounded-circle rpProfile\"  src='"+replyList[i].rpprofile + "'>"
 							}else{
-								output += "<img class=\"img-profile rounded-circle \" style=\"height:50px; width:50px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle rpProfile\"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
 							}
 						
 						
 						}else{//프로필 이미지가 없을 시 
-							output += "<img class=\"img-profile rounded-circle \" style=\"height:40px; width:40px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
+							output += "<img class=\"img-profile rounded-circle rpProfile_None\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
 						}
 						output += "</div>"
 						
@@ -670,14 +753,14 @@
 					}else{
 						
 						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;'>" /* 프로필영역 */
-						if( replyList[i].rpprofile != null ){//프로필 이미지가 있을 시 
+						if( replyList[i].rpprofile != 'nomprofile' ){//프로필 이미지가 있을 시 
 							if(  replyList[i].rpmstate == 9){//카카오 회원
-								output += "<img class=\"img-profile rounded-circle \" style=\"height:50px; width:50px;\" src='"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle rpProfile\"  src='"+replyList[i].rpprofile + "'>"
 							}else{
-								output += "<img class=\"img-profile rounded-circle \" style=\"height:50px; width:50px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle rpProfile\"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
 							}
 						}else{//프로필 이미지가 없을 시 
-							output += "<img class=\"img-profile rounded-circle\" style=\"height:40px; width:40px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
+							output += "<img class=\"img-profile rounded-circle rpProfile_None\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
 						}
 						output += "</div>"
 							
@@ -729,7 +812,7 @@
 			async : false,
 			success : function(reply){
 				
-				$("#inputModifyRp").text(reply.rpcontents);
+				$("#inputModifyRpBox").text(reply.rpcontents);
 				$("#inputRpcode").val(reply.rpcode);
 			}
 		});

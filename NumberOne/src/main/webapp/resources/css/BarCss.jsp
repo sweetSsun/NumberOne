@@ -77,11 +77,14 @@
 	text-decoration: none; 
 	}
 	
-	footer{
+/* 	
+footer{
+		margin-top: 10%;
 		height: 200px;
-		background-color: gray;
+		border-top: solid #9C9C9C 1px;
+		background-color: #F9F9F9;
 	}
-
+ */
 	
 	
 	/* ---------------------- */
@@ -89,8 +92,8 @@
 	/* ---------------------- */
 	
 	
-	/* 사이드바 기본 설정 */
-	#sidebar, #sideList, #sidebar-toggleOff {
+	/* 사이드바 기본 설정 (닫힘) */
+	#sidebar, #sideList, #sidebar-toggleOff, .sideresell_title {
 		-webkit-transition: all 0.2s;
 		-moz-transition: all 0.2s;
 		-ms-transition:all 0.2s;
@@ -185,12 +188,8 @@
 	
 	/* 사이드메뉴 - 지역 */
 	
-	.sideregion {
-		text-align: center;
-		color: #4C4C4C;
-	}
-	
 	.sideregion_title {
+		text-align: center;
 		padding-bottom: 5%;
 		margin-bottom: 5%;
 	    border-bottom: solid 1px;
@@ -205,6 +204,7 @@
 	.sideregion_tags tr td {
 		padding-right: 0.5rem;
 		font-weight: bold;
+		font-size: 17px;
 	}
 	
 	/* 열었을 때 햄버거 */
@@ -249,22 +249,38 @@
 	/* ------- sidebar_중고거래페이지 ------ */
 	/* --------------------------------- */
 	
-	.dropdown-menu {
-	list-style:none;
+	.sideresell_title.sideon {
+		text-align: center;
+		padding-bottom: 5%;
+		margin-bottom: 5%;	    
+	    font-weight: bold;
+		font-size: 20px;
+		padding-left: 20px;
 	}
-	.dropdown-menu li {
+	.sidetitle_resell{
+		border: none;
+	}
+	
+	.accordion-button {
+		background-color: #F2F2FF;
+	}	
+	
+	.accordion-body {
+		height: 100px;
+		padding: 0px;
+	}
+	
+	.accordion-menu {
+		list-style:none;
+    	padding: 0;
+	}
+	
+	.accordion-menu li {
 		width: 130px;
+		padding-left: 8px;
+		padding-top: 8px;
 	}
-	#drop_buy.padding_plus, #chatroom.padding_plus {
-		padding-top: 100px;
-	}
-	
-	#drop_sell, #drop_buy { display:none; }
-	#drop_sell.sideon, #drop_buy.sideon { display: block; padding-bottom: 0px; margin-bottom: 0px;}
 
-	
-	
-	
 	/* -------------------------------- */
 	/* ------- sidebar_관리자페이지 ------ */
 	/* -------------------------------- */

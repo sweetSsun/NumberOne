@@ -9,19 +9,13 @@
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<!-- Css Styles -->
-<%@ include file="/resources/css/BarCss.jsp" %>
-<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
-<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/listCss.css" type="text/css">
-
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<!-- Css Styles -->
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/listCss.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/nice-select.css" type="text/css">         
 
-<!-- ogani css -->
-    <%-- <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/bootstrap.min.css" type="text/css">  --%>
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/nice-select.css" type="text/css">         
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/listCss.css" type="text/css">
 
 <style type="text/css">
   	.d_none{
@@ -112,7 +106,7 @@
 							<tr style="border-bottom: solid #E0E0E0 1px; height: 40px;">
 								<td class="overflow text-center">${contact.ctcode }</td>
 								<td onclick="showContents('${contact.ctcode }')" class="buttonPoint overflow">${contact.cttitle }</td>
-								<td class="overflow text-center">${contact.ctnickname }</td>
+								<td class="overflow text-center pointer" onclick="writeMemberBoard('${contact.ctnickname}')">${contact.ctnickname }</td>
 								<td class="overflow text-center">${contact.ctdate }</td>
 								<c:choose>
 									<c:when test="${contact.ctans != null}">
@@ -143,8 +137,8 @@
 												<textarea id="${contact.ctcode }_ctans" class="textareaSt" rows="3" cols="80" placeholder="문의글에 대한 답변을 작성해주세요."></textarea>
 											</div>	
 										</td>
-										<td>
-											<button type="button" onclick="insertReply('${contact.ctcode}')" class="btn-numberone fw-bold">등록</button>
+										<td class="text-center">
+											<button type="button" onclick="insertReply('${contact.ctcode}')" class="btn-numberone btn-sm fw-bold">등록</button>
 										</td>
 									</c:when>
 									<%-- 답변 있을 때 --%>
@@ -205,8 +199,8 @@
 	</main>
 	
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+	<!-- 부트스트랩 -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 
 <script type="text/javascript">
@@ -227,31 +221,45 @@
 	// 문의에 답변 달기
 	function insertReply(ctcode){
 		console.log("insertReply() 실행");
-		console.log("문의코드 : " + ctcode);
-		var ctans = $("#"+ctcode+"_ctans").val().replaceAll("\n", "<br>").replaceAll(" ", "&nbsp;");
-		console.log("답변 : " + ctans);
-		// 답변내용 CONTACT 테이블에 insert
 		$.ajax({
-			type: "post",
-			data: {"ctcode":ctcode, "ctans":ctans},
-			url: "admin_updateQuestionAns_ajax",
-			dataType: "json",
-			success: function(result){
-				if (result > 0) {
-					alert(ctcode + " 문의글에 답변이 작성되었습니다.");
-				} else {
-					alert("답변 작성에 실패했습니다.");
-				}
-			},
-			error: function(){
-				alert("연결 실패");
-			}
+	  		type : 'get',
+	  		url : 'Admin_selectLoginOut_ajax',
+	  		async : false,
+	  		success : function(result){
+	  			if (result == "2"){ 
+	  				if(confirm("관리자 로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+	  					location.href = "loadToLogin";
+	  				}
+	  				return;
+	  			}
+	  			
+				console.log("문의코드 : " + ctcode);
+				var ctans = $("#"+ctcode+"_ctans").val().replaceAll("\n", "<br>").replaceAll(" ", "&nbsp;");
+				console.log("답변 : " + ctans);
+				// 답변내용 CONTACT 테이블에 insert
+				$.ajax({
+					type: "post",
+					data: {"ctcode":ctcode, "ctans":ctans},
+					url: "admin_updateQuestionAns_ajax",
+					dataType: "json",
+					success: function(result){
+						if (result > 0) {
+							alert(ctcode + " 문의글에 답변이 작성되었습니다.");
+						} else {
+							alert("답변 작성에 실패했습니다.");
+						}
+					},
+					error: function(){
+						alert("연결 실패");
+					}
+				});
+				
+				// 답변 textarea 없애고 단 것처럼 출력
+				var output = "<td colspan='5' class='p-4'>" + ctans + "</td>";
+				$("#"+ctcode+"_replycontents").text("").html(output);
+				$("#"+ctcode+"_state").text("완료");
+	  		}
 		});
-		
-		// 답변 textarea 없애고 단 것처럼 출력
-		var output = "<td colspan='5' class='p-4'>" + ctans + "</td>";
-		$("#"+ctcode+"_replycontents").text("").html(output);
-		$("#"+ctcode+"_state").text("완료");
 	}
 	
 
@@ -301,7 +309,7 @@ $(document).ready(function () {
 					output += "<tr style='border-bottom: solid #E0E0E0 1px; height: 40px;'>";
 					output += "<td class='overflow text-center'>" + result[i].ctcode + "</td>";
 					output += "<td onclick='showContents(\"" + result[i].ctcode + "\")' class='buttonPoint overflow'>" + result[i].cttitle + "</td>";
-					output += "<td class='overflow text-center'>" + result[i].ctnickname + "</td>";
+					output += "<td class='overflow text-center pointer' onclick='writeMemberBoard(\"" + result[i].ctnickname + "\")'>" + result[i].ctnickname + "</td>";
 					output += "<td class='overflow text-center'>" + result[i].ctdate + "</td>";
 					if (result[i].ctans != null){
 						output += "<td class='text-center'>완료</td>";
@@ -322,8 +330,8 @@ $(document).ready(function () {
 								+ "<textarea id='" + result[i].ctcode + "_ctans' class='textareaSt' rows='3' cols='80' placeholder='문의글에 대한 답변을 작성해주세요.'></textarea>"
 								+ "</div>"
 								+ "</td>";
-						output += "<td>";
-						output += "<button type='button' onclick='insertReply(\"" + result[i].ctcode + "\")' class='btn-numberone fw-bold'>등록</button>";
+						output += "<td class='text-center'>";
+						output += "<button type='button' onclick='insertReply(\"" + result[i].ctcode + "\")' class='btn-numberone btn-sm fw-bold'>등록</button>";
 						output += "</td>";
 					} else {
 						output += "<td colspan='5' class='p-4'>" + result[i].ctans + "</td>";

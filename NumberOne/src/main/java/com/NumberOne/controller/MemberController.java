@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.NumberOne.dto.ChatMessageDto;
 import com.NumberOne.dto.ContactDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.service.MemberService;
@@ -66,19 +67,25 @@ public class MemberController {
 	
 	//로그인 페이지 이동
 	@RequestMapping(value="/loadToLogin")
-	public ModelAndView loadToLogin(String afterUrl) {
+	public ModelAndView loadToLogin(String afterUrl, RedirectAttributes ra) {
 		System.out.println("로그인 페이지 요청");
 		mav = new ModelAndView();
-		System.out.println("afterUrl: "+afterUrl);
-		if(afterUrl != null) {
-			session.setAttribute("afterUrl", afterUrl);						
+		//System.out.println("afterUrl: "+afterUrl);
+		
+		if(session.getAttribute("loginId")!=null) {
+			//System.out.println("로그인되어있어서 메인으로");
+			ra.addFlashAttribute("msg" , "이미 로그인 상태입니다.");
+			mav.setViewName("redirect:/");
+			
 		} else {
-			session.setAttribute("afterUrl", "noUrl");			
+			if(afterUrl != null) {
+				session.setAttribute("afterUrl", afterUrl);						
+			}
+			System.out.println((String)session.getAttribute("afterUrl"));
+			mav.setViewName("member/MemberLoginForm");
 		}
-		System.out.println((String)session.getAttribute("afterUrl"));
-		mav.setViewName("member/MemberLoginForm");
 		return mav;
-	}	
+	}
 	
 	//로그인 요청
 	  @RequestMapping("/selectMemberLogin")
@@ -182,10 +189,10 @@ public class MemberController {
 		
 		//마이페이지 커뮤니티 
 		@RequestMapping(value = "/selectMyInfoCommunityView")
-		public ModelAndView selectMyInfoCommunityView() {
+		public ModelAndView selectMyInfoCommunityView(RedirectAttributes ra) {
 			System.out.println("마이페이지 커뮤니티");
 			mav = new ModelAndView();
-			mav = msvc.selectMyInfoCommunityView();
+			mav = msvc.selectMyInfoCommunityView(ra);
 			
 			return mav;
 			
@@ -194,10 +201,10 @@ public class MemberController {
 		//마이페이지 중고거래
 		
 		@RequestMapping(value = "/selectMyInfoResellView")
-		public ModelAndView selectMyInfoResellView() {
+		public ModelAndView selectMyInfoResellView(RedirectAttributes ra) {
 			System.out.println("마이페이지 중고거래");
 			mav = new ModelAndView();
-			mav = msvc.selectMyInfoResellView();
+			mav = msvc.selectMyInfoResellView(ra);
 			
 			return mav;
 	
@@ -207,10 +214,10 @@ public class MemberController {
 		//마이페이지 1:1 문의 내역 / 상세
 		
 		@RequestMapping(value = "/selectMyInfoQuestionListView")
-		public ModelAndView selectMyInfoQuestionListView() {
+		public ModelAndView selectMyInfoQuestionListView(RedirectAttributes ra) {
 			System.out.println("마이페이지 1:1 문의 목록 / 상세");
 			mav = new ModelAndView();
-			mav = msvc.selectMyInfoQuestionListView();
+			mav = msvc.selectMyInfoQuestionListView(ra);
 			
 			return mav;
 	
@@ -218,10 +225,10 @@ public class MemberController {
 		
 		//마이페이지 1:1 문의 작성페이지 이동 
 		@RequestMapping(value = "/loadToMyInfoQuestionForm")
-		public ModelAndView loadToMyInfoQuestionForm() {
+		public ModelAndView loadToMyInfoQuestionForm(RedirectAttributes ra) {
 			System.out.println("마이페이지 1:1 문의 작성페이지 이동");
 			mav = new ModelAndView();
-			mav = msvc.loadToMyInfoQuestionForm();
+			mav = msvc.loadToMyInfoQuestionForm(ra);
 			
 			return mav;
 	
@@ -237,15 +244,15 @@ public class MemberController {
 			return mav;
 	
 		}		
-		//작성자 상세페이지 _ Board
-		@RequestMapping(value = "/selectWriteMemberInfo_ajax")
+		// (삭제 예정) 작성자 상세페이지 _ Board
+		/*@RequestMapping(value = "/selectWriteMemberInfo_ajax")
 		public @ResponseBody String selectWriteMemberInfo_ajax (String nickname) {
 			System.out.println("작성자 상세페이지 _ selectWriteMemberInfo");
 			System.out.println("controller.nickname : " + nickname);
 			String boardList_ajax = msvc.selectWriteMemberInfo_ajax(nickname);
 			return boardList_ajax;
 			
-		}
+		}*/
 
 		
 		//카카오아이디 중복 확인
@@ -285,17 +292,55 @@ public class MemberController {
 현석 :  mail API 에러 때문에 주석처리 끝	*/
 		
 
-//마이페이지 미니브라우저 
+		//마이페이지 미니브라우저 & 프로필가져오기
 		@RequestMapping(value="/loadToWriteMemberBoard")
 		public ModelAndView loadToWriteMemberBoard(String nickname) {
 			System.out.println("미니브라우저 마이페이지 Board 페이지 요청");
 			mav = new ModelAndView();
+			System.out.println("미니브라우저 닉네임 : "+nickname);
+			mav = msvc.selectWriteMemberInfo_member(nickname);
 			mav.setViewName("member/WriteMemberInfoPage");
+			
 			return mav;
 		}
 		
+		
+		//미니브라우저 작성자 상세페이지 _ Board
+		@RequestMapping(value = "/selectWriteMemberInfo_ajax")
+		public @ResponseBody String selectWriteMemberInfo_ajax (String nickname) {
+			System.out.println("작성자 상세페이지 _ selectWriteMemberInfo");
+			System.out.println("controller.nickname : " + nickname);
+			String boardList_gson = msvc.selectWriteMemberInfo_ajax(nickname);
+			return boardList_gson;
+			
+		}
+		//미니브라우저 작성자 상세페이지 _ Reply
+		@RequestMapping(value = "/selectWriteMemberInfoReply_ajax")
+		public @ResponseBody String selectWriteMemberInfoReply_ajax (String nickname) {
+			System.out.println("작성자 상세페이지 _ selectWriteMemberInfoReply_ajax");
+			System.out.println("controller.nickname : " + nickname);
+			String replyList_gson = msvc.selectWriteMemberInfoReply_ajax(nickname);
+			return replyList_gson;
+			
+		}	
+		
+		//미니브라우저 작성자 상세페이지 _ SellBuy
+		@RequestMapping(value = "/selectWriteMemberInfoSellBuy_ajax")
+		public @ResponseBody String selectWriteMemberInfoSellBuy_ajax (String nickname) {
+			System.out.println("작성자 상세페이지 _ selectWriteMemberInfoReply_ajax");
+			System.out.println("controller.nickname : " + nickname);
+			String ubList_gson = msvc.selectWriteMemberInfoSellBuy_ajax(nickname);
+			return ubList_gson;
+			
+		}
 
-
+		// 찜목록 조회
+		@RequestMapping(value = "/selectZzimList_ajax")
+		public @ResponseBody String selectZzimList_ajax(String loginId) {
+			System.out.println("찜목록 조회 요청");
+			String zzimList_gson = msvc.selectZzimList_ajax(loginId);
+			return zzimList_gson;
+		}
 
 
 }

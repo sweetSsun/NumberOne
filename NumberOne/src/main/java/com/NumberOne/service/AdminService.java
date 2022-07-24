@@ -45,17 +45,32 @@ public class AdminService {
 	// 파일 저장 경로
 	String nbImgSavePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\noticeUpLoad";
 	
+	/* 관리자 로그인 확인 (파라미터: ra/리턴: mav) */
+	public ModelAndView loginAdminChToFail(RedirectAttributes ra) {
+	    mav = new ModelAndView();
+	    String loginId = (String) session.getAttribute("loginId");
+	      
+	    if(loginId == null || !loginId.equals("admin")){
+	       //비로그인이거나, 관리자가 아닌 경우
+		    System.out.println("관리자 아님");
+	        //메세지 전송
+	        ra.addFlashAttribute("msg", "관리자 로그인 후 이용가능합니다");
+	        //실패페이지로 이동(msg alert 띄우고, history back)
+	        mav.setViewName("redirect:/loadToLogin");
+	    }
+        return mav;
+    }
+	
 	/* 회원 관리 */
 	// 회원 관리페이지 이동
 	public ModelAndView admin_selectMemberList(Paging paging, RedirectAttributes ra) {
 		System.out.println("AdminService.admin_selectMemberList() 호출");
 		mav = new ModelAndView();
 		// 관리자 로그인 여부 체크
-		String loginId = (String)session.getAttribute("loginId");
-		if (loginId == null) {
-			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
-			mav.setViewName("redirect:/loadToLogin");	
-			return mav;
+		mav = loginAdminChToFail(ra);
+		//System.out.println(mav.getViewName().equals("redirect:/loadToLogin"));
+		if(mav.getViewName() != null) {
+		   return mav;
 		}
 		
 		// 페이징
@@ -133,11 +148,10 @@ public class AdminService {
 		System.out.println("AdminService.admin_selectNoticeList() 호출");
 		mav = new ModelAndView();
 		// 관리자 로그인 여부 체크
-		String loginId = (String)session.getAttribute("loginId");
-		if (loginId == null) {
-			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
-			mav.setViewName("redirect:/loadToLogin");	
-			return mav;
+		mav = loginAdminChToFail(ra);
+		//System.out.println(mav.getViewName().equals("redirect:/loadToLogin"));
+		if(mav.getViewName() != null) {
+		   return mav;
 		}
 
 		// 페이징
@@ -238,11 +252,10 @@ public class AdminService {
 		mav = new ModelAndView();
 		
 		// 관리자 로그인 여부 체크
-		String loginId = (String)session.getAttribute("loginId");
-		if (loginId == null) {
-			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
-			mav.setViewName("redirect:/loadToLogin");	
-			return mav;
+		mav = loginAdminChToFail(ra);
+		//System.out.println(mav.getViewName().equals("redirect:/loadToLogin"));
+		if(mav.getViewName() != null) {
+		   return mav;
 		}
 		mav.setViewName("admin/Admin_NoticeWriteForm");
 		
@@ -253,6 +266,15 @@ public class AdminService {
 	public ModelAndView admin_insertNoticeWrite(NoticeDto notice, RedirectAttributes ra) throws IllegalStateException, IOException {
 		System.out.println("AdminService.admin_insertNoticeWrite() 호출");
 		notice.setNbmid( (String) session.getAttribute("loginId")); // 세션id set
+		
+		mav = new ModelAndView();
+		
+		// 관리자 로그인 여부 체크
+		mav = loginAdminChToFail(ra);
+		//System.out.println(mav.getViewName().equals("redirect:/loadToLogin"));
+		if(mav.getViewName() != null) {
+		   return mav;
+		}
 		
 		// nbcode 생성
 		String maxNbcode = adao.admin_selectMaxNbcode();
@@ -283,12 +305,11 @@ public class AdminService {
 			nbimgfile.transferTo( new File(nbImgSavePath, nbimg) );
 		}
 		notice.setNbimg(nbimg); // 생성한 파일명 set
-		
+
 		// INSERT
 		System.out.println(notice);
 		int insertresult =  adao.admin_insertNoticeWrite(notice);
 		
-		mav = new ModelAndView();
 		if(insertresult > 0) {
 			ra.addFlashAttribute("msg", nbcode+" 공지가 작성되었습니다.");
 			ra.addAttribute("codeIdx", nbcode);
@@ -297,16 +318,24 @@ public class AdminService {
 			ra.addFlashAttribute("msg", "공지 작성에 실패했습니다.");
 			mav.setViewName("redirect:/loadToFail");
 		}
+
 		return mav;
 	}
 
 	// 공지 수정페이지 이동
-	public ModelAndView admin_selectNoticeModify(String nbcode, Paging paging) {
+	public ModelAndView admin_selectNoticeModify(String nbcode, Paging paging, RedirectAttributes ra) {
 		System.out.println("AdminService.admin_selectNoticeModify() 호출");
 		System.out.println("nbcode : " + nbcode);
 		System.out.println("paging : " + paging);
 		
 		mav = new ModelAndView();
+		
+		// 관리자 로그인 여부 체크
+		mav = loginAdminChToFail(ra);
+		//System.out.println(mav.getViewName().equals("redirect:/loadToLogin"));
+		if(mav.getViewName() != null) {
+		   return mav;
+		}
 		
 		NoticeDto noticeBoard = bdao.selectNoticeBoardView(nbcode);
 		System.out.println(noticeBoard);
@@ -323,7 +352,16 @@ public class AdminService {
 		System.out.println("AdminService.admin_updateNoticeModify() 호출");
 		System.out.println("originImg : " + modiNotice.getOriginImg());
 		System.out.println("paging : " + paging);
+
+		mav = new ModelAndView();
 		
+		// 관리자 로그인 여부 체크
+		mav = loginAdminChToFail(ra);
+		//System.out.println(mav.getViewName().equals("redirect:/loadToLogin"));
+		if(mav.getViewName() != null) {
+		   return mav;
+		}
+				
 		// 파일 등록
 		MultipartFile nbimgfile = modiNotice.getNbimgfile();
 		String nbimg = ""; // 파일명 저장할 변수명
@@ -345,7 +383,6 @@ public class AdminService {
 		System.out.println(modiNotice);
 		int updateresult =  adao.admin_updateNoticeModify(modiNotice);
 		
-		mav = new ModelAndView();
 		if(updateresult > 0) {
 			if(!nbimgfile.isEmpty() && modiNotice.getOriginImg().length() > 0) { // 파일을 수정하고 기존 첨부파일이 있었으면
 					File delFile = new File(nbImgSavePath, modiNotice.getOriginImg());
@@ -367,11 +404,10 @@ public class AdminService {
 		mav = new ModelAndView();
 		
 		// 관리자 로그인 여부 체크
-		String loginId = (String)session.getAttribute("loginId");
-		if (loginId == null) {
-			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
-			mav.setViewName("redirect:/loadToLogin");	
-			return mav;
+		mav = loginAdminChToFail(ra);
+		//System.out.println(mav.getViewName().equals("redirect:/loadToLogin"));
+		if(mav.getViewName() != null) {
+		   return mav;
 		}
 			
 		if(paging.getKeyword() == null) {
@@ -428,11 +464,10 @@ public class AdminService {
 		System.out.println("AdminService.admin_selectBoardList() 호출");
 		mav = new ModelAndView();
 		// 관리자 로그인 여부 체크
-		String loginId = (String)session.getAttribute("loginId");
-		if (loginId == null) {
-			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
-			mav.setViewName("redirect:/loadToLogin");	
-			return mav;
+		mav = loginAdminChToFail(ra);
+		//System.out.println(mav.getViewName().equals("redirect:/loadToLogin"));
+		if(mav.getViewName() != null) {
+		   return mav;
 		}
 		
 		if(paging.getKeyword() == null) {
@@ -481,6 +516,23 @@ public class AdminService {
 		}
 	}	
 	
+	// 경고/정지 후기 상세페이지 이동 
+	public ModelAndView admin_selectReviewBoardView(Paging paging, String codeIdx, String check) {
+		System.out.println("AdminService.admin_selectReviewBoardView() 호출");
+		mav = new ModelAndView();
+		System.out.println("bdcode : " + codeIdx);
+		System.out.println("check : " + check);
+		
+		//글상세정보 조회 
+		BoardDto board = bdao.selectBoardView(codeIdx);
+		System.out.println(board);
+		
+		mav.addObject("board", board);
+		mav.setViewName("admin/Admin_ReviewBoardView");
+		
+		return mav;
+	}
+	
 	// 경고/정지 상세페이지 이동 
 	public ModelAndView admin_selectBoardView(Paging paging, String codeIdx, String check) {
 		System.out.println("AdminService.admin_selectBoardView() 호출");
@@ -497,17 +549,17 @@ public class AdminService {
 		
 		return mav;
 	}
+	
 	/* 배너 관리 */
 	// 배너 관리페이지 이동
 	public ModelAndView admin_selectBdfixList(Paging paging, RedirectAttributes ra) {
 		System.out.println("AdminService.admin_selectBdfixList() 호출");
 		mav = new ModelAndView();
 		// 관리자 로그인 여부 체크
-		String loginId = (String)session.getAttribute("loginId");
-		if (loginId == null) {
-			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
-			mav.setViewName("redirect:/loadToLogin");	
-			return mav;
+		mav = loginAdminChToFail(ra);
+		//System.out.println(mav.getViewName().equals("redirect:/loadToLogin"));
+		if(mav.getViewName() != null) {
+		   return mav;
 		}
 		
 		if(paging.getKeyword() == null) {
@@ -562,11 +614,10 @@ public class AdminService {
 		System.out.println("AdminService.admin_selectReplyList() 호출");
 		mav = new ModelAndView();
 		// 관리자 로그인 여부 체크
-		String loginId = (String)session.getAttribute("loginId");
-		if (loginId == null) {
-			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
-			mav.setViewName("redirect:/loadToLogin");	
-			return mav;
+		mav = loginAdminChToFail(ra);
+		//System.out.println(mav.getViewName().equals("redirect:/loadToLogin"));
+		if(mav.getViewName() != null) {
+		   return mav;
 		}
 		
 		if(paging.getKeyword() == null) {
@@ -621,11 +672,10 @@ public class AdminService {
 		System.out.println("AdminService.admin_selectQuestionList() 호출");
 		mav = new ModelAndView();
 		// 관리자 로그인 여부 체크
-		String loginId = (String)session.getAttribute("loginId");
-		if (loginId == null) {
-			ra.addFlashAttribute("msg", "관리자로 로그인 후 이용 가능합니다.");
-			mav.setViewName("redirect:/loadToLogin");	
-			return mav;
+		mav = loginAdminChToFail(ra);
+		//System.out.println(mav.getViewName().equals("redirect:/loadToLogin"));
+		if(mav.getViewName() != null) {
+		   return mav;
 		}
 		
 		int totalCount = adao.admin_selectContactTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
@@ -682,7 +732,7 @@ public class AdminService {
 		mav = new ModelAndView();
 		int updateResult = adao.admin_updateBoardStop(bdcode);
 		if (updateResult > 0) {
-			ra.addFlashAttribute("msg",bdcode + " 글이 정지 처리되었습니다.");
+			ra.addFlashAttribute("msg", bdcode + " 글이 정지 처리되었습니다.");
 			if(check == null) {
 				mav.setViewName("redirect:/selectBoardList");
 			} else {
@@ -703,17 +753,23 @@ public class AdminService {
 	}
 	
 	//중고거래 글 정지
-	public ModelAndView admin_updateResellStop(String ubcode, Paging paging, RedirectAttributes ra) {
+	public ModelAndView admin_updateResellStop(UsedBoardDto ubDto, Paging paging, String check, RedirectAttributes ra) {
 		System.out.println("AdminService.admin_updateResellStop() 호출");
-		System.out.println("ubcode : " + ubcode);
-		System.out.println("paging : " + paging);
+		System.out.println("ubcode : " + ubDto.getUbcode());
+		System.out.println("check : " + check);
 		mav = new ModelAndView();
-		int updateResult = adao.admin_updateResellStop(ubcode);
+		int updateResult = adao.admin_updateResellStop(ubDto.getUbcode());
 		if (updateResult > 0) {
-			ra.addFlashAttribute(ubcode + " 글이 정지 처리되었습니다.");
-			ra.addAttribute("paging", paging);
-			// 글목록으로 돌아가는 url 만들어서 매개변수 생기면 수정 필요
-			mav.setViewName("redirect:/selectResellPageList");
+			ra.addFlashAttribute("msg", ubDto.getUbcode() + " 글이 정지 처리되었습니다.");
+			if(check == null) {
+				if (ubDto.getUbsellbuy().equals("B")) {
+					mav.setViewName("redirect:/selectResellPageList?sellBuy=B");
+				} else {
+					mav.setViewName("redirect:/selectResellPageList?sellBuy=S");
+				}
+			} else {
+				mav.setViewName("redirect:/admin_selectResellList");
+			}
 		}
 		return mav;
 	}

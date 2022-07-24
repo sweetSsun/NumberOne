@@ -7,13 +7,13 @@
 <meta charset="UTF-8">
 <title>1인자 - 마이페이지 중고거래</title>
 
-<%@ include file="/resources/css/BarCss.jsp"%>
-<!-- 부트스트랩 -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-	crossorigin="anonymous">
+
+<!--jquery & bootstrap(5css)-->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
+
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">        
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
 <!-- ogani css -->
     <%-- <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/bootstrap.min.css" type="text/css">  --%>
@@ -48,14 +48,40 @@
 
 	}
 
-.site-btn { background-color: #00BCD4; }	
+	.text_leng {
+	
+	text-overflow: ellipsis;
+	overflow:hidden;
+	white-space : nowrap;	
+	text-decoration: none; !important
+	color:black;
+	}
+	
+	.text_leng:hover {
+		color : #00BCD4;
+		font-weight: bold;
+		cursor: pointer;
+		text-decoration: none;!important
+	}
 
-/* .blank {
-
-		overflow: auto;
-		margin-top: 500px;
-} */
-
+	.write:hover {
+		color : #00BCD4;
+		font-weight: bold;
+		text-decoration: none;	!important
+	}
+	
+	.delete_leng {
+	
+	text-overflow: ellipsis;
+	overflow:hidden;
+	white-space : nowrap;	
+	text-decoration: none;!important
+	color:gray;
+	}	
+	
+	.buttonPoint {
+	
+	}
 
 
 </style>
@@ -79,11 +105,11 @@
 		<%@ include file="/WEB-INF/views/includes/SideBar_Mypage.jsp" %>
 		
 		<section>
-		<div style="min-height: 50px;" id="scroll-sellbuy"></div>
+		<div style="min-height: 60px;" id="scroll-sellbuy"></div>
 		<!-- 본문 -->
 			<div class="container">
 				<br>
-				<div class="checkout__form"><h4>마이페이지 중고거래</h4></div>
+				<div class="checkout__form" style="margin-top: 20px;"><h4>마이페이지 중고거래</h4></div>
 				<br>
 				<br>
 				<!-- 8949 목록 -->
@@ -101,15 +127,19 @@
 									<c:choose>
 										<c:when test="${sell.ubstate == 0}">
 											<tr style="border-bottom: solid #E0E0E0 1px; color:gray; text-align: center;">
-											<td>(정지)&nbsp;<span style="text-decoration : line-through;">${sell.ubtitle}</span></td></tr>									
+											<td>[정지]&nbsp;&nbsp;<span style="text-decoration : line-through;" class="delete_leng">
+											${sell.ubtitle}</span></td></tr>									
 										</c:when>
 										<c:when test="${sell.ubstate == 2}">
-											<tr style="border-bottom: solid #E0E0E0 1px; color:gray; text-align: center;">
-											<td>(삭제)&nbsp;<span style="text-decoration : line-through;">${sell.ubtitle}</span></td></tr>									
+											<tr style="border-bottom: solid #E0E0E0 1px; text-align: center; color:gray; ">
+											<td>[삭제]&nbsp;&nbsp;
+											<span style="text-decoration : line-through;" class="delete_leng">${sell.ubtitle}</span>
+											</td></tr>									
 										</c:when>										
 										<c:otherwise>
 											<tr style="border-bottom: solid #E0E0E0 1px; text-align: center;">						
-											<td><a href="selectResellView?ubcode=${sell.ubcode }&ubsellbuy=S&modifyCheck=LIST">${sell.ubtitle}</a></td>					
+											<td><a href="selectResellView?ubcode=${sell.ubcode }&ubsellbuy=S&modifyCheck=LIST">
+											<div class="text_leng" style="text-decoration: none;">${sell.ubtitle}</div></a></td>					
 											</tr>									
 										</c:otherwise>
 									</c:choose>		
@@ -129,15 +159,16 @@
 									<c:choose>
 										<c:when test="${buy.ubstate == 0}">
 											<tr style="border-bottom: solid #E0E0E0 1px; color:gray; text-align: center;">
-											<td>(정지)&nbsp;<span style="text-decoration : line-through;">${buy.ubtitle}</span></td></tr>									
+											<td>[정지]&nbsp;&nbsp;<span style="text-decoration : line-through;" class="delete_leng">${buy.ubtitle}</span></td></tr>									
 										</c:when>
 										<c:when test="${buy.ubstate == 2}">
 											<tr style="border-bottom: solid #E0E0E0 1px; color:gray; text-align: center;">
-											<td>(삭제)&nbsp;<span style="text-decoration : line-through;">${buy.ubtitle}</span></td></tr>									
+											<td>[삭제]&nbsp;&nbsp;<span style="text-decoration : line-through;" class="delete_leng">${buy.ubtitle}</span></td></tr>									
 										</c:when>										
 										<c:otherwise>
 											<tr style="border-bottom: solid #E0E0E0 1px; text-align: center;">						
-											<td><a href="selectResellView?ubcode=${buy.ubcode }&ubsellbuy=S&modifyCheck=LIST">${buy.ubtitle}</a></td>					
+											<td><a href="selectResellView?ubcode=${buy.ubcode }&ubsellbuy=B&modifyCheck=LIST">
+											<div class="text_leng">${buy.ubtitle}</div></a></td>					
 											</tr>									
 										</c:otherwise>
 									</c:choose>		
@@ -149,54 +180,48 @@
                                     </div>
                                 </div> 																		                                  
                              </div>                	        
-							<hr>
+							
 				<!-- 채팅 목록 -->
 				<!-- 여백 -->
-				<div style="min-height: 50px;" id="scroll-chat"></div>				
-				<div class="row" style="margin:20px;">
-					<br><h4 class="checkout__form" style="color: #00BCD4;">채팅 내역 (미완성)</h4>
+				<div style="min-height: 230px;" id="scroll-chat"></div>				
+				<div class="row">
+					<br><h4 class="checkout__form" style="color: #00BCD4;">채팅 내역</h4>
 				</div>
 				<!-- 여백 -->
 				<div style="min-height: 50px;"></div>				
-				<div class="row"  style="margin:20px;">
+				<div class="row" >
 				<table>
 						<tr class="text-center" id="board_column">
 							<td>닉네임</td>
 							<td>최신채팅글</td>						
 							<td>날짜</td>
 						</tr>
-<%-- 						<c:forEach items="${zzimBoard }" var="zzim"> 
-							<!-- 찜한 목록 -->
+ 						<c:forEach items="${chatRoomList }" var="chat"> 
+							
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center; ">
-							<c:choose>
-							<c:when test="${zzim.ubsellbuy == 'S' }">
-								<td><a href="selectResellView?ubcode=${zzim.zzubcode }&ubsellbuy=S&modifyCheck=LIST">${zzim.ubtitle }</a></td>
-							</c:when>
-							<c:otherwise>
-								<td><a href="selectResellView?ubcode=${zzim.zzubcode }&ubsellbuy=B&modifyCheck=LIST">${zzim.ubtitle }</a></td>						
-							</c:otherwise>
-							</c:choose> 
-								<td>${zzim.mnickname }</td>
-								<td>${zzim.ubdate }</td>
+								<td><div onclick="writeMemberSellbuy('${chat.crfrmnickname }')" class="text_leng">${chat.crfrmnickname }</div></td>
+								<td><div onclick="popupChat('${chat.crcode }')" class="text_leng">${chat.recentCmcontents }</div></td>
+								<td>${chat.recentCmdate }</td>
 							</tr>
 														
-						</c:forEach> --%>
+						</c:forEach> 
 				</table>
 				<!-- 여백 -->				
-				<div style="min-height: 700px;"></div><hr>
+				<div style="min-height: 700px;"></div>
 				</div>
 	
 				<!-- 찜 목록 -->
 				<!-- 여백 -->
-				<div style="min-height: 50px;" id="scroll-zzim"></div>				
-				<div class="row" style="margin:20px;">
+				<div style="min-height: 230px;" id="scroll-zzim"></div>				
+				<div class="row">
 					<br><h4 class="checkout__form" style="color: #00BCD4;">찜목록</h4>
 				</div>
 				<!-- 여백 -->
-				<div style="min-height: 50px;"></div>				
-				<div class="row" style="margin:20px;">
+				<div style="min-height: 30px;"></div>				
+				<div class="row">
 				<table>
 						<tr class="text-center" id="board_column">
+							<td>글번호</td>
 							<td>글제목</td>
 							<td>작성자</td>						
 							<td>날짜</td>
@@ -207,7 +232,8 @@
 						
 						<c:when test="${zzim.ubstate == 0}">
 							<tr style="border-bottom: solid #E0E0E0 1px;  color:gray; text-align: center; ">
-								<td>(정지)&nbsp;<span style="text-decoration : line-through;">${zzim.ubtitle }</span></td>
+								<td>정지</td>
+								<td><span style="text-decoration : line-through;" class="delete_leng">${zzim.ubtitle }</span></td>
 								<td style="text-decoration : line-through;">${zzim.mnickname }</td>
 								<td style="text-decoration : line-through;">${zzim.ubdate }</td>
 							</tr>						
@@ -215,7 +241,8 @@
 
 						<c:when test="${zzim.ubstate == 2}">
 							<tr style="border-bottom: solid #E0E0E0 1px;  color:gray; text-align: center; ">
-								<td>(삭제)&nbsp;<span style="text-decoration : line-through;">${zzim.ubtitle }</span></td>
+								<td>삭제</td>
+								<td><span style="text-decoration : line-through;" class="delete_leng">${zzim.ubtitle }</span></td>
 								<td style="text-decoration : line-through;">${zzim.mnickname }</td>
 								<td style="text-decoration : line-through;">${zzim.ubdate }</td>
 							</tr>						
@@ -223,26 +250,28 @@
 						
 						<c:otherwise>
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center; ">
+							<td>${zzim.zzubcode }</td>
 							<c:choose>
 							<c:when test="${zzim.ubsellbuy == 'S' }">
-								<td><a href="selectResellView?ubcode=${zzim.zzubcode }&ubsellbuy=S&modifyCheck=LIST">${zzim.ubtitle }</a></td>
+								<td><a href="selectResellView?ubcode=${zzim.zzubcode }&ubsellbuy=S&modifyCheck=LIST" class="text_leng">${zzim.ubtitle }</a></td>
 							</c:when>
 							<c:otherwise>
-								<td><a href="selectResellView?ubcode=${zzim.zzubcode }&ubsellbuy=B&modifyCheck=LIST">${zzim.ubtitle }</a></td>						
+								<td><a href="selectResellView?ubcode=${zzim.zzubcode }&ubsellbuy=B&modifyCheck=LIST" class="text_leng">${zzim.ubtitle }</a></td>						
 							</c:otherwise>
 							</c:choose> 
-								<td>${zzim.mnickname }</td>
+								<td><div onclick="writeMemberSellbuy('${zzim.mnickname }')"
+								 class="text_leng">${zzim.mnickname }</div></td>
 								<td>${zzim.ubdate }</td>
 							</tr>
 						</c:otherwise> 
 						
 						</c:choose>
 						 
-							<!-- 찜한 목록 -->
+					<!-- 찜한 목록 끝 -->
 														
 						</c:forEach>
 				</table>
-				<div style="min-height: 600px;"></div><hr>
+				<div style="min-height: 600px;"></div>
 				</div>				
 				</div>	
 							
@@ -251,11 +280,13 @@
 	</main>
 	
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
-
+<!--jquery & bootstrap(5js)-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
 </body>
 
-<!--  -->
+
+
 
 
 

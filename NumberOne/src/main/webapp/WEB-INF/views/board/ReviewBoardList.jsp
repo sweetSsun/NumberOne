@@ -7,8 +7,10 @@
 <meta charset="UTF-8">
 <title>1인자 - 후기게시판</title>
 <!-- Jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<%@ include file="/resources/css/BarCss.jsp" %>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>  
+<!-- 부트스트랩 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 <style type="text/css">
 	section{
@@ -148,7 +150,7 @@
 					<thead >
 						<tr class="text-center" id="board_column">
 							<td style="font-size: 17px;">글번호</td>
-							<td style="font-size: 17px;">카테고리</td>
+							<td style="font-size: 17px;">별점</td>
 							<td style="font-size: 17px;">제목</td>
 							<td style="font-size: 17px;">작성자</td>
 							<td style="font-size: 17px;">날짜</td>
@@ -182,30 +184,44 @@
 							<td class="bdcategory text-center tableCell">
 								<div class="col" class="mb-3"  id="myform">
 									<c:choose>
-										<c:when test="${board.bdrate == 0 }">
-											 <span class="None_rate">★★★★★</span>
-										</c:when>
-	
 										<c:when test="${board.bdrate == 1 }">
-											 <span>★</span><span class="None_rate">★★★★</span>
+											 <span>★</span>
+											 <span class="None_rate">★</span>
+											 <span class="None_rate">★</span>
+											 <span class="None_rate">★</span>
+											 <span class="None_rate">★</span>
 										</c:when>
 										
 										<c:when test="${board.bdrate == 2 }">
-											 <span>★★</span><span class="None_rate">★★★</span>
+											 <span>★</span>
+											 <span>★</span>
+											 <span class="None_rate">★</span>
+											 <span class="None_rate">★</span>
+											 <span class="None_rate">★</span>
 										</c:when>
 										
 										<c:when test="${board.bdrate == 3 }">
-											 <span>★★★</span><span class="None_rate">★★</span>
+											 <span>★</span>
+											 <span>★</span>
+											 <span>★</span>
+											 <span class="None_rate">★</span>
+											 <span class="None_rate">★</span>
 										</c:when>
 										
 										<c:when test="${board.bdrate == 4 }">
-											 <span>★★★★</span><span class="None_rate">★</span>
+											 <span>★</span>
+											 <span>★</span>
+											 <span>★</span>
+											 <span>★</span>
+											 <span class="None_rate">★</span>
 										</c:when>
 										
 										<c:when test="${board.bdrate == 5 }">
-											 <fieldset>
-												<span>★★★★★</span>
-											</fieldset> 
+											 <span>★</span>
+											 <span>★</span>
+											 <span>★</span>
+											 <span>★</span>
+										     <span>★</span>
 										</c:when>
 										
 									</c:choose>
@@ -228,7 +244,7 @@
 							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
 							 </td>
 							<td class="text-center tableCell">
-								<a href="#">${board.bdnickname}</a>
+								<span style="cursor: pointer" onclick="writeMemberBoard('${board.bdnickname}')">${board.bdnickname}</span>
 							</td>
 							<td class="text-center tableCell">${board.bddate}</td>
 							<td class="text-center tableCell">${board.bdhits }</td>
@@ -239,8 +255,8 @@
 				</table>
 				<div align="right" class="col mt-2">
 					<c:if test="${sessionScope.loginId != null }">
-						<button type="button" onclick="loadToWriteReview()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">후기시범</button>
-						<button type="button" onclick="loadToBoardWrite()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">글작성</button>
+						<button type="button" onclick="loadToWriteReview()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">글작성</button>
+						<!-- <button type="button" onclick="loadToBoardWrite()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">글작성</button> -->
 					</c:if>
 				</div>
 				</div>
@@ -285,16 +301,9 @@
 	</main>
 	
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+	<!-- 부트스트랩 -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
-
-<script type="text/javascript">
-	/* 별점 출력 */
-	var reviewList = "${boardList}";
-	
-	
-</script>
 
 <script type="text/javascript">
 	var actionForm = $("#actionForm");
@@ -307,6 +316,37 @@
 		actionForm.submit();
 	});
 </script>
+
+<script type="text/javascript">
+	//선택한 검색 select option 으로 선택되도록 하기 
+	var searchOption = $("#searchTypeSel option");
+	var searchType = "${paging.searchType}";
+	if ( searchType.length > 0 ){
+		for ( var i = 0; i<searchOption.length; i++){
+			if (searchOption.eq(i).val() == searchType){
+				searchOption.eq(i).attr("selected", "selected");
+			}
+		}	
+	}
+	//선택한 정렬 select option으로 선택되도록 하기
+	var searchValOption = $("#searchValSel option");
+	var searchVal = "${paging.searchVal}";
+	if (searchVal.length > 0) {
+		for (var i = 0; i < searchValOption.length; i++){
+			if (searchValOption.eq(i).val() == searchVal){
+				searchValOption.eq(i).attr("selected", "selected");
+			}
+		}
+	}
+	
+	var keyword = '${paging.keyword}';
+	if( keyword.length > 0 ){
+		$("#inputSearchText").val(keyword);
+	}
+	
+</script>
+
+
 <script type="text/javascript">
 	var checkMsg = '${msg}';
 	if ( checkMsg.length > 0 ){

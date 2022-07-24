@@ -29,12 +29,9 @@ public class ChatWebSocketMsg extends TextWebSocketHandler {
 	
     // <채팅방, 해당 채팅방의 세션>
 	private Map<String, ArrayList<WebSocketSession>> RoomList = new ConcurrentHashMap<String, ArrayList<WebSocketSession>>();
-//    private Map<String, WebSocketSession> users = new ConcurrentHashMap<String, WebSocketSession>();
 	
-	// 접속 세션
-	// <session, 방번호>
+	// 접속 세션 <session, 방번호>
     private Map<WebSocketSession, String> sessionList = new ConcurrentHashMap<WebSocketSession, String>();
-//	private ArrayList<WebSocketSession> sessionList = new ArrayList<WebSocketSession>();
 	
     // 세션 접속인원
     private static int loginMbCount;
@@ -45,31 +42,6 @@ public class ChatWebSocketMsg extends TextWebSocketHandler {
 		System.out.println("afterConnectionEstablished() 호출");
 		loginMbCount++;
 		System.out.println(session.getId() + " 연결성공 >> 총 접속인원 : " + loginMbCount + "명");
-		
-		// 맵과 세션목록에 추가
-//		users.put(session.getId(), session);
-//		sessionList.add(session);
-//		
-//		Map<String, Object> ChatMap = session.getAttributes();
-//		String chfrmid = (String)ChatMap.get("loginId");
-//		chfrmid = "보내는사람_"+session.getId();
-//		System.out.println("chfrmid : "+chfrmid);
-//		
-//		
-//		Gson gson = new Gson();
-//		ChatDto chatdto = new ChatDto();
-//		chatdto.setChfrmid(chfrmid); 		// from 메세지를 보내는 사람의 ID 
-		
-
-		/* 실행하면서 나타날 말이 있으면 여기다 쓰면 좋을것같다
-		for(int i = 0; i < sessionList.size(); i++) {
-	        if( !sessionList.get(i).getId().equals(session.getId())) {
-	        	sessionList.get(i).sendMessage(new TextMessage(gson.toJson(chatdto.getChdate())));
-	        }
-		}
-		*/
-
-//		super.afterConnectionEstablished(session);
 	}
 	
 	/* 웹소켓 연결 종료시 */
@@ -85,30 +57,6 @@ public class ChatWebSocketMsg extends TextWebSocketHandler {
             RoomList.get(sessionList.get(session)).remove(session);
             sessionList.remove(session);
         }
-//        users.remove(session.getId());
-//        sessionList.remove(session);
-		
-		
-//		System.out.println("session.getId() : "+session.getId());
-//		sessionList.remove(session);
-//		
-//		// 끄면서 나타날 loginId
-//		Map<String, Object> ChatMap = session.getAttributes();
-//		String chfrmid = (String)ChatMap.get("loginId");
-//		chfrmid = "보내는사람_"+session.getId();
-//		System.out.println("loginId : "+chfrmid);
-//		
-//		Gson gson = new Gson();
-//		ChatDto chatdto = new ChatDto();
-//		chatdto.setChfrmid(chfrmid); 		// from 메세지를 보내는 사람의 ID
-		
-		/* 끄면서 나타날 말이 있으면 여기다 쓰면 좋을 것 같다
-		for(int i = 0; i < sessionList.size(); i++) {
-	        if( !sessionList.get(i).getId().equals(session.getId())) {
-	        	sessionList.get(i).sendMessage(new TextMessage(gson.toJson(chatdto.getChdate())));
-	        }
-		}
-		*/
 	}
 	
 	/* 웹소켓으로 메세지가 전송됐을 때 */
@@ -116,10 +64,9 @@ public class ChatWebSocketMsg extends TextWebSocketHandler {
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		System.out.println("handleTextMessage() 호출 : " + session.getId());
 		
-		// Json객체 -> Java객체 변환 (gson 말고 jackson 사용)
+		// Json객체 -> Java객체 변환
 		Gson gson = new Gson();
-		ChatMessageDto chatMessage = //objectMapper.readValue(message.getPayload(), ChatMessageDto.class);
-									 gson.fromJson(message.getPayload(), ChatMessageDto.class);  
+		ChatMessageDto chatMessage = gson.fromJson(message.getPayload(), ChatMessageDto.class);  
 		System.out.println("전달메세지 : " + chatMessage);
 		
 		// 받은 메세지에 저장되어있는 채팅방코드로 해당 채팅방 찾기
@@ -148,6 +95,7 @@ public class ChatWebSocketMsg extends TextWebSocketHandler {
 		
 		// 채팅메세지 입력 시
 		else if (RoomList.get(chatRoom.getCrcode()) != null && !chatMessage.getCmcontents().equals("ENTER-CHAT") && chatRoom != null) {
+			
 			// 보낸 사람 닉네임 조회
 			String cmfrmnickname = chdao.selectMnickname(chatMessage.getCmfrmid());
 			chatMessage.setCmfrmnickname(cmfrmnickname);
@@ -157,10 +105,8 @@ public class ChatWebSocketMsg extends TextWebSocketHandler {
 			// 해당 채팅방의 session 확인하고 뿌리기
 			for(WebSocketSession sess : RoomList.get(chatRoom.getCrcode())) {
 				sessionCount++;
-				// Java객체 -> Json객체 변환 (gson 말고 jackson 사용)
-//				sess.sendMessage(new TextMessage(objectMapper.writeValueAsString(chatMessage)));
+				// Java객체 -> Json객체 변환
 				sess.sendMessage(new TextMessage(gson.toJson(chatMessage)));
-				System.out.println("왜그래 : " + gson.toJson(chatMessage));
 			}
 
 			// 동적쿼리에서 사용할 sessionCount 저장 (세션값에 따라 cmread가 달라짐)
@@ -169,59 +115,12 @@ public class ChatWebSocketMsg extends TextWebSocketHandler {
 			// cmcode 생성
 			int cmcode = chsvc.createCmcode();
 			chatMessage.setCmcode(cmcode);
+			
 			// DB에 메세지 저장
 			int insertResult = chdao.insertChatMessage(chatMessage);
 			
-			
-			System.out.println("DB입력 결과 : " + insertResult);
+			//System.out.println("DB입력 결과 : " + insertResult);
 		}
 
 	}
-//
-//			// 채팅 번호 생성 (select)
-//			int maxChcode = chdao.selectMaxChcode();
-//			int chcode = 0;
-//				System.out.println("채팅MAX번호 : "+maxChcode);
-//				if (maxChcode==0) {
-//					chcode = 1; 
-//				} else {
-//					chcode = maxChcode + 1;
-//				}				
-//			System.out.println("채팅번호 : "+chcode);
-//			chatMessage.setCmcode(chcode);
-//			System.out.println("DB입력 전 : "+chatMessage);
-//			
-//			// 채팅 입력
-//			chdao.insertChat(chatMessage);
-//			
-//			// 채팅 출력_닉네임
-//			String chfrmnick = chdao.selectMfrnick(chatMessage.getCmfrmid());
-//			String chtomnick = chdao.selectMtonick(chatMessage.getCmtomid());
-//			chatMessage.setChfrmnick(chfrmnick);
-//			chatMessage.setChtomnick(chtomnick);
-//
-//			// 채팅 출력_시간
-//			
-//			// 날짜를 뽑고싶어서 split으로 해봤는데 
-//			String chdate = chdao.selectTime(chatMessage.getChcode());
-//			System.out.println(chdate);
-//			String[] chdate_split = chdate.split(" ");
-//			System.out.println(chdate_split[0]);
-//			System.out.println(chdate_split[1]+" "+chdate_split[2]);
-//			chatMessage.setChdate(chdate_split[0]);
-//			chatMessage.setChdatetime(chdate_split[1]+" "+chdate_split[2]);
-//			
-//			
-//			System.out.println("DB입력 후 : "+chatMessage);
-//				
-//			
-//		// 보낸사람이 본인이면 메세지를 전달하지않는다
-//		for(int i = 0; i < sessionList.size(); i++) {
-//	        if( !sessionList.get(i).getId().equals(session.getId())) {
-//	            sessionList.get(i).sendMessage(new TextMessage(gson.toJson(chatMessage)));
-//	        }
-//	    }
-		
-
-	
 }

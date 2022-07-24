@@ -9,8 +9,9 @@
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- 부트스트랩 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <!-- Css Styles -->
-<%@ include file="/resources/css/BarCss.jsp" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/listCss.css" type="text/css">
 
@@ -131,7 +132,7 @@
             </table>
             <!-- 공지작성 버튼 -->
             <div align="right" class="col mt-2">
-				<button class="btn-numberone btm-sm fw-bold" type="button" onclick="location.href='admin_loadToNoticeWrite'">글작성</button>
+				<button class="btn-numberone btn-sm fw-bold" type="button" onclick="location.href='admin_loadToNoticeWrite'">글작성</button>
             </div>
             
    			<!-- 페이징 시작 -->
@@ -224,7 +225,7 @@
 
 	
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
-
+	<!-- 부트스트랩 -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 	
 	<script type="text/javascript">
@@ -257,41 +258,56 @@
 		// 공지상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
 		function updateNbstate(){
 			console.log("updateNbstate() 실행");
-			var nbcode_state = $("#nbcode_state").val();
-			console.log(btnObj_state.text());
-			console.log($("#fixBtn_"+nbcode_state+" button").text());
-			if (btnObj_state.text() == "활성"){
-				// 고정공지일 때 바로 삭제 불가능
-				if( $("#fixBtn_"+nbcode_state+" button").text() == "고정" ){
-					alert("해당 공지의 고정을 취소 후 삭제해주세요.");
-					$("#updateNbstateModal").modal("hide");
-					return false;
-				}
-				var nbstate = 2;				
-			} else {
-				var nbstate = 1;				
-			}
+			
 			$.ajax({
-				type: "get",
-				data: {"nbcode":nbcode_state, "nbstate":nbstate},
-				url: "admin_updateNbstate_ajax",
-				dataType: "json",
-				success: function(result){
-					if(result > 0){
-						if (nbstate == 2){
-							btnObj_state.text("삭제").addClass("btn-secondary").removeClass("btn-primary");
-							$("#fixBtn_"+nbcode_state).text("");
-						} else {
-							btnObj_state.text("활성").addClass("btn-primary").removeClass("btn-secondary");
-							$("#fixBtn_"+nbcode_state).html("<button class='btn btn-sm btn-secondary' type='button' onclick='showNbfixModal(this,\"" + nbcode_state + "\")'>일반</button>");
+		  		type : 'get',
+		  		url : 'Admin_selectLoginOut_ajax',
+		  		async : false,
+		  		success : function(result){
+		  			if (result == "2"){ 
+		  				if(confirm("관리자 로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+		  					location.href = "loadToLogin";
+		  				}
+		  				return;
+		  			}
+		  			
+					var nbcode_state = $("#nbcode_state").val();
+					console.log(btnObj_state.text());
+					console.log($("#fixBtn_"+nbcode_state+" button").text());
+					if (btnObj_state.text() == "활성"){
+						// 고정공지일 때 바로 삭제 불가능
+						if( $("#fixBtn_"+nbcode_state+" button").text() == "고정" ){
+							alert("해당 공지의 고정을 취소 후 삭제해주세요.");
+							$("#updateNbstateModal").modal("hide");
+							return false;
 						}
+						var nbstate = 2;				
+					} else {
+						var nbstate = 1;				
 					}
-					$("#updateNbstateModal").modal("hide");
-				},
-				error: function(){
-					$("#updateNbstateModal").modal("hide");
-					alert("공지상태 변경에 실패했습니다.");
-				}
+					$.ajax({
+						type: "get",
+						data: {"nbcode":nbcode_state, "nbstate":nbstate},
+						url: "admin_updateNbstate_ajax",
+						dataType: "json",
+						success: function(result){
+							if(result > 0){
+								if (nbstate == 2){
+									btnObj_state.text("삭제").addClass("btn-secondary").removeClass("btn-primary");
+									$("#fixBtn_"+nbcode_state).text("");
+								} else {
+									btnObj_state.text("활성").addClass("btn-primary").removeClass("btn-secondary");
+									$("#fixBtn_"+nbcode_state).html("<button class='btn btn-sm btn-secondary' type='button' onclick='showNbfixModal(this,\"" + nbcode_state + "\")'>일반</button>");
+								}
+							}
+							$("#updateNbstateModal").modal("hide");
+						},
+						error: function(){
+							$("#updateNbstateModal").modal("hide");
+							alert("공지상태 변경에 실패했습니다.");
+						}
+					});
+		  		}
 			});
 		}
 				
@@ -314,32 +330,46 @@
 		// 고정공지 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
 		function updateNbfix(){
 			console.log("updateNbfix() 실행");
-			var nbcode_fix = $("#nbcode_fix").val();
-			console.log(btnObj_fix.text());
-			if (btnObj_fix.text() == "고정"){
-				var nbfix = 0;				
-			} else {
-				var nbfix = 1;				
-			}
 			$.ajax({
-				type: "get",
-				data: {"nbcode":nbcode_fix, "nbfix":nbfix},
-				url: "admin_updateNbfix_ajax",
-				dataType: "json",
-				success: function(result){
-					if(result > 0){
-						if (nbfix == 0){
-							btnObj_fix.text("일반").addClass("btn-secondary").removeClass("btn-numberone").toggleClass("btn");
-						} else {
-							btnObj_fix.text("고정").addClass("btn-numberone").removeClass("btn-secondary").toggleClass("btn");
-						}
+		  		type : 'get',
+		  		url : 'Admin_selectLoginOut_ajax',
+		  		async : false,
+		  		success : function(result){
+		  			if (result == "2"){ 
+		  				if(confirm("관리자 로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+		  					location.href = "loadToLogin";
+		  				}
+		  				return;
+		  			}
+		  			
+					var nbcode_fix = $("#nbcode_fix").val();
+					console.log(btnObj_fix.text());
+					if (btnObj_fix.text() == "고정"){
+						var nbfix = 0;				
+					} else {
+						var nbfix = 1;				
 					}
-					$("#updateNbfixModal").modal("hide");
-				},
-				error: function(){
-					$("#updateNbfixModal").modal("hide");
-					alert("공지상태 변경에 실패했습니다.");
-				}
+					$.ajax({
+						type: "get",
+						data: {"nbcode":nbcode_fix, "nbfix":nbfix},
+						url: "admin_updateNbfix_ajax",
+						dataType: "json",
+						success: function(result){
+							if(result > 0){
+								if (nbfix == 0){
+									btnObj_fix.text("일반").addClass("btn-secondary").removeClass("btn-numberone").toggleClass("btn");
+								} else {
+									btnObj_fix.text("고정").addClass("btn-numberone").removeClass("btn-secondary").toggleClass("btn");
+								}
+							}
+							$("#updateNbfixModal").modal("hide");
+						},
+						error: function(){
+							$("#updateNbfixModal").modal("hide");
+							alert("공지상태 변경에 실패했습니다.");
+						}
+					});
+		  		}
 			});
 		}
 	</script>

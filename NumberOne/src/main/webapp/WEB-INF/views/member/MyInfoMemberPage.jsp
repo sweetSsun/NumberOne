@@ -7,13 +7,11 @@
 <meta charset="UTF-8">
 <title>1인자 - 마이페이지 회원정보</title>
 
-<%@ include file="/resources/css/BarCss.jsp"%>
-<!-- 부트스트랩 -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-	crossorigin="anonymous">
+<!--jquery & bootstrap(5css)-->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+
 
 <!-- ogani css -->
     <%-- <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/bootstrap.min.css" type="text/css">  --%>
@@ -70,13 +68,14 @@ background-color: #00BCD4;
 }
 
 .textarea {
+font-size: 15px;
   display:block; 
   overflow:hidden; 
   width:100%; 
   height:2rem; 
   padding-left:1rem;
   padding-top:0.8rem;
-  font-size:1rem; 
+  /* font-size:1rem;  */
   font-weight:bold;
   color:#000; 
   border:1px solid #808080; 
@@ -255,12 +254,11 @@ background-color: #00BCD4;
 						<br>
                         <div class="row">
                         	<div class="col-lg-12 col-md-12 col-sm-12">						
-                        		<button type="submit" class="site-btn" style="width: 130px; border-radius: 4px;"
-                        		onclick = "location.href = 'loadToMyInfoModifyForm' " >
-                        		수정</button>
-                        		<button type="submit" class="site-btn" style="width: 130px; border-radius: 4px;"
-                        		onclick = "location.href = 'updateMemberWithdraw' " > 
-                        		탈퇴</button>                        
+                        		<button type="submit" class="site-btn" style="width: 130px; border-radius: 4px; cursor: pointer;"
+                        		onclick = "location.href = 'loadToMyInfoModifyForm' " >수정</button>
+                        		<input type="button" class="site-btn" style="width: 130px; border-radius: 4px; cursor: pointer;"
+                        		onclick="WithdrawalCheckModal()" value="탈퇴">
+                        		                 
                         	</div>
                          </div>
                     </div>
@@ -270,20 +268,66 @@ background-color: #00BCD4;
     </section>
 	</main>
 
-	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp"%>
+<!-- 탈퇴 재확인 모달 -->
+	<div class="modal fade" id="WithdrawalCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" > 회원 탈퇴 </h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" >
+                	<span class="fw-bold">정말 탈퇴하시겠습니까?</span>
+                </div>	
+                <div class="modal-footer">
+                	<input type="hidden" >
+                    <button class="close btn text-white" style="background-color:#00bcd4" onclick="updateMemberWithdraw()" >네</button>
+                    <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+ 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
+	<!-- 부트스트랩 -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+	   
+
+<script type="text/javascript">
+
+// 모달창 close 하는 스크립트
+	var modal = $(".modal");
+	var close = $(".close");
+	for (var i = 0; i < close.length; i++){
+	close[i].addEventListener("click", function(){
+		$("#WithdrawalCheckModal").modal("hide");
+	});
+}
 	
-	<!-- 스크립트 시작 -->
-	<script type="text/javascript" src="resources/js/jquery-3.3.1.min.js"></script>
+	//회원탈퇴모달띄우기
+	function WithdrawalCheckModal(){
+		
+		$("#WithdrawalCheckModal").modal('show');
+	}
 	
+	//회원탈퇴
+	function updateMemberWithdraw(){
+		location.href="updateMemberWithdraw";
+	}
+	</script>
+
 	<!-- textarea 길이 조절 -->
-<script>
+	<script>
     var txtArea = $(".textarea");
     if (txtArea) {
         txtArea.each(function(){
             $(this).height(this.scrollHeight);
         });
     }
-</script>
+	</script>
 
 
 
@@ -546,10 +590,6 @@ background-color: #00BCD4;
 		}
 	</script>
 
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-		crossorigin="anonymous"></script>
 	
 	
 		

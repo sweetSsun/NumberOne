@@ -15,6 +15,9 @@
 	td{
 		font-size: 20px;
 	}
+	a:hover{
+		color : #00bcd4;
+	}
 	.category{
 		color : #00bcd4;
 	}
@@ -45,4 +48,9 @@
 	}
 	.malmeori{
 		display: none;
+	}
+	.overflow{
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}

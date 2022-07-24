@@ -5,36 +5,6 @@
   
 <mapper namespace="com.NumberOne.dao.ChatDao">
 
-	
-<!-- 	
-	<select resultType="com.NumberOne.dto.ChatDto" id="selectChatList">
-	SELECT CHCODE, CHFRMID, CHTOMID, CHCONTENTS, TO_CHAR(CHDATE,'YYYY-MM-DD HH24:MI') AS CHDATE
-	FROM CHAT ORDER BY CHDATE
-	</select>
-
-	
-	<select resultType="String" id="selectMfrnick">
-	SELECT MNICKNAME
-	FROM MEMBERS
-	WHERE MID = #{chfrmid}
-	</select>
-	
-
-	
-	<select resultType="String" id="selectTime">
-	SELECT TO_CHAR(CHDATE, 'YYYY-MM-DD AM HH:MI')
-	FROM CHAT
-	WHERE CHCODE = #{chcode}
-	</select> -->
-
-	<!-- 여기부터 새로한거! -->
-	<!-- chatRoom 조회(회원정보/탑바용) -->
-<!-- 	<select id="selectChatRoom_1" resultType="com.NumberOne.dto.ChatRoomDto">
-		SELECT * 
-		FROM CHATROOM
-		WHERE CRFRMID = #{mid} OR CRTOMID = #{mid}
-	</select> -->
-
 	<!-- chatRoom 조회(채팅방 유무 확인용) -->
 	<select id="selectChatRoom_1" resultType="com.NumberOne.dto.ChatRoomDto">
 		SELECT * 
@@ -87,7 +57,7 @@
 	
 	<!-- 특정 채팅방의 채팅메세지 목록 조회 -->
 	<select id="selectChatRoomMessage" resultType="com.NumberOne.dto.ChatMessageDto">
-		SELECT CMCODE, CMCRCODE, CMFRMID, CMCONTENTS, TO_CHAR(CMDATE,'YYYY-MM-DD HH24:MI') AS CMDATE, CMREAD
+		SELECT CMCODE, CMCRCODE, CMFRMID, CMCONTENTS, TO_CHAR(CMDATE,'MM/DD HH24:MI') AS CMDATE, CMREAD
 		FROM CHATMESSAGE
 		WHERE CMCRCODE = #{crcode}
 		ORDER BY CMCODE
@@ -100,16 +70,41 @@
 		WHERE CMCRCODE = #{crcode} AND CMFRMID != #{mid} AND CMREAD = 1
 	</update>
 	
-	<!-- 특정 사용자의 채팅방 목록 조회 -->
-	<select id="selectChatRoomList" resultType="com.NumberOne.dto.ChatRoomDto">
-		SELECT *
-		FROM CHATROOM
+	<!-- 특정 사용자의 채팅방 목록 조회(가장 최신 메세지 순으로) -->
+<!-- 	<select id="selectChatRoomList" resultType="com.NumberOne.dto.ChatRoomDto">
+		SELECT CRCODE, CRFRMID, CRTOMID, CMCONTENTS, RECENTCMDATE
+		FROM CHATROOM CR 
+		    INNER JOIN (SELECT CMCODE, CMCRCODE, CMCONTENTS, TO_CHAR(CMDATE, 'MM/DD HH24:MI') AS RECENTCMDATE, CMREAD
+		                FROM CHATMESSAGE
+		                WHERE CMCODE IN (SELECT MAX(CMCODE) AS MAXCMCODE FROM CHATMESSAGE GROUP BY CMCRCODE)
+		                ORDER BY CMREAD DESC, CMCODE DESC) 
+		    ON CMCRCODE = CRCODE
 		WHERE CRFRMID = #{loginId} OR CRTOMID = #{loginId}
+	</select> -->
+	<!-- 특정 사용자의 읽지 않은 채팅방 목록 조회(테스트) -->
+	<select id="selectChatRoomList" resultType="com.NumberOne.dto.ChatRoomDto">
+		SELECT CRCODE, CRFRMID, CRTOMID, CMCONTENTS AS RECENTCMCONTENTS, RECENTCMDATE, CMFRMID AS RECENTMID
+		FROM CHATROOM CR 
+			INNER JOIN (SELECT CMCODE, CMCRCODE, CMCONTENTS, TO_CHAR(CMDATE, 'MM/DD HH24:MI') AS RECENTCMDATE, CMREAD, CMFRMID
+			            FROM CHATMESSAGE
+			            WHERE CMCODE IN (SELECT MAX(CMCODE) AS MAXCMCODE FROM CHATMESSAGE GROUP BY CMCRCODE) )
+			ON CMCRCODE = CRCODE
+		WHERE CRFRMID = #{loginId} OR CRTOMID = #{loginId}
+		ORDER BY 
+			<!-- 첫번째 정렬 조건 -->	
+            (CASE WHEN 
+				<!-- 마지막 메세지를 보낸 사람이 자신이 아니고, 읽지 않았다면(cmread=1) 1순위 -->
+            	(CMFRMID != #{loginId} AND CMREAD = 1) THEN 1
+            	<!-- 그렇지 않으면 2순위 -->
+        		ELSE 2
+        	END),
+        	<!-- 두번째 정렬 조건 : cmcode(최신순) -->
+       		CMCODE DESC
 	</select>
 	
 	<!-- 특정 채팅방의 안읽은 메세지 수 조회 -->
 	<select id="selectUnReadCount" resultType="int">
-		SELECT SUM(CMREAD) CMREAD
+		SELECT NVL(SUM(CMREAD), 0) AS CMREAD
 		FROM CHATMESSAGE
 		WHERE CMFRMID != #{loginId} AND CMCRCODE = #{cmcrcode}
 	</select>
@@ -122,4 +117,14 @@
 						FROM CHATMESSAGE 
 						WHERE CMCRCODE = #{cmcrcode})
 	</select>
+	
+	<!-- 채팅방의 상대방 프로필 이미지 조회 -->
+	<select id="selectCrfrMember" resultType="com.NumberOne.dto.MemberDto">
+		SELECT MNICKNAME, MPROFILE
+		FROM MEMBERS
+		WHERE MID = #{mid}
+	</select>
+	
+
+	
 </mapper>

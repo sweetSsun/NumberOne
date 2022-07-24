@@ -15,6 +15,10 @@ public class ChatRoomDto {
 	private String recentCmcontents;	//가장 최신 메세지 (chatmessage 조인)
 	private String recentCmdate;		//가장 최신 메세지의 날짜,시간 (chatmessage 조인)
 	private String crfrmnickname;		//상대방 닉네임 (members 조인)
+	private String crfrmprofile;		//상대방 프로필이미지 (members 조인)
+	
+	//테스트 용 마지막 메세지 보낸 사람
+	private String recentmid;
 	
 	public String getCrcode() {
 		return crcode;
@@ -40,11 +44,65 @@ public class ChatRoomDto {
 		this.crtomid = crtomid;
 	}
 
+	public int getUnreadCount() {
+		return unreadCount;
+	}
+
+	public void setUnreadCount(int unreadCount) {
+		this.unreadCount = unreadCount;
+	}
+
+	public String getRecentCmcontents() {
+		return recentCmcontents;
+	}
+
+	public void setRecentCmcontents(String recentCmcontents) {
+		this.recentCmcontents = recentCmcontents;
+	}
+
+	public String getRecentCmdate() {
+		return recentCmdate;
+	}
+
+	public void setRecentCmdate(String recentCmdate) {
+		this.recentCmdate = recentCmdate;
+	}
+
+	public String getCrfrmnickname() {
+		return crfrmnickname;
+	}
+
+	public void setCrfrmnickname(String crfrmnickname) {
+		this.crfrmnickname = crfrmnickname;
+	}
+
+	public String getCrfrmprofile() {
+		return crfrmprofile;
+	}
+
+	public void setCrfrmprofile(String crfrmprofile) {
+		this.crfrmprofile = crfrmprofile;
+	}
+
+	public String getRecentmid() {
+		return recentmid;
+	}
+
+	public void setRecentmid(String recentmid) {
+		this.recentmid = recentmid;
+	}
+
 	@Override
 	public String toString() {
 		return "ChatRoomDto [crcode=" + crcode + ", crfrmid=" + crfrmid + ", crtomid=" + crtomid + ", unreadCount="
 				+ unreadCount + ", recentCmcontents=" + recentCmcontents + ", recentCmdate=" + recentCmdate
-				+ ", crfrmnickname=" + crfrmnickname + "]";
+				+ ", crfrmnickname=" + crfrmnickname + ", crfrmprofile=" + crfrmprofile + ", recentmid=" + recentmid
+				+ "]";
 	}
+
+	
+	
+	
+	
 	
 }

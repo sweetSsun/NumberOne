@@ -5,9 +5,8 @@
 <head>
 <meta charset="UTF-8">
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!-- 부트스트랩 -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <%@ include file="/resources/css/BarCss.jsp" %>
+
 
 <style type="text/css">
 
@@ -15,7 +14,13 @@
 	    display: block;
 	    margin-top: 0;
 	} */
-	
+	.overflow_twoline{
+	    overflow: hidden;
+		text-overflow: ellipsis;
+		display: -webkit-box;
+		-webkit-line-clamp: 1;
+		-webkit-box-orient: vertical;
+    }
 	.logoimg{
 		margin-top: 2%;
         padding-left: 45%;    
@@ -31,6 +36,66 @@
 		text-align: right;
 		font-size: 16px;
 	}
+	
+	.nav_chat .nav_chat-badge{
+		position: absolute;
+		top: 5px;
+		right: 1px;
+		color: white;
+		background-color: red;
+	}
+	
+	.nav_chat .chat-badge{
+		position: absolute;
+		color: white;
+		background-color: red;
+	}
+	
+	.nav_chat-badge{
+		font-size: 0.2rem;
+		border-radius: 10px;
+		min-width: 14px;
+		text-align: center;
+	}
+	
+	.chat-badge{
+		font-size: 0.2rem;
+		border-radius: 10px;
+		min-width: 15px;
+		text-align: center;
+	}
+	
+	.chat-profile{
+		width: 35px;
+		height: 35px;
+	}
+	
+	#chatRoomList{
+		overflow: hidden;
+	}
+
+
+	@keyframes blink-effect {
+		  50% {
+	    opacity: 0;
+	  }
+	}
+	
+	.iconBlink{
+		animation: blink-effect 1s step-end infinite;
+	}
+	
+	.d_none{
+      display: none;
+    }
+    .dropdown a:link {
+      text-decoration: none;
+   }
+   .dropdown a:visited {
+      text-decoration: none;
+   }
+   .dropdown a:hover {
+      text-decoration: none;
 
 </style>
 
@@ -101,7 +166,7 @@
 					
 				<!-- 로그인, 회원가입, 고객센터 -->
 				<div class="col-lg-7 col-md-6 col-sm-6 menubar_right">
-					<ul class="">
+					<ul>
 						<c:choose>
 	                    <c:when test="${sessionScope.loginId == null && sessionScope.kakaoId == null}">
 							<li style="margin-right: 15px;" ><a href="loadToRegister">회원가입</a></li>
@@ -109,54 +174,33 @@
 	                    </c:when>
 						<c:otherwise>
 							<!-- 찜 -->
-							<li style="margin-right: 15px;"><a href="#" title="찜목록"><i class="fa-solid fa-heart"></i></a></li>
+							<li style="margin-right: 15px;" class="dropdown" >
+								<a href="#" title="찜목록" id="dropdownZzim" role="button" data-bs-toggle="dropdown" aria-expanded="false" 
+									style="display: inline-block !important;">
+									<i class="fa-solid fa-heart"></i>
+								</a>
+								
+								<!-- 찜목록 드롭다운 -->
+								<div class="dropdown-menu shadow" id="zzimList" aria-labelledby="dropdownZzim"
+									style="width: 500px;">
+									<div>찜목록 나올거지롱</div>
+									<!-- 회원의 찜목록 ajax로 받고 출력되는 부분 -->
+                                </div>
+							</li>
+
 							<!-- 채팅 -->
 							<li style="margin-right: 15px;" class="dropdown" >
-								<a href="#" title="1:1채팅" class="" id="dropdownChat" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+								<a href="#" title="1:1채팅" class="nav_chat" id="dropdownChat" role="button" data-bs-toggle="dropdown" aria-expanded="false" 
+									style="display: inline-block !important;">
 									<i class="fa-solid fa-comment-dots"></i>
-									<!-- 안읽은 채팅메세지 표시 -->
-									<!-- badge 클래스 끌어와야함 -->
-									<!-- <span class="badge badge-danger badge-counter">7</span> -->
+									<!-- 안읽은 채팅메세지 갯수 표시 -->
+									<span id="chat-badge" class="nav_chat-badge"></span>
 								</a>
 
 								<!-- 채팅방 목록 드롭다운 -->
-								<div class="dropdown-list dropdown-menu dropdown-menu-right shadow" id="chatRoomList" aria-labelledby="dropdownChat">
-                                <h6 class="dropdown-header">
-                                    채팅방 목록
-                                </h6>
-                                <!-- 채팅방1 -->
-                                <a class="dropdown-item d-flex align-items-center" href="#" onclick="popupChat('CR00001')">
-                                    <div class="mr-3">
-                                    	<!-- 여기 글자가 있으면 이미지가 나오는데 없으면 왜 안나와????? -->
-                                    	<!-- 임시이미지 -->
-                                    	<img src="${pageContext.request.contextPath }/resources/img/logo_bada.png" alt="..."
-                                    		class="img-profile rounded-circle" style="height: 50px; width:50px;"> 
-                                    </div>
-                                    <div class="">
-                                        <div class="overflow">최신 메세지를 아주 길게아아아아아아웆아주아ㅜㅇ자우ㅏ아주길게아아아아아아웆아주아ㅜㅇ자우ㅏ아주길게 써볼게요~~~~~</div>
-                                        <div class="row">
-                                        <div class="col-6 small" style="color:gray; text-align:left;">상대방 닉네임</div>
-                                        <div class="col-6 small" style="color:gray; text-align:right;">날짜</div>
-                                        </div>
-                                    </div>
-                                </a>
-                                
-                                <!-- 채팅방2 -->
-                                <a class="dropdown-item d-flex align-items-center" href="#" onclick="popupChat('CR00002')">
-                                    <div class="mr-3">
-                                    	<!-- 여기 글자가 있으면 이미지가 나오는데 없으면 왜 안나와????? -->
-                                    	<!-- 임시이미지 -->
-                                    	<img src="${pageContext.request.contextPath }/resources/img/logo_bada.png" alt="..."
-                                    		class="img-profile rounded-circle" style="height: 50px; width:50px;"> 
-                                    </div>
-                                    <div class="">
-                                        <div class="overflow">채팅방2</div>
-                                        <div class="row">
-                                        <div class="col-6 small" style="color:gray; text-align:left;">상대방 닉네임</div>
-                                        <div class="col-6 small" style="color:gray; text-align:right;">날짜</div>
-                                        </div>
-                                    </div>
-                                </a>
+								<div class="dropdown-menu  shadow" id="chatRoomList" aria-labelledby="dropdownChat"
+									style="width: 500px;">
+									<!-- 회원의 채팅방 목록 ajax로 받고 출력되는 부분 -->
                                 </div>
 							</li>
 <!--  								
@@ -173,100 +217,400 @@
 		</div>
 	</header>
 	
-	
-	<form name="msgData" id="msgData" method="post">
-		<!-- 메세지 리스트 전달받고 팝업창으로 전달하는 부분(동적 생성) -->
-	</form>
-	
-	
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
 </body>
 <script type="text/javascript">
 	console.log("스크립트 확인!");
 	
-	var popChat;
+
+</script>	
+	
+<!-- 채팅 관련 스크립트 -->
+<script type="text/javascript">
+/* 채팅관련 스크립트 */
+	var popChat;		 // 채팅팝업 이름
+	var popChatArr = []; // 현재 떠있는 채팅 팝업창을 담을 배열
 	
 	// 채팅 버튼 클릭시 채팅창 팝업되면서 기존 채팅방 메세지 목록 데이터 보내주는 함수
 	function popupChat(crcode){
-		//var crcode = "CR00001"; // 함수 호출시 파라미터로 받을 값. 임시 crcode
 		console.log("popupChat 호출");
-		let popOption = "width=450px, height=550px, top=300px, left=500px, scrollbars=no, resizable=no";
+		let popOption = "width=450px, height=560px, top=300px, left=500px, scrollbars=no, resizable=no";
 		let openUrl = "loadToChat?crcode="+crcode;
-		//console.log($('popChat[name=pop'+crcode+']').closed); // 해당 팝업창이 열려있는지 확인
-		$.ajax({
-			url: "selectChatRoomMessage",
-			data: {"crcode":crcode},
-			async:false,
-			dataType:"json",
-			success:function(data){
-				//var popCheck = popChatHistory(crcode); // 팝업창 안열려있으면 true, 열려있으면 false 반환
-				
-				// 특정 자식창의 name으로 어떻게 접근하는지요......................................
-				//if(!(popChat.window.name=crcode) || (popChat.window.name=crcode).closed) { // 안열려있으면 open
-					popChat = window.open(openUrl, crcode, popOption);
-					popChat.window.addEventListener("load", function(){
-						popChat.enterRoom(data);
-				 	});
-				/*} else { // 열려있으면 focus
-					$('popChat[name=pop'+crcode+']').focus();
-				} */
+	  	$.ajax({
+	  		type : 'get',
+	  		url : 'selectLoginOut_ajax',
+	  		async : false,
+	  		success : function(result){
+	  			if (result == "2"){ 
+	  				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+	  					location.href = "loadToLogin"
+	  					return;
+	  				}
+	  				return;
+	  			}
+
+				$.ajax({
+					url: "selectChatRoomMessage",
+					data: {"crcode":crcode},
+					async:false,
+					dataType:"json",
+					success:function(data){
+						console.log(popChatArr.some(popChat => popChat.name === crcode));
+						// 해당 채팅방 팝업이 열려있으면
+						if (popChatArr.some(popChat => popChat.name === crcode)) { 
+							var openedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
+							//console.log(popChatArr[openedIdx]);
+							popChatArr[openedIdx].focus(); // 해당 채팅창 팝업에 focus
+						} 
+						
+						// 열려있지 않으면
+						else { 
+							popChat = window.open(openUrl, crcode, popOption); // 팝업창 열기
+							popChat.window.addEventListener("load", function(){
+								popChat.enterRoom(data); // 채팅방 목록 불러오기
+						 	});
+							popChatArr.push(popChat); // 채팅팝업 배열에 담기
+						}
+						console.log("배열의 길이 : " + popChatArr.length);
+					}
+				});
 			}
 		});
 	}
 	
-	// 동일한 코드의 팝업창이 열려있는지 확인
-/* 	function popChatHistory(crcode){
-		var Obj = popChat.[name=pop'+crcode+'];
-		console.log(Obj==undefined);
-		console.log(Obj.closed);
-		console.log(Obj==null);
-		console.log(!Obj);
-		if(!Obj || Obj.closed){
-			return true;
-		} else {
-			return false;
-		}
-	} */
+	// 특정 채팅방(자식창) 닫힐 경우 배열에서 제거하는 함수
+	function closeChat(crcode){
+		console.log("채팅방 닫힘");
+		var openedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
+		popChatArr.splice(openedIdx, 1); // 채팅팝업 배열에서 제거
+	}
 	
 	// 채팅 아이콘 클릭하면 채팅방 목록 불러오고 드롭다운(안읽은 메세지 > 최신순)
-	$(document).on("click", "#dropdownChat", function(){
-		$.ajax({
-			type: "post",
-			url: "selectChatRoomList",
-			data: {"loginId": "${sessionScope.loginId}"},
-			async:false,
-			dataType: "json",
-			success: function(result){
-				console.log(result);
-				outputDropdown(result);
+	$(document).on("click", "#dropdownChat", function(e){
+	  	$.ajax({
+	  		type : 'get',
+	  		url : 'selectLoginOut_ajax',
+	  		async : false,
+	  		success : function(result){
+	  			if (result == "2"){ 
+	  				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+	  					location.href = "loadToLogin"
+	  					return;
+	  				}
+	  				return;
+	  			}
+				$.ajax({
+					type: "post",
+					url: "selectChatRoomList",
+					data: {"loginId": "${sessionScope.loginId}"},
+					async:false,
+					dataType: "json",
+					success: function(result){
+						console.log(result);
+						outputChatRoomList(result);
+					}
+				});
+			}
+		});
+	});
+
+	// 드롭다운 채팅방목록 입력 함수
+	function outputChatRoomList(data){
+		console.log("채팅방 목록 드롭다운 실행");
+		var dropdownList = "<p class=\"dropdown-header\" style=\"font-size:11px;\">채팅방 목록</p>";
+		for(var i = 0; i < data.length; i++){
+			if (i == 5){ // 최대 5개 목록까지만 출력
+				break;
+			}
+			dropdownList += "<div class=\"\" >";
+			dropdownList += "<a class=\" dropdown-item d-flex align-items-center py-2\" href=\"#\" onclick=\"popupChat('" + data[i].crcode + "')\">";
+			dropdownList += "<div class=\"row\" style=\"width: 100%; --bs-gutter-x: 0;\">";
+			dropdownList += "<div class=\"col-1 text-center\">";
+			if (data[i].crfrmprofile != null){ // 상대방 이미지가 있으면
+				dropdownList += "<img src=\"${pageContext.request.contextPath }/resources/img/mprofileUpLoad/" + data[i].crfrmprofile + "\" alt=\"프로필\" class=\"rounded-circle chat-profile\">";
+			} else { // 없으면
+				dropdownList += "<img src=\"${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png\" alt=\"프로필\" class=\"rounded-circle chat-profile\">";
+			}
+			dropdownList += "</div>";
+			dropdownList += "<div class=\"col-11\" style=\"\">";
+			dropdownList += "<div class=\"row nav_chat\" style=\"--bs-gutter-x: 0; margin-left: 10px;\">";
+			dropdownList += "<div class=\"col-11 overflow_twoline px-0 \" style=\"font-size:13px;\">" + data[i].recentCmcontents + "</div>";
+			dropdownList += "<div class=\"col-1 nav_chat\" style=\"text-align: center;\">";
+			if (data[i].unreadCount != 0){ // 안읽은 메세지가 있으면
+				dropdownList += "<span class=\"chat-badge\" style=\"\">" + data[i].unreadCount + "</span>";
+			}
+			dropdownList += "</div>";
+			dropdownList += "<div class=\"row\"style=\"width: 100%; --bs-gutter-x: 0;\">";
+			dropdownList += "<div class=\"col-6 \" style=\"color:gray; text-align:left; font-size:9px;\">" + data[i].crfrmnickname + "</div>";
+			dropdownList += "<div class=\"col-6  px-0\" style=\"color:gray; text-align:right; font-size:9px;\">" + data[i].recentCmdate + "</div>";
+			dropdownList += "</div>";
+			dropdownList += "</div>";
+			dropdownList += "</div>";
+			dropdownList += "</div>";
+			dropdownList += "</a>";
+			dropdownList += "</div>";
+		}
+		dropdownList += "<div class=\"text-center mt-1\">";
+		dropdownList += "<a class=\"dropdown-item pt-2\" href=\"selectMyInfoResellView#scroll-chat\" style=\"color: gray; font-size:13px;\">더보기</a>";
+		dropdownList += "</div>";
+		$("#chatRoomList").html(dropdownList);
+	}
+
+
+	<!-- 안읽은 채팅메세지 확인 뱃지 -->
+	//console.log('${sessionScope.loginId }');
+	if(${sessionScope.loginId != null}){
+	   $(window).on('load', function(){
+	         // 2초에 한번씩 채팅 목록 불러오기(실시간 알림 전용)
+	         setInterval(function(){
+	             // 읽지 않은 메세지 총 개수 불러오기 
+	             var sumUnReadCount = 0;
+	                   $.ajax({
+	                     url:"selectSumUnReadCount",
+	                     data:{"loginId": "${sessionScope.loginId}"},
+	                     dataType:"json",
+	                     async:false, // async : false를 줌으로써 비동기를 동기로 처리 할 수 있다.
+	                     success:function(sumUnReadCount){
+	                       //console.log(sumUnReadCount);
+	                       $("#chat-badge").text(sumUnReadCount);
+	                      // 읽지 않은 메세지 총 갯수가 0개가 아니면
+	                      if(sumUnReadCount != 0){
+	                          // 채팅 icon 깜빡거리기
+	                          $('.nav_chat-badge').addClass('iconBlink');
+	                          $('.nav_chat-badge').removeClass('d_none');
+	                      }else{
+	                          // 깜빡거림 없애기
+	                          $('.nav_chat-badge').removeClass('iconBlink');
+	                          $('.nav_chat-badge').addClass('d_none');
+	                      }
+	                     }
+	              });
+	
+	               },3000);
+	    });
+	}
+	
+	<!-- 로그인 시 세션에 담긴 채팅메세지 갯수 뱃지 출력 -->
+ 	if (${sessionScope.sumUnReadCount != 0 }){
+		var loginUnReadCount = ${sessionScope.sumUnReadCount};
+		console.log("안읽은 채팅 메세지 수 : " + loginUnReadCount);
+		$("#chat-badge").text(loginUnReadCount);
+	}
+</script>
+
+<!-- 마이페이지 미니브라우저 (커뮤니티부터!) -->
+<script type="text/javascript">
+
+   var wMemberPopup = "";
+  
+   
+   function writeMemberBoard(nickname){
+      console.log("팝업 스트립트 확인!!!");
+      let wMemberPopupUrl = "loadToWriteMemberBoard?nickname="+nickname;
+      let wMemberPopupOption = "width=660, height=820, top=300px, left=500px, scrollbars=no, resizable=no";
+      
+	   // 로그인 확인
+	  	$.ajax({
+	  		type : 'get',
+	  		url : 'selectLoginOut_ajax',
+	  		async : false,
+	  		success : function(result){
+	  			if (result == "2"){ 
+	  				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+	  					location.href = "loadToLogin"
+	  					return;
+	  				}
+	  				return;
+	  			}
+	  			
+	  			// 판매자정보 팝업
+			    $.ajax({
+			         url: "selectWriteMemberInfo_ajax",
+			         data: {"nickname":nickname},
+			         async:false,
+			         dataType:"json",
+			         success:function(result){
+			        	 wMemberPopup = window.open(wMemberPopupUrl, "", wMemberPopupOption, nickname);
+			        	 wMemberPopup.window.addEventListener("load", function(){
+			        		 wMemberPopup.writeMemberBoard(result);
+		        		 });
+		        	 }
+		         });
+	  		}
+	  	})
+   }
+
+      
+   function boardreplySwitch(nickname, type){
+         console.log("팝업 작성글 버튼 클릭!!!");
+         
+         var popUpUrl = "";
+         if(type == 'b'){
+            popUpUrl = "selectWriteMemberInfo_ajax";
+         }else if(type == 'r') {
+            popUpUrl = "selectWriteMemberInfoReply_ajax";
+         }else if(type == 's') {
+           popUpUrl = "selectWriteMemberInfoSellBuy_ajax"; 
+         }
+
+         $.ajax({
+            url: popUpUrl,   
+            data: {"nickname":nickname},
+            async:false,
+            dataType:"json",
+            success:function(result){
+               //console.log(result);
+               //console.log(nickname);
+                  
+               if(type == 'b'){
+                  wMemberPopup.writeMemberBoard(result);
+               }else if(type == 'r') {
+                  wMemberPopup.writeMemberReply(result);
+               }else if(type == 's') {
+                 wMemberPopup.writeMemberSellBuy(result); 
+               }
+
+            }
+         });
+      
+   }
+   
+
+
+</script>
+
+<!-- 마이페이지 미니브라우저 (중고거래부터!) -->
+<script type="text/javascript">
+
+   var wMemberPopup = "";
+  
+   
+   function writeMemberSellbuy(nickname){
+      console.log("(중고거래)팝업 스트립트 확인!!!");
+      let wMemberPopupUrl = "loadToWriteMemberBoard?nickname="+nickname;
+      let wMemberPopupOption = "width=660, height=820, top=300px, left=500px, scrollbars=no, resizable=no";
+      
+      
+      $.ajax({
+         url: "selectWriteMemberInfoSellBuy_ajax",
+         data: {"nickname":nickname},
+         async:false,
+         dataType:"json",
+         success:function(result){
+           console.log(result);
+            //console.log(nickname);
+            wMemberPopup = window.open(wMemberPopupUrl, "", wMemberPopupOption, nickname);
+            
+            wMemberPopup.window.addEventListener("load", function(){
+               wMemberPopup.writeMemberSellBuy(result);
+            });
+            
+         }
+      });
+   }
+
+      
+   function boardreplySwitch(nickname, type){
+         console.log("팝업 작성글 버튼 클릭!!!");
+         
+         var popUpUrl = "";
+         if(type == 'b'){
+            popUpUrl = "selectWriteMemberInfo_ajax";
+         }else if(type == 'r') {
+            popUpUrl = "selectWriteMemberInfoReply_ajax";
+         }else if(type == 's') {
+           popUpUrl = "selectWriteMemberInfoSellBuy_ajax"; 
+         }
+
+         $.ajax({
+            url: popUpUrl,   
+            data: {"nickname":nickname},
+            async:false,
+            dataType:"json",
+            success:function(result){
+               //console.log(result);
+               //console.log(nickname);
+                  
+               if(type == 'b'){
+                  wMemberPopup.writeMemberBoard(result);
+               }else if(type == 'r') {
+                  wMemberPopup.writeMemberReply(result);
+               }else if(type == 's') {
+                 wMemberPopup.writeMemberSellBuy(result); 
+               }
+
+            }
+         });
+      
+   }
+</script>
+
+<!-- 찜목록 관련 스크립트 -->
+<script type="text/javascript">
+	// 찜 아이콘 클릭하면 찜목록 불러오고 드롭다운(최신순 5개까지 + 더보기)
+	$(document).on("click", "#dropdownZzim", function(e){
+	  	$.ajax({
+	  		type : 'get',
+	  		url : 'selectLoginOut_ajax',
+	  		async : false,
+	  		success : function(result){
+	  			if (result == "2"){ 
+	  				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+	  					location.href = "loadToLogin"
+	  				}
+	  				return;
+	  			}
+	  			
+				$.ajax({
+					type: "post",
+					url: "selectZzimList_ajax",
+					data: {"loginId": "${sessionScope.loginId}"},
+					async:false,
+					dataType: "json",
+					success: function(result){
+						console.log(result);
+						outputZzimList(result);
+					}
+				});
 			}
 		});
 	});
 	
 	// 드롭다운 채팅방목록 입력 함수
-	function outputDropdown(data){
-		var dropdownList = "<h6 class=\"dropdown-header\">채팅방 목록</h6>";
+	function outputZzimList(data){
+		console.log("찜목록 드롭다운 실행");
+		var zzimList = "<p class=\"dropdown-header\" style=\"font-size:11px;\">찜 목록</p>";
 		for(var i = 0; i < data.length; i++){
-			if (i == 10){ // 최대 10개 목록까지만 출력
+			if (i == 5){ // 최대 5개 목록까지만 출력
 				break;
 			}
-			dropdownList += "<a class=\"dropdown-item d-flex align-items-center\" href=\"#\" onclick=\"popupChat('" + data[i].crcode + "')\">";
-			dropdownList += "<div class=\"mr-3\">";
-			dropdownList += "상대방이미지";
-			dropdownList += "</div>";
-			dropdownList += "<div>";
-			dropdownList += "<div class=\"overflow\">" + data[i].recentCmcontents + "</div>";
-			dropdownList += "<div class=\"row\">";
-			dropdownList += "<div class=\"col-6 small\" style=\"color:gray; text-align:left;\">" + data[i].crfrmnickname + "</div>";
-			dropdownList += "<div class=\"col-6 small\" style=\"color:gray; text-align:left;\">" + data[i].recentCmdate + "</div>";
-			dropdownList += "</div>";
-			dropdownList += "</div>";
-			dropdownList += "</a>";
+			zzimList += "<div class=\"\" >";
+			zzimList += "<a class=\" dropdown-item d-flex align-items-center py-2\" href=\"#\" onclick=\"location.href=\"selectResellView?ubcode=" + data[i].ubcode + "&ubsellbuy=" + data[i].ubsellbuy+ ">";
+			zzimList += "<div class=\"row\" style=\"width: 100%; --bs-gutter-x: 0;\">";
+			zzimList += "<div class=\"col-1 text-center\">";
+			zzimList += "<img src=\"${pageContext.request.contextPath }/resources/img/resell/" + data[i].ubmainimg + "\" alt=\"메인사진\" class=\" chat-profile\">";
+			zzimList += "</div>";
+			zzimList += "<div class=\"col-11\" style=\"\">";
+			zzimList += "<div class=\"row nav_chat\" style=\"--bs-gutter-x: 0; margin-left: 10px;\">";
+			zzimList += "<div class=\"col-11 overflow_twoline px-0 \" style=\"font-size:13px;\">" + data[i].ubtitle + "</div>";
+			zzimList += "<div class=\"col-1 nav_chat\" style=\"text-align: center;\">";
+			zzimList += "</div>";
+			zzimList += "<div class=\"row\"style=\"width: 100%; --bs-gutter-x: 0;\">";
+			zzimList += "<div class=\"col-6 \" style=\"color:gray; text-align:left; font-size:9px;\">" + data[i].ubrgcode + "</div>";
+			zzimList += "<div class=\"col-6  px-0\" style=\"color:gray; text-align:right; font-size:9px;\">" + data[i].ubnickname + "</div>";
+			zzimList += "</div>";
+			zzimList += "</div>";
+			zzimList += "</div>";
+			zzimList += "</div>";
+			zzimList += "</a>";
+			zzimList += "</div>";
 		}
-		$("#chatRoomList").html(dropdownList);
+		zzimList += "<div class=\"text-center mt-1\">";
+		zzimList += "<a class=\"dropdown-item pt-2\" href=\"selectMyInfoResellView#scroll-zzim\" style=\"color: gray; font-size:13px;\">더보기</a>";
+		zzimList += "</div>";
+		$("#zzimList").html(zzimList);
 	}
 
 </script>
-
 
 </html>

@@ -7,8 +7,9 @@
 <meta charset="UTF-8">
 <title>1인자 - 커뮤니티 메인</title>
 <!-- 부트스트랩 -->
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
+<!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-<%@ include file="/resources/css/BarCss.jsp" %>
 
 <style type="text/css">
 
@@ -51,11 +52,18 @@ section{
      display: flex;
      align-items: center;
      justify-content: center;
-     width: 240px;
-     height: 240px;
+     width: 239px;
+     height: 239px;
      border: solid #E0E0E0 2px;
      margin-top: 5%;
      margin-bottom: 5%;
+     
+   }
+   .img{
+   /* 오브젝트 채우기 */
+   	width: 239px;
+    height: 239px;
+    object-fit: cover;
    }
    .board_category{
      height: 100px;
@@ -68,7 +76,31 @@ section{
      height: auto;
      font-size: 24px;
    }
-
+	.region_sel{
+	 margin: auto;
+	 margin-right: 15px;
+	 text-align: center;
+	 border: solid #E0E0E0 1px;
+	 border-radius: 5px;
+	 background-color: #eaf8ff; 
+	 height: 70px;
+	 line-height: 70px;
+	}
+	
+	.region_sel a {
+	 color: #00bcd4;
+	 font-size: 20px;
+	 font-weight: bold;
+	}
+	
+	.region_sel:hover{
+	 background-color: #00bcd4; 
+		color: white;	
+	}
+	
+	.region_sel a:hover{
+	  color: white;		
+	}
 </style>
 
 </head>
@@ -105,7 +137,8 @@ section{
 					<c:forEach items="${roomList }" end="4" var="room">
 						<div class="col-3" style="width:auto;">
 							<div class="img-container" >
-								<a href="selectRoomList?bdcode=${room.bdcode }&jsp=modal"><img alt="" src="${pageContext.request.contextPath }/resources/img/room/${room.bdimg }"></a>
+								<a href="selectRoomList?bdcode=${room.bdcode }&jsp=modal">
+								<img class="img" src="${pageContext.request.contextPath }/resources/img/room/${room.bdimg }"></a>
 							</div>
 						</div>
 					</c:forEach>
@@ -293,54 +326,43 @@ section{
 					<div class="col-1">
 						<span style="font-size:17px;"> <a href="selectRegionBoardList"><i class="fa-solid fa-square-plus"></i>&nbsp;더보기</a></span>
 					</div>
-					<div class="col ">
-						<div class="">
-							<a href="selectDetailBoardList?searchVal=SEL"> <span>서울</span> </a>
-						</div>
+				</div>	
+					
+				<div class="row">
+					<div class="col region_sel">
+						<a href="selectRegionBoardList">전체</a>
 					</div>
-					<div class="col ">
-						<div class="">
-							<a href="selectDetailBoardList?searchVal=ICN"> <span>인천</span> </a>
-						</div>
+					<div class="col region_sel">
+						<a href="selectDetailBoardList?searchVal=SEL">서울</a>
 					</div>
-					<div class="col ">
-						<div class="">
-							<a href="selectDetailBoardList?searchVal=GGD"> <span>경기</span> </a>
-						</div>
+					<div class="col region_sel">
+						<a href="selectDetailBoardList?searchVal=ICN">인천</a>
 					</div>
-					<div class="col">
-						<div class="">
-							<a href="selectDetailBoardList?searchVal=GSD"> <span>경상</span> </a>
-						</div>
+					<div class="col region_sel">
+						<a href="selectDetailBoardList?searchVal=GGD">경기</a>
 					</div>
-					<div class="col ">
-						<div class="">
-							<a href="selectDetailBoardList?searchVal=JLD"> <span>전라</span> </a>
-						</div>
+					<div class="col region_sel">
+						<a href="selectDetailBoardList?searchVal=GSD">경상</a>
 					</div>
-					<div class="col ">
-						<div class="">
-							<a href="#"> <span>충청</span> </a>
-						</div>
+					<div class="col region_sel">
+						<a href="selectDetailBoardList?searchVal=JLD">전라</a>
 					</div>
-					<div class="col ">
-						<div class="">
-							<a href="#"> <span>강원</span> </a>
-						</div>
+					<div class="col region_sel">
+						<a href="selectDetailBoardList?searchVal=CCD">충청</a>
 					</div>
-					<div class="col ">
-						<div class="">
-							<a href="#"> <span>제주</span> </a>
-						</div>
+					<div class="col region_sel">
+						<a href="selectDetailBoardList?searchVal=GWD">강원</a>
+					</div>
+					<div class="col region_sel">
+						<a href="selectDetailBoardList?searchVal=JJD">제주</a>
 					</div>
 				</div>
-				
 			</div>
 			</section>
 	</main>
 	
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
-
+<!-- 부트스트랩 -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 </html>

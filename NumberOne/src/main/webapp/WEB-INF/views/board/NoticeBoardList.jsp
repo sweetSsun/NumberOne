@@ -7,9 +7,12 @@
 <meta charset="UTF-8">
 <title>1인자 - 공지게시판</title>
 <!-- Jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<%@ include file="/resources/css/BarCss.jsp" %>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>  
+<!-- 부트스트랩 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/listCss.css" type="text/css">
 <style type="text/css">
 	section{
 		max-width: 70%;
@@ -88,7 +91,7 @@
 		
 		<section>
 		<!-- 본문 -->
-			<form action="selectNoticeBoard" method="get" id="actionForm" >
+			<form action="selectNoticeBoardList" method="get" id="actionForm">
 			<!-- <input type="hidden" name="searchVal" value="all"> -->
 			<div class="container">
 				<div class="row" style="margin:auto;">
@@ -130,18 +133,18 @@
 							<td style="font-size: 17px;">조회</td>
 						</tr>
 						
-						<c:forEach items="${noticeList }" var="notice">
-							<c:if test="${notice.nbfix == 1 }">
+						<c:forEach items="${noticeList_fix }" var="notice_fix">
+							<c:if test="${notice_fix.nbfix == 1 }">
 							<!-- 공지게시판 : 상단에 띄울 고정 공지-->
 							<tr class="fw-bold" style="border-bottom: solid #E0E0E0 1px;">
-								<td class="text-center tableCell">${notice.nbcode}</td>
+								<td class="text-center tableCell">${notice_fix.nbcode}</td>
 								<td class="text-center tableCell">공지</td>
 								<td class="tableCell">
-									<a href="selectNoticeBoardView?nbcode=${notice.nbcode }">${notice.nbtitle}</a>
+									<a href="selectNoticeBoardView?nbcode=${notice_fix.nbcode }">${notice_fix.nbtitle}</a>
 								</td>
 								<td class="text-center tableCell">관리자</td>
-								<td class="text-center tableCell">${notice.nbdate}</td>
-								<td class="text-center tableCell">${notice.nbhits }</td>
+								<td class="text-center tableCell">${notice_fix.nbdate}</td>
+								<td class="text-center tableCell">${notice_fix.nbhits }</td>
 							</tr>
 							</c:if>
 						</c:forEach>
@@ -149,6 +152,7 @@
 					
 					<tbody id="bdCategoryList">
 					<c:forEach items="${noticeList }" begin="3" var="notice">
+						<c:if test="${notice.nbfix != 1 }">
 						<tr style="border-bottom: solid #E0E0E0 1px;">
 							<td class="text-center tableCell">${notice.nbcode}</td>
 							<td class="bdcategory text-center tableCell">공지</td>
@@ -162,6 +166,7 @@
 							<td class="text-center tableCell">${notice.nbdate}</td>
 							<td class="text-center tableCell">${notice.nbhits }</td>
 						</tr>
+						</c:if>
 					</c:forEach>
 					</tbody>
 				</table>
@@ -191,7 +196,7 @@
 	                			<li class=""><a class="active">${num }</a></li>
 	                		</c:when>
 	                		<c:otherwise>
-	                			<li class="paginate_button "><a href="${num }" >${num }</a></li>
+	                			<li class="paginate_button"><a href="${num }" >${num }</a></li>
 	                		</c:otherwise>
 	                	</c:choose>
 	               	</c:forEach>
@@ -212,8 +217,8 @@
 	</main>
 	
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+	<!-- 부트스트랩 -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 
 <script type="text/javascript">
@@ -258,6 +263,11 @@
 				searchOption.eq(i).attr("selected", "selected");
 			}
 		}
+	}
+	
+	var keyword = '${paging.keyword}';
+	if( keyword.length > 0 ){
+		$("#inputSearchText").val(keyword);
 	}
 	
 </script>

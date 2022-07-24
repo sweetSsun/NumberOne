@@ -9,8 +9,9 @@
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- 부트스트랩 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <!-- Css Styles -->
-<%@ include file="/resources/css/BarCss.jsp" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/listCss.css" type="text/css">
 
@@ -104,7 +105,7 @@
 	                      		class="img-fluid" style="width:60px; height:60px; object-fit:fill;"></td>
 	                      <td class="overflow"><a href="#">
 	                      ${usedBoard.ubtitle}</a></td>
-	                      <td class="text-center overflow">${usedBoard.ubnickname}</td>
+	                      <td class="text-center overflow pointer" onclick="writeMemberSellbuy('${usedBoard.ubnickname}')">${usedBoard.ubnickname}</td>
 	                      <td class="text-center overflow">${usedBoard.ubdate}</td>
 	                      <td class="text-center">${usedBoard.ubwarning}</td>
 	                      <td>
@@ -191,7 +192,7 @@
 
 	
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
-
+	<!-- 부트스트랩 -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 	
 	<script type="text/javascript">
@@ -223,34 +224,47 @@
 		// 거래글 상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
 		function updateUbstate(){
 			console.log("updateUbstate() 실행");
-			var ubcode = $("#ubcode").val();
-			console.log(btnObj.text());
-			if (btnObj.text() == "경고"){
-				var ubstate = 0;				
-			} else {
-				var ubstate = 1;				
-			}
 			$.ajax({
-				type: "get",
-				data: {"ubcode":ubcode, "ubstate":ubstate},
-				url: "admin_updateUbstate_ajax",
-				dataType: "json",
-				success: function(result){
-					if(result > 0){
-						if (ubstate == 0){
-							btnObj.text("정지").addClass("btn-danger").removeClass("btn-warning");
-						} else {
-							btnObj.text("경고").addClass("btn-warning").removeClass("btn-danger");
-						}
+		  		type : 'get',
+		  		url : 'Admin_selectLoginOut_ajax',
+		  		async : false,
+		  		success : function(result){
+		  			if (result == "2"){ 
+		  				if(confirm("관리자 로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+		  					location.href = "loadToLogin";
+		  				}
+		  				return;
+		  			}
+		  			
+					var ubcode = $("#ubcode").val();
+					console.log(btnObj.text());
+					if (btnObj.text() == "경고"){
+						var ubstate = 0;				
+					} else {
+						var ubstate = 1;				
 					}
-					$("#updateUbstateModal").modal("hide");
-				},
-				error: function(){
-					$("#updateUbstateModal").modal("hide");
-					alert("글상태 변경에 실패했습니다.");
-				}
+					$.ajax({
+						type: "get",
+						data: {"ubcode":ubcode, "ubstate":ubstate},
+						url: "admin_updateUbstate_ajax",
+						dataType: "json",
+						success: function(result){
+							if(result > 0){
+								if (ubstate == 0){
+									btnObj.text("정지").addClass("btn-danger").removeClass("btn-warning");
+								} else {
+									btnObj.text("경고").addClass("btn-warning").removeClass("btn-danger");
+								}
+							}
+							$("#updateUbstateModal").modal("hide");
+						},
+						error: function(){
+							$("#updateUbstateModal").modal("hide");
+							alert("글상태 변경에 실패했습니다.");
+						}
+					});
+		  		}
 			});
-			
 		}
 	</script>
 		
@@ -318,7 +332,7 @@
 						output += "<td class='text-center'><img src='${pageContext.request.contextPath }/resources/img/resell/" + result[i].ubmainimg
 						+ "' class='img-fluid' style='width:60px; height:60px;  object-fit:fill;'></td>";
 						output += "<td class='overflow'><a href='admin_selectResellView?ubcode=" + result[i].ubcode + "'>" + result[i].ubtitle + "</a></td>";
-						output += "<td class='text-center overflow'>" + result[i].ubnickname + "</td>";
+						output += "<td class='text-center overflow pointer' onclick='writeMemberSellbuy(\"" + result[i].ubnickname + "\")'>" + result[i].ubnickname + "</td>";
 						output += "<td class='text-center overflow'>" + result[i].ubdate + "</td>";
 						output += "<td class='text-center'>" + result[i].ubwarning + "</td>";
 						output += "<td class='text-center'>"

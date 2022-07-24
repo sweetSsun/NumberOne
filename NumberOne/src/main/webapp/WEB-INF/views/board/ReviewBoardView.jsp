@@ -5,12 +5,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<%@ include file="/resources/css/BarCss.jsp" %>
-<!-- 폰트어썸 -->
-<script src="https://kit.fontawesome.com/86a85cd392.js" crossorigin="anonymous"></script>
 <title>${board.bdtitle } - 1인자:후기글 상세페이지</title>
 <!-- Jquery -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
+<!-- 부트스트랩 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
 <style type="text/css">
 	section{
@@ -93,6 +92,16 @@
 		background-color: #F4F4F4;
 		float: right;
 	}
+	.rpProfile{
+		height:50px;
+		width:50px;
+		object-fit: cover;
+	}
+	.rpProfile_None{
+		height:50px; 
+		width:50px;
+		object-fit: cover;
+	}
 	.rpnickname{
 		font-size:20px;
 	}
@@ -116,10 +125,14 @@
      border: solid #E0E0E0 2px;
      margin-top: 5%;
      margin-bottom: 5%;
+     width: 200px;
+     height: 200px;
+     
    }
    #upload_Img{
-   	width: 100px;
-   	heigth: 100px;
+   	width: 200px;
+   	height: 200px;
+   	object-fit: cover;
    }
    
 	/*  */
@@ -168,8 +181,19 @@
 				<form action="">
 					<div class="row">
 						<div class="col">
-							<a href="#"><span class="fw-bold boardCategory"> | ${board.bdcategory }게시판 </span></a> 
-							<span class="fw-bold" style="color:gray; font-size:20px">/</span> <a href="#"><span class="bdregion"> ${board.bdrgname}</span></a>
+							<a href="selectCategoryBoardList?searchVal=${board.bdcategory }"><span class="fw-bold boardCategory"> | ${board.bdcategory }게시판 </span></a> 
+							<span class="fw-bold" style="color:gray; font-size:20px">/</span> 
+							
+							<c:choose>
+								<c:when test="${board.bdrgcode == 'ALL' }">
+									<a href="selectRegionBoardList"><span class="bdregion"> ${board.bdrgname}</span></a>
+								</c:when>
+							
+								<c:otherwise>
+									<a href="selectDetailBoardList?searchVal=${board.bdrgcode }"><span class="bdregion"> ${board.bdrgname}</span></a>
+								</c:otherwise>
+							</c:choose>
+							
 						</div>
 					</div>
 					<div class="row" >
@@ -182,15 +206,15 @@
 						<div class="col" class="mb-3" id="myform">
 							<fieldset>
 								<input type="radio" name="bdrate" value="5" id="rate1"><label
-									for="rate1">★</label>
+									for="rate1"  onclick="return(false);">★</label>
 								<input type="radio" name="bdrate" value="4" id="rate2"><label
-									for="rate2">★</label>
+									for="rate2"  onclick="return(false);">★</label>
 								<input type="radio" name="bdrate" value="3" id="rate3"><label
-									for="rate3">★</label>
+									for="rate3"  onclick="return(false);">★</label>
 								<input type="radio" name="bdrate" value="2" id="rate4"><label
-									for="rate4">★</label>
+									for="rate4"  onclick="return(false);">★</label>
 								<input type="radio" name="bdrate" value="1" id="rate5"><label
-									for="rate5">★</label>
+									for="rate5"  onclick="return(false);">★</label>
 							</fieldset>
 						</div>
 					</div>	
@@ -213,7 +237,8 @@
 						</div>
 						
 						<div align="right"  class="col-3 offset-md-3">
-							<span class="boardDate">${board.bddate } | </span> 
+							<%-- <span class="boardDate" id="bddate">${board.bddate } | </span>  --%>
+							<span class="boardDate" id="bddate"></span> 
 							<span class="bdhit" style="right:0;"><i class="fa-regular fa-eye"></i>  ${board.bdhits } |</span> 
 							<i class="fa-regular fa-thumbs-up commentDate" ></i> <span class="commentDate" style="right:0;" id="BoardRecommendSum"></span>
 						</div>
@@ -259,11 +284,11 @@
 				</c:choose>
 				</div>
 				
-
-				<%-- <div class="img-container">
-					<img id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
-				
-				</div>	 --%>			
+				<c:if test="${board.bdimg != null }">
+					<div class="img-container">
+						<img id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
+					</div>				
+				</c:if >		
 				
 				<!------------------ 댓글영역 ------------------->
 				<div class="mb-2" id="commentBox">
@@ -400,11 +425,15 @@
     </div>
     
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+	<!-- 부트스트랩 -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 
 <script type="text/javascript">
+
+	var bdcategory = "${board.bdcategory}";
+	console.log("게시판 : " + bdcategory);
+	
 	var checkMsg = '${msg}';
 	if ( checkMsg.length > 0 ){
 		alert(checkMsg);
@@ -435,14 +464,47 @@
 		updateBoardRecommendCount();//게시글 추천수 
 		checkBoardRecommend();//게시글 추천 확인
 		checkBoardWarning();//게시글 신고 확인 
-		
+		var bddate = timeForToday("${board.bddate }"); //게시글 작성 시간
+		$("#bddate").text(bddate);
 	});
+	
+	//시간 함수
+	function timeForToday(value) {
+		console.log("시간 변경 함수 호출")
+		
+        var today = new Date();
+        var timeValue = new Date(value);
+
+        var betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
+        console.log(betweenTime);
+        if (betweenTime < 1) return "방금전 | ";
+        if (betweenTime < 60) {
+            return betweenTime+"분전 | ";
+        }
+
+        const betweenTimeHour = Math.floor(betweenTime / 60);
+        console.log(betweenTimeHour);
+        if (betweenTimeHour < 24) {
+            return betweenTimeHour+"시간전 | ";
+        }
+		/*
+        const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+        if (betweenTimeDay < 365) {
+            return betweenTimeDay+"일전";
+        }
+        return Math.floor(betweenTimeDay / 365)+"년전";
+		*/
+        var time = value.substring(0, 16);
+		return time+" | ";
+ 	}
+		
+
 </script>
 
 <script type="text/javascript">
 	/* 글목록 버튼 클릭 시 */
 	function ReviewBoardList(){
-		var bdcategory = "후기";
+		
 		location.href="selectCategoryBoardList?searchVal="+bdcategory;
 	}
 </script>
@@ -639,7 +701,7 @@
 	function updateBoardDelete(){
 		/* 게시글 삭제(상태변경) */
 		//모달창에서 "네" 버튼 클릭 시 삭제
-		location.href="updateBoardDelete?bdcode="+bdcode+"&bdcategory="+'${board.bdcategory }';
+		location.href="updateBoardDelete?bdcode="+bdcode+"&bdcategory="+bdcategory;
 	}
 	
 </script>
@@ -686,16 +748,16 @@
 					if( replyList[i].rpmid == '${sessionScope.loginId}' ){//동일한 아이디 (댓글 수정, 삭제 버튼)
 						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;' >" /* 프로필영역 */
 
-						if( replyList[i].rpprofile != null ){//프로필 이미지가 있을 시 
+						if( replyList[i].rpprofile != 'nomprofile' ){//프로필 이미지가 있을 시 
 							if(  replyList[i].rpmstate == 9){//카카오 회원
-								output += "<img class=\"img-profile rounded-circle \" style=\"height:50px; width:50px;\" src='"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle rpProfile\"  src='"+replyList[i].rpprofile + "'>"
 							}else{
-								output += "<img class=\"img-profile rounded-circle \" style=\"height:50px; width:50px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle rpProfile\"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
 							}
 						
 						
 						}else{//프로필 이미지가 없을 시 
-							output += "<img class=\"img-profile rounded-circle \" style=\"height:40px; width:40px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
+							output += "<img class=\"img-profile rounded-circle rpProfile_None\"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
 						}
 						output += "</div>"
 						
@@ -720,14 +782,14 @@
 					}else{
 						
 						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;'>" /* 프로필영역 */
-						if( replyList[i].rpprofile != null ){//프로필 이미지가 있을 시 
+						if( replyList[i].rpprofile != 'nomprofile' ){//프로필 이미지가 있을 시 
 							if(  replyList[i].rpmstate == 9){//카카오 회원
-								output += "<img class=\"img-profile rounded-circle \" style=\"height:50px; width:50px;\" src='"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle rpProfile\"  src='"+replyList[i].rpprofile + "'>"
 							}else{
-								output += "<img class=\"img-profile rounded-circle \" style=\"height:50px; width:50px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle rpProfile\"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
 							}
 						}else{//프로필 이미지가 없을 시 
-							output += "<img class=\"img-profile rounded-circle\" style=\"height:40px; width:40px;\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
+							output += "<img class=\"img-profile rounded-circle rpProfile_None\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
 						}
 						output += "</div>"
 							

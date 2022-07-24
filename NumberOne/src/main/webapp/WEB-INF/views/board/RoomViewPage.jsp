@@ -7,11 +7,12 @@
 <meta charset="UTF-8">
 <title>1인자 - 자취방 자랑 상세</title>
 
-
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<%@ include file="/resources/css/BarCss.jsp" %>
+<%-- <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css"> --%>
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> 
+<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
+ <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<%-- <%@ include file="/resources/css/BarCss.jsp"%> --%>
 <style type="text/css">
 	#board_column{
 		border-bottom: solid gray 3px;
@@ -141,9 +142,9 @@
 	transition:all .35s;
 }
 
-textarea.rvcontents {
+#roomContents > textarea {
 	 width:100%; 
-	 height:100%; 
+	 height:86%; 
 	 overflow-y:scroll; 
 	 color:black;
 	 border: none;
@@ -155,20 +156,6 @@ textarea.rvcontents {
 textarea.rvcontents :focus { 
 	outline: none; 
 	background-color: black;
-}
-
-#inputReply{
-	 width:100%; 
-	 height:100%; 
-	 overflow-y:scroll; 
-	 color:black;
-	 border: none;
-	 padding-right:6px; 
-	 font-size: 15px;
-	 resize: none;
-	 border: 1px solid black;
-	 border-radius : 5px;
-	 
 }
 
 .gallerylist > ul > li > a:hover .top {bottom:36%;}
@@ -270,7 +257,7 @@ div.menu{
 
 #roomContents{
 	padding-top:10px;
-	height:200px; 
+	height:220px; 
 	color:black;
 	margin-bottom:5px;
 	border-bottom: solid 1px #DCDCDC;
@@ -333,6 +320,22 @@ section{
     background: #EAEAEA;  /*스크롤바 뒷 배경 색상*/
 }
 
+#inputReply{
+	height : 100px;
+	width : 100%;
+	resize : none;
+	padding-top:0;
+	margin-top:0;
+	border : 1px solid #DCDCDC;
+	font-size : 15px; 
+}
+
+#replyWriteForm > button{
+	background-color:#4cadcc;
+	color:white;
+	font-weight:600;
+	font-size:initial;
+}
 </style>
 </head>
 <body>
@@ -397,25 +400,42 @@ section{
 				
 				<!-- 자취방 상세보기 -->
 				<div class="row" style="width:1200px; height:600px;" id="modalContents">
+					<!-- 자취방 상세 이미지(슬라이드) -->
   					<div class="product-title tb col-lg-8">
   						<div id="roomimg" class="product-img-div" style="width:100%; height:100%;"></div>
   					</div>
+  					<!-- 내용 -->
   					<div class="tb col-lg-4" style="background-color:white; padding:10px">
+ 						<!-- 작성자 프로핖 -->
  						<div class="row" style="height:32px; width:800px;" id="roomWriter">
+ 							<!-- 작성자 프로필 사진 -->
  							<div id="roomMprofile" style="width:30px;"></div>
+ 							<!-- 작성자 닉네임 -->
  							<div id="roomMnickname" style="width:372px; padding-bottom:10px;"></div>
  						</div>
+ 						<!-- 작성글 -->
  						<div id="roomContents"></div>
- 						<div id="reply" class="scroll"><!-- 댓글 영역 --></div>
- 						<div id="roomInfo"><!-- 추천, 스크랩, 신고 --></div>
- 						<div id="likes_date"><!-- 좋아요수, 날짜 --></div>
- 						<div id="replyWriteForm" class="row"><!-- 댓글 입력 영역 -->
- 							<div class="col-10" style="border:none;">
- 								<textarea class="scroll" id="inputReply" placeholder="댓글 달기..." onkeydown="replyEnter(event)"></textarea>
- 							</div>
- 							<div class="col-2">
- 								<button onclick='replyResister()' style="margin-top:85%;">게시</button>
- 							</div>
+ 						<!-- 댓글 -->
+ 						<div id="reply" class="scroll"></div>
+ 						<!-- 추천, 스크랩, 신고 여부 출력-->
+ 						<div id="roomInfo"></div>
+ 						<!-- 좋아요수-->
+ 						<div id="likes_date"></div>
+ 					
+ 						<!-- 댓글 입력 폼 -->
+ 						<div id="replyWriteForm" class="row">	
+ 							<!-- 댓글 입력 영역 -->
+ 							<c:choose>
+ 								<c:when test="${sessionScope.loginId != null }">
+		 							<textarea class="scroll" id="inputReply" placeholder="댓글 달기..." style="height:60px;" onkeydown="replyEnter(event)"></textarea>&nbsp;&nbsp;
+		 							<button onclick='replyResister()'>게시</button>
+			 					</c:when>
+ 								<c:otherwise>
+		 							<textarea class="scroll" id="inputReply" type="text" readonly="readonly" placeholder="로그인 후 이용 가능합니다" style="height:60px;"></textarea>&nbsp;&nbsp;
+		 							<button onclick='replyResister()' disabled="disabled">게시</button>
+ 								</c:otherwise>
+ 							</c:choose>	
+ 							
  						</div>		
   					</div>	
   				</div>
@@ -428,8 +448,7 @@ section{
 						<c:forEach items="${roomList}" var="room">
 							<li>
 								<a class="" onclick="roomView_ajax('${room.bdcode}')">
-									<div class="screen">
-										 
+									<div class="screen"> 
 										<div class="top">${room.bdtitle}</div>
 										<div class="bottom">${room.bddate }</div>
 										<c:choose>
@@ -479,6 +498,7 @@ section{
 
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+ 
 </body>
 
 
@@ -487,6 +507,7 @@ section{
 //관리자 스크립트
 function adminRvBan(){
 	console.log("관리자 자랑글 정지")
+	
 	var rvBanConfirm = confirm("해당 글을 정지하시겠습니까?");
 	
 	if(rvBanConfirm == 'false'){
@@ -502,7 +523,8 @@ function adminRvBan(){
 			success : function(updateResult){
 				if( updateResult > 0 ){
 					console.log("관리자 자랑글 정지 성공!");
-					//그 다음 페이지를 다시 로드하고 스크롤을 원하는 위치로...??
+					//일단 목록 페이지 다시 로드
+					location.href = "${pageContext.request.contextPath }/loadToLogin?afterUrl=selectRoomList";
 				}
 			}
 		});
@@ -527,7 +549,7 @@ function adminRpBan(){
 			async : false,
 			success : function(updateResult){
 				if( updateResult > 0 ){
-					console.log("관리자 댓글 삭제 성공!");
+					console.log("관리자 댓글 정지 성공!");
 					replyPrint('top');
 					
 					//목록 페이지 댓글수 업데이트 (-1)
@@ -606,15 +628,15 @@ roomView_ajax(nowBdcode)
 					imgHtml += "<span class='sr-only'>Next</span>"
 					imgHtml += "</a>";
 					imgHtml += "</div>";
-				
+					
 				} 
-				
+
 				$("#roomimg").html(imgHtml);
 				//작성자 프로필	
-				var mprofileOutput = "<img class='product-img' style='width:30px; height:30px; border-radius:50%;'";
+				var mprofileOutput = "<img class='product-img' onclick='writeMemberBoard(\""+roomView.bdnickname+"\")' style='width:30px; height:30px; border-radius:50%;'";
 				if(roomView.bdmprofile != 'nomprofile'){
 					console.log("작성자 프로필 있음");
-					if(roomView.bdmstate == 9){
+					if(roomView.bdmid.substring(0,1) == "@"){
 						//카카오 로그인
 						console.log("작성자 카카오 회원 사진 출력")
 						mprofileOutput += "src='"+roomView.bdmprofile+"'>";							
@@ -628,7 +650,7 @@ roomView_ajax(nowBdcode)
 				}
 				mprofileOutput += "</img>";
 				$("#roomMprofile").html(mprofileOutput);
-				mnicknameOutput = "<div id='mnickname' style='font-size:22px; margin-left:5px; padding-bottom:2px; color: black;'>"+roomView.bdnickname;
+				mnicknameOutput = "<div id='mnickname' style='font-size:18px; margin-left:8px; padding-bottom:2px; color: black;'>"+roomView.bdnickname;
 				//메뉴 출력 할 수 있는 ...
 				//로그인 아이디에 따라 메뉴는 다르게 출력됨 
 				mnicknameOutput += "<span  style='position:absolute; right:20px; cursor:pointer;' onclick='menuModal(\""+nowBdcode+"\", \"${sessionScope.loginId}\")' style='font-size:15px; color:black; padding-rignt:10px;'>&#8943;</span>";
@@ -636,7 +658,12 @@ roomView_ajax(nowBdcode)
 				$("#roomMnickname").html(mnicknameOutput);
 
 				//글 내용
-				$("#roomContents").html("<textarea class='scroll rvcontents' readonly style='font-size:15px; resize:none;'>"+roomView.bdcontents+"</textarea>");
+				var roomContentsOutput = "<textarea class='scroll' readonly style='font-size:15px; resize:none;'>"+roomView.bdcontents+"</textarea>";
+				//시간 출력
+				roomContentsOutput += "<span style='font-size:15px; color:grey; margin:0px;'>"+timeForToday(roomView.bddate)+"</span>"
+				$("#roomContents").html(roomContentsOutput);
+				//$("#roomContents").html("<textarea class='scroll' readonly style='font-size:15px; resize:none;'>"+roomView.bdcontents+"</textarea>");
+				
 				//추천, 스크랩, 신고 출력
 				var roomInfoOutput = ""
 				//추천
@@ -645,7 +672,7 @@ roomView_ajax(nowBdcode)
 					roomInfoOutput += "<a onclick='log(\"rchistory\")' style='cursor:pointer;'><span id='"+roomView.bdcode+"_rchistory'><i class='fa-solid fa-heart'></i></span></a> ";
 				} else {					
 					console.log("추천 기록 없음")
-					roomInfoOutput += "<a onclick='log(\"rchistory\") style='cursor:pointer;'><span id='"+roomView.bdcode+"_rchistory'><i class='fa-regular fa-heart'></i></span></a> ";
+					roomInfoOutput += "<a onclick='log(\"rchistory\")' style='cursor:pointer;'><span id='"+roomView.bdcode+"_rchistory'><i class='fa-regular fa-heart'></i></span></a> ";
 				}
 				//스크랩
 				if(roomView.schistory != "n"){
@@ -668,7 +695,7 @@ roomView_ajax(nowBdcode)
 				
 				//좋아요수, 날짜 출력
 				var likesDateOutput = "<span style='color:black; font-size:18px; font-weight:bold;'>좋아요&nbsp;<span id='likesNum'>"+roomView.bdrecommend+"</span>개</span><br>";
-				likesDateOutput += "<span style='color:grey; font-size:15px;'>"+roomView.bddate+"</span>"
+				//likesDateOutput += "<span style='color:grey; font-size:15px;'>"+roomView.bddate+"</span>"
 				$("#likes_date").html(likesDateOutput);
 				
 				//댓글 출력
@@ -685,6 +712,34 @@ roomView_ajax(nowBdcode)
 		
 	}
 
+	//시간 함수
+	function timeForToday(value) {
+		console.log("시간 변경 함수 호출")
+	
+    	var today = new Date();
+    	var timeValue = new Date(value);
+
+    	var betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
+    	if (betweenTime < 1) return "방금전";
+    	if (betweenTime < 60) {
+    		return betweenTime+"분전";
+    	}
+
+    	var betweenTimeHour = Math.floor(betweenTime / 60);
+    	if (betweenTimeHour < 24) {
+        	return betweenTimeHour+"시간전";
+    	}
+	
+    	var betweenTimeDay = Math.floor(betweenTime / 60 / 24);
+    	if (betweenTimeDay < 365) {
+        	return betweenTimeDay+"일전";
+    	}
+    	return Math.floor(betweenTimeDay / 365)+"년전";
+	
+		return value;
+	}
+	
+	
 	//댓글 출력
 	function replyPrint(scroll){
 		$.ajax({
@@ -700,8 +755,8 @@ roomView_ajax(nowBdcode)
 					console.log(replys[i]);
 					replyOutput += "<div id='reply_"+replys[i].rpcode+"' style='width:100%; margin-bottom:3px;' class='row' onmouseover='toggleReplyMenu(\""+replys[i].rpcode+"\", \"show\")' onmouseout='toggleReplyMenu(\""+replys[i].rpcode+"\", \"hide\")'>";
 					//댓글 작성자 프로필 이미지
-					replyOutput += "<div style='width:30px;'>";
-					replyOutput += "<img class='product-img' style='width:20px; height:20px; border-radius:50%;'";
+					replyOutput += "<div style='width:30px; padding-top: 10px'>";
+					replyOutput += "<img class='product-img' onclick='writeMemberBoard(\""+replys[i].rpnickname+"\")' style='width:20px; height:20px; border-radius:50%;'";
 					if(replys[i].rpprofile != 'nomprofile'){
 						//console.log(replys[i].rpprofile);
 						console.log("프로필 있음");
@@ -780,40 +835,7 @@ roomView_ajax(nowBdcode)
 		
 		$("#"+nowBdcode+"_"+logType).html(after+"&nbsp;");
 	}
-</script>
-</script>
-
-<script type="text/javascript">
-	function closeMenuModal(){
-		console.log("메뉴 모달 닫기 요청");
-		//nowRpcode 초기화
-		nowRpcode = "";
-		//모달창 닫기
-		$("#menuModal").css("display", "none");
-	}
 	
-	function replyDelete(){
-		console.log("리플 삭제 요청");
-		$.ajax({
-			type : "get",
-			url : "updateReplyState_ajax",
-			data : { "rpcode" : nowRpcode},
-			async : false,
-			success : function(updateResult){
-				if( updateResult > 0 ){
-					console.log("댓글 삭제 성공!");
-					replyPrint('top');
-					
-					//목록 페이지 댓글수 업데이트 (-1)
-					logUpdate('bdreplies', 'down');
-					
-					//메뉴 모달 닫기
-					closeMenuModal()
-				}
-			}
-		});	
-	}
-
 </script>
 
 <script type="text/javascript">
@@ -876,6 +898,50 @@ roomView_ajax(nowBdcode)
 		
 		$("#"+nowBdcode+"_"+logType).html(after+"&nbsp;");
 	}
+	
+	
+	function closeMenuModal(){
+		console.log("메뉴 모달 닫기 요청");
+		//nowRpcode 초기화
+		nowRpcode = "";
+		//모달창 닫기
+		$("#menuModal").css("display", "none");
+	}
+	
+	function replyDelete(){
+		console.log("댓글 삭제 요청");
+		console.log('${sessionScope.loginId}');
+		console.log(nowRpmid);
+		if(nowRpmid != '${sessionScope.loginId}'){
+			alert("script-작성자가 아닙니다");
+			return;
+		}
+		
+			
+		$.ajax({
+			type : "get",
+			url : "updateReplyState_ajax2",
+			data : { "rpcode" : nowRpcode, "rpmid":nowRpmid},
+			async : false,
+			success : function(updateResult){
+				if( updateResult == 1 ){
+					console.log("댓글 삭제 성공!");
+					replyPrint('top');
+					
+					//목록 페이지 댓글수 업데이트 (-1)
+					logUpdate('bdreplies', 'down');
+					
+					//메뉴 모달 닫기
+					closeMenuModal()
+				} else if (updateResult == 2){
+					console.log("댓글 작성자가 아님!");
+					alert("작성자가 아닙니다");
+					return;
+				} 
+			}
+		});	
+	}
+
 </script>
 
 <script type="text/javascript">
@@ -891,10 +957,10 @@ roomView_ajax(nowBdcode)
 		}
 			
 		if('${sessionScope.loginId}'==''){
-			var confirmResult = confirm("로그인 후 이용가능합니다."); 
+			var confirmResult = confirm("script-로그인 후 이용가능합니다"); 
 			console.log(confirmResult);
 			if(confirmResult==true){
-				location.href = '${pageContext.request.contextPath }/loadToLogin?afterUrl=selectRoomList';
+				location.href = '${pageContext.request.contextPath }/loadToLogin?afterUrl=selectRoomListbdcode='+nowBdcode;
 				return;
 			} else {
 				return;
@@ -910,6 +976,18 @@ roomView_ajax(nowBdcode)
 			async : false,
 			success: function(result){
 				console.log(result);
+				
+				if(result == "2"){
+					var confirmResult = confirm("로그인 후 이용가능합니다"); 
+					console.log(confirmResult);
+					if(confirmResult==true){
+						location.href = '${pageContext.request.contextPath }/loadToLogin?afterUrl=selectRoomList?bdcode='+nowBdcode;
+						return;
+					} else {
+						return;
+					}
+				}
+				
 				currentState = result;				
 			}
 		});
@@ -995,13 +1073,20 @@ roomView_ajax(nowBdcode)
 	
 	function deleteRoomView(){
 		console.log(nowBdcode+"글 삭제 요청");
+		
+		console.log('${sessionScope.loginId}');
+		console.log(nowBdmid);
+		if(nowBdmid != '${sessionScope.loginId}'){
+			alert("script-작성자가 아닙니다");
+			return;
+		}
+		
 		var confirmCh = confirm("해당 글을 삭제하시겠습니까?");
 		if(confirmCh == false){
 			return;
 		} 
 		
-		location.href = "updateBoardDelete?bdcode="+nowBdcode+"&bdcategory=자랑";
-
+		location.href = "updateBoardDelete?bdcode="+nowBdcode+"&bdcategory=자랑&bdmid="+nowBdmid;
 	}
 	
 	

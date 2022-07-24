@@ -7,9 +7,10 @@
 <meta charset="UTF-8">
 
 <!-- jquery -->
-<script type="text/javascript" src="resources/js/jquery-3.3.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- 부트스트랩 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <!-- Css Styles -->
-<%@ include file="/resources/css/BarCss.jsp" %>
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 
 <title>${noticeBoard.nbtitle} - 1인자:관리자 공지게시판</title>
@@ -98,7 +99,7 @@
 					<div class="row idDateHits">
 						<div class="col-6">
 							<!-- 닉네임 출력으로 바꾸기 -->
-							<a href="#"><span class="fw-bold bdnickname">${noticeBoard.nbnickname }</span></a> 
+							<span class="fw-bold bdnickname">${noticeBoard.nbnickname }</span>
 						</div>
 						
 						<div align="right" class="col-3 offset-md-3">
@@ -145,20 +146,48 @@
 	// 공지글 삭제 요청 (nbstate 0으로 변경)
 	$("#deleteBtn").click(function(){
 		console.log("공지 삭제 요청");
-		var nbstate = 2;
-		var nbcode = '${noticeBoard.nbcode}';
-		console.log("nbcode : " + nbcode);
-		location.href="admin_updateNbstate?nbcode="+nbcode+"&nbstate="+nbstate;
+		$.ajax({
+	  		type : 'get',
+	  		url : 'Admin_selectLoginOut_ajax',
+	  		async : false,
+	  		success : function(result){
+	  			if (result == "2"){ 
+	  				if(confirm("관리자 로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+	  					location.href = "loadToLogin";
+	  				}
+	  				return;
+	  			}
+	  			
+				var nbstate = 2;
+				var nbcode = '${noticeBoard.nbcode}';
+				console.log("nbcode : " + nbcode);
+				location.href="admin_updateNbstate?nbcode="+nbcode+"&nbstate="+nbstate;
+	  		}
+		});
 	});
 	
 	$("#modifyBtn").click(function(){
 		console.log("공지 수정 요청");
-		var nbcode = '${noticeBoard.nbcode}';
-		console.log("nbcode : " + nbcode);
-		//console.log("paging : " + ${paging});
-		var url = "admin_selectNoticeModify${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}";
-		console.log(url);
-		location.href="admin_selectNoticeModify${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}";
+		$.ajax({
+	  		type : 'get',
+	  		url : 'Admin_selectLoginOut_ajax',
+	  		async : false,
+	  		success : function(result){
+	  			if (result == "2"){ 
+	  				if(confirm("관리자 로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+	  					location.href = "loadToLogin";
+	  				}
+	  				return;
+	  			}
+	  			
+				var nbcode = '${noticeBoard.nbcode}';
+				console.log("nbcode : " + nbcode);
+				//console.log("paging : " + ${paging});
+				var url = "admin_selectNoticeModify${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}";
+				console.log(url);
+				location.href="admin_selectNoticeModify${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}";
+	  		}
+		});
 	});
 	
 </script>

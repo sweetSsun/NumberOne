@@ -11,6 +11,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.NumberOne.dto.NoticeDto;
 import com.NumberOne.dto.Paging;
+import com.NumberOne.dto.UsedBoardDto;
 import com.NumberOne.service.AdminService;
 
 @Controller
@@ -114,10 +115,10 @@ public class AdminController {
 	}
 	
 	@RequestMapping (value="admin_selectNoticeModify")
-	public ModelAndView admin_selectNoticeModify(String codeIdx, Paging paging) {
+	public ModelAndView admin_selectNoticeModify(String codeIdx, Paging paging, RedirectAttributes ra) {
 		System.out.println("공지 수정페이지 이동 요청");
 		System.out.println("codeIdx : " + codeIdx);
-		mav = asvc.admin_selectNoticeModify(codeIdx, paging);
+		mav = asvc.admin_selectNoticeModify(codeIdx, paging, ra);
 		return mav;
 	}
 	
@@ -200,6 +201,13 @@ public class AdminController {
 		return updateResult;
 	}
 	
+	@RequestMapping (value="admin_selectReviewBoardView")
+	public ModelAndView admin_selectReviewBoardView(Paging paging, String codeIdx, String check) {
+		System.out.println("커뮤니티 후기 상세페이지 이동 요청_관리자");
+		mav = asvc.admin_selectReviewBoardView(paging, codeIdx, check);
+		return mav;
+	}
+	
 	@RequestMapping (value="admin_selectBoardView")
 	public ModelAndView admin_selectBoardView(Paging paging, String codeIdx, String check) {
 		System.out.println("커뮤니티 상세페이지 이동 요청_관리자");
@@ -271,9 +279,9 @@ public class AdminController {
 	}
 	
 	@RequestMapping (value="admin_updateResellStop")
-	public ModelAndView admin_updateResellStop(String ubcode, Paging paging, RedirectAttributes ra) {
+	public ModelAndView admin_updateResellStop(UsedBoardDto ubDto, Paging paging, String check, RedirectAttributes ra) {
 		System.out.println("중고거래 글 정지 요청");
-		mav = asvc.admin_updateResellStop(ubcode, paging, ra);
+		mav = asvc.admin_updateResellStop(ubDto, paging, check, ra);
 		return mav;
 		// 글목록으로 돌아가는 url 만들어서 매개변수 생기면 수정 필요
 	}
