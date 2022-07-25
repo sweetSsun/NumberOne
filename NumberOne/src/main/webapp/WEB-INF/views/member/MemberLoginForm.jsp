@@ -57,6 +57,16 @@ background-color: #00BCD4;
 
 }
 
+.lookforBtn {
+border: 0px;
+background-color: white;
+}
+
+.lookforBtn:hover {
+	color: #00BCD4;
+	
+}
+
 
 </style>
 
@@ -140,12 +150,13 @@ background-color: #00BCD4;
                             <div class="row">
                             	<div class="col-lg-6 col-md-6 col-sm-6">
                                 	<div class="checkout__input" style="text-align: right;">
-                                 		<a class="small" href="loadToLookforId">아이디 찾기</a>
+                                 		<button class ="lookforBtn" type="button" onclick = "location.href = 'loadToLookforId' " >아이디 찾기</button>
+                        
                                 	</div>
                               	</div>                             	
                              	<div class="col-lg-6 col-md-6 col-sm-6">
                              		<div class="checkout__input" style="text-align: left;">
-                                 		<a class="small" href="loadToLookforPw">비밀번호 찾기</a>
+                                 		<button class ="lookforBtn" type="button" onclick = "location.href = 'loadToLookforPw' " >비밀번호 찾기</button>
                              		</div>
                              	</div>
                             </div>                        							
