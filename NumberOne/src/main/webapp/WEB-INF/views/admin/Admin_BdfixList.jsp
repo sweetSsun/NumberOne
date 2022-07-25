@@ -338,7 +338,7 @@
 					for (var i = 0; i < result.length; i++){
 						output += "<tr style='border-bottom: solid #E0E0E0 1px;'>";
 						output += "<td class='text-center overflow'>" + result[i].bdcode + "</td>";
-						output += "<td class='text-center'><img src='${pageContext.request.contextPath }/resources/img/resell/" + result[i].ubmainimg
+						output += "<td class='text-center'><img src='${pageContext.request.contextPath }/resources/img/room/" + result[i].bdimg
 								+ "' class='img-fluid' style='width:60px; height:60px;  object-fit:fill;'></td>";
 						output += "<td><a href='selectRoomList?bdcode=" + result[i].bdcode + "&jsp=view'>"
 								+"<span class='overflow'>" + result[i].bdtitle + "</span>"

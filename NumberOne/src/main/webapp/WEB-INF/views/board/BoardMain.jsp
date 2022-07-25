@@ -93,7 +93,7 @@ section{
 	 font-weight: bold;
 	}
 	
-	.region_sel:hover{
+	.region_sel:hover {
 	 background-color: #00bcd4; 
 		color: white;	
 	}
