@@ -13,6 +13,8 @@
  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <%-- <%@ include file="/resources/css/BarCss.jsp"%> --%>
+<%-- <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">  --%>
+
 <style type="text/css">
 	#board_column{
 		border-bottom: solid gray 3px;
@@ -242,7 +244,13 @@ div.menu{
   }
 }
 
-.viewImgs{ width:800px; height:600px;}
+.viewImgs{ 
+	width:800px; 
+	height:600px;
+	object-fit: contain;
+	background-color: rgb(0,0,0); /* Fallback color */
+  	background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
 
 #reply{
 	height:160px; 
@@ -336,6 +344,12 @@ section{
 	font-weight:600;
 	font-size:initial;
 }
+.pointer { cursor : pointer; }
+
+.pointer:hover{
+	color: #00bcd4;
+}
+
 </style>
 </head>
 <body>
@@ -365,41 +379,23 @@ section{
 		
 		<section>
 		<!-- 본문 -->
-			<div class="container">
+			<div class="container" style="width:1220px !important;">
 				<div class="row" style="margin:auto;">
-					<h1 class="text-center">자취방 상세 페이지 : RoomViewPage.jsp</h1>
-					<div class="col-2"></div>
-					<div class="col-2" style="text-align:right;">
-						<select id="searchVal" onclick="bdSearchTypeSel(this.value)">
-							<option value="bdTitle">제목</option>
-							<option value="bdContents">내용</option>
-							<option value="bdTitleContents">제목+내용</option>
-							<option value="bdNickname">작성자</option>
-						</select>
-					</div>
-					<div class="col-6">
-						
-						<!-- 검색기능 -->
-						<form action="searchBoard" method="get">
-						<div class="input-group">
-						  <input type="text" class="form-control" name="searchText" placeholder="검색 키워드를 입력하세요!">
-						  <span class="input-group-btn">
-						    <button class="btn btn-secondary">찾기</button>
-						  </span>
-						</div>
-						</form>
+					
+					<div class="col-10">
+						<h2 class="text-center">자취방 상세 페이지 : RoomViewPage.jsp</h2>
 					</div>
 					<div class="col-2">
 						<!-- 글쓰기 버튼 -->
 						<c:if test="${sessionScope.loginId != null}">
-							<button class="btn btn-primary btm-sm" onclick="location.href='${pageContext.request.contextPath }/loadToWriteRoom'">글쓰기</button>
+							<button class="btn btn-primary btn-lg" onclick="location.href='${pageContext.request.contextPath }/loadToWriteRoom'">글쓰기</button>
 						</c:if>
 					</div>
 					
 				</div>
 				
 				<!-- 자취방 상세보기 -->
-				<div class="row" style="width:1200px; height:600px;" id="modalContents">
+				<div class="row" style="width:1210px; height:610px; border:1px solid #DCDCDC" id="modalContents">
 					<!-- 자취방 상세 이미지(슬라이드) -->
   					<div class="product-title tb col-lg-8">
   						<div id="roomimg" class="product-img-div" style="width:100%; height:100%;"></div>
@@ -440,7 +436,16 @@ section{
   					</div>	
   				</div>
 				
-				<hr>
+				<hr style="height:2px; margin-bottom:3rem;">
+				
+				<div class="row sellbuyhead">
+					<div class="col mb-2" style="padding-top:0.2rem;">
+						<h3 style="font-size:2.3rem; font-weight:700; color:#4cadcc;">자취방 자랑 - 최신글</h3>
+					</div>
+					<div align="right" class="col" style="padding-top:0.45rem;">
+						<span style="font-size:1.6rem;"> <a href="selectRoomList" style="color:initial !important; font-weight:bold;"><i class="fa-solid fa-square-plus"></i>&nbsp;&nbsp;더보기</a></span>
+					</div>
+				</div>
 				
 				<!-- 자취방 자랑글 목록 -->	
 				<div class="gallerylist">
@@ -587,7 +592,7 @@ roomView_ajax(nowBdcode)
 				
 				if(roomView.bdimg=='noimg'){
 					console.log('noimg');
-					imgHtml += "<img alt='NumberOneLogo' style='width:800px; height:600px' src='${pageContext.request.contextPath }/resources/img/logo_grey.jpg'>";
+					imgHtml += "<img alt='NumberOneLogo' style='width:800px; height:600px max-width:800px;' src='${pageContext.request.contextPath }/resources/img/logo_grey.jpg'>";
 				} else {
 					//console.log(roomView.bddetailimg);
 					var imgs = roomView.bddetailimg.split("___");
@@ -609,11 +614,11 @@ roomView_ajax(nowBdcode)
 					//wrapper for slide
 					imgHtml += "<div class='carousel-inner'>";
 					imgHtml += "<div class='item active'>";
-					imgHtml += "<img style='width:800px; height:600px;' class='viewImgs' src='${pageContext.request.contextPath }/resources/img/room/"+imgs[0]+"'></img>";		
+					imgHtml += "<img style='width:100%; height:600px; max-width:100%' class='viewImgs' src='${pageContext.request.contextPath }/resources/img/room/"+imgs[0]+"'></img>";		
 					imgHtml += "</div>";
 					for(var j=1; j<numOfImgs; j++){
 						imgHtml += "<div class='item'>";
-						imgHtml += "<img class='viewImgs' style='width:800px; height:600px;' src='${pageContext.request.contextPath }/resources/img/room/"+imgs[j]+"' ></img>";		
+						imgHtml += "<img class='viewImgs' style='width:100%; height:600px; max-width:100%' src='${pageContext.request.contextPath }/resources/img/room/"+imgs[j]+"' ></img>";		
 						imgHtml += "</div>";
 					}
 					imgHtml += "</div>";
@@ -633,7 +638,7 @@ roomView_ajax(nowBdcode)
 
 				$("#roomimg").html(imgHtml);
 				//작성자 프로필	
-				var mprofileOutput = "<img class='product-img' onclick='writeMemberBoard(\""+roomView.bdnickname+"\")' style='width:30px; height:30px; border-radius:50%;'";
+				var mprofileOutput = "<img class='product-img' style='width:30px; height:30px; border-radius:50%;'";
 				if(roomView.bdmprofile != 'nomprofile'){
 					console.log("작성자 프로필 있음");
 					if(roomView.bdmid.substring(0,1) == "@"){
@@ -650,10 +655,12 @@ roomView_ajax(nowBdcode)
 				}
 				mprofileOutput += "</img>";
 				$("#roomMprofile").html(mprofileOutput);
-				mnicknameOutput = "<div id='mnickname' style='font-size:18px; margin-left:8px; padding-bottom:2px; color: black;'>"+roomView.bdnickname;
+				mnicknameOutput = "<div id='mnickname' style='font-size:18px; font-weight:bold; margin-left:8px; padding-bottom:2px; color: black;'>";
+				mnicknameOutput += "<span onclick='writeMemberBoard(\""+roomView.bdnickname+"\")' class='pointer'>"+roomView.bdnickname+"</span>";
+	
 				//메뉴 출력 할 수 있는 ...
 				//로그인 아이디에 따라 메뉴는 다르게 출력됨 
-				mnicknameOutput += "<span  style='position:absolute; right:20px; cursor:pointer;' onclick='menuModal(\""+nowBdcode+"\", \"${sessionScope.loginId}\")' style='font-size:15px; color:black; padding-rignt:10px;'>&#8943;</span>";
+				mnicknameOutput += "<span  style='position:absolute; right:20px; cursor:pointer;' onclick='menuModal(\""+nowBdcode+"\", \""+nowBdmid+"\")' style='font-size:15px; color:black; padding-rignt:10px;'>&#8943;</span>";
 				mnicknameOutput += "</div>";
 				$("#roomMnickname").html(mnicknameOutput);
 
@@ -756,7 +763,7 @@ roomView_ajax(nowBdcode)
 					replyOutput += "<div id='reply_"+replys[i].rpcode+"' style='width:100%; margin-bottom:3px;' class='row' onmouseover='toggleReplyMenu(\""+replys[i].rpcode+"\", \"show\")' onmouseout='toggleReplyMenu(\""+replys[i].rpcode+"\", \"hide\")'>";
 					//댓글 작성자 프로필 이미지
 					replyOutput += "<div style='width:30px; padding-top: 10px'>";
-					replyOutput += "<img class='product-img' onclick='writeMemberBoard(\""+replys[i].rpnickname+"\")' style='width:20px; height:20px; border-radius:50%;'";
+					replyOutput += "<img class='product-img' style='width:20px; height:20px; border-radius:50%;'";
 					if(replys[i].rpprofile != 'nomprofile'){
 						//console.log(replys[i].rpprofile);
 						console.log("프로필 있음");
@@ -776,17 +783,17 @@ roomView_ajax(nowBdcode)
 					//댓글 내용 부분 시작
 					replyOutput += "<div id='replyContents_"+replys[i].rpcode+"' style='width:320px; font-size:15px; padding-top:8px; word-break:break-word;'>"; 
 					//닉네임(진하게)
-					replyOutput += "<span style='font-weight:600;'>"+replys[i].rpnickname+"&nbsp;&nbsp;</span>";
+					replyOutput += "<span onclick='writeMemberBoard(\""+replys[i].rpnickname+"\")' class='pointer' style='font-weight:600; margin:0px;'>"+replys[i].rpnickname+"&nbsp;&nbsp;</span>";
 					//내용 
 					replyOutput += replys[i].rpcontents;
 					
 					//댓글 작성자와 관리자에게만 보이는 ...
 					if(replys[i].rpmid == '${sessionScope.loginId}'){
 						console.log("댓글 작성자");
-						replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \"${sessionScope.loginId}\")' style='font-size:15px;'>&#8943;</span>"; 
+						replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \""+replys[i].rpmid+"\")' style='font-size:15px;'>&#8943;</span>"; 
 					} else if ('${sessionScope.loginId}'=='admin'){
 						console.log("관리자");
-						replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \"${sessionScope.loginId}\")' style='font-size:15px;'>&#8943;</span>"; 	
+						replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \""+replys[i].rpmid+"\")' style='font-size:15px;'>&#8943;</span>"; 	
 					}
 					
 				
@@ -928,6 +935,7 @@ roomView_ajax(nowBdcode)
 			success : function(updateResult){
 				if( updateResult == 1 ){
 					console.log("댓글 삭제 성공!");
+					alert("댓글이 삭제되었습니다");
 					replyPrint('top');
 					
 					//목록 페이지 댓글수 업데이트 (-1)
@@ -1035,6 +1043,7 @@ roomView_ajax(nowBdcode)
 							$("#"+nowBdcode+"_wbhistory").html("<i class='fa-solid fa-land-mine-on' style='position:absolute; right:0;'></i>");
 							nowWb = 'y';
 							$("#menuModal").css("display", "none");
+						 	alert("신고가 접수되었습니다");
 						}
 
 					
@@ -1066,6 +1075,7 @@ roomView_ajax(nowBdcode)
 							$("#"+nowBdcode+"_wbhistory").html("");	
 							nowWb = 'n';
 							$("#menuModal").css("display", "none");
+							alert("신고가 취소되었습니다");
 						}						
 					}	
 				}	
