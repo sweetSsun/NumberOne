@@ -237,10 +237,20 @@ public class AdminService {
 		
 //		System.out.println(noticeBoard);
 		mav = new ModelAndView();
-		mav.addObject("noticeBoard", noticeBoard);
-		mav.addObject("paging", paging);
-		mav.setViewName("admin/Admin_NoticeBoardView");
 		
+		System.out.println(noticeBoard);
+
+		System.out.println(nbcode.substring(0,2));
+		if (nbcode.substring(0,2).equals("GB")){
+			mav.addObject("gonguBoard", noticeBoard);
+			mav.setViewName("gongu/GonguBoardView");
+			mav.addObject("paging", paging);
+			
+		} else {
+			mav.addObject("noticeBoard", noticeBoard);
+			mav.addObject("paging", paging);
+			mav.setViewName("admin/Admin_NoticeBoardView");
+		}
 		return mav;
 	}
 
