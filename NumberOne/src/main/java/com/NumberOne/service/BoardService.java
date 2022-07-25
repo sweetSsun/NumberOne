@@ -536,6 +536,7 @@ public class BoardService {
 		BoardDto board = bdao.selectBoardView(bdcode);
 		
 		mav.addObject("board", board);
+		mav.addObject("paging", paging);
 		mav.setViewName("board/ReviewBoardView");
 		
 		return mav;

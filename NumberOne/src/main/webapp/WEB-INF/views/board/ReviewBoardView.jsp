@@ -257,7 +257,9 @@
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
 				<div class="row mb-2">
 					<div class="col-2">
-						<input onclick="ReviewBoardList()" type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록"> 
+						<a href="selectCategoryBoardList${paging.makeQueryPage(board.bdcode, paging.page)}">
+						<input type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
+						</a> 
 					</div>
 				<c:choose>
 					<c:when test="${sessionScope.loginId == board.bdmid && sessionScope.loginId != 'admin' }">
@@ -499,14 +501,6 @@
  	}
 		
 
-</script>
-
-<script type="text/javascript">
-	/* 글목록 버튼 클릭 시 */
-	function ReviewBoardList(){
-		
-		location.href="selectCategoryBoardList?searchVal="+bdcategory;
-	}
 </script>
 
 <script type="text/javascript">
