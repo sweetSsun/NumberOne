@@ -21,13 +21,14 @@ public class GonguController {
 	@Autowired
 	private GonguService gsvc;
 	
+	/*
 	//공구 상세페이지 이동
 	@RequestMapping (value="gongu_selectBoardView")
 	public ModelAndView gongu_selectBoardView(String codeIdx, Paging paging) {
 		System.out.println("공구 상세페이지 이동 요청");
 		mav = gsvc.gongu_selectBoardView(codeIdx, paging);
 		return mav;
-	}
+	}*/
 	
 	//공구 작성페이지 이동
 	@RequestMapping (value="gongu_loadToBoardWrite")
@@ -45,22 +46,7 @@ public class GonguController {
 		return mav;
 	}
 	
-	/*
-	@RequestMapping (value="admin_selectNoticeModify")
-	public ModelAndView admin_selectNoticeModify(String codeIdx, Paging paging, RedirectAttributes ra) {
-		System.out.println("공지 수정페이지 이동 요청");
-		System.out.println("codeIdx : " + codeIdx);
-		mav = gsvc.admin_selectNoticeModify(codeIdx, paging, ra);
-		return mav;
-	}
 	
-	@RequestMapping (value="admin_updateNoticeModify")
-	public ModelAndView admin_updateNoticeModify(NoticeDto modiNotice, Paging paging, RedirectAttributes ra) throws IllegalStateException, IOException {
-		System.out.println("공지 수정 요청");
-		mav = gsvc.admin_updateNoticeModify(modiNotice, paging, ra);
-		return mav;
-	}
-	 */
 	
 	 
 	 

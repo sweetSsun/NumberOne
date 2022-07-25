@@ -12,6 +12,8 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <!-- Css Styles -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
+<!-- 카카오 JS_SDK -->
+<script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 
 <title>${gonguBoard.nbtitle} - 1인자:관리자 공구게시판</title>
 
@@ -116,23 +118,41 @@
 							</c:if>
 							<textarea class="textarea-NbView" readonly>${gonguBoard.nbcontents }</textarea>
 						</div>
+						
+						
+						<!-- 공동구매 결제API -->
+						<div class="row">
+							<div class="col-lg-10">
+								<div>
+								<input type="text" name="pay-name" placeholder="이름을 입력하세요">
+								</div>
+								<div>
+								<input type="text" name="pay-tel" placeholder="전화번호를 입력하세요">
+								</div>
+								<div>
+								<input type="text" name="pay-email" placeholder="이메일주소를 입력하세요">
+								</div>
+								<div>
+								<input type="text" name="pay-address" placeholder="배송지주소를 입력하세요">
+								</div>
+							</div>
+							<div class="col-lg-2">
+								<form method="post" action="kakaoPayReady">
+									<span id="total-price">1</span><h3>원 입니다.</h3>
+									<button class="btn-kakao-pay">
+										<img alt="카카오결제API" src="${pageContext.request.contextPath }/resources/img/payment_icon_yellow_medium.png">
+										<!-- small/ medium/ large -->
+									</button>
+								</form>
+							</div>
+									
+						</div>
+						<!-- 공구 끝 -->
+						<!-- 본문 끝 -->
+						
 					</div>
 				</form>
 				
-				<!-- 공동구매 결제API -->
-				<div>
-					<form action="">
-						<div>
-							<table>
-								<tr>
-									<td><input type="text" placeholder="이름을 입력하세요"></td>
-									<td><input type="text" placeholder="전화번호를 입력하세요"></td>
-									<td><input type="text" placeholder="배송지주소를 입력하세요"></td>
-								</tr>
-							</table>
-						</div>
-					</form>
-				</div>
 				
 				
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
@@ -207,6 +227,20 @@
 	});
 	
 </script>
+
+<!-- 카카오 공구 -->
+<!-- <script type="text/javascript">
+	
+function kakaopay(){
+	//SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해 주세요
+	Kakao.init('ca0d18cfbba25a16c9f1b8b5955fbe83');
+	Kakao.isInitialized();
+	// SDK 초기화 여부를 판단합니다.
+	console.log("Kakao.isInitialized();");
+	
+}
+
+</script> -->
 
 </body>
 
