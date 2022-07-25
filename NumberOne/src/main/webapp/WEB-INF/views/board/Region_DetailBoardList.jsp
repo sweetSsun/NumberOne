@@ -157,7 +157,7 @@
 					</thead>
 					
 					<tbody id="bdCategoryList">
-					<!-- 일반게시판 목록 -->
+					<!-- 지역게시판 목록 -->
 					
 					<c:forEach items="${regionList }" var="board">
 						<c:if test="${board.bdcategory != '자랑' }">
@@ -166,6 +166,7 @@
 							<td class="bdcategory text-center tableCell">
 								${board.bdrgname }
 							</td>
+							<!-- 후기게시판으로 이동하도록 수정하기\ -->
 							<td class="tableCell">
 							 	<a href="selectBoardView?bdcode=${board.bdcode }&bdtype=region">${board.bdtitle} 
 							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>

@@ -167,8 +167,12 @@ public class UsedBoardDto {
 	public void setGdprice2(String gdprice2) {
 		this.gdprice2 = gdprice2;
 	}
-	
-	
+	public String getUbdatedef() {
+		return ubdatedef;
+	}
+	public void setUbdatedef(String ubdatedef) {
+		this.ubdatedef = ubdatedef;
+	}
 	@Override
 	public String toString() {
 		return "UsedBoardDto [ubcode=" + ubcode + ", ubrgcode=" + ubrgcode + ", ubsellbuy=" + ubsellbuy + ", ubmid="
@@ -178,7 +182,7 @@ public class UsedBoardDto {
 				+ ubmainimgfile + ", ubdetailimgfile=" + Arrays.toString(ubdetailimgfile) + ", ubdetailimg_list="
 				+ Arrays.toString(ubdetailimg_list) + ", ubdetailimg_originList="
 				+ Arrays.toString(ubdetailimg_originList) + ", ubgdname=" + ubgdname + ", gdprice=" + gdprice
-				+ ", gdprice2=" + gdprice2 + "]";
+				+ ", gdprice2=" + gdprice2 + ", ubdatedef=" + ubdatedef + "]";
 	}
 	
 	
