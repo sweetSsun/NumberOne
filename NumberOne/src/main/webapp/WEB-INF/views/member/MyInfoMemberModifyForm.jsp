@@ -373,12 +373,13 @@ background-color: #00BCD4;
     									<input class="upload-name" 
     									value="${memberInfo.mprofile }" placeholder="첨부파일" id="inputFile" name="mprofile">
     								</div>	
-									<div class="col-lg-3 col-md-12 col-sm-12">    						
+									<div class="col-lg-3 col-md-12 col-sm-12" style="width: 150px;">    						
     									<label for="inputMfile" >파일찾기</label> 
     									<input type="file" id="inputMfile" name="mfile" value="" class="">
 									</div>
 									<div class="col-lg-3 col-md-12 col-sm-12">    						
-    									<input type="button" onclick="clear_test()" id="clickTest" name="" value="프로필없애기" class="">
+    									<input type="button" onclick="clear_test()" id="clickTest" name="" value="기본프로필로 변경" 
+    									style="border: 0px; text-align: center; background-color: #999999; height: 40px; color:white; padding: 0px;">
 									</div>								
 								</div>	
 							</div>
