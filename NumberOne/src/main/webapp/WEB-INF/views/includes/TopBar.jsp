@@ -591,13 +591,13 @@
 			zzimList += "<img src=\"${pageContext.request.contextPath }/resources/img/resell/" + data[i].ubmainimg + "\" alt=\"메인사진\" class=\" chat-profile\">";
 			zzimList += "</div>";
 			zzimList += "<div class=\"col-11\" style=\"\">";
-			zzimList += "<div class=\"row nav_chat\" style=\"--bs-gutter-x: 0; margin-left: 10px;\">";
-			zzimList += "<div class=\"col-11 overflow_twoline px-0 \" style=\"font-size:13px;\">" + data[i].ubtitle + "</div>";
-			zzimList += "<div class=\"col-1 nav_chat\" style=\"text-align: center;\">";
+			zzimList += "<div class=\"row \" style=\"--bs-gutter-x: 0; margin-left: 10px;\">";
+			zzimList += "<div class=\"col-10 overflow_twoline px-0 \" style=\"font-size:13px;\">" + data[i].ubtitle + "</div>";
+			zzimList += "<div class=\"col-2 \" style=\"color:#00a5ba; text-align:right; font-size:9px;\">"  + data[i].ubrgcode ;
 			zzimList += "</div>";
 			zzimList += "<div class=\"row\"style=\"width: 100%; --bs-gutter-x: 0;\">";
-			zzimList += "<div class=\"col-6 \" style=\"color:gray; text-align:left; font-size:9px;\">" + data[i].ubrgcode + "</div>";
-			zzimList += "<div class=\"col-6  px-0\" style=\"color:gray; text-align:right; font-size:9px;\">" + data[i].ubnickname + "</div>";
+			zzimList += "<div class=\"col-6 \" style=\"color:gray; text-align:left; font-size:9px; \">" + data[i].ubnickname + "</div>";
+			zzimList += "<div class=\"col-6  px-0\" style=\"color:gray; text-align:right; font-size:9px;\">" + data[i].ubdatedef + "</div>";
 			zzimList += "</div>";
 			zzimList += "</div>";
 			zzimList += "</div>";
