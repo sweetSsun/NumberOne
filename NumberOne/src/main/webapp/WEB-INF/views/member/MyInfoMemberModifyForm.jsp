@@ -371,12 +371,15 @@ background-color: #00BCD4;
 							<div class="row">
 									<div class="col-lg-6 col-md-12 col-sm-12">
     									<input class="upload-name" 
-    									value="${memberInfo.mprofile }" placeholder="첨부파일" id="inputFile" >
+    									value="${memberInfo.mprofile }" placeholder="첨부파일" id="inputFile" name="mprofile">
     								</div>	
-									<div class="col-lg-6 col-md-12 col-sm-12">    						
+									<div class="col-lg-3 col-md-12 col-sm-12">    						
     									<label for="inputMfile" >파일찾기</label> 
     									<input type="file" id="inputMfile" name="mfile" value="" class="">
 									</div>
+									<div class="col-lg-3 col-md-12 col-sm-12">    						
+    									<input type="button" onclick="clear_test()" id="clickTest" name="" value="프로필없애기" class="">
+									</div>								
 								</div>	
 							</div>
 							</c:otherwise>
@@ -410,6 +413,31 @@ background-color: #00BCD4;
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="${pageContext.request.contextPath }/resources/MemberJs/daumPostCode.js"></script>
     
+<script type="text/javascript">
+
+
+
+</script>
+	
+<script type="text/javascript">
+
+
+<!-- 파일 input 이름 생성 -->
+	$("#inputMfile").on('change',function(){
+	 	 var fileName = $("#inputMfile").val();
+	  	 $(".upload-name").val(fileName);
+	});
+
+
+	function clear_test(){
+		console.log("clear_test() 호출");
+		var currentFilename = $("#inputFile").val();
+		console.log(currentFilename);
+		$("#inputFile").val("del_"+currentFilename);
+	}
+	
+</script>
+
 
 
 
@@ -598,14 +626,7 @@ background-color: #00BCD4;
 	
 	</script>	
 	
-	
-	<!-- 파일 input 이름 생성 -->
-	<script type="text/javascript">
-	$("#inputMfile").on('change',function(){
-		  var fileName = $("#inputMfile").val();
-		  $(".upload-name").val(fileName);
-		});
-	</script> 
+
 	
 	<!-- ra 메세지 -->
 	<script type="text/javascript">
