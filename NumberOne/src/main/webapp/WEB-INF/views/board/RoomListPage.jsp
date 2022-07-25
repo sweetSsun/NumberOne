@@ -244,7 +244,7 @@ div.menu{
 .viewImgs{ 
 	width:800px; 
 	height:600px;     
-	object-fit: contain
+	object-fit: contain;
 }
 
 #reply{
@@ -1140,14 +1140,23 @@ function modalChange(type){
 						replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png'>"; 
 					}
 					replyOutput += "</img></div>";
+					
 					//댓글 내용 부분 시작
 					replyOutput += "<div id='replyContents_"+replys[i].rpcode+"' style='width:320px; font-size:15px; padding-top:0px; word-break:break-word;'>"; 
+					
 					//닉네임(진하게)
 					replyOutput += "<span onclick='writeMemberBoard(\""+replys[i].rpnickname+"\")' class='pointer' style='font-weight:600; margin:0px;'>"+replys[i].rpnickname+"&nbsp;&nbsp;</span>";
-					//내용 
-					replyOutput += replys[i].rpcontents+"<br>";
+					
+					//내용
+					var reply_transform = replys[i].rpcontents.replaceAll(' ', '&nbsp;');
+					reply_transform = reply_transform.replaceAll('\n', '<br>');
+					//console.log(reply_transform);
+					//replyOutput += replys[i].rpcontents+"<br>";
+					replyOutput += reply_transform+"<br>";
+					
 					//댓글 작성 시간
 					replyOutput += "<span style='font-size:10px; color:grey; margin:0px;'>"+replys[i].rpdate+"</span>";
+					
 					//댓글 작성자와 관리자에게만 보이는 ...
 					if(replys[i].rpmid == '${sessionScope.loginId}'){
 						console.log("댓글 작성자");
@@ -1252,7 +1261,8 @@ function modalChange(type){
 <script type="text/javascript">
 	
 	function replyEnter(e){
-		if(e.keyCode==13){
+		if(e.keyCode==13 && !e.shiftKey){
+			e.preventDefault();
 			replyResister();
 		}
 	}
@@ -1261,7 +1271,11 @@ function modalChange(type){
 		console.log("댓글 등록 요청");
 		
 		var rpcontents = $("#inputReply").val();
-		console.log(rpcontents);
+		//console.log(rpcontents);
+		//var rpcontents_tr = rpcontents.replaceAll(" ", "&nbsp;");
+		//console.log(rpcontents_tr);
+		//rpcontents_tr = rpcontents_tr.replace("\n", "<br>");
+		//console.log(rpcontents_tr);
 		
 		$.ajax({
 			type : "get",

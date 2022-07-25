@@ -784,8 +784,12 @@ roomView_ajax(nowBdcode)
 					replyOutput += "<div id='replyContents_"+replys[i].rpcode+"' style='width:320px; font-size:15px; padding-top:8px; word-break:break-word;'>"; 
 					//닉네임(진하게)
 					replyOutput += "<span onclick='writeMemberBoard(\""+replys[i].rpnickname+"\")' class='pointer' style='font-weight:600; margin:0px;'>"+replys[i].rpnickname+"&nbsp;&nbsp;</span>";
+					
 					//내용 
-					replyOutput += replys[i].rpcontents;
+					var reply_transform = replys[i].rpcontents.replaceAll(' ', '&nbsp;');
+					reply_transform = reply_transform.replaceAll('\n', '<br>');
+					//console.log(reply_transform);
+					replyOutput += reply_transform+"<br>";
 					
 					//댓글 작성자와 관리자에게만 보이는 ...
 					if(replys[i].rpmid == '${sessionScope.loginId}'){
@@ -853,7 +857,8 @@ roomView_ajax(nowBdcode)
 	var nowWb;
 	
 	function replyEnter(e){
-		if(e.keyCode==13){
+		if(e.keyCode==13 && !e.shiftKey){
+			e.preventDefault();
 			replyResister();
 		}
 	}
