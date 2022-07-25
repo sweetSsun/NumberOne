@@ -46,7 +46,7 @@
 	}
 	.buttons{
 		margin: auto; /* 수평 */
-		display: block; /* 수직 */
+		/* display: block; */
 		
 	}
 	.selectPlaceHolder{
@@ -261,7 +261,7 @@
 	}
 	function writeBoardCancel(){
 		/* 작성취소 */
-		history.back();
+		location.href="selectCategoryBoardList?searchVal=${paging.searchVal}";
 		
 	}
 	

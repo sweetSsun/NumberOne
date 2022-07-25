@@ -46,7 +46,7 @@
 	}
 	.buttons{
 		margin: auto;
-		display: block;
+		/* display: block; */
 		
 	}
 	.selectPlaceHolder{
