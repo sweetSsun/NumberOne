@@ -16,8 +16,7 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
 	integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
 	crossorigin="anonymous"
-	referrerpolicy="no-referrer"
-></script>
+	referrerpolicy="no-referrer"></script>
 
 <!-- 부트스트랩 -->
 <link
@@ -25,7 +24,11 @@
 	rel="stylesheet"
 	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
 	crossorigin="anonymous"
->
+	>
+	
+<!-- Css Styles -->
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
+
 <style type="text/css">
 div .d_none {
 	display: none;
@@ -64,15 +67,38 @@ option {
 	resize: none;
 }
 
+.container-gd {
+	border: 2px solid #00bcd4;
+	border-radius: 7px;
+	
+}
+
+.gdtitle {
+	border: none;
+	font-size: 20px;
+	height: 22px;
+	margin: auto;
+	width:100%;
+	vertical-align: middle;
+}
+.gd-header{
+	display: block;
+	border-radius: 5px 5px 0 0;
+	background-color: #00bcd4;
+	font-size: 18px;
+	color: white;
+	font-weight: bold;
+	text-align: center;
+}
+
+input[type="text"]:disabled {
+ 	background-color: white;
+}
+
 .btn-wrapper {
 	width: 100%;
 	text-align: center;
 	display: inline-block;
-}
-
-.buttons {
-	margin: auto; /* 수평 */
-	display: block; /* 수직 */
 }
 
 .selectPlaceHolder {
@@ -98,15 +124,6 @@ input:focus {
 	font-size: 20px;
 }
 
-.inputStyle{
-border: none;
-}
-
-.btn_size{
-width: 60px;
-height: 30px;
-
-}
 .item_right{
 flex-direction: row-reverse;
 margin-right: 5px;
@@ -124,6 +141,10 @@ margin-top: 0px;
 	border: none;
 	font-size: 20px;
 	margin-left: 20px;
+}
+
+.pl-4 {
+	padding-left: 1.5rem; 
 }
 </style>
 
@@ -150,10 +171,9 @@ margin-top: 0px;
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h1
+				<h2
 					class="text-center"
-					id="titleMsg"
-				></h1>
+					id="titleMsg"></h2>
 
 				<form
 					action="insertResellWrite"
@@ -163,25 +183,23 @@ margin-top: 0px;
 				>
 					<div class="container-header">
 						<div class="row">
-							<div class="col-8">
-								<span> <select
-										class="bdCategoryList"
-										id="resellTitle"
-										name="ubsellbuy"
-									>
-										<option value="S">팔구</option>
-										<option value="B">사구</option>
-									</select>
-								</span>
+							<div class="col-6">
+								<span style="font-size:20px;">카테고리 </span><span class="text-danger">*</span>
+								<select
+									class="bdCategoryList"
+									id="resellTitle"
+									name="ubsellbuy">
+									<option value="S">팔구</option>
+									<option value="B">사구</option>
+								</select>
+							</div>
+							<div class="col-6">
+								<span style="font-size:20px;">지역 </span><span class="text-danger">*</span>
 								<select
 									class="bdCategoryList"
 									name="ubrgcode"
-									id="regionCheck"
-								>
-									<option
-										value=""
-										selected disabled="disabled"
-									>지역선택</option>
+									id="regionCheck">
+									<option selected disabled="disabled" class="selectPlaceHolder">선택</option>
 									<option value="SEL">서울</option>
 									<option value="ICN">인천</option>
 									<option value="GGD">경기</option>
@@ -191,167 +209,170 @@ margin-top: 0px;
 									<option value="GSD">경상</option>
 									<option value="JJD">제주</option>
 								</select>
-
-
 							</div>
-
+<%-- 
 							<div class="col-1">작성자</div>
-
-
-
 							<div class="col-3 bdCategoryList">${mNickname }</div>
-
+ --%>
 						</div>
 						<hr>
+						
+						<!-- 글 제목 -->
 						<div class="row">
 							<input
 								type="text"
+								class ="bdtitle"
 								id="titleCheck"
 								name="ubtitle"
-								class ="inputStyle"
+								placeholder="제목"
 							>
 							<span class="checkMsg"></span>
 						</div>
 						<hr>
-						<div class="row">
-							<div class="col-8">
-								<input
-									type="text"
-									name="gd_names"
-									placeholder="품목명"
-									class ="inputStyle"
-								>
+						
+						<!-- 품목 -->
+						<div class="container-gd mb-3">
+						
+							<div class="row my-3">
+								<div class="col-7 pl-4">
+									<input
+										type="text"
+										class ="gdtitle"
+										name="gd_names"
+										placeholder="품목명">
+								</div>
+								<div class="col-3" style="display:flex;">  
+									<!-- 한화 표시 -->
+									<span style="color:gray; vertical-align: middle; margin: auto;">&#8361; </span>
+									<input
+										type="text"
+										class ="gdtitle"
+										placeholder="가격"
+										name="gd_price">
+								</div>
+								<div class="col-2 text-center">
+									<button id="addBtn" class="btn btn-sm btn-numberone" type="button"> +추가</button>
+								</div>
 							</div>
-
-							<div class="col-4">
-								<input
-									type="text"
-									placeholder="가격"
-									name="gd_price"
-									class ="inputStyle"
-								>
-							</div>
-							<hr>
-
-						</div>
-					
-							
-						<div class="row d_none btn_d-none">
-							<div class="col-7">
-								<input
-									type="text"
-									name=""
-									style="width: 100%"
-									placeholder="품목명"
-									class="gdcheck_n inputStyle"
-								>
-							</div>
-
-							<div class="col-4">
-								<input
-									type="text"
-									style="width: 100%"
-									placeholder="가격"
-									name=""
-									class="gdcheck_p inputStyle"
-								>
-							</div>
-								<button class="removeBtn btn btn-sm btn-info btn_size" type="button">-제거</button>
-								<hr>
-						</div>
-						<div class="row d_none btn_d-none">
-							<div class="col-7">
-								<input
-									type="text"
-									name=""
-									style="width: 100%"
-									placeholder="품목명"
-									class="gdcheck_n inputStyle"
-								>
-							</div>
-
-							<div class="col-4">
-								<input
-									type="text"
-									style="width: 100%"
-									placeholder="가격"
-									name=""
-									class="gdcheck_p inputStyle "
-								>
-							</div>
-							<button class="removeBtn btn btn-sm btn-info btn_size" type="button">-제거</button>
-								<hr>
-						</div>
-						<div class="row d_none btn_d-none">
-							<div class="col-7">
-								<input
-									type="text"
-									name=""
-									style="width: 100%"
-									placeholder="품목명"
-									class="gdcheck_n inputStyle"
-								>
-							</div>
-
-							<div class="col-4">
-								<input
-									type="text"
-									style="width: 100%"
-									placeholder="가격"
-									name=""
-									class="gdcheck_p inputStyle"
-								>
-							</div>
-								<button class="removeBtn btn btn-sm btn-info btn_size" type="button">-제거</button>
-							<hr>
-						</div>
-						<div class="row d_none btn_d-none">
-							<div class="col-7">
-								<input
-									type="text"
-									name=""
-									style="width: 100%"
-									placeholder="품목명"
-									class="gdcheck_n inputStyle"
-								>
-							</div>
-
-							<div class="col-4 ">
-								<input
-									type="text"
-									style="width: 100%"
-									placeholder="가격"
-									name=""
-									class="gdcheck_p inputStyle"
-								>
+								
+							<div class="row my-3 d_none btn_d-none">
+								<div class="col-7 pl-4">
+									<input
+										type="text"
+										class="gdcheck_n gdtitle"
+										name=""
+										style="width: 100%"
+										placeholder="품목명"
+									>
+								</div>
+								<div class="col-3" style="display:flex;">  
+									<!-- 한화 표시 -->
+									<span style="color:gray; vertical-align: middle; margin: auto;">&#8361; </span>
+									<input
+										type="text"
+										class="gdcheck_p gdtitle"
+										name=""
+										style="width: 100%"
+										placeholder="가격"
+									>
+								</div>
+								<div class="col-2 text-center">
+									<button class="removeBtn btn btn-sm btn-numberone" type="button">-제거</button>
+								</div>
 							</div>
 							
-							<button class="removeBtn btn btn-sm btn-info btn_size" type="button">-제거</button>
+							<div class="row my-3 d_none btn_d-none">
+								<div class="col-7 pl-4">
+									<input
+										type="text"
+										class="gdcheck_n gdtitle"
+										name=""
+										style="width: 100%"
+										placeholder="품목명"
+									>
+								</div>
+								<div class="col-3" style="display:flex;">  
+									<!-- 한화 표시 -->
+									<span style="color:gray; vertical-align: middle; margin: auto;">&#8361; </span>
+									<input
+										type="text"
+										class="gdcheck_p gdtitle"
+										name=""
+										style="width: 100%"
+										placeholder="가격"
+									>
+								</div>
+								<div class="col-2 text-center">
+									<button class="removeBtn btn btn-sm btn-numberone" type="button">-제거</button>
+								</div>
+							</div>
 							
-							<hr>
-									
+							<div class="row my-3 d_none btn_d-none">
+								<div class="col-7 pl-4">
+									<input
+										type="text"
+										class="gdcheck_n gdtitle"
+										name=""
+										style="width: 100%"
+										placeholder="품목명"
+									>
+								</div>
+								<div class="col-3" style="display:flex;">  
+									<!-- 한화 표시 -->
+									<span style="color:gray; vertical-align: middle; margin: auto;">&#8361; </span>
+									<input
+										type="text"
+										class="gdcheck_p gdtitle"
+										name=""
+										style="width: 100%"
+										placeholder="가격"
+									>
+								</div>
+								<div class="col-2 text-center">
+									<button class="removeBtn btn btn-sm btn-numberone" type="button">-제거</button>
+								</div>
+							</div>
+							
+							<div class="row my-3 d_none btn_d-none">
+								<div class="col-7 pl-4">
+									<input
+										type="text"
+										class="gdcheck_n gdtitle"
+										name=""
+										style="width: 100%"
+										placeholder="품목명"
+									>
+								</div>
+								<div class="col-3" style="display:flex;">  
+									<!-- 한화 표시 -->
+									<span style="color:gray; vertical-align: middle;">&#8361;</span>
+									<input
+										type="text"
+										class="gdcheck_p gdtitle"
+										name=""
+										style="width: 100%"
+										placeholder="가격"
+									>
+								</div>
+								<div class="col-2 text-center">
+									<button class="removeBtn btn btn-sm btn-numberone" type="button">-제거</button>
+								</div>
+							</div>
 						</div>
 						
-
-	<div class ="row item_right">
-							<div id="addBtn" class="btn btn-sm btn-info btn_size"> +추가</div>
-							</div>
-
-
-						<div class="row">
+						<!-- 상품 설명  -->
+						<div class="row" style="width:100%; margin-left:0;">
 							<textarea
+								class="ubcontents"
 								rows="17"
 								cols="80"
 								name="ubcontents"
 								id="contentsCheck"
-								class="ubcontents"
 								placeholder="상품상세설명"
 							></textarea>
 						</div>
 
 					</div>
-
-
 
 
 
@@ -404,15 +425,13 @@ margin-top: 0px;
 					<div class="row mt-4">
 						<div class="col btn-wrapper">
 							<input
-								class="btn btn-lg buttons fw-bold text-white"
-								style="background-color: #00bcd4;"
+								class="btn btn-lg btn-numberone fw-bold"
 								type="submit"
 								value="작성"
 							>
 							<input
 								onclick="bdWriteCancelCheckModal()"
-								style="background-color: #00bcd4;"
-								class="btn btn-lg buttons fw-bold text-white"
+								class="btn btn-lg btn-numberone fw-bold"
 								type="button"
 								value="취소"
 							>
@@ -458,7 +477,7 @@ margin-top: 0px;
 				<div class="modal-footer">
 					<input type="hidden">
 					<button
-						class="close btn btn-info text-white"
+						class="close btn btn-numberone"
 						onclick="cancelBtn()"
 					>네</button>
 					<button
@@ -729,7 +748,9 @@ for(let i = 0; i<dsiplay_btn.length; i++){
 		dsiplay_btn[i].classList.add("d_none");
 		
 		gdcheck_n[i].removeAttribute("name", "gd_names");
+		gdcheck_n[i].value = "";
 		gdcheck_p[i].removeAttribute("name", "gd_price");
+		gdcheck_p[i].value = "";
 				
 		}		
 	}

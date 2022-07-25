@@ -151,7 +151,7 @@
 					</thead>
 					
 					<tbody id="bdCategoryList">
-					<c:forEach items="${noticeList }" begin="3" var="notice">
+					<c:forEach items="${noticeList }" var="notice">
 						<c:if test="${notice.nbfix != 1 }">
 						<tr style="border-bottom: solid #E0E0E0 1px;">
 							<td class="text-center tableCell">${notice.nbcode}</td>

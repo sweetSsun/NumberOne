@@ -3,6 +3,7 @@ package com.NumberOne.service;
 import java.io.File;
 import java.io.IOException;
 import java.text.NumberFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.UUID;
@@ -42,7 +43,10 @@ public class MemberService {
 	private ChatDao chdao;
 	
 	@Autowired
-	   private ChatService chsvc;
+    private ChatService chsvc;
+
+	@Autowired
+	private ResellService rssvc;
 	
 	/*	현석 :  mail API 에러 때문에 주석처리 시작 
 	@Autowired
@@ -389,10 +393,12 @@ public class MemberService {
 		  System.out.println("로그인 된 프로필 : " + loginProfile);
 		 
 		 member.setMid(loginId);
-
+		 
+		 //System.out.println(member);
 		     
 			 //이미지 파일
 		      MultipartFile mfile = member.getMfile();
+		      System.out.println(mfile);
 		      
 		      //이미지의 파일명
 		      String mprofile = "";
@@ -408,15 +414,26 @@ public class MemberService {
 		         System.out.println("변경프로필 : " + mprofile);
 		      }else {
 		    	  if(loginProfile !=null) {
-		    		  System.out.println("변경 이미지 파일 없고, 기존 이미지 있음");		         
-		    		  member.setMprofile(loginProfile);  
+		    		  System.out.println("변경 이미지 파일 없고, 기존 이미지 있음");
+		    		  System.out.println(member.getMprofile().substring(0, 4));
+		    		  
+		    		  if(member.getMprofile().substring(0, 4).equals("del_")) {
+		    			  System.out.println("프로필 삭제");
+		    			  member.setMprofile("");  
+		    			  //System.out.println("프로필 삭제 if문 : "+member);
+		    		  } else {
+		    			  System.out.println("기존 프로필 유지");
+		    			  member.setMprofile(loginProfile);  
+		    		  }
+		    		  
 		    	  } else {
 		    		  System.out.println("변경 이미지 파일 없고, 기존 이미지 없음");		         
 		    		  member.setMprofile(mprofile);  
 		    	  }
 		      	
 		      }
-		         System.out.println(member);
+		      
+		      //System.out.println("프로필 삭제 if문 밖 : "+member);
 		      
 		      
 		      // 주소 처리 
@@ -960,15 +977,24 @@ public class MemberService {
 			
 			return ubList_gson;
 		}
-
-
+		
 		// 회원 찜목록 조회
-		public String selectZzimList_ajax(String loginId) {
+		public String selectZzimList_ajax(String loginId) throws ParseException {
 			System.out.println("service.selectZzimList_ajax() 호출");
 			System.out.println("loginId : " + loginId);
 			
 			ArrayList<UsedBoardDto> zzList = mdao.selectZzimList_ajax(loginId);
 			System.out.println("zzList : " + zzList);
+			
+			// 시간 출력 변경 (?시간 전)
+			for (int i = 0; i < zzList.size(); i++) {
+				//현재시간 - 작성시간
+				String ubdatedef = rssvc.timeFuction(zzList.get(i).getUbdate());
+				//ubdatedef 객체에 저장
+				zzList.get(i).setUbdatedef(ubdatedef);
+				//ubdate 분까지만 객체에 저장
+				zzList.get(i).getUbdate().substring(0,  16);	
+			}
 			
 			Gson gson = new Gson();
 			String zzList_gson = gson.toJson(zzList);

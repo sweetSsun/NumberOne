@@ -548,7 +548,8 @@ background-color: #00BCD4;
     		$("#inputMid").focus();
     		return false;
     	}
-    	
+    }
+  	
 
     	
     	/*이름 유무*/
@@ -559,11 +560,12 @@ background-color: #00BCD4;
     	}
     	
     	/*비밀번호 유무*/
-    	if($("#inputMpw").val().length == 0){
+    	if($("#inputMpw").val().length < 6){
     		alert("비밀번호를 입력해주세요.");
     		$("#inputMpw").focus();
     		return false;
     	}
+    	
     	
     	/*비밀번호 확인*/
     	if($("#checkMpw").val() != $("#inputMpw").val()){
