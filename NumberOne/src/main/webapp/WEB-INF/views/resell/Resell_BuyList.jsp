@@ -21,6 +21,7 @@
 	referrerpolicy="no-referrer"
 ></script>
 <!-- 부트스트랩 -->
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> 
 <link
 	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
@@ -126,34 +127,6 @@ input {
 	font-size: 18px;
 }
 
-.pagination {
-	width: 20rem ! important;
-	display: inline-block ! important;
-	margin-left: auto ! important;
-	margin-right: auto ! important;
-	margin-top: 1rem ! important;
-	font-size: 18px ! important;
-}
-
-.pagination a {
-	color: black ! important;
-	padding: 6px 12px ! important;
-	text-decoration: none ! important;
-	border-radius: 5px ! important;
-}
-
-.pagination span {
-	color: black ! important;
-	padding: 6px 12px ! important;
-	text-decoration: none ! important;
-	border-radius: 5px ! important;
-}
-
-.pagination a.active {
-	background-color: #00bcd4 ! important;
-	border-radius: 5px ! important;
-	color: white ! important;
-}
 
 .bigger {
 	font-size: 2rem;
@@ -303,7 +276,7 @@ div.col.mb-2 h3{ color : white; }
 						
 						id="regionInfo"
 					>
-						<option value="전국">전국</option>
+						<option value="all">전국</option>
 						<option value="서울">서울</option>
 						<option value="인천">인천</option>
 						<option value="경기">경기</option>
@@ -431,62 +404,66 @@ div.col.mb-2 h3{ color : white; }
 </body>
 
 <script type="text/javascript">
-	var checkMsg = '${msg}';
+	const checkMsg = '${msg}';
 	if ( checkMsg.length > 0 ){
 		alert(checkMsg);
+	}
+	window.onload = function() {
+		soldCheck();
 	}
 </script>
 
 <script type="text/javascript">
-		// ID가 'regionInfo'인 select태그의 option들 중 선택된 인덱스의 option태그 value를 변수에 저장
-		const loginRegion = '${sessionScope.loginRegion}'; 
-		const checkSearch = '${checkSearch}';   //검색확인용
-		console.log("체크메세지",checkSearch );
-		const searchMsg = document.getElementById("searchMsg");
-		const regionInfo = document.getElementById("regionInfo"); 
-		const checkMsg = '${msg}';   //글작성 확인용
-		let selRegion = regionInfo.options[regionInfo.selectedIndex].value;
-		console.log('selRegion',selRegion);
-		
-				/* 로그인된 회원인지 체크 */
-				let loginCheck = '${sessionScope.loginId}';
-				if (loginCheck.length == 0) {
-					alert("잘못된 접근입니다.");
-					location.href = "loadToLogin"
 
+	const memberRegion = '${sessionScope.loginRegion}';
+	const memberId = '${sessionScope.loginId}';
+	const checkSearch = '${checkSearch}'; //검색확인용	
+	const ubstate = document.querySelectorAll('.ubstate_');
+	const searchType_main = '${paging.searchType}';  //매인에서 선택한 검색타입
+	const keyword_main = '${paging.keyword}';		//메인에서 입력한 검색어
+	
+	
+	let regionInfo = document.getElementById("regionInfo");
+	let soldCheckMsg = document.querySelectorAll('.soldCheckMsg_');
+	
+	console.log("체크메세지", checkSearch);
+	
+
+	if (checkSearch === 'OK') { // 검색을 통해 페이지이동해 왔을 때 	
+		console.log("메인페이지에서 검색");
+	console.log('메인에서 선택한 검색타입 : ', searchType_main);
+	console.log('메인에서 입력한 검색어 : ', keyword_main);
+		keyword.value = keyword_main;
 		
-		if(checkMsg.length >0){		// 파라메터를 확인해서 단순 목록페이지이동인지, 글작성 후 페이지이동 인지 확인 
-			alert(checkMsg);  // 글작성 후 페이지이동 했을 시에만 글작성 성공메시시출력
-		}
-			
-			
-		if(checkSearch=='OK'){ // 검색을 통해 페이지이동해 왔을 때 		
-		console.log('checkSearch 체크',checkSearch);
-			// 수정****   검색을 통해 이동해 왔을 시 Text를 '' <- 공백으로 처리하고
-			//           중앙에 [검색어] 로 검색된 목록입니다.' 라는 메세지 출력하자
-		}
+		for(let i=0; i< searchType.options.length; i++){
+			if(searchType.options[i].value === searchType_main){
+				searchType.options[i].selected = 'true';
+				break;
+			}			
+		}		
+	}
+
+	else if (checkSearch === 'write') { //글 작성 후 이동해왔을 시 [전국]으로 selected 하기위한 코드
 		
-		else if(checkSearch=='all'){  //글 작성 후 이동해왔을 시 [전국]으로 selected 하기위한 코드
-			console.log('checkSearch 체크',checkSearch);
-			regionInfo.options[0].selected = "true";   //0번인덱스가 [전국]
-		}
+		console.log("글 작성");
+		regionInfo.options[0].selected = "true"; //0번인덱스가 [전국]
+	}
+
+	else {
+		//checkSearch의 값이 'OK' 가 아닐경우 선택된 지역이 없으므로, 페이지 접속 시 회원의 관심지역이 자동 선택되어 출력되도록 한다.	
 		
-		else{     
-			//checkSearch의 값이 'OK' 가 아닐경우 선택된 지역이 없으므로, 페이지 접속 시 회원의 관심지역이 자동 선택되어 출력되도록 한다.	
-			selRegion = loginRegion;  //회원의 관심지역을 선택된option의 value에 덮어쓰기.
-			console.log("관심지역" + selRegion);
-			
-			for(var i =0; i<regionInfo.options.length; i++){
-				//select 태그가 갖고있는 option의 갯수(길이)만큼 반복문을 실행한다.
-				if(regionInfo.options[i].value==selRegion){
-					 //option의 value 와 회원의 관심지역이 일치하는지 확인		
-					regionInfo.options[i].selected = "true";
-					 // 일치하는 경우 그 option에 selected 속성을 주어 선택되도록 한다.
-				}			
+		console.log("관심지역" + memberRegion);
+		for (let i = 0; i < regionInfo.options.length; i++) {
+			//select 태그가 갖고있는 option의 갯수(길이)만큼 반복문을 실행한다.
+			if (regionInfo.options[i].value === memberRegion) {
+				//option의 value 와 회원의 관심지역이 일치하는지 확인		
+				regionInfo.options[i].selected = "true";
+				// 일치하는 경우 그 option에 selected 속성을 주어 선택되도록 한다.
 			}
-		}	
-				}
+		}
+	}
 </script>
+
 
 <!-- 지역 검색 -->
 <script type="text/javascript">
@@ -495,74 +472,81 @@ div.col.mb-2 h3{ color : white; }
 	var output_pagerNum = '';
 
 	/* 지역선택 이벤트  */
-	
+
 	function selectRegion(page) {
 		console.log("selectRegion이벤트 호출");
-		selRegion = regionInfo.options[regionInfo.selectedIndex].value;
+		let searchType = document.getElementById("searchType").value;
+		console.log('searchType : ',searchType);
+		let keyword = document.getElementById("keyword").value;
+		console.log('keyword : ', keyword);
+		let selRegion = regionInfo.options[regionInfo.selectedIndex].value;
 		console.log("selRegion : ", selRegion);
 		//선택된 option의 value를 변수에 저장.
-		$.ajax({   //ajax를 통해 선택된 지역의 목록을 가져온다.
-					type : "get",
-					url : "selectResellRegionList_ajax",
-					dataType : "json",
-					data : {
-						"searchVal" : selRegion,
-						"sellBuy" : 'B',
-						"ajaxCheck" : 'REGION',
-						"page" : page
-					},
-					success : function(result) {
-						 output_page = '';
-						alert("성공");
-						console.log("결과 : " + result);
-						listOutput(result);	//목록 출력용 함수
-						document.getElementById("regionList").innerHTML = output_page;
-					}
-				})
-		
-			$
+		$.ajax({ //ajax를 통해 선택된 지역의 목록을 가져온다.
+			type : "get",
+			url : "selectResellRegionList_ajax",
+			dataType : "json",
+			async : false,
+			data : {
+				"keyword" : keyword,
+				"searchVal" : selRegion,
+				"sellBuy" : 'B',
+				"ajaxCheck" : 'REGION',
+				"page" : page,
+				"searchType" : searchType
+			},
+			success : function(result) {
+				output_page = '';
+				alert("성공");
+				console.log("결과 : " + result);
+				listOutput(result); //목록 출력용 함수
+				document.getElementById("regionList").innerHTML = output_page;
+			}
+
+		})
+
+		$
 				.ajax({ // 페이지 번호 출력용 ajax
 					type : "get",
 					url : "selectResellRegionList_ajax",
 					dataType : "json",
 					async : false,
 					data : {
+						"keyword" : keyword,
 						"searchVal" : selRegion,
-						"sellBuy" : 'S',
+						"sellBuy" : 'B',
 						"ajaxCheck" : 'PAGE',
-						"page" : page
+						"page" : page,
+						"searchType" : searchType
 					},
 					success : function(result) {
 						alert("page_ajax");
 						console.log("결과페이지 : " + result.page);
-						output_pagerNum = '';
 						
-						if (result.page <= 1) {
-							output_pagerNum = '<span class=\"paginate_button"\ >[이전]</span>';
+						let output_pageNum = "<ul class='pagination'>";
+						if (result.prev) {
+							output_pageNum += '<li class=\"paginate_button\" <a href=\"javascript:void(0);\" onclick=\"selectRegion('+ (result.page - 1) + ')\">[이전]</a></button>';
 						} else {
-							output_pagerNum = '<button class=\"paginate_button"\ onclick=\"selectRegion('
-									+ (result.page - 1) + ')\">[이전]</button>';
+							output_pageNum += "<li class='paginate_button'><span>이전</span></li>";
 						}
 						for (var i = result.startPage; i <= result.endPage; i++) {
 
 							if (result.page == i) {
-								output_pagerNum += '<span class=\"paginate_button"\ style=\"font-size: 20px\">&nbsp;'
-										+ i + '&nbsp;</span>';
+								output_pageNum +=  '<li><a class=\"active\">'+ i + '</a></li>';
 							} else {
-								output_pagerNum += '<button class=\"paginate_button"\ onclick=\"selectRegion('
-										+ i + ')\">' + i + '</button>';
+								output_pageNum += '<li class=\"paginate_button\"><a href=\"javascript:void(0);\" onclick=\"selectRegion('+ i + ')\">' + i + '</a></li>';
 							}
 						}
 						if (result.next) {
-							output_pagerNum += '<button class=\"paginate_button"\ onclick=\"selectRegion('
-									+ (result.page + 1) + ')\">[다음]</button>';
-
-						} else {
-							output_pagerNum += '<span class=\"paginate_button"\ >[다음]</span>';
+							output_pageNum += '<li class=\"paginate_button\"><a href=\"javascript:void(0);\" onclick=\"selectRegion('+ (result.page + 1) + ')\">다음</a></li>';
+								} 
+						else {									
+							output_pageNum += '<li class=\"paginate_button\"><span>다음</span></li>'
 						}
-						document.getElementById("pageList").innerHTML = output_pagerNum;
+						document.getElementById("pageList").innerHTML = output_pageNum;
 					}
 				})
+
 	}
 </script>
 
@@ -570,19 +554,20 @@ div.col.mb-2 h3{ color : white; }
 <script type="text/javascript">
 
  /* 검색버튼 클릭시 이벤트함수 */	 
-	function searchE(page){
-	console.log('searchE 호출 : ', searchE);	
-	 let searchType = document.getElementById("searchType").value;
-		console.log('searchType : ',searchType);
-		let searchKeyword = document.getElementsByName("keyword")[0].value;
-		console.log('searchKeyword : ', searchKeyword);
+function searchE(page){
+console.log('searchE 호출 : ', searchE);	
+let searchType = document.getElementById("searchType").value;
+	console.log('searchType : ',searchType);
+	let keyword = document.getElementById("keyword").value;
+	console.log('keyword : ', keyword);
+	let selRegion = regionInfo.options[regionInfo.selectedIndex].value;
 		//검색버튼의 click 이벤트 발생시  선택된 검색타입과 작성된 검색어를 변수에 담는다.
 		
 	$.ajax({   // 검색타입과 검색어에 일치하는 목록을 불러오기 위한 ajax
 			type : "get",
 			url : "selectResellRegionList_ajax",
 			dataType : "json",
-			data : {"keyword" : searchKeyword, "sellBuy" : "B", "ajaxCheck" : 'REGION', "searchVal" : selRegion, "searchType" : searchType},
+			data : {"keyword" : keyword, "sellBuy" : "B", "ajaxCheck" : 'REGION', "searchVal" : selRegion, "searchType" : searchType},
 			success : function(result){
 				alert("검색성공");
 				console.log("결과 : "+result);
@@ -601,7 +586,7 @@ div.col.mb-2 h3{ color : white; }
 					dataType : "json",
 					async : false,
 					data : {
-						"keyword" : searchKeyword,
+						"keyword" : keyword,
 						"searchVal" : selRegion,
 						"sellBuy" : 'S',
 						"ajaxCheck" : 'PAGE',
@@ -609,34 +594,31 @@ div.col.mb-2 h3{ color : white; }
 						"searchType" : searchType
 					},
 					success : function(result) {
-						output_pagerNum = '';
 						alert("page_ajax");
 						console.log("결과페이지 : " + result.page);
-
-						if (result.page <= 1) {
-							output_pagerNum = '<span class=\"paginate_button"\ >[이전]</span>';
+						
+						let output_pageNum = "<ul class='pagination'>";
+						
+						if (result.prev) {
+							output_pageNum += '<li class=\"paginate_button\" <a href=\"javascript:void(0);\" onclick=\"searchE('+ (result.page - 1) + ')\">[이전]</a></button>';
 						} else {
-							output_pagerNum = '<button class=\"paginate_button"\ onclick=\"searchE('
-									+ (result.page - 1) + ')\">[이전]</button>';
+							output_pageNum += "<li class='paginate_button'><span>이전</span></li>";
 						}
 						for (var i = result.startPage; i <= result.endPage; i++) {
 
 							if (result.page == i) {
-								output_pagerNum += '<span class=\"paginate_button"\ style=\"font-size: 20px\">&nbsp;'
-										+ i + '&nbsp;</span>';
+								output_pageNum +=  '<li><a class=\"active\">'+ i + '</a></li>';
 							} else {
-								output_pagerNum += '<button class=\"paginate_button"\ onclick=\"searchE('
-										+ i + ')\">' + i + '</button>';
+								output_pageNum += '<li class=\"paginate_button\"><a href=\"javascript:void(0);\" onclick=\"searchE('+ i + ')\">' + i + '</a></li>';
 							}
 						}
 						if (result.next) {
-							output_pagerNum += '<button class=\"paginate_button"\ onclick=\"searchE('
-									+ (result.page + 1) + ')\">[다음]</button>';
-
-						} else {
-							output_pagerNum += '<span class=\"paginate_button"\ >[다음]</span>';
+							output_pageNum += '<li class=\"paginate_button\"><a href=\"javascript:void(0);\" onclick=\"searchE('+ (result.page + 1) + ')\">다음</a></li>';
+								} 
+						else {									
+							output_pageNum += '<li class=\"paginate_button\"><span>다음</span></li>'
 						}
-						document.getElementById("pageList").innerHTML = output_pagerNum;
+						document.getElementById("pageList").innerHTML = output_pageNum;
 					}
 				})
 	}
