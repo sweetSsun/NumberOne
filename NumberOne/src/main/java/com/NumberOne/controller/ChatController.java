@@ -55,11 +55,20 @@ public class ChatController {
 		return msgList_json;
 	}
 
+//	@RequestMapping(value = "/selectChatRoomList")
+//	public @ResponseBody String selectChatRoomList(String loginId) {
+//		System.out.println("특정 사용자의 채팅방 목록 조회 요청");
+//		String chatRoomList_json = chsvc.selectChatRoomList(loginId);
+//			
+//		return chatRoomList_json;
+//	}
+	
+	// 채팅목록 남이 보낸 안읽은 메세지가 상단으로 오게
 	@RequestMapping(value = "/selectChatRoomList")
 	public @ResponseBody String selectChatRoomList(String loginId) {
 		System.out.println("특정 사용자의 채팅방 목록 조회 요청");
 		String chatRoomList_json = chsvc.selectChatRoomList(loginId);
-			
+		
 		return chatRoomList_json;
 	}
 	
@@ -71,24 +80,5 @@ public class ChatController {
 		return sumUnReadCount;
 	}
 	
-	// 채팅목록 남이 보낸 안읽은 메세지가 상단으로 오게 테스트
-	@RequestMapping(value = "/selectChatRoomList2")
-	public @ResponseBody String selectChatRoomListTest() {
-		System.out.println("특정 사용자의 채팅방 목록 조회 요청 (테스트)");
-		
-		//로그인 체크
-		String loginId = (String) session.getAttribute("loginId");
-		if(loginId == null) {
-			System.out.println("비로그인 사용자 채팅목록 접근 시도!");
-			//script에서 처리
-			return "2";
-		}
-		
-		//로그인 회원이면 채팅 목록 조회
-		String chatRoomList_json = chsvc.selectChatRoomList2(loginId);
-
-		return chatRoomList_json;
-		//return null;
-	}
 	
 }

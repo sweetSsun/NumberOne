@@ -230,31 +230,47 @@
 		// 배너고정 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
 		function updateBdfix(){
 			console.log("updateBdfix() 실행");
-			var bdcode = $("#bdcode").val();
-			console.log(btnObj.text());
-			if (btnObj.text() == "배너"){
-				var bdfix = 0;				
-			} else {
-				var bdfix = 1;				
-			}
-			$.ajax({
-				type: "get",
-				data: {"bdcode":bdcode, "bdfix":bdfix},
-				url: "admin_updateBdfix_ajax",
-				dataType: "json",
-				success: function(result){
-					if(result > 0){
-						if (bdfix == 0){
-							btnObj.text("일반").addClass("btn-secondary").removeClass("btn-numberone").toggleClass("btn");
-						} else {
-							btnObj.text("배너").addClass("btn-numberone").removeClass("btn-secondary").toggleClass("btn");
-						}
+		  	$.ajax({
+		  		type : 'get',
+		  		url : 'Admin_selectLoginOut_ajax',
+		  		async : false,
+		  		success : function(result){
+		  			if (result == "2"){ 
+		  				if(confirm("관리자 로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+		  					$("#updateBdfixModal").modal("hide");
+		  					location.href = "loadToLogin";
+		  				}
+		  				return;
+		  			}
+
+					var bdcode = $("#bdcode").val();
+					console.log(btnObj.text());
+					if (btnObj.text() == "배너"){
+						var bdfix = 0;				
+					} else {
+						var bdfix = 1;				
 					}
-					$("#updateBdfixModal").modal("hide");
-				},
-				error: function(){
-					$("#updateBdfixModal").modal("hide");
-					alert("글상태 변경에 실패했습니다.");
+					$.ajax({
+						type: "get",
+						data: {"bdcode":bdcode, "bdfix":bdfix},
+						url: "admin_updateBdfix_ajax",
+						dataType: "json",
+						success: function(result){
+							if(result > 0){
+								if (bdfix == 0){
+									btnObj.text("일반").addClass("btn-secondary").removeClass("btn-numberone").toggleClass("btn");
+								} else {
+									btnObj.text("배너").addClass("btn-numberone").removeClass("btn-secondary").toggleClass("btn");
+								}
+							}
+							$("#updateBdfixModal").modal("hide");
+						},
+						error: function(){
+							$("#updateBdfixModal").modal("hide");
+							alert("글상태 변경에 실패했습니다.");
+						}
+					});
+			
 				}
 			});
 		}

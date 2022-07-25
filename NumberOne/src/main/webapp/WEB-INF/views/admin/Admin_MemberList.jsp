@@ -313,37 +313,52 @@
 		// 회원상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
 		function updateMstate(){
 			console.log("updateMstate() 실행");
-			var mid = $("#mid").val();
-			console.log(btnObj.text());
-			if (btnObj.text() == "활동" || btnObj.text() == "경고" ){
-				var mstate = 0;				
-			} else {
-				if (mid.includes("@_")){
-					var mstate = 9;				
-				} else {
-					var mstate = 1;				
-				}
-			}
+			
 			$.ajax({
-				type: "get",
-				data: {"mid":mid, "mstate":mstate},
-				url: "admin_updateMstate_ajax",
-				dataType: "json",
-				success: function(result){
-					console.log(result);
-						if (result.mstate == 0){
-							btnObj.text("정지").addClass("btn-danger").removeClass("btn-secondary btn-primary btn-warning");
-						} else if (result.mwarning > 0){
-							btnObj.text("경고").addClass("btn-warning").removeClass("btn-secondary btn-danger btn-primary");
+		  		type : 'get',
+		  		url : 'Admin_selectLoginOut_ajax',
+		  		async : false,
+		  		success : function(result){
+		  			if (result == "2"){ 
+		  				if(confirm("관리자 로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+		  					location.href = "loadToLogin";
+		  				}
+		  				return;
+		  			}
+		  			
+					var mid = $("#mid").val();
+					console.log(btnObj.text());
+					if (btnObj.text() == "활동" || btnObj.text() == "경고" ){
+						var mstate = 0;				
+					} else {
+						if (mid.includes("@_")){
+							var mstate = 9;				
 						} else {
-							btnObj.text("활동").addClass("btn-primary").removeClass("btn-secondary btn-danger btn-warning");
+							var mstate = 1;				
 						}
-					$("#updateMstateModal").modal("hide");
-				},
-				error: function(){
-					$("#updateMstateModal").modal("hide");
-					alert("회원상태 변경에 실패했습니다.");
-				}
+					}
+					$.ajax({
+						type: "get",
+						data: {"mid":mid, "mstate":mstate},
+						url: "admin_updateMstate_ajax",
+						dataType: "json",
+						success: function(result){
+							console.log(result);
+								if (result.mstate == 0){
+									btnObj.text("정지").addClass("btn-danger").removeClass("btn-secondary btn-primary btn-warning");
+								} else if (result.mwarning > 0){
+									btnObj.text("경고").addClass("btn-warning").removeClass("btn-secondary btn-danger btn-primary");
+								} else {
+									btnObj.text("활동").addClass("btn-primary").removeClass("btn-secondary btn-danger btn-warning");
+								}
+							$("#updateMstateModal").modal("hide");
+						},
+						error: function(){
+							$("#updateMstateModal").modal("hide");
+							alert("회원상태 변경에 실패했습니다.");
+						}
+					});
+		  		}
 			});
 		}
 	</script>

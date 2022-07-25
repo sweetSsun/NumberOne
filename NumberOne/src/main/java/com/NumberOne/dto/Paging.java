@@ -51,7 +51,7 @@ public class Paging {
 	public Paging() {
 		// 초기값 설정
 		page = 1;
-		perPageNum = 10;
+		perPageNum = 20;
 		startRow = 1;
 		endRow = 10;
 		
