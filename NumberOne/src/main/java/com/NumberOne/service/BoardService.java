@@ -1008,6 +1008,10 @@ public class BoardService {
 		System.out.println("bdcategory : " + bdcategory);
 		System.out.println("bdrgcode : " + bdrgcode);
 		System.out.println("bdrgname : " + bdrgname);
+	
+		//로그인 확인 
+		
+		
 		
 		if ( bdcategory != null ) {
 			mav.setViewName("board/BoardWriteForm");
@@ -1106,11 +1110,8 @@ public class BoardService {
 		System.out.println("수정할 댓글번호 : " + rpcode);
 
 		ReplyDto reply = bdao.selectRpContents_ajax(rpcode);
-		reply.getRpcontents().replace("<br>", "\r\n");
-		reply.setRpcontents(reply.getRpcontents().replace("<br>", "\r\n"));
-
 		System.out.println(reply);
-
+		
 		return reply;
 	}
 

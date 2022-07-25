@@ -374,10 +374,28 @@ public class BoardController {
 	 
 	 //게시글 작성 페이지 이동 
 	 @RequestMapping ( value = "/loadToBoardWrite")
-	 public ModelAndView loadToBoardWrite(String bdcategory, String bdrgcode, String bdrgname) {
+	 public ModelAndView loadToBoardWrite(String bdcategory, String bdrgcode, String bdrgname, RedirectAttributes ra) {
 		 System.out.println("게시글 작성페이지 이동 요청");
+		 ModelAndView mav = new ModelAndView();
+		 mav = bsvc.loginChToFail(ra);
+		 int loginCh = (int) session.getAttribute("loginCh");
+		 if( loginCh == 0 ) {
+			 session.removeAttribute("loginCh");
+			 return mav;
+		 }
+		 session.removeAttribute("loginCh");
 		 
-		 ModelAndView mav = bsvc.loadToBoardWrite(bdcategory, bdrgcode, bdrgname);
+		 if ( bdcategory != null ) {
+			mav.setViewName("board/BoardWriteForm");
+		}else {
+			mav.setViewName("board/Region_BoardWriteForm");
+		}
+		
+		mav.addObject("bdcategory", bdcategory);
+		mav.addObject("bdrgcode", bdrgcode);
+		mav.addObject("bdrgname",bdrgname);
+		 
+		 //ModelAndView mav = bsvc.loadToBoardWrite(bdcategory, bdrgcode, bdrgname);
 		 
 		 return mav;
 	 }

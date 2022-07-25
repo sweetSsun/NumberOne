@@ -261,7 +261,7 @@
 	}
 	function writeBoardCancel(){
 		/* 작성취소 */
-		history.back();
+		location.href="selectCategoryBoardList?searchVal=${paging.searchVal}";
 		
 	}
 	
