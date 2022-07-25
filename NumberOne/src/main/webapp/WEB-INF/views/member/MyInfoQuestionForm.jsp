@@ -36,11 +36,11 @@
 		font-size: 20px;
 	}
 
-.site-btn {
+/* .site-btn {
 
 background-color: #00BCD4;
 
-}	
+} */	
 </style>
 </head>
 <body>
@@ -69,7 +69,7 @@ background-color: #00BCD4;
 				<br>
 				<!-- 재수정 -->
 				<!-- 작성글 목록 -->
-                <form class="user" action="insertMyInfoQuestionWrite" method="post">                                
+                <form class="user" action="insertMyInfoQuestionWrite" method="post" onsubmit="return inputFormCheck()">                                
                             <div class="row">
                                     <div>
 										<h4 class="" style="color: #00BCD4; margin-left: 30px;">문의하기</h4>  
@@ -84,13 +84,13 @@ background-color: #00BCD4;
 											<tr class="text-center" id="board_column">
 											<td style="width: 200px; padding: 20px;">제목</td> 
 											<td style="padding: 20px;" >
-											<input style=" height: 60px; width: 800px; padding: 20px;" name="cttitle">
+											<input style=" height: 60px; width: 800px; padding: 20px;" name="cttitle" id="title">
 											</td>
 											</tr>
 											<tr class="text-center" id="board_column">
 											<td style="width: 200px; padding: 20px;">내용</td>
 											<td style="padding: 20px;">
-											<textarea  style="height: 300px; width: 800px; padding: 20px;" name="ctcontents"></textarea></td>
+											<textarea  style="height: 300px; width: 800px; padding: 20px;" name="ctcontents" id="contents"></textarea></td>
 											</tr>											
 										</table>										                                  
                                     </div>
@@ -101,11 +101,11 @@ background-color: #00BCD4;
 				<br>
                         <div class="row">
                         	<div class="col-lg-12" style="margin-left: 400px;">						
-                        		<!--<button type="button" class="site-btn" style="width: 130px; border-radius: 4px;"
-                        		onclick = "location.href = 'selectMyInfoQuestionListView' " >
-                        		취소</button>-->
-                        		<button type="submit" class="site-btn" style="width: 130px; border-radius: 4px;"> 
+                        		<button type="submit" class="btn btn-numberone" style="width: 130px; border-radius: 4px;"> 
                         		등록</button>                        
+                        		<button type="button" class="btn btn-numberone" style="width: 130px; border-radius: 4px; background-color: gray; border: 1px solid gray;"
+                        		onclick = "location.href = 'selectMyInfoQuestionListView' " >
+                        		취소</button>
                         	</div>
                          </div>
                          </form>
@@ -120,6 +120,47 @@ background-color: #00BCD4;
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
 </body>
+
+<script type="text/javascript">
+
+ function inputFormCheck(){
+
+	 //제목 유무 확인
+	if($("#title").val().length == 0) {
+		alert("제목을 입력해주세요.");
+		$("#title").focus();
+		return false;
+	}
+	
+	 //내용 유무 확인
+	if($("#contents").val().length == 0) {
+		alert("내용을 입력해주세요.");
+		$("#contents").focus();
+		return false;
+	}
+	
+	 //재확인
+	var result = confirm("등록 후 수정 불가하오니 다시 한번 확인부탁드립니다.\n등록하시겠습니까?");
+	 console.log(result);
+	 if(!result){
+	     alert("취소되었습니다.");
+	     return false;
+
+	 }
+	
+	
+ }
+
+ 
+ 
+</script>
+
+
+
+    	
+
+
+
 
 <script type="text/javascript">
 	/* 게시판 카테고리 선택 */

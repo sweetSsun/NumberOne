@@ -88,6 +88,8 @@
 	}
 	.inputRpcontents{
 		font-size:20px;
+		border:none;
+		min-height: 2rem;
 	}
 	.outerCmtBox{
 		background-color : #F6F6F6;
@@ -287,14 +289,14 @@
 					<c:choose>
 					<c:when test="${sessionScope.loginId  != null }">
 						<div style="min-height:20%; border-radius:8px;" class="row outerCmtBox mt-3 mb-3">
-							<div class="innerCmtBox">
-								<!-- 댓글입력 -->
-								<textarea id="inputComment" style="border: solid #E0E0E0 3px; " class="mt-4 " rows="2" cols="100%" placeholder="상대방에게 불쾌감을 주는 욕설이나 댓글은 고지없이 삭제될 수 있습니다. "></textarea>
-							</div>
-							<div align="right" class="row">
-								<div align="right" class="col">
-									<button onclick="insertReply()" class="btn btn-sm bg-secondary mb-2 fw-bold text-white">등록</button>
+							<div class="col">
+								<div class="col innerCmtBox">
+									<!-- 댓글입력 -->
+									<textarea id="inputComment" style="border: solid #E0E0E0 3px; " class="mt-4 " rows="2" cols="120%" placeholder="상대방에게 불쾌감을 주는 욕설이나 댓글은 고지없이 삭제될 수 있습니다. "></textarea>
 								</div>
+							<div align="right" class="col">
+								<button onclick="insertReply()" class="btn btn-sm bg-secondary mb-2 fw-bold text-white">등록</button>
+							</div>
 							</div>
 						</div>
 					</c:when>
@@ -324,9 +326,9 @@
 					</textarea>                
                 </div>
                 <div class="modal-footer">
-                	<input type="hidden" >
+                	<input type="hidden" id="rpContentsBefore">
                     <button class="close btn text-white" style="background-color:#00bcd4" onclick="rpModify()">등록</button>
-                    <button class="close btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+                    <button class="close btn btn-secondary" type="button" data-dismiss="modal" onclick="rpModifyCancel()">취소</button>
                 </div>
             </div>
         </div>
@@ -408,8 +410,6 @@
 </body>
 
 <script type="text/javascript">
-	var boardCheck = "${bdcategory_none}";
-	console.log(boardCheck);
 	
 	var checkMsg = '${msg}';
 	if ( checkMsg.length > 0 ){
@@ -669,10 +669,12 @@
 		$("#bdDeleteCheckModal").modal('show');
 	}
 	function updateBoardDelete(){
+		
+		var bdmid = '${board.bdmid}';
 		/* 게시글 삭제(상태변경) */
 		//모달창에서 "네" 버튼 클릭 시 삭제
 		var bdcategory = '${board.bdcategory }';
-		location.href="updateBoardDelete?bdcode="+bdcode+"&bdcategory="+bdcategory;
+		location.href="updateBoardDelete?bdcode="+bdcode+"&bdcategory="+bdcategory+"&bdmid="+bdmid;
 	}
 	
 </script>
@@ -747,7 +749,7 @@
 							output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton bg-secondary text-white fw-bold mt-2\" onclick=\"adminReplyStop('"+ replyList[i].rpcode +"')\" value=\"정지\">"
 						}
 						/* 댓글내용 */
-						output += "<span class=\"inputRpcontents\">" + replyList[i].rpcontents + "</span>"
+						output += "<textarea style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</textarea>"
 						output += "</div>"
 						
 					}else{
@@ -776,7 +778,7 @@
 						
 						output += "<br>"
 						/* 댓글내용 */
-						output += "<span class=\"inputRpcontents\">" + replyList[i].rpcontents + "</span>"
+						output += "<textarea style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</textarea>"
 						output += "</div>"
 					}
 
@@ -811,10 +813,16 @@
 			data : { "rpcode" : rpcode },
 			async : false,
 			success : function(reply){
-				
-				$("#inputModifyRpBox").text(reply.rpcontents);
+				console.log(reply.rpcontents);
+				//$("#rpContentsBefore").text(reply.rpcontents);
+				$("#inputModifyRpBox").val(reply.rpcontents);
 				$("#inputRpcode").val(reply.rpcode);
+			},
+			error : function(reply) {
+				console.log("실휴패");
 			}
+			
+			
 		});
 		
 		$("#bdRpModifyModal").modal('show');
@@ -823,7 +831,7 @@
 	
 	function rpModify(){
 		/* 댓글수정 */
-		var modifyRpContents = $("#inputModifyRp").val();
+		var modifyRpContents = $("#inputModifyRpBox").val();
 		var inputRecode = $("#inputRpcode").val();
 		console.log("수정할 댓글코드 : " + inputRecode);
 		
@@ -839,9 +847,12 @@
 					selectReplyList();
 				}
 			}
-			
 		});
-		
+	}
+	
+	function rpModifyCancel(){
+		/* 댓글수정 취소 */
+		$("#inputModifyRpBox").text();
 	}
 	
 	function rpRemoveModal(rpcode){

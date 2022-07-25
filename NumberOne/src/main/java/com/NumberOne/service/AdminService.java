@@ -52,7 +52,7 @@ public class AdminService {
 	      
 	    if(loginId == null || !loginId.equals("admin")){
 	       //비로그인이거나, 관리자가 아닌 경우
-		    System.out.println("관리자 아님");
+//		    System.out.println("관리자 아님");
 	        //메세지 전송
 	        ra.addFlashAttribute("msg", "관리자 로그인 후 이용가능합니다");
 	        //실패페이지로 이동(msg alert 띄우고, history back)
@@ -80,10 +80,10 @@ public class AdminService {
 		int totalCount = adao.admin_selectMemberTotalCount(paging); // 전체 회원수 조회
 		paging.setTotalCount(totalCount);
 		paging.calc(); // 페이지 처리 계산 실행
-		System.out.println(paging);
+//		System.out.println(paging);
 		
 		ArrayList<MemberDto> memberList = adao.admin_selectMemberList(paging);
-		System.out.println(memberList);
+//		System.out.println(memberList);
 		
 		mav.addObject("memberList", memberList);
 		mav.addObject("paging", paging);
@@ -94,15 +94,15 @@ public class AdminService {
 	// 선택한 상태값에 따른 회원목록 ajax
 	public String admin_selectMemberList_ajax(Paging paging) {
 		System.out.println("AdminService.admin_selectMemberList_ajax() 호출");
-		System.out.println("searchVal : " + paging.getSearchVal());
+//		System.out.println("searchVal : " + paging.getSearchVal());
 		
 		int totalCount = adao.admin_selectMemberTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
 		paging.setTotalCount(totalCount);
 		paging.calc(); // 페이지 처리 계산 실행
-		System.out.println("paging : " + paging);
+//		System.out.println("paging : " + paging);
 		
 		ArrayList<MemberDto> memberList = adao.admin_selectMemberList(paging);
-		System.out.println("memberList : " + memberList);
+//		System.out.println("memberList : " + memberList);
 		
 		gson = new Gson();
 		if (paging.getAjaxCheck().equals("list")) { // memberList ajax일 경우
@@ -117,8 +117,8 @@ public class AdminService {
 	// 회원상태 변경 ajax
 	public String admin_updateMstate_ajax(String mid, int mstate) {
 		System.out.println("AdminService.admin_updateMstate_ajax() 호출");
-		System.out.println("상태변경할 mid : " + mid);
-		System.out.println("상태변경할 mstate : " + mstate);
+//		System.out.println("상태변경할 mid : " + mid);
+//		System.out.println("상태변경할 mstate : " + mstate);
 		int updateResult = adao.admin_updateMstate_ajax(mid, mstate);
 		String memberInfo_json = "";
 		if(updateResult > 0) {
@@ -132,7 +132,7 @@ public class AdminService {
 	public String admin_selectMemberInfo_ajax(String mid) {
 		System.out.println("AdminService_admin_selectMemberInfo_ajax() 호출");
 		MemberDto memberInfo = adao.admin_selectMemberInfo_ajax(mid);
-		System.out.println(memberInfo);
+//		System.out.println(memberInfo);
 		if (memberInfo.getMaddr() != null) {
 			String maadr_replace = memberInfo.getMaddr().replace("_", " ");
 			memberInfo.setMaddr(maadr_replace);
@@ -161,10 +161,10 @@ public class AdminService {
 		int totalCount = adao.admin_selectNoticeTotalCount(paging); // 전체 공지수 조회
 		paging.setTotalCount(totalCount);
 		paging.calc(); // 페이지 처리 계산 실행
-		System.out.println(paging);
+//		System.out.println(paging);
 		
 		ArrayList<NoticeDto> noticeList = adao.admin_selectNoticeList(paging);
-		System.out.println(noticeList);
+//		System.out.println(noticeList);
 		
 		mav.addObject("noticeList", noticeList);
 		mav.addObject("paging", paging);
@@ -175,15 +175,15 @@ public class AdminService {
 	// 선택한 상태값에 따른 공지목록 ajax
 	public String admin_selectNoticeList_ajax(Paging paging) {
 		System.out.println("AdminService.admin_selectNoticeList_ajax() 호출");
-		System.out.println("searchVal : " + paging.getSearchVal());
+//		System.out.println("searchVal : " + paging.getSearchVal());
 		
 		int totalCount = adao.admin_selectNoticeTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
 		paging.setTotalCount(totalCount);
 		paging.calc(); // 페이지 처리 계산 실행
-		System.out.println("paging : " + paging);
+//		System.out.println("paging : " + paging);
 		
 		ArrayList<NoticeDto> noticeList = adao.admin_selectNoticeList(paging);
-		System.out.println("noticeList : " + noticeList);
+//		System.out.println("noticeList : " + noticeList);
 		
 		gson = new Gson();
 		if (paging.getAjaxCheck().equals("list")) { // memberList ajax일 경우
@@ -198,8 +198,8 @@ public class AdminService {
 	// 공지상태 변경
 	public int admin_updateNbstate_ajax(String nbcode, int nbstate) {
 		System.out.println("AdminService.admin_updateNbstate_ajax() 호출");
-		System.out.println("상태변경할 nbcode : " + nbcode);
-		System.out.println("상태변경할 nbstate : " + nbstate);
+//		System.out.println("상태변경할 nbcode : " + nbcode);
+//		System.out.println("상태변경할 nbstate : " + nbstate);
 		int updateResult = adao.admin_updateNbstate_ajax(nbcode, nbstate);
 		return updateResult;
 	}
@@ -207,8 +207,8 @@ public class AdminService {
 	// 공지상태 변경_공지글 삭제
 	public ModelAndView admin_updateNbstate(String nbcode, int nbstate, RedirectAttributes ra) {
 		System.out.println("AdminService.admin_updateNbstate() 호출");
-		System.out.println("상태변경할 nbcode : " + nbcode);
-		System.out.println("상태변경할 nbstate : " + nbstate);
+//		System.out.println("상태변경할 nbcode : " + nbcode);
+//		System.out.println("상태변경할 nbstate : " + nbstate);
 		mav = new ModelAndView();
 		int updateResult = adao.admin_updateNbstate_ajax(nbcode, nbstate);
 		if (updateResult > 0) {
@@ -221,8 +221,8 @@ public class AdminService {
 	// 고정공지 변경
 	public int admin_updateNbfix_ajax(String nbcode, int nbfix) {
 		System.out.println("AdminService.admin_updateNbfix_ajax() 호출");
-		System.out.println("변경할 nbcode : " + nbcode);
-		System.out.println("변경할 nbfix : " + nbfix);
+//		System.out.println("변경할 nbcode : " + nbcode);
+//		System.out.println("변경할 nbfix : " + nbfix);
 		int updateResult = adao.admin_updateNbfix_ajax(nbcode, nbfix);
 		return updateResult;
 	}
@@ -230,14 +230,12 @@ public class AdminService {
 	//공지 상세페이지 이동 
 	public ModelAndView admin_selectNoticeBoardView(String nbcode,  Paging paging) {
 		System.out.println("AdminService.admin_selectNoticeBoardView() 호출");
-		System.out.println("nbcode:" +  nbcode);
-		System.out.println("paging : " + paging);
+//		System.out.println("nbcode:" +  nbcode);
+//		System.out.println("paging : " + paging);
 		
 		NoticeDto noticeBoard = bdao.selectNoticeBoardView(nbcode);
 		
-
-		
-		System.out.println(noticeBoard);
+//		System.out.println(noticeBoard);
 		mav = new ModelAndView();
 		mav.addObject("noticeBoard", noticeBoard);
 		mav.addObject("paging", paging);
@@ -350,8 +348,8 @@ public class AdminService {
 	// 수정 공지 DB에 입력
 	public ModelAndView admin_updateNoticeModify(NoticeDto modiNotice, Paging paging, RedirectAttributes ra) throws IllegalStateException, IOException {
 		System.out.println("AdminService.admin_updateNoticeModify() 호출");
-		System.out.println("originImg : " + modiNotice.getOriginImg());
-		System.out.println("paging : " + paging);
+		//System.out.println("originImg : " + modiNotice.getOriginImg());
+		//System.out.println("paging : " + paging);
 
 		mav = new ModelAndView();
 		
@@ -366,7 +364,7 @@ public class AdminService {
 		MultipartFile nbimgfile = modiNotice.getNbimgfile();
 		String nbimg = ""; // 파일명 저장할 변수명
 		if(!nbimgfile.isEmpty()) { // 파일 수정
-			System.out.println("첨부파일 있음");
+			//System.out.println("첨부파일 있음");
 			UUID uuid = UUID.randomUUID(); // 랜덤코드 생성
 			nbimg = uuid.toString() + "_" + nbimgfile.getOriginalFilename();
 			nbimgfile.transferTo( new File(nbImgSavePath, nbimg) );
@@ -380,7 +378,7 @@ public class AdminService {
 		}
 		
 		// UPDATE
-		System.out.println(modiNotice);
+		//System.out.println(modiNotice);
 		int updateresult =  adao.admin_updateNoticeModify(modiNotice);
 		
 		if(updateresult > 0) {
@@ -416,9 +414,9 @@ public class AdminService {
 		int totalCount = adao.admin_selectResellTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
 		paging.setTotalCount(totalCount);
 		paging.calc(); // 페이지 처리 계산 실행
-		System.out.println(paging);
+//		System.out.println(paging);
 		ArrayList<UsedBoardDto> usedBoardList = adao.admin_selectResellList(paging);
-		System.out.println("boardList : " + usedBoardList);
+//		System.out.println("boardList : " + usedBoardList);
 		mav.addObject("paging", paging);
 		mav.addObject("usedBoardList", usedBoardList);
 			
@@ -429,14 +427,14 @@ public class AdminService {
 	// 선택한 상태값에 따른 커뮤니티 목록 ajax
 	public String admin_selectResellList_ajax(Paging paging) {
 		System.out.println("AdminService.admin_selectResellList_ajax() 호출");
-		System.out.println("searchVal : " + paging.getSearchVal());
+//		System.out.println("searchVal : " + paging.getSearchVal());
 		int totalCount = adao.admin_selectResellTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
 		paging.setTotalCount(totalCount);
 		paging.calc(); // 페이지 처리 계산 실행
-		System.out.println("paging : " + paging);
+//		System.out.println("paging : " + paging);
 		
 		ArrayList<UsedBoardDto> usedBoardList = adao.admin_selectResellList(paging);
-		System.out.println("usedBoardLis : " + usedBoardList);
+//		System.out.println("usedBoardLis : " + usedBoardList);
 		gson = new Gson();
 		if (paging.getAjaxCheck().equals("list")) { // usedBoardLis ajax일 경우
 			String usedBoardList_json = gson.toJson(usedBoardList); 
@@ -450,8 +448,8 @@ public class AdminService {
 	// 중고거래 글상태 변경 요청
 	public int admin_updateUbstate_ajax(String ubcode, int ubstate) {
 		System.out.println("AdminService.admin_updateUbstate_ajax() 호출");
-		System.out.println("상태변경할 ubcode : " + ubcode);
-		System.out.println("상태변경할 ubstate : " + ubstate);
+//		System.out.println("상태변경할 ubcode : " + ubcode);
+//		System.out.println("상태변경할 ubstate : " + ubstate);
 		int updateResult = adao.admin_updateUbstate_ajax(ubcode, ubstate);
 		return updateResult;
 	}
@@ -477,9 +475,9 @@ public class AdminService {
 		paging.setTotalCount(totalCount);
 		paging.calc(); // 페이지 처리 계산 실행
 		
-		System.out.println(paging);
+//		System.out.println(paging);
 		ArrayList<BoardDto> boardList = adao.admin_selectBoardList(paging);
-		System.out.println("boardList : " + boardList);
+//		System.out.println("boardList : " + boardList);
 		mav.addObject("paging", paging);
 		mav.addObject("boardList", boardList);
 		mav.setViewName("admin/Admin_BoardList");
@@ -489,8 +487,8 @@ public class AdminService {
 	// 경고/정지 글 상태 변경 요청
 	public int admin_updateBdstate_ajax(String bdcode, int bdstate) {
 		System.out.println("AdminService.admin_updateBdstate_ajax() 호출");
-		System.out.println("상태변경할 bdcode : " + bdcode);
-		System.out.println("상태변경할 bdstate : " + bdstate);
+//		System.out.println("상태변경할 bdcode : " + bdcode);
+//		System.out.println("상태변경할 bdstate : " + bdstate);
 		int updateResult = adao.admin_updateBdstate_ajax(bdcode, bdstate);
 		return updateResult;
 	}
@@ -498,14 +496,14 @@ public class AdminService {
 	// 선택한 상태값에 따른 커뮤니티 목록 ajax
 	public String admin_selectBoardList_ajax(Paging paging) {
 		System.out.println("AdminService.admin_selectBoardList_ajax() 호출");
-		System.out.println("searchVal : " + paging.getSearchVal());
+//		System.out.println("searchVal : " + paging.getSearchVal());
 		int totalCount = adao.admin_selectBoardTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
 		paging.setTotalCount(totalCount);
 		paging.calc(); // 페이지 처리 계산 실행
-		System.out.println("paging : " + paging);
+//		System.out.println("paging : " + paging);
 		
 		ArrayList<BoardDto> boardList = adao.admin_selectBoardList(paging);
-		System.out.println("boardList : " + boardList);
+//		System.out.println("boardList : " + boardList);
 		gson = new Gson();
 		if (paging.getAjaxCheck().equals("list")) { // boardList ajax일 경우
 			String boardList_json = gson.toJson(boardList); 
@@ -520,12 +518,12 @@ public class AdminService {
 	public ModelAndView admin_selectReviewBoardView(Paging paging, String codeIdx, String check) {
 		System.out.println("AdminService.admin_selectReviewBoardView() 호출");
 		mav = new ModelAndView();
-		System.out.println("bdcode : " + codeIdx);
-		System.out.println("check : " + check);
+//		System.out.println("bdcode : " + codeIdx);
+//		System.out.println("check : " + check);
 		
 		//글상세정보 조회 
 		BoardDto board = bdao.selectBoardView(codeIdx);
-		System.out.println(board);
+//		System.out.println(board);
 		
 		mav.addObject("board", board);
 		mav.setViewName("admin/Admin_ReviewBoardView");
@@ -537,12 +535,12 @@ public class AdminService {
 	public ModelAndView admin_selectBoardView(Paging paging, String codeIdx, String check) {
 		System.out.println("AdminService.admin_selectBoardView() 호출");
 		mav = new ModelAndView();
-		System.out.println("bdcode : " + codeIdx);
-		System.out.println("check : " + check);
+//		System.out.println("bdcode : " + codeIdx);
+//		System.out.println("check : " + check);
 		
 		//글상세정보 조회 
 		BoardDto board = bdao.selectBoardView(codeIdx);
-		System.out.println(board);
+//		System.out.println(board);
 		
 		mav.addObject("board", board);
 		mav.setViewName("admin/Admin_BoardView");
@@ -569,9 +567,9 @@ public class AdminService {
 		paging.setTotalCount(totalCount);
 		paging.calc(); // 페이지 처리 계산 실행
 		
-		System.out.println(paging);
+//		System.out.println(paging);
 		ArrayList<BoardDto> bdfixList = adao.admin_selectBdfixList(paging);
-		System.out.println("bdfixList : " + bdfixList);
+//		System.out.println("bdfixList : " + bdfixList);
 		mav.addObject("paging", paging);
 		mav.addObject("bdfixList", bdfixList);
 		mav.setViewName("admin/Admin_BdfixList");
@@ -581,14 +579,14 @@ public class AdminService {
 	// 선택한 상태값에 따른 배너관리 목록 ajax
 	public String admin_selectBdfixList_ajax(Paging paging) {
 		System.out.println("AdminService.admin_selectBdfixList_ajax() 호출");
-		System.out.println("searchVal : " + paging.getSearchVal());
+//		System.out.println("searchVal : " + paging.getSearchVal());
 		int totalCount = adao.admin_selectBdfixTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
 		paging.setTotalCount(totalCount);
 		paging.calc(); // 페이지 처리 계산 실행
-		System.out.println("paging : " + paging);
+//		System.out.println("paging : " + paging);
 		
 		ArrayList<BoardDto> bdfixList = adao.admin_selectBdfixList(paging);
-		System.out.println("bdfixList : " + bdfixList);
+//		System.out.println("bdfixList : " + bdfixList);
 		gson = new Gson();
 		if (paging.getAjaxCheck().equals("list")) { // boardList ajax일 경우
 			String bdfixList_json = gson.toJson(bdfixList); 
@@ -602,8 +600,8 @@ public class AdminService {
 	// 배너 고정상태 변경 요청
 	public int admin_updateBdfix_ajax(String bdcode, int bdfix) {
 		System.out.println("AdminService.admin_updateBdstate_ajax() 호출");
-		System.out.println("배너 고정할 bdcode : " + bdcode);
-		System.out.println("배너 고정할 bdfix : " + bdfix);
+//		System.out.println("배너 고정할 bdcode : " + bdcode);
+//		System.out.println("배너 고정할 bdfix : " + bdfix);
 		int updateResult = adao.admin_updateBdfix_ajax(bdcode, bdfix);
 		return updateResult;
 	}
@@ -626,10 +624,10 @@ public class AdminService {
 		int totalCount = adao.admin_selectReplyTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
 		paging.setTotalCount(totalCount);
 		paging.calc(); // 페이지 처리 계산 실행
-		System.out.println(paging);
+//		System.out.println(paging);
 		
 		ArrayList<ReplyDto> replyList = adao.admin_selectReplyList(paging);
-		System.out.println("replyList : " + replyList);
+//		System.out.println("replyList : " + replyList);
 		mav.addObject("paging", paging);
 		mav.addObject("replyList", replyList);
 		mav.setViewName("admin/Admin_ReplyList");
@@ -639,14 +637,14 @@ public class AdminService {
 	// 선택한 상태값에 따른 댓글 목록 ajax
 	public String admin_selectReplyList_ajax(Paging paging) {
 		System.out.println("AdminService.admin_selectReplyList_ajax() 호출");
-		System.out.println("searchVal : " + paging.getSearchVal());
+//		System.out.println("searchVal : " + paging.getSearchVal());
 		int totalCount = adao.admin_selectReplyTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
 		paging.setTotalCount(totalCount);
 		paging.calc(); // 페이지 처리 계산 실행
-		System.out.println("paging : " + paging);
+//		System.out.println("paging : " + paging);
 		
 		ArrayList<ReplyDto> replyList = adao.admin_selectReplyList(paging);
-		System.out.println("replyList : " + replyList);
+//		System.out.println("replyList : " + replyList);
 		gson = new Gson();
 		if (paging.getAjaxCheck().equals("list")) { // replyList ajax일 경우
 			String replyList_json = gson.toJson(replyList); 
@@ -660,8 +658,8 @@ public class AdminService {
 	// 댓글 상태 변경 요청
 	public int admin_updateRpstate_ajax(String rpcode, int rpstate) {
 		System.out.println("AdminService.admin_updateRpstate_ajax() 호출");
-		System.out.println("상태변경할 rpcode : " + rpcode);
-		System.out.println("상태변경할 rpstate : " + rpstate);
+//		System.out.println("상태변경할 rpcode : " + rpcode);
+//		System.out.println("상태변경할 rpstate : " + rpstate);
 		int updateResult = adao.admin_updateRpstate_ajax(rpcode, rpstate);
 		return updateResult;
 	}
@@ -681,10 +679,10 @@ public class AdminService {
 		int totalCount = adao.admin_selectContactTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
 		paging.setTotalCount(totalCount);
 		paging.calc(); // 페이지 처리 계산 실행
-		System.out.println(paging);
+//		System.out.println(paging);
 		
 		ArrayList<ContactDto> contactList = adao.admin_selectContactList(paging);
-		System.out.println("contactList : " + contactList);
+//		System.out.println("contactList : " + contactList);
 		mav.addObject("paging", paging);
 		mav.addObject("contactList", contactList);
 		
@@ -695,14 +693,14 @@ public class AdminService {
 	// 문의 관리페이지 정렬 요청
 	public String admin_selectQuestionList_ajax(Paging paging) {
 		System.out.println("AdminService.admin_selectQuestionList_ajax() 호출");
-		System.out.println("searchVal : " + paging.getSearchVal());
+//		System.out.println("searchVal : " + paging.getSearchVal());
 		int totalCount = adao.admin_selectContactTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
 		paging.setTotalCount(totalCount);
 		paging.calc(); // 페이지 처리 계산 실행
-		System.out.println("paging : " + paging);
+//		System.out.println("paging : " + paging);
 		
 		ArrayList<ContactDto> contactList = adao.admin_selectContactList(paging);
-		System.out.println("contactList : " + contactList);
+//		System.out.println("contactList : " + contactList);
 		gson = new Gson();
 		
 		if (paging.getAjaxCheck().equals("list")) {
@@ -717,8 +715,8 @@ public class AdminService {
 	// 문의 답변 입력 요청
 	public int admin_updateQuestionAns_ajax(String ctcode, String ctans) {
 		System.out.println("AdminService.admin_updateQuestionAns_ajax() 호출");
-		System.out.println("ctcode : " + ctcode);
-		System.out.println("ctans : " + ctans);
+//		System.out.println("ctcode : " + ctcode);
+//		System.out.println("ctans : " + ctans);
 		int updateResult = adao.admin_updateQuestionAns_ajax(ctcode, ctans);
 		return updateResult;
 	}
@@ -727,8 +725,8 @@ public class AdminService {
 	// 일반게시글 정지
 	public ModelAndView admin_updateBoardStop(String bdcode, Paging paging, String check, RedirectAttributes ra) {
 		System.out.println("AdminService.admin_updateBoardStop() 호출");
-		System.out.println("bdcode : " + bdcode);
-		System.out.println("check : " + check);
+//		System.out.println("bdcode : " + bdcode);
+//		System.out.println("check : " + check);
 		mav = new ModelAndView();
 		int updateResult = adao.admin_updateBoardStop(bdcode);
 		if (updateResult > 0) {
@@ -745,7 +743,7 @@ public class AdminService {
 	//자랑글 정지
 	public int admin_updateRoomStop_ajax(String bdcode) {
 		System.out.println("AdminService.admin_updateRoomStop_ajax() 호출");
-		System.out.println("bdcode : " + bdcode);
+//		System.out.println("bdcode : " + bdcode);
 		int updateResult = adao.admin_updateBoardStop(bdcode);
 		return updateResult;
 		// 스크립트단에서 updateResult > 0 이면 "정지처리되었습니다" 모달 띄우고, 정지버튼 d_none
@@ -755,8 +753,8 @@ public class AdminService {
 	//중고거래 글 정지
 	public ModelAndView admin_updateResellStop(UsedBoardDto ubDto, Paging paging, String check, RedirectAttributes ra) {
 		System.out.println("AdminService.admin_updateResellStop() 호출");
-		System.out.println("ubcode : " + ubDto.getUbcode());
-		System.out.println("check : " + check);
+//		System.out.println("ubcode : " + ubDto.getUbcode());
+//		System.out.println("check : " + check);
 		mav = new ModelAndView();
 		int updateResult = adao.admin_updateResellStop(ubDto.getUbcode());
 		if (updateResult > 0) {
@@ -777,7 +775,7 @@ public class AdminService {
 	// 댓글 정지
 	public int admin_updateReplyStop_ajax(String rpcode) {
 		System.out.println("AdminService.admin_updateReplyStop_ajax() 호출");
-		System.out.println("rpcode : " + rpcode);
+//		System.out.println("rpcode : " + rpcode);
 		int updateResult = adao.admin_updateReplyStop(rpcode);
 		return updateResult;
 		// 호출한 ajax success에서

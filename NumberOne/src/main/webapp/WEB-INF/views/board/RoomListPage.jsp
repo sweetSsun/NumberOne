@@ -105,6 +105,7 @@
 .gallerylist > ul > li > a .screen img {
 	width:100%; 
 	height:100%;
+    object-fit: fill;
 }
 
 .gallerylist > ul > li > a h3 {
@@ -240,7 +241,11 @@ div.menu{
   }
 }
 
-.viewImgs{ width:800px; height:600px;}
+.viewImgs{ 
+	width:800px; 
+	height:600px;     
+	object-fit: contain
+}
 
 #reply{
 	height:160px; 
@@ -393,6 +398,7 @@ input{
 	border : 1px solid #DCDCDC;
 	font-size : 15px; 
 }
+.pointer { cursor : pointer; }
 </style>
 </head>
 <body>
@@ -973,11 +979,11 @@ function modalChange(type){
 			//wrapper for slide
 			imgHtml += "<div class='carousel-inner'>";
 			imgHtml += "<div class='item active'>";
-			imgHtml += "<img style='width:800px; height:600px;' class='viewImgs' src='${pageContext.request.contextPath }/resources/img/room/"+imgs[0]+"'></img>";		
+			imgHtml += "<img style='width:100%; height:600px; max-width:100%' class='viewImgs' src='${pageContext.request.contextPath }/resources/img/room/"+imgs[0]+"'></img>";		
 			imgHtml += "</div>";
 			for(var j=1; j<numOfImgs; j++){
 				imgHtml += "<div class='item'>";
-				imgHtml += "<img class='viewImgs' style='width:800px; height:600px;' src='${pageContext.request.contextPath }/resources/img/room/"+imgs[j]+"' ></img>";		
+				imgHtml += "<img class='viewImgs' style='width:100%; height:600px; max-width:100%' src='${pageContext.request.contextPath }/resources/img/room/"+imgs[j]+"' ></img>";		
 				imgHtml += "</div>";
 			}
 			imgHtml += "</div>";
@@ -997,7 +1003,7 @@ function modalChange(type){
 		
 		$("#roomimg").html(imgHtml);
 		//작성자 프로필	
-		var mprofileOutput = "<img onclick='writeMemberBoard(\""+roomView.bdnickname+"\")' class='product-img' style='width:30px; height:30px; border-radius:50%;'";
+		var mprofileOutput = "<img class='product-img' style='width:30px; height:30px; border-radius:50%;'";
 		if(roomView.bdmprofile != 'nomprofile'){
 			console.log("작성자 프로필 있음");
 			if(roomView.bdmid.substring(0,1) == "@"){
@@ -1014,7 +1020,9 @@ function modalChange(type){
 		}
 		mprofileOutput += "</img>";
 		$("#roomMprofile").html(mprofileOutput);
-		mnicknameOutput = "<div id='mnickname' style='font-size:18px; margin-left:8px; padding-bottom:2px; color: black;'>"+roomView.bdnickname;
+		mnicknameOutput = "<div id='mnickname' style='font-size:18px; font-weight:bold; margin-left:8px; padding-bottom:2px; color: black;'>";
+		mnicknameOutput += "<span onclick='writeMemberBoard(\""+roomView.bdnickname+"\")' class='pointer'>"+roomView.bdnickname+"</span>";
+		
 		//메뉴 출력 할 수 있는 ...
 		//로그인 아이디에 따라 메뉴는 다르게 출력됨 
 		mnicknameOutput += "<span  style='position:absolute; right:20px; cursor:pointer;' onclick='menuModal(\""+roomView.bdcode+"\", \""+roomView.bdmid+"\")' style='font-size:15px; color:black; padding-rignt:10px;'>&#8943;</span>";
@@ -1118,7 +1126,7 @@ function modalChange(type){
 					replyOutput += "<div id='reply_"+replys[i].rpcode+"' style='width:100%; margin-bottom:3px;' class='row' onmouseover='toggleReplyMenu(\""+replys[i].rpcode+"\", \"show\")' onmouseout='toggleReplyMenu(\""+replys[i].rpcode+"\", \"hide\")'>";
 					//댓글 작성자 프로필 이미지
 					replyOutput += "<div style='width:30px;'>";
-					replyOutput += "<img class='product-img' onclick='writeMemberBoard(\""+replys[i].rpnickname+"\")' style='width:20px; height:20px; border-radius:50%; margin-top:10px;'";
+					replyOutput += "<img class='product-img' style='width:20px; height:20px; border-radius:50%; margin-top:10px;'";
 					if(replys[i].rpprofile != 'nomprofile'){
 						console.log("프로필 있음")
 						if(replys[i].rpmid.substring(0, 1) == "@"){
@@ -1135,7 +1143,7 @@ function modalChange(type){
 					//댓글 내용 부분 시작
 					replyOutput += "<div id='replyContents_"+replys[i].rpcode+"' style='width:320px; font-size:15px; padding-top:0px; word-break:break-word;'>"; 
 					//닉네임(진하게)
-					replyOutput += "<span style='font-weight:600; margin:0px;'>"+replys[i].rpnickname+"&nbsp;&nbsp;</span>";
+					replyOutput += "<span onclick='writeMemberBoard(\""+replys[i].rpnickname+"\")' class='pointer' style='font-weight:600; margin:0px;'>"+replys[i].rpnickname+"&nbsp;&nbsp;</span>";
 					//내용 
 					replyOutput += replys[i].rpcontents+"<br>";
 					//댓글 작성 시간
@@ -1222,6 +1230,7 @@ function modalChange(type){
 			success : function(updateResult){
 				if( updateResult == 1 ){
 					console.log("댓글 삭제 성공!");
+					alert("댓글이 삭제되었습니다");
 					replyPrint('top');
 					
 					//목록 페이지 댓글수 업데이트 (-1)
@@ -1407,6 +1416,7 @@ function modalChange(type){
 							nowWb = 'y';
 							$("#"+nowBdcode+"_wbhistory").html("<i class='fa-solid fa-land-mine-on' style='position:absolute; right:0;'></i>");
 							$("#menuModal").css("display", "none");
+							alert("신고가 접수되었습니다");
 						}
 
 					
@@ -1438,6 +1448,7 @@ function modalChange(type){
 							$("#"+nowBdcode+"_wbhistory").html("");	
 							nowWb = 'n';
 							$("#menuModal").css("display", "none");
+							alert("신고가 취소되었습니다");
 						}						
 					}	
 				} 

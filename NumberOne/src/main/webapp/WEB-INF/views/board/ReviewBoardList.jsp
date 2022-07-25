@@ -256,7 +256,6 @@
 				<div align="right" class="col mt-2">
 					<c:if test="${sessionScope.loginId != null }">
 						<button type="button" onclick="loadToWriteReview()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">글작성</button>
-						<!-- <button type="button" onclick="loadToBoardWrite()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">글작성</button> -->
 					</c:if>
 				</div>
 				</div>
@@ -356,14 +355,7 @@
 </script>
 <script type="text/javascript">
 	
-	console.log('${paging.searchVal}');
-	/* 글쓰기 버튼 클릭 */
-	function loadToBoardWrite(){
-		//글작성 페이지로 이동 
-		var bdcategory = "${paging.searchVal}";
-		location.href= "loadToBoardWrite?bdcategory="+bdcategory;
-	}
-	
+	/* 글작성 버튼 클릭 */
 	function loadToWriteReview(){
 		location.href="loadToWriteReview";		
 	}

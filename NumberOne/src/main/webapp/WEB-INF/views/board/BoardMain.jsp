@@ -93,7 +93,7 @@ section{
 	 font-weight: bold;
 	}
 	
-	.region_sel:hover{
+	.region_sel:hover {
 	 background-color: #00bcd4; 
 		color: white;	
 	}
@@ -289,7 +289,7 @@ section{
 									<tr>
 										<td class="tdTitle">
 										<div class="td_Div">
-											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
+											<a href="selectReviewBoardView?bdcode=${board.bdcode }">${board.bdtitle}
 												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
 										</div>
 										</td>
