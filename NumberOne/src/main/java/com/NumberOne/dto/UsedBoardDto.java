@@ -44,6 +44,7 @@ public class UsedBoardDto {
 	private String gdprice2; // 마이페이지 출력용 가격 (천단위마다 ,)
 	
 	private String ubdatedef; //메인에서 시간 출력용(현재시간-작성시간)
+	private String zzimcheck;    //로그인 아이디가 찜 했는지 안했는지 저장 1:기록있음 0:기록없음
 	
 	public String getUbcode() {
 		return ubcode;
@@ -173,6 +174,12 @@ public class UsedBoardDto {
 	public void setUbdatedef(String ubdatedef) {
 		this.ubdatedef = ubdatedef;
 	}
+	public String getZzimcheck() {
+		return zzimcheck;
+	}
+	public void setZzimcheck(String zzimcheck) {
+		this.zzimcheck = zzimcheck;
+	}
 	@Override
 	public String toString() {
 		return "UsedBoardDto [ubcode=" + ubcode + ", ubrgcode=" + ubrgcode + ", ubsellbuy=" + ubsellbuy + ", ubmid="
@@ -182,10 +189,9 @@ public class UsedBoardDto {
 				+ ubmainimgfile + ", ubdetailimgfile=" + Arrays.toString(ubdetailimgfile) + ", ubdetailimg_list="
 				+ Arrays.toString(ubdetailimg_list) + ", ubdetailimg_originList="
 				+ Arrays.toString(ubdetailimg_originList) + ", ubgdname=" + ubgdname + ", gdprice=" + gdprice
-				+ ", gdprice2=" + gdprice2 + ", ubdatedef=" + ubdatedef + "]";
+				+ ", gdprice2=" + gdprice2 + ", ubdatedef=" + ubdatedef + ", zzimcheck=" + zzimcheck + "]";
 	}
-	
-	
+
 	
 	
 	
