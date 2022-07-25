@@ -125,20 +125,22 @@ background-color: #00BCD4;
                             </div>
                             
                         <!-- 찾기버튼 -->    
-                             <div class="row">
-                             	<div class="col-lg-12 col-md-12 col-sm-12">
-                             		<div class="checkout__input"  style="text-align: center;">                        
-                        <button class="site-btn" style="border-radius: 4px;" onclick="searchId()">찾기</button>
-                             		</div>
+                        <div class="row" id="findButton">
+                             <div class="col-lg-12 col-md-12 col-sm-12">
+                             	<div class="checkout__input"  style="text-align: center;">                        
+                        			<button class="site-btn" style="border-radius: 4px;" onclick="searchId()">찾기</button>
                              	</div>
-                            </div>                        
-                        <br>
+                             </div>
+                       </div>          
+                                     
+                       <br>
                         <!-- 결과 span Msg-->
                              <div class="row">
                              	<div class="col-lg-12 col-md-12 col-sm-12">
                              		<div class="checkout__input" style="text-align: center;">
-                                 		<span id="resultLookforIdMsg" style="width: 400px;"></span> 
+                                 		<span id="resultLookforIdMsg" style="width: 400px; "></span> 
                              		</div>
+                             		<div id="login"></div>
                              	</div>
                             </div>                                            							
    							
@@ -180,7 +182,11 @@ background-color: #00BCD4;
 				
 					success : function(result){
 						if(result.length != 0) {
-						$("#resultLookforIdMsg").text("귀하의 아이디는 "+result+" 입니다.").css("color" , "green");    
+						$("#resultLookforIdMsg").text("귀하의 아이디는 "+result+" 입니다.").css("color" , "green"); 
+						$("#findButton").css("display", "none");
+						var output = "";
+						output ="<button onclick = \"location.href = 'loadToLogin' \" class=\"site-btn\" style=\"border-radius: 4px; margin-left: 305px;\">로그인하러가기</button>"
+							$("#login").html(output);  
 						
 						}else {
 						$("#resultLookforIdMsg").text("일치하는 회원정보가 없습니다.").css("color" , "red");  		

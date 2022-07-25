@@ -270,7 +270,7 @@ textarea:focus {
 	cursor: pointer;
 }
 /* 글목록 버튼 */
-#sellBuyList {
+#backList {
 	border: none;
 	width: 60px;
 	height: 30px;
@@ -573,7 +573,7 @@ textarea:focus {
 					>
 						<div class="col">
 							<button
-								id="sellBuyList"
+								id="backList"
 								type="button"
 								class="fw-bold text-white"
 							>글목록</button>
@@ -871,7 +871,7 @@ textarea:focus {
 	if ( checkMsg.length > 0 ){
 		alert(checkMsg);
 	}
-	
+
 	
 </script>
 
@@ -1250,14 +1250,38 @@ textarea:focus {
 
 <!-- 글목록으로 돌아가기 -->
 <script type="text/javascript">
-	let sellbuy_List = document.querySelector("#sellBuyList");
+let storage = window.localStorage; 
+if(storage.getItem('searchType') !=null){
+	var searchType_storage = storage.getItem('searchType');
+	console.log('로컬스토리지 검색타입 : ', searchType_storage);
+}
+if(storage.getItem('keyword') !=null){
+	var keyword_storage = storage.getItem('keyword');
+	console.log('로컬스토리지 검색어 : ', keyword_storage);
+}
+if(storage.getItem('selRegion') !=null ){
+	var selRegion_storage = storage.getItem('selRegion');
+	console.log('로컬스토리지 선택지역 : ', selRegion_storage);
+}	
+if(storage.getItem('page') !=null ){
+	var page_storage = storage.getItem('page');
+	
+	console.log('로컬스토리지 선택지역 : ', page_storage);
+}	
+
+	const backList = document.querySelector("#backList");
+	
+
 	//console.log(sellbuy_List);
 	
-	sellbuy_List.addEventListener("click", backList);
+	backList.addEventListener("click", backListHandler);
 	
-	function backList() {
+	function backListHandler() {
+
 		console.log("글목록버튼 클릭이벤트");
-		location.href = "selectResellPageList?sellBuy=" + ubsellbuy;
+		//location.href = 'selectResellPageList?sellBuy='+ubsellbuy;
+		
+		location.href = 'selectResellPageList?sellBuy='+ubsellbuy+'&searchType='+searchType_storage+'&keyword='+keyword_storage+'&searchVal='+selRegion_storage+'&page='+page_storage;
 	}
 
 </script>

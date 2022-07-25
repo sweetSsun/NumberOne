@@ -403,7 +403,78 @@
                         	<div class="col-lg-4 col-md-4 col-sm-4">	
                         		<h4>${boardList.bddate }</h4>
                         	</div>
+<<<<<<< HEAD
+                        </div>
+                    </div>
+                </c:forEach>
+                </div>
+                
+                <!-- 자유보기 -->
+                <div class="row mix free" style="display:none;">
+            	<p><a href="selectFreeBoardList"  style="float: right; margin-bottom: 15px;">더보기</a></p>
+            	<c:forEach items="${boardList_free }" end="5" var="boardList_free">
+                    <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
+                        <div class="row">
+                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
+                        		<h3><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList_free.bdcode}">${boardList_free.bdtitle }</a></h3>
+                        	</div>
+                        	<div class="col-lg-4 col-md-4 col-sm-4">	
+                        		<h4>${boardList_free.bddate }</h4>
+                        	</div>
+                        </div>
+                    </div>
+                </c:forEach>
+                </div>
+                
+                <!-- 질문보기 -->
+                <div class="row mix question" style="display:none;">
+            	<p><a href="#"  style="float: right; margin-bottom: 15px;">더보기</a></p>
+            	<c:forEach items="${boardList_qa }" end="5" var="boardList_qa">
+                    <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
+                        <div class="row">
+                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
+                        		<h3><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList_qa.bdcode}">${boardList_qa.bdtitle }</a></h3>
+                        	</div>
+                        	<div class="col-lg-4 col-md-4 col-sm-4">	
+                        		<h4>${boardList_qa.bddate }</h4>
+                        	</div>
+                        </div>
+                    </div>
+                </c:forEach>
+                </div>
+                
+                <!-- 정보보기 -->
+                <div class="row mix information" style="display:none;">
+				<p><a href="#"  style="float: right; margin-bottom: 15px;">더보기</a></p>
+            	<c:forEach items="${boardList_info }" end="5" var="boardList_info">
+                    <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
+                        <div class="row">
+                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
+                        		<h3><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList_info.bdcode}">${boardList_info.bdtitle }</a></h3>
+                        	</div>
+                        	<div class="col-lg-4 col-md-4 col-sm-4">	
+                        		<h4>${boardList_info.bddate }</h4>
+                        	</div>
+                        </div>
+                    </div>
+                </c:forEach>
+                </div>
+                
+                <!-- 후기보기 -->
+                <div class="row mix review" style="display:none;">
+            	<p><a href="#"  style="float: right; margin-bottom: 20px;">더보기</a></p>
+            	<c:forEach items="${boardList_review }" end="5" var="boardList_review">
+                    <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
+                        <div class="row">
+                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
+                        		<h3><a href="${pageContext.request.contextPath }/selectReviewBoardView?bdcode=${boardList_review.bdcode}">${boardList_review.bdtitle }</a></h3>
+                        	</div>
+                        	<div class="col-lg-4 col-md-4 col-sm-4">	
+                        		<h4>${boardList_review.bddate }</h4>
+                        	</div>
+=======
                        	</a>
+>>>>>>> 1a879d57c1d3db46226b489f9072c71e46b5902e
                         </div>
                     </div>
                 </c:forEach>

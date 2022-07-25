@@ -119,18 +119,18 @@
 								    	<table class="sideregion_tags">
 								    		<tr>
 												<td><a href="selectResellPageList?sellBuy=S">전체</a></td>
-												<td><a href="selectResellPageList?searchVal=SEL&sellBuy=S">서울</a></td>
-												<td><a href="selectResellPageList?searchVal=ICN&sellBuy=S">인천</a></td>
+												<td><a href="selectResellPageList?searchVal=SEL&sellBuy=B">서울</a></td>
+												<td><a href="selectResellPageList?searchVal=ICN&sellBuy=B">인천</a></td>
 											</tr>
 											<tr>
-												<td><a href="selectResellPageList?searchVal=GGD&sellBuy=S">경기</a></td>
-												<td><a href="selectResellPageList?searchVal=GSD&sellBuy=S">경상</a></td>
-												<td><a href="selectResellPageList?searchVal=JLD&sellBuy=S">전라</a></td>
+												<td><a href="selectResellPageList?searchVal=GGD&sellBuy=B">경기</a></td>
+												<td><a href="selectResellPageList?searchVal=GSD&sellBuy=B">경상</a></td>
+												<td><a href="selectResellPageList?searchVal=JLD&sellBuy=B">전라</a></td>
 											</tr>
 											<tr>
-												<td><a href="selectResellPageList?searchVal=CCD&sellBuy=S">충청</a></td>
-												<td><a href="selectResellPageList?searchVal=GWD&sellBuy=S">강원</a></td>
-												<td><a href="selectResellPageList?searchVal=JJD&sellBuy=S">제주</a></td>
+												<td><a href="selectResellPageList?searchVal=CCD&sellBuy=B">충청</a></td>
+												<td><a href="selectResellPageList?searchVal=GWD&sellBuy=B">강원</a></td>
+												<td><a href="selectResellPageList?searchVal=JJD&sellBuy=B">제주</a></td>
 											</tr>
 										</table>
 									</li>
@@ -152,11 +152,20 @@
 	
 $('#sidebar-toggleOff').click(function() {    
     $("#sidebar, #sideList, #sidebar-toggleOff, #sideclose, .sideresell_title").removeClass('sideon')
+    if($("#panelsStayOpen-collapseOne").hasClass("show")){
+    	$("#panelsStayOpen-collapseOne").removeClass("show");
+    }
+    if($("#panelsStayOpen-collapseTwo").hasClass("show")){
+    	$("#panelsStayOpen-collapseTwo").removeClass("show");
+    }
     console.log("off");
 });
 
 $('#sidebar-toggleOn').click(function() {
     $("#sidebar, #sideList, #sidebar-toggleOff, #sideclose, .sideresell_title").addClass('sideon')
+    if(!$(".sideresell_title .sideon").hasClass("collapsed")){
+    	$(".accordion-button").addClass("collapsed");
+    }
     console.log("on");
 });
 
