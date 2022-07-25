@@ -326,7 +326,7 @@
                 <div class="modal-footer">
                 	<input type="hidden" >
                     <button class="close btn text-white" style="background-color:#00bcd4" onclick="rpModify()">등록</button>
-                    <button class="close btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+                    <button class="close btn btn-secondary" type="button" data-dismiss="modal" onclick="rpModifyCancel()">취소</button>
                 </div>
             </div>
         </div>
@@ -669,10 +669,12 @@
 		$("#bdDeleteCheckModal").modal('show');
 	}
 	function updateBoardDelete(){
+		
+		var bdmid = '${board.bdmid}';
 		/* 게시글 삭제(상태변경) */
 		//모달창에서 "네" 버튼 클릭 시 삭제
 		var bdcategory = '${board.bdcategory }';
-		location.href="updateBoardDelete?bdcode="+bdcode+"&bdcategory="+bdcategory;
+		location.href="updateBoardDelete?bdcode="+bdcode+"&bdcategory="+bdcategory+"&bdmid="+bdmid;
 	}
 	
 </script>
@@ -842,6 +844,11 @@
 			
 		});
 		
+	}
+	
+	function rpModifyCancel(){
+		/* 댓글수정 취소 */
+		$("#inputModifyRpBox").text();
 	}
 	
 	function rpRemoveModal(rpcode){

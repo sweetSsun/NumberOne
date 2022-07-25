@@ -363,10 +363,11 @@ public class BoardController {
 			 }
 		 }
 		
-		//나머지
-		System.out.println("글작성자 아님");
-		ra.addFlashAttribute("msg", "글 작성자만 삭제할 수 있습니다!");
-		mav.setViewName("redirect:loadToFail");
+		 //나머지 
+		 System.out.println("글작성자 아님"); 
+		 ra.addFlashAttribute("msg","글 작성자만 삭제할 수 있습니다!"); 
+		 mav.setViewName("redirect:loadToFail");
+		
 		return mav;
 
 	 }

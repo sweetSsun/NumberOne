@@ -46,7 +46,7 @@
 	}
 	.buttons{
 		margin: auto; /* 수평 */
-		display: block; /* 수직 */
+		/* display: block; */
 		
 	}
 	.selectPlaceHolder{
