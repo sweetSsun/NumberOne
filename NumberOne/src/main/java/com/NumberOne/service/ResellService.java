@@ -40,7 +40,7 @@ public class ResellService {
 	public static String savePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\resell";
 
 	
-	public ModelAndView selectResellMainPage(Paging paging) throws ParseException {
+	public ModelAndView selectResellMainPage(Paging paging) throws Exception {
 		System.out.println("selectResellMainPage 서비스 호출");
 		ModelAndView mav = new ModelAndView();
 
@@ -60,33 +60,30 @@ public class ResellService {
 		paging.setSellBuy("S");
 //		팔구리스트
 		ArrayList<UsedBoardDto> SellList = rdao.selectResellPageList(paging, checkMethod);
-		for (int i = 0; i < SellList.size(); i++) {
-			//현재시간 - 작성시간
-			String ubdatedef = timeFuction(SellList.get(i).getUbdate());
-			//ubdatedef 객체에 저장
-			SellList.get(i).setUbdatedef(ubdatedef);
-			//ubdate 분까지만 객체에 저장
-			SellList.get(i).getUbdate().substring(0,  16);	
-		}
+
+		//timeFuction에 리스트 넘기면 시간 ubdatedef에는 변경된 시간, ubdate에는 분까지 잘린 시간이 저장되어 리턴
+		SellList = timeFuction(SellList);
 		
-		System.out.println("팔구DTO : " + paging);
+		//zzimCheck에 리스트 넘기면 로그인 id가 zzim 기록이 있는 경우 zzimcheck에 mid 저장
+		SellList = zzimCheck(SellList);
+		
+		//System.out.println("팔구DTO : " + paging);
 
 //		사구리스트
 		paging.setSellBuy("B");
 		ArrayList<UsedBoardDto> BuyList = rdao.selectResellPageList(paging, checkMethod);
-		for (int i = 0; i < BuyList.size(); i++) {
-			//현재시간 - 작성시간
-			String ubdatedef = timeFuction(BuyList.get(i).getUbdate());
-			//ubdatedef 객체에 저장
-			BuyList.get(i).setUbdatedef(ubdatedef);
-			//ubdate 분까지만 객체에 저장
-			BuyList.get(i).getUbdate().substring(0,  16);	
-		}
-		System.out.println("사구DTO : " + paging);
+		
+		//timeFuction에 리스트 넘기면 시간 ubdatedef에는 변경된 시간, ubdate에는 분 까지 잘린 시간이 저장되어 리턴
+		BuyList = timeFuction(BuyList);
+
+		//zzimCheck에 리스트 넘기면 로그인 id가 zzim 기록이 있는 경우 zzimcheck에 mid 저장
+		BuyList = zzimCheck(BuyList);
+		
+		//System.out.println("사구DTO : " + paging);
 
 		mav.addObject("SellList", SellList);
-
 		mav.addObject("BuyList", BuyList);
+		
 		System.out.println("팔구목록 : " +SellList);
 		System.out.println("사구목록 : " + BuyList);
 		
@@ -95,6 +92,8 @@ public class ResellService {
 		return mav;
 
 	}
+
+
 
 	public ModelAndView insertResellWrite(GoodsDto gdDto, UsedBoardDto ubDto, RedirectAttributes ra)
 			throws IllegalStateException, IOException {
@@ -255,7 +254,7 @@ public class ResellService {
 	}
 
 //  사구 팔구 통합
-	public ModelAndView selectResellPageList(Paging paging) throws ParseException {
+	public ModelAndView selectResellPageList(Paging paging) throws Exception {
 
 		System.out.println("selectResellPageList 서비스 호출");
 		ModelAndView mav = new ModelAndView();
@@ -281,6 +280,11 @@ public class ResellService {
 		paging.calc();
 
 		ArrayList<UsedBoardDto> sell_buyList = rdao.selectResellPageList(paging, checkMethod);
+		
+		//timeFuction에 리스트 넘기면 시간 ubdatedef에는 변경된 시간, ubdate에는 분 까지 잘린 시간이 저장되어 리턴
+		sell_buyList = timeFuction(sell_buyList);
+		
+		/*
 		for (int i = 0; i < sell_buyList.size(); i++) {
 			//현재시간 - 작성시간
 			String ubdatedef = timeFuction(sell_buyList.get(i).getUbdate());
@@ -289,7 +293,7 @@ public class ResellService {
 			//ubdate 분까지만 객체에 저장
 			sell_buyList.get(i).getUbdate().substring(0,  16);	
 		}
-		
+		*/
 		
 		System.out.println(sell_buyList);
 		System.out.println(paging);
@@ -702,23 +706,24 @@ public class ResellService {
 		return mav;
 	}
 
+	//시간 형식 변경 : 매개변수가 시간인 경우(시간 형식을 변경해서 리턴)
 	public String timeFuction(String ubdate) throws ParseException {
-		System.out.println("ResellService.timeFuction 호출");
-		System.out.println(ubdate);
+		//System.out.println("ResellService.timeFuction(ubdate) 호출");
+		//System.out.println(ubdate);
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		
 		Date time = sdf.parse(ubdate);
-		System.out.println(time);
+		//System.out.println(time);
 		long timeMin = time.getTime(); 
-		System.out.println(timeMin);
+		//System.out.println(timeMin);
 		
 		Date now = new Date();
-		System.out.println(now);
+		//System.out.println(now);
 		long nowMin = now.getTime();
-		System.out.println(nowMin);
+		//System.out.println(nowMin);
 				
 		long betweenTime = (nowMin - timeMin)/60000;
-		System.out.println(betweenTime);
+		//System.out.println(betweenTime);
 
 		
         if (betweenTime < 1) return "방금전";
@@ -739,6 +744,44 @@ public class ResellService {
         return ubdate.substring(0, 16);
 	}
 	
+	//시간 형식 변경 : 매개변수가 리스트인 경우(리스트의 시간을 모두 바꿔서 리스트 반환)
+	private ArrayList<UsedBoardDto> timeFuction(ArrayList<UsedBoardDto> resellList) throws Exception {
+		System.out.println("ResellService.timeFuction(resellList) 호출");
+		
+		for (int i = 0; i < resellList.size(); i++) {
+			//현재시간 - 작성시간
+			String ubdatedef = timeFuction(resellList.get(i).getUbdate());
+			//ubdatedef 객체에 저장
+			resellList.get(i).setUbdatedef(ubdatedef);
+			//ubdate 분까지만 객체에 저장
+			resellList.get(i).getUbdate().substring(0,  16);	
+		}
+		
+		return resellList;
+	}
 
+	//찜 체크 : 매개변수가 리스트인 경우(리스트의 찜기록 추가해서 리스트 반환)
+	private ArrayList<UsedBoardDto> zzimCheck(ArrayList<UsedBoardDto> resellList) {
+		System.out.println("ResellService.zzimCheck(resellList) 호출");
+		String loginId = (String) session.getAttribute("loginId");
+		
+		if(loginId == null) {
+			//비로그인이면 메소드 종료
+			return resellList;
+		}
+		
+		for (int i = 0; i < resellList.size(); i++) {
+			//loginId가 해당글을 찜 했을 경우 loginId 리턴
+			String zzimcheck = rdao.selectZzimCheck(loginId, resellList.get(i).getUbcode());
+			
+			System.out.println(resellList.get(i).getUbcode()+": "+zzimcheck);
+			
+			//zzimcheck에 저장
+			resellList.get(i).setZzimcheck(zzimcheck);
+		}
+		
+		return resellList;
+	}
+	
 
 }
