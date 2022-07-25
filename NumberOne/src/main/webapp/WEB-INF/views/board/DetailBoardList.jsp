@@ -157,7 +157,7 @@
 							<td class="text-center tableCell">${board.bdcode}</td>
 							<td class="bdcategory text-center tableCell">${board.bdcategory}</td>
 							<td class="tableCell">
-							 	<a href="selectBoardView?bdcode=${board.bdcode }&keyword=${paging.keyword}">${board.bdtitle} 
+							 	<a href="selectBoardView${paging.makeQueryPage(board.bdcode, paging.page)}">${board.bdtitle} 
 							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
 							 </td>
 							<td class="text-center tableCell">

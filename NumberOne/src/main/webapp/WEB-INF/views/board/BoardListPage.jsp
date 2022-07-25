@@ -178,13 +178,13 @@
 							</td>
 							<td class="tableCell">
 								<c:choose>
-									<c:when test="${board.bdcategory == '후기'  }">
-										<a href="selectReviewBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
+									<c:when test="${board.bdcategory eq '후기'  }">
+										<a href="selectReviewBoardView${paging.makeQueryPage(board.bdcode, paging.page) }">${board.bdtitle} 
 									 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
 									</c:when>
 									
 									<c:otherwise>
-									 	<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
+									 	<a href="selectBoardView${paging.makeQueryPage(board.bdcode, paging.page)}">${board.bdtitle} 
 									 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
 									</c:otherwise>
 								</c:choose>

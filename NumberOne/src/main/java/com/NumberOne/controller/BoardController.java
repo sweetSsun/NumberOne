@@ -155,30 +155,31 @@ public class BoardController {
 	 
 	 //공지글 상세페이지 이동 
 	 @RequestMapping ( value = "/selectNoticeBoardView" )
-	 public ModelAndView selectNoticeBoardView(String nbcode) {
+	 public ModelAndView selectNoticeBoardView(String codeIdx, Paging paging) {
 		 System.out.println("공지글 상세페이지 이동 요청");
 		 
-		 ModelAndView mav = bsvc.selectNoticeBoardView(nbcode);
+		 ModelAndView mav = bsvc.selectNoticeBoardView(codeIdx, paging);
 		 
 		 return mav;
 	 }
 	 
 	 //일반/지역 - 글상세페이지 이동 
 	 @RequestMapping ( value = "/selectBoardView")
-	 public ModelAndView selectBoardView(String bdcode, String bdtype) {
+	 public ModelAndView selectBoardView(String codeIdx, Paging paging) {
 		 System.out.println("글상세페이지 이동 요청");
+		 System.out.println("글카테고리 : "+paging.getSearchVal());
 		 
-		 ModelAndView mav = bsvc.selectBoardView(bdcode, bdtype);
+		 ModelAndView mav = bsvc.selectBoardView(paging, codeIdx);
 		 
 		 return mav;
 	 }
 	 
 	 //후기글 상세페이지 이동 
 	 @RequestMapping ( value = "/selectReviewBoardView")
-	 public ModelAndView selectReviewBoardView(String bdcode) {
+	 public ModelAndView selectReviewBoardView(String codeIdx, Paging paging) {
 		 System.out.println("후기글 상세페이지 이동 요청");
 		 
-		 ModelAndView mav =bsvc.selectReviewBoardView(bdcode);
+		 ModelAndView mav = bsvc.selectReviewBoardView(codeIdx, paging);
 		 
 		 return mav;
 	 }

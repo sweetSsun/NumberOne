@@ -219,7 +219,9 @@
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
 				<div class="row mb-2">
 					<div class="col-2">
-						<input onclick="boardList()" type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록"> 
+						<a href="selectNoticeBoardList${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}">
+						<input  type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
+						</a> 
 					</div>
 				<c:choose>
 					<c:when test="${sessionScope.loginId == board.bdmid && sessionScope.loginId != 'admin' }">
@@ -419,13 +421,7 @@
 	});
 </script>
 
-<script type="text/javascript">
-	/* 글목록 버튼 클릭 시 */
-	function boardList(){
-		/* 넘어온 게시판으로 다시 이동 */
-		location.href="selectNoticeBoardList";
-	}
-</script>
+
 
 <script type="text/javascript">
 		// 게시글 경고 모달창 close 하는 스크립트

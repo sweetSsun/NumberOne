@@ -234,7 +234,22 @@
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
 				<div class="row mb-2">
 					<div class="col-2">
-						<input onclick="boardList()" type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록"> 
+						<c:choose>
+							<c:when test="${paging.searchVal eq 'ALL' }">
+							<!-- 전체 글목록 페이지 -->
+							<a href="selectBoardList${paging.makeQueryPage(board.bdcode, paging.page)}">
+							<input type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
+							</a>
+							</c:when>
+							
+							<c:otherwise>
+							<!-- 자유~후기 글목록 페이지 -->
+							<a href="selectCategoryBoardList${paging.makeQueryPage(board.bdcode, paging.page) }">
+							<input type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
+							</a>
+							</c:otherwise>
+							
+						</c:choose>
 					</div>
 				<c:choose>
 					<c:when test="${sessionScope.loginId == board.bdmid && sessionScope.loginId != 'admin' }">
@@ -467,15 +482,6 @@
 		return time+" | ";
 		
  	}
-	
-</script>
-
-<script type="text/javascript">
-	/* 글목록 버튼 클릭 시 */
-	function boardList(){
-		/* 넘어온 게시판으로 다시 이동 */
-		location.href="selectCategoryBoardList?searchVal=${board.bdcategory}";
-	}
 	
 </script>
 

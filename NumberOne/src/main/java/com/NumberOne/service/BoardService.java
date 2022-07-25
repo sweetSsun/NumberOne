@@ -476,7 +476,7 @@ public class BoardService {
 
 
 	// 공지글상세 페이지 이동
-	public ModelAndView selectNoticeBoardView(String nbcode) {
+	public ModelAndView selectNoticeBoardView(String nbcode, Paging paging) {
 		System.out.println("BoardService.selectNoticeBoardView() 호출");
 		ModelAndView mav = new ModelAndView();
 
@@ -490,33 +490,34 @@ public class BoardService {
 		System.out.println(noticeBoard);
 
 		mav.addObject("noticeBoard", noticeBoard);
+		mav.addObject("paging", paging);
 		mav.setViewName("board/NoticeBoardView");
 
 		return mav;
 	}
 
 	// 일반/지역 - 글상세페이지 이동
-	public ModelAndView selectBoardView(String bdcode, String bdtype) {
+	public ModelAndView selectBoardView(Paging paging, String bdcode) {
 		System.out.println("BoardService.selectBoardView() 호출");
 		ModelAndView mav = new ModelAndView();
 		System.out.println("bdcode : " + bdcode);
 		
-		if( bdtype == null ) {
-			bdtype = "";
+		if( paging.getBdtype() == null ) {
+			paging.setBdtype("");
 		}
 		
-		System.out.println("게시판 타입 : " + bdtype);
+		System.out.println("게시판 타입 : " + paging.getBdtype());
 		
 		// 게시글 조회수 증가
 		updateBoardHits(bdcode);
 		// 글상세정보 조회
 		BoardDto board = bdao.selectBoardView(bdcode);
-		System.out.println(board);
+		//System.out.println(board);
 		
+		mav.addObject("paging",paging);
 		mav.addObject("board", board);
 		
-		
-		if ( bdtype.equals("region") ) {
+		if ( paging.getBdtype().equals("region") ) {
 			mav.setViewName("board/Region_BoardView");
 		}else {
 			mav.setViewName("board/BoardView");
@@ -526,7 +527,7 @@ public class BoardService {
 	}
 	
 	// 후기글 상세페이지 이동 
-	public ModelAndView selectReviewBoardView(String bdcode) {
+	public ModelAndView selectReviewBoardView(String bdcode, Paging paging) {
 		System.out.println("BoardService.selectReviewBoardView() 호출");
 		ModelAndView mav = new ModelAndView();
 		

@@ -286,8 +286,9 @@
 				
 				<c:if test="${board.bdimg != null }">
 					<div class="img-container">
-						<img id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
-					</div>				
+						<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
+					</div>	
+		
 				</c:if >		
 				
 				<!------------------ 댓글영역 ------------------->
@@ -309,11 +310,11 @@
 					<c:choose>
 					<c:when test="${sessionScope.loginId  != null }">
 						<div style="min-height:20%; border-radius:8px;" class="row outerCmtBox mt-3 mb-3">
-							<div class="col">
-								<div class="col innerCmtBox">
+							<div class="col innerCmtBox">
 									<!-- 댓글입력 -->
 									<textarea id="inputComment" style="border: solid #E0E0E0 3px; " class="mt-4 " rows="2" cols="120%" placeholder="상대방에게 불쾌감을 주는 욕설이나 댓글은 고지없이 삭제될 수 있습니다. "></textarea>
 								</div>
+								
 							<div align="right" class="col">
 								<button onclick="insertReply()" class="btn btn-sm bg-secondary mb-2 fw-bold text-white">등록</button>
 							</div>
