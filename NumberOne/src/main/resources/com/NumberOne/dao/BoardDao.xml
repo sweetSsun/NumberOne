@@ -258,9 +258,11 @@
  	<select id="selectNoticeTotalCount" resultType="int">
 	<!-- 페이징 위한 공지게시판 총 갯수 조회 -->
 		SELECT COUNT(*)
-		FROM VIEW_LATESTNOTICELIST
+		FROM NOTICEBOARDS
+		WHERE NBSTATE = 1
+		AND NBFIX != 1
 		<if test="keyword.length > 0 ">
-			WHERE
+			AND
 			<choose>
 				<when test="searchType == 'nbTitleContents'">
 					(NBTITLE LIKE '%'||#{keyword}||'%' OR NBCONTENTS LIKE '%'||#{keyword}||'%')
