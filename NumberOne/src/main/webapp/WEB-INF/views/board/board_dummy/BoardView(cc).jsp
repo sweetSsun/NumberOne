@@ -88,8 +88,13 @@
 	}
 	.inputRpcontents{
 		font-size:20px;
-		border:none;
-		min-height: 2rem;
+		border: none;
+		height:30px;
+		line-height:30px;
+		
+	}
+	textarea:focus {
+    	outline: none;
 	}
 	.outerCmtBox{
 		background-color : #F6F6F6;
@@ -289,14 +294,14 @@
 					<c:choose>
 					<c:when test="${sessionScope.loginId  != null }">
 						<div style="min-height:20%; border-radius:8px;" class="row outerCmtBox mt-3 mb-3">
-							<div class="col">
-								<div class="col innerCmtBox">
-									<!-- 댓글입력 -->
-									<textarea id="inputComment" style="border: solid #E0E0E0 3px; " class="mt-4 " rows="2" cols="120%" placeholder="상대방에게 불쾌감을 주는 욕설이나 댓글은 고지없이 삭제될 수 있습니다. "></textarea>
-								</div>
-							<div align="right" class="col">
-								<button onclick="insertReply()" class="btn btn-sm bg-secondary mb-2 fw-bold text-white">등록</button>
+							<div class="innerCmtBox">
+								<!-- 댓글입력 -->
+								<textarea id="inputComment" style="border: solid #E0E0E0 3px; " class="mt-4 " rows="2" cols="100%" placeholder="상대방에게 불쾌감을 주는 욕설이나 댓글은 고지없이 삭제될 수 있습니다. "></textarea>
 							</div>
+							<div align="right" class="row">
+								<div align="right" class="col">
+									<button onclick="insertReply()" class="btn btn-sm bg-secondary mb-2 fw-bold text-white">등록</button>
+								</div>
 							</div>
 						</div>
 					</c:when>
@@ -326,9 +331,9 @@
 					</textarea>                
                 </div>
                 <div class="modal-footer">
-                	<input type="hidden" id="rpContentsBefore">
+                	<input type="hidden" >
                     <button class="close btn text-white" style="background-color:#00bcd4" onclick="rpModify()">등록</button>
-                    <button class="close btn btn-secondary" type="button" data-dismiss="modal" onclick="rpModifyCancel()">취소</button>
+                    <button class="close btn btn-secondary" type="button" data-dismiss="modal" id="rpModifyCancelBtn">취소</button>
                 </div>
             </div>
         </div>
@@ -410,6 +415,14 @@
 </body>
 
 <script type="text/javascript">
+	
+	const rpMdCancelBtn = document.getElementById("rpModifyCancelBtn"); // 모달창 댓글 취소버튼 
+	
+	rpMdCancelBtn.addEventListener("click",function(){
+       console.log("댓글수정 취소");
+    });
+
+	
 	
 	var checkMsg = '${msg}';
 	if ( checkMsg.length > 0 ){
@@ -741,7 +754,7 @@
 						
 						/* 수정, 삭제 버튼 */
 						output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"rpRemoveModal('"+ replyList[i].rpcode +"')\" value=\"삭제\">"
-						output += "<input style=\"margin-right:5px; border:solid gray 1px\" type=\"button\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"rpModifyModal('"+ replyList[i].rpcode +"')\" value=\"수정\">"
+						output += "<input style=\"margin-right:5px; border:solid gray 1px\" type=\"button\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"rpModifyModal('"+ replyList[i].rpcode +"','" + replyList[i].rpcontents + "')\" value=\"수정\">"
 						output += "<br>"
 						
 						if( '${sessionScope.loginId}' == 'admin'){
@@ -749,7 +762,7 @@
 							output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton bg-secondary text-white fw-bold mt-2\" onclick=\"adminReplyStop('"+ replyList[i].rpcode +"')\" value=\"정지\">"
 						}
 						/* 댓글내용 */
-						output += "<textarea style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</textarea>"
+						output += "<textarea style=\"resize:none;\"  cols=\"100%\"  class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</textarea>"
 						output += "</div>"
 						
 					}else{
@@ -778,7 +791,7 @@
 						
 						output += "<br>"
 						/* 댓글내용 */
-						output += "<textarea style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</textarea>"
+						output += "<textarea style=\"resize:none;\" cols=\"100%\"  class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</textarea>"
 						output += "</div>"
 					}
 
@@ -803,10 +816,10 @@
 		});
 	}
 	
-	function rpModifyModal(rpcode){
+	function rpModifyModal(rpcode, rpcontents){
 		/* 댓글수정 모달창 띄우기 */
 		console.log("댓글코드 : " + rpcode );
-		
+
 		$.ajax({
 			type : "get",
 			url : "selectRpContents_ajax",
@@ -814,15 +827,10 @@
 			async : false,
 			success : function(reply){
 				console.log(reply.rpcontents);
-				//$("#rpContentsBefore").text(reply.rpcontents);
-				$("#inputModifyRpBox").val(reply.rpcontents);
+				
+				$("#inputModifyRpBox").text(reply.rpcontents);
 				$("#inputRpcode").val(reply.rpcode);
-			},
-			error : function(reply) {
-				console.log("실휴패");
 			}
-			
-			
 		});
 		
 		$("#bdRpModifyModal").modal('show');
@@ -847,14 +855,12 @@
 					selectReplyList();
 				}
 			}
+			
 		});
+		
 	}
 	
-	function rpModifyCancel(){
-		/* 댓글수정 취소 */
-		$("#inputModifyRpBox").text();
-	}
-	
+
 	function rpRemoveModal(rpcode){
 		/* 댓글삭제 버튼 클릭 시 모달창 띄우기  */
 		console.log(rpcode);
@@ -927,7 +933,6 @@ $("#inputReply").each(function () {
 	this.style.height = 'auto';
 	this.style.height = (this.scrollHeight) + 'px';
 	});
-
 </script>
 
 </html>

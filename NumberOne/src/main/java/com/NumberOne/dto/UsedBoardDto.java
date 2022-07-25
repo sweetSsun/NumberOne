@@ -168,8 +168,18 @@ public class UsedBoardDto {
 	public void setGdprice2(String gdprice2) {
 		this.gdprice2 = gdprice2;
 	}
-	
-	
+	public String getUbdatedef() {
+		return ubdatedef;
+	}
+	public void setUbdatedef(String ubdatedef) {
+		this.ubdatedef = ubdatedef;
+	}
+	public String getZzimcheck() {
+		return zzimcheck;
+	}
+	public void setZzimcheck(String zzimcheck) {
+		this.zzimcheck = zzimcheck;
+	}
 	@Override
 	public String toString() {
 		return "UsedBoardDto [ubcode=" + ubcode + ", ubrgcode=" + ubrgcode + ", ubsellbuy=" + ubsellbuy + ", ubmid="
@@ -179,24 +189,9 @@ public class UsedBoardDto {
 				+ ubmainimgfile + ", ubdetailimgfile=" + Arrays.toString(ubdetailimgfile) + ", ubdetailimg_list="
 				+ Arrays.toString(ubdetailimg_list) + ", ubdetailimg_originList="
 				+ Arrays.toString(ubdetailimg_originList) + ", ubgdname=" + ubgdname + ", gdprice=" + gdprice
-				+ ", gdprice2=" + gdprice2 + ", ubdatedef=" + ubdatedef + ", zzimcheck=" + zzimcheck
-				+ ", getUbdetailimg_originList()=" + Arrays.toString(getUbdetailimg_originList()) + ", getUbcode()="
-				+ getUbcode() + ", getUbrgcode()=" + getUbrgcode() + ", getUbsellbuy()=" + getUbsellbuy()
-				+ ", getUbmid()=" + getUbmid() + ", getUbtitle()=" + getUbtitle() + ", getUbcontents()="
-				+ getUbcontents() + ", getUbdate()=" + getUbdate() + ", getUbmainimg()=" + getUbmainimg()
-				+ ", getUbdetailimg()=" + getUbdetailimg() + ", getUbstate()=" + getUbstate() + ", getUbwarning()="
-				+ getUbwarning() + ", getUbzzim()=" + getUbzzim() + ", getUbmainimgfile()=" + getUbmainimgfile()
-				+ ", getUbdetailimgfile()=" + Arrays.toString(getUbdetailimgfile()) + ", getUbnickname()="
-				+ getUbnickname() + ", getUbdetailimg_list()=" + Arrays.toString(getUbdetailimg_list())
-				+ ", getUbprofile()=" + getUbprofile() + ", getUbgdname()=" + getUbgdname() + ", getGdprice()="
-				+ getGdprice() + ", getGdprice2()=" + getGdprice2() + ", getUbdatedef()=" + getUbdatedef()
-				+ ", getZzimcheck()=" + getZzimcheck() + ", hashCode()=" + hashCode() + ", getClass()=" + getClass()
-				+ ", toString()=" + super.toString() + "]";
+				+ ", gdprice2=" + gdprice2 + ", ubdatedef=" + ubdatedef + ", zzimcheck=" + zzimcheck + "]";
 	}
-	
-	
-	
-	
+
 	
 	
 	

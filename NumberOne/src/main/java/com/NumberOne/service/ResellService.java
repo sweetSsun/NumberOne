@@ -2,6 +2,7 @@ package com.NumberOne.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -385,7 +386,7 @@ public class ResellService {
 		System.out.println(ub_resellView.getUbmid());
 
 		ArrayList<GoodsDto> gd_resellView = rdao.selectResellView_goods(ubDto);
-
+		
 		ArrayList<UsedBoardDto> memberSellList = rdao.selectResellView_List(ub_resellView.getUbmid(),
 				ubDto.getUbcode());
 		
