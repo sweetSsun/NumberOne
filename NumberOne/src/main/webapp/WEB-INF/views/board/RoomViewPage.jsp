@@ -842,6 +842,7 @@ roomView_ajax(nowBdcode)
 	var nowBdcode;
 	var nowRpcode;
 	var nowBdmid;
+	var nowRpmid;
 	var nowWb;
 	
 	function replyEnter(e){
@@ -904,6 +905,7 @@ roomView_ajax(nowBdcode)
 		console.log("메뉴 모달 닫기 요청");
 		//nowRpcode 초기화
 		nowRpcode = "";
+		nowRpmid = "";
 		//모달창 닫기
 		$("#menuModal").css("display", "none");
 	}
@@ -1101,7 +1103,7 @@ roomView_ajax(nowBdcode)
 		
 	}
 	
-	function menuModal(objcode, loginId){
+	function menuModal(objcode, writer){
 		console.log("메뉴 모달 요청");
 		console.log(objcode);
 		var objType = objcode.substring(0, 2);
@@ -1110,11 +1112,11 @@ roomView_ajax(nowBdcode)
 		if(objType=='BD'){
 			console.log("자랑글(Rv) 메뉴 요청")
 			//아이디에 따라 다른 메뉴 구성
-			if(loginId == 'admin'){
+			if('${sessionScope.loginId}' == 'admin'){
 				//관리자:정지/취소
 				menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick='adminRvBan()'>정지</div>";
 				menuOutput += "<div class='menu' onclick='closeMenuModal()'>취소</div>";
-			} else if( loginId == nowBdmid){ 
+			} else if('${sessionScope.loginId}' == writer){ 
 				//글작성자:수정/삭제/취소
 				menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick='modifyRoomView()'>수정</div>";
 				menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick='deleteRoomView()'>삭제</div>";
@@ -1131,16 +1133,18 @@ roomView_ajax(nowBdcode)
 		} else {
 			console.log("댓글(Rp) 메뉴 요청")
 			nowRpcode = objcode;
-			console.log(loginId);
-			if(loginId == 'admin'){ //관리자
+			nowRpmid = writer;
+			//console.log(writer);
+			if('${sessionScope.loginId}' == 'admin'){ //관리자
 				//console.log("관리자");
 				menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick='adminRpBan()'>정지</div>";
 				menuOutput += "<div class='menu' onclick='closeMenuModal()'>취소</div>";
-			} else { //댓글작성자
+			} else if ('${sessionScope.loginId}' == nowRpmid){ //댓글작성자
+				//console.log("작성자");
 				//console.log("작성자");
 				menuOutput += "<div class='menu' style='border-bottom: solid 1px #DCDCDC; color:#FF4956;' onclick='replyDelete()'>삭제</div>";
 				menuOutput += "<div class='menu' onclick='closeMenuModal()'>취소</div>";
-			} 
+			}
 		}
 		//console.log(menuOutput);
 		$("#menuInnerDiv").html(menuOutput);

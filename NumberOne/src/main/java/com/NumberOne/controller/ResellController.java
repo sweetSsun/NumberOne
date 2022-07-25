@@ -26,7 +26,7 @@ public class ResellController {
 	
 		
 	@RequestMapping(value = "/selectResellMainPage")
-	public ModelAndView selectResellMainPage(Paging paging) throws ParseException {
+	public ModelAndView selectResellMainPage(Paging paging) throws Exception {
 		System.out.println("selectResellMainPage 호출");
 		ModelAndView mav = new ModelAndView();
 
@@ -148,7 +148,7 @@ System.out.println(ubDto);
 	}
 
 	@RequestMapping(value = "/selectResellPageList")
-	public ModelAndView selectResellPageList(Paging paging) throws ParseException {
+	public ModelAndView selectResellPageList(Paging paging) throws Exception {
 		System.out.println("selectResellPageList 호출");
 
 		ModelAndView mav = new ModelAndView();
@@ -192,5 +192,6 @@ System.out.println(ubDto);
 
 		return deleteResult;
 	}
+	
 
 }

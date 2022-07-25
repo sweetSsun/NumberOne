@@ -44,6 +44,7 @@ public class UsedBoardDto {
 	private String gdprice2; // 마이페이지 출력용 가격 (천단위마다 ,)
 	
 	private String ubdatedef; //메인에서 시간 출력용(현재시간-작성시간)
+	private String zzimcheck;    //로그인 아이디가 찜 했는지 안했는지 저장 1:기록있음 0:기록없음
 	
 	public String getUbcode() {
 		return ubcode;
@@ -178,8 +179,22 @@ public class UsedBoardDto {
 				+ ubmainimgfile + ", ubdetailimgfile=" + Arrays.toString(ubdetailimgfile) + ", ubdetailimg_list="
 				+ Arrays.toString(ubdetailimg_list) + ", ubdetailimg_originList="
 				+ Arrays.toString(ubdetailimg_originList) + ", ubgdname=" + ubgdname + ", gdprice=" + gdprice
-				+ ", gdprice2=" + gdprice2 + "]";
+				+ ", gdprice2=" + gdprice2 + ", ubdatedef=" + ubdatedef + ", zzimcheck=" + zzimcheck
+				+ ", getUbdetailimg_originList()=" + Arrays.toString(getUbdetailimg_originList()) + ", getUbcode()="
+				+ getUbcode() + ", getUbrgcode()=" + getUbrgcode() + ", getUbsellbuy()=" + getUbsellbuy()
+				+ ", getUbmid()=" + getUbmid() + ", getUbtitle()=" + getUbtitle() + ", getUbcontents()="
+				+ getUbcontents() + ", getUbdate()=" + getUbdate() + ", getUbmainimg()=" + getUbmainimg()
+				+ ", getUbdetailimg()=" + getUbdetailimg() + ", getUbstate()=" + getUbstate() + ", getUbwarning()="
+				+ getUbwarning() + ", getUbzzim()=" + getUbzzim() + ", getUbmainimgfile()=" + getUbmainimgfile()
+				+ ", getUbdetailimgfile()=" + Arrays.toString(getUbdetailimgfile()) + ", getUbnickname()="
+				+ getUbnickname() + ", getUbdetailimg_list()=" + Arrays.toString(getUbdetailimg_list())
+				+ ", getUbprofile()=" + getUbprofile() + ", getUbgdname()=" + getUbgdname() + ", getGdprice()="
+				+ getGdprice() + ", getGdprice2()=" + getGdprice2() + ", getUbdatedef()=" + getUbdatedef()
+				+ ", getZzimcheck()=" + getZzimcheck() + ", hashCode()=" + hashCode() + ", getClass()=" + getClass()
+				+ ", toString()=" + super.toString() + "]";
 	}
+	
+	
 	
 	
 	
