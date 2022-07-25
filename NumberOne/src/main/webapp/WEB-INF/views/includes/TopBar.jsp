@@ -585,7 +585,7 @@
 				break;
 			}
 			zzimList += "<div class=\"\" >";
-			zzimList += "<a class=\" dropdown-item d-flex align-items-center py-2\" href=\"#\" onclick=\"location.href=\"selectResellView?ubcode=" + data[i].ubcode + "&ubsellbuy=" + data[i].ubsellbuy+ ">";
+			zzimList += "<a class=\" dropdown-item d-flex align-items-center py-2\" href=\"#\" onclick=\"location.href='selectResellView?ubcode=" + data[i].ubcode + "&ubsellbuy=" + data[i].ubsellbuy+ "&modifyCheck=LIST'\">";
 			zzimList += "<div class=\"row\" style=\"width: 100%; --bs-gutter-x: 0;\">";
 			zzimList += "<div class=\"col-1 text-center\">";
 			zzimList += "<img src=\"${pageContext.request.contextPath }/resources/img/resell/" + data[i].ubmainimg + "\" alt=\"메인사진\" class=\" chat-profile\">";
