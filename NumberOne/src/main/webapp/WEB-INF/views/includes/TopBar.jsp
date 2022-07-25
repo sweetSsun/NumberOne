@@ -356,7 +356,7 @@
 		$("#chatRoomList").html(dropdownList);
 	}
 
-
+/* 렉 때문에 잠시 지움
 	<!-- 안읽은 채팅메세지 확인 뱃지 -->
 	//console.log('${sessionScope.loginId }');
 	if(${sessionScope.loginId != null}){
@@ -389,7 +389,7 @@
 	               },3000);
 	    });
 	}
-	
+	 */
 	<!-- 로그인 시 세션에 담긴 채팅메세지 갯수 뱃지 출력 -->
  	if (${sessionScope.sumUnReadCount != 0 }){
 		var loginUnReadCount = ${sessionScope.sumUnReadCount};

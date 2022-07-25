@@ -469,8 +469,6 @@
 						output += "<td class='text-center overflow' >" + result[i].mjoindate + "</td>";
 						output += "<td class='text-center' >" + result[i].mwarning + "</td>";
 						output += "<td class='text-center'>"
-						// if문 순서 바꿔봐야함~~~~~~~~~~~~~~~~~~~~ㅠㅠㅠ 정지인데 경고로 뜸
-						
 						if (result[i].mstate == 0){
 							output += "<button class='btn btn-sm btn-danger' type='button' onclick='showMstateModal(this, \""+result[i].mid+"\")'>정지</button>";
 						
