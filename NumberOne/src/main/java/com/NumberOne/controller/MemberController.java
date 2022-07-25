@@ -1,6 +1,7 @@
 package com.NumberOne.controller;
 
 import java.io.IOException;
+import java.text.ParseException;
 
 import javax.servlet.http.HttpSession;
 
@@ -336,7 +337,7 @@ public class MemberController {
 
 		// 찜목록 조회
 		@RequestMapping(value = "/selectZzimList_ajax")
-		public @ResponseBody String selectZzimList_ajax(String loginId) {
+		public @ResponseBody String selectZzimList_ajax(String loginId) throws ParseException {
 			System.out.println("찜목록 조회 요청");
 			String zzimList_gson = msvc.selectZzimList_ajax(loginId);
 			return zzimList_gson;

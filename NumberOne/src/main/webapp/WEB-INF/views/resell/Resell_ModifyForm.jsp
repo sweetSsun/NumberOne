@@ -94,7 +94,6 @@ option {
 	resize: none;
 }
 
-/* 새로 추가한 부분 (여기부터 input:disabled까지) */
 .container-gd {
 	border: 2px solid #00bcd4;
 	border-radius: 7px;
@@ -107,7 +106,9 @@ option {
 	height: 22px;
 	margin: auto;
 	width:100%;
+	vertical-align: middle
 }
+
 .gd-header{
 	display: block;
 	border-radius: 5px 5px 0 0;
@@ -126,11 +127,6 @@ input[type="text"]:disabled {
 	width: 100%;
 	text-align: center;
 	display: inline-block;
-}
-
-.buttons {
-	margin: auto;
-	display: block;
 }
 
 .selectPlaceHolder {
@@ -344,14 +340,15 @@ div.detailimageBox {
 											type="text" value="${gdList.gdname }">
 									</div>
 	
-									<div class="col-3">
-	
+									<div class="col-3" style="display:flex;">
+										<!-- 한화 표시 -->
+										<span style="vertical-align: middle; margin: auto;">&#8361; </span>
 										<input
-											type="text"
-											class="gdtitle"
-											name="gd_price"
-											value="${gdList.gdprice }"
-										>
+												type="text"
+												class="gdtitle"
+												name="gd_price"
+												value="${gdList.gdprice }"
+											>
 										<input disabled class="d_none gdtitle gd_priceList line-through" 
 											 type="text" value="${gdList.gdprice }">
 									</div>
@@ -385,7 +382,7 @@ div.detailimageBox {
 					<div class="row" style="width:100%; margin-left:0;">
 						<textarea
 							class="bdcontents"
-							rows="16"
+							rows="17"
 							cols="80"
 							name="ubcontents"
 							id="ubcontents"
@@ -538,7 +535,7 @@ div.detailimageBox {
 				<div class="modal-footer">
 					<input type="hidden">
 					<button
-						class="close btn btn-info text-white"
+						class="close btn btn-numberone"
 						onclick="cancelBtn()"
 					>네</button>
 					<button

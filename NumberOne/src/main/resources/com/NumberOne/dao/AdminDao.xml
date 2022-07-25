@@ -15,26 +15,26 @@
 	    	<when test="searchVal == 'active'">
 				WHERE MSTATE=1 AND MWARNING = 0
 			</when>
-			<when test="searchVal == 'warning'">
-				WHERE MWARNING > 0
-			</when>
 			<when test="searchVal == 'inactive'">
 				WHERE MSTATE=0
+			</when>
+			<when test="searchVal == 'warning'">
+				WHERE MSTATE=1 AND MWARNING > 0
 			</when>
 			<when test="searchVal == 'withdraw'">
 				WHERE MSTATE=2
 			</when>
 		</choose>
-		<choose>
-			<when test="keyword.length > 0 and searchVal != 'all'">
-				AND
-			</when>
-			<when test="keyword.length > 0 and searchVal == 'all'">
-				WHERE
-			</when>
-		</choose>
 		<!-- 검색한 키워드 정렬 -->
 		<if test="keyword.length > 0">
+			<choose>
+				<when test="searchVal != 'all'">
+					AND
+				</when>
+				<when test="searchVal == 'all'">
+					WHERE
+				</when>
+			</choose>
 			${searchType} LIKE '%'||#{keyword}||'%'
 		</if>
 	</select>
@@ -49,26 +49,26 @@
 		    	<when test="searchVal == 'active'">
 					WHERE MSTATE=1 AND MWARNING = 0
 				</when>
-				<when test="searchVal == 'warning'">
-					WHERE MWARNING > 0
-				</when>
 				<when test="searchVal == 'inactive'">
 					WHERE MSTATE=0
+				</when>
+				<when test="searchVal == 'warning'">
+					WHERE MSTATE=1 AND MWARNING > 0
 				</when>
 				<when test="searchVal == 'withdraw'">
 					WHERE MSTATE=2
 				</when>
 			</choose>
-			<choose>
-				<when test="keyword.length > 0 and searchVal != 'all'">
-					AND
-				</when>
-				<when test="keyword.length > 0 and searchVal == 'all'">
-					WHERE
-				</when>
-			</choose>
 			<!-- 검색한 키워드 정렬 -->
 			<if test="keyword.length > 0">
+				<choose>
+					<when test="searchVal != 'all'">
+						AND
+					</when>
+					<when test="searchVal == 'all'">
+						WHERE
+					</when>
+				</choose>
 				${searchType} LIKE '%'||#{keyword}||'%'
 			</if>
 			)
@@ -283,16 +283,16 @@
 				WHERE BDSTATE = 0
 			</when>
 		</choose>
+		<!-- 검색한 키워드 정렬 -->
+		<if test="keyword.length > 0">
 		<choose>
-			<when test="keyword.length > 0 and searchVal != 'all'">
+			<when test="searchVal != 'all'">
 				AND
 			</when>
-			<when test="keyword.length > 0 and searchVal == 'all'">
+			<when test="searchVal == 'all'">
 				WHERE
 			</when>
 		</choose>
-		<!-- 검색한 키워드 정렬 -->
-		<if test="keyword.length > 0">
 		<choose>
 			<when test="searchType == 'bdTitleContents'">
 				(BDTITLE LIKE '%'||#{keyword}||'%' OR BDCONTENTS LIKE '%'||#{keyword}||'%')
@@ -320,16 +320,16 @@
 				WHERE BDSTATE = 0	
 			</when>
 		</choose>
-		<choose>
-			<when test="keyword.length > 0 and searchVal != 'all'">
-				AND
-			</when>
-			<when test="keyword.length > 0 and searchVal == 'all'">
-				WHERE
-			</when>
-		</choose>
 			<!-- 검색한 키워드 정렬 -->
-			<if test="keyword.length > 0">
+		<if test="keyword.length > 0">
+			<choose>
+				<when test="searchVal != 'all'">
+					AND
+				</when>
+				<when test="searchVal == 'all'">
+					WHERE
+				</when>
+			</choose>
 			<choose>
 				<when test="searchType == 'bdTitleContents'">
 					(BDTITLE LIKE '%'||#{keyword}||'%' OR BDCONTENTS LIKE '%'||#{keyword}||'%')
@@ -362,24 +362,24 @@
 				WHERE BDFIX = 0
 			</when>
 		</choose>
-		<choose>
-			<when test="keyword.length > 0 and searchVal != 'all'">
-				AND
-			</when>
-			<when test="keyword.length > 0 and searchVal == 'all'">
-				WHERE
-			</when>
-		</choose>
 		<!-- 검색한 키워드 정렬 -->
 		<if test="keyword.length > 0">
-		<choose>
-			<when test="searchType == 'bdTitleContents'">
-				(BDTITLE LIKE '%'||#{keyword}||'%' OR BDCONTENTS LIKE '%'||#{keyword}||'%')
-			</when>
-			<otherwise>
-				${searchType} LIKE '%'||#{keyword}||'%'
-			</otherwise>
-		</choose>
+			<choose>
+				<when test="searchVal != 'all'">
+					AND
+				</when>
+				<when test="searchVal == 'all'">
+					WHERE
+				</when>
+			</choose>
+			<choose>
+				<when test="searchType == 'bdTitleContents'">
+					(BDTITLE LIKE '%'||#{keyword}||'%' OR BDCONTENTS LIKE '%'||#{keyword}||'%')
+				</when>
+				<otherwise>
+					${searchType} LIKE '%'||#{keyword}||'%'
+				</otherwise>
+			</choose>
 		</if>
 	</select>
 	
@@ -398,16 +398,16 @@
 				WHERE BDFIX = 0
 			</when>
 		</choose>
-		<choose>
-			<when test="keyword.length > 0 and searchVal != 'all'">
-				AND
-			</when>
-			<when test="keyword.length > 0 and searchVal == 'all'">
-				WHERE
-			</when>
-		</choose>
-			<!-- 검색한 키워드 정렬 -->
-			<if test="keyword.length > 0">
+		<!-- 검색한 키워드 정렬 -->
+		<if test="keyword.length > 0">
+			<choose>
+				<when test="searchVal != 'all'">
+					AND
+				</when>
+				<when test="searchVal == 'all'">
+					WHERE
+				</when>
+			</choose>
 			<choose>
 				<when test="searchType == 'bdTitleContents'">
 					(BDTITLE LIKE '%'||#{keyword}||'%' OR BDCONTENTS LIKE '%'||#{keyword}||'%')
@@ -435,15 +435,15 @@
 		<if test="searchVal != 'all'">
 			WHERE RPBDCATEGORY=#{searchVal}
 		</if>
-		<choose>
-			<when test="keyword.length > 0 and searchVal != 'all'">
-				AND
-			</when>
-			<when test="keyword.length > 0 and searchVal == 'all'">
-				WHERE
-			</when>
-		</choose>
 		<if test="keyword.length > 0">
+			<choose>
+				<when test="searchVal != 'all'">
+					AND
+				</when>
+				<when test="searchVal == 'all'">
+					WHERE
+				</when>
+			</choose>
 			${searchType} LIKE '%'||#{keyword}||'%'
 		</if>
 	</select>
@@ -457,15 +457,15 @@
 		<if test="searchVal != 'all'">
 			WHERE RPBDCATEGORY=#{searchVal}
 		</if>
-		<choose>
-			<when test="keyword.length > 0 and searchVal != 'all'">
-				AND
-			</when>
-			<when test="keyword.length > 0 and searchVal == 'all'">
-				WHERE
-			</when>
-		</choose>
 		<if test="keyword.length > 0">
+			<choose>
+				<when test="searchVal != 'all'">
+					AND
+				</when>
+				<when test="searchVal == 'all'">
+					WHERE
+				</when>
+			</choose>
 			${searchType} LIKE '%'||#{keyword}||'%'
 		</if>
 		)
