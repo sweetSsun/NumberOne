@@ -337,9 +337,9 @@
 						output += "<td class='text-center'>" + result[i].ubwarning + "</td>";
 						output += "<td class='text-center'>"
 						if (result[i].ubstate == 1){
-							output += "<button class='btn btn-sm btn-warning' type='button' onclick='showBdstateModal(this, \""+result[i].ubcode+"\")'>경고</button>";
+							output += "<button class='btn btn-sm btn-warning' type='button' onclick='showUbstateModal(this, \""+result[i].ubcode+"\")'>경고</button>";
 						} else {
-							output += "<button class='btn btn-sm btn-danger' type='button' onclick='showBdstateModal(this,\""+result[i].ubcode+"\")'>정지</button>";
+							output += "<button class='btn btn-sm btn-danger' type='button' onclick='showUbstateModal(this,\""+result[i].ubcode+"\")'>정지</button>";
 						}
 						output += "</td>";
 						output += "</tr>";

@@ -116,11 +116,11 @@
 	                      <td class="text-center">${member.mwarning}</td>
 	                      <td>
 	                      	<c:choose>
-	                      		<c:when test="${member.mwarning > 0}">
-	                      			<button class="btn btn-sm btn-warning" type="button" onclick="showMstateModal(this,'${member.mid }')">경고</button>
-	                      		</c:when>
 	                      		<c:when test="${member.mstate == 0}">
 	                      			<button class="btn btn-sm btn-danger"  type="button" onclick="showMstateModal(this, '${member.mid }')">정지</button>
+	                      		</c:when>
+	                      		<c:when test="${member.mwarning > 0}">
+	                      			<button class="btn btn-sm btn-warning" type="button" onclick="showMstateModal(this,'${member.mid }')">경고</button>
 	                      		</c:when>
 	                      		<c:when test="${member.mstate == 1 || member.mstate == 9}">
 	                      			<button class="btn btn-sm btn-primary"  type="button" onclick="showMstateModal(this,'${member.mid }')">활동</button>
@@ -469,14 +469,15 @@
 						output += "<td class='text-center overflow' >" + result[i].mjoindate + "</td>";
 						output += "<td class='text-center' >" + result[i].mwarning + "</td>";
 						output += "<td class='text-center'>"
-						if (result[i].mwarning > 0){
-							output += "<button class='btn btn-sm btn-warning' type='button' onclick='showMstateModal(this, \""+result[i].mid+"\")'>경고</button>";
-						} else if (result[i].mstate == 0){
+						if (result[i].mstate == 0){
 							output += "<button class='btn btn-sm btn-danger' type='button' onclick='showMstateModal(this, \""+result[i].mid+"\")'>정지</button>";
+						
+						} else if (result[i].mwarning > 0){
+							output += "<button class='btn btn-sm btn-warning' type='button' onclick='showMstateModal(this, \""+result[i].mid+"\")'>경고</button>";
 						} else if (result[i].mstate == 1 || result[i].mstate == 9){
 							output += "<button class='btn btn-sm btn-primary' type='button' onclick='showMstateModal(this, \""+result[i].mid+"\")'>활동</button>";
 						} else {
-							output += "<button class='btn btn-sm btn-secondary' type='button' style='cursor:default;>탈퇴</button>";
+							output += "<button class='btn btn-sm btn-secondary' type='button' style='cursor:default';>탈퇴</button>";
 						}
 						output += "</td>";
 						output += "</tr>";

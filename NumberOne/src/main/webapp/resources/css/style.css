@@ -232,11 +232,14 @@ ol {
     user-select: none;
     background-color: #00bcd4;
     border: 1px solid #00bcd4;
-    /*
-    padding: .375rem .75rem;
-    font-size: 1rem;
-    */
     border-radius: .25rem;
+    
+    transition:all 0.9s, color 0.3;  
+}
+
+.btn-numberone:hover{
+    color: #ffffff !important;
+    box-shadow:200px 0 0 0 rgba(0,0,0,0.1) inset;
 }
 
 .primary-btn {

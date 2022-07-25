@@ -100,7 +100,7 @@ public class Paging {
 				.queryParam("keyword", keyword)
 				.encode()
 				.build();
-		System.out.println("생성된 파라미터 : " + uri.toUriString());
+		//System.out.println("생성된 파라미터 : " + uri.toUriString());
 		return uri.toUriString();
 	}
 	// 인덱스 있는 버전(상세페이지에서 수정, 삭제시)
@@ -115,7 +115,7 @@ public class Paging {
 				.queryParam("keyword", keyword)
 				.encode()
 				.build();
-		System.out.println("생성된 파라미터 : " + uri.toUriString());
+		//System.out.println("생성된 파라미터 : " + uri.toUriString());
 		return uri.toUriString();
 	}
 
