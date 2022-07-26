@@ -64,7 +64,9 @@
 	.malmeori{
 		display: none;
 	}
-	
+   .bdnickname:hover{
+   	color:#00bcd4;
+   }
 </style>
 </head>
 <body>
@@ -156,7 +158,7 @@
 								<td class="text-center tableCell">${notice.nbcode}</td>
 								<td></td>
 								<td class="tableCell">
-									<a href="selectNoticeBoardView?nbcode=${notice.nbcode }">${notice.nbtitle}</a>
+									<a href="selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page) }">${notice.nbtitle}</a>
 								</td>
 								<td class="text-center tableCell">관리자</td>
 								<td class="text-center tableCell">${notice.nbdate}</td>
@@ -174,16 +176,16 @@
 						<tr style="border-bottom: solid #E0E0E0 1px;">
 							<td class="text-center tableCell">${board.bdcode}</td>
 							<td class="bdcategory text-center tableCell">
-								
+								<c:set var="bdtype" value="region"/>
 								<c:choose>
 									<c:when test="${board.bdrgcode == 'ALL' }">
-										<a href="selectRegionBoardList">
+										<a href="selectRegionBoardList${paging.makeQueryPage(board.bdrgcode, bdtype, board.bdcode, paging.page ) }">
 											${board.bdrgname }
 										</a>
 									</c:when>
 									
 									<c:otherwise>
-										<a href="selectDetailBoardList?searchVal=${board.bdrgcode }">
+										<a href="selectDetailBoardList${paging.makeQueryPage(board.bdrgcode, bdtype, board.bdcode, paging.page )}">
 											${board.bdrgname }
 										</a>	
 									</c:otherwise>
@@ -193,18 +195,19 @@
 							<td class="tableCell">
 							 	<c:choose>
 									<c:when test="${board.bdcategory == '후기'  }">
-										<a href="selectReviewBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
+										<c:set var="bdtype" value="region"/>
+										<a href="selectReviewBoardView${paging.makeQueryPage(board.bdrgcode, bdtype, board.bdcode, paging.page)}">${board.bdtitle} 
 									 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
 									</c:when>
 									
 									<c:otherwise>
-									 	<a href="selectBoardView?bdcode=${board.bdcode }&bdtype=region">${board.bdtitle} 
+									 	<a href="selectBoardView${paging.makeQueryPage(board.bdrgcode, bdtype, board.bdcode, paging.page)}">${board.bdtitle} 
 									 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
 									</c:otherwise>
 								</c:choose>
 							 </td>
 							<td class="text-center tableCell">
-								<span style="cursor: pointer" onclick="writeMemberBoard('${board.bdnickname}')">${board.bdnickname}</span>
+								<span style="cursor: pointer" class="bdnickname" onclick="writeMemberBoard('${board.bdnickname}')">${board.bdnickname}</span>
 							</td>
 							<td class="text-center tableCell">${board.bddate}</td>
 							<td class="text-center tableCell">${board.bdhits }</td>

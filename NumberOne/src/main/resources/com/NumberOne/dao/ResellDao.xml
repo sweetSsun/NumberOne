@@ -24,6 +24,7 @@
 		WHERE RGNAME = #{mregion}
 	</select>
 
+
 	<select id="loadToResellWriteForm" resultType="String">
 		SELECT MNICKNAME
 		FROM MEMBERS
@@ -46,9 +47,12 @@
 		UBDATE,
 		UBMAINIMG, UBDETAILIMG, UBSTATE
 		FROM (SELECT * FROM USEDBOARDS
+		
+			<if test="(paging.searchType != '' or paging.searchType != null)
+					and (paging.keyword != '' or paging.keyword != null)">
 		<choose>
 			<when
-				test="paging.searchType == 'total' or paging.searchType == 'sell' or paging.searchType == 'buy'">
+				test="paging.searchType == 'total'">
 				WHERE UBTITLE LIKE '%'||#{paging.keyword}||'%' OR
 				UBCONTENTS
 				LIKE
@@ -71,6 +75,7 @@
 				WHERE UBCONTENTS LIKE '%'||#{paging.keyword}||'%'
 			</when>
 		</choose>
+		</if>
 		ORDER BY
 		UBDATE DESC)
 
@@ -81,7 +86,7 @@
 		</if>
 
 		UBSELLBUY = #{paging.sellBuy} AND
-		UBSTATE = 1 OR UBSTATE = 9
+		(UBSTATE = 1 OR UBSTATE = 9)
 
 		) LEFT
 		OUTER JOIN ZZIM_VIEW
@@ -109,7 +114,7 @@
 		resultType="com.NumberOne.dto.UsedBoardDto">
 		SELECT UBNICKNAME, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE,
 		UBCONTENTS,
-		TO_CHAR(UBDATE, 'YYYY-MM-DD') UBDATE, UBMAINIMG,
+		TO_CHAR(UBDATE, 'YYYY-MM-DD HH24:MI:SS') UBDATE, UBMAINIMG,
 		UBDETAILIMG, UBSTATE,
 		NVL(ZZIMCOUNT, 0) UBZZIM
 		FROM (SELECT ROWNUM
@@ -119,10 +124,11 @@
 		UBDATE,
 		UBMAINIMG, UBDETAILIMG, UBSTATE
 		FROM (SELECT * FROM USEDBOARDS
-		<if test="searchType != null or searchType != ''">
+			<if test="(searchType != '' or searchType != null)
+					and (keyword != '' or keyword != null)">
 			<choose>
 				<when
-					test="searchType == 'total' or searchType == 'sell' or searchType == 'buy'">
+					test="searchType == 'total'">
 					WHERE UBTITLE LIKE '%'||#{keyword}||'%' OR UBCONTENTS
 					LIKE
 					'%'||#{keyword}||'%'
@@ -151,7 +157,7 @@
 			UBRGCODE = #{searchVal} AND
 		</if>
 		UBSELLBUY = #{sellBuy} AND
-		UBSTATE = 1 OR UBSTATE = 9
+		(UBSTATE = 1 OR UBSTATE = 9)
 
 		) LEFT OUTER JOIN ZZIM_VIEW
 		ON UBCODE = ZZUBCODE,
@@ -170,10 +176,11 @@
 		FROM (SELECT *
 
 		FROM (SELECT * FROM USEDBOARDS
-		<if test="searchType != null or searchType != ''">
+		<if test="(searchType != '' or searchType != null)
+					and (keyword != '' or keyword != null)">
 			<choose>
 				<when
-					test="searchType == 'total' or searchType == 'sell' or searchType == 'buy'">
+					test="searchType == 'total'">
 					WHERE UBTITLE LIKE '%'||#{keyword}||'%' OR UBCONTENTS
 					LIKE
 					'%'||#{keyword}||'%'
@@ -198,10 +205,11 @@
 		)
 		WHERE
 		<if test="searchVal !='all'">
+		
 			UBRGCODE = #{searchVal} AND
 		</if>
 
-		UBSELLBUY = #{sellBuy} AND UBSTATE = 1 OR UBSTATE = 9
+		UBSELLBUY = #{sellBuy} AND (UBSTATE = 1 OR UBSTATE = 9)
 
 		),MNICKNAME_VIEW
 		WHERE MID = UBMID
@@ -243,8 +251,8 @@
 		UBCODE)
 		WHERE UBSELLBUY =
 		#{ubsellbuy} AND
-		UBSTATE = 1
-		OR UBSTATE = 9
+		(UBSTATE = 1
+		OR UBSTATE = 9)
 		) LEFT OUTER JOIN ZZIM_VIEW
 		ON UBCODE = ZZUBCODE,
 		MNICKNAME_VIEW
@@ -276,7 +284,7 @@
 		AND UBCODE != #{ubcode} ORDER BY
 		UBDATE DESC )
 		WHERE UBSELLBUY = 'S' AND
-		UBSTATE = 1 OR UBSTATE = 9
+		(UBSTATE = 1 OR UBSTATE = 9)
 		) LEFT OUTER JOIN
 		ZZIM_VIEW
 		ON UBCODE = ZZUBCODE,

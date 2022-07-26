@@ -48,7 +48,7 @@ public class Paging {
 	//일반게시판 / 지역게시판 구분을 위한 필드
 	private String bdtype;	
 	//일반게시판 카테고리 구분을 위한 필드
-	private String bdcategory;	//자유~후기 게시판 구분
+	private String bdcategory;
 	
 	// 생성자
 	public Paging() {
@@ -108,7 +108,7 @@ public class Paging {
 	}
 	// 인덱스 있는 버전(상세페이지에서 수정, 삭제시)
 	public String makeQueryPage(String codeIdx, int page) {
-		System.out.println(codeIdx);
+		//System.out.println(codeIdx);
 		UriComponents uri = UriComponentsBuilder.newInstance()
 				.queryParam("codeIdx", codeIdx)
 				.queryParam("page", page)
@@ -122,6 +122,39 @@ public class Paging {
 		return uri.toUriString();
 	}
 
+	// 일반게시판 + 지역게시판 용
+	public String makeQueryPage( String searchVal, String bdtype, String codeIdx, int page) {
+		//System.out.println(codeIdx);
+		UriComponents uri = UriComponentsBuilder.newInstance()
+				.queryParam("bdtype", bdtype)
+				.queryParam("codeIdx", codeIdx)
+				.queryParam("page", page)
+				.queryParam("searchVal", searchVal)
+				.queryParam("perPageNum", perPageNum)
+				.queryParam("searchType", searchType)
+				.queryParam("keyword", keyword)
+				.encode()
+				.build();
+		//System.out.println("생성된 파라미터 : " + uri.toUriString());
+		return uri.toUriString();
+	}
+	// 전체게시판(일반) , 지역게시판(전체글)
+	public String makeQueryPage( String bdtype, String codeIdx, int page) {
+		//System.out.println(codeIdx);
+		UriComponents uri = UriComponentsBuilder.newInstance()
+				.queryParam("bdtype", bdtype)
+				.queryParam("codeIdx", codeIdx)
+				.queryParam("page", page)
+				.queryParam("perPageNum", perPageNum)
+				.queryParam("searchType", searchType)
+				.queryParam("keyword", keyword)
+				.encode()
+				.build();
+		//System.out.println("생성된 파라미터 : " + uri.toUriString());
+		return uri.toUriString();
+	}
+
+	
 	public int getPage() {
 		return page;
 	}
@@ -283,6 +316,9 @@ public class Paging {
 				+ ajaxCheck + ", sellBuy=" + sellBuy + ", bdrgname=" + bdrgname + ", bdtype=" + bdtype + ", bdcategory="
 				+ bdcategory + "]";
 	}
+
+
+
 
 
 	

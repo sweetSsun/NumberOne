@@ -28,7 +28,6 @@
 	
 <!-- Css Styles -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
-
 <style type="text/css">
 div .d_none {
 	display: none;
@@ -649,25 +648,33 @@ function mainimgCh(){
 			location.href = "loadToLogin";
 		}
 
-		const resellTitle = document.getElementById("resellTitle"); //select태그지정
-
+		let resellTitle = document.getElementById("resellTitle"); // 사구,팔구 select태그지정
+		let regionCheck = document.getElementById("regionCheck");	// 지역 select 태그
 		/* 페이지이동 시 어느게시판에서 넘어왔는지 파라메터를 통해 확인 */
-		let sell_buy = '${sell_buy}'; // 'S'  or  'B'
+		const sellbuy = '${selectInfo.ubsellbuy}'; // 글쓰기 버튼 누른 목록페이지 확인
+		const rgcode = '${selectInfo.ubrgcode}';		// 글쓰기 버튼 누른 지역 확인
 
+		
 		/* 사구, 팔구 중 어느게시판에서 글작성눌렀는지 확인해서 출력  */
 		for (let i = 0; i < resellTitle.options.length; i++) {
-			// select태그의 option태그 갯수(길이)만큼 for문 반복 실행
-			if (resellTitle.options[i].value == sell_buy) {
-				//option태그의 value 가 sell_buy 변수 값과 일치하는 option 찾기
+			if (resellTitle.options[i].value === sellbuy) {
 				resellTitle.options[i].selected = 'true'
-				//일치하는 option에 selected 속성을 준다.
-				sell_buy == 'B' ? document.getElementById("titleMsg").innerText = "사구게시판 글작성"
+				sellbuy == 'B' ? document.getElementById("titleMsg").innerText = "사구게시판 글작성"
 						: document.getElementById("titleMsg").innerText = "팔구게시판 글작성";
-				//그리고 sell_buy의 값에 따라 Text를 다르게 출력한다. 
 				break;
-				//일치하는 값을 찾으면 break 로 for문 종료
+				}
+					}
+		
+		/* 페이지 로드시 글쓰기를 누른 페이지의 지역으로 selected */
+		for(let i = 0; i < regionCheck.options.length; i++){
+			console.log('지역선택확인')
+			if(regionCheck.options[i].value === rgcode){
+				regionCheck.options[i].selected = 'true';
 			}
+			
+			
 		}
+		
 </script>
 
 
@@ -704,19 +711,19 @@ if(resellTitle.options[resellTitle.selectedIndex].value == 'B'){
 <!-- 품목추가,제거 이벤트 -->
 <script type="text/javascript">
 	/* 추가버튼 변수 */
-	let addBtn = document.getElementById("addBtn");
+	const addBtn = document.getElementById("addBtn");
 	
 	/* 제거버튼 변수*/
-	let removeBtn = document.getElementsByClassName("removeBtn");
+	const removeBtn = document.getElementsByClassName("removeBtn");
 	
 	/* input태그의 부모div */
-	let dsiplay_btn = document.getElementsByClassName("btn_d-none");
+	const dsiplay_btn = document.getElementsByClassName("btn_d-none");
 	
 	/* 품목이름 변수 */
-	let gdcheck_n = document.getElementsByClassName("gdcheck_n");
+	const gdcheck_n = document.getElementsByClassName("gdcheck_n");
 	
 	/* 품목가격 변수  */
-	let gdcheck_p = document.getElementsByClassName("gdcheck_p");
+	const gdcheck_p = document.getElementsByClassName("gdcheck_p");
 
 
 	/* 추가, 제거 버튼 클릭시 이벤트 */
@@ -762,6 +769,9 @@ for(let i = 0; i<dsiplay_btn.length; i++){
 	/* 폼태그 데이터 공백 체크  */
 	/* onsubmit이벤트  false 일시 submit이벤트 취소*/
 	function checkFormData() {
+		const gdtitle_class = document.getElementsByClassName("gdtitle");
+		console.log(gdtitle_class[0]);
+		
 		let checkForm = true;
 		console.log("폼데이터 핸들러 호출");
 		if (document.getElementById("titleCheck").value === '') {
@@ -772,30 +782,59 @@ for(let i = 0; i<dsiplay_btn.length; i++){
 			document.getElementById("contentsCheck").focus();
 			alert("내용을 입력하세요");
 			checkForm = false;
-		} else if(document.getElementById('regionCheck').value===''){
-			alert("지역을 선택하세요");
-			document.getElementById("regionCheck").focus();
-			checkForm = false;
-		}		
+		} 		
 		else if (document.getElementById("mainImg").value === '') {
 			alert("대표 사진은 필수 사항입니다!");
 			document.getElementById("mainImg").focus();
 			checkForm = false;
+		}			
+	
+		else{
+			
+			
+			
+	for(let i = 0; i<gdtitle_class.length; i++){
+		if(gdtitle_class[i].value === '') {
+			console.log(gdtitle_class[i].value)
+			gdtitle_class[i].focus();
+			alert("상품정보를 입력하세요");
+			checkForm = false;			
 		}
-		
-		return checkForm;
 	}
+	}
+		
+	return false;
+	}
+		
 </script>
 
 
+		
+<!-- 글목록으로 돌아가기 -->
 <script type="text/javascript">
-
-function cancelBtn() {
-	console.log('취소버튼');
-location.href = "selectResellPageList?sellBuy=" + sell_buy;
+let storage = window.localStorage; 
+if(storage.getItem('searchType') !=null){
+	var searchType_storage = storage.getItem('searchType');
+	console.log('로컬스토리지 검색타입 : ', searchType_storage);
 }
-		</script>
+if(storage.getItem('keyword') !=null){
+	var keyword_storage = storage.getItem('keyword');
+	console.log('로컬스토리지 검색어 : ', keyword_storage);
+}
+if(storage.getItem('page') !=null ){
+	var page_storage = storage.getItem('page');
+	
+	console.log('로컬스토리지 페이지번호 : ', page_storage);
+}	
+			
+	function cancelBtn() {
 
+		console.log("취소버튼 클릭이벤트");
+		
+		location.href = 'selectResellPageList?sellBuy='+sellbuy+'&searchType='+searchType_storage+'&keyword='+keyword_storage+'&searchVal='+rgcode+'&page='+page_storage;
+	}
+
+</script>
 
 <%--
 <!-- 이미지파일 미리보기 스크립트 -->

@@ -15,6 +15,8 @@
 <!-- 카카오 JS_SDK -->
 <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
 
+
+
 <title>${gonguBoard.nbtitle} - 1인자:관리자 공구게시판</title>
 
 <style type="text/css">
@@ -87,7 +89,7 @@
 			<div class="container">
 				<h4 class="text-center">관리자 공구글 상세페이지 : GonguBoardView.jsp</h4>
 				
-				<form action="">
+				<!-- <form action=""> -->
 					<div class="row">
 						<div class="col">
 							<a href="#"><span class="fw-bold boardCategory"> | 공구게시판</span></a> 
@@ -122,9 +124,10 @@
 						
 						<!-- 공동구매 결제API -->
 						<div class="row">
+						<form id="form-payment" method="post" action="">
 							<div class="col-lg-10">
 								<div>
-								<input type="text" name="pay-name" placeholder="이름을 입력하세요">
+								<input type="text" name="pay-id" placeholder="아이디를 입력하세요" value="${sessionScope.loginId}">
 								</div>
 								<div>
 								<input type="text" name="pay-tel" placeholder="전화번호를 입력하세요">
@@ -137,21 +140,20 @@
 								</div>
 							</div>
 							<div class="col-lg-2">
-								<form method="post" action="kakaoPayReady">
-									<span id="total-price">1</span><h3>원 입니다.</h3>
-									<button class="btn-kakao-pay">
-										<img alt="카카오결제API" src="${pageContext.request.contextPath }/resources/img/payment_icon_yellow_medium.png">
-										<!-- small/ medium/ large -->
-									</button>
-								</form>
+								<span id="total-price">1</span><h3>원 입니다.</h3>
+								<button id="btn-kakao-pay" type="button">
+									<img alt="카카오결제API" src="${pageContext.request.contextPath }/resources/img/payment_icon_yellow_medium.png">
+									<!-- small/ medium/ large -->
+								</button>
 							</div>
+						</form>
 									
 						</div>
 						<!-- 공구 끝 -->
 						<!-- 본문 끝 -->
 						
 					</div>
-				</form>
+				<!-- </form> -->
 				
 				
 				
@@ -228,7 +230,7 @@
 	
 </script>
 
-<!-- 카카오 공구 -->
+<!-- 카카오 결제 -->
 <!-- <script type="text/javascript">
 	
 function kakaopay(){
@@ -241,6 +243,57 @@ function kakaopay(){
 }
 
 </script> -->
+
+<script>
+//카카오결제
+	$("#btn-kakao-pay").click(function(){
+		console.log("카카오페이 클릭");
+		// 필수입력값을 확인.
+		var loginId = $("#form-payment input[name='pay-id']").val();
+		var tel = $("#form-payment input[name='pay-tel']").val();
+		var email = $("#form-payment input[name='pay-email']").val();
+		var address = $("#form-payment input[name='pay-address']").val();
+		
+		if(name == ""){
+			$("#form-payment input[name='pay-name']").focus()
+		}
+		if(tel == ""){
+			$("#form-payment input[name='pay-tel']").focus()
+		}
+		if(email == ""){
+			$("#form-payment input[name='pay-email']").focus()
+		}
+		if(address == ""){
+			$("#form-payment input[name='pay-address']").focus()
+		}
+		
+		console.log("loginId : "+loginId);
+		console.log("tel : "+tel);
+		console.log("email : "+email);
+		console.log("address : "+address);
+		
+		// 카카오페이 결제전송
+		$.ajax({
+			type:'post',
+			url:'kakaopay',
+			dataType:'json',
+/* 			data:{
+
+			}, */
+			success:function(response){
+				console.log("결제실행");
+				var payopen = response.next_redirect_pc_url
+				window.open(payopen,"","width=350, height=450, top=0px, left=500px, scrollbars=no, resizable=no");
+				console.log(response)
+				//if(response="")
+				// 결과값에따라서 넣어주기! 결제성공했을때 !
+				// alert("success");
+			}
+		})
+	})
+
+</script>
+
 
 </body>
 
