@@ -6,8 +6,12 @@
 <meta charset="UTF-8">
 <title>1인자 - 1:1채팅</title>
 <%@ include file="/resources/css/CommonCss.jsp" %>
+<!-- 폰트어썸 -->
+<script src="https://kit.fontawesome.com/86a85cd392.js" crossorigin="anonymous"></script>
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- Css Styles -->
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 
 <style>
 	html{
@@ -190,6 +194,28 @@
 		background-color: #F6F6F6;
     	border-radius: 6px;
 	}
+	#frMemberInfo{
+		height: 50px;
+		margin:0;
+		font-weight: bold; 
+		line-height: 50px; 
+		background-color:#00bcd4; 
+		color:#ffffff; 
+		border-radius: 5px;"
+	}
+	.frMember{
+		text-align:left;
+		margin-left: 0.5rem;
+	}
+	.frMbImg{
+		height: 40px; 
+		width:40px; 
+	}
+	.warningBtn{
+		font-size: 28px; 
+		vertical-align: middle;
+		cursor: pointer;
+	}
 </style>
 
 </head>
@@ -202,11 +228,22 @@
 		<div class="col-xl-12 col-lg-12">
 				<div class="subtitle" style="margin-bottom: 0.5rem;">
 					<div class="subtitle">
-					
-		                <div class="subtitle">
-		                	<h6 style="height: 50px; margin:0; font-weight: bold; line-height: 50px; background-color:#00bcd4; color:#ffffff; border-radius: 5px;">1:1채팅</h6>
+						<!-- 상대방 정보 -->
+		                <div class="" id="frMemberInfo">
+<%-- 						
+		                	<div class="row" style="flex-wrap: nowrap;">
+								<div class="col-9 frMember">
+		                			<img class="img-profile rounded-circle frMbImg" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png">
+		                			<span>상대방닉네임</span>
+								</div>
+								<div class="col-3">
+		                			<i id="mbWarning" onclick="mbWarningCheckModal()" class='fa-solid fa-land-mine-on fa-2x icon warningBtn'></i>
+								</div>
+
+		                	</div>
+		                  --%>
 		                </div>
-		                 
+		                <!-- 메세지 출력 -->
 		                <div class="subtitle listArea" id="chatList">
 			                <!--
 			                받은 메세지 들어갈 부분 div 왼쪽정렬
@@ -242,7 +279,33 @@
 		</div>
 	</div>
 	
+	
+	<!-- 게시글 신고 확인 모달 -->
+	<div class="modal fade" id="mbWarningCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"> 회원 신고 </h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" >
+                	회원을 신고하시겠습니까?
+                	<br> <span class="text-danger fw-bold">(※한번 신고한 회원은 신고취소가 불가능합니다.)</span></div>
+                <div class="modal-footer">
+                	<input type="hidden" >
+                    <button class="close btn btn-numberone" onclick="insertMemberWarning()" >네</button>
+                    <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
+                </div>
+            </div>
+        </div>
+    </div>
+	
+	<!-- 부트스트랩 -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+	
 </body>
 
 
@@ -261,9 +324,11 @@
 <!-- 웹소캣 sockjs -->
 <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 
+<!-- 채팅 관련 스크립트 -->
 <script type="text/javascript">
 	let crcode = "${param.crcode }";
 	console.log("해당 채팅방 코드 : " + crcode)
+	var wmedNickname = ""; // 대화상대 닉네임
 	
 	// 채팅방 접속시 기존 채팅방의 대화목록 불러오기
      	// 팝업창 ajax가 불가하므로 부모창(Topbar)에서 데이터 보내줌
@@ -273,6 +338,26 @@
             checkLR(msgList[i], false); // DB 입력시간으로 출력하기 위한 boolean값 전송
          } 
       }
+	
+	// 채팅방 접속시 채팅방의 상대방 정보 출력
+	function crfrMbInfo(crfrmnickname, crfrmprofile){
+		console.log("crfrMbInfo 호출");
+		var crfrMb = "";
+		crfrMb += "<div class=\"row\" style=\"flex-wrap: nowrap;\">";
+		crfrMb += "<div class=\"col-9 frMember\">";
+		crfrMb += "<a onclick=\"opener.writeMemberSellbuy('" + crfrmnickname + "')\" style=\"cursor:pointer;\">";
+		crfrMb += "<img class=\"img-profile rounded-circle frMbImg\" src=\"${pageContext.request.contextPath }/resources/img/mprofileUpLoad/" + crfrmprofile + "\">";
+		crfrMb += "<span> " + crfrmnickname + "</span>";
+		crfrMb += "</a>";
+		crfrMb += "</div>";
+		crfrMb += "<div class=\"col-3\">";
+		crfrMb += "<i id=\"mbWarning\" onclick=\"mbWarningCheckModal()\" class='fa-solid fa-land-mine-on fa-2x icon warningBtn'></i>";
+		crfrMb += "</div>";
+		crfrMb += "</div>";
+			
+		wmedNickname = crfrmnickname;
+		$("#frMemberInfo").html(crfrMb);
+	}
 	
 	// enter키 이벤트
 	$(document).on("keydown", $("#inputMsg"), function(e){
@@ -374,8 +459,8 @@
      	// 날짜 한 번만 출력하기 위함
       	if (!dateLine.includes(date_split[0])){ 
     		dateLine.push(date_split[0]);
-    		console.log("dateLine 길이 : " + dateLine.length);
-    		console.log("출력할 날짜 : " + date_split[0]);
+    		//console.log("dateLine 길이 : " + dateLine.length);
+    		//console.log("출력할 날짜 : " + date_split[0]);
     		message += "<div class=\"dateLine\">" + date_split[0] + "</div>";
       	}
     	  
@@ -392,8 +477,6 @@
               
     }
 
-		    
-	    
     // 서버시간 return 함수
     function serverDate(){
 		var now = new Date();
@@ -431,5 +514,51 @@
 		console.log("채팅방 닫힘");
 		opener.closeChat(crcode);
 	};
+</script>
+
+<!-- 신고 관련 스크립트 -->
+<script type="text/javascript">
+
+	// 채팅방 입장과 동시에 대화상대 신고 했는지 확인
+	$(document).ready(function (){
+		opener.checkMemberWarning(wmedNickname, crcode);
+	});
+	
+	// 신고 모달창 close 하는 스크립트
+	var modal = $(".modal");
+	var close = $(".close");
+	for (var i = 0; i < close.length; i++){
+		close[i].addEventListener("click", function(){
+			$("#mbWarningCheckModal").modal("hide");
+		});
+	}
+	
+	// 신고 클릭 시 모달창 출력
+	function mbWarningCheckModal(){
+		if( $("#mbWarning").hasClass("text-danger") ){
+			alert("이미 신고접수된 회원입니다.");
+		}else{
+			$("#mbWarningCheckModal").modal('show');
+		}
+	}
+	
+	// 모달창에서 "네" 클릭 시 대화상대 신고
+	function insertMemberWarning(){
+		console.log("신고할 회원 : " + wmedNickname);
+		opener.insertMemberWarning(wmedNickname, crcode);
+	}
+	
+	// 대화상대 신고 성공 시 수행할 기능
+	function successMemberWarning(){
+		alert("회원 신고가 접수되었습니다.");
+		$("#mbWarning").addClass("text-danger");
+	}
+	
+	// 대화상대 신고 실패 시 수행할 기능
+	function failMemberWarning(){
+		alert("회원 신고에 실패했습니다.");
+	}
+
+	
 </script>
 </html>

@@ -132,6 +132,7 @@
             </table>
             <!-- 공지작성 버튼 -->
             <div align="right" class="col mt-2">
+				<button class="btn-numberone btn-sm fw-bold" type="button" onclick="location.href='gongu_loadToGonguWrite'">공구작성</button>
 				<button class="btn-numberone btn-sm fw-bold" type="button" onclick="location.href='admin_loadToNoticeWrite'">글작성</button>
             </div>
             

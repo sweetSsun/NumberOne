@@ -225,6 +225,7 @@
 
 </script>	
 	
+	
 <!-- 채팅 관련 스크립트 -->
 <script type="text/javascript">
 /* 채팅관련 스크립트 */
@@ -232,7 +233,7 @@
 	var popChatArr = []; // 현재 떠있는 채팅 팝업창을 담을 배열
 	
 	// 채팅 버튼 클릭시 채팅창 팝업되면서 기존 채팅방 메세지 목록 데이터 보내주는 함수
-	function popupChat(crcode){
+	function popupChat(crcode, crfrmnickname, crfrmprofile){
 		console.log("popupChat 호출");
 		let popOption = "width=450px, height=560px, top=300px, left=500px, scrollbars=no, resizable=no";
 		let openUrl = "loadToChat?crcode="+crcode;
@@ -268,12 +269,15 @@
 							popChat = window.open(openUrl, crcode, popOption); // 팝업창 열기
 							popChat.window.addEventListener("load", function(){
 								popChat.enterRoom(data); // 채팅방 목록 불러오기
+								popChat.crfrMbInfo(crfrmnickname, crfrmprofile);
 						 	});
 							popChatArr.push(popChat); // 채팅팝업 배열에 담기
 						}
 						console.log("배열의 길이 : " + popChatArr.length);
 					}
 				});
+				
+
 			}
 		});
 	}
@@ -323,7 +327,7 @@
 				break;
 			}
 			dropdownList += "<div class=\"\" >";
-			dropdownList += "<a class=\" dropdown-item d-flex align-items-center py-2\" href=\"#\" onclick=\"popupChat('" + data[i].crcode + "')\">";
+			dropdownList += "<a class=\" dropdown-item d-flex align-items-center py-2\" href=\"#\" onclick=\"popupChat('" + data[i].crcode + "', '" + data[i].crfrmnickname + "', '" + data[i].crfrmprofile + "')\">";
 			dropdownList += "<div class=\"row\" style=\"width: 100%; --bs-gutter-x: 0;\">";
 			dropdownList += "<div class=\"col-1 text-center\">";
 			if (data[i].crfrmprofile != null){ // 상대방 이미지가 있으면
@@ -397,6 +401,7 @@
 		$("#chat-badge").text(loginUnReadCount);
 	}
 </script>
+
 
 <!-- 마이페이지 미니브라우저 (커뮤니티부터!) -->
 <script type="text/javascript">
@@ -474,10 +479,8 @@
          });
       
    }
-   
-
-
 </script>
+
 
 <!-- 마이페이지 미니브라우저 (중고거래부터!) -->
 <script type="text/javascript">
@@ -545,6 +548,7 @@
    }
 </script>
 
+
 <!-- 찜목록 관련 스크립트 -->
 <script type="text/javascript">
 	// 찜 아이콘 클릭하면 찜목록 불러오고 드롭다운(최신순 5개까지 + 더보기)
@@ -610,7 +614,51 @@
 		zzimList += "</div>";
 		$("#zzimList").html(zzimList);
 	}
+</script>
 
+
+<!-- 회원 신고 관련 스크립트 -->
+<script type="text/javascript">
+	// 회원 신고 확인 (팝업창 뜸과 동시에 수행)
+	function checkMemberWarning(wmedNickname, crcode){ // 여기서 crcode는 팝업창의 고유 name값임
+		console.log("checkMemberWarning 실행");		
+		console.log("신고 확인할 회원 닉네임 : " + wmedNickname);
+		$.ajax({
+			type : "get",
+			url : "checkMemberWarning_ajax",
+			data : { "loginId" : "${sessionScope.loginId}", "wmedNickname" : wmedNickname },
+			async: false,
+			success : function(mbwnCheck){
+				console.log("신고유무 확인 : " + mbwnCheck );
+				// 신고된 상태면 신고버튼 빨간색으로 출력
+				if( mbwnCheck == "Yes" ){
+					var mwOpenedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
+					popChatArr[mwOpenedIdx].$("#mbWarning").addClass("text-danger");
+				}
+			}
+		});
+	}	
+	
+	// 회원 신고
+	function insertMemberWarning(wmedNickname, crcode){ // 여기서 crcode는 팝업창의 고유 name값임
+		console.log("신고자 : " + loginId);
+		console.log("신고할 회원 닉네임 : " + wmedNickname);
+ 		$.ajax({
+			type : "get",
+			url : "insertMemberWarning_ajax",
+			data : { "loginId" : "${sessionScope.loginId}", "wmedNickname" : wmedNickname },
+			success : function(insertResult){
+				console.log(insertResult);
+				var mwOpenedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
+				if( insertResult > 0 ){ // 신고 성공
+					popChatArr[mwOpenedIdx].successMemberWarning();
+				} else { // 신고 실패
+					popChatArr[mwOpenedIdx].failMemberWarning();
+				}
+			}
+		});
+	}
+	
 </script>
 
 </html>

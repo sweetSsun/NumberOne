@@ -152,11 +152,20 @@
 	
 $('#sidebar-toggleOff').click(function() {    
     $("#sidebar, #sideList, #sidebar-toggleOff, #sideclose, .sideresell_title").removeClass('sideon')
+    if($("#panelsStayOpen-collapseOne").hasClass("show")){
+    	$("#panelsStayOpen-collapseOne").removeClass("show");
+    }
+    if($("#panelsStayOpen-collapseTwo").hasClass("show")){
+    	$("#panelsStayOpen-collapseTwo").removeClass("show");
+    }
     console.log("off");
 });
 
 $('#sidebar-toggleOn').click(function() {
     $("#sidebar, #sideList, #sidebar-toggleOff, #sideclose, .sideresell_title").addClass('sideon')
+    if(!$(".sideresell_title .sideon").hasClass("collapsed")){
+    	$(".accordion-button").addClass("collapsed");
+    }
     console.log("on");
 });
 
