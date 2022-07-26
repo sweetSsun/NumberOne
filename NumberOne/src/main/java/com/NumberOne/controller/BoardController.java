@@ -74,15 +74,15 @@ public class BoardController {
 	@RequestMapping(value="/loadToWriteRoom")
 	public ModelAndView loadToWriteRoom(RedirectAttributes ra) {
 		System.out.println("자쥐방 자랑 Form 요청");
+		ModelAndView mav;
 		
 		//로그인 확인
-		ModelAndView mav = bsvc.loginChToFail(ra);
-		int loginCh = (int) session.getAttribute("loginCh");
-		if(loginCh == 0) {
-			session.removeAttribute("loginCh");
+		 mav = bsvc.loginChToFail(ra);
+		 if(mav.getViewName() != null) {
+			 //setView에 loadtologin이 담겨있으면 메소드 중단
+			 //실패페이지로 이동(msg alert 띄우고, history back)
 			return mav;
-		}
-		session.removeAttribute("loginCh");
+		 }
 		
 		mav.setViewName("board/RoomWriteForm");
 		return mav;
@@ -95,13 +95,12 @@ public class BoardController {
 		ModelAndView mav = new ModelAndView();
 		
 		//로그인 확인
-		mav = bsvc.loginChToFail(ra);
-		int loginCh = (int) session.getAttribute("loginCh");
-		if(loginCh == 0) {
-			session.removeAttribute("loginCh");
+		 mav = bsvc.loginChToFail(ra);
+		 if(mav.getViewName() != null) {
+			 //setView에 loadtologin이 담겨있으면 메소드 중단
+			 //실패페이지로 이동(msg alert 띄우고, history back)
 			return mav;
-		}
-		session.removeAttribute("loginCh");
+		 }
 		
 		mav = bsvc.insertRoomWrite(room, ra);
 		return mav;
@@ -188,6 +187,13 @@ public class BoardController {
 	 @ResponseBody
 	 public int insertBoardReply_ajax(String bdcode, String rpcontents) {
 		 System.out.println("댓글등록 요청_ajax");
+		 
+		 //로그인 확인
+		 String loginId = (String) session.getAttribute("loginId");
+		 if(loginId == null) {
+			 //로그인 하지 않았을 경우
+			 return 2;
+		 }
 		 
 		 int insertResult = bsvc.insertBoardReply_ajax(bdcode, rpcontents);
 		 
@@ -331,6 +337,8 @@ public class BoardController {
 	 @RequestMapping ( value = "/loadToBoardModify")
 	 public ModelAndView loadToBoardModify(String bdcode, String bdcategory, RedirectAttributes ra) {
 		 System.out.println("게시글 수정페이지 이동 요청");
+		 
+		 //bdmid 정보가 없어서 service에서 로그인 체크
 		 ModelAndView mav = bsvc.loadToBoardModify(bdcode, bdcategory, ra);
 		 
 		 return mav;
@@ -340,8 +348,17 @@ public class BoardController {
 	 @RequestMapping ( value = "/updateBoardModify")
 	 public ModelAndView updateBoardModify(BoardDto board, String del_bdimg, RedirectAttributes ra) throws IllegalStateException, IOException {
 		 System.out.println("게시글 수정 요청");
+		 ModelAndView mav = new ModelAndView();
 		 
-		 ModelAndView mav = bsvc.updateBoardModify(board, del_bdimg, ra);
+		//작성자 본인 확인
+		 mav = bsvc.writerChToFail(ra, board.getBdmid());
+		 if(mav.getViewName() != null) {
+			 //setView에 loadtologin이 담겨있으면 메소드 중단하고 
+			 //실패페이지로 이동(msg alert 띄우고, history back)
+			return mav;
+		 }
+		 
+		mav = bsvc.updateBoardModify(board, del_bdimg, ra);
 		 
 		 return mav;
 	 }
@@ -352,22 +369,15 @@ public class BoardController {
 		 System.out.println("게시글 삭제 요청");
 		 ModelAndView mav = new ModelAndView();
 		 
-		 String loginId = (String) session.getAttribute("loginId");
-		 System.out.println(loginId);
-		 
-		 //작성자 본인일 때
-		 if(loginId != null && bdmid != null) {
-			 if(loginId.equals(bdmid)) {
-				 mav = bsvc.updateBoardDelete(bdcode, bdcategory ,ra);
-				 return mav;
-			 }
+		//작성자 본인 확인
+		 mav = bsvc.writerChToFail(ra, bdmid);
+		 if(mav.getViewName() != null) {
+			 //setView에 loadtologin이 담겨있으면 메소드 중단하고 
+			 //실패페이지로 이동(msg alert 띄우고, history back)
+			return mav;
 		 }
-		
-		 //나머지 
-		 System.out.println("글작성자 아님"); 
-		 ra.addFlashAttribute("msg","글 작성자만 삭제할 수 있습니다!"); 
-		 mav.setViewName("redirect:loadToFail");
-		
+		 
+		mav = bsvc.updateBoardDelete(bdcode, bdcategory ,ra);
 		return mav;
 
 	 }
@@ -377,25 +387,19 @@ public class BoardController {
 	 public ModelAndView loadToBoardWrite(String bdcategory, String bdrgcode, String bdrgname, RedirectAttributes ra) {
 		 System.out.println("게시글 작성페이지 이동 요청");
 		 ModelAndView mav = new ModelAndView();
+
+		 //로그인 확인
 		 mav = bsvc.loginChToFail(ra);
-		 int loginCh = (int) session.getAttribute("loginCh");
-		 if( loginCh == 0 ) {
-			 session.removeAttribute("loginCh");
-			 return mav;
-		 }
-		 session.removeAttribute("loginCh");
+		 if(mav.getViewName() != null) {
+			 //setView에 loadtologin이 담겨있으면 메소드 중단
+			return mav;
+		 }	
+
+		//mav.addObject("bdcategory", bdcategory);
+		//mav.addObject("bdrgcode", bdrgcode);
+		//mav.addObject("bdrgname",bdrgname);
 		 
-		 if ( bdcategory != null ) {
-			mav.setViewName("board/BoardWriteForm");
-		}else {
-			mav.setViewName("board/Region_BoardWriteForm");
-		}
-		
-		mav.addObject("bdcategory", bdcategory);
-		mav.addObject("bdrgcode", bdrgcode);
-		mav.addObject("bdrgname",bdrgname);
-		 
-		 //ModelAndView mav = bsvc.loadToBoardWrite(bdcategory, bdrgcode, bdrgname);
+		mav = bsvc.loadToBoardWrite(bdcategory, bdrgcode, bdrgname);
 		 
 		 return mav;
 	 }
@@ -403,12 +407,22 @@ public class BoardController {
 	 //게시글 작성 
 	 @RequestMapping ( value = "/insertBoardWrite")
 	 public ModelAndView insertBoardWrite(BoardDto board, RedirectAttributes ra) throws IllegalStateException, IOException {
-		 System.out.println("게시글 작성 요청");
+		 System.out.println("게시글 등록 요청");
 		 
-		 ModelAndView mav = bsvc.insertBoardWrite(board, ra);
+		 ModelAndView mav;
+		 
+		 //로그인 확인
+		 mav = bsvc.loginChToFail(ra);
+		 if(mav.getViewName() != null) {
+			 //setView에 loadtologin이 담겨있으면 메소드 중단
+			return mav;
+		 }	
+		 
+		 mav = bsvc.insertBoardWrite(board, ra);
 		 
 		 return mav;
 	 }
+	 
 	 //지역게시판 이동 
 	 @RequestMapping ( value = "/selectRegionBoardList")
 	 public ModelAndView selectRegionBoardList(Paging paging) {
@@ -453,6 +467,8 @@ public class BoardController {
 	 public @ResponseBody String updateRbrecommend(String bdcode, String history, String currentState ) {
 		 System.out.println(bdcode+"번 자랑글 "+history+"업데이트 요청 현재상태: "+currentState);
 	 
+		 //현재 상태 조회할 때 로그인 체크해서 신고 처리에는 로그인 체크 없음
+		 
 		 int updateResult = bsvc.updateLog(bdcode, history, currentState);
 		 
 		 return updateResult+"";
@@ -477,17 +493,6 @@ public class BoardController {
 		 return currnetState;
 	 }
 	 
-		/*
-		 * //자취방 자랑글 상세 페이지 요청(마이페이지, 게시판메인. 관리자 연결용)
-		 * 
-		 * @RequestMapping( value="/loadToRoomViewPage") public ModelAndView
-		 * loadToRoomViewPage(String bdcode) {
-		 * System.out.println(bdcode+"번 자랑글 상세 페이지 이동 요청"); //상세 보기 하단에 나올 자랑글 목록
-		 * 받아오기(상세글은 ajax로) ModelAndView mav = bsvc.selectRoomList();
-		 * mav.addObject("bdcode", bdcode); mav.setViewName("board/RoomViewPage");
-		 * return mav; }
-		 */
-	 
 	 
 	 @RequestMapping ( value = "/updateRoomView")
 	 public ModelAndView updateRoomView(BoardDto board, RedirectAttributes ra) throws IllegalStateException, IOException {
@@ -495,14 +500,13 @@ public class BoardController {
 		 ModelAndView mav = new ModelAndView();
 		 String loginId = (String) session.getAttribute("loginId");
 		 
-		//작성자 확인
-		mav = bsvc.writerChToFail(ra, board.getBdmid());
-		int loginCh = (int) session.getAttribute("loginCh");
-		if(loginCh == 0) {
-			session.removeAttribute("loginCh");
+		//작성자 본인 확인
+		 mav = bsvc.writerChToFail(ra, board.getBdmid());
+		 if(mav.getViewName() != null) {
+			 //setView에 loadtologin이 담겨있으면 메소드 중단하고 
+			 //실패페이지로 이동(msg alert 띄우고, history back)
 			return mav;
-		}		 
-		session.removeAttribute("loginCh"); 
+		 }
 		 
 		 mav = bsvc.updateRoomView(board, ra);
 		 
@@ -512,9 +516,17 @@ public class BoardController {
 	 
 	 //후기글 작성페이지 이동
 	 @RequestMapping ( value = "/loadToWriteReview")
-	 public ModelAndView loadToWriteReview() {
+	 public ModelAndView loadToWriteReview(RedirectAttributes ra) {
 		 System.out.println("후기글 작성페이지 이동 요청");
 		 ModelAndView mav= new ModelAndView();
+		 
+		 //로그인 확인
+		 mav = bsvc.loginChToFail(ra);
+		 if(mav.getViewName() != null) {
+			 //setView에 loadtologin이 담겨있으면 메소드 중단
+			 //실패페이지로 이동(msg alert 띄우고, history back)
+			return mav;
+		 }
 		 
 		 mav.setViewName("board/ReviewWriteForm");
 		 
@@ -522,7 +534,7 @@ public class BoardController {
 		 
 	 }
 	 
-	 //댓글삭제2 (로그인 확인) (ajax)
+	 //댓글삭제2 (작성자 확인) (ajax)
 	 @RequestMapping ( value = "/updateReplyState_ajax2")
 	 @ResponseBody 
 	 public int updateReplyState_ajax2(String rpcode , String rpmid) {
