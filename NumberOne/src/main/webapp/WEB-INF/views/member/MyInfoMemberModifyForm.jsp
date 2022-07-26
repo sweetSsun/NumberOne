@@ -371,14 +371,15 @@ background-color: #00BCD4;
 							<div class="row">
 									<div class="col-lg-6 col-md-12 col-sm-12">
     									<input class="upload-name" 
-    									value="${memberInfo.mprofile }" placeholder="첨부파일" id="inputFile" name="mprofile">
+    									value="${memberInfo.mprofile }" placeholder="첨부파일" id="inputFile">
+    									<input class="upload-name" placeholder="삭제할 파일" id="delFile" name="mprofile">
     								</div>	
 									<div class="col-lg-3 col-md-12 col-sm-12">    						
-    									<label for="inputMfile" >파일찾기</label> 
+    									<label for="inputMfile">파일찾기</label> 
     									<input type="file" id="inputMfile" name="mfile" value="" class="">
 									</div>
 									<div class="col-lg-3 col-md-12 col-sm-12">    						
-    									<input type="button" onclick="clear_test()" id="clickTest" name="" value="프로필없애기" class="">
+    									<input type="button" onclick="clear_test()" id="clickTest" name="" value="프로필 사진 삭제" class="">
 									</div>								
 								</div>	
 							</div>
@@ -425,17 +426,14 @@ background-color: #00BCD4;
 <!-- 파일 input 이름 생성 -->
 	$("#inputMfile").on('change',function(){
 	 	 var fileName = $("#inputMfile").val();
-	  	 $(".upload-name").val(fileName);
+	  	 $("#inputFile").val(fileName);
 	});
 
-
+  /* 프로필 사진 없애기 */
 	function clear_test(){
 		console.log("clear_test() 호출");
-		var currentFilename = $("#inputFile").val();
-		console.log(currentFilename);
-		$("#inputFile").val("del_"+currentFilename);
+		$("#delFile").val('${memberInfo.mprofile }');
 	}
-	
 </script>
 
 
@@ -597,7 +595,12 @@ background-color: #00BCD4;
     		return false;
     	}  
     	
-   
+   		/* 새로운 파일 있는지 체크 */
+   		if($("#inputMfile").val().length != 0){
+			console.log("기존 파일 없애기");
+			$("#delFile").val('${memberInfo.mprofile }');
+			
+   		};
 
     }
     
