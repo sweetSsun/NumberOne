@@ -574,11 +574,10 @@ div.col.mb-2 h3 {
 	/* 글쓰기 버튼 클릭시 선택되어있는 검색타입, 검색어, 지역 저장*/
 	function loadToWrite(){
 		storage.setItem('searchType',
-				document.getElementById("searchType").value); // 로컬스토리지 검색타입 저장
-		storage.setItem('keyword', document.getElementById("keyword").value); // 로컬스토리지 검색어 저장
+				document.getElementById("searchType").value); 
+		storage.setItem('keyword', document.getElementById("keyword").value); 
 		storage.setItem('selRegion',
-				regionInfo.value); // 로컬스토리지 선택지역 저장
-
+				regionInfo.value); 
 
 		location.href = "loadToResellWriteForm?ubsellbuy=S&ubrgcode="+selRegion;
 	}	
@@ -649,8 +648,7 @@ div.col.mb-2 h3 {
 		// ajax체크메세지 저장. (페이지번호출력을 위한 ajax인지, 지역목록출력을 위한 ajax 인지 구분하기위해)
 		paging.ajaxCheck = 'PAGE';
 
-		$
-				.ajax({ // 페이지 번호 출력용 ajax
+		$.ajax({ // 페이지 번호 출력용 ajax
 					type : "get",
 					url : "selectResellRegionList_ajax",
 					dataType : "json",
