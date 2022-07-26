@@ -534,7 +534,7 @@
 	   		<!-- 팔구보기 -->
 		        <div id="resell" style="margin-left: 5%; margin-right: 5%; margin-bottom: 3%; min-height: 170px; width: 90%;">
 	           		<div>
-	           			<p style="text-align: right; margin-bottom: 20px;"><a href="selectResellPageList?sellBuy=S">팔구보기</a></p>
+	           			<p style="text-align: right; margin-bottom: 20px;"><a href="selectResellPageList?sellBuy=S&ajaxCheck=LIST">팔구보기</a></p>
 	            	
 		            	<div id="owl-banner_resell" class="owl-carousel">           		
 		           			<c:forEach items="${SellList }" end="4" var="SellList">
@@ -560,7 +560,7 @@
 	       <!-- 사구보기 -->        
 		        <div id="rebuy" class="display_none" style="margin-left: 5%; margin-right: 5%; margin-bottom: 3%; min-height: 170px; width: 90%;">
 	           		<div>
-	           			<p style="text-align: right; margin-bottom: 20px;"><a href="selectResellPageList?sellBuy=B">사구보기</a></p>
+	           			<p style="text-align: right; margin-bottom: 20px;"><a href="selectResellPageList?sellBuy=B&ajaxCheck=LIST">사구보기</a></p>
 	           		  	
 		            	<div id="owl-banner_rebuy" class="owl-carousel">
 		           		
