@@ -100,8 +100,6 @@ public class ChatService {
 		String msgList_json = gson.toJson(msgList);
 		System.out.println("msgList_json : " + msgList_json);
 		
-		
-		
 		return msgList_json;
 	}
 	
@@ -216,6 +214,8 @@ public class ChatService {
 			} else {
 				mid = chatRoomList.get(i).getCrfrmid();
 			}
+			chatRoomList.get(i).setCrfrmid(mid); // 상대방을 보낸 사람으로 변경
+			chatRoomList.get(i).setCrtomid(loginId); // 나를 받는 사람으로 변경
 			MemberDto crfrMember = chdao.selectCrfrMember(mid);
 			chatRoomList.get(i).setCrfrmnickname(crfrMember.getMnickname());
 			chatRoomList.get(i).setCrfrmprofile(crfrMember.getMprofile());
