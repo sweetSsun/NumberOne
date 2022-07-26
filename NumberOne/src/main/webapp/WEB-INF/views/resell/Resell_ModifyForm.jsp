@@ -620,8 +620,6 @@ div.detailimageBox {
 					document.getElementById("titleCheck").setAttribute("disabled", "disabled");
 
 					for (let i = 0; i < gd_nameList.length; i++) {
-
-						
 						gd_nameList[i].classList.remove('d_none');
 						gd_priceList[i].classList.remove('d_none');
 						
@@ -629,50 +627,42 @@ div.detailimageBox {
 						gd_price[i].classList.add('d_none');
 						
 						selectStates[i].setAttribute('disabled', 'disabled');
-						
 					}
 					
-
 				} else { //글의 상태값이 1(판매중)이면 실행
 					document.getElementById("titleCheck").classList.remove("line-through")
 					document.getElementById("titleCheck").removeAttribute("disabled");
-
-					for (let j = 0; j < select_gdstate.length; j++) {
-						
-						console.log("selectStates[j].selectedIndex : ",
-								selectStates[j].selectedIndex);
-						console.log("select_gdstate[j].value : ",
-								select_gdstate[j].value);
-						
-						selectStates[j].removeAttribute('disabled');
-						
-						
-
-						//상품별로 상태값에 따라 option을 selected
-
-						if (select_gdstate[j].value === '0') {
-							// 클래스가 select_gdstate 인 태그들 중 value가 0(판매완료)인 태그 찾고
-							// 그 select태그와 인덱스 번호가 같은 selectStates 를 찾는다.
-							// 찾은 selectStates의 option중 1번인덱스를 selected되도록 한다. 
-							// 0번인덱스는 value 가 '1'(판매중), 1번인덱스는 value가 '0'(판매종료) 이다.  
+					selectStates[i].removeAttribute('disabled');
+				}
+				
+				for (let j = 0; j < select_gdstate.length; j++) {
+					console.log("selectStates[j].selectedIndex : ",
+							selectStates[j].selectedIndex);
+					console.log("select_gdstate[j].value : ",
+							select_gdstate[j].value);
 					
-							selectStates[j].selectedIndex = '1';  //(판매종료선택)
+					
+					//상품별로 상태값에 따라 option을 selected
 
-							//css속성 주기
-							gd_nameList[j].classList.remove('d_none');
-							gd_priceList[j].classList.remove('d_none');
-							
-							gd_names[j].classList.add('d_none');
-							gd_price[j].classList.add('d_none');						
+					if (select_gdstate[j].value === '0') {
+						// 클래스가 select_gdstate 인 태그들 중 value가 0(판매완료)인 태그 찾고
+						// 그 select태그와 인덱스 번호가 같은 selectStates 를 찾는다.
+						// 찾은 selectStates의 option중 1번인덱스를 selected되도록 한다. 
+						// 0번인덱스는 value 가 '1'(판매중), 1번인덱스는 value가 '0'(판매종료) 이다.  
+				
+						selectStates[j].selectedIndex = '1';  //(판매종료선택)
+
+						//css속성 주기
+						gd_nameList[j].classList.remove('d_none');
+						gd_priceList[j].classList.remove('d_none');
 						
-						} else {
-							
-							
-							
-							selectStates[j].selectedIndex = '0';
-							//0번인덱스를 selected	(판매중선택)
-										
-						}
+						gd_names[j].classList.add('d_none');
+						gd_price[j].classList.add('d_none');						
+					
+					} else {
+						selectStates[j].selectedIndex = '0';
+						//0번인덱스를 selected	(판매중선택)
+									
 					}
 				}
 				break;
@@ -688,7 +678,7 @@ div.detailimageBox {
 	function selectOp_value(e) {
 		console.log("e", e.target.value);		
 		let select_ubstate = e.target.value;
-console.log("선택된 글의 상태값 : ", select_ubstate);
+		console.log("선택된 글의 상태값 : ", select_ubstate);
 	
 
 						if (select_ubstate === '9') {
@@ -703,7 +693,7 @@ console.log("선택된 글의 상태값 : ", select_ubstate);
 								gd_names[i].classList.add('d_none');
 								gd_price[i].classList.add('d_none');
 								
-								selectStates[i].selectedIndex = '1';
+								//selectStates[i].selectedIndex = '1';
 								selectStates[i].setAttribute('disabled', 'disabled');
 							}
 
@@ -718,7 +708,7 @@ console.log("선택된 글의 상태값 : ", select_ubstate);
 															
 								if (select_gdstate[i].value === '0') {
 									console.log("상품판매완료");
-									selectStates[i].selectedIndex = '1';
+									//selectStates[i].selectedIndex = '1';
 									
 									gd_nameList[i].classList.remove('d_none');
 									gd_priceList[i].classList.remove('d_none');
@@ -729,7 +719,7 @@ console.log("선택된 글의 상태값 : ", select_ubstate);
 
 								} else {
 									console.log("상품판매중");
-									selectStates[i].selectedIndex = '0';
+									//selectStates[i].selectedIndex = '0';
 									
 									gd_nameList[i].classList.add('d_none');
 									gd_priceList[i].classList.add('d_none');
@@ -755,8 +745,8 @@ console.log("선택된 글의 상태값 : ", select_ubstate);
 	//		시간나면 연습용. 	이건 객체를 통째로 받아와서 스플릿 많이 해야함.   
 	function resellState(selOP, geTest) {
 
-		console.log("글상태값 :", selOP.value);
-		console.log("코드 :", geTest);
+		//console.log("글상태값 :", selOP.value);
+		//console.log("코드 :", geTest);
 	}
 </script>
 
@@ -912,6 +902,11 @@ console.log("선택된 글의 상태값 : ", select_ubstate);
 		console.log("자취방 자랑글 수정 확인");
 		console.log(currentDetailCount);
 	
+		// 글상태를 판매완료로 변경했을 때 disabled 되어있던 상품상태값 value를 넘겨주기 위해 disabled 속성 삭제
+		for (let i = 0; i < gd_nameList.length; i++) {
+			selectStates[i].removeAttribute('disabled');
+		}
+		
 		let detailImg = "";
 		for(var i=0; i<currentDetailCount; i++){
 			if($("#"+i+"_currentDetailimg").val() !== undefined){
