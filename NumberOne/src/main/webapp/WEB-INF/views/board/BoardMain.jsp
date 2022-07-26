@@ -167,7 +167,7 @@ section{
 								<tr>
 									<td class="tdTitle">
 									<div>
-										<a href="selectNoticeBoardView?nbcode=${notice.nbcode }">${notice.nbtitle}</a>
+										<a href="selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}">${notice.nbtitle}</a>
 									</div>
 									</td>
 								</tr>
@@ -186,7 +186,8 @@ section{
 									<tr>
 										<td class="tdTitle">
 										<div class="td_Div">
-											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
+											
+											<a href="selectBoardView${paging.makeQueryPage(board.bdcategory,bdtype, board.bdcode, paging.page) }">${board.bdtitle}
 												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
 										</div>
 										</td>
@@ -200,7 +201,7 @@ section{
 									<tr>
 										<td class="tdTitle">
 										<div class="td_Div">
-											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
+											<a href="selectBoardView${paging.makeQueryPage(board.bdcategory,bdtype, board.bdcode, paging.page) }">${board.bdtitle}
 												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
 										</div>
 										</td>
@@ -220,7 +221,7 @@ section{
 									<tr>
 										<td class="tdTitle">
 										<div class="td_Div">
-											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
+											<a href="selectBoardView${paging.makeQueryPage(board.bdcategory,bdtype, board.bdcode, paging.page) }">${board.bdtitle}
 												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
 										</div>
 										</td>
@@ -234,7 +235,7 @@ section{
 									<tr>
 										<td class="tdTitle">
 										<div class="td_Div">
-											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
+											<a href="selectBoardView${paging.makeQueryPage(board.bdcategory,bdtype, board.bdcode, paging.page) }">${board.bdtitle}
 												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
 										</div>
 										</td>
@@ -254,7 +255,7 @@ section{
 									<tr>
 										<td class="tdTitle">
 										<div class="td_Div">
-											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
+											<a href="selectBoardView${paging.makeQueryPage(board.bdcategory,bdtype, board.bdcode, paging.page) }">${board.bdtitle}
 												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
 										</div>
 										</td>
@@ -268,7 +269,7 @@ section{
 									<tr>
 										<td class="tdTitle">
 										<div class="td_Div">
-											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
+											<a href="selectBoardView${paging.makeQueryPage(board.bdcategory,bdtype, board.bdcode, paging.page) }">${board.bdtitle}
 												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
 										</div>
 										</td>
@@ -289,7 +290,7 @@ section{
 									<tr>
 										<td class="tdTitle">
 										<div class="td_Div">
-											<a href="selectReviewBoardView?bdcode=${board.bdcode }">${board.bdtitle}
+											<a href="selectReviewBoardView${paging.makeQueryPage(board.bdcategory, bdtype, board.bdcode, paging.page) }">${board.bdtitle}
 												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
 										</div>
 										</td>
@@ -305,7 +306,7 @@ section{
 									<tr>
 										<td class="tdTitle">
 										<div class="td_Div">
-											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
+											<a href="selectReviewBoardView${paging.makeQueryPage(board.bdcategory, bdtype, board.bdcode, paging.page) }">${board.bdtitle}
 												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
 										</div>
 										</td>

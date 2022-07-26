@@ -635,8 +635,17 @@
 				console.log("신고유무 확인 : " + mbwnCheck );
 				// 신고된 상태면 신고버튼 빨간색으로 출력
 				if( mbwnCheck == "Yes" ){
-					var mwOpenedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
-					popChatArr[mwOpenedIdx].$("#mbWarning").addClass("text-danger");
+					if(crcode == 'wMemberPopup'){
+						console.log("회원 정보에서 신고 확인 성공")
+						//버튼 모양 바꾸기
+						wMemberPopup.$("#warningBtn").removeClass("Wbtn").addClass("WbtnDisabled");
+						wMemberPopup.$("#warningBtn").val("신고완료");
+						//onclick 속성 제거
+						wMemberPopup.$("#warningBtn").removeAttr("onclick");
+						} else {
+							var mwOpenedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
+							popChatArr[mwOpenedIdx].$("#mbWarning").addClass("text-danger");
+						}	
 				}
 			}
 		});
@@ -644,8 +653,9 @@
 	
 	// 회원 신고
 	function insertMemberWarning(wmedNickname, crcode){ // 여기서 crcode는 팝업창의 고유 name값임
-		console.log("신고자 : " + loginId);
+		console.log("신고자 : ${sessionScope.loginId}");
 		console.log("신고할 회원 닉네임 : " + wmedNickname);
+		
  		$.ajax({
 			type : "get",
 			url : "insertMemberWarning_ajax",
@@ -657,7 +667,7 @@
 					
 					if(crcode == 'wMemberPopup'){
 						console.log("회원 정보에서 신고 성공")
-						
+						wMemberPopup.successMemberWarning();
 						
 						} else {
 							console.log("채팅창에서 신고 성공")
