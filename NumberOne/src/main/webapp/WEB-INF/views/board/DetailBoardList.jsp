@@ -117,7 +117,15 @@
 				</div>
 				
 				<div class=" community" style="text-align:center;">
-					<span style="font-size:21px;" class="fw-bold text-white">${paging.searchVal }게시판</span>
+					<c:choose>
+						<c:when test="${paging.searchVal eq 'all' }">
+							<span style="font-size:21px;" class="fw-bold text-white">전체게시판</span>
+						</c:when>
+						
+						<c:otherwise>
+							<span style="font-size:21px;" class="fw-bold text-white">${paging.searchVal }게시판</span>
+						</c:otherwise>
+					</c:choose>
 				</div>
 				
 				<!-- 게시글 목록 -->

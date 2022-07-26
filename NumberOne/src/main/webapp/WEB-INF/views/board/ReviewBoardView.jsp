@@ -125,14 +125,14 @@
 /*      justify-content: center; */
 /*      border: solid #E0E0E0 2px; */
      margin-top: 2%;
-     width: 400px;
-     height: 280px;
+     width: 450px;
+     height: 350px;
      
    }
    #upload_Img{
-   	width: 400px;
-   	height: 280px;
-   	object-fit: fill;
+   	width: 450px;
+   	height: 350px;
+   	object-fit: cover;
    }
    
    .rpnickname:hover{
