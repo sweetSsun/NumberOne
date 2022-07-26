@@ -87,6 +87,9 @@ textarea:focus {
 .bdnickname {
 	font-size: 20px;
 }
+.bdnickname:hover{
+	color: #00bcd4;
+}
 
 .bdregion {
 	font-weight: bold;
@@ -592,25 +595,23 @@ textarea:focus {
 							<c:when test="${sessionScope.loginId != null && ub_resellView.ubmid != sessionScope.loginId}">
 
 								<%-- 작성자가 본인이 아니고 일반사용자일 때 --%>
-								<div
-									style="text-align: end;"
-									class="col">
+								<div style="text-align: end;" class="col">
 									<!-- 찜버튼 -->
-									<i	id="zzimBtn"
-										class="fa-solid fa-heart fa-2x zzimChatBtn"></i>
+									<i	id="zzimBtn" style="font-size:25px;"
+										class="fa-regular fa-heart zzimChatBtn"></i>
 									<!-- 찜 수 -->
 									<span
 										style="font-size: 20px;"
-										id="zzimCount">${ub_resellView.ubzzim }</span>
-									<span style="font-size: 30px; color: gray;">|</span>
+										id="zzimCount">${ub_resellView.ubzzim }&nbsp;</span>
+									<!-- <span style="font-size: 30px; color: gray;">|</span> -->
 									<!-- 채팅버튼 -->
-									<i	id="chatBtn"
-										class="fa-solid fa-comment-dots fa-2x zzimChatBtn"></i> 
-									<span style="font-size: 30px; color: gray;">|</span>
+									<i	id="chatBtn" style="font-size:25px;"
+										class="fa-solid fa-comment-dots zzimChatBtn"></i> <span>&nbsp;</span>
+									<!-- <span style="font-size: 30px; color: gray;">|</span> -->
 									<!-- 신고버튼 -->
-									<i	id="ubWarning"
+									<i	id="ubWarning" style="font-size:25px;"
 										onclick="ubWarningCheckModal()"
-										class='fa-solid fa-land-mine-on fa-2x zzimChatBtn'></i>
+										class='fa-solid fa-land-mine-on zzimChatBtn'></i>
 
 								</div>
 							</c:when>
@@ -1039,6 +1040,8 @@ textarea:focus {
 
 					ubzzim = Number(ubzzim)+1;
 					document.getElementById("zzimCount").innerHTML = ubzzim;
+					
+					
 					
 				} else { //찜 취소했을 때
 					zzimBtn.classList.remove("red");
