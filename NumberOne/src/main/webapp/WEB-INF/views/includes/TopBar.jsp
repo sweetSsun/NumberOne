@@ -121,22 +121,25 @@
 							<c:otherwise>
 							
 								<c:choose>
+									
 									<c:when test="${sessionScope.loginProfile == null}">
-										<p style="font-size: 12.5px"><a href="selectMyInfoMemberView">${sessionScope.loginNickname} 님 &nbsp;&nbsp;
+										<p style="font-size: 12.5px"><a href="selectMyInfoMemberView"> ${sessionScope.loginNickname} 님 &nbsp;&nbsp;
 										<img class="img-profile rounded-circle" style="height: 50px; width:50px;" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png">
 		
 										</a></p>
 									</c:when>
+									
 									<c:when test="${sessionScope.loginId != null && sessionScope.kakaoId == null }">
 										<p style="font-size: 12.5px">
-											<a href="selectMyInfoMemberView">${sessionScope.loginNickname} 님 &nbsp;&nbsp;
+											<a href="selectMyInfoMemberView"> ${sessionScope.loginNickname} 님 &nbsp;&nbsp;
 												<img class="img-profile rounded-circle" style="height: 50px; width:50px;" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/${sessionScope.loginProfile }">
 											</a>
 										</p>
 									</c:when>									
+									
 									<c:otherwise>
 										<p style="font-size: 12.5px">
-											<a href="selectMyInfoMemberView">${sessionScope.loginNickname} 님 &nbsp;&nbsp;
+											<a href="selectMyInfoMemberView"> ${sessionScope.loginNickname} 님 &nbsp;&nbsp;
 												<img class="img-profile rounded-circle" style="height: 50px; width:50px;" src="${sessionScope.loginProfile }">
 											</a>
 										</p>

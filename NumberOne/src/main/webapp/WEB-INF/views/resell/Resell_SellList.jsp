@@ -23,11 +23,6 @@
 <!-- 부트스트랩 -->
 <link
 	rel="stylesheet"
-	href="${pageContext.request.contextPath }/resources/css/style.css"
-	type="text/css"
->
-<link
-	rel="stylesheet"
 	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
 >
 <link
@@ -35,6 +30,11 @@
 	rel="stylesheet"
 	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
 	crossorigin="anonymous"
+>
+<link
+	rel="stylesheet"
+	href="${pageContext.request.contextPath }/resources/css/style.css"
+	type="text/css"
 >
 
 <style type="text/css">

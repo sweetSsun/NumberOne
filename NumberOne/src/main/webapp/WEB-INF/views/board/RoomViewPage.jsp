@@ -339,7 +339,7 @@ section{
 }
 
 #replyWriteForm > button{
-	background-color:#4cadcc;
+	background-color:#00bcd4;
 	color:white;
 	font-weight:600;
 	font-size:initial;
@@ -348,6 +348,15 @@ section{
 
 .pointer:hover{
 	color: #00bcd4;
+}
+
+section div.checkout__form{
+	color: #1c1c1c; 
+    font-weight: 700; 
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+    font-size : 24px;
 }
 
 </style>
@@ -380,12 +389,12 @@ section{
 		<section>
 		<!-- 본문 -->
 			<div class="container" style="width:1220px !important;">
-				<div class="row" style="margin:auto;">
-					
-					<div class="col-10">
-						<h2 class="text-center">자취방 상세 페이지 : RoomViewPage.jsp</h2>
-					</div>
-					<div class="col-2">
+					<!-- 페이지명 -->
+					<div class="checkout__form" style="margin-top: 30px;">자취방 자랑 상세 페이지</div> 
+				
+				<div class="row" style="margin:auto;">				
+					<div class="col-11"></div>
+					<div class="col-1">
 						<!-- 글쓰기 버튼 -->
 						<c:if test="${sessionScope.loginId != null}">
 							<button class="btn btn-primary btn-lg" onclick="location.href='${pageContext.request.contextPath }/loadToWriteRoom'">글쓰기</button>
@@ -440,7 +449,7 @@ section{
 				
 				<div class="row sellbuyhead">
 					<div class="col mb-2" style="padding-top:0.2rem;">
-						<h3 style="font-size:2.3rem; font-weight:700; color:#4cadcc;">자취방 자랑 - 최신글</h3>
+						<h3 style="font-size:2.3rem; font-weight:700; color:#00bcd4;">자취방 자랑 - 최신글</h3>
 					</div>
 					<div align="right" class="col" style="padding-top:0.45rem;">
 						<span style="font-size:1.6rem;"> <a href="selectRoomList" style="color:initial !important; font-weight:bold;"><i class="fa-solid fa-square-plus"></i>&nbsp;&nbsp;더보기</a></span>
@@ -667,7 +676,7 @@ roomView_ajax(nowBdcode)
 				//글 내용
 				var roomContentsOutput = "<textarea class='scroll' readonly style='font-size:15px; resize:none;'>"+roomView.bdcontents+"</textarea>";
 				//시간 출력
-				roomContentsOutput += "<span style='font-size:15px; color:grey; margin:0px;'>"+timeForToday(roomView.bddate)+"</span>"
+				roomContentsOutput += "<span style='font-size:15px; color:gray; margin:0px;'>"+timeForToday(roomView.bddate)+"</span>"
 				$("#roomContents").html(roomContentsOutput);
 				//$("#roomContents").html("<textarea class='scroll' readonly style='font-size:15px; resize:none;'>"+roomView.bdcontents+"</textarea>");
 				
@@ -784,8 +793,15 @@ roomView_ajax(nowBdcode)
 					replyOutput += "<div id='replyContents_"+replys[i].rpcode+"' style='width:320px; font-size:15px; padding-top:8px; word-break:break-word;'>"; 
 					//닉네임(진하게)
 					replyOutput += "<span onclick='writeMemberBoard(\""+replys[i].rpnickname+"\")' class='pointer' style='font-weight:600; margin:0px;'>"+replys[i].rpnickname+"&nbsp;&nbsp;</span>";
+					
 					//내용 
-					replyOutput += replys[i].rpcontents;
+					var reply_transform = replys[i].rpcontents.replaceAll(' ', '&nbsp;');
+					reply_transform = reply_transform.replaceAll('\n', '<br>');
+					//console.log(reply_transform);
+					replyOutput += reply_transform+"<br>";
+					
+					//댓글 작성 시간
+					replyOutput += "<span style='font-size:10px; color:grey; margin:0px;'>"+replys[i].rpdate+"</span>";
 					
 					//댓글 작성자와 관리자에게만 보이는 ...
 					if(replys[i].rpmid == '${sessionScope.loginId}'){
@@ -853,7 +869,8 @@ roomView_ajax(nowBdcode)
 	var nowWb;
 	
 	function replyEnter(e){
-		if(e.keyCode==13){
+		if(e.keyCode==13 && !e.shiftKey){
+			e.preventDefault();
 			replyResister();
 		}
 	}
