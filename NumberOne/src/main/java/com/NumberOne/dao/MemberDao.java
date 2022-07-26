@@ -151,7 +151,9 @@ public interface MemberDao {
 	   @Insert("INSERT INTO WARNINGMEMBERS VALUES(#{loginId}, (SELECT MID FROM MEMBERS WHERE MNICKNAME = #{wmedNickname}))")
 	   int insertMemberWarning_ajax(@Param("loginId") String loginId, @Param("wmedNickname") String wmedNickname);
 
-	
+		//이메일 중복 확인
+		@Select("SELECT MEMAIL FROM MEMBERS WHERE MEMAIL = #{inputEmail}")	
+		String selectMemberEmail_ajax(String inputEmail);
 	
 }
 
