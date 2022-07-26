@@ -45,7 +45,10 @@ public class Paging {
 	
 	//지역게시판 지역이름 저장을 위한 필드 
 	private String bdrgname;	//서울 ~ 제주 게시판 이름 출력용
-	
+	//일반게시판 / 지역게시판 구분을 위한 필드
+	private String bdtype;	
+	//일반게시판 카테고리 구분을 위한 필드
+	private String bdcategory;	//자유~후기 게시판 구분
 	
 	// 생성자
 	public Paging() {
@@ -255,16 +258,33 @@ public class Paging {
 		this.bdrgname = bdrgname;
 	}
 
+	public String getBdtype() {
+		return bdtype;
+	}
+
+	public void setBdtype(String bdtype) {
+		this.bdtype = bdtype;
+	}
+
+	public String getBdcategory() {
+		return bdcategory;
+	}
+
+	public void setBdcategory(String bdcategory) {
+		this.bdcategory = bdcategory;
+	}
+
 	@Override
 	public String toString() {
 		return "Paging [page=" + page + ", perPageNum=" + perPageNum + ", startRow=" + startRow + ", endRow=" + endRow
 				+ ", totalCount=" + totalCount + ", maxPage=" + maxPage + ", displayPageNum=" + displayPageNum
 				+ ", startPage=" + startPage + ", endPage=" + endPage + ", prev=" + prev + ", next=" + next
 				+ ", searchVal=" + searchVal + ", searchType=" + searchType + ", keyword=" + keyword + ", ajaxCheck="
-				+ ajaxCheck + ", sellBuy=" + sellBuy + ", bdrgname=" + bdrgname + "]";
+				+ ajaxCheck + ", sellBuy=" + sellBuy + ", bdrgname=" + bdrgname + ", bdtype=" + bdtype + ", bdcategory="
+				+ bdcategory + "]";
 	}
 
-	
+
 	
 	
 	

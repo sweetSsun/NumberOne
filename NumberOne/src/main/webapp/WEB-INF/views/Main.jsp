@@ -197,7 +197,9 @@
 		    margin: auto;
 			border-radius: 20px;
 		}
-
+		.owl-carousel .owl-dots.disabled, .owl-carousel .owl-nav.disabled {
+    		display: block! important;
+   		}
 		
 		/* 두번째 배너 */
 		.owl-carousel .owl-item img, .owl-stage-outer {
@@ -538,7 +540,7 @@
 		           			<c:forEach items="${SellList }" end="4" var="SellList">
 			                	<div class="item" style="height:25rem; padding-bottom: 10px;">
 			                        <div style="height:80%">
-	                        			<a href="selectResellPageList?sellBuy=S"><img class="owl-carousel-img" alt="중고판매상세이동" src="${pageContext.request.contextPath }/resources/img/resell/${SellList.ubmainimg}"></a>
+	                        			<a href="selectResellView?ubcode=${SellList.ubcode }&ubsellbuy=${SellList.ubsellbuy }&modifyCheck=LIST"><img class="owl-carousel-img" alt="중고판매상세이동" src="${pageContext.request.contextPath }/resources/img/resell/${SellList.ubmainimg}"></a>
 			                        </div>
 			                        <div style="margin-top: 10px; font-size: 16px; height:20%">
 			                        	<div>
@@ -565,7 +567,7 @@
 		            		<c:forEach items="${buyList }" end="4" var="buyList">
 			                	<div class="item" style="height:25rem; padding-bottom: 10px;">
 			                        <div style="height:80%">
-	                        			<a href="selectResellPageList?sellBuy=B"><img class="owl-carousel-img" alt="중고구매상세이동" src="${pageContext.request.contextPath }/resources/img/resell/${buyList.ubmainimg}"></a>
+	                        			<a href="selectResellView?ubcode=${buyList.ubcode }&ubsellbuy=${buyList.ubsellbuy }&modifyCheck=LIST"><img class="owl-carousel-img" alt="중고구매상세이동" src="${pageContext.request.contextPath }/resources/img/resell/${buyList.ubmainimg}"></a>
 			                        </div>
 			                        <div style="margin-top: 10px; font-size: 16px; height:20%">
 			                        	<div>

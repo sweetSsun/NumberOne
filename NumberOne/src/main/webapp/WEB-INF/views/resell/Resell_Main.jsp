@@ -253,8 +253,18 @@ div.col.mb-2 h3{ color : white; }
 							<a href="selectResellView?ubcode=${sellList.ubcode }&ubsellbuy=${sellList.ubsellbuy }&modifyCheck=LIST">${sellList.ubtitle }</a>
 						</div>
 						<div style="height:2rem; font-size:1.6rem; padding:0; color:grey;">${sellList.ubdatedef }&nbsp;
-							<span style="color:red; font-size:1.8rem;">
-								<i class='fa-regular fa-heart'></i>
+							<span style="color:red; font-size:1.8rem;" onclick="clickZzim('${sellList.ubcode }')" id="zzimCheck_${sellList.ubcode }">
+								<c:choose>
+									<c:when test="${sellList.zzimcheck != null }">
+										<i id="zzimState_${sellList.ubcode }" class='fa-heart fa-solid'></i> 
+									</c:when>
+									<c:otherwise>
+										<i id="zzimState_${sellList.ubcode }" class='fa-heart fa-regular'></i> 
+									</c:otherwise>
+								</c:choose>	
+							</span>
+							<span style="color:initial; font-size:1.8rem;" id="zzimCount_${sellList.ubcode }">
+								${sellList.ubzzim } 
 							</span>
 						</div>
 						<div class="bottom" style="font-size:1.7rem; font-weight:600; position:relative;">
@@ -297,8 +307,18 @@ div.col.mb-2 h3{ color : white; }
 							<a href="selectResellView?ubcode=${buyList.ubcode }&ubsellbuy=${buyList.ubsellbuy }&modifyCheck=LIST">${buyList.ubtitle }</a>
 						</div>
 						<div style="height:2rem; font-size:1.6rem; padding:0; color:grey;">${buyList.ubdatedef }&nbsp;
-							<span style="color:red; font-size:1.8rem;">
-								<i class='fa-regular fa-heart'></i>
+							<span style="color:red; font-size:1.8rem;" onclick="clickZzim('${buyList.ubcode }')" id="zzimCheck_${buyList.ubcode }">
+								<c:choose>
+									<c:when test="${sellList.zzimcheck != null }">
+										<i id="zzimState_${buyList.ubcode }" class='fa-solid fa-heart'></i> 
+									</c:when>
+									<c:otherwise>
+										<i id="zzimState_${buyList.ubcode }" class='fa-regular fa-heart'></i> 
+									</c:otherwise>
+								</c:choose>	
+							</span>
+							<span style="color:initial; font-size:1.8rem;" id="zzimCount_${buyList.ubcode }">
+								${buyList.ubzzim } 
 							</span>
 						</div>
 						<div class="bottom" style="font-size:1.7rem; font-weight:600; position:relative;">
@@ -337,7 +357,6 @@ div.col.mb-2 h3{ color : white; }
 
 </body>
 
-
 <script type="text/javascript">
    var checkMsg = '${msg}';
    if ( checkMsg.length > 0 ){
@@ -349,9 +368,10 @@ div.col.mb-2 h3{ color : white; }
 
    /* 로그인된 회원인지 체크 */
    let loginCheck = '${sessionScope.loginId}';
-   if (loginCheck.length == 0) {
+   if (loginCheck.length == 0) {	   
       alert("로그인 후 이용가능합니다");
       location.href = "loadToLogin"
+   }
 
    function searchKeyword() {
       var searchType = document.getElementById("searchType").value;
@@ -366,8 +386,76 @@ div.col.mb-2 h3{ color : white; }
                + searchType + "&keyword=" + keyword;
          ;
       }
-
    }
+   
+    /* 메인에서 찜 버튼 클릭 */ 
+	function clickZzim(ubcode) {
+    	
+    	console.log(ubcode);
+		var loginId = '${loginId}';
+		
+		//로그인 체크
+		if('${loginId}'.length == 0){
+			 alert("script-로그인 후 이용가능합니다");
+		}
+		
+		//찜 체크
+		var zzim_Check;
+		console.log($("#zzimState_"+ubcode).attr("class")[12]);
+		//현재 찜상태 s:찜O r:찜X
+		var zzimState = $("#zzimState_"+ubcode).attr("class")[12];
+		if(zzimState == 's'){
+			//현재 찜이 되어 있는 경우
+			console.log("zzim O")
+			zzim_Check = 'CHECK';
+		} else {			
+			//현재 찜이 안되어 경우
+			console.log("zzim X")
+			zzim_Check = 'UNCHECK';
+		}
+    	
+		var zzimCount = $("#zzimCount_"+ubcode).text().trim();
+		console.log(zzimCount);
+
+		$.ajax({
+			type : "get",
+			url : "zzimClick_ajax",
+			async : false, //전역변수 값 저장을 위해 필요
+			data : {
+				"zzubcode" : ubcode,
+				"zzmid" : loginId,
+				"zzim_Check" : zzim_Check
+			},
+
+			success : function(zzimCheck) {
+				console.log("zzimCheck : " + zzimCheck);
+
+				if (zzimCheck == 'CHECK') { //찜 했을 때
+					//하트 채우기
+					$("#zzimState_"+ubcode).removeClass("fa-regular").addClass("fa-solid");
+
+					//증가
+					console.log("증가 요청");
+					if(zzimCount==0){
+						zzimCount = 1;
+					} else {
+						zzimCount = parseInt(zzimCount)+1;
+					}
+
+				} else { //찜 취소했을 때
+					//하트 비우기
+					$("#zzimState_"+ubcode).removeClass("fa-solid").addClass("fa-regular");		
+				
+					//감소				
+					console.log("감소 요청");
+					zzimCount = parseInt(zzimCount)-1;
+
+				}
+					$("#zzimCount_"+ubcode).text(zzimCount);
+			}
+		})
+	}
+      
 </script>
 
 

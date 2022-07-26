@@ -356,10 +356,10 @@ public class BoardService {
 		   	}
 		   	*/
 		   	
-		   	if( paging.getSearchVal() != "후기" ) {
-		   		mav.setViewName("board/DetailBoardList");
-		   	}else {
+		   	if( paging.getSearchVal().equals("후기")  ) {
 		   		mav.setViewName("board/ReviewBoardList");
+		   	}else {
+		   		mav.setViewName("board/DetailBoardList");
 		   	}
 		   	
 		    mav.addObject("noticeList", noticeList);
@@ -414,7 +414,7 @@ public class BoardService {
 		   ArrayList<NoticeDto> noticeList_fix = bdao.selectNoticeList();
 		   
 		   ArrayList<NoticeDto> noticeList = bdao.selectNoticeBoardList(paging);
-		   //System.out.println(noticeList);
+		   System.out.println(noticeList);
 		   
 		   mav.addObject("noticeList_fix", noticeList_fix);
 		   mav.addObject("noticeList", noticeList);
@@ -951,10 +951,11 @@ public class BoardService {
              }
           }
           
-       }else {
+       }else {//업로드한 이미지가 없을 경우
           System.out.println("첨부파일 없음");
-          if ( del_bdimg != null) { //삭제파일 있음 
+          if ( del_bdimg != null && del_bdimg.length() > 0) { //삭제파일 있음 
              System.out.println("삭제파일 있음");
+             System.out.println("삭제파일 : " + del_bdimg);
              board.setBdimg("");
              int updateResult = bdao.updateBoardModify(board);
              if ( updateResult > 0 ) {
@@ -970,7 +971,7 @@ public class BoardService {
                 }else {
                    System.out.println("존재하지 않는 파일입니다.");
                 }
-                 ra.addFlashAttribute("msg", "글이 수정되었습니다.");
+				/* ra.addFlashAttribute("msg", "글이 수정되었습니다."); */
              }
           
        }else {//삭제파일 없음
@@ -1007,6 +1008,10 @@ public class BoardService {
 		System.out.println("bdcategory : " + bdcategory);
 		System.out.println("bdrgcode : " + bdrgcode);
 		System.out.println("bdrgname : " + bdrgname);
+	
+		//로그인 확인 
+		
+		
 		
 		if ( bdcategory != null ) {
 			mav.setViewName("board/BoardWriteForm");
@@ -1105,11 +1110,8 @@ public class BoardService {
 		System.out.println("수정할 댓글번호 : " + rpcode);
 
 		ReplyDto reply = bdao.selectRpContents_ajax(rpcode);
-		reply.getRpcontents().replace("<br>", "\r\n");
-		reply.setRpcontents(reply.getRpcontents().replace("<br>", "\r\n"));
-
 		System.out.println(reply);
-
+		
 		return reply;
 	}
 

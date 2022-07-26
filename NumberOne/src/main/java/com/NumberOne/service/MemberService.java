@@ -393,10 +393,12 @@ public class MemberService {
 		  System.out.println("로그인 된 프로필 : " + loginProfile);
 		 
 		 member.setMid(loginId);
-
+		 
+		 //System.out.println(member);
 		     
 			 //이미지 파일
 		      MultipartFile mfile = member.getMfile();
+		      System.out.println(mfile);
 		      
 		      //이미지의 파일명
 		      String mprofile = "";
@@ -412,15 +414,26 @@ public class MemberService {
 		         System.out.println("변경프로필 : " + mprofile);
 		      }else {
 		    	  if(loginProfile !=null) {
-		    		  System.out.println("변경 이미지 파일 없고, 기존 이미지 있음");		         
-		    		  member.setMprofile(loginProfile);  
+		    		  System.out.println("변경 이미지 파일 없고, 기존 이미지 있음");
+		    		  System.out.println(member.getMprofile().substring(0, 4));
+		    		  
+		    		  if(member.getMprofile().substring(0, 4).equals("del_")) {
+		    			  System.out.println("프로필 삭제");
+		    			  member.setMprofile("");  
+		    			  //System.out.println("프로필 삭제 if문 : "+member);
+		    		  } else {
+		    			  System.out.println("기존 프로필 유지");
+		    			  member.setMprofile(loginProfile);  
+		    		  }
+		    		  
 		    	  } else {
 		    		  System.out.println("변경 이미지 파일 없고, 기존 이미지 없음");		         
 		    		  member.setMprofile(mprofile);  
 		    	  }
 		      	
 		      }
-		         System.out.println(member);
+		      
+		      //System.out.println("프로필 삭제 if문 밖 : "+member);
 		      
 		      
 		      // 주소 처리 
