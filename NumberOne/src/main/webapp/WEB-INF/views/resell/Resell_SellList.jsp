@@ -37,6 +37,7 @@
 	href="${pageContext.request.contextPath }/resources/css/style.css"
 	type="text/css"
 >
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/listCss.css" type="text/css">
 
 <style type="text/css">
 * {
@@ -502,14 +503,14 @@ div.col.mb-2 h3 {
 	let soldCheckMsg = document.querySelectorAll('.soldCheckMsg_');
 
 	console.log("체크메세지", checkSearch);
-
+<%-- 
 	if (checkSearch === 'write') { //글 작성 후 이동해왔을 시 [전국]으로 selected 하기위한 코드
 
 		console.log("체크메세지 : ", checkSearch);
 		regionInfo.options[0].selected = "true"; //0번인덱스가 [전국]
 	}
-
-	else { // 단순 페이지이동 ( 메인페이지에서 더보기 클릭 , 상세페이지에서 글목록 클릭, 사이드바에서 클릭)
+--%>
+	 // 단순 페이지이동 ( 메인페이지에서 더보기 클릭 , 상세페이지에서 글목록 클릭, 사이드바에서 클릭)
 		//checkSearch의 값이 'NO' 일 경우
 		console.log('체크메세지 : NO')
 
@@ -545,7 +546,7 @@ div.col.mb-2 h3 {
 				}
 			}
 		}
-	}
+	
 </script>
 
 <!-- 페이지이동시 상세페이지에서 글목록으로 돌아올 때 필요한 값 저장. -->
@@ -580,7 +581,7 @@ div.col.mb-2 h3 {
 		storage.setItem('selRegion',
 				regionInfo.value); 
 
-		location.href = "loadToResellWriteForm?ubsellbuy=S&ubrgcode="+selRegion;
+		location.href = "loadToResellWriteForm?ubsellbuy=S&ubrgcode="+regionInfo.value;
 	}	
 </script>
 

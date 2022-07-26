@@ -47,6 +47,9 @@
 		UBDATE,
 		UBMAINIMG, UBDETAILIMG, UBSTATE
 		FROM (SELECT * FROM USEDBOARDS
+		
+			<if test="(paging.searchType != '' or paging.searchType != null)
+					and (paging.keyword != '' or paging.keyword != null)">
 		<choose>
 			<when
 				test="paging.searchType == 'total'">
@@ -72,6 +75,7 @@
 				WHERE UBCONTENTS LIKE '%'||#{paging.keyword}||'%'
 			</when>
 		</choose>
+		</if>
 		ORDER BY
 		UBDATE DESC)
 
@@ -82,7 +86,7 @@
 		</if>
 
 		UBSELLBUY = #{paging.sellBuy} AND
-		UBSTATE = 1 OR UBSTATE = 9
+		(UBSTATE = 1 OR UBSTATE = 9)
 
 		) LEFT
 		OUTER JOIN ZZIM_VIEW
@@ -120,10 +124,11 @@
 		UBDATE,
 		UBMAINIMG, UBDETAILIMG, UBSTATE
 		FROM (SELECT * FROM USEDBOARDS
-		<if test="searchType != null or searchType != ''">
+			<if test="(searchType != '' or searchType != null)
+					and (keyword != '' or keyword != null)">
 			<choose>
 				<when
-					test="searchType == 'total' or searchType == 'sell' or searchType == 'buy'">
+					test="searchType == 'total'">
 					WHERE UBTITLE LIKE '%'||#{keyword}||'%' OR UBCONTENTS
 					LIKE
 					'%'||#{keyword}||'%'
@@ -152,7 +157,7 @@
 			UBRGCODE = #{searchVal} AND
 		</if>
 		UBSELLBUY = #{sellBuy} AND
-		UBSTATE = 1 OR UBSTATE = 9
+		(UBSTATE = 1 OR UBSTATE = 9)
 
 		) LEFT OUTER JOIN ZZIM_VIEW
 		ON UBCODE = ZZUBCODE,
@@ -171,8 +176,8 @@
 		FROM (SELECT *
 
 		FROM (SELECT * FROM USEDBOARDS
-		<if test="searchType != '' or searchType != null
-					and keyword != '' or keyword != null">
+		<if test="(searchType != '' or searchType != null)
+					and (keyword != '' or keyword != null)">
 			<choose>
 				<when
 					test="searchType == 'total'">
@@ -204,7 +209,7 @@
 			UBRGCODE = #{searchVal} AND
 		</if>
 
-		UBSELLBUY = #{sellBuy} AND UBSTATE = 1 OR UBSTATE = 9
+		UBSELLBUY = #{sellBuy} AND (UBSTATE = 1 OR UBSTATE = 9)
 
 		),MNICKNAME_VIEW
 		WHERE MID = UBMID
@@ -246,8 +251,8 @@
 		UBCODE)
 		WHERE UBSELLBUY =
 		#{ubsellbuy} AND
-		UBSTATE = 1
-		OR UBSTATE = 9
+		(UBSTATE = 1
+		OR UBSTATE = 9)
 		) LEFT OUTER JOIN ZZIM_VIEW
 		ON UBCODE = ZZUBCODE,
 		MNICKNAME_VIEW
@@ -279,7 +284,7 @@
 		AND UBCODE != #{ubcode} ORDER BY
 		UBDATE DESC )
 		WHERE UBSELLBUY = 'S' AND
-		UBSTATE = 1 OR UBSTATE = 9
+		(UBSTATE = 1 OR UBSTATE = 9)
 		) LEFT OUTER JOIN
 		ZZIM_VIEW
 		ON UBCODE = ZZUBCODE,
