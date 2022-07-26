@@ -138,7 +138,7 @@
 								<td class="text-center tableCell">${notice.nbcode}</td>
 								<td></td>
 								<td class="tableCell">
-									<a href="selectNoticeBoardView?nbcode=${notice.nbcode }">${notice.nbtitle}</a>
+									<a href="selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page) }">${notice.nbtitle}</a>
 								</td>
 								<td class="text-center tableCell">관리자</td>
 								<td class="text-center tableCell">${notice.nbdate}</td>

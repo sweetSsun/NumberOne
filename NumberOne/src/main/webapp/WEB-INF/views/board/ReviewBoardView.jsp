@@ -257,9 +257,36 @@
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
 				<div class="row mb-2">
 					<div class="col-2">
-						<a href="selectCategoryBoardList${paging.makeQueryPage(board.bdcode, paging.page)}">
-						<input type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
-						</a> 
+						<c:choose>
+							<c:when test="${paging.bdtype == null }">
+							<!-- 전체게시판(일반)에서 들어왔을 때 -->
+								<a href="selectBoardList${paging.makeQueryPage(board.bdcode, paging.page)}">
+								<input type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
+								</a> 
+							</c:when>
+							
+							<c:when test="${paging.searchVal eq '후기' }">
+							<!-- 후기게시판에서 들어왔을 때 -->
+								<a href="selectCategoryBoardList${paging.makeQueryPage(paging.searchVal, bdtype, board.bdcode, paging.page)}">
+								<input type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
+								</a> 
+							</c:when>							
+							
+							<c:when test="${paging.bdtype != null && paging.searchVal eq '' }">
+							<!-- 전체 지역게시판에서 들어왔을 때 -->
+								<a href="selectRegionBoardList${paging.makeQueryPage(paging.searchVal, bdtype, board.bdcode, paging.page)}">
+								<input type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
+								</a>							
+							</c:when>
+							
+							<c:otherwise>
+							<!-- 특정 지역게시판에서 들어왔을 때 -->
+								<a href="selectDetailBoardList${paging.makeQueryPage(paging.searchVal, bdtype, board.bdcode, paging.page)}">
+								<input type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
+								</a>								
+							</c:otherwise>
+							
+						</c:choose>
 					</div>
 				<c:choose>
 					<c:when test="${sessionScope.loginId == board.bdmid && sessionScope.loginId != 'admin' }">

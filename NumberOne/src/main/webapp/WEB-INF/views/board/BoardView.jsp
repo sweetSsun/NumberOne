@@ -244,7 +244,7 @@
 							
 							<c:otherwise>
 							<!-- 자유~후기 글목록 페이지 -->
-							<a href="selectCategoryBoardList${paging.makeQueryPage(board.bdcode, paging.page) }">
+							<a href="selectCategoryBoardList${paging.makeQueryPage(paging.searchVal, bdtype, board.bdcode, paging.page) }">
 							<input type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
 							</a>
 							</c:otherwise>

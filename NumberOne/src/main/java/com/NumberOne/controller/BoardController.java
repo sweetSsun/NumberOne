@@ -109,9 +109,9 @@ public class BoardController {
 	
 	//게시판 메인 페이지 이동 
 	@RequestMapping( value="/loadToBoardMainPage")
-	public ModelAndView loadToBoardMainPage() {
+	public ModelAndView loadToBoardMainPage(Paging paging) {
 	    System.out.println("게시판(커뮤니티) 메인 페이지 이동 요청");
-	    ModelAndView mav = bsvc.loadToBoardMainPage();
+	    ModelAndView mav = bsvc.loadToBoardMainPage(paging);
 	    return mav;
 	}
 	
@@ -396,7 +396,7 @@ public class BoardController {
 		mav.addObject("bdrgcode", bdrgcode);
 		mav.addObject("bdrgname",bdrgname);
 		 
-		 //ModelAndView mav = bsvc.loadToBoardWrite(bdcategory, bdrgcode, bdrgname);
+		//ModelAndView mav = bsvc.loadToBoardWrite(bdcategory, bdrgcode, bdrgname);
 		 
 		 return mav;
 	 }

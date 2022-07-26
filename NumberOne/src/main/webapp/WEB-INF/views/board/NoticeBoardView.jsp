@@ -219,9 +219,9 @@
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
 				<div class="row mb-2">
 					<div class="col-2">
-						<a href="selectNoticeBoardList${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}">
-						<input  type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
-						</a> 
+							<a href="selectNoticeBoardList${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}">
+							<input  type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
+							</a>
 					</div>
 				<c:choose>
 					<c:when test="${sessionScope.loginId == board.bdmid && sessionScope.loginId != 'admin' }">

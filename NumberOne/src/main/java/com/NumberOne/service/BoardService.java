@@ -244,7 +244,7 @@ public class BoardService {
 		return mav;
 	}
 	   //게시판(커뮤니티) 메인페이지 이동 
-	   public ModelAndView loadToBoardMainPage() {
+	   public ModelAndView loadToBoardMainPage(Paging paging) {
 	      System.out.println("BoardService.loadToBoardMainPage() 호출");
 	      ModelAndView mav = new ModelAndView();
 	      
@@ -283,6 +283,7 @@ public class BoardService {
 	      mav.addObject("boardList_Information", boardList_Information);
 	      mav.addObject("boardList_Review", boardList_Review);
 	      mav.addObject("noticeList", noticeList);
+	      mav.addObject("paging", paging);
 	      mav.setViewName("board/BoardMain");
 	      
 	      return mav;
@@ -325,6 +326,7 @@ public class BoardService {
 			System.out.println("BoardService.selectCategoryBoardList() 호출");
 			ModelAndView mav = new ModelAndView();
 			System.out.println(paging.getSearchVal());
+			System.out.println("메인에서 이동해온 게시판 : " + paging.getBdcategory());
 			
 			// 페이징
 			if(paging.getKeyword() == null) {// dao 조건문이 keyword에 null값이 들어가면 오류가 나기 때문에 ""로 변경
