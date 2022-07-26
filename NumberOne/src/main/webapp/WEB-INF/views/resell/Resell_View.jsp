@@ -38,7 +38,7 @@ textarea:focus {
 	border: none;
 	width: -webkit-fill-available;
 	resize: none;
-	height: 350px;
+	height: 340px;
 }
 
 #inputComment {
@@ -209,14 +209,16 @@ textarea:focus {
 	position: relative;
 	/* 이미지 슬라이더 */
 	overflow: hidden;
-}
+	
+}	
 
 .Resell_img {
 	position: relative;
-	width: 600px;
+	width: 500px;
 	height: 400px;
 	display: none;
 	object-fit: cover;
+	border: solid 2px #00bcd4;
 }
 
 .active {
