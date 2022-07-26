@@ -840,14 +840,14 @@ public class BoardService {
 	}
 
 	// 게시글 수정 페이지 이동 요청
-	public ModelAndView loadToBoardModify(String bdcode, String bdcategory, RedirectAttributes ra) {
+	public ModelAndView loadToBoardModify(String bdcode, Paging paging, RedirectAttributes ra) {
 		System.out.println("BoardService.loadToBoardModify() 호출");
 		ModelAndView mav = new ModelAndView();
-		System.out.println(bdcode + ", " + bdcategory);
+		System.out.println(bdcode + ", " + paging.getBdcategory());
 		
 		// 수정할 게시글 정보
 		BoardDto board;
-		if (bdcategory == null || bdcategory.equals("후기")) {
+		if (paging.getBdcategory() == null || paging.getBdcategory().equals("후기")) {
 			// 일반글
 			board = bdao.selectBoardView(bdcode);
 		}else {
@@ -867,14 +867,14 @@ public class BoardService {
 		
 		
 		//작성 페이지로 이동
-		if (bdcategory == null || bdcategory.equals("후기")) {
+		if (paging.getBdcategory() == null || paging.getBdcategory().equals("후기")) {
 			// 일반글
 			System.out.println("일반글 수정 페이지로 이동 요청");
 			String bdcontents = board.getBdcontents().replace("&nbsp;", " ");
 			bdcontents = board.getBdcontents().replace("<br>", "\r\n");
 			board.setBdcontents(bdcontents);
 			
-			if(bdcategory != null && bdcategory.equals("후기")) {
+			if(paging.getBdcategory() != null && paging.getBdcategory().equals("후기")) {
 				mav.setViewName("board/ReviewBoardModifyForm");
 			} else {
 				mav.setViewName("board/BoardModifyForm");
@@ -899,6 +899,7 @@ public class BoardService {
 		}
 		
 		mav.addObject("board", board);
+		mav.addObject("paging", paging);
 		
 		return mav;
 	}
@@ -988,9 +989,9 @@ public class BoardService {
        
        // 글수정 후 다시 글 상세페이지로 이동
        if( board.getBdcategory().equals("후기") ) {
-          mav.setViewName("redirect:/selectReviewBoardView?bdcode=" + board.getBdcode());
+          mav.setViewName("redirect:/selectReviewBoardView?codeIdx=" + board.getBdcode());
        }else {
-          mav.setViewName("redirect:/selectBoardView?bdcode=" + board.getBdcode());
+          mav.setViewName("redirect:/selectBoardView?codeIdx=" + board.getBdcode());
        }
 
        return mav;
@@ -1013,9 +1014,6 @@ public class BoardService {
 		System.out.println("bdrgcode : " + bdrgcode);
 		System.out.println("bdrgname : " + bdrgname);
 	
-		//로그인 확인 
-		
-		
 		
 		if ( bdcategory != null ) {
 			mav.setViewName("board/BoardWriteForm");
@@ -1087,9 +1085,9 @@ public class BoardService {
 		
 			//글작성 후 글상세페이지로 이동 
 			if( board.getBdcategory().equals("후기") ) {
-				mav.setViewName("redirect:/selectReviewBoardView?bdcode="+bdcode);
+				mav.setViewName("redirect:/selectReviewBoardView?codeIdx="+bdcode);
 			}else {
-				mav.setViewName("redirect:/selectBoardView?bdcode="+bdcode);
+				mav.setViewName("redirect:/selectBoardView?codeIdx="+bdcode);
 			}
 		}else {
 			ra.addFlashAttribute("msg", "로그인 상태가 아닙니다.");
@@ -1223,7 +1221,7 @@ public class BoardService {
 		int totalCount = bdao.selectRegionTotalCount(paging);
 		paging.setTotalCount(totalCount);
 		paging.calc();
-		System.out.println(paging);
+		//System.out.println(paging);
 		
 		//지역별 목록 조회
 		ArrayList<BoardDto> regionList = bdao.selectRegionBoardList_Paging(paging);

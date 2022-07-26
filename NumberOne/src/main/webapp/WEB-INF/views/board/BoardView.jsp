@@ -130,20 +130,21 @@
 		font-size: 18px;
 	}
 	.img-container{
+
      overflow: hidden;
      display: flex;
-     align-items: center;
-     justify-content: center;
-     border: solid #E0E0E0 2px;
+/*      align-items: center; */
+/*      justify-content: center; */
+/*      border: solid #E0E0E0 2px; */
      margin-top: 2%;
-     width: 200px;
-     height: 200px;
+     width: 400px;
+     height: 280px;
      
    }
    #upload_Img{
-   	width: 200px;
-   	height: 200px;
-   	object-fit: cover;
+   	width: 400px;
+   	height: 280px;
+   	object-fit: fill;
    }
    #inputModifyRpBox{
    	border: solid #E0E0E0 2px; 
@@ -179,7 +180,7 @@
 							
 							<c:choose>
 								<c:when test="${board.bdrgcode == 'ALL' }">
-									<a href="selectRegionBoardList"><span class="bdregion"> ${board.bdrgname}</span></a>
+									<a href="selectRegionBoardList?searchVal=ALL"><span class="bdregion"> ${board.bdrgname}</span></a>
 								</c:when>
 							
 								<c:otherwise>
@@ -223,6 +224,13 @@
 					<!-- 실험 -->
 					
 					<!-- 본문 글 내용-->
+					<div class="row">
+					<c:if test="${board.bdimg != null }">
+						<div class="col img-container" >
+							<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
+						</div>
+					</c:if >
+					</div>
 					<div class="row mt-3 mb-1 boardContents">
 						<div class="col">
 							<textarea id="inputReply" rows="10%" cols="100%" readonly>${board.bdcontents }</textarea>
@@ -276,14 +284,14 @@
 				</c:choose>
 				</div>
 				
-				<c:if test="${board.bdimg != null }">
+<%-- 				<c:if test="${board.bdimg != null }">
 					<div class="img-container" >
 						<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
 					</div>
 					<div style="background-color: #00bcd4; width: 200px; color:white; margin-bottom: 2%;" class="text-center fw-bold">
 						업로드 이미지
 					</div>				
-				</c:if >
+				</c:if > --%>
 				
 				<!------------------ 댓글영역 ------------------->
 				<div class="mb-2" id="commentBox">
@@ -426,10 +434,15 @@
 
 <script type="text/javascript">
 	
+	const bdmid = '${board.bdmid}';
+	console.log(bdmid);
+	
 	var checkMsg = '${msg}';
 	if ( checkMsg.length > 0 ){
 		alert(checkMsg);
 	}
+	
+	
 </script>
 
 
@@ -664,6 +677,7 @@
 </script>
 
 <script type="text/javascript">
+	
 	/* 게시글 수정, 삭제 */
 	function loadToBoardModify(){
 		/* 게시글 수정 페이지 이동  */
@@ -676,8 +690,7 @@
 	}
 	function updateBoardDelete(){
 		
-		var bdmid = '${board.bdmid}';
-		/* 게시글 삭제(상태변경) */
+				/* 게시글 삭제(상태변경) */
 		//모달창에서 "네" 버튼 클릭 시 삭제
 		var bdcategory = '${board.bdcategory }';
 		location.href="updateBoardDelete?bdcode="+bdcode+"&bdcategory="+bdcategory+"&bdmid="+bdmid;

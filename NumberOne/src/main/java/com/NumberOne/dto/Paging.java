@@ -108,7 +108,7 @@ public class Paging {
 	}
 	// 인덱스 있는 버전(상세페이지에서 수정, 삭제시)
 	public String makeQueryPage(String codeIdx, int page) {
-		System.out.println(codeIdx);
+		//System.out.println(codeIdx);
 		UriComponents uri = UriComponentsBuilder.newInstance()
 				.queryParam("codeIdx", codeIdx)
 				.queryParam("page", page)
@@ -138,7 +138,21 @@ public class Paging {
 		//System.out.println("생성된 파라미터 : " + uri.toUriString());
 		return uri.toUriString();
 	}
-
+	// 전체게시판(일반) , 지역게시판(전체글)
+	public String makeQueryPage( String bdtype, String codeIdx, int page) {
+		//System.out.println(codeIdx);
+		UriComponents uri = UriComponentsBuilder.newInstance()
+				.queryParam("bdtype", bdtype)
+				.queryParam("codeIdx", codeIdx)
+				.queryParam("page", page)
+				.queryParam("perPageNum", perPageNum)
+				.queryParam("searchType", searchType)
+				.queryParam("keyword", keyword)
+				.encode()
+				.build();
+		//System.out.println("생성된 파라미터 : " + uri.toUriString());
+		return uri.toUriString();
+	}
 
 	
 	public int getPage() {

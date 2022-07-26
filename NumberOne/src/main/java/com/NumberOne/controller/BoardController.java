@@ -330,9 +330,9 @@ public class BoardController {
 	 
 	 //게시글 수정 페이지 이동 
 	 @RequestMapping ( value = "/loadToBoardModify")
-	 public ModelAndView loadToBoardModify(String bdcode, String bdcategory, RedirectAttributes ra) {
+	 public ModelAndView loadToBoardModify(String bdcode, Paging paging, RedirectAttributes ra) {
 		 System.out.println("게시글 수정페이지 이동 요청");
-		 ModelAndView mav = bsvc.loadToBoardModify(bdcode, bdcategory, ra);
+		 ModelAndView mav = bsvc.loadToBoardModify(bdcode, paging, ra);
 		 
 		 return mav;
 	 }
@@ -352,6 +352,7 @@ public class BoardController {
 	 public ModelAndView updateBoardDelete (String bdcode, String bdcategory, String bdmid, RedirectAttributes ra) {
 		 System.out.println("게시글 삭제 요청");
 		 ModelAndView mav = new ModelAndView();
+		 System.out.println("게시글 삭제 : " + bdmid);
 		 
 		 String loginId = (String) session.getAttribute("loginId");
 		 System.out.println(loginId);
@@ -362,12 +363,14 @@ public class BoardController {
 				 mav = bsvc.updateBoardDelete(bdcode, bdcategory ,ra);
 				 return mav;
 			 }
+		 }else {
+			 //나머지 
+			 System.out.println("글작성자 아님"); 
+			 ra.addFlashAttribute("msg","글 작성자만 삭제할 수 있습니다!"); 
+			 mav.setViewName("redirect:loadToFail");
+			 
 		 }
 		
-		 //나머지 
-		 System.out.println("글작성자 아님"); 
-		 ra.addFlashAttribute("msg","글 작성자만 삭제할 수 있습니다!"); 
-		 mav.setViewName("redirect:loadToFail");
 		
 		return mav;
 
@@ -375,7 +378,7 @@ public class BoardController {
 	 
 	 //게시글 작성 페이지 이동 
 	 @RequestMapping ( value = "/loadToBoardWrite")
-	 public ModelAndView loadToBoardWrite(String bdcategory, String bdrgcode, String bdrgname, RedirectAttributes ra) {
+	 public ModelAndView loadToBoardWrite(Paging paging, String bdrgcode, RedirectAttributes ra) {
 		 System.out.println("게시글 작성페이지 이동 요청");
 		 ModelAndView mav = new ModelAndView();
 		 mav = bsvc.loginChToFail(ra);
@@ -386,15 +389,16 @@ public class BoardController {
 		 }
 		 session.removeAttribute("loginCh");
 		 
-		 if ( bdcategory != null ) {
+		 if ( paging.getBdcategory() != null ) {
 			mav.setViewName("board/BoardWriteForm");
 		}else {
 			mav.setViewName("board/Region_BoardWriteForm");
 		}
 		
-		mav.addObject("bdcategory", bdcategory);
+		mav.addObject("bdcategory", paging.getBdcategory());
 		mav.addObject("bdrgcode", bdrgcode);
-		mav.addObject("bdrgname",bdrgname);
+		mav.addObject("bdrgname", paging.getBdrgname());
+		mav.addObject("paging", paging);
 		 
 		//ModelAndView mav = bsvc.loadToBoardWrite(bdcategory, bdrgcode, bdrgname);
 		 

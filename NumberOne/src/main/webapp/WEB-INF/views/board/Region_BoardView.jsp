@@ -118,20 +118,21 @@
 		font-size: 18px;
 	}
 	.img-container{
+
      overflow: hidden;
      display: flex;
-     align-items: center;
-     justify-content: center;
-     border: solid #E0E0E0 2px;
+/*      align-items: center; */
+/*      justify-content: center; */
+/*      border: solid #E0E0E0 2px; */
      margin-top: 2%;
-     width: 200px;
-     height: 200px;
+     width: 400px;
+     height: 280px;
      
    }
    #upload_Img{
-   	width: 200px;
-   	height: 200px;
-   	object-fit: cover;
+   	width: 400px;
+   	height: 280px;
+   	object-fit: fill;
    }
 </style>
 </head>
@@ -206,6 +207,13 @@
 					
 					
 					<!-- 본문 글 내용-->
+					<div class="row">
+					<c:if test="${board.bdimg != null }">
+						<div class="col img-container" >
+							<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
+						</div>
+					</c:if >
+					</div>					
 					<div class="row mt-3 mb-1 boardContents">
 						<div class="col">
 							<textarea id="inputReply" rows="10%" cols="100%" readonly>${board.bdcontents }</textarea>
@@ -218,14 +226,14 @@
 				<div class="row mb-2">
 					<div class="col-2">
 						<c:choose>
-							<c:when test="${paging.searchVal eq '' }">
-								<a href="selectRegionBoardList${paging.makeQueryPage(bdtype, board.bdcode, paging.page) }" >
+							<c:when test="${paging.bdtype eq 'region' && paging.searchVal eq ''}">
+								<a href="selectRegionBoardList${paging.makeQueryPage( board.bdcode, paging.page) }" >
 								<input type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
 								</a> 
 							</c:when>
 							
 							<c:otherwise>
-								<a href="selectDetailBoardList${paging.makeQueryPage(bdtype, board.bdcode, paging.page) }" >
+								<a href="selectDetailBoardList${paging.makeQueryPage(paging.searchVal, bdtype, board.bdcode, paging.page) }" >
 								<input type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
 								</a> 
 							</c:otherwise>
@@ -258,14 +266,14 @@
 				</c:choose>
 				</div>
 
-				<c:if test="${board.bdimg != null }">
+<%-- 				<c:if test="${board.bdimg != null }">
 					<div class="img-container" >
 						<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
 					</div>
 					<div style="background-color: #00bcd4; width: 200px; color:white;  margin-bottom: 2%;" class="text-center fw-bold">
 						업로드 이미지
 					</div>				
-				</c:if >			
+				</c:if > --%>			
 				
 				<!------------------ 댓글영역 ------------------->
 				<div class="mb-2" id="commentBox">
@@ -409,6 +417,8 @@
 <script type="text/javascript">
 	var boardCheck = "${bdcategory_none}";
 	console.log(boardCheck);
+	
+	const bdmid = '${board.bdmid}';
 	
 	var checkMsg = '${msg}';
 	if ( checkMsg.length > 0 ){
@@ -672,7 +682,8 @@
 	function updateBoardDelete(){
 		/* 게시글 삭제(상태변경) */
 		//모달창에서 "네" 버튼 클릭 시 삭제
-		location.href="updateBoardDelete?bdcode="+bdcode+"&bdcategory="+'${board.bdcategory }';
+		var bdcategory = '${board.bdcategory}';
+		location.href="updateBoardDelete?bdcode="+bdcode+"&bdcategory="+bdcategory+"&bdmid="+bdmid;
 	}
 	
 </script>

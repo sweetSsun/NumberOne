@@ -129,24 +129,22 @@
 		font-size: 18px;
 	}
 	.img-container{
+
      overflow: hidden;
      display: flex;
-     align-items: center;
-     justify-content: center;
-     border: solid #E0E0E0 2px;
+/*      align-items: center; */
+/*      justify-content: center; */
+/*      border: solid #E0E0E0 2px; */
      margin-top: 2%;
-     width: 200px;
-     height: 200px;
+     width: 400px;
+     height: 280px;
      
    }
    #upload_Img{
-   	width: 200px;
-   	height: 200px;
-   	object-fit: cover;
+   	width: 400px;
+   	height: 280px;
+   	object-fit: fill;
    }
-
-
-
 </style>
 </head>
 <body>
@@ -208,6 +206,11 @@
 					<!-- 실험 -->
 					
 					<!-- 본문 글 내용-->
+					<c:if test="${noticeBoard.nbimg != null }">
+						<div class="img-container" >
+							<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg }">
+						</div>
+					</c:if >
 					<div class="row mt-3 mb-1 boardContents">
 						<div class="col">
 							<textarea id="inputReply" rows="10%" cols="100%" readonly>${noticeBoard.nbcontents }</textarea>
@@ -248,14 +251,14 @@
 				</c:choose>
 				</div>
 				
-				<c:if test="${noticeBoard.nbimg != null }">
+<%-- 				<c:if test="${noticeBoard.nbimg != null }">
 					<div class="img-container" >
 						<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg }">
 					</div>
 					<div style="background-color: #00bcd4; width: 200px; color:white;  margin-bottom: 2%;" class="text-center fw-bold">
 						업로드 이미지
 					</div>				
-				</c:if >
+				</c:if > --%>
 				
 				<%-- <!------------------ 댓글영역 ------------------->
 				<div class="mb-2" id="commentBox">
