@@ -234,7 +234,7 @@ div.col.mb-2 h3{ color : white; }
 						<h3 style="font-size:2.3rem; font-weight:700;">팔구</h3>
 					</div>
 					<div align="right" class="col" style="padding-top:0.45rem;">
-						<span style="font-size:1.6rem;"> <a href="selectResellPageList?sellBuy=S" style="color:gold !important; font-weight:bold;"><i class="fa-solid fa-square-plus"></i>&nbsp;&nbsp;더보기</a></span>
+						<span style="font-size:1.6rem;"> <a href="selectResellPageList?sellBuy=S&ajaxCheck=LIST" style="color:gold !important; font-weight:bold;"><i class="fa-solid fa-square-plus"></i>&nbsp;&nbsp;더보기</a></span>
 					</div>
 				</div>
 			<div id="sellList">
@@ -286,7 +286,7 @@ div.col.mb-2 h3{ color : white; }
 						<h3 style="font-size:2.3rem; font-weight:700;">사구</h3>
 					</div>
 					<div align="right" class="col" style="padding-top:0.45rem;">
-						<span style="font-size:17px;"> <a href="selectResellPageList?sellBuy=B" style="color:gold !important; font-weight:bold;"><i class="fa-solid fa-square-plus"></i>&nbsp;&nbsp;더보기</a></span>
+						<span style="font-size:17px;"> <a href="selectResellPageList?sellBuy=B&ajaxCheck=LIST" style="color:gold !important; font-weight:bold;"><i class="fa-solid fa-square-plus"></i>&nbsp;&nbsp;더보기</a></span>
 					</div>
 				</div> 
 

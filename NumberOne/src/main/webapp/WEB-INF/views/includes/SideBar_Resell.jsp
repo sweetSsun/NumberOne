@@ -45,12 +45,12 @@
 				
 				<div class="sideclose_room">
 					<span>
-						<a href="selectResellPageList?sellBuy=S" title="팔구"><i class="fa-solid fa-store"></i></a>
+						<a href="selectResellPageList?sellBuy=S&ajaxCheck=LIST" title="팔구"><i class="fa-solid fa-store"></i></a>
 					</span>
 				</div>
 				<div class="sideclose_room">
 					<span>
-						<a href="selectResellPageList?sellBuy=B" title="사구"><i class="fa-solid fa-cart-shopping"></i></a>
+						<a href="selectResellPageList?sellBuy=B&ajaxCheck=LIST" title="사구"><i class="fa-solid fa-cart-shopping"></i></a>
 					</span>
 				</div>
 				
@@ -83,7 +83,7 @@
 								  	<li>
 								    	<table class="sideregion_tags">
 								    		<tr>
-												<td><a href="selectResellPageList?sellBuy=S">전체</a></td>
+												<td><a href="selectResellPageList?searchVal=all&sellBuy=S">전체</a></td>
 												<td><a href="selectResellPageList?searchVal=SEL&sellBuy=S">서울</a></td>
 												<td><a href="selectResellPageList?searchVal=ICN&sellBuy=S">인천</a></td>
 											</tr>
@@ -118,7 +118,7 @@
 								  	<li>
 								    	<table class="sideregion_tags">
 								    		<tr>
-												<td><a href="selectResellPageList?sellBuy=S">전체</a></td>
+												<td><a href="selectResellPageList?searchVal=all&sellBuy=B">전체</a></td>
 												<td><a href="selectResellPageList?searchVal=SEL&sellBuy=B">서울</a></td>
 												<td><a href="selectResellPageList?searchVal=ICN&sellBuy=B">인천</a></td>
 											</tr>

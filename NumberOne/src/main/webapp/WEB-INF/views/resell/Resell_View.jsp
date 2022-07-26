@@ -1271,15 +1271,12 @@ if(storage.getItem('page') !=null ){
 
 	const backList = document.querySelector("#backList");
 	
-
-	//console.log(sellbuy_List);
 	
 	backList.addEventListener("click", backListHandler);
 	
 	function backListHandler() {
 
 		console.log("글목록버튼 클릭이벤트");
-		//location.href = 'selectResellPageList?sellBuy='+ubsellbuy;
 		
 		location.href = 'selectResellPageList?sellBuy='+ubsellbuy+'&searchType='+searchType_storage+'&keyword='+keyword_storage+'&searchVal='+selRegion_storage+'&page='+page_storage;
 	}
