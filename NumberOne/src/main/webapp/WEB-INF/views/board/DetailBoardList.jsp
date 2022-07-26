@@ -67,6 +67,9 @@
 	#inputSearchText{
 		font-size: 18px;
 	}
+   .bdnickname:hover{
+   	color:#00bcd4;
+   }
 </style>
 </head>
 <body>
@@ -114,7 +117,15 @@
 				</div>
 				
 				<div class=" community" style="text-align:center;">
-					<span style="font-size:21px;" class="fw-bold text-white">${paging.searchVal }게시판</span>
+					<c:choose>
+						<c:when test="${paging.searchVal eq 'all' }">
+							<span style="font-size:21px;" class="fw-bold text-white">전체게시판</span>
+						</c:when>
+						
+						<c:otherwise>
+							<span style="font-size:21px;" class="fw-bold text-white">${paging.searchVal }게시판</span>
+						</c:otherwise>
+					</c:choose>
 				</div>
 				
 				<!-- 게시글 목록 -->
@@ -138,7 +149,7 @@
 								<td class="text-center tableCell">${notice.nbcode}</td>
 								<td></td>
 								<td class="tableCell">
-									<a href="selectNoticeBoardView?nbcode=${notice.nbcode }">${notice.nbtitle}</a>
+									<a href="selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page) }">${notice.nbtitle}</a>
 								</td>
 								<td class="text-center tableCell">관리자</td>
 								<td class="text-center tableCell">${notice.nbdate}</td>
@@ -157,11 +168,11 @@
 							<td class="text-center tableCell">${board.bdcode}</td>
 							<td class="bdcategory text-center tableCell">${board.bdcategory}</td>
 							<td class="tableCell">
-							 	<a href="selectBoardView?bdcode=${board.bdcode }&keyword=${paging.keyword}">${board.bdtitle} 
+							 	<a href="selectBoardView${paging.makeQueryPage(board.bdcode, paging.page)}">${board.bdtitle} 
 							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
 							 </td>
 							<td class="text-center tableCell">
-								<span style="cursor: pointer" onclick="writeMemberBoard('${board.bdnickname}')">${board.bdnickname}</span>
+								<span style="cursor: pointer" class="bdnickname" onclick="writeMemberBoard('${board.bdnickname}')">${board.bdnickname}</span>
 							</td>
 							<td class="text-center tableCell">${board.bddate}</td>
 							<td class="text-center tableCell">${board.bdhits }</td>

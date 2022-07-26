@@ -108,9 +108,9 @@ public class BoardController {
 	
 	//게시판 메인 페이지 이동 
 	@RequestMapping( value="/loadToBoardMainPage")
-	public ModelAndView loadToBoardMainPage() {
+	public ModelAndView loadToBoardMainPage(Paging paging) {
 	    System.out.println("게시판(커뮤니티) 메인 페이지 이동 요청");
-	    ModelAndView mav = bsvc.loadToBoardMainPage();
+	    ModelAndView mav = bsvc.loadToBoardMainPage(paging);
 	    return mav;
 	}
 	
@@ -154,30 +154,31 @@ public class BoardController {
 	 
 	 //공지글 상세페이지 이동 
 	 @RequestMapping ( value = "/selectNoticeBoardView" )
-	 public ModelAndView selectNoticeBoardView(String nbcode) {
+	 public ModelAndView selectNoticeBoardView(String codeIdx, Paging paging) {
 		 System.out.println("공지글 상세페이지 이동 요청");
 		 
-		 ModelAndView mav = bsvc.selectNoticeBoardView(nbcode);
+		 ModelAndView mav = bsvc.selectNoticeBoardView(codeIdx, paging);
 		 
 		 return mav;
 	 }
 	 
 	 //일반/지역 - 글상세페이지 이동 
 	 @RequestMapping ( value = "/selectBoardView")
-	 public ModelAndView selectBoardView(String bdcode, String bdtype) {
+	 public ModelAndView selectBoardView(String codeIdx, Paging paging) {
 		 System.out.println("글상세페이지 이동 요청");
+		 System.out.println("글카테고리 : "+paging.getSearchVal());
 		 
-		 ModelAndView mav = bsvc.selectBoardView(bdcode, bdtype);
+		 ModelAndView mav = bsvc.selectBoardView(paging, codeIdx);
 		 
 		 return mav;
 	 }
 	 
 	 //후기글 상세페이지 이동 
 	 @RequestMapping ( value = "/selectReviewBoardView")
-	 public ModelAndView selectReviewBoardView(String bdcode) {
+	 public ModelAndView selectReviewBoardView(String codeIdx, Paging paging) {
 		 System.out.println("후기글 상세페이지 이동 요청");
 		 
-		 ModelAndView mav =bsvc.selectReviewBoardView(bdcode);
+		 ModelAndView mav = bsvc.selectReviewBoardView(codeIdx, paging);
 		 
 		 return mav;
 	 }
@@ -334,15 +335,15 @@ public class BoardController {
 	 }
 	 
 	 //게시글 수정 페이지 이동 
-	 @RequestMapping ( value = "/loadToBoardModify")
-	 public ModelAndView loadToBoardModify(String bdcode, String bdcategory, RedirectAttributes ra) {
-		 System.out.println("게시글 수정페이지 이동 요청");
-		 
-		 //bdmid 정보가 없어서 service에서 로그인 체크
-		 ModelAndView mav = bsvc.loadToBoardModify(bdcode, bdcategory, ra);
-		 
-		 return mav;
-	 }
+    @RequestMapping ( value = "/loadToBoardModify")
+    public ModelAndView loadToBoardModify(String bdcode, Paging paging , RedirectAttributes ra) {
+       System.out.println("게시글 수정페이지 이동 요청");
+       
+       //bdmid 정보가 없어서 service에서 로그인 체크
+       ModelAndView mav = bsvc.loadToBoardModify(bdcode, paging, ra);
+       
+       return mav;
+    }
 	 
 	 //게시글 수정 
 	 @RequestMapping ( value = "/updateBoardModify")
@@ -364,45 +365,43 @@ public class BoardController {
 	 }
 	 
 	 //게시글 삭제
-	 @RequestMapping ( value = "/updateBoardDelete")
-	 public ModelAndView updateBoardDelete (String bdcode, String bdcategory, String bdmid, RedirectAttributes ra) {
-		 System.out.println("게시글 삭제 요청");
-		 ModelAndView mav = new ModelAndView();
-		 
-		//작성자 본인 확인
-		 mav = bsvc.writerChToFail(ra, bdmid);
-		 if(mav.getViewName() != null) {
-			 //setView에 loadtologin이 담겨있으면 메소드 중단하고 
-			 //실패페이지로 이동(msg alert 띄우고, history back)
-			return mav;
-		 }
-		 
-		mav = bsvc.updateBoardDelete(bdcode, bdcategory ,ra);
-		return mav;
+	    @RequestMapping ( value = "/updateBoardDelete")
+	    public ModelAndView updateBoardDelete (String bdcode, String bdcategory, String bdmid, RedirectAttributes ra) {
+	       System.out.println("게시글 삭제 요청");
+	       ModelAndView mav = new ModelAndView();
+	       
+	      //작성자 본인 확인
+	       mav = bsvc.writerChToFail(ra, bdmid);
+	       if(mav.getViewName() != null) {
+	          //setView에 loadtologin이 담겨있으면 메소드 중단하고 
+	          //실패페이지로 이동(msg alert 띄우고, history back)
+	         return mav;
+	       }
+	       
+	      mav = bsvc.updateBoardDelete(bdcode, bdcategory ,ra);
+	      return mav;
 
-	 }
+	    }
 	 
 	 //게시글 작성 페이지 이동 
-	 @RequestMapping ( value = "/loadToBoardWrite")
-	 public ModelAndView loadToBoardWrite(String bdcategory, String bdrgcode, String bdrgname, RedirectAttributes ra) {
-		 System.out.println("게시글 작성페이지 이동 요청");
-		 ModelAndView mav = new ModelAndView();
-
-		 //로그인 확인
-		 mav = bsvc.loginChToFail(ra);
-		 if(mav.getViewName() != null) {
-			 //setView에 loadtologin이 담겨있으면 메소드 중단
-			return mav;
-		 }	
-
-		//mav.addObject("bdcategory", bdcategory);
-		//mav.addObject("bdrgcode", bdrgcode);
-		//mav.addObject("bdrgname",bdrgname);
-		 
-		mav = bsvc.loadToBoardWrite(bdcategory, bdrgcode, bdrgname);
-		 
-		 return mav;
-	 }
+    @RequestMapping ( value = "/loadToBoardWrite")
+    public ModelAndView loadToBoardWrite(String bdcategory, String bdrgcode, String bdrgname, RedirectAttributes ra) {
+       System.out.println("게시글 작성페이지 이동 요청");
+       ModelAndView mav = new ModelAndView();
+	       //로그인 확인
+       mav = bsvc.loginChToFail(ra);
+       if(mav.getViewName() != null) {
+          //setView에 loadtologin이 담겨있으면 메소드 중단
+         return mav;
+       }   
+	      //mav.addObject("bdcategory", bdcategory);
+      //mav.addObject("bdrgcode", bdrgcode);
+      //mav.addObject("bdrgname",bdrgname);
+       
+      mav = bsvc.loadToBoardWrite(bdcategory, bdrgcode, bdrgname);
+       
+       return mav;
+    }
 	 
 	 //게시글 작성 
 	 @RequestMapping ( value = "/insertBoardWrite")
