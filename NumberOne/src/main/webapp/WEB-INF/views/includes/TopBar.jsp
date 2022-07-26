@@ -121,22 +121,25 @@
 							<c:otherwise>
 							
 								<c:choose>
+									
 									<c:when test="${sessionScope.loginProfile == null}">
-										<p style="font-size: 12.5px"><a href="selectMyInfoMemberView">${sessionScope.loginNickname} 님 &nbsp;&nbsp;
+										<p style="font-size: 12.5px"><a href="selectMyInfoMemberView"> ${sessionScope.loginNickname} 님 &nbsp;&nbsp;
 										<img class="img-profile rounded-circle" style="height: 50px; width:50px;" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png">
 		
 										</a></p>
 									</c:when>
+									
 									<c:when test="${sessionScope.loginId != null && sessionScope.kakaoId == null }">
 										<p style="font-size: 12.5px">
-											<a href="selectMyInfoMemberView">${sessionScope.loginNickname} 님 &nbsp;&nbsp;
+											<a href="selectMyInfoMemberView"> ${sessionScope.loginNickname} 님 &nbsp;&nbsp;
 												<img class="img-profile rounded-circle" style="height: 50px; width:50px;" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/${sessionScope.loginProfile }">
 											</a>
 										</p>
 									</c:when>									
+									
 									<c:otherwise>
 										<p style="font-size: 12.5px">
-											<a href="selectMyInfoMemberView">${sessionScope.loginNickname} 님 &nbsp;&nbsp;
+											<a href="selectMyInfoMemberView"> ${sessionScope.loginNickname} 님 &nbsp;&nbsp;
 												<img class="img-profile rounded-circle" style="height: 50px; width:50px;" src="${sessionScope.loginProfile }">
 											</a>
 										</p>
@@ -651,7 +654,17 @@
 				console.log(insertResult);
 				var mwOpenedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
 				if( insertResult > 0 ){ // 신고 성공
-					popChatArr[mwOpenedIdx].successMemberWarning();
+					
+					if(crcode == 'wMemberPopup'){
+						console.log("회원 정보에서 신고 성공")
+						
+						
+						} else {
+							console.log("채팅창에서 신고 성공")
+							var mwOpenedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
+							popChatArr[mwOpenedIdx].successMemberWarning();
+						}
+					
 				} else { // 신고 실패
 					popChatArr[mwOpenedIdx].failMemberWarning();
 				}

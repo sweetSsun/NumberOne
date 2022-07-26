@@ -54,33 +54,23 @@ public class BoardService {
 			//메세지
 			ra.addFlashAttribute("msg", "로그인 후 이용가능합니다");
 			
-			//실패페이지로 이돌(msg alert 띄우고, history back)
+			//실패페이지로 이동(실패 페이지에서 msg alert 띄우고, history back)
 			mav.setViewName("redirect:loadToFail");
-			
-			//session에 loginCh = 0으로 저장(리턴 받은 곳에서 loginCh 확인하고
-			//0이면 session.removeAttribute("loginCh"); 으로 세션에 정보 삭제
-			//return mav;로 메소드 종료
-			session.setAttribute("loginCh", 0);
 		
 		} else {
 			System.out.println("로그인");
-			
-			//session에 loginCh = 1으로 저장(리턴 받은 곳에서 loginCh 확인하고
-			//1이면 session.removeAttribute("loginCh"); 으로 세션에 정보 삭제
-			//다음 메소드 진행
-			session.setAttribute("loginCh", 1);
+
 		}
 		
 		//호출한 곳에 들어갈 내용
 		/*
 		//로그인 확인
-		ModelAndView mav = bsvc.loginChToFail(ra);
-		int loginCh = (int) session.getAttribute("loginCh");
-		if(loginCh == 0) {
-			session.removeAttribute("loginCh");
+		 mav = bsvc.loginChToFail(ra);
+		 if(mav.getViewName() != null) {
+			 //setView에 loadtologin이 담겨있으면 메소드 중단
+			 //실패페이지로 이동(msg alert 띄우고, history back)
 			return mav;
-		}	
-		session.removeAttribute("loginCh");
+		 }
 		*/
 		
 		return mav;
@@ -98,46 +88,33 @@ public class BoardService {
 			//메세지
 			ra.addFlashAttribute("msg", "로그인 후 이용가능합니다");
 			
-			//실패페이지로 이돌(msg alert 띄우고, history back)
+			//실패페이지로 이동(msg alert 띄우고, history back)
 			mav.setViewName("redirect:loadToFail");
-			
-			//session에 loginCh = 0으로 저장(리턴 받은 곳에서 loginCh 확인하고
-			//0이면 session.removeAttribute("loginCh"); 으로 세션에 정보 삭제
-			//return mav;로 메소드 종료
-			session.setAttribute("loginCh", 0);
+
 		} else if (loginId != null && ! loginId.equals(checkId)) {
 			System.out.println("작성자 본인 아님");
 				
 			//메세지
 			ra.addFlashAttribute("msg", "작성자가 아닙니다");
 				
-			//실패페이지로 이돌(msg alert 띄우고, history back)
+			//실패페이지로 이동(msg alert 띄우고, history back)
 			mav.setViewName("redirect:loadToFail");
-			
-			//session에 loginCh = 0으로 저장(리턴 받은 곳에서 loginCh 확인하고
-			//0이면 session.removeAttribute("loginCh"); 으로 세션에 정보 삭제
-			//return mav;로 메소드 종료
-			session.setAttribute("loginCh", 0);
 				
 		} else {
 			System.out.println("작성자 본인");
-			//session에 loginCh = 1으로 저장(리턴 받은 곳에서 loginCh 확인하고
-			//1이면 session.removeAttribute("loginCh"); 으로 세션에 정보 삭제
-			//다음 메소드 진행
-			session.setAttribute("loginCh", 1);
 			
+			//다음 메소드 진행
 		} 
 		
 		//호출한 곳에 들어갈 내용
 		/*
-		//작성자 확인
-		mav = bsvc.writerChToFail(ra, board.getBdmid());
-		int loginCh = (int) session.getAttribute("loginCh");
-		if(loginCh == 0) {
-			session.removeAttribute("loginCh");
+		//작성자 본인 확인
+		 mav = bsvc.writerChToFail(ra, bdmid);
+		 if(mav.getViewName() != null) {
+			 //setView에 loadtologin이 담겨있으면 메소드 중단하고 
+			 //실패페이지로 이동(msg alert 띄우고, history back)
 			return mav;
-		}
-		session.removeAttribute("loginCh");
+		 }
 		*/
 		
 		return mav;
@@ -852,14 +829,13 @@ public class BoardService {
 		}
 		
 		
-		//작성자 확인
+		//작성자 확인(bdmid가 필요해서 게시글 정보 조회 후 로그인 확인)
 		mav = writerChToFail(ra, board.getBdmid());
-		int loginCh = (int) session.getAttribute("loginCh");
-		if(loginCh == 0) {
-			session.removeAttribute("loginCh");
+		if(mav.getViewName() != null) {
+			 //setView에 loadtologin이 담겨있으면 메소드 중단하고 
+			 //실패페이지로 이동(msg alert 띄우고, history back)
 			return mav;
 		}
-		session.removeAttribute("loginCh");
 		
 		
 		//작성 페이지로 이동
@@ -905,16 +881,6 @@ public class BoardService {
        System.out.println("BoardService.updateBoardModify() 호출");
        ModelAndView mav = new ModelAndView();
        System.out.println(board);
-       
-    
-    //작성자 확인
-    mav = writerChToFail(ra, board.getBdmid());
-    int loginCh = (int) session.getAttribute("loginCh");
-    if(loginCh == 0) {
-       session.removeAttribute("loginCh");
-       return mav;
-    }
-    session.removeAttribute("loginCh");
     
     //이미지 저장 
      String bdimgfile = "";
@@ -1009,10 +975,6 @@ public class BoardService {
 		System.out.println("bdrgcode : " + bdrgcode);
 		System.out.println("bdrgname : " + bdrgname);
 	
-		//로그인 확인 
-		
-		
-		
 		if ( bdcategory != null ) {
 			mav.setViewName("board/BoardWriteForm");
 		}else {
@@ -1357,9 +1319,11 @@ public class BoardService {
 		System.out.println("paging : " + paging);
 		
 		ArrayList<BoardDto> roomList =bdao.selectRoomList_paging(paging);
+		/*
 		for (int i = 0; i < roomList.size(); i++) {
 			System.out.println(roomList.get(i).getBdcode()+" "+roomList.get(i).getBdhits()+" "+roomList.get(i).getBdreply()+" "+roomList.get(i).getBdrecommend()+" "+roomList.get(i).getBdscrap());
 		}
+		*/
 		/*
 		gson = new Gson();
 		if (paging.getAjaxCheck().equals("list")) { // boardList ajax일 경우

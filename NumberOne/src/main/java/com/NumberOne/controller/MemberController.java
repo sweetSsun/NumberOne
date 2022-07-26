@@ -343,6 +343,24 @@ public class MemberController {
 			return zzimList_gson;
 		}
 
+	      // 회원 신고 확인 요청
+	      @RequestMapping(value="/checkMemberWarning_ajax")
+	      public @ResponseBody String checkMemberWarning_ajax(String loginId, String wmedNickname) {
+	         System.out.println("회원 신고 확인 요청");
+	         String mbwnCheck = msvc.checkMemberWarning_ajax(loginId, wmedNickname);
+	         return mbwnCheck;
+	      }
+	      
+	      // 회원 신고
+	      @RequestMapping(value="/insertMemberWarning_ajax")
+	      public @ResponseBody int insertMemberWarning_ajax(String loginId, String wmedNickname) {
+	         System.out.println("회원 신고 요청");
+	         int insertResult = msvc.insertMemberWarning_ajax(loginId, wmedNickname);
+	         return insertResult;
+	      }
+
+		
+		
 
 }
 
