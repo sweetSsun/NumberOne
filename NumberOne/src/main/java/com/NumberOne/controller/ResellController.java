@@ -47,13 +47,13 @@ public class ResellController {
 	}
 
 	@RequestMapping(value = "/loadToResellWriteForm")
-	public ModelAndView loadToResellWriteForm(String sell_buy, RedirectAttributes ra) {
+	public ModelAndView loadToResellWriteForm(UsedBoardDto ubDto, RedirectAttributes ra) {
 		
 		System.out.println("loadToResellWriteForm 호출");
 		ModelAndView mav = new ModelAndView();
-		System.out.println("타이틀체크 : " + sell_buy);
+		System.out.println("파라메터체크 : " + ubDto);
 
-		mav = rsvc.loadToResellWriteForm(sell_buy, ra);
+		mav = rsvc.loadToResellWriteForm(ubDto, ra);
 
 		return mav;
 	}
@@ -104,7 +104,7 @@ System.out.println(ubDto);
 	}
 
 	@RequestMapping(value = "/selectResellRegionList_ajax")
-	public @ResponseBody String selectResellRegionList_ajax(Paging paging) {
+	public @ResponseBody String selectResellRegionList_ajax(Paging paging) throws Exception {
 
 		System.out.println("selectResellRegionList_ajax 요청");
 		System.out.println("파라메터확인 : " + paging);
@@ -157,7 +157,8 @@ System.out.println(ubDto);
 		return mav;
 	}
 
-
+	
+	
 	/* 게시글 신고 */
 	// 게시글 신고 유무 확인
 	@RequestMapping(value = "/checkResellWarning_ajax")
