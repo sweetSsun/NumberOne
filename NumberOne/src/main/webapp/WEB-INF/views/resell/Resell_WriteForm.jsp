@@ -28,7 +28,6 @@
 	
 <!-- Css Styles -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
-
 <style type="text/css">
 div .d_none {
 	display: none;
@@ -712,19 +711,19 @@ if(resellTitle.options[resellTitle.selectedIndex].value == 'B'){
 <!-- 품목추가,제거 이벤트 -->
 <script type="text/javascript">
 	/* 추가버튼 변수 */
-	let addBtn = document.getElementById("addBtn");
+	const addBtn = document.getElementById("addBtn");
 	
 	/* 제거버튼 변수*/
-	let removeBtn = document.getElementsByClassName("removeBtn");
+	const removeBtn = document.getElementsByClassName("removeBtn");
 	
 	/* input태그의 부모div */
-	let dsiplay_btn = document.getElementsByClassName("btn_d-none");
+	const dsiplay_btn = document.getElementsByClassName("btn_d-none");
 	
 	/* 품목이름 변수 */
-	let gdcheck_n = document.getElementsByClassName("gdcheck_n");
+	const gdcheck_n = document.getElementsByClassName("gdcheck_n");
 	
 	/* 품목가격 변수  */
-	let gdcheck_p = document.getElementsByClassName("gdcheck_p");
+	const gdcheck_p = document.getElementsByClassName("gdcheck_p");
 
 
 	/* 추가, 제거 버튼 클릭시 이벤트 */
@@ -770,6 +769,9 @@ for(let i = 0; i<dsiplay_btn.length; i++){
 	/* 폼태그 데이터 공백 체크  */
 	/* onsubmit이벤트  false 일시 submit이벤트 취소*/
 	function checkFormData() {
+		const gdtitle_class = document.getElementsByClassName("gdtitle");
+		console.log(gdtitle_class[0]);
+		
 		let checkForm = true;
 		console.log("폼데이터 핸들러 호출");
 		if (document.getElementById("titleCheck").value === '') {
@@ -780,19 +782,30 @@ for(let i = 0; i<dsiplay_btn.length; i++){
 			document.getElementById("contentsCheck").focus();
 			alert("내용을 입력하세요");
 			checkForm = false;
-		} else if(document.getElementById('regionCheck').value===''){
-			alert("지역을 선택하세요");
-			document.getElementById("regionCheck").focus();
-			checkForm = false;
-		}		
+		} 		
 		else if (document.getElementById("mainImg").value === '') {
 			alert("대표 사진은 필수 사항입니다!");
 			document.getElementById("mainImg").focus();
 			checkForm = false;
+		}			
+	
+		else{
+			
+			
+			
+	for(let i = 0; i<gdtitle_class.length; i++){
+		if(gdtitle_class[i].value === '') {
+			console.log(gdtitle_class[i].value)
+			gdtitle_class[i].focus();
+			alert("상품정보를 입력하세요");
+			checkForm = false;			
 		}
-		
-		return checkForm;
 	}
+	}
+		
+	return false;
+	}
+		
 </script>
 
 
@@ -811,7 +824,7 @@ if(storage.getItem('keyword') !=null){
 if(storage.getItem('page') !=null ){
 	var page_storage = storage.getItem('page');
 	
-	console.log('로컬스토리지 선택지역 : ', page_storage);
+	console.log('로컬스토리지 페이지번호 : ', page_storage);
 }	
 			
 	function cancelBtn() {
