@@ -207,7 +207,7 @@ background-color: #00BCD4;
                                 <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p>전화번호<span>*</span></p>
-                                        <input type="text" id="inputMphone" name="mphone" placeholder="'-' 포함하여 번호 입력해주세요.">
+                                        <input type="text" id="inputMphone" name="mphone" placeholder="'-' 포함하여 번호 입력해주세요." onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');"/>
  									<span id="phoneCheckMsg" class="msg"></span>                                    
                                     </div>
                                 </div>
@@ -247,7 +247,20 @@ background-color: #00BCD4;
 										</select>
                                     </div>
                                 </div> 
-                            </div>  
+                            </div> 
+                            
+                            <!-- 이메일 중복 확인  --> 
+                            <div class="row">
+                                <div class="col-lg-12 col-md-12 col-sm-12">
+                                    <div class="checkout__input">
+                                        <p>이메일<span>*</span></p>
+                                        <span id="recheckEmail"></span>
+                                                                             
+                                    </div> 
+                                </div> 
+                            </div>                             
+                           
+                             
                             
                             <!-- 관심지역 -->
                             <div class="row">
@@ -394,6 +407,7 @@ background-color: #00BCD4;
     var inputPwCheck = false;
     var inputNameCheck = false;
     var inputNicknameCheck = false;
+    var inputEmailCheck = false;
     
     $(document).ready(function(){
     	console.log("스크립트 확인!");
@@ -472,12 +486,38 @@ background-color: #00BCD4;
 		});
 		</script>
 		
-		<!-- 이메일 도메인  -->
-<!-- 		<script type="text/javascript">
-		$("#")
-		
-		</script> -->
-		
+		<!-- 이메일 중복  -->
+ 		<script type="text/javascript">
+  			
+  		
+		var emailId = $("#inputEmailId").val();
+ 		var memailDomain = $("#domainSelect").val();
+ 		var inputEmail = "";
+ 		
+ 		inputEmail = emailId+"@"+memailDomain;
+ 		console.log("inputEmail : "+ inputEmail);
+ 		
+		//$("#domainSelect").focusout(function(){
+		$.ajax({
+			type : "get",
+			url : "selectMemberEmail_ajax",
+			data : {"inputEmail" : inputEmail },
+			success : function(result){
+	
+				if(result=="OK") {
+				//$("#recheckEmail").text("사용가능한 닉네임 입니다.").css("color" , "green");    
+				inputEmailCheck =true;
+				}else {
+				//$("#recheckEmail").text("이미 사용중인 닉네임 입니다.").css("color" , "red");  		
+				inputEmailCheck =false;
+				}
+			}
+
+		});
+
+		//});
+	</script> 
+
 
 
 
@@ -553,13 +593,25 @@ background-color: #00BCD4;
     	console.log("joinFormCheck 호출");
     	console.log(inputIdCheck);
     	
-    	if(!inputIdCheck){
+/*     	if(!inputIdCheck){
     		alert("아이디를 입력해주세요");
     		$("#inputMid").focus();
     		return false;
-    	}
+    	} */
     
   	
+    	/*아이디 유무*/
+    	if($("#inputMid").val().length == 0){
+    		alert("아이디를 입력해주세요.");
+    		$("#inputMid").focus();
+    		return false;
+    	}
+    	
+    	if($("#inputMid").val().length < 5 || $("#inputMid").val().length >12){
+    		alert("아이디는 5~12자리 입니다.");
+    		$("#inputMid").focus();
+    		return false;
+    	}
 
     	
     	/*이름 유무*/
@@ -568,10 +620,22 @@ background-color: #00BCD4;
     		$("#inputMname").focus();
     		return false;
     	}
+
+    	if($("#inputMname").val().length < 2 || $("#inputMname").val().length >10){
+    		alert("이름은 2~10자리 입니다.");
+    		$("#inputMname").focus();
+    		return false;
+    	}
     	
     	/*비밀번호 유무*/
-    	if($("#inputMpw").val().length < 6){
+    	if($("#inputMpw").val().length == 0){
     		alert("비밀번호를 입력해주세요.");
+    		$("#inputMpw").focus();
+    		return false;
+    	}    	
+    	
+    	if($("#inputMpw").val().length < 6 || $("#inputMpw").val().length >20){
+    		alert("비밀번호는 6~20자리 입니다.");
     		$("#inputMpw").focus();
     		return false;
     	}
@@ -579,7 +643,7 @@ background-color: #00BCD4;
     	
     	/*비밀번호 확인*/
     	if($("#checkMpw").val() != $("#inputMpw").val()){
-    		alert("비밀번호 확인해주세요.");
+    		alert("비밀번호를 확인해주세요.");
     		$("#checkMpw").focus();
     		return false;
     	}
@@ -587,6 +651,12 @@ background-color: #00BCD4;
     	/*닉네임 유무*/
     	if($("#inputMnickname").val().length == 0){
     		alert("닉네임을 입력해주세요.");
+    		$("#inputMnickname").focus();
+    		return false;
+    	}   	
+    	
+    	if($("#inputMnickname").val().length < 2 || $("#inputMnickname").val().length >10){
+    		alert("닉네임은 2~10자리 입니다.");
     		$("#inputMnickname").focus();
     		return false;
     	}
