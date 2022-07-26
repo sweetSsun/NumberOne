@@ -548,7 +548,7 @@ background-color: #00BCD4;
     		$("#inputMid").focus();
     		return false;
     	}
-    }
+    
   	
 
     	

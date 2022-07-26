@@ -13,7 +13,7 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 
-
+<script src="https://kit.fontawesome.com/8f795d5741.js" crossorigin="anonymous"></script>
 
 </head>
 
@@ -87,10 +87,35 @@
 	}
 	
 	.btn:hover {
-	  background: #F2F2FF;
+	  background: white;
 	  border: 2px solid #00BCD4;
 	  text-decoration: none;
 	  color: #00BCD4;
+	  height: 43px;
+	}
+	
+	/* 신고 버튼 */	
+	.Wbtn {
+		border : 0px;
+		border-radius: 3px;
+		font-family : pretendard;
+		font-size: 15px;
+		font-weight:bold;
+		background: red;
+		color:#F2F2FF;
+		padding: 10px 20px;
+		text-decoration: none;
+		width: 130px;
+		height: 43px;
+		border: 2px solid red;
+		margin-right: 20px;
+	}
+	
+	.Wbtn:hover {
+	  background: white;
+	  border: 2px solid red;
+	  text-decoration: none;
+	  color: red;
 	  height: 43px;
 	}
 
@@ -310,7 +335,7 @@
 				
 				<span class="profile"> 
 				<textarea class="spantitle" style="border: 0px; background-color:white; resize: none; height: 25px; overflow: hidden;"  disabled>닉네임&nbsp;&nbsp;|&nbsp;</textarea>
-				<textarea style="border: 0px; background-color:white; resize: none; height: 25px; overflow: hidden; text-align: left; color:black;" disabled >${memberInfo.mnickname }</textarea>				
+				<textarea id="wmedNickname" style="border: 0px; background-color:white; resize: none; height: 25px; overflow: hidden; text-align: left; color:black;" disabled >${memberInfo.mnickname }</textarea>				
 				</span>	
 					
 				<span class="profile" style="display: block;"> 
@@ -325,8 +350,15 @@
 						
 			</div>
 			<div class="third">
-			<input type="button" id="chatBtn" class="btn" style="width: 90px;" value="채팅">
-			</div>
+				
+				<span class="profile" style="display: block;"> 
+				 <input type="button" id="warningBtn" class="Wbtn" style="width: 90px; " value="신고"> 
+				</span>	
+				<span class="profile" style="display: block; padding-top: 15px;"> 
+				<input type="button" id="chatBtn" class="btn" style="width: 90px;" value="채팅">
+				</span>		
+			
+		</div>
 		</div>
 		<%-- </c:forEach> --%>
 		
@@ -349,6 +381,28 @@
 		
 	</div>
 
+	<!-- 게시글 신고 확인 모달 -->
+	<div class="modal fade" id="mbWarningCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title"> 회원 신고 </h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body" >
+                	회원을 신고하시겠습니까?
+                	<br> <span class="text-danger fw-bold">(※한번 신고한 회원은 신고취소가 불가능합니다.)</span></div>
+                <div class="modal-footer">
+                	<input type="hidden" >
+                    <button class="close btn btn-numberone" onclick="insertMemberWarning()" >네</button>
+                    <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 <script type="text/javascript">
 window.onload = function() {
@@ -613,6 +667,89 @@ function chatInsert_Ajax() {
 	
 }
 
+//신고버튼
+var warningBtn = document.getElementById("warningBtn"); 
+var wmedNickname = '${memberInfo.mnickname }';
+
+console.log("wmedNickname : " + wmedNickname);
+console.log("loginId : " + loginId);
+
+//신고버튼 클릭
+warningBtn.addEventListener('click', warningPopup);
+
+function warningPopup()  {
+	
+	// 로그인 확인
+	$.ajax({
+		type : 'get',
+		url : 'selectLoginOut_ajax',
+		async : false,
+		success : function(result){
+			if (result == "2"){ 
+				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+					opener.location.href = "loadToLogin"
+					window.close();
+					return;
+				}
+				return;
+			}
+			console.log("wmedNickname2 : " + wmedNickname);
+			console.log("loginId2 : " + loginId);
+					window.opener.insertMemberWarning(wmedNickname, 'wMemberPopup');
+					}
+				})
+		}
+
+
+
+
+
+</script>
+
+<!-- 신고 관련 스크립트 -->
+<script type="text/javascript">
+
+	// 채팅방 입장과 동시에 대화상대 신고 했는지 확인
+	$(document).ready(function (){
+		opener.checkMemberWarning(wmedNickname, crcode);
+	});
+	
+	// 신고 모달창 close 하는 스크립트
+	var modal = $(".modal");
+	var close = $(".close");
+	for (var i = 0; i < close.length; i++){
+		close[i].addEventListener("click", function(){
+			$("#mbWarningCheckModal").modal("hide");
+		});
+	}
+	
+	// 신고 클릭 시 모달창 출력
+	function mbWarningCheckModal(){
+		if( $("#mbWarning").hasClass("text-danger") ){
+			alert("이미 신고접수된 회원입니다.");
+		}else{
+			$("#mbWarningCheckModal").modal('show');
+		}
+	}
+	
+	// 모달창에서 "네" 클릭 시 대화상대 신고
+	function insertMemberWarning(){
+		console.log("신고할 회원 : " + wmedNickname);
+		opener.insertMemberWarning(wmedNickname, crcode);
+	}
+	
+	// 대화상대 신고 성공 시 수행할 기능
+	function successMemberWarning(){
+		alert("회원 신고가 접수되었습니다.");
+		$("#mbWarning").addClass("text-danger");
+	}
+	
+	// 대화상대 신고 실패 시 수행할 기능
+	function failMemberWarning(){
+		alert("회원 신고에 실패했습니다.");
+	}
+
+	
 </script>
 
 </body>

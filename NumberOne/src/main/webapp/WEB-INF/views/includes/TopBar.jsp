@@ -653,7 +653,17 @@
 				console.log(insertResult);
 				var mwOpenedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
 				if( insertResult > 0 ){ // 신고 성공
-					popChatArr[mwOpenedIdx].successMemberWarning();
+					
+					if(crcode == 'wMemberPopup'){
+						console.log("회원 정보에서 신고 성공")
+						
+						
+						} else {
+							console.log("채팅창에서 신고 성공")
+							var mwOpenedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
+							popChatArr[mwOpenedIdx].successMemberWarning();
+						}
+					
 				} else { // 신고 실패
 					popChatArr[mwOpenedIdx].failMemberWarning();
 				}
