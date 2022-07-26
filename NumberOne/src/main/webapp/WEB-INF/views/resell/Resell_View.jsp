@@ -577,8 +577,20 @@ textarea:focus {
 								class="fw-bold text-white">글목록</button>
 						</div>
 						<c:choose>
+							<%-- 관리자일 때 --%>
+							<c:when test="${sessionScope.loginId == 'admin' }">
+								<div align="right" class="col">
+									<input
+										onclick="adminBoardStop('${ub_resellView.ubcode}')"
+										type="button"
+										style="left: 0;"
+										class="btn btn-sm bg-secondary fw-bold text-white"
+										value="정지">
+								</div>
+							</c:when>
+							
 							<c:when test="${sessionScope.loginId != null && ub_resellView.ubmid != sessionScope.loginId}">
-								<!-- 일반사용자일 때 찜, 채팅, 신고 -->
+								<%-- 작성자가 본인이 아니고 일반사용자일 때 --%>
 								<div
 									style="text-align: end;"
 									class="col">
@@ -601,7 +613,7 @@ textarea:focus {
 								</div>
 							</c:when>
 
-
+							<%-- 작성자 본인일 때 --%>
 							<c:when test="${ub_resellView.ubmid == sessionScope.loginId}">
 								<div
 									style="text-align: end;"
@@ -628,17 +640,6 @@ textarea:focus {
 								</div>
 							</c:when>
 
-							<%-- 관리자일 때 --%>
-							<c:when test="${sessionScope.loginId == 'admin' }">
-								<div align="right" class="col">
-									<input
-										onclick="adminBoardStop('${ub_resellView.ubcode}')"
-										type="button"
-										style="left: 0;"
-										class="btn btn-sm bg-secondary fw-bold text-white"
-										value="정지">
-								</div>
-							</c:when>
 						</c:choose>
 					</div>
 
@@ -1474,5 +1475,13 @@ $.ajax({
 	}
 </script>
 
+<!-- 관리자용 -->
+<script type="text/javascript">
+	function adminBoardStop(ubcode){
+		/* 관리자 - 게시글 정지  */
+		console.log(ubcode);
+		location.href="admin_updateResellStop?ubcode="+ubcode+"&ubsellbuy=${ub_resellView.ubsellbuy}";
+	}
+</script>
 
 </html>
