@@ -169,12 +169,12 @@ public class MemberService {
 				mav.setViewName("redirect:/loadToLogin");
 
 
-			}else if(loginMember.getMid().equals("admin")) {
-
-
-				session.setAttribute("loginId", loginMember.getMid());
-				session.setAttribute("loginNickname", loginMember.getMnickname());
-				mav.setViewName("redirect:/admin_loadToAdminMainPage");
+//			}else if(loginMember.getMid().equals("admin")) {
+//
+//
+//				session.setAttribute("loginId", loginMember.getMid());
+//				session.setAttribute("loginNickname", loginMember.getMnickname());
+//				mav.setViewName("redirect:/admin_loadToAdminMainPage");
 			
 			}else if(loginMember .getMstate() == 2){
 				ra.addFlashAttribute("msg", "탈퇴 처리 된 회원입니다.");

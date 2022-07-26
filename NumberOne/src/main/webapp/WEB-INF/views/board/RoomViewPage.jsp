@@ -538,7 +538,7 @@ function adminRvBan(){
 				if( updateResult > 0 ){
 					console.log("관리자 자랑글 정지 성공!");
 					//일단 목록 페이지 다시 로드
-					location.href = "${pageContext.request.contextPath }/loadToLogin?afterUrl=selectRoomList";
+					location.href = "${pageContext.request.contextPath }/selectRoomList";
 				}
 			}
 		});

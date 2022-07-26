@@ -123,8 +123,11 @@ public class HomeController {
 		mav.addObject("SellList", SellList);
 		mav.addObject("buyList", buyList);
 
-		
-		mav.setViewName("Main");
+		if(session.getAttribute("loginId") != null && session.getAttribute("loginId").equals("admin")) {
+			mav.setViewName("admin/Admin_Main");
+		} else {
+			mav.setViewName("Main");
+		}
 		return mav;
 		
 	}

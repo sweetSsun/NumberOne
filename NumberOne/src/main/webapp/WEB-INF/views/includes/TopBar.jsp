@@ -622,8 +622,6 @@
 
 <!-- 회원 신고 관련 스크립트 -->
 <script type="text/javascript">
-	var loginId = "${sessionScope.loginId}";
-	
 	// 회원 신고 확인 (팝업창 뜸과 동시에 수행)
 	function checkMemberWarning(wmedNickname, crcode){ // 여기서 crcode는 팝업창의 고유 name값임
 		console.log("checkMemberWarning 실행");		
@@ -631,7 +629,7 @@
 		$.ajax({
 			type : "get",
 			url : "checkMemberWarning_ajax",
-			data : { "loginId" : loginId, "wmedNickname" : wmedNickname },
+			data : { "loginId" : "${sessionScope.loginId}", "wmedNickname" : wmedNickname },
 			async: false,
 			success : function(mbwnCheck){
 				console.log("신고유무 확인 : " + mbwnCheck );
@@ -651,7 +649,7 @@
  		$.ajax({
 			type : "get",
 			url : "insertMemberWarning_ajax",
-			data : { "loginId" : loginId, "wmedNickname" : wmedNickname },
+			data : { "loginId" : "${sessionScope.loginId}", "wmedNickname" : wmedNickname },
 			success : function(insertResult){
 				console.log(insertResult);
 				var mwOpenedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기

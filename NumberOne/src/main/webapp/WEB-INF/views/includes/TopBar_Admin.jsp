@@ -42,7 +42,7 @@
 					
 					<span>					
 						<p style="float: left; font-size: 15px; margin-left: 20px; margin-top: 4rem; margin-bottom: 10px;">						
-							<a href="admin_loadToAdminMainPage">
+							<a href="${pageContext.request.contextPath }/">
 							<img class="img-profile rounded-circle" style="height:50px; width:50px" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png">&nbsp;&nbsp;관리자님</a>
 						</p>
 			
