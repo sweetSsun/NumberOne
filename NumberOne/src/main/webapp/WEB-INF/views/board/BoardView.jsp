@@ -130,24 +130,31 @@
 		font-size: 18px;
 	}
 	.img-container{
+
      overflow: hidden;
      display: flex;
-     align-items: center;
-     justify-content: center;
-     border: solid #E0E0E0 2px;
+/*      align-items: center; */
+/*      justify-content: center; */
+/*      border: solid #E0E0E0 2px; */
      margin-top: 2%;
-     width: 200px;
-     height: 200px;
+     width: 450px;
+     height: 2350px;
      
    }
    #upload_Img{
-   	width: 200px;
-   	height: 200px;
+   	width: 450px;
+   	height: 350px;
    	object-fit: cover;
    }
    #inputModifyRpBox{
    	border: solid #E0E0E0 2px; 
    	border-radius:5px;
+   }
+   .rpnickname:hover{
+   	color:#00bcd4;
+   }
+   .bdnickname:hover{
+   	color:#00bcd4;
    }
 </style>
 </head>
@@ -179,7 +186,7 @@
 							
 							<c:choose>
 								<c:when test="${board.bdrgcode == 'ALL' }">
-									<a href="selectRegionBoardList"><span class="bdregion"> ${board.bdrgname}</span></a>
+									<a href="selectRegionBoardList?searchVal=ALL"><span class="bdregion"> ${board.bdrgname}</span></a>
 								</c:when>
 							
 								<c:otherwise>
@@ -223,6 +230,13 @@
 					<!-- 실험 -->
 					
 					<!-- 본문 글 내용-->
+					<div class="row">
+					<c:if test="${board.bdimg != null }">
+						<div class="col img-container" >
+							<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
+						</div>
+					</c:if >
+					</div>
 					<div class="row mt-3 mb-1 boardContents">
 						<div class="col">
 							<textarea id="inputReply" rows="10%" cols="100%" readonly>${board.bdcontents }</textarea>
@@ -234,7 +248,22 @@
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
 				<div class="row mb-2">
 					<div class="col-2">
-						<input onclick="boardList()" type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록"> 
+						<c:choose>
+							<c:when test="${paging.searchVal eq 'ALL' }">
+							<!-- 전체 글목록 페이지 -->
+							<a href="selectBoardList${paging.makeQueryPage(board.bdcode, paging.page)}">
+							<input type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
+							</a>
+							</c:when>
+							
+							<c:otherwise>
+							<!-- 자유~후기 글목록 페이지 -->
+							<a href="selectCategoryBoardList${paging.makeQueryPage(paging.searchVal, bdtype, board.bdcode, paging.page) }">
+							<input type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
+							</a>
+							</c:otherwise>
+							
+						</c:choose>
 					</div>
 				<c:choose>
 					<c:when test="${sessionScope.loginId == board.bdmid && sessionScope.loginId != 'admin' }">
@@ -261,14 +290,14 @@
 				</c:choose>
 				</div>
 				
-				<c:if test="${board.bdimg != null }">
+<%-- 				<c:if test="${board.bdimg != null }">
 					<div class="img-container" >
 						<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
 					</div>
 					<div style="background-color: #00bcd4; width: 200px; color:white; margin-bottom: 2%;" class="text-center fw-bold">
 						업로드 이미지
 					</div>				
-				</c:if >
+				</c:if > --%>
 				
 				<!------------------ 댓글영역 ------------------->
 				<div class="mb-2" id="commentBox">
@@ -411,10 +440,15 @@
 
 <script type="text/javascript">
 	
+	const bdmid = '${board.bdmid}';
+	console.log(bdmid);
+	
 	var checkMsg = '${msg}';
 	if ( checkMsg.length > 0 ){
 		alert(checkMsg);
 	}
+	
+	
 </script>
 
 
@@ -467,15 +501,6 @@
 		return time+" | ";
 		
  	}
-	
-</script>
-
-<script type="text/javascript">
-	/* 글목록 버튼 클릭 시 */
-	function boardList(){
-		/* 넘어온 게시판으로 다시 이동 */
-		location.href="selectCategoryBoardList?searchVal=${board.bdcategory}";
-	}
 	
 </script>
 
@@ -658,6 +683,7 @@
 </script>
 
 <script type="text/javascript">
+	
 	/* 게시글 수정, 삭제 */
 	function loadToBoardModify(){
 		/* 게시글 수정 페이지 이동  */
@@ -670,8 +696,7 @@
 	}
 	function updateBoardDelete(){
 		
-		var bdmid = '${board.bdmid}';
-		/* 게시글 삭제(상태변경) */
+				/* 게시글 삭제(상태변경) */
 		//모달창에서 "네" 버튼 클릭 시 삭제
 		var bdcategory = '${board.bdcategory }';
 		location.href="updateBoardDelete?bdcode="+bdcode+"&bdcategory="+bdcategory+"&bdmid="+bdmid;
@@ -736,7 +761,7 @@
 						
 						output += "<div class=\"col-11\" style='border-bottom: solid #E0E0E0 1px;\'>"
 						/* 닉네임, 시간 */
-						output += "<span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span>"
+						output += "<a style=\"cursor:pointer\" onclick=\"writeMemberBoard('"+replyList[i].rpnickname+"')\"><span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span></a>"
 						output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span> "
 						
 						/* 수정, 삭제 버튼 */
@@ -768,7 +793,7 @@
 							
 						output += "<div class=\"col-11\" style='border-bottom: solid #E0E0E0 1px;'>"
 						/* 닉네임, 시간 */
-						output += "<span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span>"
+						output += "<a style=\"cursor:pointer\" onclick=\"writeMemberBoard('"+replyList[i].rpnickname+"')\"><span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span></a>"
 						output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span> "
 						
 						if( '${sessionScope.loginId}' == 'admin'){

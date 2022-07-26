@@ -29,7 +29,6 @@
 	
 <!-- Css Styles -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
-
 <style type="text/css">
 .product-img {
 	max-width: 30%;
@@ -677,11 +676,9 @@ div.detailimageBox {
 	totalOp.addEventListener('change', selectOp_value);
 
 	function selectOp_value(e) {
-		console.log("e", e.target.value);
-		let gd_state = [];
-		let gd_code = [];
+		console.log("e", e.target.value);		
 		let select_ubstate = e.target.value;
-		console.log("선택된 상품의 상태값 : ", select_ubstate);
+		console.log("선택된 글의 상태값 : ", select_ubstate);
 	
 
 						if (select_ubstate === '9') {

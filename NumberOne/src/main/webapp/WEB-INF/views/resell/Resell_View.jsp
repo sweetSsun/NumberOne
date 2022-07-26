@@ -18,7 +18,6 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <!-- CSS Style -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
-
 <style type="text/css">
 section {
 	max-width: 70%;
@@ -38,7 +37,7 @@ textarea:focus {
 	border: none;
 	width: -webkit-fill-available;
 	resize: none;
-	height: auto;
+	height: 340px;
 }
 
 #inputComment {
@@ -86,6 +85,9 @@ textarea:focus {
 
 .bdnickname {
 	font-size: 20px;
+}
+.bdnickname:hover{
+	color: #00bcd4;
 }
 
 .bdregion {
@@ -202,18 +204,20 @@ textarea:focus {
 	text-align: center;
 	overflow: hidden;
 	width: 600px;
-	height: 430px;
+	height: 400px;
 	position: relative;
 	/* 이미지 슬라이더 */
 	overflow: hidden;
-}
+	
+}	
 
 .Resell_img {
 	position: relative;
-	width: 600px;
+	width: 500px;
 	height: 400px;
 	display: none;
-	object-fit: fill;
+	object-fit: cover;
+	border: solid 2px #00bcd4;
 }
 
 .active {
@@ -590,56 +594,44 @@ textarea:focus {
 							</c:when>
 							
 							<c:when test="${sessionScope.loginId != null && ub_resellView.ubmid != sessionScope.loginId}">
+
 								<%-- 작성자가 본인이 아니고 일반사용자일 때 --%>
-								<div
-									style="text-align: end;"
-									class="col">
+								<div style="text-align: end;" class="col">
 									<!-- 찜버튼 -->
-									<i	id="zzimBtn"
-										class="fa-solid fa-heart fa-2x zzimChatBtn"></i>
+									<i	id="zzimBtn" style="font-size:25px;"
+										class="fa-regular fa-heart zzimChatBtn"></i>
 									<!-- 찜 수 -->
 									<span
 										style="font-size: 20px;"
 										id="zzimCount">${ub_resellView.ubzzim }</span>
-									<span style="font-size: 30px; color: gray;">|</span>
+									<!-- <span style="font-size: 30px; color: gray;">|</span> -->
 									<!-- 채팅버튼 -->
-									<i	id="chatBtn"
-										class="fa-solid fa-comment-dots fa-2x zzimChatBtn"></i> 
-									<span style="font-size: 30px; color: gray;">|</span>
+									<i	id="chatBtn" style="font-size:25px;"
+										class="fa-solid fa-comment-dots zzimChatBtn"></i> <span>&nbsp;</span>
+									<!-- <span style="font-size: 30px; color: gray;">|</span> -->
 									<!-- 신고버튼 -->
-									<i	id="ubWarning"
+									<i	id="ubWarning" style="font-size:25px;"
 										onclick="ubWarningCheckModal()"
-										class='fa-solid fa-land-mine-on fa-2x zzimChatBtn'></i>
+										class='fa-solid fa-land-mine-on zzimChatBtn'></i>
+
 								</div>
 							</c:when>
 
 							<%-- 작성자 본인일 때 --%>
 							<c:when test="${ub_resellView.ubmid == sessionScope.loginId}">
-								<div
-									style="text-align: end;"
-									class="col">
-									<!-- 판매중  판매완료 -->
-									<select
-										class="select-size"
-										id="totalOp">
-										<option value="1">판매중</option>
-										<option value="9">판매완료</option>
+								<!-- 판매 / 구매  -->
+								<div style="text-align: end;" class="col">
+									<!-- 판매중 / 판매완료 -->
+									<select class="select-size" id="totalOp">
+										<option value="1">거래중</option>
+										<option value="9">거래완료</option>
 									</select>
-
-									<!-- 글수정 -->
-									<button
-										onclick="resellModifyForm()"
-										class="md_del_Btn fw-bold text-white"
-										type="button">수정</button>
-									<!-- 글삭제 -->
-									<input
-										onclick="ubDeleteCheckModal()"
-										type="button"
-										class="md_del_Btn fw-bold text-white"
-										value="삭제">
+								<!-- 글수정 -->
+								<button onclick="resellModifyForm()" class="md_del_Btn fw-bold text-white" type="button">수정</button>
+								<!-- 글삭제 -->
+								<input onclick="ubDeleteCheckModal()" type="button" class="md_del_Btn fw-bold text-white" value="삭제">
 								</div>
 							</c:when>
-
 						</c:choose>
 					</div>
 
@@ -698,46 +690,38 @@ textarea:focus {
 				</form>
 
 				<hr>
-				<div class="row">
+				<div class="row mb-2" >
 					<div class="col text-center">
 						<c:choose>
 							<c:when test="${ub_resellView.ubsellbuy == 'B' }">
-								<a href="#">
-									<span class="fw-bold boardCategory">구매자의 다른 상품</span>
-								</a>
+								<span class="fw-bold boardCategory" > < 구매자의 다른 상품 > </span>
 							</c:when>
 
 							<c:otherwise>
-								<a href="#">
-									<span
-										class="fw-bold boardCategory"
-										style="border-bottom: solid gray 2px;">판매자의 다른 상품 </span>
-								</a>
+								<span class="fw-bold boardCategory" > < 판매자의 다른 상품  > </span>
 							</c:otherwise>
 						</c:choose>
 					</div>
 				</div>
 
 				<!-- 판매자의 다른 품목 리스트 -->
-				<div class="row">
-					<c:forEach
-						items="${ memberSellList}"
-						var="sellList"
-					>
+				<div class="row" style="text-align:center;">
+					<c:forEach items="${ memberSellList}" var="sellList">
 						<div class="col-4">
 							<a href="selectResellView?ubcode=${sellList.ubcode}&ubsellbuy=${sellList.ubsellbuy}&modifyCheck=LIST">
-								<img
-									style="width: 270px; height: 200px; object-fit: cover;"
-									class="another_goods"
-									alt=""
-									src="${pageContext.request.contextPath }/resources/img/resell/${sellList.ubmainimg }"
-								>
+								<img style="width: 270px; height: 200px; object-fit: cover; border-top-left-radius:10px; border-top-right-radius:10px;" class="another_goods" alt="" src="${pageContext.request.contextPath }/resources/img/resell/${sellList.ubmainimg }">
 							</a>
 
-							<div class="card_body font-s text-right ">
+							<div class="card_body text-left fw-bold">
+								<!-- <div class="fw-bold text-white" style="width:270px; background-color:#00bcd4;">	 -->						
 								<a href="selectResellView?ubcode=${sellList.ubcode}&ubsellbuy=${sellList.ubsellbuy}&modifyCheck=LIST"> ${sellList.ubtitle} </a>
+								<!-- </div> -->
 							</div>
-							<div class="card_footer font-s text-right ">${sellList.ubdate}</div>
+							<div class="card_footer  text-left" style="margin-bottom:30px;">
+								<!-- <div  style="width:270px; background-color:#00bcd4;"> -->
+								${sellList.ubdate}
+								<!-- </div> -->
+							</div>
 						</div>
 					</c:forEach>
 				</div>
@@ -891,13 +875,6 @@ textarea:focus {
 	}
 	
 	
-	//이미지 슬라이드 컨트롤
-	$(function(){
-		$("#carousel-example-generic").carousel({
-			
-			interval: false, //false면 자동 순환 X
-		});
-	});
 </script>
 
 
@@ -956,11 +933,16 @@ textarea:focus {
 		console.log('myZzimCheck 호출');
 		/* 로그인한 회원이 현재 글에 찜을 했는지 여부를 확인 */
 		if (zzim_Check === 'UNCHECK') {
-			zzimBtn.classList.add("blue");
-			zzimBtn.classList.remove("red");
+			/* zzimBtn.classList.add("blue");
+			zzimBtn.classList.remove("red"); */
+			
+			$("#zzimBtn").removeClass("fa-solid");
+			
 		} else if (zzim_Check === 'CHECK') {
-			zzimBtn.classList.add("red");
-			zzimBtn.classList.remove("blue");
+/* 			zzimBtn.classList.add("red");
+			zzimBtn.classList.remove("blue"); */
+			
+			$("#zzimBtn").addClass("fa-solid");
 		}
 
 	}
@@ -1031,18 +1013,21 @@ textarea:focus {
 				console.log("zzimCheck : " + zzimCheck);
 
 				if (zzimCheck == 'CHECK') { //찜 했을 때
-					zzimBtn.classList.remove("blue");
-					zzimBtn.classList.add("red");
+					/* zzimBtn.classList.remove("blue");
+					zzimBtn.classList.add("red"); */
 					zzim_Check = 'CHECK';
 
 					ubzzim = Number(ubzzim)+1;
 					document.getElementById("zzimCount").innerHTML = ubzzim;
 					
+					$("#zzimBtn").addClass("fa-solid");
+					
 				} else { //찜 취소했을 때
-					zzimBtn.classList.remove("red");
-					zzimBtn.classList.add("blue");
+					/* zzimBtn.classList.remove("red");
+					zzimBtn.classList.add("blue"); */
 					zzim_Check = 'UNCHECK';
 					
+					$("#zzimBtn").removeClass("fa-solid");
 					
 					ubzzim = Number(ubzzim)-1;
 					document.getElementById("zzimCount").innerHTML = ubzzim;

@@ -221,7 +221,7 @@ public class BoardService {
 		return mav;
 	}
 	   //게시판(커뮤니티) 메인페이지 이동 
-	   public ModelAndView loadToBoardMainPage() {
+	   public ModelAndView loadToBoardMainPage(Paging paging) {
 	      System.out.println("BoardService.loadToBoardMainPage() 호출");
 	      ModelAndView mav = new ModelAndView();
 	      
@@ -260,6 +260,7 @@ public class BoardService {
 	      mav.addObject("boardList_Information", boardList_Information);
 	      mav.addObject("boardList_Review", boardList_Review);
 	      mav.addObject("noticeList", noticeList);
+	      mav.addObject("paging", paging);
 	      mav.setViewName("board/BoardMain");
 	      
 	      return mav;
@@ -302,6 +303,7 @@ public class BoardService {
 			System.out.println("BoardService.selectCategoryBoardList() 호출");
 			ModelAndView mav = new ModelAndView();
 			System.out.println(paging.getSearchVal());
+			System.out.println("메인에서 이동해온 게시판 : " + paging.getBdcategory());
 			
 			// 페이징
 			if(paging.getKeyword() == null) {// dao 조건문이 keyword에 null값이 들어가면 오류가 나기 때문에 ""로 변경
@@ -453,7 +455,7 @@ public class BoardService {
 
 
 	// 공지글상세 페이지 이동
-	public ModelAndView selectNoticeBoardView(String nbcode) {
+	public ModelAndView selectNoticeBoardView(String nbcode, Paging paging) {
 		System.out.println("BoardService.selectNoticeBoardView() 호출");
 		ModelAndView mav = new ModelAndView();
 
@@ -467,33 +469,34 @@ public class BoardService {
 		System.out.println(noticeBoard);
 
 		mav.addObject("noticeBoard", noticeBoard);
+		mav.addObject("paging", paging);
 		mav.setViewName("board/NoticeBoardView");
 
 		return mav;
 	}
 
 	// 일반/지역 - 글상세페이지 이동
-	public ModelAndView selectBoardView(String bdcode, String bdtype) {
+	public ModelAndView selectBoardView(Paging paging, String bdcode) {
 		System.out.println("BoardService.selectBoardView() 호출");
 		ModelAndView mav = new ModelAndView();
 		System.out.println("bdcode : " + bdcode);
 		
-		if( bdtype == null ) {
-			bdtype = "";
+		if( paging.getBdtype() == null ) {
+			paging.setBdtype("");
 		}
 		
-		System.out.println("게시판 타입 : " + bdtype);
+		System.out.println("게시판 타입 : " + paging.getBdtype());
 		
 		// 게시글 조회수 증가
 		updateBoardHits(bdcode);
 		// 글상세정보 조회
 		BoardDto board = bdao.selectBoardView(bdcode);
-		System.out.println(board);
+		//System.out.println(board);
 		
+		mav.addObject("paging",paging);
 		mav.addObject("board", board);
 		
-		
-		if ( bdtype.equals("region") ) {
+		if ( paging.getBdtype().equals("region") ) {
 			mav.setViewName("board/Region_BoardView");
 		}else {
 			mav.setViewName("board/BoardView");
@@ -503,7 +506,7 @@ public class BoardService {
 	}
 	
 	// 후기글 상세페이지 이동 
-	public ModelAndView selectReviewBoardView(String bdcode) {
+	public ModelAndView selectReviewBoardView(String bdcode, Paging paging) {
 		System.out.println("BoardService.selectReviewBoardView() 호출");
 		ModelAndView mav = new ModelAndView();
 		
@@ -512,6 +515,7 @@ public class BoardService {
 		BoardDto board = bdao.selectBoardView(bdcode);
 		
 		mav.addObject("board", board);
+		mav.addObject("paging", paging);
 		mav.setViewName("board/ReviewBoardView");
 		
 		return mav;
@@ -813,21 +817,20 @@ public class BoardService {
 	}
 
 	// 게시글 수정 페이지 이동 요청
-	public ModelAndView loadToBoardModify(String bdcode, String bdcategory, RedirectAttributes ra) {
+	public ModelAndView loadToBoardModify(String bdcode, Paging paging, RedirectAttributes ra) {
 		System.out.println("BoardService.loadToBoardModify() 호출");
 		ModelAndView mav = new ModelAndView();
-		System.out.println(bdcode + ", " + bdcategory);
+		System.out.println(bdcode + ", " + paging.getBdcategory());
 		
 		// 수정할 게시글 정보
 		BoardDto board;
-		if (bdcategory == null || bdcategory.equals("후기")) {
+		if (paging.getBdcategory() == null || paging.getBdcategory().equals("후기")) {
 			// 일반글
 			board = bdao.selectBoardView(bdcode);
 		}else {
 			// 자랑글(selec문 분리);
 			board = bdao.selectRoomModify(bdcode);
 		}
-		
 		
 		//작성자 확인(bdmid가 필요해서 게시글 정보 조회 후 로그인 확인)
 		mav = writerChToFail(ra, board.getBdmid());
@@ -839,14 +842,14 @@ public class BoardService {
 		
 		
 		//작성 페이지로 이동
-		if (bdcategory == null || bdcategory.equals("후기")) {
+		if (paging.getBdcategory() == null || paging.getBdcategory().equals("후기")) {
 			// 일반글
 			System.out.println("일반글 수정 페이지로 이동 요청");
 			String bdcontents = board.getBdcontents().replace("&nbsp;", " ");
 			bdcontents = board.getBdcontents().replace("<br>", "\r\n");
 			board.setBdcontents(bdcontents);
 			
-			if(bdcategory != null && bdcategory.equals("후기")) {
+			if(paging.getBdcategory() != null && paging.getBdcategory().equals("후기")) {
 				mav.setViewName("board/ReviewBoardModifyForm");
 			} else {
 				mav.setViewName("board/BoardModifyForm");
@@ -871,6 +874,7 @@ public class BoardService {
 		}
 		
 		mav.addObject("board", board);
+		mav.addObject("paging", paging);
 		
 		return mav;
 	}
@@ -950,9 +954,9 @@ public class BoardService {
        
        // 글수정 후 다시 글 상세페이지로 이동
        if( board.getBdcategory().equals("후기") ) {
-          mav.setViewName("redirect:/selectReviewBoardView?bdcode=" + board.getBdcode());
+          mav.setViewName("redirect:/selectReviewBoardView?codeIdx=" + board.getBdcode());
        }else {
-          mav.setViewName("redirect:/selectBoardView?bdcode=" + board.getBdcode());
+          mav.setViewName("redirect:/selectBoardView?codeIdx=" + board.getBdcode());
        }
 
        return mav;
@@ -1045,9 +1049,9 @@ public class BoardService {
 		
 			//글작성 후 글상세페이지로 이동 
 			if( board.getBdcategory().equals("후기") ) {
-				mav.setViewName("redirect:/selectReviewBoardView?bdcode="+bdcode);
+				mav.setViewName("redirect:/selectReviewBoardView?codeIdx="+bdcode);
 			}else {
-				mav.setViewName("redirect:/selectBoardView?bdcode="+bdcode);
+				mav.setViewName("redirect:/selectBoardView?codeIdx="+bdcode);
 			}
 		}else {
 			ra.addFlashAttribute("msg", "로그인 상태가 아닙니다.");
@@ -1181,7 +1185,7 @@ public class BoardService {
 		int totalCount = bdao.selectRegionTotalCount(paging);
 		paging.setTotalCount(totalCount);
 		paging.calc();
-		System.out.println(paging);
+		//System.out.println(paging);
 		
 		//지역별 목록 조회
 		ArrayList<BoardDto> regionList = bdao.selectRegionBoardList_Paging(paging);
