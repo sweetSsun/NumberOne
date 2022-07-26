@@ -260,7 +260,7 @@ public class ResellService {
 		ModelAndView mav = new ModelAndView();
 
 		String checkMethod = "NO";
-		
+		System.out.println(paging.getSellBuy());
 		/* 사이드바에서 지역선택 하지 않았을 경우 회원의 관심지역을 지역필드에 저장*/
 		 if(paging.getAjaxCheck()!=null && (String) session.getAttribute("loginRegion") != null) {
 				 paging.setSearchVal(rdao.selectRegionCode((String)
@@ -309,6 +309,8 @@ public class ResellService {
 		mav.addObject("paging", paging);
 		mav.addObject("checkSearch", checkMethod);
 		
+		
+
 		if (paging.getSellBuy().equals("S")) {
 			System.out.println("조건문S");
 			mav.setViewName("resell/Resell_SellList");

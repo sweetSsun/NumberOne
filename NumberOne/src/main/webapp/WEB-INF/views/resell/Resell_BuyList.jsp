@@ -12,7 +12,7 @@
 <head>
 
 <meta charset="UTF-8">
-<title>1인자 - 중고거래 팔구게시판</title>
+<title>1인자 - 중고거래 사구게시판</title>
 
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
@@ -229,7 +229,7 @@ div.col.mb-2 h3 {
 				class="container"
 				style="margin-top: 50px"
 			>
-				<h1 class="text-center">중고거래 팔구 페이지</h1>
+				<h1 class="text-center">중고거래 사구 페이지</h1>
 
 				<!-- 검색기능시작 -->
 
@@ -307,7 +307,7 @@ div.col.mb-2 h3 {
 						class="col mb-2"
 						style="padding-top: 0.2rem;"
 					>
-						<h3 style="font-size: 2.3rem; font-weight: 700;">팔구</h3>
+						<h3 style="font-size: 2.3rem; font-weight: 700;">사구</h3>
 					</div>
 				</div>
 				<div id="regionList">
@@ -316,17 +316,17 @@ div.col.mb-2 h3 {
 					<div id="sellList">
 						<c:forEach
 							items="${sell_buyList}"
-							var="sellList"
+							var="buyList"
 						>
 							<div class="float_">
 								<div id="sellbuyscreen">
 									<a
-										onclick="laodToView('${sellList.ubcode }')"
+										onclick="laodToView('${buyList.ubcode }')"
 										href="javascript:void(0);"
 									>
 										<img
 											alt=""
-											src="${pageContext.request.contextPath }/resources/img/resell/${sellList.ubmainimg }"
+											src="${pageContext.request.contextPath }/resources/img/resell/${buyList.ubmainimg }"
 										>
 									</a>
 
@@ -338,12 +338,12 @@ div.col.mb-2 h3 {
 									<span class="soldCheckMsg_ bold"></span>
 									
 									<a
-										onclick="laodToView('${sellList.ubcode }')"
+										onclick="laodToView('${buyList.ubcode }')"
 										href="javascript:void(0);"
-									>${sellList.ubtitle }</a>
+									>${buyList.ubtitle }</a>
 								</div>
 
-								<div style="height: 2rem; font-size: 1.6rem; padding: 0; color: grey;">${sellList.ubdatedef }&nbsp;
+								<div style="height: 2rem; font-size: 1.6rem; padding: 0; color: grey;">${buyList.ubdatedef }&nbsp;
 									<span style="color: red; font-size: 1.8rem;"> <i class='fa-regular fa-heart'></i>
 									</span>
 								</div>
@@ -352,14 +352,14 @@ div.col.mb-2 h3 {
 									style="font-size: 1.7rem; font-weight: 600; position: relative;"
 								>
 									<span
-										onclick="writeMemberSellbuy('${sellList.ubnickname }')"
+										onclick="writeMemberSellbuy('${buyList.ubnickname }')"
 										style="height: 1.8rem; font-size: 1.6rem; padding: 0; color: initial; cursor: pointer;"
-									>${sell_List.ubnickname }</span>
+									>${buyList.ubnickname }</span>
 								</div>
 								<input
 									type="hidden"
 									class="ubstate_"
-									value="${sellList.ubstate }"
+									value="${buyList.ubstate }"
 								>
 							</div>
 						</c:forEach>
