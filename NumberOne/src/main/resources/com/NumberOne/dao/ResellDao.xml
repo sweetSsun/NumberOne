@@ -24,6 +24,7 @@
 		WHERE RGNAME = #{mregion}
 	</select>
 
+
 	<select id="loadToResellWriteForm" resultType="String">
 		SELECT MNICKNAME
 		FROM MEMBERS
@@ -48,7 +49,7 @@
 		FROM (SELECT * FROM USEDBOARDS
 		<choose>
 			<when
-				test="paging.searchType == 'total' or paging.searchType == 'sell' or paging.searchType == 'buy'">
+				test="paging.searchType == 'total'">
 				WHERE UBTITLE LIKE '%'||#{paging.keyword}||'%' OR
 				UBCONTENTS
 				LIKE
@@ -109,7 +110,7 @@
 		resultType="com.NumberOne.dto.UsedBoardDto">
 		SELECT UBNICKNAME, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE,
 		UBCONTENTS,
-		TO_CHAR(UBDATE, 'YYYY-MM-DD') UBDATE, UBMAINIMG,
+		TO_CHAR(UBDATE, 'YYYY-MM-DD HH24:MI:SS') UBDATE, UBMAINIMG,
 		UBDETAILIMG, UBSTATE,
 		NVL(ZZIMCOUNT, 0) UBZZIM
 		FROM (SELECT ROWNUM
@@ -170,10 +171,11 @@
 		FROM (SELECT *
 
 		FROM (SELECT * FROM USEDBOARDS
-		<if test="searchType != null or searchType != ''">
+		<if test="searchType != '' or searchType != null
+					and keyword != '' or keyword != null">
 			<choose>
 				<when
-					test="searchType == 'total' or searchType == 'sell' or searchType == 'buy'">
+					test="searchType == 'total'">
 					WHERE UBTITLE LIKE '%'||#{keyword}||'%' OR UBCONTENTS
 					LIKE
 					'%'||#{keyword}||'%'
@@ -198,6 +200,7 @@
 		)
 		WHERE
 		<if test="searchVal !='all'">
+		
 			UBRGCODE = #{searchVal} AND
 		</if>
 
