@@ -360,7 +360,7 @@
 			
 		</c:when>
 		<c:otherwise>
-    		<img style="height: 100px; width: 100px; border: 1px solid #949494; padding: 3px; margin: 0px; border-radius: 50%;"  
+    		<img style="height: 100px; width: 100px; border: 1px solid #949494; padding: 3px; margin: 0px; border-radius: 50%;" 
     			src="${pageContext.request.contextPath }/resources/img/logo_bada.png" alt="">	
 		</c:otherwise>
 		</c:choose> 
@@ -696,7 +696,7 @@ function chatInsert_Ajax() {
 					alert('바르고 고운 말을 써주세요.');
 					console.log("chatResult : ", chatResult);
 		
-					window.opener.popupChat(chatResult);
+					window.opener.popupChat(chatResult, '${memberInfo.mnickname }', '${memberInfo.mprofile }');
 					}
 				})
 		}
@@ -783,10 +783,7 @@ function warningPopup()  {
 		
 		//버튼 모양 바꾸기
 		$("#warningBtn").removeClass("Wbtn").addClass("WbtnDisabled");
-		$("#warningBtn").val("신고완료");
-		
-		//onclick 속성 제거
-		$("#warningBtn").removeAttr("onclick");
+		$("#warningBtn").val("신고완료");		
 		
 	}
 	
