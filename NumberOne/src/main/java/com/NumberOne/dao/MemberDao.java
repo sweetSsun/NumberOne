@@ -143,6 +143,13 @@ public interface MemberDao {
 	@Select("SELECT UBCODE, RGNAME AS UBRGCODE, UBSELLBUY, MNICKNAME AS UBNICKNAME, UBTITLE, UBMAINIMG, TO_CHAR(UBDATE, 'YYYY-MM-DD HH24:MI:SS') AS UBDATE FROM ZZIM ZZ INNER JOIN USEDBOARDS UB ON ZZ.ZZUBCODE = UB.UBCODE INNER JOIN REGION RG ON UB.UBRGCODE = RG.RGCODE INNER JOIN MEMBERS MB ON UB.UBMID = MB.MID WHERE ZZMID = #{loginId} AND UBSTATE = 1 ORDER BY UB.UBCODE DESC")
 	ArrayList<UsedBoardDto> selectZzimList_ajax(String loginId);
 	
+	  // 회원 신고 확인
+	   @Select("SELECT COUNT(*) FROM WARNINGMEMBERS WHERE WMMID = #{loginId} AND WMEDMID = (SELECT MID FROM MEMBERS WHERE MNICKNAME = #{wmedNickname})")
+	   int checkMemberWarning_ajax(@Param("loginId") String loginId, @Param("wmedNickname") String wmedNickname);
+
+	   // 회원 신고 (상대방 닉네임으로)
+	   @Insert("INSERT INTO WARNINGMEMBERS VALUES(#{loginId}, (SELECT MID FROM MEMBERS WHERE MNICKNAME = #{wmedNickname}))")
+	   int insertMemberWarning_ajax(@Param("loginId") String loginId, @Param("wmedNickname") String wmedNickname);
 
 	
 	
