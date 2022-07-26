@@ -146,6 +146,10 @@
 											<!-- 자랑글 상세 -->
 											<a href="selectRoomList?bdcode=${board.bdcode }&jsp=view"><div class="text_leng">${board.bdtitle}</div></a>
 										</c:when>
+										<c:when test="${board.bdcategory.equals('후기') }">
+											<!-- 후기글 상세 -->
+											<a href="selectReviewBoardView?bdcode=${board.bdcode }"><div class="text_leng">${board.bdtitle}</div></a>
+										</c:when>										
 										<c:otherwise>
 											<!-- 일반글 상세 -->										
 											<a href="selectBoardView?bdcode=${board.bdcode }"><div class="text_leng">${board.bdtitle}</div></a>
@@ -258,6 +262,12 @@
 											<span style="text-overflow : ellipsis;"><div class="text_leng">${reply.rpbdtitle}</div></span>
 											</a>
 										</c:when>
+										<c:when test="${reply.rpbdcategory.equals('후기') }">
+											<!-- 자랑 댓글 원본 글 상세 -->
+											<a href="selectReviewBoardView?bdcode=${reply.rpbdcode }">
+											<span style="text-overflow : ellipsis;"><div class="text_leng">${reply.rpbdtitle}</div></span>
+											</a>
+										</c:when>										
 										<c:otherwise>
 											<!-- 일반 댓글 원본 글 상세 -->										
 											<a href="selectBoardView?bdcode=${reply.rpbdcode }"><div class="text_leng">${reply.rpbdtitle}</div></a>
@@ -281,6 +291,10 @@
 											<!-- 자랑 댓글 원본 글 상세 -->
 											<a href="selectRoomList?bdcode=${reply.rpbdcode }&jsp=view"><div class="text_leng">${reply.rpcontents }</div></a>
 										</c:when>
+										<c:when test="${reply.rpbdcategory.equals('후기') }">
+											<!-- 자랑 댓글 원본 글 상세 -->
+											<a href="selectReviewBoardView?bdcode=${reply.rpbdcode }"><div class="text_leng">${reply.rpcontents }</div></a>
+										</c:when>										
 										<c:otherwise>
 											<!-- 일반 댓글 원본 글 상세 -->										
 											<a href="selectBoardView?bdcode=${reply.rpbdcode }"><div class="text_leng">${reply.rpcontents }</div></a>

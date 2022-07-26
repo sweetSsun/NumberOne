@@ -37,6 +37,7 @@
 	href="${pageContext.request.contextPath }/resources/css/style.css"
 	type="text/css"
 >
+
 <style type="text/css">
 * {
 	margin: 0;
