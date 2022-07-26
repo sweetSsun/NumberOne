@@ -11,22 +11,13 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<!-- 폰트어썸 -->
 <title>${ub_resellView.ubtitle }- 1인자:중고거래 상세 페이지</title>
 <!-- Jquery -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-	crossorigin="anonymous"
->
-
-<link
-	rel="stylesheet"
-	href="${pageContext.request.contextPath }/resources/css/style.css"
-	type="text/css"
->
+<!-- 부트스트랩 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<!-- CSS Style -->
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 
 <style type="text/css">
 section {
@@ -259,10 +250,11 @@ textarea:focus {
 .selectCheckBox {
 	height: 23px;
 	width: 23px;
+	vertical-align: sub;
 }
 
 .goods_name {
-	font-size: 22px;
+	font-size: 20px;
 	left: 5px;
 }
 
@@ -285,6 +277,11 @@ textarea:focus {
 	height: 30px;
 	border-radius: 5px;
 	background-color: #00a5ba;
+}
+
+.line-through {
+	text-decoration: line-through;
+	font-size: 20px;
 }
 </style>
 </head>
@@ -384,7 +381,10 @@ textarea:focus {
 					</div>
 					<div class="row idDateHits">
 						<div class="col">
-							<span class="fw-bold boardTitle">${ub_resellView.ubtitle }</span> <span
+							<span class="fw-bold boardTitle" id="soldCheckMsg"></span>
+							<span class="fw-bold boardTitle">${ub_resellView.ubtitle }</span> 
+							
+							<span
 								style="float: right;"
 								class="boardDate"
 							>${ub_resellView.ubdate }</span>
@@ -569,41 +569,61 @@ textarea:focus {
 					<!-- 버튼 목록 -->
 					<div
 						class="row"
-						style="border-bottom: solid 1px #E0E0E0;"
-					>
+						style="border-bottom: solid 1px #E0E0E0;">
 						<div class="col">
 							<button
 								id="backList"
 								type="button"
-								class="fw-bold text-white"
-							>글목록</button>
+								class="fw-bold text-white">글목록</button>
 						</div>
 						<c:choose>
+							<%-- 관리자일 때 --%>
+							<c:when test="${sessionScope.loginId == 'admin' }">
+								<div align="right" class="col">
+									<input
+										onclick="adminBoardStop('${ub_resellView.ubcode}')"
+										type="button"
+										style="left: 0;"
+										class="btn btn-sm bg-secondary fw-bold text-white"
+										value="정지">
+								</div>
+							</c:when>
+							
 							<c:when test="${sessionScope.loginId != null && ub_resellView.ubmid != sessionScope.loginId}">
-								<!-- 일반사용자일 때 찜, 채팅, 신고 -->
-								<div style="text-align: end;" class="col">
+
+								<%-- 작성자가 본인이 아니고 일반사용자일 때 --%>
+								<div
+									style="text-align: end;"
+									class="col">
 									<!-- 찜버튼 -->
-									<i id="zzimBtn" style="font-size:25px;" class="fa-regular fa-heart fa-lg zzimChatBtn"></i>
+									<i	id="zzimBtn"
+										class="fa-solid fa-heart fa-2x zzimChatBtn"></i>
 									<!-- 찜 수 -->
-									<span style="font-size: 20px;" id="zzimCount">${ub_resellView.ubzzim }&nbsp;&nbsp;</span> <!-- <span style="font-size: 30px; color: gray;">|</span> -->
+									<span
+										style="font-size: 20px;"
+										id="zzimCount">${ub_resellView.ubzzim }</span>
+									<span style="font-size: 30px; color: gray;">|</span>
 									<!-- 채팅버튼 -->
-									<i id="chatBtn" style="font-size:25px;" class="fa-solid fa-comment-dots zzimChatBtn"></i> <span>&nbsp;</span> <!-- <span style="font-size: 30px; color: gray;">|</span> -->
+									<i	id="chatBtn"
+										class="fa-solid fa-comment-dots fa-2x zzimChatBtn"></i> 
+									<span style="font-size: 30px; color: gray;">|</span>
 									<!-- 신고버튼 -->
-									<i id="ubWarning"  style="font-size:25px;" onclick="ubWarningCheckModal()" class='fa-solid fa-land-mine-on fa-lg zzimChatBtn'></i>
+									<i	id="ubWarning"
+										onclick="ubWarningCheckModal()"
+										class='fa-solid fa-land-mine-on fa-2x zzimChatBtn'></i>
+
 								</div>
 							</c:when>
 
-
+							<%-- 작성자 본인일 때 --%>
 							<c:when test="${ub_resellView.ubmid == sessionScope.loginId}">
 								<div
 									style="text-align: end;"
-									class="col"
-								>
+									class="col">
 									<!-- 판매중  판매완료 -->
 									<select
 										class="select-size"
-										id="totalOp"
-									>
+										id="totalOp">
 										<option value="1">판매중</option>
 										<option value="9">판매완료</option>
 									</select>
@@ -612,33 +632,16 @@ textarea:focus {
 									<button
 										onclick="resellModifyForm()"
 										class="md_del_Btn fw-bold text-white"
-										type="button"
-									>수정</button>
+										type="button">수정</button>
 									<!-- 글삭제 -->
 									<input
 										onclick="ubDeleteCheckModal()"
 										type="button"
 										class="md_del_Btn fw-bold text-white"
-										value="삭제"
-									>
+										value="삭제">
 								</div>
 							</c:when>
 
-							<%-- 관리자일 때 --%>
-							<c:when test="${sessionScope.loginId == 'admin' }">
-								<div
-									align="right"
-									class="col"
-								>
-									<input
-										onclick="adminBoardStop('${ub_resellView.ubcode}')"
-										type="button"
-										style="left: 0;"
-										class="btn btn-sm bg-secondary fw-bold text-white"
-										value="정지"
-									>
-								</div>
-							</c:when>
 						</c:choose>
 					</div>
 
@@ -668,33 +671,29 @@ textarea:focus {
 						<div class="col goods_info">
 							<c:forEach
 								items="${gd_resellView}"
-								var="gdList"
-							>
+								var="gdList">
 								<div class="row goods_name_price">
 									<div class="col-9">
 										<input
 											type="checkbox"
 											class="selectCheckBox goods_name"
 											onclick="clickBox(this, '${gdList.gdname }')"
-											value="${gdList.gdname }"
-										>
+											value="${gdList.gdname }">
 										<span class="goods_name gd_nameList">${gdList.gdname }</span>
 
 									</div>
 									<div class="col-3">
-										<span class="goods_name gd_priceList"> ₩ ${gdList.gdprice }</span>
+										<span class="goods_name gd_priceList">${gdList.gdprice }</span>
 									</div>
 								</div>
 								<input
 									type="hidden"
 									class="select_gdcode"
-									value="${gdList.gdcode }"
-								>
+									value="${gdList.gdcode }">
 								<input
 									type="hidden"
 									class="select_gdstate"
-									value="${gdList.gdstate }"
-								>
+									value="${gdList.gdstate }">
 							</c:forEach>
 						</div>
 					</div>
@@ -705,17 +704,16 @@ textarea:focus {
 					<div class="col text-center">
 						<c:choose>
 							<c:when test="${ub_resellView.ubsellbuy == 'B' }">
-								<a href="">
+								<a href="#">
 									<span class="fw-bold boardCategory">구매자의 다른 상품</span>
 								</a>
 							</c:when>
 
 							<c:otherwise>
-								<a href="">
+								<a href="#">
 									<span
 										class="fw-bold boardCategory"
-										style="border-bottom: solid gray 2px;"
-									>판매자의 다른 상품 </span>
+										style="border-bottom: solid gray 2px;">판매자의 다른 상품 </span>
 								</a>
 							</c:otherwise>
 						</c:choose>
@@ -872,16 +870,17 @@ textarea:focus {
 	const ubmid = '${ub_resellView.ubmid}'; //작성자아이디
 	const ubsellbuy = '${ub_resellView.ubsellbuy}'; //사구, 팔구  분류
 	const ubstate = '${ub_resellView.ubstate}'; // 글 상태 값 
+	const totalOp = document.getElementById("totalOp"); // 글 상태 select태그
 	const selectCheckBox = document.querySelectorAll(".selectCheckBox"); // 상품 상태 checkbox (복수 , c:forEach태그안에 있음) 
 	const select_gdcode = document.querySelectorAll(".select_gdcode"); //상품코드	(복수 , c:forEach태그안에 있음) 
 	const select_gdstate = document.querySelectorAll(".select_gdstate");//상품상태 (복수 , c:forEach태그안에 있음) 
 	const gd_nameList = document.querySelectorAll(".gd_nameList"); //상품명 (복수 , c:forEach태그안에 있음)
 	const gd_priceList = document.querySelectorAll(".gd_priceList"); //상품가격 (복수 , c:forEach태그안에 있음))
+	const soldCheckMsg = document.getElementById("soldCheckMsg");
 
 	let ubzzim = '${ub_resellView.ubzzim }';	//찜 갯수
-
-
 </script>
+
 
 <script type="text/javascript">
 	// 게시글 경고 모달창 close 하는 스크립트
@@ -904,17 +903,37 @@ textarea:focus {
 </script>
 
 
-
-
-<!--신고 스크립트  -->
+<!-- 페이지 로드 스크립트 -->
 <script type="text/javascript">
 	window.onload = function(){
 		console.log('페이지로드')
+		addPriceComma();		// 페이지 로드 시 가격에 콤마 표시
 		checkResellWarning();	// 페이지 로드 시 회원의 현재 글 신고 여부확인
 		ubstateCheckFunction();	// 페이지 로드 시 글의 판매 상태 확인
-		myZzimCheck();			// 페이지 로드 시 회원의 현재 글 찜 여부확인
+		soldCheck();			// 페이지 로드 시 판매완료된 글 확인
+		if (ubmid != loginId){
+			myZzimCheck();			// 페이지 로드 시 회원의 현재 글 찜 여부확인
+		}
 	}
 	
+	function addPriceComma(){
+		/* 상품가격 콤마 추가 */
+		for (let i = 0; i < gd_priceList.length; i++) {
+			var gd_price = gd_priceList[i].innerText;
+			//console.log(gd_price.toLocaleString('ko-KR'));
+			var gd_price_comma = Number(gd_price).toLocaleString('ko-KR');
+			gd_priceList[i].innerText = " ₩ " + gd_price_comma;
+		}
+	}
+	
+	function soldCheck() {
+		/* 판매완료글 체크표시  */
+    	if (ubstate === '9') {
+        	console.log("판매완료글확인")
+        	soldCheckMsg.textContent = "(판매완료) "
+      	}
+	}
+
 	function checkResellWarning() {
 		console.log('checkResellWarning 호출');
 		/* 게시글 신고 확인 */
@@ -928,7 +947,7 @@ textarea:focus {
 			async : false,
 			success : function(wnCheck) {
 				console.log("신고유무 확인 : " + wnCheck);
-				if (wnCheck == "Yes") {
+				if (wnCheck === "Yes") {
 					$("#ubWarning").addClass("text-danger");
 				}
 			}
@@ -947,58 +966,57 @@ textarea:focus {
 		}
 
 	}
-		/* 페이지로드시 글의 판매상태체크 */
-		
+	
+	/* 페이지로드시 글의 판매상태체크 */
 	function ubstateCheckFunction(){
-			console.log('ubstateCheckFunction 호출');
-			for (let i = 0; i < totalOp.options.length; i++) {
-				if (totalOp.options[i].value === ubstate) 
+		console.log('ubstateCheckFunction 호출');
 		console.log('글의 현재 상태값 : ', ubstate);
+		
+		if (ubstate === '9') { // 글의 상태값이 9(판매완료)이면 실행.
+			console.log('글의 상태: 판매완료 확인');
+			for (let j = 0; j < select_gdstate.length; j++) {
+				gd_nameList[j].classList.add('line-through');
+				gd_priceList[j].classList.add('line-through');
+				selectCheckBox[j].setAttribute('disabled','disabled');
+			}
+		} else { //글의 상태값이 1(판매중)이면 실행
+			console.log('글의 상태: 판매중 확인');
+
+			for (let j = 0; j < select_gdstate.length; j++) {
+				if (select_gdstate[j].value === '0') {
+					console.log("상태값이 0인 : " + select_gdstate[j].value);
+					//css속성 주기
+					selectCheckBox[j].setAttribute('disabled','disabled');
+					gd_nameList[j].classList.add('line-through');
+					gd_priceList[j].classList.add('line-through');
+
+				} else {
+					console.log("상태값 1인 : " + select_gdstate[j].value);
+					selectCheckBox[j].removeAttribute('disabled');
+					gd_nameList[j].classList.remove('line-through');
+					gd_priceList[j].classList.remove('line-through');
+				}
+			}
+		}
+		
+		// 로그인아이디가 작성자와 같으면 select 태그 선택
+		if (ubmid === loginId){
+			for (let i = 0; i < totalOp.options.length; i++) {
+				if (totalOp.options[i].value == ubstate) 
 					/* 글의 판매상태 option (9:판매완료 ,1:판매중)와 
 					페이지 이동시 넘어온 글의 상태값 파라메터가 같을 경우 그 option에 selected 속성 추가*/
 					totalOp.options[i].selected = 'true';
-
-					if (ubstate === '9') { // 글의 상태값이 9(판매완료)이면 실행.
-					console.log('글의 상태: 판매완료 확인');
-						for (let j = 0; j < select_gdstate.length; j++) {
-							gd_nameList[j].classList.add('line-through');
-							gd_priceList[j].classList.add('line-through');
-							selectCheckBox[j].setAttribute('disabled',
-									'disabled');
-						}
-
-					} else { //글의 상태값이 1(판매중)이면 실행
-						console.log('글의 상태: 판매중 확인');
-						for (let j = 0; j < select_gdstate.length; j++) {
-							if (select_gdstate[j].value === '0') {
-								console.log("상태값이 0인 : "
-										+ select_gdstate[j].value);
-								//css속성 주기
-								selectCheckBox[j].setAttribute('disabled',
-										'disabled');
-								gd_nameList[j].classList.add('line-through');
-								gd_priceList[j].classList.add('line-through');
-
-							} else {
-								console.log("상태값 1인 : "
-										+ select_gdstate[j].value);
-								selectCheckBox[j].removeAttribute('disabled');
-								gd_nameList[j].classList.remove('line-through');
-								gd_priceList[j].classList
-										.remove('line-through');
-							}
-						}
-						break;
-					}				}
 			}
+		}
+	}
 </script>
 
 <!-- 찜버튼 스크립트 -->
 <script type="text/javascript">
 	/* 찜버튼 이벤트 호출 함수 */
-
-	zzimBtn.addEventListener('click', clickZzim);
-
+	if (ubmid != loginId){
+		zzimBtn.addEventListener('click', clickZzim);
+	}
 	function clickZzim() {
 
 		$.ajax({
@@ -1040,70 +1058,59 @@ textarea:focus {
 <!-- 글 상태 옵션 변경 ajax 스크립트  -->
 <script type="text/javascript">
 /* 작성자 본인일 경우만 이벤트실행가능 */
+	if (ubmid === loginId){
+		totalOp.addEventListener('change', selectOp_value);
+	}
 
-			totalOp.addEventListener('change', selectOp_value);
+	function selectOp_value(e) {
+		console.log("e", e.target.value);
+		let select_ubstate = e.target.value;
+		console.log("글 상태 : ", select_ubstate);
+		console.log("글 번호 : ", ubcode);
 
-		function selectOp_value(e) {
-			console.log("e", e.target.value);
-			let select_ubstate = e.target.value;
-			console.log("글 상태 : ", select_ubstate);
-			console.log("글 번호 : ", ubcode);
+		$.ajax({
+			type : 'get',
+			url : 'updateResellState_usedBoardAjax',
+			data : {
+				'ubcode' : ubcode,
+				'ubstate' : select_ubstate
+			},
 
-			$
-					.ajax({
-						type : 'get',
-						url : 'updateResellState_usedBoardAjax',
-						data : {
-							'ubcode' : ubcode,
-							'ubstate' : select_ubstate
-						},
+			success : function(result) {
+				console.log("결과", result);
+				if (result === 'SOLD') {
+					alert("변경성공 = 판매완료");
 
-						success : function(result) {
-							console.log("결과", result);
-							if (result === 'SOLD') {
-								alert("변경성공 = 판매완료");
+					for (let i = 0; i < selectCheckBox.length; i++) {
+						console.log("길이", selectCheckBox.length)
 
-								for (let i = 0; i < selectCheckBox.length; i++) {
-									console.log("길이", selectCheckBox.length)
+						gd_nameList[i].classList.add('line-through');
+						gd_priceList[i].classList.add('line-through');
+						selectCheckBox[i].setAttribute('disabled','disabled');
+					}
 
-									gd_nameList[i].classList
-											.add('line-through');
-									gd_priceList[i].classList
-											.add('line-through');
-									selectCheckBox[i].setAttribute('disabled',
-											'disabled');
-								}
+				} else {
+					alert("변경성공 = 판매중");
+					for (var j = 0; j < select_gdstate.length; j++) {
 
-							} else {
-								alert("변경성공 = 판매중");
-								for (var j = 0; j < select_gdstate.length; j++) {
-
-									if (select_gdstate[j].value === '0') {
-										console.log("상태값이 0인 : "
-												+ select_gdstate[j].value);
-										//css속성 주기
-										selectCheckBox[j].setAttribute(
-												'disabled', 'disabled');
-										gd_nameList[j].classList
-												.add('line-through');
-										gd_priceList[j].classList
-												.add('line-through');
-
-									} else {
-										console.log("상태값 1인 : "
-												+ select_gdstate[j].value);
-										selectCheckBox[j]
-												.removeAttribute('disabled');
-										gd_nameList[j].classList
-												.remove('line-through');
-										gd_priceList[j].classList
-												.remove('line-through');
-									}
-								}
-							}
+						if (select_gdstate[j].value === '0') {
+							console.log("상태값이 0인 : "
+									+ select_gdstate[j].value);
+							//css속성 주기
+							selectCheckBox[j].setAttribute('disabled', 'disabled');
+							gd_nameList[j].classList.add('line-through');
+							gd_priceList[j].classList.add('line-through');
+						} else {
+							console.log("상태값이 1인 : " + select_gdstate[j].value);
+							selectCheckBox[j].removeAttribute('disabled');
+							gd_nameList[j].classList.remove('line-through');
+							gd_priceList[j].classList.remove('line-through');
 						}
-					})
-		}
+					}
+				}
+			}
+		});
+	}
 	
 </script>
 
@@ -1120,28 +1127,7 @@ textarea:focus {
 
 <!--신고 스크립트  -->
 <script type="text/javascript">
-	window.onload = function(){
-		checkResellWarning();
-	}
-	
-	function checkResellWarning() {
-		/* 게시글 신고 확인 */
-		$.ajax({
-			type : "get",
-			url : "checkResellWarning_ajax",
-			data : {
-				"loginId" : loginId,
-				"ubcode" : ubcode
-			},
-			async : false,
-			success : function(wnCheck) {
-				console.log("신고유무 확인 : " + wnCheck);
-				if (wnCheck === "Yes") {
-					$("#ubWarning").addClass("text-danger");
-				}
-			}
-		});
-	}
+
 
 
 ///////////////////////////[신고]/////////////////////////////////
@@ -1272,7 +1258,9 @@ if(storage.getItem('page') !=null ){
 
 <!--채팅 활성화  -->
 <script type="text/javascript">
-chatBtn.addEventListener('click', chatInsert_Ajax);
+if (ubmid != loginId){
+	chatBtn.addEventListener('click', chatInsert_Ajax);
+}
 
 /* 챗버튼 클릭 이벤트핸들러 */
 function chatInsert_Ajax() {
@@ -1316,7 +1304,7 @@ function chatInsert_Ajax() {
                alert('바르고 고운 말을 써주세요.');
                console.log("chatResult : ", chatResult);
       
-               popupChat(chatResult);
+               popupChat(chatResult, cmtomnickname, '${ub_resellView.ubprofile }');
       
             }
          })
@@ -1489,5 +1477,13 @@ $.ajax({
 	}
 </script>
 
+<!-- 관리자용 -->
+<script type="text/javascript">
+	function adminBoardStop(ubcode){
+		/* 관리자 - 게시글 정지  */
+		console.log(ubcode);
+		location.href="admin_updateResellStop?ubcode="+ubcode+"&ubsellbuy=${ub_resellView.ubsellbuy}";
+	}
+</script>
 
 </html>

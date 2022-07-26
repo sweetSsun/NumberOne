@@ -64,7 +64,9 @@
 	.malmeori{
 		display: none;
 	}
-	
+   .bdnickname:hover{
+   	color:#00bcd4;
+   }	
 </style>
 </head>
 <body>
@@ -191,7 +193,7 @@
 								</c:choose>
 							 </td>
 							<td class="text-center tableCell">
-								<span style="cursor: pointer" onclick="writeMemberBoard('${board.bdnickname}')">${board.bdnickname}</span>
+								<span style="cursor: pointer" class="bdnickname" onclick="writeMemberBoard('${board.bdnickname}')">${board.bdnickname}</span>
 							</td>
 							<td class="text-center tableCell" id="bddate">${board.bddate}</td>
 							<td class="text-center tableCell">${board.bdhits }</td>

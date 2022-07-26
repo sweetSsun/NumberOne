@@ -150,6 +150,12 @@
    	border: solid #E0E0E0 2px; 
    	border-radius:5px;
    }
+   .rpnickname:hover{
+   	color:#00bcd4;
+   }
+   .bdnickname:hover{
+   	color:#00bcd4;
+   }
 </style>
 </head>
 <body>
@@ -755,7 +761,7 @@
 						
 						output += "<div class=\"col-11\" style='border-bottom: solid #E0E0E0 1px;\'>"
 						/* 닉네임, 시간 */
-						output += "<span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span>"
+						output += "<a style=\"cursor:pointer\" onclick=\"writeMemberBoard('"+replyList[i].rpnickname+"')\"><span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span></a>"
 						output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span> "
 						
 						/* 수정, 삭제 버튼 */
@@ -787,7 +793,7 @@
 							
 						output += "<div class=\"col-11\" style='border-bottom: solid #E0E0E0 1px;'>"
 						/* 닉네임, 시간 */
-						output += "<span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span>"
+						output += "<a style=\"cursor:pointer\" onclick=\"writeMemberBoard('"+replyList[i].rpnickname+"')\"><span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span></a>"
 						output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span> "
 						
 						if( '${sessionScope.loginId}' == 'admin'){

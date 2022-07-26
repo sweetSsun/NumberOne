@@ -134,6 +134,13 @@
    	height: 280px;
    	object-fit: fill;
    }
+   
+   .rpnickname:hover{
+   	color:#00bcd4;
+   }
+   .bdnickname:hover{
+   	color:#00bcd4;
+   }
 	/*  */
 #myform fieldset{
     display: inline-block;
@@ -232,7 +239,7 @@
 									<img class="img-profile rounded-circle" style="height: 45px; width:45px;" src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png">
 								</c:otherwise>
 							</c:choose>
-							<a href="#"><span class="fw-bold bdnickname">${board.bdnickname }</span></a> 
+						<a style="cursor: pointer" onclick="writeMemberBoard('${board.bdnickname}')"><span class="fw-bold bdnickname">${board.bdnickname }</span></a> 
 						</div>
 						
 						<div align="right"  class="col-3 offset-md-3">
@@ -792,7 +799,7 @@
 						
 						output += "<div class=\"col-11\" style='border-bottom: solid #E0E0E0 1px;\'>"
 						/* 닉네임, 시간 */
-						output += "<span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span>"
+						output += "<a style=\"cursor:pointer\" onclick=\"writeMemberBoard('"+replyList[i].rpnickname+"')\"><span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span></a>"
 						output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span> "
 						
 						/* 수정, 삭제 버튼 */
@@ -824,7 +831,7 @@
 							
 						output += "<div class=\"col-11\" style='border-bottom: solid #E0E0E0 1px;'>"
 						/* 닉네임, 시간 */
-						output += "<span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span>"
+						output += "<a style=\"cursor:pointer\" onclick=\"writeMemberBoard('"+replyList[i].rpnickname+"')\"><span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span></a>"
 						output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span> "
 						
 						if( '${sessionScope.loginId}' == 'admin'){
