@@ -12,8 +12,9 @@
 <!--jquery & bootstrap(5css)-->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
+<!-- font awesome -->
 <script src="https://kit.fontawesome.com/8f795d5741.js" crossorigin="anonymous"></script>
+
 
 </head>
 
@@ -119,6 +120,38 @@
 	  height: 43px;
 	}
 
+	.WbtnDisabled {
+		border : 0px;
+		border-radius: 3px;
+		font-family : pretendard;
+		font-size: 15px;
+		font-weight:bold;
+		background: grey;
+		color:#F2F2FF;
+		padding: 0;
+		text-decoration: none;
+		width: 130px;
+		height: 43px;
+		border: 2px solid grey;
+		margin-right: 20px;
+	}
+	
+	.WbtnDisabled:hover {
+		border : 0px;
+		border-radius: 3px;
+		font-family : pretendard;
+		font-size: 15px;
+		font-weight:bold;
+		background: grey;
+		color:#F2F2FF;
+		padding: 0;
+		text-decoration: none;
+		width: 130px;
+		height: 43px;
+		border: 2px solid grey;
+		margin-right: 20px;
+	}
+	
 /* 보기 버튼 */	
 	.viewBtn {
 		border : 0px;
@@ -404,6 +437,10 @@
         </div>
     </div>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+</body>
+
 <script type="text/javascript">
 window.onload = function() {
 	/* 로그인된 회원인지 체크 */
@@ -678,7 +715,7 @@ console.log("loginId : " + loginId);
 warningBtn.addEventListener('click', warningPopup);
 
 function warningPopup()  {
-	
+
 	// 로그인 확인
 	$.ajax({
 		type : 'get',
@@ -693,25 +730,24 @@ function warningPopup()  {
 				}
 				return;
 			}
+			
+			//신고 확인 모달창 띄우기
+			mbWarningCheckModal();
+			
+			/*
 			console.log("wmedNickname2 : " + wmedNickname);
 			console.log("loginId2 : " + loginId);
-					window.opener.insertMemberWarning(wmedNickname, 'wMemberPopup');
-					}
-				})
+			
+			window.opener.insertMemberWarning(wmedNickname, 'wMemberPopup');
+			*/
 		}
+	})
+}
 
-
-
-
-
-</script>
-
-<!-- 신고 관련 스크립트 -->
-<script type="text/javascript">
 
 	// 채팅방 입장과 동시에 대화상대 신고 했는지 확인
 	$(document).ready(function (){
-		opener.checkMemberWarning(wmedNickname, crcode);
+		opener.checkMemberWarning(wmedNickname, 'wMemberPopup');
 	});
 	
 	// 신고 모달창 close 하는 스크립트
@@ -725,23 +761,33 @@ function warningPopup()  {
 	
 	// 신고 클릭 시 모달창 출력
 	function mbWarningCheckModal(){
-		if( $("#mbWarning").hasClass("text-danger") ){
+		if( $("#warningBtn").hasClass("WbtnDisabled") ){
 			alert("이미 신고접수된 회원입니다.");
 		}else{
+			console.log("신고 확인 모달 show");
+			console.log($("#mbWarningCheckModal"));
 			$("#mbWarningCheckModal").modal('show');
+			
 		}
 	}
 	
 	// 모달창에서 "네" 클릭 시 대화상대 신고
 	function insertMemberWarning(){
 		console.log("신고할 회원 : " + wmedNickname);
-		opener.insertMemberWarning(wmedNickname, crcode);
+		opener.insertMemberWarning(wmedNickname, 'wMemberPopup');
 	}
 	
 	// 대화상대 신고 성공 시 수행할 기능
 	function successMemberWarning(){
 		alert("회원 신고가 접수되었습니다.");
-		$("#mbWarning").addClass("text-danger");
+		
+		//버튼 모양 바꾸기
+		$("#warningBtn").removeClass("Wbtn").addClass("WbtnDisabled");
+		$("#warningBtn").val("신고완료");
+		
+		//onclick 속성 제거
+		$("#warningBtn").removeAttr("onclick");
+		
 	}
 	
 	// 대화상대 신고 실패 시 수행할 기능
@@ -752,7 +798,7 @@ function warningPopup()  {
 	
 </script>
 
-</body>
+
 </html>
 
 
