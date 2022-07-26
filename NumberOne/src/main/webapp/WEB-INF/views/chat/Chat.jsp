@@ -212,7 +212,9 @@
 		width:40px; 
 	}
 	.warningBtn{
-		font-size: 28px; vertical-align: middle;
+		font-size: 28px; 
+		vertical-align: middle;
+		cursor: pointer;
 	}
 </style>
 
@@ -228,6 +230,7 @@
 					<div class="subtitle">
 						<!-- 상대방 정보 -->
 		                <div class="" id="frMemberInfo">
+<%-- 						
 		                	<div class="row" style="flex-wrap: nowrap;">
 								<div class="col-9 frMember">
 		                			<img class="img-profile rounded-circle frMbImg" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png">
@@ -238,8 +241,8 @@
 								</div>
 
 		                	</div>
+		                  --%>
 		                </div>
-		                 
 		                <!-- 메세지 출력 -->
 		                <div class="subtitle listArea" id="chatList">
 			                <!--

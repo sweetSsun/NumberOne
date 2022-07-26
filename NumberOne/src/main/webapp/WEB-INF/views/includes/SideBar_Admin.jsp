@@ -108,7 +108,7 @@ body.sideon {
 			<div class="sidemenu">
 			
 				<div class="sidetitle_close">
-					<span><a href="admin_loadToAdminMainPage">관리자페이지</a></span>
+					<span><a href="${pageContext.request.contextPath }/">관리자페이지</a></span>
 				</div>
 				
 				<div class="side_admin">
