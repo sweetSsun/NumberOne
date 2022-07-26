@@ -437,6 +437,50 @@ background-color: #00BCD4;
     
     </script>
 
+    <!-- 닉네임 중복 확인 -->
+    <script type="text/javascript">
+		$("#inputMnickname").keyup(function(){
+			var inputNickname = $("#inputMnickname").val();
+			console.log("inputNickname : " + inputNickname);
+			if( inputNickname.length == 0 ){
+				$("#nicknameCheckMsg").css("color","red").text("닉네임을 입력해주세요.");
+				inputNicknameCheck = false;
+			} else if( inputNickname.length < 2 || inputNickname.length > 10 ){
+				$("#nicknameCheckMsg").text("닉네임은 2~10자리 입니다.").css("color", "red");
+				inputNicknameCheck = false;				
+			} else {
+				
+    			$.ajax({
+    				type : "get",
+    				url : "selectMemberNickname_ajax",
+    				data : {"inputNickname" : inputNickname },
+    				success : function(result){
+    					
+    					
+    					if(result=="OK") {
+    					$("#nicknameCheckMsg").text("사용가능한 닉네임 입니다.").css("color" , "green");    
+    					inputIdCheck =true;
+    					}else {
+    					$("#nicknameCheckMsg").text("이미 사용중인 닉네임 입니다.").css("color" , "red");  		
+    					inputIdCheck =false;
+    					}
+    				}
+	
+    			});
+				
+			}
+		});
+		</script>
+		
+		<!-- 이메일 도메인  -->
+<!-- 		<script type="text/javascript">
+		$("#")
+		
+		</script> -->
+		
+
+
+
 
     <!-- 비밀번호 길이 확인 -->
     <script type="text/javascript">
@@ -498,40 +542,6 @@ background-color: #00BCD4;
 		});
 		</script>
 		
-    <!-- 닉네임 길이 확인 -->
-    <script type="text/javascript">
-		$("#inputMnickname").keyup(function(){
-			var inputNickname = $("#inputMnickname").val();
-			console.log("inputNickname : " + inputNickname);
-			if( inputNickname.length == 0 ){
-				$("#nicknameCheckMsg").css("color","red").text("닉네임을 입력해주세요.");
-				inputNicknameCheck = false;
-			} else if( inputNickname.length < 2 || inputNickname.length > 10 ){
-				$("#nicknameCheckMsg").text("닉네임은 2~10자리 입니다.").css("color", "red");
-				inputNicknameCheck = false;				
-			} else {
-				
-    			$.ajax({
-    				type : "get",
-    				url : "selectMemberNickname_ajax",
-    				data : {"inputNickname" : inputNickname },
-    				success : function(result){
-    					
-    					
-    					if(result=="OK") {
-    					$("#nicknameCheckMsg").text("사용가능한 닉네임 입니다.").css("color" , "green");    
-    					inputIdCheck =true;
-    					}else {
-    					$("#nicknameCheckMsg").text("이미 사용중인 닉네임 입니다.").css("color" , "red");  		
-    					inputIdCheck =false;
-    					}
-    				}
-	
-    			});
-				
-			}
-		});
-		</script>
 
 
 <!-- 입력칸 유무 확인 -->
