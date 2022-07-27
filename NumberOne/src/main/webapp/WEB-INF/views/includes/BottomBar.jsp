@@ -60,8 +60,8 @@ footer{
 				</div> 
 				   <div class="row" style="color:gray; font-size: 13px; text-align: left;">
             <div class="col-lg-12 col-md-12 col-sm-12">
-                <span>Company : ㈜NumberOne&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Email : pj220810@naver.com&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;주소 : 인천 미추홀구 매소홀로488번길 6-32 태승빌딩 5층</span><br>         
-                <span>Team Name : 전공자없죠&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Team Member : 김지선, 김민희, 이평화, 이현석, 허지혜, 호두리</span><br>
+                <span>Company : ㈜NumberOne&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;E-mail : pj220810@naver.com&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Address : 인천 미추홀구 매소홀로488번길 6-32 태승빌딩 5층</span><br>         
+                <span>Team Name : 전공자없죠&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Team Members : 김지선, 김민희, 이평화, 이현석, 허지혜, 호두리</span><br>
                
                 </div>
             </div>

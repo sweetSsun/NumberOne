@@ -47,6 +47,7 @@ public class AdminService {
 	
 	// 파일 저장 경로
 	String nbImgSavePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\noticeUpLoad";
+	String gbImgSavePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\gonguUpLoad";
 	
 	/* 관리자 로그인 확인 (파라미터: ra/리턴: mav) */
 	public ModelAndView loginAdminChToFail(RedirectAttributes ra) {
@@ -168,7 +169,7 @@ public class AdminService {
 			paging.setKeyword("");
 		}
 		
-		if(NbCheck.equals("Nb")) { // controller에서 Nb를 넘겨받았다면, 공지조회해줘
+		if(NbCheck.equals("NB")) { // controller에서 NB를 넘겨받았다면, 공지조회해줘
 
 			int totalNbCount = adao.admin_selectNoticeTotalCount(paging); // 전체 공지수 조회
 			paging.setTotalCount(totalNbCount);
@@ -183,7 +184,7 @@ public class AdminService {
 			mav.setViewName("admin/Admin_NoticeList");
 			return mav;
 			
-		} else { // controller에서 Nb가아닌 Gb를 넘겨받았다면, 공구조회해줘
+		} else { // controller에서 NB가아닌 GB를 넘겨받았다면, 공구조회해줘
 			int totalGbCount = adao.admin_selectGonguTotalCount(paging); // 전체 공구수 조회
 			paging.setTotalCount(totalGbCount);
 			paging.calc(); // 페이지 처리 계산 실행
@@ -199,41 +200,30 @@ public class AdminService {
 		}
 	}
 
-	// 선택한 상태값에 따른 공지목록 ajax
-	public String admin_selectNoticeList_ajax(Paging paging) {
-		System.out.println("AdminService.admin_selectNoticeList_ajax() 호출");
-//		System.out.println("searchVal : " + paging.getSearchVal());
+	// 선택한 상태값에 따른 공지 & 공구목록 ajax
+	public String admin_selectNoticeList_ajax(Paging paging, String NbCheck) {
+		System.out.println(NbCheck);
+		ArrayList<NoticeDto> noticeList;
 		
-		int totalCount = adao.admin_selectNoticeTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
-		paging.setTotalCount(totalCount);
-		paging.calc(); // 페이지 처리 계산 실행
-//		System.out.println("paging : " + paging);
-		
-		ArrayList<NoticeDto> noticeList = adao.admin_selectNoticeList(paging);
-//		System.out.println("noticeList : " + noticeList);
-		
-		gson = new Gson();
-		if (paging.getAjaxCheck().equals("list")) { // memberList ajax일 경우
-			String noticeList_json = gson.toJson(noticeList);
-			return noticeList_json;
-		} else { // paging ajax일 경우
-			String paging_json = gson.toJson(paging);
-			return paging_json;
+		if(NbCheck.equals("NB")) {// ajax에서 Nb를 넘겨받았다면, 공지조회해줘
+			System.out.println("AdminService.admin_selectNoticeList_ajax() 호출");
+	//		System.out.println("searchVal : " + paging.getSearchVal());
+			
+			int totalCount = adao.admin_selectNoticeTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
+			paging.setTotalCount(totalCount);
+			paging.calc(); // 페이지 처리 계산 실행
+	//		System.out.println("paging : " + paging);
+			
+			noticeList = adao.admin_selectNoticeList(paging);
+	//		System.out.println("noticeList : " + noticeList);
+			
+		} else {// ajax에서 Nb가아닌 Gb를 넘겨받았다면, 공구조회해줘
+			System.out.println("AdminService.admin_selectGonguList_ajax() 호출");
+			int totalCount = adao.admin_selectGonguTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
+			paging.setTotalCount(totalCount);
+			paging.calc(); // 페이지 처리 계산 실행
+			noticeList = adao.admin_selectGonguList(paging);
 		}
-	}
-	
-	// 선택한 상태값에 따른 공구목록 ajax
-	public String admin_selectGonguList_ajax(Paging paging) {
-		System.out.println("AdminService.admin_selectGonguList_ajax() 호출");
-//			System.out.println("searchVal : " + paging.getSearchVal());
-		
-		int totalCount = adao.admin_selectGonguTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
-		paging.setTotalCount(totalCount);
-		paging.calc(); // 페이지 처리 계산 실행
-//			System.out.println("paging : " + paging);
-		
-		ArrayList<NoticeDto> noticeList = adao.admin_selectGonguList(paging);
-//			System.out.println("noticeList : " + noticeList);
 		
 		gson = new Gson();
 		if (paging.getAjaxCheck().equals("list")) { // memberList ajax일 경우
@@ -320,7 +310,7 @@ public class AdminService {
 		   return mav;
 		}
 		
-		if(NbCheck.equals("Nb")) { // controller에서 Nb를 넘겨받았다면, 공지조회해줘
+		if(NbCheck.equals("NB")) { // controller에서 Nb를 넘겨받았다면, 공지조회해줘
 			mav.setViewName("admin/Admin_NoticeWriteForm");
 		} else {
 			mav.setViewName("admin/Admin_GonguBoardWrite");			
@@ -329,10 +319,12 @@ public class AdminService {
 	}
 
 	// 작성 공지 DB에 입력
-	public ModelAndView admin_insertNoticeWrite(NoticeDto notice, RedirectAttributes ra) throws IllegalStateException, IOException {
+	public ModelAndView admin_insertNoticeWrite(NoticeDto notice, RedirectAttributes ra, String NbCheck) throws IllegalStateException, IOException {
 		System.out.println("AdminService.admin_insertNoticeWrite() 호출");
 		notice.setNbmid( (String) session.getAttribute("loginId")); // 세션id set
-		
+		String successMsg;
+		String failMsg;
+		String nbcode;
 		mav = new ModelAndView();
 		
 		// 관리자 로그인 여부 체크
@@ -341,25 +333,6 @@ public class AdminService {
 		if(mav.getViewName() != null) {
 		   return mav;
 		}
-		
-		// nbcode 생성
-		String maxNbcode = adao.admin_selectMaxNbcode();
-		int nbcodeNum = Integer.parseInt(maxNbcode.substring(3)) + 1;
-//		System.out.println("nbcodeNum: "+nbcodeNum);
-		String nbcode;
-		if(nbcodeNum<10) {
-			nbcode = "NB0000"+nbcodeNum;
-		} else if(nbcodeNum<100) {
-			nbcode = "NB000"+nbcodeNum;
-		} else if(nbcodeNum<1000) {
-			nbcode = "NB00"+nbcodeNum;
-		} else if(nbcodeNum<10000) {
-			nbcode = "NB0"+nbcodeNum;
-		} else {
-			nbcode = "NB"+nbcodeNum;
-		} 
-//		System.out.println("nbcode: "+nbcode);
-		notice.setNbcode(nbcode); // 생성한 nbcode set
 		
 		// 파일 등록
 		MultipartFile nbimgfile = notice.getNbimgfile();
@@ -372,19 +345,65 @@ public class AdminService {
 		}
 		notice.setNbimg(nbimg); // 생성한 파일명 set
 
+
+		if(NbCheck.equals("NB")) {//NB라면, 공지입력해줘
+			// nbcode 생성
+			String maxNbcode = adao.admin_selectMaxNbcode();
+			int nbcodeNum = Integer.parseInt(maxNbcode.substring(3)) + 1;
+//			System.out.println("nbcodeNum: "+nbcodeNum);
+			// String Nbcode; (상단으로 올림)
+			if(nbcodeNum<10) {
+				nbcode = "NB0000"+nbcodeNum;
+			} else if(nbcodeNum<100) {
+				nbcode = "NB000"+nbcodeNum;
+			} else if(nbcodeNum<1000) {
+				nbcode = "NB00"+nbcodeNum;
+			} else if(nbcodeNum<10000) {
+				nbcode = "NB0"+nbcodeNum;
+			} else {
+				nbcode = "NB"+nbcodeNum;
+			} 
+//			System.out.println("nbcode: "+nbcode);
+			notice.setNbcode(nbcode); // 생성한 nbcode set
+			successMsg = nbcode+" 공지가 작성되었습니다."; 
+			failMsg = nbcode+" 공지 작성에 실패했습니다."; 
+			
+		} else {//GB라면 공구입력해줘
+			// gbcode 생성
+			String maxGbcode = adao.admin_selectMaxGbcode();
+			int gbcodeNum = Integer.parseInt(maxGbcode.substring(3)) + 1;
+			System.out.println("gbcodeNum: "+gbcodeNum);
+			if(gbcodeNum<10) {
+				nbcode = "GB0000"+gbcodeNum;
+			} else if(gbcodeNum<100) {
+				nbcode = "GB000"+gbcodeNum;
+			} else if(gbcodeNum<1000) {
+				nbcode = "GB00"+gbcodeNum;
+			} else if(gbcodeNum<10000) {
+				nbcode = "GB0"+gbcodeNum;
+			} else {
+				nbcode = "GB"+gbcodeNum;
+			} 
+			System.out.println("gbcode: "+nbcode);
+			notice.setNbcode(nbcode); // 생성한 gbcode set
+			successMsg = nbcode+" 공구가 작성되었습니다.";
+			failMsg = nbcode+" 공구 작성에 실패했습니다."; 
+		}
+		
 		// INSERT
 		System.out.println(notice);
 		int insertresult =  adao.admin_insertNoticeWrite(notice);
 		
 		if(insertresult > 0) {
-			ra.addFlashAttribute("msg", nbcode+" 공지가 작성되었습니다.");
+			ra.addFlashAttribute("msg", successMsg);
 			ra.addAttribute("codeIdx", nbcode);
 			mav.setViewName("redirect:/admin_selectNoticeBoardView");
 		} else {
-			ra.addFlashAttribute("msg", "공지 작성에 실패했습니다.");
+			ra.addFlashAttribute("msg", failMsg);
 			mav.setViewName("redirect:/loadToFail");
 		}
-
+			
+		
 		return mav;
 	}
 

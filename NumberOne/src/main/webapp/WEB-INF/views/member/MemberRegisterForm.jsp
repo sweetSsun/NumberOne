@@ -249,17 +249,7 @@ background-color: #00BCD4;
                                 </div> 
                             </div> 
                             
-                            <!-- 이메일 중복 확인  --> 
-                            <!--
-                            <div class="row">
-                                <div class="col-lg-12 col-md-12 col-sm-12">
-                                    <div class="checkout__input">
-                                        <input id = "emailMerge">                             
-                                    </div> 
-                                </div> 
-                            </div>                             
-                           -->
-                             
+   
                             
                             <!-- 관심지역 -->
                             <div class="row">

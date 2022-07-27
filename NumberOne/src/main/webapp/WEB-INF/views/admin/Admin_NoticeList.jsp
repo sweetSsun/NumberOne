@@ -132,8 +132,11 @@
             </table>
             <!-- 공지작성 버튼 -->
             <div align="right" class="col mt-2">
-				<button class="btn-numberone btn-sm fw-bold" type="button" onclick="location.href='admin_loadToNoticeWrite'">글작성</button>
+				<button class="btn-numberone btn-sm fw-bold" type="button" onclick="location.href='admin_loadToNoticeWrite?NbCheck=NB'">글작성</button>
             </div>
+            
+            <!-- NbCheck=NB -->
+            <input type="hidden" name="NbCheck" value="NB">
             
    			<!-- 페이징 시작 -->
    			<input type="hidden" id="pageNum" name="page" value="1">
@@ -425,7 +428,7 @@
 			console.log("검색 키워드 : " + searchText);
 			$.ajax({
 				type: "get",
-				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "ajaxCheck":"list"},
+				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "ajaxCheck":"list", "NbCheck":"NB"},
 				url: "admin_selectNoticeList_ajax",
 				dataType: "json",
 				success: function(result){
@@ -468,7 +471,7 @@
 			// 페이지에서 출력할 페이지번호 받아오기
 			$.ajax({
 				type: "get",
-				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "ajaxCheck":"page"},
+				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "ajaxCheck":"page", "NbCheck":"NB"},
 				url: "admin_selectNoticeList_ajax",
 				dataType: "json",
 				success: function(result){

@@ -242,12 +242,6 @@
 							<i id="bdWarning" onclick="bdWarningCheckModal()" class='fa-solid fa-land-mine-on  fa-2x icon' style="margin-right: 2px; font-size:30px"></i>
 						</div>
 					</c:when> --%>
-					
-					<c:when test="${sessionScope.loginId == 'admin' }">
-						<div align="right" class="col">
-							<input onclick="adminBoardStop('${board.bdcode}')" type="button" style="left:0;" class="middleBtn btn btn-sm bg-secondary fw-bold text-white" value="정지">
-						</div>
-					</c:when>
 				</c:choose>
 				</div>
 				
@@ -825,12 +819,6 @@
 
 <!-- 관리자용 -->
 <script type="text/javascript">
-	function adminBoardStop(bdcode){
-		/* 관리자 - 게시글 정지  */
-		console.log(bdcode);
-		location.href="admin_updateBoardStop?bdcode="+bdcode;
-	}
-
 	function adminReplyStop(rpcode){
 		/* 관리자 - 댓글 정지 */
 		console.log(rpcode);

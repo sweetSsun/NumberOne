@@ -56,7 +56,7 @@ section{
      height: 239px;
      border: solid #E0E0E0 2px;
      margin-top: 5%;
-     margin-bottom: 5%;
+    /*  margin-bottom: 5%; */
      
    }
    .img{
@@ -104,7 +104,11 @@ section{
 	.max_contents{
 		width: max-content;
 	}
+<<<<<<< HEAD
 	section div.checkout__form{
+=======
+section div.checkout__form{
+>>>>>>> 73f1466a5503c4eb5ee6b6f342012f6a939dd983
 	/* 페이지 제목 */
 	color: #1c1c1c; 
     font-weight: 700; 
@@ -112,7 +116,11 @@ section{
     padding-bottom: 20px;
     margin-bottom: 25px;
     font-size : 24px;
+<<<<<<< HEAD
 	}
+=======
+}
+>>>>>>> 73f1466a5503c4eb5ee6b6f342012f6a939dd983
 </style>
 
 </head>
@@ -134,7 +142,13 @@ section{
 		
 		<!-- 본문 -->
 			<section>
-			<div class="checkout__form" style="margin-top: 30px;">커뮤니티</div>
+
+		<!-- 페이지명 -->
+		<div class="checkout__form" style="margin-top: 30px;">커뮤니티 메인</div> 
+			
+			<div class="container-fluid">
+
+
 				<div class="row">
 					<div class="col mb-2">
 						<h3>자취방자랑</h3>
@@ -151,9 +165,13 @@ section{
 								<a href="selectRoomList?bdcode=${room.bdcode }&jsp=modal">
 								<img class="img" src="${pageContext.request.contextPath }/resources/img/room/${room.bdimg }"></a>
 							</div>
+							<div class="text-center fw-bold mb-1" style="color: #00a5ba;">
+								<a href="selectRoomList?bdcode=${room.bdcode }&jsp=modal">
+								[${room.bdnickname}] <span class="text-black">${room.bdtitle }</span>
+								</a>
+							</div>
 						</div>
 					</c:forEach>
-					
 				</div>
 				<hr>
 				<!-- 자취방자랑 Best 목록 끝 -->
@@ -290,7 +308,7 @@ section{
 					</div>
 				</div>
 				<!-- 후기게시판 -->
-				<div class="row mb-5" >
+				<div class="row mb-3">
 					<div class="col-1 board_category">
 						<a href="selectCategoryBoardList?searchVal=후기"><span class="text-white">후기</span></a>
 					</div>
@@ -327,6 +345,45 @@ section{
 						</table>
 					</div>
 				</div>
+				
+				<!-- 공구게시판 -->
+				<div class="row mb-5" >
+					<div class="col-1 board_category">
+						<a href="#"><span class="text-white">공구</span></a>
+					</div>
+					<div class="col-5 bg-white">
+						<table class="boardList">
+							<c:forEach items="${boardList_Review }" end="2" var="board">
+								<c:if test="${board.bdcategory.equals('후기') }">
+									<tr>
+										<td class="tdTitle">
+										<div class="td_Div">
+											<a href="selectReviewBoardView${paging.makeQueryPage(board.bdcategory, bdtype, board.bdcode, paging.page) }">${board.bdtitle}
+												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
+										</div>
+										</td>
+									</tr>
+								</c:if>
+							</c:forEach>
+						</table>
+					</div>
+					<div class="col-6 bg-white">
+						<table class="boardList">
+							<c:forEach items="${boardList_Review }" begin="3" end="5" var="board">
+								<c:if test="${board.bdcategory.equals('후기') }">
+									<tr>
+										<td class="tdTitle">
+										<div class="td_Div">
+											<a href="selectReviewBoardView${paging.makeQueryPage(board.bdcategory, bdtype, board.bdcode, paging.page) }">${board.bdtitle}
+												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
+										</div>
+										</td>
+									</tr>
+								</c:if>
+							</c:forEach>
+						</table>
+					</div>
+				</div>				
 				<!-- 게시판 목록 종료 -->
 				<hr>
 				
