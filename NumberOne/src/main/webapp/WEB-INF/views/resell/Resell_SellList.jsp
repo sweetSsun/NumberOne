@@ -465,7 +465,8 @@ div.col.mb-2 h3 {
 	function paginationBtn(pageNum) {
 		storage.setItem('page', pageNum); // 로컬스토리지 페이지번호 저장
 
-		location.href = "selectResellPageList?page=" + pageNum + "&sellBuy=S&searchVal="+selectRegion_param;
+		location.href = "selectResellPageList?page=" + pageNum
+				+ "&sellBuy=S&searchVal=" + selectRegion_param;
 	}
 
 	/* 상세페이지 클릭시 선택되어있는 검색타입, 검색어, 지역 저장 */
@@ -566,8 +567,7 @@ div.col.mb-2 h3 {
 						let output_pageNum = "<ul class='pagination'>";
 						if (result.prev) {
 							output_pageNum += '<li class=\"paginate_button\"> <a href=\"javascript:void(0);\" onclick=\"selectRegion('
-									+ (result.page - 1)
-									+ ')\">이전</a></button>';
+									+ (result.page - 1) + ')\">이전</a></button>';
 						} else {
 							output_pageNum += "<li class='paginate_button'><span>이전</span></li>";
 						}

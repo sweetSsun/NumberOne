@@ -331,57 +331,55 @@ div.col.mb-2 h3 {
 </body>
 
 <script type="text/javascript">
-   var checkMsg = '${msg}';
-   if ( checkMsg.length > 0 ){
-      alert(checkMsg);
-   }
+	var checkMsg = '${msg}';
+	if (checkMsg.length > 0) {
+		alert(checkMsg);
+	}
 </script>
 
 <script type="text/javascript">
-
-
-   function searchKeyword() {
-      var searchType = document.getElementById("searchType").value;
-      console.log(searchType);
-      var keyword = document.getElementById("keyword").value;
-      console.log(keyword);
-      if (searchType == 'sell') {
-         location.href = "selectResellPageList?sellBuy=S&searchType="
-               + searchType + "&keyword=" + keyword;
-      } else {
-         location.href = "selectResellPageList?sellBuy=B&searchType="
-               + searchType + "&keyword=" + keyword;
-         ;
-      }
-   }
-   
-    /* 메인에서 찜 버튼 클릭 */ 
-	function clickZzim(ubcode) {
-    	
-    	console.log(ubcode);
-		var loginId = '${loginId}';
-		
-		//로그인 체크
-		if('${loginId}'.length == 0){
-			 alert("script-로그인 후 이용가능합니다");
+	function searchKeyword() {
+		var searchType = document.getElementById("searchType").value;
+		console.log(searchType);
+		var keyword = document.getElementById("keyword").value;
+		console.log(keyword);
+		if (searchType == 'sell') {
+			location.href = "selectResellPageList?sellBuy=S&searchType="
+					+ searchType + "&keyword=" + keyword;
+		} else {
+			location.href = "selectResellPageList?sellBuy=B&searchType="
+					+ searchType + "&keyword=" + keyword;
+			;
 		}
-		
+	}
+
+	/* 메인에서 찜 버튼 클릭 */
+	function clickZzim(ubcode) {
+
+		console.log(ubcode);
+		var loginId = '${loginId}';
+
+		//로그인 체크
+		if ('${loginId}'.length == 0) {
+			alert("script-로그인 후 이용가능합니다");
+		}
+
 		//찜 체크
 		var zzim_Check;
-		console.log($("#zzimState_"+ubcode).attr("class")[12]);
+		console.log($("#zzimState_" + ubcode).attr("class")[12]);
 		//현재 찜상태 s:찜O r:찜X
-		var zzimState = $("#zzimState_"+ubcode).attr("class")[12];
-		if(zzimState == 's'){
+		var zzimState = $("#zzimState_" + ubcode).attr("class")[12];
+		if (zzimState == 's') {
 			//현재 찜이 되어 있는 경우
 			console.log("zzim O")
 			zzim_Check = 'CHECK';
-		} else {			
+		} else {
 			//현재 찜이 안되어 경우
 			console.log("zzim X")
 			zzim_Check = 'UNCHECK';
 		}
-    	
-		var zzimCount = $("#zzimCount_"+ubcode).text().trim();
+
+		var zzimCount = $("#zzimCount_" + ubcode).text().trim();
 		console.log(zzimCount);
 
 		$.ajax({
@@ -399,44 +397,45 @@ div.col.mb-2 h3 {
 
 				if (zzimCheck == 'CHECK') { //찜 했을 때
 					//하트 채우기
-					$("#zzimState_"+ubcode).removeClass("fa-regular").addClass("fa-solid");
+					$("#zzimState_" + ubcode).removeClass("fa-regular")
+							.addClass("fa-solid");
 
 					//증가
 					console.log("증가 요청");
-					if(zzimCount==0){
+					if (zzimCount == 0) {
 						zzimCount = 1;
 					} else {
-						zzimCount = parseInt(zzimCount)+1;
+						zzimCount = parseInt(zzimCount) + 1;
 					}
 
 				} else { //찜 취소했을 때
 					//하트 비우기
-					$("#zzimState_"+ubcode).removeClass("fa-solid").addClass("fa-regular");		
-				
+					$("#zzimState_" + ubcode).removeClass("fa-solid").addClass(
+							"fa-regular");
+
 					//감소				
 					console.log("감소 요청");
-					zzimCount = parseInt(zzimCount)-1;
+					zzimCount = parseInt(zzimCount) - 1;
 
 				}
-					$("#zzimCount_"+ubcode).text(zzimCount);
+				$("#zzimCount_" + ubcode).text(zzimCount);
 			}
 		})
 	}
-      
 </script>
 
 <script type="text/javascript">
 	/* 거래완료 글 체크표시  */
-		// 페이지로드 시 거래완료된 글 확인
+	// 페이지로드 시 거래완료된 글 확인
 	window.onload = function() {
 		soldCheck();
 	}
-		const ubstate = document.querySelectorAll('.ubstate_');
-		const soldCheckMsg = document.querySelectorAll('.soldCheckMsg_');
+	const ubstate = document.querySelectorAll('.ubstate_');
+	const soldCheckMsg = document.querySelectorAll('.soldCheckMsg_');
 	function soldCheck() {
 		for (let i = 0; i < ubstate.length; i++) {
 			if (ubstate[i].value === '9') {
-				
+
 				console.log("거래완료글확인")
 				soldCheckMsg[i].textContent = "(거래완료) "
 			}

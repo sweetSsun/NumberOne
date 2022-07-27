@@ -558,33 +558,6 @@ if (loginCheck.length == 0) {
 </script>
 
 
-<%--
-<!-- 상품 상태변경시 실행 스크립트  -->
-<script type="text/javascript">
-	/* 상품 상태변경 코드 */
-
-	function select_option(sel_tag, gd_code) {
-
-		console.log('매개변수확인(sel_tag) :', sel_tag.value);
-		console.log('매개변수확인(gd_code) :', gd_code);
-
-	}
-</script>
-
-<!-- 전페이지(상세페이지)로 돌아가기 -->
-<script type="text/javascript">
-	/* 수정취소 코드 */
-
-	let cancelModify = document.querySelector("#cancelModify");
-	cancelModify.addEventListener("click", backPage);
-	function backPage() {
-		console.log("수정취소버튼 클릭이벤트");
-		location.href = "selectResellView?ubcode=" + ubcode + "&ubsellbuy="
-				+ ubsellbuy + "&modifyCheck=LIST";
-	}
-</script>
- --%>
-
 <!-- 상품 상태변경 ajax  -->
 <script type="text/javascript">
 	//상품 상태변경 ajax 
@@ -622,31 +595,6 @@ if (loginCheck.length == 0) {
 	}
 </script>
 
-<%--
-<!-- 폼데이터 입력되었는지 체크하는 코드 스크립트  -->
-<script type="text/javascript">
-	/* 폼태그 데이터 공백 체크  */
-	/* onsubmit이벤트  false 일시 submit이벤트 취소*/
-	function checkFormData() {
-		let checkForm = true;		
-		console.log("폼데이터 핸들러 호출");
-	
-		
-		if (document.getElementById("contentsCheck").value == '') {
-			document.getElementById("contentsCheck").focus();
-			alert("내용을 작성해주세요.");
-			checkForm = false;
-
-		} else if (document.getElementById("fileName").value == '') {
-			alert("메인사진을 선택해주세요.");
-			document.getElementById("chooseFile_id").focus();
-			checkForm = false;
-		} 
-		
-		return checkForm;
-	}
-</script>
- --%>
 <script type="text/javascript">
 	function bdWriteCancelCheckModal(){
 	/* 게시글 작성 취소버튼 클릭시 모달 출력 */
@@ -749,6 +697,9 @@ if (loginCheck.length == 0) {
 		}
 	}
 </script>
+
+
+
 
 <%--    나중에 시간있으면 수정
 <!-- 이미지파일 미리보기 스크립트 -->
