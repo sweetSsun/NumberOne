@@ -229,26 +229,24 @@ public class ResellService {
 			System.out.println(gdDto);
 			insertResult_gd = rdao.insertResellWrite_gd(gdDto);
 
+			
 		}
-
+		
+		String sellbuy = ubDto.getUbsellbuy();
+		String searchVal = ubDto.getUbrgcode();
+		mav.setViewName("redirect:/selectResellPageList?sellBuy="+sellbuy+"&searchVal="+searchVal);
 		if (insertResult_ub > 0 && insertResult_gd > 0) {			
 			System.out.println("insert성공");
 			System.out.println(ubDto.getUbsellbuy());
-			String sellbuy = ubDto.getUbsellbuy();
-					String searchVal = ubDto.getUbrgcode();
+		
 			ra.addFlashAttribute("msg", "글이 작성되었습니다.");
-			if (ubDto.getUbsellbuy().equals("B")) {
-
-				mav.setViewName("redirect:/selectResellPageList?sellBuy="+sellbuy+"&searchVal="+searchVal);
-
-			} else {
-
-				mav.setViewName("redirect:/selectResellPageList?sellBuy="+sellbuy+"&searchVal="+searchVal);
-
-			}
+		
 		} else {
+			
 			ra.addFlashAttribute("msg", "글 작성에 실패하였습니다.");
-			mav.setViewName("redirect:/");
+			rdao.delete_gdInsertResult(gdDto);
+			rdao.delete_ubInsertResult(ubDto);
+			
 		}
 
 		return mav;
@@ -290,6 +288,9 @@ public class ResellService {
 		//timeFuction에 리스트 넘기면 시간 ubdatedef에는 변경된 시간, ubdate에는 분 까지 잘린 시간이 저장되어 리턴
 		sell_buyList = timeFuction(sell_buyList);
 		
+		//zzimCheck에 리스트 넘기면 로그인 id가 zzim 기록이 있는 경우 zzimcheck에 mid 저장
+		sell_buyList = zzimCheck(sell_buyList);
+				
 		/*
 
 		for (int i = 0; i < sell_buyList.size(); i++) {

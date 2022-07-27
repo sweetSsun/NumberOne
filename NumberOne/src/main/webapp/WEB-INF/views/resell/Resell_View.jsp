@@ -492,7 +492,7 @@ textarea:focus {
 							</div>
 						</div>
 
-						<!-- 판매자 정보  / 본문-->
+						<!-- 거래자 정보  / 본문-->
 						<div class="col-5">
 							<div class="row">
 								<div class="col seller_and_buttons">
@@ -619,9 +619,9 @@ textarea:focus {
 
 							<%-- 작성자 본인일 때 --%>
 							<c:when test="${ub_resellView.ubmid == sessionScope.loginId}">
-								<!-- 판매 / 구매  -->
+								<!-- 거래 / 구매  -->
 								<div style="text-align: end;" class="col">
-									<!-- 판매중 / 판매완료 -->
+									<!-- 거래중 / 거래완료 -->
 									<select class="select-size" id="totalOp">
 										<option value="1">거래중</option>
 										<option value="9">거래완료</option>
@@ -651,7 +651,7 @@ textarea:focus {
 									구매상품
 								</c:when>
 									<c:otherwise>
-									판매상품
+									거래상품
 								</c:otherwise>
 								</c:choose>
 
@@ -698,13 +698,13 @@ textarea:focus {
 							</c:when>
 
 							<c:otherwise>
-								<span class="fw-bold boardCategory" > < 판매자의 다른 상품  > </span>
+								<span class="fw-bold boardCategory" > < 거래자의 다른 상품  > </span>
 							</c:otherwise>
 						</c:choose>
 					</div>
 				</div>
 
-				<!-- 판매자의 다른 품목 리스트 -->
+				<!-- 거래자의 다른 품목 리스트 -->
 				<div class="row" style="text-align:center;">
 					<c:forEach items="${ memberSellList}" var="sellList">
 						<div class="col-4">
@@ -884,8 +884,8 @@ textarea:focus {
 		console.log('페이지로드')
 		addPriceComma();		// 페이지 로드 시 가격에 콤마 표시
 		checkResellWarning();	// 페이지 로드 시 회원의 현재 글 신고 여부확인
-		ubstateCheckFunction();	// 페이지 로드 시 글의 판매 상태 확인
-		soldCheck();			// 페이지 로드 시 판매완료된 글 확인
+		ubstateCheckFunction();	// 페이지 로드 시 글의 거래 상태 확인
+		soldCheck();			// 페이지 로드 시 거래완료된 글 확인
 		if (ubmid != loginId){
 			myZzimCheck();			// 페이지 로드 시 회원의 현재 글 찜 여부확인
 		}
@@ -902,10 +902,10 @@ textarea:focus {
 	}
 	
 	function soldCheck() {
-		/* 판매완료글 체크표시  */
+		/* 거래완료글 체크표시  */
     	if (ubstate === '9') {
-        	console.log("판매완료글확인")
-        	soldCheckMsg.textContent = "(판매완료) "
+        	console.log("거래완료글확인")
+        	soldCheckMsg.textContent = "(거래완료) "
       	}
 	}
 
@@ -947,20 +947,20 @@ textarea:focus {
 
 	}
 	
-	/* 페이지로드시 글의 판매상태체크 */
+	/* 페이지로드시 글의 거래상태체크 */
 	function ubstateCheckFunction(){
 		console.log('ubstateCheckFunction 호출');
 		console.log('글의 현재 상태값 : ', ubstate);
 		
-		if (ubstate === '9') { // 글의 상태값이 9(판매완료)이면 실행.
-			console.log('글의 상태: 판매완료 확인');
+		if (ubstate === '9') { // 글의 상태값이 9(거래완료)이면 실행.
+			console.log('글의 상태: 거래완료 확인');
 			for (let j = 0; j < select_gdstate.length; j++) {
 				gd_nameList[j].classList.add('line-through');
 				gd_priceList[j].classList.add('line-through');
 				selectCheckBox[j].setAttribute('disabled','disabled');
 			}
-		} else { //글의 상태값이 1(판매중)이면 실행
-			console.log('글의 상태: 판매중 확인');
+		} else { //글의 상태값이 1(거래중)이면 실행
+			console.log('글의 상태: 거래중 확인');
 
 			for (let j = 0; j < select_gdstate.length; j++) {
 				if (select_gdstate[j].value === '0') {
@@ -983,7 +983,7 @@ textarea:focus {
 		if (ubmid === loginId){
 			for (let i = 0; i < totalOp.options.length; i++) {
 				if (totalOp.options[i].value == ubstate) 
-					/* 글의 판매상태 option (9:판매완료 ,1:판매중)와 
+					/* 글의 거래상태 option (9:거래완료 ,1:거래중)와 
 					페이지 이동시 넘어온 글의 상태값 파라메터가 같을 경우 그 option에 selected 속성 추가*/
 					totalOp.options[i].selected = 'true';
 			}
@@ -1062,7 +1062,7 @@ textarea:focus {
 			success : function(result) {
 				console.log("결과", result);
 				if (result === 'SOLD') {
-					alert("변경성공 = 판매완료");
+					alert("변경성공 = 거래완료");
 
 					for (let i = 0; i < selectCheckBox.length; i++) {
 						console.log("길이", selectCheckBox.length)
@@ -1073,7 +1073,7 @@ textarea:focus {
 					}
 
 				} else {
-					alert("변경성공 = 판매중");
+					alert("변경성공 = 거래중");
 					for (var j = 0; j < select_gdstate.length; j++) {
 
 						if (select_gdstate[j].value === '0') {
@@ -1203,11 +1203,11 @@ textarea:focus {
 
 <!-- 글목록으로 돌아가기 -->
 <script type="text/javascript">
-let storage = window.localStorage; 
+let storage = window.localStorage;
+
 if(storage.getItem('searchType') !=null){
 	var searchType_storage = storage.getItem('searchType');
-	console.log('로컬스토리지 검색타입 : ', searchType_storage);
-}
+	console.log('로컬스토리지 검색타입 : ', searchType_storage);}
 if(storage.getItem('keyword') !=null){
 	var keyword_storage = storage.getItem('keyword');
 	console.log('로컬스토리지 검색어 : ', keyword_storage);
@@ -1217,13 +1217,13 @@ if(storage.getItem('selRegion') !=null ){
 	console.log('로컬스토리지 선택지역 : ', selRegion_storage);
 }	
 if(storage.getItem('page') !=null ){
-	var page_storage = storage.getItem('page');
-	
-	console.log('로컬스토리지 선택지역 : ', page_storage);
-}	
+	var page_storage = storage.getItem('page');	
+	console.log('로컬스토리지 선택페이지 : ', page_storage);
+}else{
+	storage.setItem('page', '1');
+	}	
 
 	const backList = document.querySelector("#backList");
-	
 	
 	backList.addEventListener("click", backListHandler);
 	
@@ -1312,7 +1312,7 @@ $.ajax({
 	async : false,
 	success : function(mInfo){		
 		alert('성공');
-		console.log('판매자정보',mInfo );
+		console.log('거래자정보',mInfo );
 				}
 		
 })

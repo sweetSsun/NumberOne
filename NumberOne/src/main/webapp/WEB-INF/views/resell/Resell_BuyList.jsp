@@ -344,8 +344,22 @@ div.col.mb-2 h3 {
 								</div>
 
 								<div style="height: 2rem; font-size: 1.6rem; padding: 0; color: grey;">${buyList.ubdatedef }&nbsp;
-									<span style="color: red; font-size: 1.8rem;"> <i class='fa-regular fa-heart'></i>
-									</span>
+								
+												<span style="color:red; font-size:1.8rem;" onclick="clickZzim('${buyList.ubcode }')" id="zzimCheck_${buyList.ubcode }">
+								<c:choose>
+									<c:when test="${buyList.zzimcheck != null }">
+										<i id="zzimState_${buyList.ubcode }" class='fa-heart fa-solid'></i> 
+									</c:when>
+									<c:otherwise>
+										<i id="zzimState_${buyList.ubcode }" class='fa-heart fa-regular'></i> 
+									</c:otherwise>
+								</c:choose>	
+							</span>
+							<span style="color:initial; font-size:1.8rem;" id="zzimCount_${buyList.ubcode }">
+								${buyList.ubzzim } 
+							</span>
+									
+									
 								</div>
 								<div
 									class="bottom"
@@ -448,7 +462,7 @@ div.col.mb-2 h3 {
 	let storage = window.localStorage;
 	console.log('스토리지아이템갯수', storage.length); //현재 로컬스토리지에 저장된 아이템 갯수
 
-	// 페이지로드 시 판매완료된 글 확인
+	// 페이지로드 시 거래완료된 글 확인
 	window.onload = function() {
 		soldCheck();
 	}
@@ -733,18 +747,89 @@ div.col.mb-2 h3 {
 </script>
 
 <script type="text/javascript">
-	/* 판매완료 글 체크표시  */
+	/* 거래완료 글 체크표시  */
 	function soldCheck() {
 		for (let i = 0; i < ubstate.length; i++) {
 			if (ubstate[i].value === '9') {
 				
-				console.log("판매완료글확인")
-				soldCheckMsg[i].textContent = "(판매완료) "
+				console.log("거래완료글확인")
+				soldCheckMsg[i].textContent = "(거래완료) "
 				break;
 			}
 		}
 	}
 </script>
 
+
+<script type="text/javascript">
+    /* 메인에서 찜 버튼 클릭 */ 
+	function clickZzim(ubcode) {
+    	
+    	console.log(ubcode);
+		var loginId = '${loginId}';
+		
+		//로그인 체크
+		if('${loginId}'.length == 0){
+			 alert("script-로그인 후 이용가능합니다");
+		}
+		
+		//찜 체크
+		var zzim_Check;
+		console.log($("#zzimState_"+ubcode).attr("class")[12]);
+		//현재 찜상태 s:찜O r:찜X
+		var zzimState = $("#zzimState_"+ubcode).attr("class")[12];
+		if(zzimState == 's'){
+			//현재 찜이 되어 있는 경우
+			console.log("zzim O")
+			zzim_Check = 'CHECK';
+		} else {			
+			//현재 찜이 안되어 경우
+			console.log("zzim X")
+			zzim_Check = 'UNCHECK';
+		}
+    	
+		var zzimCount = $("#zzimCount_"+ubcode).text().trim();
+		console.log(zzimCount);
+
+		$.ajax({
+			type : "get",
+			url : "zzimClick_ajax",
+			async : false, //전역변수 값 저장을 위해 필요
+			data : {
+				"zzubcode" : ubcode,
+				"zzmid" : loginId,
+				"zzim_Check" : zzim_Check
+			},
+
+			success : function(zzimCheck) {
+				console.log("zzimCheck : " + zzimCheck);
+
+				if (zzimCheck == 'CHECK') { //찜 했을 때
+					//하트 채우기
+					$("#zzimState_"+ubcode).removeClass("fa-regular").addClass("fa-solid");
+
+					//증가
+					console.log("증가 요청");
+					if(zzimCount==0){
+						zzimCount = 1;
+					} else {
+						zzimCount = parseInt(zzimCount)+1;
+					}
+
+				} else { //찜 취소했을 때
+					//하트 비우기
+					$("#zzimState_"+ubcode).removeClass("fa-solid").addClass("fa-regular");		
+				
+					//감소				
+					console.log("감소 요청");
+					zzimCount = parseInt(zzimCount)-1;
+
+				}
+					$("#zzimCount_"+ubcode).text(zzimCount);
+			}
+		})
+	}
+      
+</script>
 
 </html>

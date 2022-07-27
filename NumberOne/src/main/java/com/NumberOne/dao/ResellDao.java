@@ -64,5 +64,10 @@ public interface ResellDao {
 	int updateResellModify_gd(GoodsDto gdDto);
 
 	
+	void delete_gdInsertResult(GoodsDto gdDto);
+
+	void delete_ubInsertResult(UsedBoardDto ubDto);
+
+	
 	
 }
