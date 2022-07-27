@@ -160,7 +160,7 @@
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
 				<div class="row mb-2">
 					<div class="col-2">
-						<a href="admin_selectNoticeList${paging.makeQueryPage(gonguBoard.nbcode, paging.page)}">
+						<a href="admin_selectGonguList${paging.makeQueryPage(gonguBoard.nbcode, paging.page)}">
 						<input type="button" style="left:0;" class="middleBtn btn-numberone btn-sm fw-bold text-white" value="글목록">
 						</a> 
 					</div>

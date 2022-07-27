@@ -61,7 +61,17 @@ public class AdminController {
 	@RequestMapping (value="admin_selectNoticeList")
 	public ModelAndView admin_selectNoticeList(Paging paging, RedirectAttributes ra) {
 		System.out.println("공지 관리페이지 이동 요청");
-		mav = asvc.admin_selectNoticeList(paging, ra);
+		String NbCheck = "Nb";
+		mav = asvc.admin_selectNoticeList(paging, ra, NbCheck);
+		return mav;
+	}
+	
+	/* 공구 관리 */
+	@RequestMapping (value="admin_selectGonguList")
+	public ModelAndView admin_selectGonguList(Paging paging, RedirectAttributes ra) {
+		System.out.println("공구 관리페이지 이동 요청");
+		String NbCheck = "Gb";
+		mav = asvc.admin_selectNoticeList(paging, ra, NbCheck);
 		return mav;
 	}
 	

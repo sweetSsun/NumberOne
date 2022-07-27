@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 공지관리</title>
+<title>1인자 - 공구관리</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -53,7 +53,7 @@
          <form action="admin_selectNoticeList" method="get" id="actionForm">
 			<div class="container">
 	            <div class="row" style="margin:auto;">
-	                <h4 class="text-center">공지 관리페이지 : Admin_NoticeList.jsp</h4>
+	                <h4 class="text-center">공구 관리페이지 : Admin_GonguList.jsp</h4>
 	            </div>
 	            <!-- 검색 -->
 	            <div class="row">
@@ -130,9 +130,9 @@
 	                </c:forEach>                 
                 </tbody>
             </table>
-            <!-- 공지작성 버튼 -->
+            <!-- 공구작성 버튼 -->
             <div align="right" class="col mt-2">
-				<button class="btn-numberone btn-sm fw-bold" type="button" onclick="location.href='admin_loadToNoticeWrite'">글작성</button>
+				<button class="btn-numberone btn-sm fw-bold" type="button" onclick="location.href='gongu_loadToBoardWrite'">공구작성</button>
             </div>
             
    			<!-- 페이징 시작 -->
@@ -180,13 +180,13 @@
 	</main>
 	
 	
-	<!-- 공지상태 변경 모달 -->
+	<!-- 공구상태 변경 모달 -->
 	<div class="modal fade" id="updateNbstateModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="updateNbstateModalLabel"> 공지상태 변경 확인 </h5>
+                    <h5 class="modal-title" id="updateNbstateModalLabel"> 공구상태 변경 확인 </h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -201,13 +201,13 @@
         </div>
     </div>
 	
-	<!-- 고정공지 변경 모달 -->
+	<!-- 고정공구 변경 모달 -->
 	<div class="modal fade" id="updateNbfixModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="updateNbfixModalLabel"> 고정공지 변경 확인 </h5>
+                    <h5 class="modal-title" id="updateNbfixModalLabel"> 고정공구 변경 확인 </h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
@@ -239,7 +239,7 @@
 			});
 		}
 				
-		// 공지상태 변경 확인 모달창 출력
+		// 공구상태 변경 확인 모달창 출력
 		var btnObj_state;
 		function showNbstateModal(obj, nbcode){
 			console.log("showNbstateModal() 실행");
@@ -247,15 +247,15 @@
 			var btnObj_stateText = btnObj_state.text();
 			console.log("btnObj_stateText:"+btnObj_stateText);
 			if (btnObj_stateText == "활성"){
-				$("#updateNbstateModalBody").text(nbcode + "번 공지를 삭제 처리하시겠습니까?");
+				$("#updateNbstateModalBody").text(nbcode + "번 공구를 삭제 처리하시겠습니까?");
 			} else {
-				$("#updateNbstateModalBody").text(nbcode + "번 공지를 활성화 처리하시겠습니까?");
+				$("#updateNbstateModalBody").text(nbcode + "번 공구를 활성화 처리하시겠습니까?");
 			}
 			$("#nbcode_state").val(nbcode);
 			$("#updateNbstateModal").modal("show");
 		}
 		
-		// 공지상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
+		// 공구상태 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
 		function updateNbstate(){
 			console.log("updateNbstate() 실행");
 			
@@ -275,9 +275,9 @@
 					console.log(btnObj_state.text());
 					console.log($("#fixBtn_"+nbcode_state+" button").text());
 					if (btnObj_state.text() == "활성"){
-						// 고정공지일 때 바로 삭제 불가능
+						// 고정공구일 때 바로 삭제 불가능
 						if( $("#fixBtn_"+nbcode_state+" button").text() == "고정" ){
-							alert("해당 공지의 고정을 취소 후 삭제해주세요.");
+							alert("해당 공구의 고정을 취소 후 삭제해주세요.");
 							$("#updateNbstateModal").modal("hide");
 							return false;
 						}
@@ -304,14 +304,14 @@
 						},
 						error: function(){
 							$("#updateNbstateModal").modal("hide");
-							alert("공지상태 변경에 실패했습니다.");
+							alert("공구상태 변경에 실패했습니다.");
 						}
 					});
 		  		}
 			});
 		}
 				
-		// 고정공지 변경 확인 모달창 출력
+		// 고정공구 변경 확인 모달창 출력
 		var btnObj_fix;
 		function showNbfixModal(obj, nbcode){
 			console.log("showNbfixModal() 실행");
@@ -319,15 +319,15 @@
 			var btnObj_fixText = btnObj_fix.text();
 			console.log("btnObj_fixText:"+btnObj_fixText);
 			if (btnObj_fixText == "고정"){
-				$("#updateNbfixModalBody").text(nbcode + "번 공지 고정을 취소하시겠습니까?");
+				$("#updateNbfixModalBody").text(nbcode + "번 공구 고정을 취소하시겠습니까?");
 			} else {
-				$("#updateNbfixModalBody").text(nbcode + "번 공지를 고정 처리하시겠습니까?");
+				$("#updateNbfixModalBody").text(nbcode + "번 공구를 고정 처리하시겠습니까?");
 			}
 			$("#nbcode_fix").val(nbcode);
 			$("#updateNbfixModal").modal("show");
 		}
 		
-		// 고정공지 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
+		// 고정공구 변경 모달창에서 "네" 버튼을 눌렀을 때 상태값 변경하고 상태 버튼 css 변경
 		function updateNbfix(){
 			console.log("updateNbfix() 실행");
 			$.ajax({
@@ -366,7 +366,7 @@
 						},
 						error: function(){
 							$("#updateNbfixModal").modal("hide");
-							alert("공지상태 변경에 실패했습니다.");
+							alert("공구상태 변경에 실패했습니다.");
 						}
 					});
 		  		}
@@ -415,7 +415,7 @@
 		}
 	</script>
 	<script type="text/javascript">
-		// 정렬 select하면 ajax로 공지목록 받고 출력을 바꿔주는 함수
+		// 정렬 select하면 ajax로 공구목록 받고 출력을 바꿔주는 함수
 		function nbSearchState(searchVal){
 			console.log("nbSearchState() 실행");
 			var searchType = $("#searchTypeSel").val();

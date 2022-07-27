@@ -143,9 +143,15 @@ public class AdminService {
 	}
 	
 	/* 공지 관리*/
-	// 공지 관리페이지 이동
-	public ModelAndView admin_selectNoticeList(Paging paging, RedirectAttributes ra) {
-		System.out.println("AdminService.admin_selectNoticeList() 호출");
+	// 공지 & 공구 관리페이지 이동
+	public ModelAndView admin_selectNoticeList(Paging paging, RedirectAttributes ra, String NbCheck) {
+		System.out.println(NbCheck);
+		if(NbCheck.equals("Nb")) {
+			System.out.println("AdminService.admin_selectNoticeList() 호출");
+		} else {
+			System.out.println("AdminService.admin_selectGonguList() 호출");
+		}
+		
 		mav = new ModelAndView();
 		// 관리자 로그인 여부 체크
 		mav = loginAdminChToFail(ra);
@@ -158,18 +164,36 @@ public class AdminService {
 		if(paging.getKeyword() == null) { // dao 조건문이 keyword에 null값이 들어가면 오류가 나기 때문에 ""로 변경
 			paging.setKeyword("");
 		}
-		int totalCount = adao.admin_selectNoticeTotalCount(paging); // 전체 공지수 조회
-		paging.setTotalCount(totalCount);
-		paging.calc(); // 페이지 처리 계산 실행
-//		System.out.println(paging);
 		
-		ArrayList<NoticeDto> noticeList = adao.admin_selectNoticeList(paging);
-//		System.out.println(noticeList);
-		
-		mav.addObject("noticeList", noticeList);
-		mav.addObject("paging", paging);
-		mav.setViewName("admin/Admin_NoticeList");
-		return mav;
+		if(NbCheck.equals("Nb")) { // controller에서 Nb를 넘겨받았다면, 공지조회해줘
+
+			int totalNbCount = adao.admin_selectNoticeTotalCount(paging); // 전체 공지수 조회
+			paging.setTotalCount(totalNbCount);
+			paging.calc(); // 페이지 처리 계산 실행
+	//		System.out.println(paging);
+			
+			ArrayList<NoticeDto> noticeList = adao.admin_selectNoticeList(paging);
+	//		System.out.println(noticeList);
+			
+			mav.addObject("noticeList", noticeList);
+			mav.addObject("paging", paging);
+			mav.setViewName("admin/Admin_NoticeList");
+			return mav;
+			
+		} else { // controller에서 Nb가아닌 Gb를 넘겨받았다면, 공구조회해줘
+			int totalGbCount = adao.admin_selectGonguTotalCount(paging); // 전체 공구수 조회
+			paging.setTotalCount(totalGbCount);
+			paging.calc(); // 페이지 처리 계산 실행
+	//		System.out.println(paging);
+			
+			ArrayList<NoticeDto> noticeList = adao.admin_selectGonguList(paging);
+	//		System.out.println(noticeList);
+			
+			mav.addObject("noticeList", noticeList);
+			mav.addObject("paging", paging);
+			mav.setViewName("admin/Admin_GonguBoardList");
+			return mav;
+		}
 	}
 
 	// 선택한 상태값에 따른 공지목록 ajax
@@ -227,7 +251,7 @@ public class AdminService {
 		return updateResult;
 	}
 	
-	//공지 상세페이지 이동 
+	//공지 & 공구 상세페이지 이동 
 	public ModelAndView admin_selectNoticeBoardView(String nbcode,  Paging paging) {
 		System.out.println("AdminService.admin_selectNoticeBoardView() 호출");
 //		System.out.println("nbcode:" +  nbcode);
@@ -243,7 +267,7 @@ public class AdminService {
 		System.out.println(nbcode.substring(0,2));
 		if (nbcode.substring(0,2).equals("GB")){
 			mav.addObject("gonguBoard", noticeBoard);
-			mav.setViewName("gongu/GonguBoardView");
+			mav.setViewName("admin/Admin_GonguBoardView");
 			mav.addObject("paging", paging);
 			
 		} else {

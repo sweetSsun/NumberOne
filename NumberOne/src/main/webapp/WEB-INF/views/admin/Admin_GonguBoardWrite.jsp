@@ -152,7 +152,7 @@
 	// 공지글 작성 취소
 	function writeBoardCancel(){
 		console.log("취소 버튼 클릭");
-		location.href="admin_selectNoticeList${paging.makeQueryPage(paging.page)}";
+		location.href="admin_selectGonguList${paging.makeQueryPage(paging.page)}";
 	}
 	
 	// 제목, 내용 입력됐는지 확인
