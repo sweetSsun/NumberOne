@@ -70,6 +70,15 @@
 	#inputSearchText{
 		font-size: 18px;
 	}
+section div.checkout__form{
+	/* 페이지 제목 */
+	color: #1c1c1c; 
+    font-weight: 700; 
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+    font-size : 24px;
+}
 </style>
 </head>
 <body>
@@ -91,13 +100,13 @@
 		
 		<section>
 		<!-- 본문 -->
+		<!-- 페이지명 -->
+		<div class="checkout__form" style="margin-top: 30px;">공지게시판</div> 
+		
 			<form action="selectNoticeBoardList" method="get" id="actionForm">
 			<!-- <input type="hidden" name="searchVal" value="all"> -->
 			<div class="container">
-				<div class="row" style="margin:auto;">
-					<h2 class="text-center">공지게시판 : NoticeBoardList.jsp</h2>
-				</div>
-					<div class="row ">
+						<div class="row ">
 						<!-- 검색기능 -->
 						<div class="col-5" align="right">
 								<select name="searchType" class="searchType" id="searchTypeSel">

@@ -367,45 +367,54 @@
 		$("#chatRoomList").html(dropdownList);
 	}
 
-/* 렉 때문에 잠시 지움
+/* 렉 때문에 잠시 지움*/
 	<!-- 안읽은 채팅메세지 확인 뱃지 -->
 	//console.log('${sessionScope.loginId }');
 	if(${sessionScope.loginId != null}){
 	   $(window).on('load', function(){
+		   var loadUnReadCount = 0;
+		   $.ajax({
+               url:"selectSumUnReadCount",
+               data:{"loginId": "${sessionScope.loginId}"},
+               dataType:"json",
+               async:false, // async : false를 줌으로써 비동기를 동기로 처리 할 수 있다.
+               success:function(sumUnReadCount){
+	                  //console.log(sumUnReadCount);
+	                  if(sumUnReadCount != 0){
+		                  $("#chat-badge").text(sumUnReadCount);
+	                      loadUnReadCount = sumUnReadCount;
+	                  }
+            	}
+		   });
+               
 	         // 2초에 한번씩 채팅 목록 불러오기(실시간 알림 전용)
 	         setInterval(function(){
 	             // 읽지 않은 메세지 총 개수 불러오기 
-	             var sumUnReadCount = 0;
-	                   $.ajax({
-	                     url:"selectSumUnReadCount",
-	                     data:{"loginId": "${sessionScope.loginId}"},
-	                     dataType:"json",
-	                     async:false, // async : false를 줌으로써 비동기를 동기로 처리 할 수 있다.
-	                     success:function(sumUnReadCount){
-	                       //console.log(sumUnReadCount);
-	                       $("#chat-badge").text(sumUnReadCount);
-	                      // 읽지 않은 메세지 총 갯수가 0개가 아니면
-	                      if(sumUnReadCount != 0){
-	                          // 채팅 icon 깜빡거리기
-	                          $('.nav_chat-badge').addClass('iconBlink');
-	                          $('.nav_chat-badge').removeClass('d_none');
-	                      }else{
-	                          // 깜빡거림 없애기
-	                          $('.nav_chat-badge').removeClass('iconBlink');
-	                          $('.nav_chat-badge').addClass('d_none');
-	                      }
-	                     }
-	              });
-	
-	               },3000);
+                 $.ajax({
+	                 url:"selectSumUnReadCount",
+	                 data:{"loginId": "${sessionScope.loginId}"},
+	                 dataType:"json",
+	                 success:function(sumUnReadCount){
+		                  //console.log(sumUnReadCount);
+		                  // 읽지 않은 메세지 갯수가 0이면
+		                  if(sumUnReadCount == 0) {
+		                  	  $("#chat-badge").text("");
+		                  }
+		                  // 읽지 않은 메세지 갯수가 0이 아니면서 페이지 로드 값에서 변경됐으면
+		                  else if (sumUnReadCount != 0 && loadUnReadCount != sumUnReadCount) {
+		                      // 채팅 icon 깜빡거리기
+		                  	  $("#chat-badge").text(sumUnReadCount);
+		                      $('.nav_chat-badge').addClass('iconBlink');
+		                  }
+		                  // 페이지 로드 값과 동일하면
+		                  else {
+		                      // 깜빡거림 없애기
+		                      $('.nav_chat-badge').removeClass('iconBlink');
+		                  }
+                  	}
+            	});
+	          },2000);
 	    });
-	}
-	 */
-	<!-- 로그인 시 세션에 담긴 채팅메세지 갯수 뱃지 출력 -->
- 	if (${sessionScope.sumUnReadCount != 0 }){
-		var loginUnReadCount = ${sessionScope.sumUnReadCount};
-		console.log("안읽은 채팅 메세지 수 : " + loginUnReadCount);
-		$("#chat-badge").text(loginUnReadCount);
 	}
 </script>
 

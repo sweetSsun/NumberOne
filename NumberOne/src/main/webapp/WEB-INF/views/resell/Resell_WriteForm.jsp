@@ -489,13 +489,8 @@ function mainimgCh(){
 </script>
 
 <script type="text/javascript">
-		/* 로그인된 회원인지 체크 */
-		let loginCheck = '${sessionScope.loginId}';
-		if (loginCheck.length == 0) {
-			alert("잘못된 접근입니다.");
-			location.href = "loadToLogin";
-		}
-
+	
+	/* 페이지 로드시 체크 */
 		let resellTitle = document.getElementById("resellTitle"); // 사구,팔구 select태그지정
 		let regionCheck = document.getElementById("regionCheck");	// 지역 select 태그
 		/* 페이지이동 시 어느게시판에서 넘어왔는지 파라메터를 통해 확인 */
@@ -598,18 +593,18 @@ if(resellTitle.options[resellTitle.selectedIndex].value == 'B'){
 		}		
 	}
 	/* 제거버튼 클릭 */
-for(let i = 0; i<display_btn.length; i++){
-	
-	removeBtn[i].onclick = function(){	
-			
-		display_btn[i+1].classList.add("d_none");
+	for(let i = 0; i<display_btn.length; i++){
 		
-		gdcheck_n[i].removeAttribute("name", "gd_names");
-		gdcheck_n[i].value = "";
-		gdcheck_p[i].removeAttribute("name", "gd_price");
-		gdcheck_p[i].value = "";
-				
-		}		
+		removeBtn[i].addEventListener('click', function(){
+			
+			display_btn[i+1].classList.add("d_none");
+			
+			gdcheck_n[i].removeAttribute("name", "gd_names");
+			gdcheck_n[i].value = "";
+			gdcheck_p[i].removeAttribute("name", "gd_price");
+			gdcheck_p[i].value = "";
+					
+		})
 	}
 </script>
 
@@ -642,7 +637,7 @@ for(let i = 0; i<display_btn.length; i++){
 		else{
 			
 			for(let i = 0; i < gdtitle_class.length; i++){
-				if(!display_btn[i].classList.contains('d_none')){
+				if(!display_btn[i].classList.contains('+1none')){
 					console.log('d_none 클래스 없음');
 				
 					if(gdtitle_class[i].value === '') {
@@ -670,7 +665,7 @@ for(let i = 0; i<display_btn.length; i++){
 
 <!-- 취소버튼클릭 이벤트핸들러 스크립트  -->
 <script type="text/javascript">
-const storage = window.localStorage; 
+const storage = window.ltrueStorage; 
 
 //기본값 (스토리지에 아이템 없을 때 사용)
 let searchType = '';
@@ -704,14 +699,14 @@ if(storage.getItem('page') !=null ){
 
 		console.log("취소버튼 클릭이벤트");
 		
-		location.href = 'selectResellPageList?sellBuy='+ubsellbuy+'&searchType='+searchType+'&keyword='+keyword+'&searchVal='+selRegion+'&page='+page;
+		location.//ef = 'selectResellPageList?sellBuy='+ubsellbuy+'&searchType='+searchType+'&keyword='+keyword+'&searchVal='+selRegion+'&page='+page;
 	}
 
 </script>
 
 <%--
 <!-- 이미지파일 미리보기 스크립트 -->
-<script type="text/javascript">
+<scr//t type="text/javascript">
 /*<!-- 이미지파일 미리보기 이벤트핸들러 호출 -->  */
 	function loadFile(input) { // 함수가 호출된 태그를 인자로 받는다.( 여기선 input태그)
 		

@@ -350,20 +350,10 @@ section div.checkout__form{
 </body>
 
 <script type="text/javascript">
-<<<<<<< HEAD
-   var checkMsg = '${msg}';
-   if ( checkMsg.length > 0 ){
-      alert(checkMsg);
-   }
-   
-    // 페이지로드 시 판매완료된 글 확인
-	window.onload = function() {
-		soldCheck();
-=======
+
 	var checkMsg = '${msg}';
 	if (checkMsg.length > 0) {
 		alert(checkMsg);
->>>>>>> c80144822e0706946ebf750ed717e4296944c305
 	}
 </script>
 
