@@ -313,8 +313,9 @@
 							<div align="right" class="col">
 								<button onclick="insertReply()" class="btn btn-sm bg-secondary mb-2 fw-bold text-white">등록</button>
 							</div>
+							</div>
 						</div>
-					</c:when>
+					</c:when>					
 					</c:choose>
 				</div>
 			</div>
