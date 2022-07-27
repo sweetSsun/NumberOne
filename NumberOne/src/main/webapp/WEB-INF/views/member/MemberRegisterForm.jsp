@@ -250,16 +250,15 @@ background-color: #00BCD4;
                             </div> 
                             
                             <!-- 이메일 중복 확인  --> 
+                            <!--
                             <div class="row">
                                 <div class="col-lg-12 col-md-12 col-sm-12">
                                     <div class="checkout__input">
-                                        <p>이메일<span>*</span></p>
-                                        <span id="recheckEmail"></span>
-                                                                             
+                                        <input id = "emailMerge">                             
                                     </div> 
                                 </div> 
                             </div>                             
-                           
+                           -->
                              
                             
                             <!-- 관심지역 -->
@@ -486,36 +485,97 @@ background-color: #00BCD4;
 		});
 		</script>
 		
-		<!-- 이메일 중복  -->
+		<!-- 이메일 중복 확인 -->
  		<script type="text/javascript">
   			
-  		
+  		/*
 		var emailId = $("#inputEmailId").val();
- 		var memailDomain = $("#domainSelect").val();
+ 		var memailDomain = $("#inputEmailDomain").val();
  		var inputEmail = "";
- 		
  		inputEmail = emailId+"@"+memailDomain;
  		console.log("inputEmail : "+ inputEmail);
+ 		*/
  		
-		//$("#domainSelect").focusout(function(){
-		$.ajax({
-			type : "get",
-			url : "selectMemberEmail_ajax",
-			data : {"inputEmail" : inputEmail },
-			success : function(result){
-	
-				if(result=="OK") {
-				//$("#recheckEmail").text("사용가능한 닉네임 입니다.").css("color" , "green");    
-				inputEmailCheck =true;
-				}else {
-				//$("#recheckEmail").text("이미 사용중인 닉네임 입니다.").css("color" , "red");  		
-				inputEmailCheck =false;
+		//이메일 아이디 입력하면 중복 확인으로 연결하는 함수
+ 		$("#inputEmailId").on("propertychange change keyup paste input", function() {
+ 			console.log("이메일 아이디 입력");
+ 	 		
+ 			if( $("#inputEmailDomain").val().length != 0){
+ 				console.log("도메인도 입력")
+ 	 			var inputEmail = $("#inputEmailId").val()+"@"+$("#inputEmailDomain").val();
+ 	 			selectMemberEmail_ajax(inputEmail);
+ 			}
+         });
+ 		
+ 		
+		//이메일 도메인 직접 입력하면 중복 확인으로 연결하는 함수
+ 		$("#inputEmailDomain").on("propertychange change keyup paste input", function() {
+ 			//propertychate, input은 작동을 하지 않는 듯 하다...
+ 			console.log("이메일 도메인 입력");
+ 	 		
+ 			if( $("#inputEmailId").val().length != 0){
+ 				console.log("아이디도 입력")
+ 	 			var inputEmail = $("#inputEmailId").val()+"@"+$("#inputEmailDomain").val();
+ 	 			selectMemberEmail_ajax(inputEmail);
+ 			}
+         });
+		
+		//이메일 도메인 선택하면 중복 확인으로 연결하는 함수
+ 		$("#domainSelect").on("change", function() {
+ 			console.log("이메일 도메인 선택");
+ 	 		
+ 			if( $("#inputEmailId").val().length != 0){
+ 				console.log("아이디도 입력")
+ 	 			var inputEmail = $("#inputEmailId").val()+"@"+$("#domainSelect").val();
+ 	 			selectMemberEmail_ajax(inputEmail);
+ 			}
+         });
+		
+ 		function emailChForDuplicates() {	
+ 			
+ 			console.log($("#inputEmailId").val());
+ 			console.log($("#inputEmailId").val().length);
+ 			console.log($("#inputEmailDomain").val());
+ 			var inputEmail = $("#inputEmailId").val()+"@"+$("#inputEmailDomain").val();
+ 			console.log(inputEmail);
+ 			/*
+ 			if(emailId.length == 0){
+ 				console.log("메소드 종료!")
+ 				return;
+ 			}
+ 			*/
+ 			//selectMemberEmail_ajax(inputEmail);
+
+		};
+ 		
+ 		function selectMemberEmail_ajax(inputEmail){
+ 			
+			console.log("이메일 중복 체크 함수 호출")
+			$.ajax({
+				type : "get",
+				url : "selectMemberEmail_ajax",
+				data : {"inputEmail" : inputEmail },
+				success : function(result){
+					console.log(result);
+					
+					if(result=="OK") {
+					//$("#recheckEmail").text("사용가능한 닉네임 입니다.").css("color" , "green");  
+					console.log("이메일 사용 가능")
+					inputEmailCheck =true;
+					
+					}else {
+					//$("#recheckEmail").text("이미 사용중인 닉네임 입니다.").css("color" , "red");  		
+					console.log("이메일 사용 불가능")
+					inputEmailCheck =false;
+					alert("이미 사용중인 이메일 입니다")
+					$("#inputEmailId").val("");
+					$("#inputEmailDomain").val("");
+					$("#inputEmailId").focus();
+					}
 				}
-			}
 
-		});
-
-		//});
+			});
+ 		}
 	</script> 
 
 
@@ -687,8 +747,6 @@ background-color: #00BCD4;
     		return false;
     	} 
     	
-   
-
     }
     
     </script>
@@ -699,7 +757,7 @@ background-color: #00BCD4;
 		
 	$("#domainSelect").change(function(){	
 		var domainVal = $("#domainSelect").val();
-		console.log(domainVal);
+		//console.log(domainVal);
 		$("#inputEmailDomain").val(domainVal);	
 		});	
 	

@@ -1,18 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-    
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 공지수정</title>
+<title>1인자 - 공구작성</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
 <!-- Css Styles -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 
@@ -21,6 +18,11 @@
 		max-width: 70%;
 		margin: auto;
 		margin-top: 0%;
+	}
+	table{
+		width:70%;
+		border:1px solid black;
+		margin-left: auto; margin-right: auto;
 	}
 	.textarea-NbView{
 		resize: none;
@@ -31,20 +33,20 @@
 		border: none;
 		font-weight: bold;
 		font-size: 20px;
-		height: 22px;
 		margin: auto;
+		height: 22px;
 	}
 	.bdcontents{
 		border-radius: 5px;
-		border: solid gray 2px;
+		border: solid gray 1px;
 		font-size: 19px;
 	}
 	.btn-wrapper{
 		width: 100%;
 		text-align: center;
 		display:inline-block;
-	}	
-	textarea:focus {
+	}
+		textarea:focus {
  	   outline: none;
 	}
 	input:focus{
@@ -74,43 +76,29 @@
 		<!-- 본문 -->
 			<div class="container">
 				<div class="row" style="margin:auto;">
-					<h4 class="text-center">공지 수정페이지 : Admin_NoticeModifyForm.jsp</h4>
+					<h4 class="text-center">공구 작성페이지 : Gongu_BoardWriteForm.jsp</h4>
 				</div>
 				<div>
- 				<form action="admin_updateNoticeModify${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}" method="post" enctype="multipart/form-data" onsubmit="return inputCheck()">
- 				<!-- 수정 불가능한 값 숨기고 submit에는 데이터 넘겨주는 변수 -->
- 				<input type="hidden" name="nbcode" value="${noticeBoard.nbcode }">
- 				<input type="hidden" name="originImg" value="${noticeBoard.nbimg }">
- 				
- 				<div class="row">
-					<input type="text" id="title" class="bdtitle" name="nbtitle" maxlength="50" value="${noticeBoard.nbtitle }">
+ 				<form action="gongu_insertBoardWrite" method="post" enctype="multipart/form-data" onsubmit="return inputCheck()">
+				<div class="row">
+					<input type="text" id="title" class="bdtitle" name="nbtitle" placeholder="제목을 입력하세요" maxlength="50">
 				</div>
 				<hr>
 				<div class="row">
-					<textarea id="contents" class="bdcontents textarea-NbView" rows="17" cols="40" name="nbcontents"  
-						maxlength="2000" placeholder="내용을 입력하세요">${noticeBoard.nbcontents }</textarea>
+					<textarea id="contents" class="bdcontents textarea-NbView" rows="17" cols="40" name="nbcontents"
+						maxlength="2000"  placeholder="내용을 입력하세요"></textarea>
 				</div>
 				<div class="row mt-4">
-					<!-- 기존 이미지가 있으면 -->
-					<c:if test="${noticeBoard.nbimg != null }">
-						<div id="originImgScreen" style="width:200px; height:200px;" class="">
-							<img src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg}" style="width:100%; height:100%;"
-								id="originImg">
-						</div>
-					</c:if>
-					<!-- 이미지 변경시 -->
-					<div id="imgScreen" style="width:200px; height:200px;" class="d_none">
-						<img id='previewImg' style="width:100%; height:100%;"></img>
-					</div>
+					<div id="imgScreen" style="width:200px; height:200px;" class="d_none"><img id='previewImg' style="width:100%; height:100%;"></img></div>
 					<input type="file" id="nbImg" name="nbimgfile" class="" accept="image/*" onchange="readImg(this)"> 
 				</div>
 				<div class="row mt-4 mb-2">
 					<div class="col btn-wrapper">
-						<input class="btn-numberone btn fw-bold text-white" type="submit" value="수정">
-						<input onclick="$('#nbWriteCancelCheckModal').modal('show')" class="btn-numberone btn fw-bold text-white" type="button" value="취소">
+						<input class="btn-numberone btn fw-bold text-white" type="submit" value="작성">
+						<input onclick="$('#gbWriteCancelCheckModal').modal('show')" class="btn-numberone btn fw-bold text-white" type="button" value="취소">
 					</div>
-				</div>	
- 				
+				</div>		
+				
 				</form>
             </div>
 
@@ -120,24 +108,24 @@
 	
 	
 	<!-- 게시글 작성 취소 확인 -->
-	<div class="modal fade" id="nbWriteCancelCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+	<div class="modal fade" id="gbWriteCancelCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"> 공지글 작성 취소 </h5>
+                    <h5 class="modal-title"> 공구글 작성 취소 </h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div class="modal-body" >
-                	<span class="fw-bold">공지글 작성을 취소하시겠습니까?</span>
+                	<span class="fw-bold">공구글 작성을 취소하시겠습니까?</span>
                 	<br>
                 	<span class="">이 페이지를 벗어나면 작성된 내용은 저장되지 않습니다.</span>
                 </div>	
                 <div class="modal-footer">
                 	<input type="hidden" >
-                    <button class="close btn-numberone text-white" onclick="writeBoardCancel()" style="padding: 0.375rem 0.75rem;" >네</button>
+                    <button class="close btn-numberone text-white" onclick="writeBoardCancel()" style="padding: 0.375rem 0.75rem;">네</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
             </div>
@@ -149,21 +137,22 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
 <script type="text/javascript">
-	// 공지글 수정 취소 경고 모달창 close 하는 스크립트
+	// 공지글 작성 취소 경고 모달창 close 하는 스크립트
 		var modal = $(".modal");
 	var close = $(".close");
 	for (var i = 0; i < close.length; i++){
 		close[i].addEventListener("click", function(){
-			$("#nbWriteCancelCheckModal").modal("hide");
+			$("#gbWriteCancelCheckModal").modal("hide");
 		});
 	}
 </script>
 
 <script type="text/javascript">
-	// 공지글 수정 취소
+	
+	// 공지글 작성 취소
 	function writeBoardCancel(){
 		console.log("취소 버튼 클릭");
-		location.href="admin_selectNoticeBoardView${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}";
+		location.href="admin_selectGonguList${paging.makeQueryPage(paging.page)}";
 	}
 	
 	// 제목, 내용 입력됐는지 확인
@@ -200,7 +189,6 @@
 					return;
 				}
 				$("#previewImg").attr("src",e.target.result);
-				$("#originImgScreen").addClass("d_none");
 				$("#imgScreen").removeClass("d_none");
 			}
 			reader.readAsDataURL(obj.files[0]);
@@ -220,7 +208,6 @@
 			return false;
 		}
 	}
-	
 </script>
 
 </body>
