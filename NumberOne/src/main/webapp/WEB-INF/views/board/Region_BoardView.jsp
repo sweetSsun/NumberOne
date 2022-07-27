@@ -140,6 +140,10 @@
    .bdnickname:hover{
    	color:#00bcd4;
    }
+    pre{
+	font-family: 'pretendard';
+   }
+     
 </style>
 </head>
 <body>
@@ -233,13 +237,13 @@
 					<div class="col-2">
 						<c:choose>
 							<c:when test="${paging.bdtype eq 'region' && paging.searchVal eq ''}">
-								<a href="selectRegionBoardList${paging.makeQueryPage( board.bdcode, paging.page) }" >
+								<a href="selectRegionBoardList${paging.makeQueryPage(board.bdcode, paging.page) }" >
 								<input type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
 								</a> 
 							</c:when>
 							
 							<c:otherwise>
-								<a href="selectDetailBoardList${paging.makeQueryPage(paging.searchVal, bdtype, board.bdcode, paging.page) }" >
+								<a href="selectDetailBoardList${paging.makeQueryPage(board.bdrgcode, bdtype, board.bdcode, paging.page) }" >
 								<input type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
 								</a> 
 							</c:otherwise>
@@ -764,7 +768,7 @@
 							output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton bg-secondary text-white fw-bold mt-2\" onclick=\"adminReplyStop('"+ replyList[i].rpcode +"')\" value=\"정지\">"
 						}
 						/* 댓글내용 */
-						output += "<span class=\"inputRpcontents\">" + replyList[i].rpcontents + "</span>"
+						output += "<pre class=\"inputRpcontents\">" + replyList[i].rpcontents + "</pre>"
 						output += "</div>"
 						
 					}else{
@@ -793,7 +797,7 @@
 						
 						output += "<br>"
 						/* 댓글내용 */
-						output += "<span class=\"inputRpcontents\">" + replyList[i].rpcontents + "</span>"
+						output += "<pre class=\"inputRpcontents\">" + replyList[i].rpcontents + "</pre>"
 						output += "</div>"
 					}
 

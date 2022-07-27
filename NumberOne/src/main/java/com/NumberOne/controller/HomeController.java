@@ -62,8 +62,6 @@ public class HomeController {
 		
 		ModelAndView mav = new ModelAndView();
 		
-		
-		
 		// 고정된 자랑글 불러오기 :: 메인배너로 & 자랑글상세 링크 필요
 		ArrayList<BoardDto> fixList = bdao.selectFixedRoomView();
 		//System.out.println(fixList);
@@ -73,7 +71,6 @@ public class HomeController {
 		ArrayList<BoardDto> boardList = bdao.selectBoardList();
 		//System.out.println(boardList);
 		mav.addObject("boardList", boardList);
-		
 		
 		String bdcategory_Free = "자유";
 		String bdcategory_qa = "질문";
@@ -122,7 +119,8 @@ public class HomeController {
 		
 		mav.addObject("SellList", SellList);
 		mav.addObject("buyList", buyList);
-
+		mav.addObject("paging", paging);
+		
 		if(session.getAttribute("loginId") != null && session.getAttribute("loginId").equals("admin")) {
 			mav.setViewName("admin/Admin_Main");
 		} else {
