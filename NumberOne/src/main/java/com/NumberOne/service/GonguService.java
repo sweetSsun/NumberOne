@@ -38,42 +38,8 @@ public class GonguService {
 	// 파일 저장 경로
 	String gbImgSavePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\gonguUpLoad";
 
-	/*
-	//공구 상세페이지 이동 
-	public ModelAndView gongu_selectBoardView(String gbcode,  Paging paging) {
-		System.out.println("GonguService.gongu_selectBoardView() 호출");
-		System.out.println("nbcode:" +  gbcode);
-		System.out.println("paging : " + paging);
-		
-		NoticeDto gonguBoard = bdao.selectNoticeBoardView(gbcode);
-			
-		System.out.println(gonguBoard);
-		mav = new ModelAndView();
-		mav.addObject("gonguBoard", gonguBoard);
-		mav.addObject("paging", paging);
-		mav.setViewName("gongu/GonguBoardView");
-		
-		return mav;
-	}
-*/
-	// 공구 작성페이지 이동
-	public ModelAndView gongu_loadToBoardWrite(RedirectAttributes ra) {
-		System.out.println("GonguService.gongu_loadToBoardWrite() 호출");
-		mav = new ModelAndView();
-		
-		
-		// 관리자 로그인 여부 체크
-		mav = asvc.loginAdminChToFail(ra);
-		//System.out.println(mav.getViewName().equals("redirect:/loadToLogin"));
-		if(mav.getViewName() != null) {
-		   return mav;
-		}
-		mav.setViewName("gongu/GonguBoardWrite");
-		
-		return mav;
-	}
-
-	//공구 작성 DB 입력
+	
+	//공구 작성 DB 입력 (관리자 :: 저장소 위치 구별할겸 AdminService가 아닌 GonguService에서 작업한 것)
 	public ModelAndView gongu_insertBoardWrite(NoticeDto notice, RedirectAttributes ra) throws IllegalStateException, IOException {
 		System.out.println("GonguService.gongu_insertBoardWrite() 호출");
 		notice.setNbmid( (String) session.getAttribute("loginId")); // 세션id set
@@ -88,7 +54,7 @@ public class GonguService {
 		}
 		
 		// gbcode 생성
-		String maxGbcode = adao.admin_selectMaxNbcode();
+		String maxGbcode = adao.admin_selectMaxGbcode();
 		int gbcodeNum = Integer.parseInt(maxGbcode.substring(3)) + 1;
 		System.out.println("gbcodeNum: "+gbcodeNum);
 		String gbcode;
@@ -124,7 +90,7 @@ public class GonguService {
 		if(insertresult > 0) {
 			ra.addFlashAttribute("msg", gbcode+" 공구 작성되었습니다.");
 			ra.addAttribute("codeIdx", gbcode);
-			mav.setViewName("redirect:/gongu_selectBoardView");
+			mav.setViewName("redirect:/admin_selectNoticeBoardView");
 		} else {
 			ra.addFlashAttribute("msg", "공구 작성에 실패했습니다.");
 			mav.setViewName("redirect:/loadToFail");
