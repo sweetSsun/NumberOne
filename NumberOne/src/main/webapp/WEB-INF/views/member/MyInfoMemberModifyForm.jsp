@@ -235,7 +235,7 @@ background-color: #00BCD4;
                                 <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p>전화번호<span>*</span></p>
-                                        <input type="text" id="inputMphone" name="mphone" placeholder="'-' 포함하여 번호 입력해주세요."  value="${memberInfo.mphone }">
+                                        <input type="text" id="inputMphone" name="mphone" placeholder="'-' 포함하여 번호 입력해주세요."  value="${memberInfo.mphone }" onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');"/>
  									<span id="phoneCheckMsg" class="msg"></span>                                    
                                     </div>
                                 </div>
@@ -275,7 +275,8 @@ background-color: #00BCD4;
 										</select>
                                     </div>
                                 </div> 
-                            </div>               
+                            </div> 
+                                          
                             <!-- 관심지역 -->
                             <div class="row">
                                 <div class="col-lg-5 col-md-12 col-sm-12">
@@ -423,6 +424,10 @@ background-color: #00BCD4;
 	
 <script type="text/javascript">
 
+var inputPwCheck = false;
+var inputNameCheck = false;
+var inputNicknameCheck = false;
+var inputEmailCheck = false;
 
 <!-- 파일 input 이름 생성 -->
 	$("#inputMfile").on('change',function(){
@@ -438,7 +443,139 @@ background-color: #00BCD4;
 	}
 </script>
 
+		<!-- 이메일 중복 확인 -->
+ 		<script type="text/javascript">
+  			
+  		/*
+		var emailId = $("#inputEmailId").val();
+ 		var memailDomain = $("#inputEmailDomain").val();
+ 		var inputEmail = "";
+ 		inputEmail = emailId+"@"+memailDomain;
+ 		console.log("inputEmail : "+ inputEmail);
+ 		*/
+ 		
+		//이메일 아이디 입력하면 중복 확인으로 연결하는 함수
+ 		$("#inputEmailId").on("propertychange change keyup paste input", function() {
+ 			console.log("이메일 아이디 입력");
+ 	 		
+ 			if( $("#inputEmailDomain").val().length != 0){
+ 				console.log("도메인도 입력")
+ 	 			var inputEmail = $("#inputEmailId").val()+"@"+$("#inputEmailDomain").val();
+ 	 			selectMemberEmail_ajax(inputEmail);
+ 			}
+         });
+ 		
+ 		
+		//이메일 도메인 직접 입력하면 중복 확인으로 연결하는 함수
+ 		$("#inputEmailDomain").on("propertychange change keyup paste input", function() {
+ 			//propertychate, input은 작동을 하지 않는 듯 하다...
+ 			console.log("이메일 도메인 입력");
+ 	 		
+ 			if( $("#inputEmailId").val().length != 0){
+ 				console.log("아이디도 입력")
+ 	 			var inputEmail = $("#inputEmailId").val()+"@"+$("#inputEmailDomain").val();
+ 	 			selectMemberEmail_ajax(inputEmail);
+ 			}
+         });
+		
+		//이메일 도메인 선택하면 중복 확인으로 연결하는 함수
+ 		$("#domainSelect").on("change", function() {
+ 			console.log("이메일 도메인 선택");
+ 	 		
+ 			if( $("#inputEmailId").val().length != 0){
+ 				console.log("아이디도 입력")
+ 	 			var inputEmail = $("#inputEmailId").val()+"@"+$("#domainSelect").val();
+ 	 			selectMemberEmail_ajax(inputEmail);
+ 			}
+         });
+		
+ 		function emailChForDuplicates() {	
+ 			
+ 			console.log($("#inputEmailId").val());
+ 			console.log($("#inputEmailId").val().length);
+ 			console.log($("#inputEmailDomain").val());
+ 			var inputEmail = $("#inputEmailId").val()+"@"+$("#inputEmailDomain").val();
+ 			console.log(inputEmail);
+ 			/*
+ 			if(emailId.length == 0){
+ 				console.log("메소드 종료!")
+ 				return;
+ 			}
+ 			*/
+ 			//selectMemberEmail_ajax(inputEmail);
 
+		};
+ 		
+ 		function selectMemberEmail_ajax(inputEmail){
+ 			
+			console.log("이메일 중복 체크 함수 호출")
+			
+			if(inputEmail == '${memberInfo.memail}'){
+				console.log("기존 이메일");
+				return;
+			}
+			
+			$.ajax({
+				type : "get",
+				url : "selectMemberEmail_ajax",
+				data : {"inputEmail" : inputEmail },
+				success : function(result){
+					console.log(result);
+					
+					if(result=="OK") {
+					//$("#recheckEmail").text("사용가능한 닉네임 입니다.").css("color" , "green");  
+					console.log("이메일 사용 가능")
+					inputEmailCheck =true;
+					
+					}else {
+					//$("#recheckEmail").text("이미 사용중인 닉네임 입니다.").css("color" , "red");  		
+					console.log("이메일 사용 불가능")
+					inputEmailCheck =false;
+					alert("이미 사용중인 이메일 입니다")
+					$("#inputEmailId").val("");
+					$("#inputEmailDomain").val("");
+					$("#inputEmailId").focus();
+					}
+				}
+
+			});
+ 		}
+	</script> 
+
+    <!-- 닉네임 중복 확인 -->
+    <script type="text/javascript">
+		$("#inputMnickname").keyup(function(){
+			var inputNickname = $("#inputMnickname").val();
+			console.log("inputNickname : " + inputNickname);
+			if( inputNickname.length == 0 ){
+				$("#nicknameCheckMsg").css("color","red").text("닉네임을 입력해주세요.");
+				inputNicknameCheck = false;
+			} else if( inputNickname.length < 2 || inputNickname.length > 10 ){
+				$("#nicknameCheckMsg").text("닉네임은 2~10자리 입니다.").css("color", "red");
+				inputNicknameCheck = false;				
+			} else {
+				
+    			$.ajax({
+    				type : "get",
+    				url : "selectMemberNickname_ajax",
+    				data : {"inputNickname" : inputNickname },
+    				success : function(result){
+    					
+    					
+    					if(result=="OK") {
+    					$("#nicknameCheckMsg").text("사용가능한 닉네임 입니다.").css("color" , "green");    
+    					inputIdCheck =true;
+    					}else {
+    					$("#nicknameCheckMsg").text("이미 사용중인 닉네임 입니다.").css("color" , "red");  		
+    					inputIdCheck =false;
+    					}
+    				}
+	
+    			});
+				
+			}
+		});
+		</script>
 
 
     <!-- 비밀번호 길이 확인 -->
@@ -501,42 +638,6 @@ background-color: #00BCD4;
 		});
 		</script>
 		
-    <!-- 닉네임 길이 확인 -->
-    <script type="text/javascript">
-		$("#inputMnickname").keyup(function(){
-			var inputNickname = $("#inputMnickname").val();
-			console.log("inputNickname : " + inputNickname);
-			if( inputNickname.length == 0 ){
-				$("#nicknameCheckMsg").css("color","red").text("닉네임을 입력해주세요.");
-				inputNicknameCheck = false;
-			} else if( inputNickname.length < 2 || inputNickname.length > 10 ){
-				$("#nicknameCheckMsg").text("닉네임은 2~10자리 입니다.").css("color", "red");
-				inputNicknameCheck = false;				
-			} else {
-				
-    			$.ajax({
-    				type : "get",
-    				url : "selectMemberNickname_ajax",
-    				data : {"inputNickname" : inputNickname },
-    				success : function(result){
-    					
-    					
-    					if(result=="OK") {
-    					$("#nicknameCheckMsg").text("사용가능한 닉네임 입니다.").css("color" , "green");    
-    					inputIdCheck =true;
-    					}else {
-    					$("#nicknameCheckMsg").text("이미 사용중인 닉네임 입니다.").css("color" , "red");  		
-    					inputIdCheck =false;
-    					}
-    				}
-	
-    			});
-				
-			}
-		});
-		</script>					
-	
-		
 
 <!-- 입력칸 유무 확인 -->
      <script type="text/javascript">
@@ -549,17 +650,30 @@ background-color: #00BCD4;
     		$("#inputMname").focus();
     		return false;
     	}
+
+    	if($("#inputMname").val().length < 2 || $("#inputMname").val().length >10){
+    		alert("이름은 2~10자리 입니다.");
+    		$("#inputMname").focus();
+    		return false;
+    	}
     	
     	/*비밀번호 유무*/
     	if($("#inputMpw").val().length == 0){
     		alert("비밀번호를 입력해주세요.");
     		$("#inputMpw").focus();
     		return false;
+    	}    	
+    	
+    	if($("#inputMpw").val().length < 6 || $("#inputMpw").val().length >20){
+    		alert("비밀번호는 6~20자리 입니다.");
+    		$("#inputMpw").focus();
+    		return false;
     	}
+    	
     	
     	/*비밀번호 확인*/
     	if($("#checkMpw").val() != $("#inputMpw").val()){
-    		alert("비밀번호 확인해주세요.");
+    		alert("비밀번호를 확인해주세요.");
     		$("#checkMpw").focus();
     		return false;
     	}
@@ -567,6 +681,12 @@ background-color: #00BCD4;
     	/*닉네임 유무*/
     	if($("#inputMnickname").val().length == 0){
     		alert("닉네임을 입력해주세요.");
+    		$("#inputMnickname").focus();
+    		return false;
+    	}   	
+    	
+    	if($("#inputMnickname").val().length < 2 || $("#inputMnickname").val().length >10){
+    		alert("닉네임은 2~10자리 입니다.");
     		$("#inputMnickname").focus();
     		return false;
     	}
@@ -595,7 +715,7 @@ background-color: #00BCD4;
     		alert("관심지역을 선택해주세요.");
     		$("#inputmregion").focus();
     		return false;
-    	}  
+    	} 
     	
    		/* 새로운 파일 있는지 체크 */
    		if($("#inputMfile").val().length != 0){
