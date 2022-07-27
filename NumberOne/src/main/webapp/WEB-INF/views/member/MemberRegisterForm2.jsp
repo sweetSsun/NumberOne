@@ -496,47 +496,37 @@ background-color: #00BCD4;
  		console.log("inputEmail : "+ inputEmail);
  		*/
  		
- 		const emailId = $("#inputEmailId");
- 		const emailDomain = $("#inputEmailDomain");
- 		const emailDomainSel = $("#domainSelect");
- 		
- 		
 		//이메일 아이디 입력하면 중복 확인으로 연결하는 함수
- 		emailId.on("focusout", function() {
- 			if(emailId.val().lengh == 0){
- 				return;
- 			}
- 			
+ 		$("#inputEmailId").on("propertychange change keyup paste input", function() {
  			console.log("이메일 아이디 입력");
  	 		
- 			if( emailDomain.val().length != 0){
+ 			if( $("#inputEmailDomain").val().length != 0){
  				console.log("도메인도 입력")
- 	 			var inputEmail = emailId.val()+"@"+emailDomain.val();
- 				console.log("입력한 이메일: "+inputEmail)
+ 	 			var inputEmail = $("#inputEmailId").val()+"@"+$("#inputEmailDomain").val();
  	 			selectMemberEmail_ajax(inputEmail);
  			}
          });
  		
  		
 		//이메일 도메인 직접 입력하면 중복 확인으로 연결하는 함수
- 		emailDomain.on("propertychange change keyup paste input", function() {
+ 		$("#inputEmailDomain").on("propertychange change keyup paste input", function() {
  			//propertychate, input은 작동을 하지 않는 듯 하다...
  			console.log("이메일 도메인 입력");
  	 		
- 			if( emailId.val().length != 0){
+ 			if( $("#inputEmailId").val().length != 0){
  				console.log("아이디도 입력")
- 	 			var inputEmail = emailId.val()+"@"+emailDomain.val();
+ 	 			var inputEmail = $("#inputEmailId").val()+"@"+$("#inputEmailDomain").val();
  	 			selectMemberEmail_ajax(inputEmail);
  			}
          });
 		
 		//이메일 도메인 선택하면 중복 확인으로 연결하는 함수
- 		emailDomainSel.on("change", function() {
+ 		$("#domainSelect").on("change", function() {
  			console.log("이메일 도메인 선택");
  	 		
- 			if( emailId.val().length != 0){
+ 			if( $("#inputEmailId").val().length != 0){
  				console.log("아이디도 입력")
- 	 			var inputEmail = emailId.val()+"@"+emailDomainSel.val();
+ 	 			var inputEmail = $("#inputEmailId").val()+"@"+$("#domainSelect").val();
  	 			selectMemberEmail_ajax(inputEmail);
  			}
          });

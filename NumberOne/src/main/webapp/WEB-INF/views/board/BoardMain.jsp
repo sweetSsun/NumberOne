@@ -104,6 +104,15 @@ section{
 	.max_contents{
 		width: max-content;
 	}
+	section div.checkout__form{
+	/* 페이지 제목 */
+	color: #1c1c1c; 
+    font-weight: 700; 
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+    font-size : 24px;
+	}
 </style>
 
 </head>
@@ -125,8 +134,7 @@ section{
 		
 		<!-- 본문 -->
 			<section>
-			<div class="container-fluid">
-				<h2 class="text-center">게시판 메인 : BoardMain.jsp</h2>
+			<div class="checkout__form" style="margin-top: 30px;">커뮤니티</div>
 				<div class="row">
 					<div class="col mb-2">
 						<h3>자취방자랑</h3>

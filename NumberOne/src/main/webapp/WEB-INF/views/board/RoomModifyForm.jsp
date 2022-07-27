@@ -147,7 +147,7 @@
 				</div>
 				<hr>
 				<div class="row">
-					<input class="bdtitle" name="bdtitle" type="text" value="${board.bdtitle }">
+					<input class="bdtitle" name="bdtitle" type="text" value="${board.bdtitle }" placeholder="제목">
 				</div>
 				<hr>
 				<div class="row">
