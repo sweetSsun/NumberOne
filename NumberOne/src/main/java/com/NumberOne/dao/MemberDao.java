@@ -152,8 +152,8 @@ public interface MemberDao {
 	   int insertMemberWarning_ajax(@Param("loginId") String loginId, @Param("wmedNickname") String wmedNickname);
 
 		//이메일 중복 확인
-		@Select("SELECT MEMAIL FROM MEMBERS WHERE MEMAIL = #{inputEmail}")	
-		String selectMemberEmail_ajax(String inputEmail);
+		@Select("SELECT COUNT(MEMAIL) FROM MEMBERS WHERE MEMAIL = #{inputEmail}")	
+		int selectMemberEmail_ajax(String inputEmail);
 	
 }
 
