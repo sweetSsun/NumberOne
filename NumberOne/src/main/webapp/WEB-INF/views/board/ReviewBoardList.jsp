@@ -96,7 +96,15 @@
 .None_rate{
 	color: #F0F0F0;
 }
-
+section div.checkout__form{
+	/* 페이지 제목 */
+	color: #1c1c1c; 
+    font-weight: 700; 
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+    font-size : 24px;
+}
 </style>
 </head>
 <body>
@@ -117,12 +125,11 @@
 		<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
 		
 		<section>
+		<!-- 페이지명 -->
+		<div class="checkout__form" style="margin-top: 30px;">후기게시판</div>
 		<!-- 본문 -->
 			<form action="selectCategoryBoardList" method="get" id="actionForm">
 			<div class="container">
-				<div class="row" style="margin:auto;">
-					<h2 class="text-center">후기게시판 : ReviewBoardList.jsp</h2>
-				</div>
 				<input type="hidden" name="searchVal" value="후기">
 					<div class="row ">
 						<!-- 검색기능 -->

@@ -66,7 +66,16 @@
 	}
    .bdnickname:hover{
    	color:#00bcd4;
-   }	
+   }
+section div.checkout__form{
+	/* 페이지 제목 */
+	color: #1c1c1c; 
+    font-weight: 700; 
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+    font-size : 24px;
+}
 </style>
 </head>
 <body>
@@ -87,12 +96,13 @@
 		<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
 		
 		<section>
+			<!-- 페이지명 -->
+			<div class="checkout__form" style="margin-top: 30px;">커뮤니티</div> 
+		
 		<!-- 본문 -->
 			<form action="selectBoardList" method="get"  id="actionForm">
 			<div class="container">
-				<div class="row" style="margin:auto;">
-					<h2 class="text-center">게시판 글목록 페이지 : BoardListPage.jsp</h2>
-				</div>
+
 					<div class="row ">
 						<!-- 검색기능 -->
 						<div class="col-5" align="right">
