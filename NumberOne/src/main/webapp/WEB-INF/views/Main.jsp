@@ -394,7 +394,7 @@
             <div class="featured__filter" style="margin-left: 5%; margin-right: 3%; margin-bottom: 5%; min-height: 170px;">
             	<!-- 전체보기 -->
                 <div class="row mix all active">
-            	<p><a href="loadToBoardMainPage"  style="float: right; margin-bottom: 20px; font-size: 15px;">더보기</a></p>
+            	<p><a href="selectBoardList"  style="float: right; margin-bottom: 20px; font-size: 15px;">더보기</a></p>
             	<c:forEach items="${boardList }" end="5" var="boardList">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;border-right: solid 20px white">
                         <div class="row ahover">
@@ -448,7 +448,7 @@
                 
                 <!-- 자유보기 -->
                 <div class="row mix free" style="display:none;">
-            	<p><a href="selectFreeBoardList"  style="float: right; margin-bottom: 15px;">더보기</a></p>
+            	<p><a href="selectCategoryBoardList?searchVal=자유"  style="float: right; margin-bottom: 15px;">더보기</a></p>
             	<c:forEach items="${boardList_free }" end="5" var="boardList_free">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row ahover">
@@ -467,7 +467,7 @@
                 
                 <!-- 질문보기 -->
                 <div class="row mix question" style="display:none;">
-            	<p><a href="#"  style="float: right; margin-bottom: 15px;">더보기</a></p>
+            	<p><a href="selectCategoryBoardList?searchVal=질문"  style="float: right; margin-bottom: 15px;">더보기</a></p>
             	<c:forEach items="${boardList_qa }" end="5" var="boardList_qa">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row ahover">
@@ -486,7 +486,7 @@
                 
                 <!-- 정보보기 -->
                 <div class="row mix information" style="display:none;">
-				<p><a href="#"  style="float: right; margin-bottom: 15px;">더보기</a></p>
+				<p><a href="selectCategoryBoardList?searchVal=정보"  style="float: right; margin-bottom: 15px;">더보기</a></p>
             	<c:forEach items="${boardList_info }" end="5" var="boardList_info">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row ahover">
@@ -505,7 +505,7 @@
                 
                 <!-- 후기보기 -->
                 <div class="row mix review" style="display:none;">
-            	<p><a href="#"  style="float: right; margin-bottom: 20px;">더보기</a></p>
+            	<p><a href="selectCategoryBoardList?searchVal=후기"  style="float: right; margin-bottom: 20px;">더보기</a></p>
             	<c:forEach items="${boardList_review }" end="5" var="boardList_review">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row ahover">

@@ -265,6 +265,9 @@ textarea:focus {
 .zzimChatBtn:hover {
 	cursor: pointer;
 }
+#sellList_title:hover{
+	color: #00bcd4;
+}
 /* 글목록 버튼 */
 #backList {
 	border: none;
@@ -722,14 +725,17 @@ textarea:focus {
 
 							<div class="card_body text-left fw-bold">
 								<!-- <div class="fw-bold text-white" style="width:270px; background-color:#00bcd4;">	 -->						
-								<a href="selectResellView?ubcode=${sellList.ubcode}&ubsellbuy=${sellList.ubsellbuy}&modifyCheck=LIST"> ${sellList.ubtitle} </a>
+								<a id="sellList_title" href="selectResellView?ubcode=${sellList.ubcode}&ubsellbuy=${sellList.ubsellbuy}&modifyCheck=LIST"> ${sellList.ubtitle} 
+								<br>
+								${sellList.ubdate}
+								</a>
 								<!-- </div> -->
 							</div>
-							<div class="card_footer  text-left" style="margin-bottom:30px;">
+							<%-- <div class="card_footer  text-left" style="margin-bottom:30px;">
 								<!-- <div  style="width:270px; background-color:#00bcd4;"> -->
 								${sellList.ubdate}
 								<!-- </div> -->
-							</div>
+							</div> --%>
 						</div>
 					</c:forEach>
 				</div>
