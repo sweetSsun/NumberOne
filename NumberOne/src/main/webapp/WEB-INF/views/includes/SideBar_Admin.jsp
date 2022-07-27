@@ -76,6 +76,11 @@ body.sideon {
 				</div>
 				<div class="sideclose_room">
 					<span>
+						<a href="admin_selectGonguList" title="공구관리"><i class="fa-solid fa-box-open"></i></a>
+					</span>
+				</div>
+				<div class="sideclose_room">
+					<span>
 						<a href="admin_selectResellList" title="중고거래관리"><i class="fa-solid fa-carrot"></i></a>
 					</span>
 				</div>
@@ -119,6 +124,11 @@ body.sideon {
 				<div class="side_admin">
 					<span>
 						<a href="admin_selectNoticeList"><i class="fa-solid fa-volume-low"></i>&nbsp;&nbsp;공지방</a>
+					</span>
+				</div>
+				<div class="side_admin" style="padding-left: 5px;">
+					<span>
+						<a href="admin_selectGonguList"><i class="fa-solid fa-box-open" style="font-size:large;"></i>&nbsp;&nbsp;공구방</a>
 					</span>
 				</div>
 				<div class="side_admin">

@@ -33,6 +33,7 @@ public class UsedBoardDto {
 	
 	private String ubnickname;	//작성자 닉네임 (members 테이블 조인) 
 	private String ubprofile;	//상세페이지 출력용 작성자 프로필사진
+	private String ubmstate;	//상세페이지 조건용 작성자 상태
 	
 	private MultipartFile ubmainimgfile;	//대표사진파일
 	private MultipartFile[] ubdetailimgfile;	//상세사진파일

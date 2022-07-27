@@ -37,7 +37,29 @@ public class ResellService {
 	ResellDao rdao;
 
 	public static String savePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\resell";
+	
+	//로그인 확인 (파라미터: ra/리턴: mav)
+	public ModelAndView loginChToFail(RedirectAttributes ra) {
+		ModelAndView mav = new ModelAndView();
+		String loginId = (String) session.getAttribute("loginId");
+		
+		if(loginId == null) {
+			System.out.println("비로그인");
+			
+			//메세지
+			ra.addFlashAttribute("msg", "로그인 후 이용가능합니다");
+			
+			//실패페이지로 이동(실패 페이지에서 msg alert 띄우고, history back)
+			mav.setViewName("redirect:loadToFail");
+		
+		} else {
+			System.out.println("로그인");
 
+		}	
+		
+		return mav;
+	}
+	
 	
 	public ModelAndView selectResellMainPage(Paging paging) throws Exception {
 		System.out.println("selectResellMainPage 서비스 호출");
@@ -229,24 +251,24 @@ public class ResellService {
 			System.out.println(gdDto);
 			insertResult_gd = rdao.insertResellWrite_gd(gdDto);
 
+			
 		}
-
-		if (insertResult_ub > 0 && insertResult_gd > 0) {
+		
+		String sellbuy = ubDto.getUbsellbuy();
+		String searchVal = ubDto.getUbrgcode();
+		mav.setViewName("redirect:/selectResellPageList?sellBuy="+sellbuy+"&searchVal="+searchVal);
+		if (insertResult_ub > 0 && insertResult_gd > 0) {			
 			System.out.println("insert성공");
 			System.out.println(ubDto.getUbsellbuy());
+		
 			ra.addFlashAttribute("msg", "글이 작성되었습니다.");
-			if (ubDto.getUbsellbuy().equals("B")) {
-
-				mav.setViewName("redirect:/selectResellPageList?sellBuy=B&searchVal=전국");
-
-			} else {
-
-				mav.setViewName("redirect:/selectResellPageList?sellBuy=S&searchVal=전국");
-
-			}
+		
 		} else {
+			
 			ra.addFlashAttribute("msg", "글 작성에 실패하였습니다.");
-			mav.setViewName("redirect:/");
+			rdao.delete_gdInsertResult(gdDto);
+			rdao.delete_ubInsertResult(ubDto);
+			
 		}
 
 		return mav;
@@ -261,6 +283,7 @@ public class ResellService {
 
 		String checkMethod = "NO";
 		System.out.println(paging.getSellBuy());
+		
 		/* 사이드바에서 지역선택 하지 않았을 경우 회원의 관심지역을 지역필드에 저장*/
 		 if(paging.getAjaxCheck()!=null && (String) session.getAttribute("loginRegion") != null) {
 				 paging.setSearchVal(rdao.selectRegionCode((String)
@@ -288,6 +311,9 @@ public class ResellService {
 		//timeFuction에 리스트 넘기면 시간 ubdatedef에는 변경된 시간, ubdate에는 분 까지 잘린 시간이 저장되어 리턴
 		sell_buyList = timeFuction(sell_buyList);
 		
+		//zzimCheck에 리스트 넘기면 로그인 id가 zzim 기록이 있는 경우 zzimcheck에 mid 저장
+		sell_buyList = zzimCheck(sell_buyList);
+				
 		/*
 
 		for (int i = 0; i < sell_buyList.size(); i++) {
@@ -516,24 +542,16 @@ public class ResellService {
 
 		int ub_deleteResult = rdao.updateResellDelete_ub(ubDto); // 글삭제
 
+		String ubsellbuy = ubDto.getUbsellbuy();
+		
+		mav.setViewName("redirect:/selectResellPageList?sellBuy="+ubsellbuy);
+		
 		if (gd_deleteResult > 0 && ub_deleteResult > 0) {
 			System.out.println("delete성공");
 			ra.addFlashAttribute("msg", "글이 삭제되었습니다.");
-
-			if (ubDto.getUbsellbuy().equals("B")) {
-
-				mav.setViewName("redirect:/selectResellPageList?sellBuy=B");
-
-			} else {
-
-				mav.setViewName("redirect:/selectResellPageList?sellBuy=S");
-
-			}
 		} else {
-			ra.addFlashAttribute("msg", "글 작성에 실패하였습니다.");
-			mav.setViewName("redirect:/");
+			ra.addFlashAttribute("msg", "글 삭제에 실패하였습니다.");
 		}
-
 		return mav;
 
 	}
@@ -547,18 +565,16 @@ public class ResellService {
 
 			if (gdDto.getGdstate() == 0) {
 				result = "SOLD";
-
 			} else {
-
 				result = "ING";
 			}
 		}
-
 		return result;
 	}
 
 	public String updateResellState_usedBoardAjax(UsedBoardDto ubDto) {
 		System.out.println("updateResellState_usedBoardAjax() 호출");
+		
 		String result = null;
 
 		int usedBoardState = rdao.updateResellState_usedBoardAjax(ubDto);
