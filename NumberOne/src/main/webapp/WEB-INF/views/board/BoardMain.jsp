@@ -104,7 +104,11 @@ section{
 	.max_contents{
 		width: max-content;
 	}
+<<<<<<< HEAD
+	section div.checkout__form{
+=======
 section div.checkout__form{
+>>>>>>> 73f1466a5503c4eb5ee6b6f342012f6a939dd983
 	/* 페이지 제목 */
 	color: #1c1c1c; 
     font-weight: 700; 
@@ -112,7 +116,11 @@ section div.checkout__form{
     padding-bottom: 20px;
     margin-bottom: 25px;
     font-size : 24px;
+<<<<<<< HEAD
+	}
+=======
 }
+>>>>>>> 73f1466a5503c4eb5ee6b6f342012f6a939dd983
 </style>
 
 </head>
@@ -134,10 +142,12 @@ section div.checkout__form{
 		
 		<!-- 본문 -->
 			<section>
+
 		<!-- 페이지명 -->
 		<div class="checkout__form" style="margin-top: 30px;">커뮤니티 메인</div> 
 			
 			<div class="container-fluid">
+
 
 				<div class="row">
 					<div class="col mb-2">

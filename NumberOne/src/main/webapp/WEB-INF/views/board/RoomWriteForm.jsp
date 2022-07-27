@@ -121,7 +121,7 @@
 				</div>
 				<hr>
 				<div class="row">
-					<input id="bdtitle" class="bdtitle" name="bdtitle" type="text" >
+					<input id="bdtitle" class="bdtitle" name="bdtitle" type="text" placeholder="제목">
 				</div>
 				<hr>
 				<div class="row">
