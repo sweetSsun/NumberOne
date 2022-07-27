@@ -419,7 +419,7 @@ public class MemberService {
 		    	  if(loginProfile !=null) {
 		    		  //System.out.println("변경 이미지 파일 없고, 기존 이미지 있음");
 		    		  
-		    		  if(member.getMprofile() != null) {
+		    		  if(delFileName.length() != 0) {
 		    			  System.out.println("프로필 삭제");
 		    			  member.setMprofile("");  
 		    			  //System.out.println("프로필 삭제 if문 : "+member);
@@ -1055,7 +1055,42 @@ public class MemberService {
 	  		}
 	  	}
 
-}
+	  	//마이페이지 _ 공구
+		public ModelAndView selectMyInfoGonguView(RedirectAttributes ra) {
+	
+				ModelAndView mav = new ModelAndView();
+				System.out.println("MemberService.selectMyInfoGonguView 호출");
+				
+				//로그인 여부 확인
+				if(session.getAttribute("loginId")==null) {
+					ra.addFlashAttribute("msg", "로그인 후 이용가능합니다.");
+					mav.setViewName("redirect:/loadToLogin");
+					return mav;
+				}
+				
+			    //String loginId = (String) session.getAttribute("loginId");
+				String loginId;
+				if((String) session.getAttribute("loginId")!=null) {			
+					loginId = (String) session.getAttribute("loginId");
+				} else {
+					loginId = (String) session.getAttribute("kakaoId");			
+				}
+				System.out.println("로그인 된 아이디 : " + loginId);
+				
+
+				//참여한 공구 목록 
+				//ArrayList<BoardDto> board = mdao.selectMyInfoMemberView_Boards(loginId);
+				//System.out.println(board);
+
+				//mav.addObject("board", board);
+	
+				mav.setViewName("member/MyInfoGonguPage");
+
+				return mav;
+			}
+		}
+
+
 
 
 
