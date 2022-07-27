@@ -1042,7 +1042,18 @@ public class MemberService {
 	         return insertResult;
 	      }
 
-
+	  	//이메일 중복 확인 요청
+	  	public String selectMemberEmail_ajax(String inputEmail) {
+	  		System.out.println("MemberService.selectMemberEmail_ajax() 호출");
+	  		System.out.println(inputEmail);
+	  		int emailCheckResult = mdao.selectMemberEmail_ajax(inputEmail);
+	  		System.out.println(emailCheckResult);
+	  		if(emailCheckResult > 0) {
+	  			return "NO";
+	  		}else {
+	  			return "OK";
+	  		}
+	  	}
 
 }
 
