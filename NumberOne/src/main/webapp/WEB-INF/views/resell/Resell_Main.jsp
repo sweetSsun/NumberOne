@@ -276,6 +276,12 @@ div.col.mb-2 h3{ color : white; }
 							<span onclick="writeMemberSellbuy('${sellList.ubnickname }')" style="height:1.8rem; font-size:1.6rem; padding:0; color:initial; cursor:pointer;">${sellList.ubnickname }</span>
 						</div>
 					</div>
+							<input
+									type="hidden"
+									class="ubstate_"
+									value="${sellList.ubstate }"
+								>
+					
 				</c:forEach>
 
 				<div style="height: 20px; float: left; width: 33.3333333%;"></div>
@@ -329,11 +335,11 @@ div.col.mb-2 h3{ color : white; }
 						<div class="bottom" style="font-size:1.7rem; font-weight:600; position:relative;">
 							<span onclick="writeMemberSellbuy('${buyList.ubnickname }')" style="height:1.8rem; font-size:1.6rem; padding:0; color:initial; cursor:pointer;">${buyList.ubnickname }</span>
 						</div>
-						<input
-							type="hidden"
-							class="ubstate_"
-							value="1"
-						>
+							<input
+									type="hidden"
+									class="ubstate_"
+									value="${buyList.ubstate }"
+								>
 					</div>
 					
 				</c:forEach>
@@ -463,5 +469,24 @@ div.col.mb-2 h3{ color : white; }
       
 </script>
 
+<script type="text/javascript">
+	/* 거래완료 글 체크표시  */
+		// 페이지로드 시 거래완료된 글 확인
+	window.onload = function() {
+		soldCheck();
+	}
+		const ubstate = document.querySelectorAll('.ubstate_');
+		const soldCheckMsg = document.querySelectorAll('.soldCheckMsg_');
+	function soldCheck() {
+		for (let i = 0; i < ubstate.length; i++) {
+			if (ubstate[i].value === '9') {
+				
+				console.log("거래완료글확인")
+				soldCheckMsg[i].textContent = "(거래완료) "
+				break;
+			}
+		}
+	}
+</script>
 
 </html>

@@ -263,8 +263,8 @@ div.detailimageBox {
 									id="totalOp"
 									name="ubstate"
 									onchange="resellState(this,'${gd_resellView}')">
-									<option value="1">판매중</option>
-									<option value="9">판매완료</option>
+									<option value="1">거래중</option>
+									<option value="9">거래완료</option>
 								</select>
 							</div>
 							<div class="col-6">
@@ -309,7 +309,7 @@ div.detailimageBox {
 						
 						<!-- 품목 -->
 						<div class="container-gd mb-3">
-							<!-- <span class="gd-header">판매물품</span> -->
+							<!-- <span class="gd-header">거래물품</span> -->
 						
 							<c:forEach
 								items="${gd_resellView}"
@@ -323,8 +323,8 @@ div.detailimageBox {
 											onchange="gdUpdateState('${gdList.gdcode }',this)"
 											style="width:130px;"
 										>
-											<option value="1">판매중</option>
-											<option value="0">판매완료</option>
+											<option value="1">거래중</option>
+											<option value="0">거래완료</option>
 										</select>
 	
 									</div>
@@ -565,10 +565,10 @@ div.detailimageBox {
 	const selectStates = document.querySelectorAll(".selectStates"); // 상품 상태 select태그 
 	const select_gdcode = document.querySelectorAll(".select_gdcode"); //상품코드	
 	const select_gdstate = document.querySelectorAll(".select_gdstate");//상품상태 
-	const gd_nameList = document.querySelectorAll(".gd_nameList"); //상품명  (판매완료시) 
-	const gd_priceList = document.querySelectorAll(".gd_priceList"); //상품가격 (판매완료시)
-	const gd_names = document.getElementsByName('gd_names');	// input 상품명	(판매중)
-	const gd_price = document.getElementsByName('gd_price');	// input 상품가격	(판매중)
+	const gd_nameList = document.querySelectorAll(".gd_nameList"); //상품명  (거래완료시) 
+	const gd_priceList = document.querySelectorAll(".gd_priceList"); //상품가격 (거래완료시)
+	const gd_names = document.getElementsByName('gd_names');	// input 상품명	(거래중)
+	const gd_price = document.getElementsByName('gd_price');	// input 상품가격	(거래중)
 </script>
 
 
@@ -605,16 +605,16 @@ div.detailimageBox {
 		
 	}
 
-	/* 페이지로드시 글의 판매상태체크 */
+	/* 페이지로드시 글의 거래상태체크 */
 		for (let i = 0; i < totalOp.options.length; i++) {
 			if (totalOp.options[i].value === ubstate) {
 				console.log('totalOp.options[i].value',
 						totalOp.options[i].value);
-				/* 글의 판매상태 option (9:판매완료 ,1:판매중)와 
+				/* 글의 거래상태 option (9:거래완료 ,1:거래중)와 
 				페이지 이동시 넘어온 글의 상태값 파라메터가 같을 경우 그 option에 selected 속성 추가*/
 				totalOp.options[i].selected = 'true';
 
-				if (ubstate === '9') { // 글의 상태값이 9(판매완료)이면 실행.
+				if (ubstate === '9') { // 글의 상태값이 9(거래완료)이면 실행.
 					console.log('ubstate', ubstate);
 					document.getElementById("titleCheck").classList.add("line-through")
 					document.getElementById("titleCheck").setAttribute("disabled", "disabled");
@@ -629,7 +629,7 @@ div.detailimageBox {
 						selectStates[i].setAttribute('disabled', 'disabled');
 					}
 					
-				} else { //글의 상태값이 1(판매중)이면 실행
+				} else { //글의 상태값이 1(거래중)이면 실행
 					document.getElementById("titleCheck").classList.remove("line-through")
 					document.getElementById("titleCheck").removeAttribute("disabled");
 					selectStates[i].removeAttribute('disabled');
@@ -645,12 +645,12 @@ div.detailimageBox {
 					//상품별로 상태값에 따라 option을 selected
 
 					if (select_gdstate[j].value === '0') {
-						// 클래스가 select_gdstate 인 태그들 중 value가 0(판매완료)인 태그 찾고
+						// 클래스가 select_gdstate 인 태그들 중 value가 0(거래완료)인 태그 찾고
 						// 그 select태그와 인덱스 번호가 같은 selectStates 를 찾는다.
 						// 찾은 selectStates의 option중 1번인덱스를 selected되도록 한다. 
-						// 0번인덱스는 value 가 '1'(판매중), 1번인덱스는 value가 '0'(판매종료) 이다.  
+						// 0번인덱스는 value 가 '1'(거래중), 1번인덱스는 value가 '0'(거래종료) 이다.  
 				
-						selectStates[j].selectedIndex = '1';  //(판매종료선택)
+						selectStates[j].selectedIndex = '1';  //(거래종료선택)
 
 						//css속성 주기
 						gd_nameList[j].classList.remove('d_none');
@@ -661,7 +661,7 @@ div.detailimageBox {
 					
 					} else {
 						selectStates[j].selectedIndex = '0';
-						//0번인덱스를 selected	(판매중선택)
+						//0번인덱스를 selected	(거래중선택)
 									
 					}
 				}
@@ -707,7 +707,7 @@ div.detailimageBox {
 								selectStates[i].removeAttribute('disabled');
 															
 								if (select_gdstate[i].value === '0') {
-									console.log("상품판매완료");
+									console.log("상품거래완료");
 									//selectStates[i].selectedIndex = '1';
 									
 									gd_nameList[i].classList.remove('d_none');
@@ -718,7 +718,7 @@ div.detailimageBox {
 									
 
 								} else {
-									console.log("상품판매중");
+									console.log("상품거래중");
 									//selectStates[i].selectedIndex = '0';
 									
 									gd_nameList[i].classList.add('d_none');
@@ -902,7 +902,7 @@ div.detailimageBox {
 		console.log("자취방 자랑글 수정 확인");
 		console.log(currentDetailCount);
 	
-		// 글상태를 판매완료로 변경했을 때 disabled 되어있던 상품상태값 value를 넘겨주기 위해 disabled 속성 삭제
+		// 글상태를 거래완료로 변경했을 때 disabled 되어있던 상품상태값 value를 넘겨주기 위해 disabled 속성 삭제
 		for (let i = 0; i < gd_nameList.length; i++) {
 			selectStates[i].removeAttribute('disabled');
 		}
