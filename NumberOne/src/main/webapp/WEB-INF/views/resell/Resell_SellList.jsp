@@ -239,7 +239,7 @@ section div.checkout__form{
 
 				<!-- 검색기능시작 -->
 
-				<div class="row">
+				<div class="row" style="margin-top: 40px">
 
 					<div class="col-5" align="right">
 						<select class="bigger searchType_" id="searchType">
@@ -250,7 +250,6 @@ section div.checkout__form{
 						</select>
 					</div>
 					<div class="col-7 ">
-
 						<input
 							type="text"
 							class="bigger"
