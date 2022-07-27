@@ -575,7 +575,7 @@ div.col.mb-2 h3 {
 		storage.setItem('selRegion',
 				regionInfo.value); 
 
-		location.href = "loadToResellWriteForm?ubsellbuy=B&ubrgcode="+selRegion;
+		location.href = "loadToResellWriteForm?ubsellbuy=B&ubrgcode="+regionInfo.value;
 	}	
 </script>
 
