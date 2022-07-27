@@ -359,7 +359,14 @@ public class MemberController {
 	         return insertResult;
 	      }
 
-		
+	  	//이메일 중복 확인 요청
+	  	@RequestMapping(value = "/selectMemberEmail_ajax")
+	  	public @ResponseBody String selectMemberEmail_ajax(String inputEmail) {
+	  		System.out.println("이메일 중복 확인 요청");
+	  		System.out.println("입력한 이메일 : " + inputEmail);
+	  		String emailCheckResult = msvc.selectMemberEmail_ajax(inputEmail);
+	  		return emailCheckResult;  
+	  	}		
 		
 
 }
