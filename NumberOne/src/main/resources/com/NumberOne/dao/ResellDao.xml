@@ -35,136 +35,99 @@
 	<!-- 중고거래 글목록 -->
 	<select id="selectResellPageList"
 		resultType="com.NumberOne.dto.UsedBoardDto">
-		SELECT UBNICKNAME, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE,
-		UBCONTENTS,
-		TO_CHAR(UBDATE, 'YYYY-MM-DD HH24:MI:SS') UBDATE, UBMAINIMG,
-		UBDETAILIMG, UBSTATE,
-		NVL(ZZIMCOUNT, 0) UBZZIM
-		FROM (SELECT ROWNUM
-		RN,
-		UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE,
-		UBCONTENTS,
-		UBDATE,
-		UBMAINIMG, UBDETAILIMG, UBSTATE
-		FROM (SELECT * FROM USEDBOARDS
 		
-			<if test="(paging.searchType != '' or paging.searchType != null)
-					and (paging.keyword != '' or paging.keyword != null)">
-		<choose>
-			<when
-				test="paging.searchType == 'total'">
-				WHERE UBTITLE LIKE '%'||#{paging.keyword}||'%' OR
-				UBCONTENTS
-				LIKE
-				'%'||#{paging.keyword}||'%'
-			</when>
 
-			<when test="paging.searchType == 'ubmid'">
-				WHERE UBMID IN (SELECT MID
-				FROM MEMBERS
-				WHERE
-				MNICKNAME
-				LIKE '%'||#{paging.keyword}||'%')
-			</when>
-
-			<when test="paging.searchType == 'ubtitle'">
-				WHERE UBTITLE LIKE '%'||#{paging.keyword}||'%'
-			</when>
-			
-			<when test="paging.searchType == 'ubcontents'">
-				WHERE UBCONTENTS LIKE '%'||#{paging.keyword}||'%'
-			</when>
-		</choose>
-		</if>
-		ORDER BY
-		UBDATE DESC)
-
+		SELECT UBMSTATE, UBNICKNAME, UBCODE, UBRGCODE, UBSELLBUY, UBMID,
+		UBTITLE, UBCONTENTS, UBDATE, UBMAINIMG,
+		UBDETAILIMG, UBSTATE, UBZZIM
+		FROM (SELECT ROWNUM RN, PAGESELECT_VIEW.*
+		FROM PAGESELECT_VIEW
 		WHERE
-
 		<if test="paging.searchVal !='all'">
 			UBRGCODE = #{paging.searchVal} AND
 		</if>
-
-		UBSELLBUY = #{paging.sellBuy} AND
-		(UBSTATE = 1 OR UBSTATE = 9)
-
-		) LEFT
-		OUTER JOIN ZZIM_VIEW
-		ON UBCODE = ZZUBCODE,
-		MNICKNAME_VIEW
-		WHERE
-		MID =
-		UBMID
-
+		UBSELLBUY = #{paging.sellBuy}
+		
+		<if
+			test="(paging.searchType != '' or paging.searchType != null)
+					and (paging.keyword != '' or paging.keyword != null)">
+			<choose>
+				<when test="paging.searchType == 'total'">
+					AND (UBTITLE LIKE '%'||#{paging.keyword}||'%' OR
+					UBCONTENTS
+					LIKE
+					'%'||#{paging.keyword}||'%')
+				</when>
+				<when test="paging.searchType == 'ubmid'">
+					AND UBMID IN (SELECT MID
+					FROM MEMBERS
+					WHERE
+					MNICKNAME LIKE
+					'%'||#{paging.keyword}||'%')
+				</when>
+				<when test="paging.searchType == 'ubtitle'">
+					AND UBTITLE LIKE '%'||#{paging.keyword}||'%'
+				</when>
+				<when test="paging.searchType == 'ubcontents'">
+					AND UBCONTENTS LIKE '%'||#{paging.keyword}||'%'
+				</when>
+			</choose>
+		</if>
+		)
 		<choose>
 			<when test="checkMethod=='Main'">
-				AND RN BETWEEN 1 AND 3
+				WHERE RN BETWEEN 1 AND 3
 			</when>
 
 			<otherwise>
-				AND RN BETWEEN #{paging.startRow} AND #{paging.endRow}
+				WHERE RN BETWEEN #{paging.startRow} AND #{paging.endRow}
 			</otherwise>
 
 		</choose>
+
 	</select>
 
 
 	<!-- 지역글 목록 ajax -->
 	<select id="selectResellRegionList_ajax"
 		resultType="com.NumberOne.dto.UsedBoardDto">
-		SELECT UBNICKNAME, UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE,
-		UBCONTENTS,
-		TO_CHAR(UBDATE, 'YYYY-MM-DD HH24:MI:SS') UBDATE, UBMAINIMG,
-		UBDETAILIMG, UBSTATE,
-		NVL(ZZIMCOUNT, 0) UBZZIM
-		FROM (SELECT ROWNUM
-		RN,
-		UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE,
-		UBCONTENTS,
-		UBDATE,
-		UBMAINIMG, UBDETAILIMG, UBSTATE
-		FROM (SELECT * FROM USEDBOARDS
-			<if test="(searchType != '' or searchType != null)
+		SELECT UBMSTATE, UBNICKNAME, UBCODE, UBRGCODE, UBSELLBUY, UBMID,
+		UBTITLE, UBCONTENTS, UBDATE, UBMAINIMG,
+		UBDETAILIMG, UBSTATE, UBZZIM
+		FROM (SELECT ROWNUM RN, PAGESELECT_VIEW.*
+		FROM PAGESELECT_VIEW
+		WHERE
+		<if test="searchVal !='all'">
+			UBRGCODE = #{searchVal} AND
+		</if>
+		UBSELLBUY = #{sellBuy}
+		<if
+			test="(searchType != '' or searchType != null)
 					and (keyword != '' or keyword != null)">
 			<choose>
-				<when
-					test="searchType == 'total'">
-					WHERE UBTITLE LIKE '%'||#{keyword}||'%' OR UBCONTENTS
+				<when test="searchType == 'total'">
+					AND (UBTITLE LIKE '%'||#{keyword}||'%' OR
+					UBCONTENTS
 					LIKE
-					'%'||#{keyword}||'%'
+					'%'||#{keyword}||'%')
 				</when>
 				<when test="searchType == 'ubmid'">
-					WHERE UBMID IN (SELECT MID
+					AND UBMID IN (SELECT MID
 					FROM MEMBERS
 					WHERE
 					MNICKNAME LIKE
 					'%'||#{keyword}||'%')
 				</when>
 				<when test="searchType == 'ubtitle'">
-					WHERE UBTITLE LIKE '%'||#{keyword}||'%'
+					AND UBTITLE LIKE '%'||#{keyword}||'%'
 				</when>
 				<when test="searchType == 'ubcontents'">
-				WHERE UBCONTENTS LIKE '%'||#{keyword}||'%'
-			</when>
-			
-			</choose>
+					AND UBCONTENTS LIKE '%'||#{keyword}||'%'
+				</when>
+			</choose> 
 		</if>
-		ORDER BY
-		UBDATE DESC)
-
-		WHERE
-		<if test="searchVal !='all'">
-			UBRGCODE = #{searchVal} AND
-		</if>
-		UBSELLBUY = #{sellBuy} AND
-		(UBSTATE = 1 OR UBSTATE = 9)
-
-		) LEFT OUTER JOIN ZZIM_VIEW
-		ON UBCODE = ZZUBCODE,
-		MNICKNAME_VIEW
-		WHERE
-		MID
-		= UBMID AND RN BETWEEN #{startRow} AND
+		)
+		WHERE RN BETWEEN #{startRow} AND
 		#{endRow}
 
 	</select>
@@ -172,47 +135,39 @@
 
 	<!-- 중고거래 전체 글 수 확인 -->
 	<select id="selectPageTotalCount" resultType="int">
-		SELECT COUNT(UBCODE)
-		FROM (SELECT *
-
-		FROM (SELECT * FROM USEDBOARDS
-		<if test="(searchType != '' or searchType != null)
+			SELECT COUNT(UBCODE)
+		FROM PAGESELECT_VIEW
+		WHERE
+		<if test="searchVal !='all'">
+			UBRGCODE = #{searchVal} AND
+		</if>
+		UBSELLBUY = #{sellBuy}
+		<if
+			test="(searchType != '' or searchType != null)
 					and (keyword != '' or keyword != null)">
 			<choose>
-				<when
-					test="searchType == 'total'">
-					WHERE UBTITLE LIKE '%'||#{keyword}||'%' OR UBCONTENTS
+				<when test="searchType == 'total'">
+					AND (UBTITLE LIKE '%'||#{keyword}||'%' OR
+					UBCONTENTS
 					LIKE
-					'%'||#{keyword}||'%'
+					'%'||#{keyword}||'%')
 				</when>
-				
 				<when test="searchType == 'ubmid'">
-					WHERE UBMID IN (SELECT MID
+					AND UBMID IN (SELECT MID
 					FROM MEMBERS
 					WHERE
-					MNICKNAME LIKE '%'||#{keyword}||'%')
+					MNICKNAME LIKE
+					'%'||#{keyword}||'%')
 				</when>
-				
 				<when test="searchType == 'ubtitle'">
-					WHERE UBTITLE LIKE '%'||#{keyword}||'%'
+					AND UBTITLE LIKE '%'||#{keyword}||'%'
 				</when>
-						<when test="searchType == 'ubcontents'">
-				WHERE UBCONTENTS LIKE '%'||#{keyword}||'%'
-			</when>
+				<when test="searchType == 'ubcontents'">
+					AND UBCONTENTS LIKE '%'||#{keyword}||'%'
+				</when>
 			</choose>
 		</if>
 		
-		)
-		WHERE
-		<if test="searchVal !='all'">
-		
-			UBRGCODE = #{searchVal} AND
-		</if>
-
-		UBSELLBUY = #{sellBuy} AND (UBSTATE = 1 OR UBSTATE = 9)
-
-		),MNICKNAME_VIEW
-		WHERE MID = UBMID
 
 	</select>
 
@@ -232,7 +187,7 @@
 	<!-- 글 상세정보 -->
 	<select id="selectResellView"
 		resultType="com.NumberOne.dto.UsedBoardDto">
-		SELECT UBMSTATE, UBNICKNAME, UBPROFILE, UBCODE, UBRGCODE, UBSELLBUY,
+		SELECT UBNICKNAME, UBPROFILE, UBCODE, UBRGCODE, UBSELLBUY,
 		UBMID, UBTITLE,
 		UBCONTENTS,
 		TO_CHAR(UBDATE, 'YYYY-MM-DD HH24:MI')
@@ -249,7 +204,9 @@
 		USEDBOARDS ORDER BY
 		UBCODE)
 		WHERE UBSELLBUY =
-		#{ubsellbuy} 
+		#{ubsellbuy} AND
+		(UBSTATE = 1
+		OR UBSTATE = 9)
 		) LEFT OUTER JOIN ZZIM_VIEW
 		ON UBCODE = ZZUBCODE,
 		MNICKNAME_VIEW
