@@ -181,17 +181,25 @@ public class UsedBoardDto {
 	public void setZzimcheck(String zzimcheck) {
 		this.zzimcheck = zzimcheck;
 	}
+	public String getUbmstate() {
+		return ubmstate;
+	}
+	public void setUbmstate(String ubmstate) {
+		this.ubmstate = ubmstate;
+	}
 	@Override
 	public String toString() {
 		return "UsedBoardDto [ubcode=" + ubcode + ", ubrgcode=" + ubrgcode + ", ubsellbuy=" + ubsellbuy + ", ubmid="
 				+ ubmid + ", ubtitle=" + ubtitle + ", ubcontents=" + ubcontents + ", ubdate=" + ubdate + ", ubmainimg="
 				+ ubmainimg + ", ubdetailimg=" + ubdetailimg + ", ubstate=" + ubstate + ", ubwarning=" + ubwarning
-				+ ", ubzzim=" + ubzzim + ", ubnickname=" + ubnickname + ", ubprofile=" + ubprofile + ", ubmainimgfile="
-				+ ubmainimgfile + ", ubdetailimgfile=" + Arrays.toString(ubdetailimgfile) + ", ubdetailimg_list="
-				+ Arrays.toString(ubdetailimg_list) + ", ubdetailimg_originList="
-				+ Arrays.toString(ubdetailimg_originList) + ", ubgdname=" + ubgdname + ", gdprice=" + gdprice
-				+ ", gdprice2=" + gdprice2 + ", ubdatedef=" + ubdatedef + ", zzimcheck=" + zzimcheck + "]";
+				+ ", ubzzim=" + ubzzim + ", ubnickname=" + ubnickname + ", ubprofile=" + ubprofile + ", ubmstate="
+				+ ubmstate + ", ubmainimgfile=" + ubmainimgfile + ", ubdetailimgfile="
+				+ Arrays.toString(ubdetailimgfile) + ", ubdetailimg_list=" + Arrays.toString(ubdetailimg_list)
+				+ ", ubdetailimg_originList=" + Arrays.toString(ubdetailimg_originList) + ", ubgdname=" + ubgdname
+				+ ", gdprice=" + gdprice + ", gdprice2=" + gdprice2 + ", ubdatedef=" + ubdatedef + ", zzimcheck="
+				+ zzimcheck + "]";
 	}
+	
 
 	
 	
