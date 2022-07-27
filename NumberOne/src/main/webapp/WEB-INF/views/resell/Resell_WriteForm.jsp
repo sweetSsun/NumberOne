@@ -80,6 +80,14 @@ option {
 	width:100%;
 	vertical-align: middle;
 }
+.gdprice {
+	border: none;
+	font-size: 20px;
+	height: 22px;
+	margin: auto;
+	width:100%;
+	vertical-align: middle;
+}
 .gd-header{
 	display: block;
 	border-radius: 5px 5px 0 0;
@@ -231,7 +239,7 @@ margin-top: 0px;
 						<!-- 품목 -->
 						<div class="container-gd mb-3">
 						
-							<div class="row my-3">
+							<div class="row my-3 content-gd">
 								<div class="col-7 pl-4">
 									<input
 										type="text"
@@ -244,7 +252,7 @@ margin-top: 0px;
 									<span style="color:gray; vertical-align: middle; margin: auto;">&#8361; </span>
 									<input
 										type="text"
-										class ="gdtitle"
+										class ="gdprice"
 										placeholder="가격"
 										name="gd_price">
 								</div>
@@ -253,7 +261,7 @@ margin-top: 0px;
 								</div>
 							</div>
 								
-							<div class="row my-3 d_none btn_d-none">
+							<div class="row my-3 d_none content-gd">
 								<div class="col-7 pl-4">
 									<input
 										type="text"
@@ -268,7 +276,7 @@ margin-top: 0px;
 									<span style="color:gray; vertical-align: middle; margin: auto;">&#8361; </span>
 									<input
 										type="text"
-										class="gdcheck_p gdtitle"
+										class="gdcheck_p gdprice"
 										name=""
 										style="width: 100%"
 										placeholder="가격"
@@ -279,7 +287,7 @@ margin-top: 0px;
 								</div>
 							</div>
 							
-							<div class="row my-3 d_none btn_d-none">
+							<div class="row my-3 d_none content-gd">
 								<div class="col-7 pl-4">
 									<input
 										type="text"
@@ -294,7 +302,7 @@ margin-top: 0px;
 									<span style="color:gray; vertical-align: middle; margin: auto;">&#8361; </span>
 									<input
 										type="text"
-										class="gdcheck_p gdtitle"
+										class="gdcheck_p gdprice"
 										name=""
 										style="width: 100%"
 										placeholder="가격"
@@ -305,7 +313,7 @@ margin-top: 0px;
 								</div>
 							</div>
 							
-							<div class="row my-3 d_none btn_d-none">
+							<div class="row my-3 d_none content-gd">
 								<div class="col-7 pl-4">
 									<input
 										type="text"
@@ -320,7 +328,7 @@ margin-top: 0px;
 									<span style="color:gray; vertical-align: middle; margin: auto;">&#8361; </span>
 									<input
 										type="text"
-										class="gdcheck_p gdtitle"
+										class="gdcheck_p gdprice"
 										name=""
 										style="width: 100%"
 										placeholder="가격"
@@ -331,11 +339,11 @@ margin-top: 0px;
 								</div>
 							</div>
 							
-							<div class="row my-3 d_none btn_d-none">
+							<div class="row my-3 d_none content-gd">
 								<div class="col-7 pl-4">
 									<input
 										type="text"
-										class="gdcheck_n gdtitle"
+										class="gdcheck_n gdtitle "
 										name=""
 										style="width: 100%"
 										placeholder="품목명"
@@ -346,7 +354,7 @@ margin-top: 0px;
 									<span style="color:gray; vertical-align: middle;">&#8361;</span>
 									<input
 										type="text"
-										class="gdcheck_p gdtitle"
+										class="gdcheck_p gdprice"
 										name=""
 										style="width: 100%"
 										placeholder="가격"
@@ -718,7 +726,7 @@ if(resellTitle.options[resellTitle.selectedIndex].value == 'B'){
 	const removeBtn = document.getElementsByClassName("removeBtn");
 	
 	/* input태그의 부모div */
-	const dsiplay_btn = document.getElementsByClassName("btn_d-none");
+	const display_btn = document.getElementsByClassName("content-gd");
 	
 	/* 품목이름 변수 */
 	const gdcheck_n = document.getElementsByClassName("gdcheck_n");
@@ -734,12 +742,12 @@ if(resellTitle.options[resellTitle.selectedIndex].value == 'B'){
 	function addBtnFunction(){
 		console.log('추가버튼 이벤트핸들러호출');
 		
-		for(let i = 0; i<dsiplay_btn.length; i++){
+		for(let i = 0; i<display_btn.length; i++){
 		
-			/* dsiplay_btn[i] 중에 d_none 클래스 유무를 확인해서 boolean 타입 반환 */
-		if(dsiplay_btn[i].classList.contains('d_none')){ 
+			/* display_btn[i] 중에 d_none 클래스 유무를 확인해서 boolean 타입 반환 */
+		if(display_btn[i].classList.contains('d_none')){ 
 			
-			dsiplay_btn[i].classList.remove("d_none");
+			display_btn[i].classList.remove("d_none");
 			
 			gdcheck_n[i].setAttribute("name", "gd_names");
 			gdcheck_p[i].setAttribute("name", "gd_price");
@@ -749,11 +757,11 @@ if(resellTitle.options[resellTitle.selectedIndex].value == 'B'){
 		}		
 	}
 	/* 제거버튼 클릭 */
-for(let i = 0; i<dsiplay_btn.length; i++){
+for(let i = 0; i<display_btn.length; i++){
 	
 	removeBtn[i].onclick = function(){	
 			
-		dsiplay_btn[i].classList.add("d_none");
+		display_btn[i].classList.add("d_none");
 		
 		gdcheck_n[i].removeAttribute("name", "gd_names");
 		gdcheck_n[i].value = "";
@@ -771,6 +779,7 @@ for(let i = 0; i<dsiplay_btn.length; i++){
 	/* onsubmit이벤트  false 일시 submit이벤트 취소*/
 	function checkFormData() {
 		const gdtitle_class = document.getElementsByClassName("gdtitle");
+		const gdprice_class = document.getElementsByClassName("gdprice");
 		console.log(gdtitle_class[0]);
 		
 		let checkForm = true;
@@ -789,25 +798,29 @@ for(let i = 0; i<dsiplay_btn.length; i++){
 			document.getElementById("mainImg").focus();
 			checkForm = false;
 		}			
-	
 		else{
 			
-			
-			
-	for(let i = 0; i<gdtitle_class.length; i++){
-		if(!dsiplay_btn[i].classList.contains('d_none')){
-			console.log('디스플레이논 클래스 없음');
-		if(gdtitle_class[i].value === '') {
-			console.log(gdtitle_class[i].value)
-			gdtitle_class[i].focus();
-			alert("상품정보를 입력하세요");
-			checkForm = false;
-			
+			for(let i = 0; i < gdtitle_class.length; i++){
+				if(!display_btn[i].classList.contains('d_none')){
+					console.log('d_none 클래스 없음');
+				
+					if(gdtitle_class[i].value === '') {
+						//console.log(gdtitle_class[i].value);
+						gdtitle_class[i].focus();
+						alert("상품 정보를 입력하세요");
+						checkForm = false;
+					}
+					else if(gdprice_class[i].value === '') {
+						//console.log(gdprice_class[i].value);
+						gdprice_class[i].focus();
+						alert("상품 가격을 입력하세요");
+						checkForm = false;
+					}
+				} 
+			}
 		}
-	}}
-	}
 		
-	return checkForm;
+		return checkForm;
 	}
 		
 </script>
