@@ -94,7 +94,7 @@
 				</div>
 				<div class="row mt-4 mb-2">
 					<div class="col btn-wrapper">
-						<input class="btn-numberone btn fw-bold text-white" type="submit" value="작성">
+						<input class="btn-numberone btn fw-bold text-white" type="submit" value="작성"><input type="hidden" name="NbCheck" value="NB">
 						<input onclick="$('#nbWriteCancelCheckModal').modal('show')" class="btn-numberone btn fw-bold text-white" type="button" value="취소">
 					</div>
 				</div>		
@@ -152,7 +152,7 @@
 	// 공지글 작성 취소
 	function writeBoardCancel(){
 		console.log("취소 버튼 클릭");
-		location.href="admin_selectNoticeList${paging.makeQueryPage(paging.page)}";
+		location.href="admin_selectNoticeList?NbCheck=NB&${paging.makeQueryPage(paging.page)}";
 	}
 	
 	// 제목, 내용 입력됐는지 확인
