@@ -405,6 +405,10 @@ h4:hover{
 	color: #00bcd4;
 }
 
+.btn-numberone{
+	/* 글쓰기 버튼 */
+	background-color: #00bcd4;
+}
 </style>
 </head>
 <body>
@@ -457,7 +461,7 @@ h4:hover{
 							<input type="text" class="bigger" name="keyword" placeholder="검색어를 입력하세요" id="searchText"> &nbsp;
 							<button class="btn btn-secondary medium">검색</button> &nbsp;
 							<c:if test="${sessionScope.loginId != null}">
-								<button type="button" class="btn btn-primary medium" onclick="location.href='${pageContext.request.contextPath }/loadToWriteRoom'">글쓰기</button>
+								<button type="button" class="btn btn-numberone medium" onclick="location.href='${pageContext.request.contextPath }/loadToWriteRoom'">글쓰기</button>
 							</c:if>
 						</div>
 					</div>		
