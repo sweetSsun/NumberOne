@@ -1,32 +1,16 @@
-<%@ page
-	language="java"
-	contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"
-%>
-<%@ taglib
-	prefix="c"
-	uri="http://java.sun.com/jsp/jstl/core"
-%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>1인자 - 중고거래 수정페이지</title>
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-	integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-	crossorigin="anonymous"
-	referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
 
 <!-- 부트스트랩 -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-	crossorigin="anonymous"
-	>
-	
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
 <!-- Css Styles -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 <style type="text/css">
@@ -96,7 +80,6 @@ option {
 .container-gd {
 	border: 2px solid #00bcd4;
 	border-radius: 7px;
-	
 }
 
 .gdtitle {
@@ -104,11 +87,11 @@ option {
 	font-size: 20px;
 	height: 22px;
 	margin: auto;
-	width:100%;
+	width: 100%;
 	vertical-align: middle
 }
 
-.gd-header{
+.gd-header {
 	display: block;
 	border-radius: 5px 5px 0 0;
 	background-color: #00bcd4;
@@ -119,7 +102,7 @@ option {
 }
 
 input[type="text"]:disabled {
- 	background-color: white;
+	background-color: white;
 }
 
 .btn-wrapper {
@@ -189,7 +172,6 @@ div.detailimageBox {
 	width: 260px;
 	display: inline-block;
 }
-
 </style>
 
 </head>
@@ -218,61 +200,25 @@ div.detailimageBox {
 			<!-- 본문 -->
 			<div class="container">
 				<h2 class="text-center">중고거래 글수정페이지 : Resell_ModifyForm.jsp</h2>
-				<h1
-					class="text-center"
-					id="titleMsg"
-				></h1>
+				<h1 class="text-center" id="titleMsg"></h1>
 
-				<form
-					action="updateResellModify"
-					method="post"
-					enctype="multipart/form-data"
-					onsubmit="return roomModifyCh('${detailLength}')"
-				>
-				
-					<input
-									type="hidden"
-									name="ubcode"
-									value="${ub_resellView.ubcode }"
-								>
-					<input
-									type="hidden"
-									name="ubmid"
-									value="${ub_resellView.ubmid }"
-								>
-							<input
-									type="hidden"
-									name="ubsellbuy"
-									value="${ub_resellView.ubsellbuy }"
-								>
-									<input
-									type="hidden"
-									name="ubdate"
-									value="${ub_resellView.ubdate }"
-								>
-								
-										
-				
-				
+				<form action="updateResellModify" method="post" enctype="multipart/form-data" onsubmit="return roomModifyCh('${detailLength}')">
+
+					<input type="hidden" name="ubcode" value="${ub_resellView.ubcode }"> <input type="hidden" name="ubmid" value="${ub_resellView.ubmid }"> <input type="hidden" name="ubsellbuy" value="${ub_resellView.ubsellbuy }"> <input type="hidden" name="ubdate" value="${ub_resellView.ubdate }">
+
+
+
+
 					<div class="container-header">
 						<div class="row">
 							<div class="col-6">
-								<span style="font-size:20px;">글상태 </span><span class="text-danger">*</span>
-								<select
-									class="bdCategoryList"
-									id="totalOp"
-									name="ubstate"
-									onchange="resellState(this,'${gd_resellView}')">
-									<option value="1">판매중</option>
-									<option value="9">판매완료</option>
+								<span style="font-size: 20px;">글상태 </span><span class="text-danger">*</span> <select class="bdCategoryList" id="totalOp" name="ubstate" onchange="resellState(this,'${gd_resellView}')">
+									<option value="1">거래중</option>
+									<option value="9">거래완료</option>
 								</select>
 							</div>
 							<div class="col-6">
-								<span style="font-size:20px;">지역 </span><span class="text-danger">*</span>
-								<select
-									class="bdCategoryList"
-									id = "ubrgOp"
-									name="ubrgcode">
+								<span style="font-size: 20px;">지역 </span><span class="text-danger">*</span> <select class="bdCategoryList" id="ubrgOp" name="ubrgcode">
 									<option value="SEL">서울</option>
 									<option value="ICN">인천</option>
 									<option value="GGD">경기</option>
@@ -283,91 +229,51 @@ div.detailimageBox {
 									<option value="JJD">제주</option>
 								</select>
 							</div>
-<%-- 
+							<%-- 
 							<div class="col-2">작성자</div>
 							<div class="col-4">${ub_resellView.ubnickname }</div>
  --%>
- 						</div>
+						</div>
 						<hr>
-						
+
 						<!-- 글 제목  -->
 						<div class="row">
-							<input
-								type="text"
-								<%-- 
+							<input type="text" <%-- 
 								size="60"
 								style="margin-left: 40px;"
 								 --%>
-								class="bdtitle" 
-								id="titleCheck"
-								name="ubtitle"
-								value="${ub_resellView.ubtitle }"
-							>
-							<span class="checkMsg"></span>
+								class="bdtitle" id="titleCheck" name="ubtitle" value="${ub_resellView.ubtitle }"> <span class="checkMsg"></span>
 						</div>
 						<hr>
-						
+
 						<!-- 품목 -->
 						<div class="container-gd mb-3">
-							<!-- <span class="gd-header">판매물품</span> -->
-						
-							<c:forEach
-								items="${gd_resellView}"
-								var="gdList"
-							>
+							<!-- <span class="gd-header">거래물품</span> -->
+
+							<c:forEach items="${gd_resellView}" var="gdList">
 								<div class="row my-3" style="">
 									<div class="col-2">
-										<select
-											class="bdCategoryList selectStates"
-											name="gd_state"
-											onchange="gdUpdateState('${gdList.gdcode }',this)"
-											style="width:130px;"
-										>
-											<option value="1">판매중</option>
-											<option value="0">판매완료</option>
+										<select class="bdCategoryList selectStates" name="gd_state" onchange="gdUpdateState('${gdList.gdcode }',this)" style="width: 130px;">
+											<option value="1">거래중</option>
+											<option value="0">거래완료</option>
 										</select>
-	
+
 									</div>
 									<div class="col-7">
-										<input
-											type="text"
-											class="gdtitle"
-											name="gd_names"
-											value="${gdList.gdname }"
-										>
-										<input disabled class="d_none gdtitle gd_nameList line-through"
-											type="text" value="${gdList.gdname }">
+										<input type="text" class="gdtitle" name="gd_names" value="${gdList.gdname }"> <input disabled class="d_none gdtitle gd_nameList line-through" type="text" value="${gdList.gdname }">
 									</div>
-	
-									<div class="col-3" style="display:flex;">
+
+									<div class="col-3" style="display: flex;">
 										<!-- 한화 표시 -->
-										<span style="vertical-align: middle; margin: auto;">&#8361; </span>
-										<input
-												type="text"
-												class="gdtitle"
-												name="gd_price"
-												value="${gdList.gdprice }"
-											>
-										<input disabled class="d_none gdtitle gd_priceList line-through" 
-											 type="text" value="${gdList.gdprice }">
+										<span style="vertical-align: middle; margin: auto;">&#8361; </span> <input type="text" class="gdtitle" name="gd_price" value="${gdList.gdprice }"> <input disabled class="d_none gdtitle gd_priceList line-through" type="text" value="${gdList.gdprice }">
 									</div>
-	
-	
-	
-									<input
-										type="hidden"
-										class="select_gdcode"
-										name="gd_code"
-										value="${gdList.gdcode }"
-									>
-									<input
-										type="hidden"
-										class="select_gdstate"
-										value="${gdList.gdstate }"
-									>
-	
+
+
+
+									<input type="hidden" class="select_gdcode" name="gd_code" value="${gdList.gdcode }"> <input type="hidden" class="select_gdstate" value="${gdList.gdstate }">
+
 								</div>
-	
+
 							</c:forEach>
 						</div>
 
@@ -378,116 +284,43 @@ div.detailimageBox {
 
 
 					<!-- 상품 설명  -->
-					<div class="row" style="width:100%; margin-left:0;">
-						<textarea
-							class="bdcontents"
-							rows="17"
-							cols="80"
-							name="ubcontents"
-							id="ubcontents"
-						>${ub_resellView.ubcontents}</textarea>
+					<div class="row" style="width: 100%; margin-left: 0;">
+						<textarea class="bdcontents" rows="17" cols="80" name="ubcontents" id="ubcontents">${ub_resellView.ubcontents}</textarea>
 					</div>
 
 					<!-- 파일첨부  -->
-			
+
 
 					<!-- 대표사진 -->
-					<div
-						class="row"
-						style="height: 190px; width: 260px; margin-top: 15px;"
-					>
-						<img
-							class="img"
-							alt="대표사진"
-							src="${pageContext.request.contextPath }/resources/img/resell/${ub_resellView.ubmainimg }"
-							id="currentBdimg_screen"
-						><br>
-						<input
-							type="hidden"
-							value="${ub_resellView.ubmainimg }"
-							id="currentBdimg"
-							name="ubmainimg"
-						>
+					<div class="row" style="height: 190px; width: 260px; margin-top: 15px;">
+						<img class="img" alt="대표사진" src="${pageContext.request.contextPath }/resources/img/resell/${ub_resellView.ubmainimg }" id="currentBdimg_screen"><br> <input type="hidden" value="${ub_resellView.ubmainimg }" id="currentBdimg" name="ubmainimg">
 					</div>
 
 					<!-- 대표사진 수정 -->
 					<div class="row">
-						<span>대표사진 수정</span>
-						<input
-							type="file"
-							id="mainImg"
-							name="ubmainimgfile"
-							accept="image/*"
-						>
+						<span>대표사진 수정</span> <input type="file" id="mainImg" name="ubmainimgfile" accept="image/*">
 					</div>
 
 					<!-- 상세사진 -->
-					<div
-						class="row"
-						style="margin-top: 15px;"
-					>
-						<c:forEach
-							items="${ub_resellView.ubdetailimg_list }"
-							var="ubdetailimg_list"
-							begin="1"
-							varStatus="status"
-						>
-							<div
-								class="detailimageBox"
-								id="${status.index }_currentDetailimg_screen"
-								style="position: relative;"
-							>
-								<img
-									class="img"
-									alt='상세사진'
-									src='${pageContext.request.contextPath }/resources/img/resell/${ubdetailimg_list}'
-								> <span
-									class="x"
-									onclick="currentImgStateUpdate('${status.index }_currentDetailimg')"
-								>&nbsp;X&nbsp;</span>
-								<input
-									type="hidden"
-									id="${status.index }_currentDetailimg"
-									value="${ubdetailimg_list }"
-								>
+					<div class="row" style="margin-top: 15px;">
+						<c:forEach items="${ub_resellView.ubdetailimg_list }" var="ubdetailimg_list" begin="1" varStatus="status">
+							<div class="detailimageBox" id="${status.index }_currentDetailimg_screen" style="position: relative;">
+								<img class="img" alt='상세사진' src='${pageContext.request.contextPath }/resources/img/resell/${ubdetailimg_list}'> <span class="x" onclick="currentImgStateUpdate('${status.index }_currentDetailimg')">&nbsp;X&nbsp;</span> <input type="hidden" id="${status.index }_currentDetailimg" value="${ubdetailimg_list }">
 							</div>
 						</c:forEach>
-						<input
-							type="hidden"
-							id="ubdetailimg"
-							name="ubdetailimg"
-							placeholder="현재상세이미지 파일명을 모을 input"
-						>
+						<input type="hidden" id="ubdetailimg" name="ubdetailimg" placeholder="현재상세이미지 파일명을 모을 input">
 					</div>
 
 					<!-- 상세사진 추가-->
 					<div class="row">
-						<span>상세사진 추가</span>
-						<input
-							type="file"
-							multiple="multiple"
-							id="detailImg"
-							name="ubdetailimgfile"
-							accept="image/*"
-							onclick="return mainimgCh()"
-						>
+						<span>상세사진 추가</span> <input type="file" multiple="multiple" id="detailImg" name="ubdetailimgfile" accept="image/*" onclick="return mainimgCh()">
 					</div>
 
 
 					<!-- 수정/취소 버튼 -->
 					<div class="row mt-4">
 						<div class="col btn-wrapper">
-							<input
-								class="btn btn-numberone btn-lg fw-bold"
-								type="submit"
-								value="수정"
-							>
-							<input
-								onclick="bdWriteCancelCheckModal()"
-								class="btn btn-numberone btn-lg fw-bold"
-								type="button"
-								value="취소"
-							>
+							<input class="btn btn-numberone btn-lg fw-bold" type="submit" value="수정"> <input onclick="bdWriteCancelCheckModal()" class="btn btn-numberone btn-lg fw-bold" type="button" value="취소">
 						</div>
 					</div>
 
@@ -504,27 +337,12 @@ div.detailimageBox {
 
 
 	<!-- 게시글 작성 취소 확인 -->
-	<div
-		class="modal fade"
-		id="bdWriteCancelCheckModal"
-		tabindex="-1"
-		role="dialog"
-		aria-labelledby="exampleModalLabel"
-		aria-hidden="true"
-	>
-		<div
-			class="modal-dialog"
-			role="document"
-		>
+	<div class="modal fade" id="bdWriteCancelCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">게시글 작성 취소</h5>
-					<button
-						class="close"
-						type="button"
-						data-dismiss="modal"
-						aria-label="Close"
-					>
+					<button class="close" type="button" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">×</span>
 					</button>
 				</div>
@@ -533,26 +351,15 @@ div.detailimageBox {
 				</div>
 				<div class="modal-footer">
 					<input type="hidden">
-					<button
-						class="close btn btn-numberone"
-						onclick="cancelBtn()"
-					>네</button>
-					<button
-						class="close btn btn-secondary"
-						type="button"
-						data-dismiss="modal"
-					>아니오</button>
+					<button class="close btn btn-numberone" onclick="cancelBtn()">네</button>
+					<button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
 				</div>
 			</div>
 		</div>
 	</div>
 
 
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-		crossorigin="anonymous"
-	></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 <!-- 페이지로드시 실행할 코드 스크립트 -->
 <script type="text/javascript">
@@ -562,25 +369,24 @@ div.detailimageBox {
 	const ubrgOp = document.getElementById("ubrgOp") // 지역 select태그
 	const ubcode = '${ub_resellView.ubcode}'; //글번호
 	const ubsellbuy = '${ub_resellView.ubsellbuy}'; //사구,팔구 확인
-	const selectStates = document.querySelectorAll(".selectStates"); // 상품 상태 select태그 
+	const selectStates = document.querySelectorAll(".selectStates"); // select태그 : 상품상태(거래중,거래완료) option들을 가지는 부모태그  
 	const select_gdcode = document.querySelectorAll(".select_gdcode"); //상품코드	
-	const select_gdstate = document.querySelectorAll(".select_gdstate");//상품상태 
-	const gd_nameList = document.querySelectorAll(".gd_nameList"); //상품명  (판매완료시) 
-	const gd_priceList = document.querySelectorAll(".gd_priceList"); //상품가격 (판매완료시)
-	const gd_names = document.getElementsByName('gd_names');	// input 상품명	(판매중)
-	const gd_price = document.getElementsByName('gd_price');	// input 상품가격	(판매중)
+	const select_gdstate = document.querySelectorAll(".select_gdstate");// 상품상태번호 ('1', '0');
+	const gd_nameList = document.querySelectorAll(".gd_nameList"); //상품명  (거래완료시) 
+	const gd_priceList = document.querySelectorAll(".gd_priceList"); //상품가격 (거래완료시)
+	const gd_names = document.getElementsByName('gd_names');	// input 상품명	(거래중)
+	const gd_price = document.getElementsByName('gd_price');	// input 상품가격	(거래중)
 </script>
 
 
 
 <script type="text/javascript">
-	/* 로그인된 회원인지 체크 */
-	let loginCheck = '${sessionScope.loginId}';
-	if (loginCheck.length === 0) {
-		alert("잘못된 접근입니다.");
-		location.href = "loadToLogin"
-	}
-	
+/* 로그인된 회원인지 체크 */
+let loginCheck = '${sessionScope.loginId}';
+if (loginCheck.length == 0) {	   
+   alert("로그인 후 이용가능합니다");
+   location.href = "loadToLogin"
+}
 </script>
 
 
@@ -605,16 +411,16 @@ div.detailimageBox {
 		
 	}
 
-	/* 페이지로드시 글의 판매상태체크 */
+	/* 페이지로드시 글의 거래상태체크 */
 		for (let i = 0; i < totalOp.options.length; i++) {
 			if (totalOp.options[i].value === ubstate) {
 				console.log('totalOp.options[i].value',
 						totalOp.options[i].value);
-				/* 글의 판매상태 option (9:판매완료 ,1:판매중)와 
+				/* 글의 거래상태 option (9:거래완료 ,1:거래중)와 
 				페이지 이동시 넘어온 글의 상태값 파라메터가 같을 경우 그 option에 selected 속성 추가*/
 				totalOp.options[i].selected = 'true';
 
-				if (ubstate === '9') { // 글의 상태값이 9(판매완료)이면 실행.
+				if (ubstate === '9') { // 글의 상태값이 9(거래완료)이면 실행.
 					console.log('ubstate', ubstate);
 					document.getElementById("titleCheck").classList.add("line-through")
 					document.getElementById("titleCheck").setAttribute("disabled", "disabled");
@@ -629,7 +435,7 @@ div.detailimageBox {
 						selectStates[i].setAttribute('disabled', 'disabled');
 					}
 					
-				} else { //글의 상태값이 1(판매중)이면 실행
+				} else { //글의 상태값이 1(거래중)이면 실행
 					document.getElementById("titleCheck").classList.remove("line-through")
 					document.getElementById("titleCheck").removeAttribute("disabled");
 					selectStates[i].removeAttribute('disabled');
@@ -645,12 +451,12 @@ div.detailimageBox {
 					//상품별로 상태값에 따라 option을 selected
 
 					if (select_gdstate[j].value === '0') {
-						// 클래스가 select_gdstate 인 태그들 중 value가 0(판매완료)인 태그 찾고
+						// 클래스가 select_gdstate 인 태그들 중 value가 0(거래완료)인 태그 찾고
 						// 그 select태그와 인덱스 번호가 같은 selectStates 를 찾는다.
 						// 찾은 selectStates의 option중 1번인덱스를 selected되도록 한다. 
-						// 0번인덱스는 value 가 '1'(판매중), 1번인덱스는 value가 '0'(판매종료) 이다.  
+						// 0번인덱스는 value 가 '1'(거래중), 1번인덱스는 value가 '0'(거래종료) 이다.  
 				
-						selectStates[j].selectedIndex = '1';  //(판매종료선택)
+						selectStates[j].selectedIndex = '1';  //(거래종료선택)
 
 						//css속성 주기
 						gd_nameList[j].classList.remove('d_none');
@@ -661,7 +467,7 @@ div.detailimageBox {
 					
 					} else {
 						selectStates[j].selectedIndex = '0';
-						//0번인덱스를 selected	(판매중선택)
+						//0번인덱스를 selected	(거래중선택)
 									
 					}
 				}
@@ -707,7 +513,7 @@ div.detailimageBox {
 								selectStates[i].removeAttribute('disabled');
 															
 								if (select_gdstate[i].value === '0') {
-									console.log("상품판매완료");
+									console.log("상품거래완료");
 									//selectStates[i].selectedIndex = '1';
 									
 									gd_nameList[i].classList.remove('d_none');
@@ -718,7 +524,7 @@ div.detailimageBox {
 									
 
 								} else {
-									console.log("상품판매중");
+									console.log("상품거래중");
 									//selectStates[i].selectedIndex = '0';
 									
 									gd_nameList[i].classList.add('d_none');
@@ -902,7 +708,7 @@ div.detailimageBox {
 		console.log("자취방 자랑글 수정 확인");
 		console.log(currentDetailCount);
 	
-		// 글상태를 판매완료로 변경했을 때 disabled 되어있던 상품상태값 value를 넘겨주기 위해 disabled 속성 삭제
+		// 글상태를 거래완료로 변경했을 때 disabled 되어있던 상품상태값 value를 넘겨주기 위해 disabled 속성 삭제
 		for (let i = 0; i < gd_nameList.length; i++) {
 			selectStates[i].removeAttribute('disabled');
 		}

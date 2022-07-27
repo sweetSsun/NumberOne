@@ -375,8 +375,14 @@ public class BoardService {
 		}
 	   
 	   //공지게시판 이동 및 검색 
-	   public ModelAndView selectNoticeBoardList(Paging paging) {
-		   System.out.println("BoardService.selectNoticeBoard() 호출");
+	   public ModelAndView selectNoticeBoardList(Paging paging, String NbCheck) {
+		   System.out.println(NbCheck);
+			if(NbCheck.equals("Nb")) {
+				System.out.println("BoardService.selectNoticeBoardList() 호출");
+			} else {
+				System.out.println("BoardService.selectGonguBoardList() 호출");
+			}
+			
 		   ModelAndView mav = new ModelAndView();
 		   
 		   //페이징 
@@ -392,15 +398,26 @@ public class BoardService {
 		   //고정공지
 		   ArrayList<NoticeDto> noticeList_fix = bdao.selectNoticeList();
 		   
-		   ArrayList<NoticeDto> noticeList = bdao.selectNoticeBoardList(paging);
-		   System.out.println(noticeList);
-		   
-		   mav.addObject("noticeList_fix", noticeList_fix);
-		   mav.addObject("noticeList", noticeList);
-		   mav.addObject("paging", paging);
-		   mav.setViewName("board/NoticeBoardList");
-		   
-		   return mav;
+		   if(NbCheck.equals("Nb")) { // controller에서 Nb를 넘겨받았다면, 공지조회해줘
+			   ArrayList<NoticeDto> noticeList = bdao.selectNoticeBoardList(paging);
+			   System.out.println(noticeList);
+			   
+			   mav.addObject("noticeList_fix", noticeList_fix);
+			   mav.addObject("noticeList", noticeList);
+			   mav.addObject("paging", paging);
+			   mav.setViewName("board/NoticeBoardList");
+			   
+			   return mav;
+		   } else { // controller에서 Nb가아닌 Gb를 넘겨받았다면, 공구조회해줘
+			   ArrayList<NoticeDto> GonguList = bdao.selectGonguBoardList(paging);
+			   System.out.println(GonguList);
+			   
+			   mav.addObject("noticeList_fix", noticeList_fix);
+			   mav.addObject("noticeList", GonguList);
+			   mav.addObject("paging", paging);
+			   mav.setViewName("gongu/GonguBoardList");			   
+			   return mav;
+		   }		   
 	   }
 
 		// 자취방 자랑 메인 페이지(목록)
@@ -457,21 +474,26 @@ public class BoardService {
 	// 공지글상세 페이지 이동
 	public ModelAndView selectNoticeBoardView(String nbcode, Paging paging) {
 		System.out.println("BoardService.selectNoticeBoardView() 호출");
+		
 		ModelAndView mav = new ModelAndView();
 
 		System.out.println("nbcode:" + nbcode);
+		System.out.println(nbcode.substring(0,2));
 
 		// 공지글 조회수 업데이트
 		int updateResult = bdao.updateNoticeBdHits(nbcode);
-
-		// 공지글 정보 조회
 		NoticeDto noticeBoard = bdao.selectNoticeBoardView(nbcode);
 		System.out.println(noticeBoard);
-
+		
 		mav.addObject("noticeBoard", noticeBoard);
 		mav.addObject("paging", paging);
-		mav.setViewName("board/NoticeBoardView");
 
+		if (nbcode.substring(0,2).equals("NB")){ // 공지글 정보 조회
+			mav.setViewName("board/NoticeBoardView");
+			
+		} else { // 공구글 정보 조회
+			mav.setViewName("gongu/GonguBoardView");
+		}
 		return mav;
 	}
 

@@ -38,6 +38,8 @@ public interface BoardDao {
 	
 	//공지글검색 목록 조회 
 	ArrayList<NoticeDto> selectNoticeBoardList( Paging paging );
+	//공구글검색 목록 조회
+	ArrayList<NoticeDto> selectGonguBoardList( Paging paging );
 	
 	//게시판 공지글 상세페이지 이동 
 	NoticeDto selectNoticeBoardView(String nbcode);
