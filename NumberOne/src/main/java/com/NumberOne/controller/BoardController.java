@@ -152,11 +152,10 @@ public class BoardController {
 		 return mav;
 	 }
 	 
-	 //공지게시판 이동 및 글검색
+	 //공지 & 공구 게시판 이동 및 글검색
 	 @RequestMapping ( value = "/selectNoticeBoardList")
-	 public ModelAndView selectNoticeBoardList( Paging paging ) {
+	 public ModelAndView selectNoticeBoardList(Paging paging, String NbCheck) {
 		 System.out.println("공지글 이동 및 검색 요청");
-		 String NbCheck = "Nb";
 		 ModelAndView mav = bsvc.selectNoticeBoardList(paging, NbCheck);
 		 
 		 return mav;
