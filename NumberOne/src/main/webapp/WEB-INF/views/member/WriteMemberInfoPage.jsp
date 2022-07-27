@@ -360,8 +360,9 @@
 			
 		</c:when>
 		<c:otherwise>
-    		<img style="height: 100px; width: 100px; border: 1px solid #949494; padding: 3px; margin: 0px; border-radius: 50%;" 
-    			src="${pageContext.request.contextPath }/resources/img/logo_bada.png" alt="">	
+    		<img style="height: 100px; width: 100px; border: 1px solid #949494; padding: 3px; margin: 0px; border-radius: 50%;"  
+    			src="${pageContext.request.contextPath }/resources/img/profile.png" alt="">	
+
 		</c:otherwise>
 		</c:choose> 
 			<div class="second">	
