@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class KakaoPay {
 	
-	@RequestMapping(value="/kakaopay")
-	public @ResponseBody String kakaopayTest() throws IOException {
+	@RequestMapping(value="/kakaopay")// data 넘겨줘야함
+	public @ResponseBody String kakaopayTest(/* String nbcode, String loginId */) throws IOException {
 		System.out.println("kakaopay 호출");
 		StringBuilder urlBuilder = new StringBuilder("https://kapi.kakao.com/v1/payment/ready"); /*URL*/
 	    urlBuilder.append("?" + URLEncoder.encode("cid","UTF-8") + "=" + URLEncoder.encode("TC0ONETIME", "UTF-8"));
-	    urlBuilder.append("&" + URLEncoder.encode("partner_order_id","UTF-8") + "=" + URLEncoder.encode("GG0001", "UTF-8"));//공구번호
+	    urlBuilder.append("&" + URLEncoder.encode("partner_order_id","UTF-8") + "=" + URLEncoder.encode("nbcode", "UTF-8"));//공구번호
 	    urlBuilder.append("&" + URLEncoder.encode("partner_user_id","UTF-8") + "=" + URLEncoder.encode("loginId", "UTF-8"));	//구매자
 	    urlBuilder.append("&" + URLEncoder.encode("item_name","UTF-8") + "=" + URLEncoder.encode("1인자 자취템 공동구매", "UTF-8"));//판매이름
 	    urlBuilder.append("&" + URLEncoder.encode("quantity","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); //개수
@@ -69,13 +69,13 @@ public class KakaoPay {
 	@RequestMapping(value="/kakaopayFail")
 	public String kakaopayFail() {
 		System.out.println("/kakaopayFail 페이지이동없음");
-		return null;
+		return "Fail";
 	}
 	
 	@RequestMapping(value="/kakaopayCansel")
 	public String kakaopayCansel() {
 		System.out.println("/kakaopayCansel 페이지이동없음");
-		return null;
+		return "Fail";
 	}
 	
 	

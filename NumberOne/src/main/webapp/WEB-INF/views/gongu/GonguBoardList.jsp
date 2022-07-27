@@ -158,9 +158,11 @@
 							<td class="text-center tableCell">${notice.nbcode}</td>
 							<td class="bdcategory text-center tableCell">공구</td>
 							<td class="tableCell">
-							 	<a href="selectGonguBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}">${notice.nbtitle} 
+<!-- 임시로 관리자페이지 연결해놨음!!!!! -->
+							 	<a href="admin_selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}">${notice.nbtitle} 
+							<!-- <a href="selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}">${notice.nbtitle}  -->
 							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;"></span> </a>
-							 </td>
+							</td>
 							<td class="text-center tableCell">
 								관리자
 							</td>
@@ -178,6 +180,9 @@
 				</div> --%>
 				</div>
 				
+				<!-- NbCheck=NB -->
+            	<input type="hidden" name="NbCheck" value="GB">
+            
 				<!-- 페이징 시작 -->
 				<input type="hidden" id="pageNum" name="page" value="1">
 				<div class="block text-center" id="pageList" >
