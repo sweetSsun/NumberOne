@@ -101,6 +101,9 @@ section{
 	.region_sel a:hover{
 	  color: white;		
 	}
+	.max_contents{
+		width: max-content;
+	}
 </style>
 
 </head>
@@ -331,31 +334,31 @@ section{
 					
 				<div class="row">
 					<div class="col region_sel">
-						<a href="selectRegionBoardList">전체</a>
+						<a href="selectRegionBoardList"> <div>전체</div></a>
 					</div>
 					<div class="col region_sel">
-						<a href="selectDetailBoardList?searchVal=SEL">서울</a>
+						<a href="selectDetailBoardList?searchVal=SEL"> <div>서울</div></a>
 					</div>
 					<div class="col region_sel">
-						<a href="selectDetailBoardList?searchVal=ICN">인천</a>
+						<a href="selectDetailBoardList?searchVal=ICN"> <div>인천</div></a>
 					</div>
 					<div class="col region_sel">
-						<a href="selectDetailBoardList?searchVal=GGD">경기</a>
+						<a href="selectDetailBoardList?searchVal=GGD"> <div>경기</div></a>
 					</div>
 					<div class="col region_sel">
-						<a href="selectDetailBoardList?searchVal=GSD">경상</a>
+						<a href="selectDetailBoardList?searchVal=GSD"> <div>경상</div></a>
 					</div>
 					<div class="col region_sel">
-						<a href="selectDetailBoardList?searchVal=JLD">전라</a>
+						<a href="selectDetailBoardList?searchVal=JLD"> <div>전라</div></a>
 					</div>
 					<div class="col region_sel">
-						<a href="selectDetailBoardList?searchVal=CCD">충청</a>
+						<a href="selectDetailBoardList?searchVal=CCD"> <div>충청</div> </a>
 					</div>
 					<div class="col region_sel">
-						<a href="selectDetailBoardList?searchVal=GWD">강원</a>
+						<a href="selectDetailBoardList?searchVal=GWD"> <div>강원</div> </a>
 					</div>
 					<div class="col region_sel">
-						<a href="selectDetailBoardList?searchVal=JJD">제주</a>
+						<a href="selectDetailBoardList?searchVal=JJD"> <div>제주</div> </a>
 					</div>
 				</div>
 			</div>
