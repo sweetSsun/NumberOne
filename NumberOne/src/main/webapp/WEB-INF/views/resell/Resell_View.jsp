@@ -56,7 +56,8 @@ textarea:focus {
 .boardDate {
 	color: gray;
 	font-size: 17px;
-	text-align: left;
+	position: absolute;
+    transform: translate(10%, 80%);
 }
 
 .bdhit {
@@ -267,20 +268,9 @@ textarea:focus {
 }
 /* 글목록 버튼 */
 #backList {
-	border: none;
 	width: 60px;
 	height: 30px;
-	border-radius: 5px;
-	background-color: #00a5ba;
 	margin-bottom: 13px;
-}
-/* 수정 / 삭제 버튼 */
-.md_del_Btn {
-	border: none;
-	width: 40px;
-	height: 30px;
-	border-radius: 5px;
-	background-color: #00a5ba;
 }
 
 .line-through {
@@ -384,14 +374,12 @@ textarea:focus {
 						</div>
 					</div>
 					<div class="row idDateHits">
-						<div class="col">
+						<div class="col-9">
 							<span class="fw-bold boardTitle" id="soldCheckMsg"></span>
 							<span class="fw-bold boardTitle">${ub_resellView.ubtitle }</span> 
-							
-							<span
-								style="float: right;"
-								class="boardDate"
-							>${ub_resellView.ubdate }</span>
+						</div>
+						<div class="col-3">
+							<span class="boardDate">${ub_resellView.ubdate }</span>
 						</div>
 					</div>
 
@@ -524,8 +512,7 @@ textarea:focus {
 									<a
 										id="memberInfo"
 										style="cursor: pointer"
-										onclick="writeMemberBoard('${ub_resellView.ubnickname}')"
-									>
+										onclick="writeMemberSellbuy('${ub_resellView.ubnickname}')">
 										<span class="fw-bold bdnickname">${ub_resellView.ubnickname}</span>
 									</a>
 								</div>
@@ -578,7 +565,7 @@ textarea:focus {
 							<button
 								id="backList"
 								type="button"
-								class="fw-bold text-white">글목록</button>
+								class="fw-bold btn-numberone">글목록</button>
 						</div>
 						<c:choose>
 							<%-- 관리자일 때 --%>
@@ -627,9 +614,9 @@ textarea:focus {
 										<option value="9">거래완료</option>
 									</select>
 								<!-- 글수정 -->
-								<button onclick="resellModifyForm()" class="md_del_Btn fw-bold text-white" type="button">수정</button>
+								<button onclick="resellModifyForm()" class="fw-bold btn-numberone" type="button">수정</button>
 								<!-- 글삭제 -->
-								<input onclick="ubDeleteCheckModal()" type="button" class="md_del_Btn fw-bold text-white" value="삭제">
+								<input onclick="ubDeleteCheckModal()" type="button" class="fw-bold btn-numberone" value="삭제">
 								</div>
 							</c:when>
 						</c:choose>

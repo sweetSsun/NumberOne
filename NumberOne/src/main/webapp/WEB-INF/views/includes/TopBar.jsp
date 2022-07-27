@@ -330,7 +330,11 @@
 				break;
 			}
 			dropdownList += "<div class=\"\" >";
-			dropdownList += "<a class=\" dropdown-item d-flex align-items-center py-2\" href=\"#\" onclick=\"popupChat('" + data[i].crcode + "', '" + data[i].crfrmnickname + "', '" + data[i].crfrmprofile + "')\">";
+			if (data[i].crfrmprofile != null){ // 상대방 이미지가 있으면
+				dropdownList += "<a class=\" dropdown-item d-flex align-items-center py-2\" href=\"#\" onclick=\"popupChat('" + data[i].crcode + "', '" + data[i].crfrmnickname + "', '" + data[i].crfrmprofile + "')\">";
+			} else { // 없으면
+				dropdownList += "<a class=\" dropdown-item d-flex align-items-center py-2\" href=\"#\" onclick=\"popupChat('" + data[i].crcode + "', '" + data[i].crfrmnickname + "', '')\">";
+			}
 			dropdownList += "<div class=\"row\" style=\"width: 100%; --bs-gutter-x: 0;\">";
 			dropdownList += "<div class=\"col-1 text-center\">";
 			if (data[i].crfrmprofile != null){ // 상대방 이미지가 있으면
@@ -583,7 +587,7 @@
 		});
 	});
 	
-	// 드롭다운 채팅방목록 입력 함수
+	// 드롭다운 찜목록 입력 함수
 	function outputZzimList(data){
 		console.log("찜목록 드롭다운 실행");
 		var zzimList = "<p class=\"dropdown-header\" style=\"font-size:11px;\">찜 목록</p>";

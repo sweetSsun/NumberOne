@@ -107,6 +107,14 @@ option {
 	width:100%;
 	vertical-align: middle
 }
+.gdprice {
+	border: none;
+	font-size: 20px;
+	height: 22px;
+	margin: auto;
+	width:100%;
+	vertical-align: middle;
+}
 
 .gd-header{
 	display: block;
@@ -302,6 +310,7 @@ div.detailimageBox {
 								id="titleCheck"
 								name="ubtitle"
 								value="${ub_resellView.ubtitle }"
+								placeholder="제목"
 							>
 							<span class="checkMsg"></span>
 						</div>
@@ -315,7 +324,7 @@ div.detailimageBox {
 								items="${gd_resellView}"
 								var="gdList"
 							>
-								<div class="row my-3" style="">
+								<div class="row my-3 content-gd" style="">
 									<div class="col-2">
 										<select
 											class="bdCategoryList selectStates"
@@ -334,6 +343,7 @@ div.detailimageBox {
 											class="gdtitle"
 											name="gd_names"
 											value="${gdList.gdname }"
+											placeholder="품목명"
 										>
 										<input disabled class="d_none gdtitle gd_nameList line-through"
 											type="text" value="${gdList.gdname }">
@@ -344,11 +354,12 @@ div.detailimageBox {
 										<span style="vertical-align: middle; margin: auto;">&#8361; </span>
 										<input
 												type="text"
-												class="gdtitle"
+												class="gdprice"
 												name="gd_price"
 												value="${gdList.gdprice }"
+												placeholder="가격"
 											>
-										<input disabled class="d_none gdtitle gd_priceList line-through" 
+										<input disabled class="d_none gdprice gd_priceList line-through" 
 											 type="text" value="${gdList.gdprice }">
 									</div>
 	
@@ -385,6 +396,7 @@ div.detailimageBox {
 							cols="80"
 							name="ubcontents"
 							id="ubcontents"
+							placeholder="상품상세설명"
 						>${ub_resellView.ubcontents}</textarea>
 					</div>
 
@@ -569,6 +581,9 @@ div.detailimageBox {
 	const gd_priceList = document.querySelectorAll(".gd_priceList"); //상품가격 (거래완료시)
 	const gd_names = document.getElementsByName('gd_names');	// input 상품명	(거래중)
 	const gd_price = document.getElementsByName('gd_price');	// input 상품가격	(거래중)
+	
+	/* 각 상품의 부모div */
+	const display_btn = document.getElementsByClassName("content-gd");
 </script>
 
 
@@ -898,7 +913,6 @@ div.detailimageBox {
 	}
 
 	function  roomModifyCh(currentDetailCount){
-	
 		console.log("자취방 자랑글 수정 확인");
 		console.log(currentDetailCount);
 	
@@ -919,14 +933,28 @@ div.detailimageBox {
 		
 		$("#ubdetailimg").val(detailImg);
 		
-		if($("#ubtitle").val()==""){
+		if($("#titleCheck").val()==""){
 			alert("제목을 입력하세요");
 			return false;
 		} else if ($("#ubcontents").val()==""){
 			alert("내용을 입력하세요");
 			return false;
+		} else {
+			for(let i = 0; i < display_btn.length; i++){
+				if(gd_names[i].value === '') {
+					//console.log(gdtitle_class[i].value);
+					gd_names[i].focus();
+					alert("상품 정보를 입력하세요");
+					return false;
+				}
+				else if(gd_price[i].value === '') {
+					//console.log(gdprice_class[i].value);
+					gd_price[i].focus();
+					alert("상품 가격을 입력하세요");
+					return false;
+				}
+			}
 		}
-		return true;
 	}
 </script>
 
