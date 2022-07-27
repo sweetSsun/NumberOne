@@ -132,8 +132,11 @@
             </table>
             <!-- 공구작성 버튼 -->
             <div align="right" class="col mt-2">
-				<button class="btn-numberone btn-sm fw-bold" type="button" onclick="location.href='gongu_loadToBoardWrite'">공구작성</button>
+				<button class="btn-numberone btn-sm fw-bold" type="button" onclick="location.href='admin_loadToNoticeWrite?NbCheck=GB'">공구작성</button>
             </div>
+            
+            <!-- NbCheck=GB -->
+            <input type="hidden" name="NbCheck" value="GB">
             
    			<!-- 페이징 시작 -->
    			<input type="hidden" id="pageNum" name="page" value="1">
@@ -425,8 +428,8 @@
 			console.log("검색 키워드 : " + searchText);
 			$.ajax({
 				type: "get",
-				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "ajaxCheck":"list"},
-				url: "admin_selectGonguList_ajax",
+				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "ajaxCheck":"list", "NbCheck":"GB"},
+				url: "admin_selectNoticeList_ajax",
 				dataType: "json",
 				success: function(result){
 					var output = "";
@@ -468,8 +471,8 @@
 			// 페이지에서 출력할 페이지번호 받아오기
 			$.ajax({
 				type: "get",
-				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "ajaxCheck":"page"},
-				url: "admin_selectGonguList_ajax",
+				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "ajaxCheck":"page", "NbCheck":"GB"},
+				url: "admin_selectNoticeList_ajax",
 				dataType: "json",
 				success: function(result){
 					console.log("요청 페이지 : " + result.page);
