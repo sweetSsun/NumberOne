@@ -455,7 +455,7 @@ var inputEmailCheck = false;
  		*/
  		
 		//이메일 아이디 입력하면 중복 확인으로 연결하는 함수
- 		$("#inputEmailId").on("propertychange change keyup paste input", function() {
+ 		$("#inputEmailId").on("focusout", function() {
  			console.log("이메일 아이디 입력");
  	 		
  			if( $("#inputEmailDomain").val().length != 0){
@@ -489,22 +489,6 @@ var inputEmailCheck = false;
  			}
          });
 		
- 		function emailChForDuplicates() {	
- 			
- 			console.log($("#inputEmailId").val());
- 			console.log($("#inputEmailId").val().length);
- 			console.log($("#inputEmailDomain").val());
- 			var inputEmail = $("#inputEmailId").val()+"@"+$("#inputEmailDomain").val();
- 			console.log(inputEmail);
- 			/*
- 			if(emailId.length == 0){
- 				console.log("메소드 종료!")
- 				return;
- 			}
- 			*/
- 			//selectMemberEmail_ajax(inputEmail);
-
-		};
  		
  		function selectMemberEmail_ajax(inputEmail){
  			
