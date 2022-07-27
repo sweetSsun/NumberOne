@@ -220,7 +220,7 @@ div.detailimageBox {
 					<div class="container-header">
 						<div class="row">
 							<div class="col-6">
-								<span style="font-size: 20px;">글상태 </span><span class="text-danger">*</span> <select class="bdCategoryList" id="totalOp" name="ubstate" onchange="resellState(this,'${gd_resellView}')">
+								<span style="font-size: 20px;">글상태 </span><span class="text-danger">*</span> <select class="bdCategoryList" id="totalOp" name="ubstate" >
 									<option value="1">거래중</option>
 									<option value="9">거래완료</option>
 								</select>
