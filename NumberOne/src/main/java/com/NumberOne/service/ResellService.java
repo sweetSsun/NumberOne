@@ -37,7 +37,29 @@ public class ResellService {
 	ResellDao rdao;
 
 	public static String savePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\resell";
+	
+	//로그인 확인 (파라미터: ra/리턴: mav)
+	public ModelAndView loginChToFail(RedirectAttributes ra) {
+		ModelAndView mav = new ModelAndView();
+		String loginId = (String) session.getAttribute("loginId");
+		
+		if(loginId == null) {
+			System.out.println("비로그인");
+			
+			//메세지
+			ra.addFlashAttribute("msg", "로그인 후 이용가능합니다");
+			
+			//실패페이지로 이동(실패 페이지에서 msg alert 띄우고, history back)
+			mav.setViewName("redirect:loadToFail");
+		
+		} else {
+			System.out.println("로그인");
 
+		}	
+		
+		return mav;
+	}
+	
 	
 	public ModelAndView selectResellMainPage(Paging paging) throws Exception {
 		System.out.println("selectResellMainPage 서비스 호출");
@@ -261,6 +283,7 @@ public class ResellService {
 
 		String checkMethod = "NO";
 		System.out.println(paging.getSellBuy());
+		
 		/* 사이드바에서 지역선택 하지 않았을 경우 회원의 관심지역을 지역필드에 저장*/
 		 if(paging.getAjaxCheck()!=null && (String) session.getAttribute("loginRegion") != null) {
 				 paging.setSearchVal(rdao.selectRegionCode((String)
@@ -519,24 +542,16 @@ public class ResellService {
 
 		int ub_deleteResult = rdao.updateResellDelete_ub(ubDto); // 글삭제
 
+		String ubsellbuy = ubDto.getUbsellbuy();
+		
+		mav.setViewName("redirect:/selectResellPageList?sellBuy="+ubsellbuy);
+		
 		if (gd_deleteResult > 0 && ub_deleteResult > 0) {
 			System.out.println("delete성공");
 			ra.addFlashAttribute("msg", "글이 삭제되었습니다.");
-
-			if (ubDto.getUbsellbuy().equals("B")) {
-
-				mav.setViewName("redirect:/selectResellPageList?sellBuy=B");
-
-			} else {
-
-				mav.setViewName("redirect:/selectResellPageList?sellBuy=S");
-
-			}
 		} else {
-			ra.addFlashAttribute("msg", "글 작성에 실패하였습니다.");
-			mav.setViewName("redirect:/");
+			ra.addFlashAttribute("msg", "글 삭제에 실패하였습니다.");
 		}
-
 		return mav;
 
 	}
@@ -550,18 +565,16 @@ public class ResellService {
 
 			if (gdDto.getGdstate() == 0) {
 				result = "SOLD";
-
 			} else {
-
 				result = "ING";
 			}
 		}
-
 		return result;
 	}
 
 	public String updateResellState_usedBoardAjax(UsedBoardDto ubDto) {
 		System.out.println("updateResellState_usedBoardAjax() 호출");
+		
 		String result = null;
 
 		int usedBoardState = rdao.updateResellState_usedBoardAjax(ubDto);
