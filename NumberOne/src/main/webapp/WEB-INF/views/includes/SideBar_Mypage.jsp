@@ -61,6 +61,11 @@
 				</div>
 				<div class="sideclose_room">
 					<span>
+						<a href="selectMyInfoGonguView" title="공동구매"><i class="fa-solid fa-box-open"></i></a>
+					</span>
+				</div>
+				<div class="sideclose_room">
+					<span>
 						<a href="selectMyInfoQuestionListView" title="1:1문의"><i class="fa-solid fa-headset"></i></a>
 					</span>
 				</div>
@@ -79,7 +84,7 @@
 					<span><a href="selectMyInfoMemberView">회원정보</a></span>
 				</div>
 				
-				<div class="sidetitle_mypage">
+				<div class="sidetitle_mypage" style="margin-top: 0px;">
 					<span style="font-weight: bold; font-size: 20px;"><a href="selectMyInfoCommunityView">커뮤니티</a></span>
 					
 					<div class="side_mypage">
@@ -108,7 +113,15 @@
 				</div>
 				
 				<div class="sidetitle_mypage">
-					<span style="font-weight: bold; font-size: 20px;"><a href="selectMyInfoResellView">문의</a></span>
+					<span style="font-weight: bold; font-size: 20px;"><a href="selectMyInfoGonguView">공동구매</a></span>
+				
+					<div class="side_mypage">
+						<a href="selectMyInfoGonguView"><i class="fa-solid fa-box-open"></i>&nbsp;&nbsp;공구</a>
+					</div>
+				</div>
+				
+				<div class="sidetitle_mypage">
+					<span style="font-weight: bold; font-size: 20px;"><a href="selectMyInfoQuestionListView">문의</a></span>
 				
 					<div class="side_mypage">
 						<a href="selectMyInfoQuestionListView"><i class="fa-solid fa-headset"></i>&nbsp;&nbsp;1:1문의</a>
