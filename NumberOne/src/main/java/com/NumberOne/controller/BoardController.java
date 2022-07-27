@@ -184,7 +184,7 @@ public class BoardController {
 		 return mav;
 	 }
 	 
-	 //댓글작성(ajax)
+	 //댓글등록(ajax)
 	 @RequestMapping ( value = "/insertBoardReply_ajax")
 	 @ResponseBody
 	 public int insertBoardReply_ajax(String bdcode, String rpcontents) {
@@ -239,10 +239,20 @@ public class BoardController {
 	 //댓글 수정 (ajax)
 	 @RequestMapping ( value = "/updateRpcontents_ajax")
 	 @ResponseBody
-	 public int  updateRpcontents_ajax(String rpcode, String rpcontents) {
+	 public int  updateRpcontents_ajax(String rpcode, String rpcontents, String rpmid) {
 		 System.out.println("댓글수정 요청_ajax");
 		 
+		 String loginId = (String) session.getAttribute("loginId");
+		 System.out.println("loginId : " + loginId);
+		 System.out.println("rpmid : " + rpmid);
+		 
+		 if( loginId == null) {
+			 return 2;
+		 }
+		 
 		 int updateResult = bsvc.updateRpcontents_ajax(rpcode, rpcontents);
+
+		 System.out.println("댓글수정 결과 : " + updateResult);
 		 
 		 return updateResult;
 	 }
@@ -252,6 +262,12 @@ public class BoardController {
 	 @ResponseBody 
 	 public int updateReplyState_ajax(String rpcode) {
 		 System.out.println("댓글삭제 요청_ajax");
+		 
+		 String loginId = (String) session.getAttribute("loginId");
+		 
+		 if( loginId == null) {
+			 return 2;
+		 }
 		 
 		 int updateResult = bsvc.updateReplyState_ajax(rpcode);
 		 

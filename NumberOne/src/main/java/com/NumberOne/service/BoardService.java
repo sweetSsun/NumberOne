@@ -620,7 +620,10 @@ public class BoardService {
 	      //System.out.println("로그인 아이디 : " + loginId);
 	      //System.out.println("댓글작성할 글번호 : " + bdcode);
 	      //System.out.println("작성할 댓글 내용 : " + rpcontents);
-
+	      if( loginId == null) {
+	    	  return 2;
+	      }
+	      
 	      String maxRpcode = bdao.selectReplyMaxNumber();
 	      //System.out.println("maxRpcode : " + maxRpcode);
 	      String rpcode = "RP";
@@ -628,7 +631,7 @@ public class BoardService {
 	      if (maxRpcode == null) {
 	         rpcode = rpcode + "00001";
 	      } else {
-
+	    	  
 	         String rpcode_stirng = maxRpcode.substring(4);
 	         int rpcode_num = Integer.parseInt(rpcode_stirng) + 1;
 
