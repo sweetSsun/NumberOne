@@ -123,13 +123,13 @@ background-color: #00BCD4;
                             </div>
                             
                         <!-- 찾기버튼 -->    
-                        <button class="site-btn" style="border-radius: 4px; margin-left: 400px;" onclick="searchPw()">찾기</button>
+                        <button class="site-btn" style="border-radius: 4px; margin-left: 45%;" onclick="searchPw()">찾기</button>
                         <br><br>
                         <!-- 결과 span Msg-->
                              <div class="row">
                              	<div class="col-lg-12 col-md-6">
                              		<div class="checkout__input" style="text-align: center;">
-                                 		<span id="resultLookforPwMsg" style="width: 400px;"></span> 
+                                 		<span id="resultLookforPwMsg" style="text-align: center;"></span> 
                              		</div>
                              	</div>
                             </div>                                            							   							
