@@ -17,7 +17,7 @@
 
 
 
-<title>${gonguBoard.nbtitle} - 1인자:관리자 공구게시판</title>
+<title>${noticeBoard.nbtitle} - 1인자:관리자 공구게시판</title>
 
 <style type="text/css">
 	section{
@@ -97,28 +97,28 @@
 					</div>
 					<div class="row" >
 						<div class="col">
-							<span class="fw-bold boardTitle">${gonguBoard.nbtitle }</span>  
+							<span class="fw-bold boardTitle">${noticeBoard.nbtitle }</span>  
 						</div>
 					</div>
 					<div class="row idDateHits">
 						<div class="col-6">
 							<!-- 닉네임 출력으로 바꾸기 -->
-							<span class="fw-bold bdnickname">${gonguBoard.nbnickname }</span>
+							<span class="fw-bold bdnickname">${noticeBoard.nbnickname }</span>
 						</div>
 						
 						<div align="right" class="col-3 offset-md-3">
-							<span class="boardDate">${gonguBoard.nbdate } | </span> 
-							<span class="bdhit" style="right:0;"><i class="fa-regular fa-eye"></i>${gonguBoard.nbhits}</span> 
+							<span class="boardDate">${noticeBoard.nbdate } | </span> 
+							<span class="bdhit" style="right:0;"><i class="fa-regular fa-eye"></i>${noticeBoard.nbhits}</span> 
 						</div>
 					</div>
 					
 					<!-- 본문 글 내용-->
 					<div class="row mt-3 mb-1 boardContents">
 						<div class="col">
-							<c:if test="${gonguBoard.nbimg != null }">
-								<img alt="" src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${gonguBoard.nbimg}" style="max-width:100%; max-height:500px;">
+							<c:if test="${noticeBoard.nbimg != null }">
+								<img alt="" src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg}" style="max-width:100%; max-height:500px;">
 							</c:if>
-							<textarea class="textarea-NbView" readonly>${gonguBoard.nbcontents }</textarea>
+							<textarea class="textarea-NbView" readonly>${noticeBoard.nbcontents }</textarea>
 						</div>
 						
 						
@@ -160,7 +160,7 @@
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
 				<div class="row mb-2">
 					<div class="col-2">
-						<a href="admin_selectGonguList${paging.makeQueryPage(gonguBoard.nbcode, paging.page)}">
+						<a href="admin_selectGonguList${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}">
 						<input type="button" style="left:0;" class="middleBtn btn-numberone btn-sm fw-bold text-white" value="글목록">
 						</a> 
 					</div>
@@ -197,7 +197,7 @@
 	  			}
 	  			
 				var nbstate = 2;
-				var nbcode = '${gonguBoard.nbcode}';
+				var nbcode = '${noticeBoard.nbcode}';
 				console.log("nbcode : " + nbcode);
 				location.href="admin_updateNbstate?nbcode="+nbcode+"&nbstate="+nbstate;
 	  		}
@@ -218,12 +218,12 @@
 	  				return;
 	  			}
 	  			
-				var nbcode = '${gonguBoard.nbcode}';
+				var nbcode = '${noticeBoard.nbcode}';
 				console.log("nbcode : " + nbcode);
 				//console.log("paging : " + ${paging});
-				var url = "admin_selectNoticeModify${paging.makeQueryPage(gonguBoard.nbcode, paging.page)}";
+				var url = "admin_selectNoticeModify${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}";
 				console.log(url);
-				location.href="admin_selectNoticeModify${paging.makeQueryPage(gonguBoard.nbcode, paging.page)}";
+				location.href="admin_selectNoticeModify${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}";
 	  		}
 		});
 	});

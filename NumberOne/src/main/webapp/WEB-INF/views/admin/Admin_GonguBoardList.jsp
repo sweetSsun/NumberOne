@@ -426,7 +426,7 @@
 			$.ajax({
 				type: "get",
 				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "ajaxCheck":"list"},
-				url: "admin_selectNoticeList_ajax",
+				url: "admin_selectGonguList_ajax",
 				dataType: "json",
 				success: function(result){
 					var output = "";
@@ -469,7 +469,7 @@
 			$.ajax({
 				type: "get",
 				data: {"searchVal":searchVal, "searchType":searchType, "keyword":searchText, "ajaxCheck":"page"},
-				url: "admin_selectNoticeList_ajax",
+				url: "admin_selectGonguList_ajax",
 				dataType: "json",
 				success: function(result){
 					console.log("요청 페이지 : " + result.page);

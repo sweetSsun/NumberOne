@@ -218,7 +218,31 @@ public class AdminService {
 			return paging_json;
 		}
 	}
-
+	
+	// 선택한 상태값에 따른 공구목록 ajax
+	public String admin_selectGonguList_ajax(Paging paging) {
+		System.out.println("AdminService.admin_selectGonguList_ajax() 호출");
+//			System.out.println("searchVal : " + paging.getSearchVal());
+		
+		int totalCount = adao.admin_selectGonguTotalCount(paging); // 페이지 처리 위한 게시글 수 조회
+		paging.setTotalCount(totalCount);
+		paging.calc(); // 페이지 처리 계산 실행
+//			System.out.println("paging : " + paging);
+		
+		ArrayList<NoticeDto> noticeList = adao.admin_selectGonguList(paging);
+//			System.out.println("noticeList : " + noticeList);
+		
+		gson = new Gson();
+		if (paging.getAjaxCheck().equals("list")) { // memberList ajax일 경우
+			String noticeList_json = gson.toJson(noticeList);
+			return noticeList_json;
+		} else { // paging ajax일 경우
+			String paging_json = gson.toJson(paging);
+			return paging_json;
+		}
+	}
+	
+	
 	// 공지상태 변경
 	public int admin_updateNbstate_ajax(String nbcode, int nbstate) {
 		System.out.println("AdminService.admin_updateNbstate_ajax() 호출");
@@ -228,7 +252,7 @@ public class AdminService {
 		return updateResult;
 	}
 
-	// 공지상태 변경_공지글 삭제
+	// 공지상태 변경_공지글 삭제 & 공구
 	public ModelAndView admin_updateNbstate(String nbcode, int nbstate, RedirectAttributes ra) {
 		System.out.println("AdminService.admin_updateNbstate() 호출");
 //		System.out.println("상태변경할 nbcode : " + nbcode);
@@ -236,8 +260,13 @@ public class AdminService {
 		mav = new ModelAndView();
 		int updateResult = adao.admin_updateNbstate_ajax(nbcode, nbstate);
 		if (updateResult > 0) {
-			ra.addFlashAttribute("msg", nbcode+" 공지가 비활성화 처리 되었습니다.");
-			mav.setViewName("redirect:/admin_selectNoticeList?searchVal=all&searchType=&keyword=&page=1");
+			if (nbcode.substring(0,2).equals("NB")){
+				ra.addFlashAttribute("msg", nbcode+" 공지가 비활성화 처리 되었습니다.");
+				mav.setViewName("redirect:/admin_selectNoticeList?searchVal=all&searchType=&keyword=&page=1");
+			} else {
+				ra.addFlashAttribute("msg", nbcode+" 공구가 비활성화 처리 되었습니다.");
+				mav.setViewName("redirect:/admin_selectGonguList?searchVal=all&searchType=&keyword=&page=1");
+			}
 		}
 		return mav;
 	}
@@ -264,22 +293,20 @@ public class AdminService {
 		
 		System.out.println(noticeBoard);
 
+		mav.addObject("noticeBoard", noticeBoard);
+		mav.addObject("paging", paging);
+
 		System.out.println(nbcode.substring(0,2));
-		if (nbcode.substring(0,2).equals("GB")){
-			mav.addObject("gonguBoard", noticeBoard);
-			mav.setViewName("admin/Admin_GonguBoardView");
-			mav.addObject("paging", paging);
-			
-		} else {
-			mav.addObject("noticeBoard", noticeBoard);
-			mav.addObject("paging", paging);
+		if (nbcode.substring(0,2).equals("NB")){
 			mav.setViewName("admin/Admin_NoticeBoardView");
+		} else {
+			mav.setViewName("admin/Admin_GonguBoardView");
 		}
 		return mav;
 	}
 
-	// 공지 작성페이지 이동
-	public ModelAndView admin_loadToNoticeWrite(RedirectAttributes ra) {
+	// 공지 & 공구 작성페이지 이동
+	public ModelAndView admin_loadToNoticeWrite(RedirectAttributes ra, String NbCheck) {
 		System.out.println("AdminService.admin_loadToNoticeWrite() 호출");
 		mav = new ModelAndView();
 		
@@ -289,8 +316,12 @@ public class AdminService {
 		if(mav.getViewName() != null) {
 		   return mav;
 		}
-		mav.setViewName("admin/Admin_NoticeWriteForm");
 		
+		if(NbCheck.equals("Nb")) { // controller에서 Nb를 넘겨받았다면, 공지조회해줘
+			mav.setViewName("admin/Admin_NoticeWriteForm");
+		} else {
+			mav.setViewName("admin/Admin_GonguBoardWrite");			
+		}
 		return mav;
 	}
 
@@ -354,7 +385,7 @@ public class AdminService {
 		return mav;
 	}
 
-	// 공지 수정페이지 이동
+	// 공지 & 공구 수정페이지 이동
 	public ModelAndView admin_selectNoticeModify(String nbcode, Paging paging, RedirectAttributes ra) {
 		System.out.println("AdminService.admin_selectNoticeModify() 호출");
 		System.out.println("nbcode : " + nbcode);
@@ -374,7 +405,13 @@ public class AdminService {
         
 		mav.addObject("noticeBoard", noticeBoard);
 		mav.addObject("paging", paging);
-		mav.setViewName("admin/Admin_NoticeModifyForm");
+		
+		System.out.println(nbcode.substring(0,2));
+		if (nbcode.substring(0,2).equals("NB")){
+			mav.setViewName("admin/Admin_NoticeModifyForm");			
+		} else {
+			mav.setViewName("admin/Admin_GonguBoardModifyForm");
+		}
 		
 		return mav;
 	}
@@ -420,10 +457,14 @@ public class AdminService {
 					File delFile = new File(nbImgSavePath, modiNotice.getOriginImg());
 					delFile.delete();
 			}
-			ra.addFlashAttribute("msg", modiNotice.getNbcode()+ " 공지가 수정되었습니다.");
+			if (modiNotice.getNbcode().substring(0,2).equals("NB")){
+				ra.addFlashAttribute("msg", modiNotice.getNbcode()+ " 공지가 수정되었습니다.");
+			} else {
+				ra.addFlashAttribute("msg", modiNotice.getNbcode()+ " 공구가 수정되었습니다.");
+			}
 			mav.setViewName("redirect:/admin_selectNoticeBoardView"+paging.makeQueryPage(modiNotice.getNbcode(), paging.getPage()));
 		} else {
-			ra.addFlashAttribute("msg", "공지 수정에 실패했습니다.");
+			ra.addFlashAttribute("msg", "수정에 실패했습니다.");
 			mav.setViewName("redirect:/loadToFail");
 		}
 		return mav;

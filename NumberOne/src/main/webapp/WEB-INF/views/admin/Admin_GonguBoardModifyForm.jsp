@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 공지수정</title>
+<title>1인자 - 공구수정</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -74,7 +74,7 @@
 		<!-- 본문 -->
 			<div class="container">
 				<div class="row" style="margin:auto;">
-					<h4 class="text-center">공지 수정페이지 : Admin_NoticeModifyForm.jsp</h4>
+					<h4 class="text-center">공구 수정페이지 : Admin_GonguBoardModifyForm.jsp</h4>
 				</div>
 				<div>
  				<form action="admin_updateNoticeModify${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}" method="post" enctype="multipart/form-data" onsubmit="return inputCheck()">
@@ -125,13 +125,13 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title"> 공지글 작성 취소 </h5>
+                    <h5 class="modal-title"> 공구글 작성 취소 </h5>
                     <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                     </button>
                 </div>
                 <div class="modal-body" >
-                	<span class="fw-bold">공지글 작성을 취소하시겠습니까?</span>
+                	<span class="fw-bold">공구글 작성을 취소하시겠습니까?</span>
                 	<br>
                 	<span class="">이 페이지를 벗어나면 작성된 내용은 저장되지 않습니다.</span>
                 </div>	
@@ -149,7 +149,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
 <script type="text/javascript">
-	// 공지글 수정 취소 경고 모달창 close 하는 스크립트
+	// 공구글 수정 취소 경고 모달창 close 하는 스크립트
 		var modal = $(".modal");
 	var close = $(".close");
 	for (var i = 0; i < close.length; i++){
@@ -160,7 +160,7 @@
 </script>
 
 <script type="text/javascript">
-	// 공지글 수정 취소
+	// 공구글 수정 취소
 	function writeBoardCancel(){
 		console.log("취소 버튼 클릭");
 		location.href="admin_selectNoticeBoardView${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}";
