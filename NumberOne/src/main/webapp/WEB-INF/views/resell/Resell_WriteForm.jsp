@@ -827,28 +827,43 @@ for(let i = 0; i<display_btn.length; i++){
 
 
 		
-<!-- 글목록으로 돌아가기 -->
+<!-- 취소 핸들러 스크립트  -->
 <script type="text/javascript">
-let storage = window.localStorage; 
+const storage = window.localStorage; 
+
+//기본값 (스토리지에 아이템 없을 때 사용)
+let searchType = '';
+let keyword = '';
+let selRegion = '${ub_resellView.ubrgcode}';
+let page = '1';
+
+//스토리지 아이템 확인
 if(storage.getItem('searchType') !=null){
-	var searchType_storage = storage.getItem('searchType');
-	console.log('로컬스토리지 검색타입 : ', searchType_storage);
-}
-if(storage.getItem('keyword') !=null){
-	var keyword_storage = storage.getItem('keyword');
-	console.log('로컬스토리지 검색어 : ', keyword_storage);
-}
-if(storage.getItem('page') !=null ){
-	var page_storage = storage.getItem('page');
+	searchType = storage.getItem('searchType');
+	console.log('로컬스토리지 검색타입 : ', searchType);
+	}
 	
-	console.log('로컬스토리지 페이지번호 : ', page_storage);
-}	
-			
+if(storage.getItem('keyword') !=null){
+	keyword = storage.getItem('keyword');
+	console.log('로컬스토리지 검색어 : ', keyword);
+}
+
+if(storage.getItem('selRegion') !=null ){
+	selRegion = storage.getItem('selRegion');
+	console.log('로컬스토리지 선택지역 : ', selRegion);
+}
+
+if(storage.getItem('page') !=null ){
+	page = storage.getItem('page');	
+	console.log('로컬스토리지 선택페이지 : ', page);
+}
+
+	
 	function cancelBtn() {
 
 		console.log("취소버튼 클릭이벤트");
 		
-		location.href = 'selectResellPageList?sellBuy='+sellbuy+'&searchType='+searchType_storage+'&keyword='+keyword_storage+'&searchVal='+rgcode+'&page='+page_storage;
+		location.href = 'selectResellPageList?sellBuy='+ubsellbuy+'&searchType='+searchType+'&keyword='+keyword+'&searchVal='+selRegion+'&page='+page;
 	}
 
 </script>

@@ -1201,37 +1201,48 @@ textarea:focus {
 	}
 </script>
 
-<!-- 글목록으로 돌아가기 -->
+<!-- 글목록 버튼클릭 이벤트핸들러 스크립트  -->
 <script type="text/javascript">
-let storage = window.localStorage;
+// 로컬스토리지 초기화
+const storage = window.localStorage;
 
+//글목록버튼
+const backList = document.querySelector("#backList");	
+backList.addEventListener("click", backListHandler);
+// 기본값 (스토리지에 아이템 없을 때 사용)
+let searchType = '';
+let keyword = '';
+let selRegion = '${ub_resellView.ubrgcode}';
+let page = '1';
+
+//스토리지 아이템 확인
 if(storage.getItem('searchType') !=null){
-	var searchType_storage = storage.getItem('searchType');
-	console.log('로컬스토리지 검색타입 : ', searchType_storage);}
-if(storage.getItem('keyword') !=null){
-	var keyword_storage = storage.getItem('keyword');
-	console.log('로컬스토리지 검색어 : ', keyword_storage);
-}
-if(storage.getItem('selRegion') !=null ){
-	var selRegion_storage = storage.getItem('selRegion');
-	console.log('로컬스토리지 선택지역 : ', selRegion_storage);
-}	
-if(storage.getItem('page') !=null ){
-	var page_storage = storage.getItem('page');	
-	console.log('로컬스토리지 선택페이지 : ', page_storage);
-}else{
-	storage.setItem('page', '1');
-	}	
-
-	const backList = document.querySelector("#backList");
+	searchType = storage.getItem('searchType');
+	console.log('로컬스토리지 검색타입 : ', searchType);
+	}
 	
-	backList.addEventListener("click", backListHandler);
+if(storage.getItem('keyword') !=null){
+	keyword = storage.getItem('keyword');
+	console.log('로컬스토리지 검색어 : ', keyword);
+}
+
+if(storage.getItem('selRegion') !=null ){
+	selRegion = storage.getItem('selRegion');
+	console.log('로컬스토리지 선택지역 : ', selRegion);
+}
+
+if(storage.getItem('page') !=null ){
+	page = storage.getItem('page');	
+	console.log('로컬스토리지 선택페이지 : ', page);
+}
+
+	
 	
 	function backListHandler() {
 
 		console.log("글목록버튼 클릭이벤트");
 		
-		location.href = 'selectResellPageList?sellBuy='+ubsellbuy+'&searchType='+searchType_storage+'&keyword='+keyword_storage+'&searchVal='+selRegion_storage+'&page='+page_storage;
+		location.href = 'selectResellPageList?sellBuy='+ubsellbuy+'&searchType='+searchType+'&keyword='+keyword+'&searchVal='+selRegion+'&page='+page;
 	}
 
 </script>
