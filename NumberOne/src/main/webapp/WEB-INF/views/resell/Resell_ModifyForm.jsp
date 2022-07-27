@@ -364,14 +364,14 @@ div.detailimageBox {
 <!-- 페이지로드시 실행할 코드 스크립트 -->
 <script type="text/javascript">
 	const ubstate = '${ub_resellView.ubstate}'; // 글 상태 값 
-	const totalOp = document.getElementById("totalOp"); // 글 상태 select태그
+	const totalOp = document.getElementById("totalOp"); // 글상태 select태그(거래중, 거래완료) option들을 가지고있는  select태그
 	const ubrgcode = '${ub_resellView.ubrgcode}'; // 지역코드
 	const ubrgOp = document.getElementById("ubrgOp") // 지역 select태그
 	const ubcode = '${ub_resellView.ubcode}'; //글번호
 	const ubsellbuy = '${ub_resellView.ubsellbuy}'; //사구,팔구 확인
-	const selectStates = document.querySelectorAll(".selectStates"); // select태그 : 상품상태(거래중,거래완료) option들을 가지는 부모태그  
+	const selectStates = document.querySelectorAll(".selectStates"); // 상품 select태그 : 상품상태(거래중,거래완료) option들을 가지는 부모태그  
 	const select_gdcode = document.querySelectorAll(".select_gdcode"); //상품코드	
-	const select_gdstate = document.querySelectorAll(".select_gdstate");// 상품상태번호 ('1', '0');
+	const select_gdstate = document.querySelectorAll(".select_gdstate");// 상품 상태번호확인용 ('1', '0');
 	const gd_nameList = document.querySelectorAll(".gd_nameList"); //상품명  (거래완료시) 
 	const gd_priceList = document.querySelectorAll(".gd_priceList"); //상품가격 (거래완료시)
 	const gd_names = document.getElementsByName('gd_names');	// input 상품명	(거래중)
@@ -407,10 +407,9 @@ if (loginCheck.length == 0) {
 	for (let i = 0; i < ubrgOp.options.length; i++){
 		if (ubrgOp.options[i].value === ubrgcode) {
 			ubrgOp.options[i].selected = 'true';
-		}
-		
+		}		
 	}
-
+	
 	/* 페이지로드시 글의 거래상태체크 */
 		for (let i = 0; i < totalOp.options.length; i++) {
 			if (totalOp.options[i].value === ubstate) {
@@ -548,12 +547,7 @@ if (loginCheck.length == 0) {
 	}
 
 	
-	//		시간나면 연습용. 	이건 객체를 통째로 받아와서 스플릿 많이 해야함.   
-	function resellState(selOP, geTest) {
-
-		//console.log("글상태값 :", selOP.value);
-		//console.log("코드 :", geTest);
-	}
+	
 </script>
 
 

@@ -439,7 +439,6 @@ div.col.mb-2 h3 {
 				
 				console.log("거래완료글확인")
 				soldCheckMsg[i].textContent = "(거래완료) "
-				break;
 			}
 		}
 	}
