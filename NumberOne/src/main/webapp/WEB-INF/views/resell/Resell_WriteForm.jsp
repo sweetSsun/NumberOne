@@ -489,7 +489,8 @@ function mainimgCh(){
 </script>
 
 <script type="text/javascript">
-
+	
+	/* 페이지 로드시 체크 */
 		let resellTitle = document.getElementById("resellTitle"); // 사구,팔구 select태그지정
 		let regionCheck = document.getElementById("regionCheck");	// 지역 select 태그
 		/* 페이지이동 시 어느게시판에서 넘어왔는지 파라메터를 통해 확인 */

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - ${paging.searchVal }게시판</title>
+<title>1인자 - 공지게시판</title>
 <!-- Jquery -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>  
 <!-- 부트스트랩 -->
@@ -37,7 +37,7 @@
 		font-size: 20px;
 	}
 	.bdcategory{
-		color : #00bcd4;
+		color : gray;
 	}
 	.bdCategoryList{
 		color : #00bcd4;
@@ -64,13 +64,13 @@
 	.community{
 		background-color: #00bcd4;
 	}
+	.malmeori{
+		display: none;
+	}
 	#inputSearchText{
 		font-size: 18px;
 	}
-   .bdnickname:hover{
-   	color:#00bcd4;
-   }
-   section div.checkout__form{
+section div.checkout__form{
 	/* 페이지 제목 */
 	color: #1c1c1c; 
     font-weight: 700; 
@@ -94,28 +94,29 @@
         <!-- End of TopBar -->
 	
 	<main>
+		
 		<!-- 사이드바 -->
 		<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
 		
 		<section>
-		<!-- 페이지명 -->
-		<div class="checkout__form" style="margin-top: 30px;">${paging.searchVal }게시판</div> 
 		<!-- 본문 -->
-			<form action="selectCategoryBoardList" method="get" id="actionForm">
+		<!-- 페이지명 -->
+		<div class="checkout__form" style="margin-top: 30px;">공지게시판</div> 
+		
+			<form action="selectNoticeBoardList" method="get" id="actionForm">
+			<!-- <input type="hidden" name="searchVal" value="all"> -->
 			<div class="container">
-				<input type="hidden" name="searchVal" value="${paging.searchVal }">
-					<div class="row ">
+						<div class="row ">
 						<!-- 검색기능 -->
 						<div class="col-5" align="right">
-								<select name="searchType" id="searchTypeSel" class="searchType">
-									<option value="bdTitle">제목</option>
-									<option value="bdContents">내용</option>
-									<option value="bdTitleContents">제목+내용</option>
-									<option value="bdNickname">작성자</option>
+								<select name="searchType" class="searchType" id="searchTypeSel">
+									<option value="nbTitle">제목</option>
+									<option value="nbContents">내용</option>
+									<option value="nbTitleContents">제목+내용</option>
 								</select>
 						</div>
 						<div class="col-7 ">
-							<input type="text" name="keyword"  placeholder="검색어를 입력하세요" id="inputSearchText">
+							<input type="text" name="keyword" placeholder="검색어를 입력하세요" id="inputSearchText">
 							<button class="btn btn-sm btn-secondary">검색</button>
 						</div>
 					</div>		
@@ -124,16 +125,8 @@
 					
 				</div>
 				
-				<div class=" community" style="text-align:center;">
-					<c:choose>
-						<c:when test="${paging.searchVal eq 'all' }">
-							<span style="font-size:21px;" class="fw-bold text-white">전체게시판</span>
-						</c:when>
-						
-						<c:otherwise>
-							<span style="font-size:21px;" class="fw-bold text-white">${paging.searchVal }게시판</span>
-						</c:otherwise>
-					</c:choose>
+				<div class="community" style="text-align:center;">
+					<span style="font-size:21px;" class="fw-bold text-white">공지게시판</span>
 				</div>
 				
 				<!-- 게시글 목록 -->
@@ -147,59 +140,57 @@
 							<td style="font-size: 17px;">작성자</td>
 							<td style="font-size: 17px;">날짜</td>
 							<td style="font-size: 17px;">조회</td>
-							<td style="font-size: 17px;">추천</td>
 						</tr>
 						
-						<c:forEach items="${noticeList }" var="notice">
-							<c:if test="${notice.nbfix == 1 }">
-							<!-- 공지게시판 -->
+						<c:forEach items="${noticeList_fix }" var="notice_fix">
+							<c:if test="${notice_fix.nbfix == 1 }">
+							<!-- 공지게시판 : 상단에 띄울 고정 공지-->
 							<tr class="fw-bold" style="border-bottom: solid #E0E0E0 1px;">
-								<td class="text-center tableCell">${notice.nbcode}</td>
-								<td></td>
+								<td class="text-center tableCell">${notice_fix.nbcode}</td>
+								<td class="text-center tableCell">공지</td>
 								<td class="tableCell">
-									<a href="selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page) }">${notice.nbtitle}</a>
+									<a href="selectNoticeBoardView?codeIdx=${notice_fix.nbcode }">${notice_fix.nbtitle}</a>
 								</td>
 								<td class="text-center tableCell">관리자</td>
-								<td class="text-center tableCell">${notice.nbdate}</td>
-								<td class="text-center tableCell">${notice.nbhits }</td>
-								<td></td>
+								<td class="text-center tableCell">${notice_fix.nbdate}</td>
+								<td class="text-center tableCell">${notice_fix.nbhits }</td>
 							</tr>
 							</c:if>
 						</c:forEach>
 					</thead>
 					
+					<!-- nbfix != 1 인 공지들 -->
 					<tbody id="bdCategoryList">
-					<!-- 일반게시판 목록 -->
-					
-					<c:forEach items="${boardList }" var="board">
+					<c:forEach items="${noticeList }" var="notice">
+						<c:if test="${notice.nbfix != 1 }">
 						<tr style="border-bottom: solid #E0E0E0 1px;">
-							<td class="text-center tableCell">${board.bdcode}</td>
-							<td class="bdcategory text-center tableCell">${board.bdcategory}</td>
+							<td class="text-center tableCell">${notice.nbcode}</td>
+							<td class="bdcategory text-center tableCell">공지</td>
 							<td class="tableCell">
-							 	<a href="selectBoardView${paging.makeQueryPage(board.bdcode, paging.page)}">${board.bdtitle} 
-							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
+							 	<a href="selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}">${notice.nbtitle} 
+							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;"></span> </a>
 							 </td>
 							<td class="text-center tableCell">
-								<span style="cursor: pointer" class="bdnickname" onclick="writeMemberBoard('${board.bdnickname}')">${board.bdnickname}</span>
+								관리자
 							</td>
-							<td class="text-center tableCell">${board.bddate}</td>
-							<td class="text-center tableCell">${board.bdhits }</td>
-							<td class="fw-bold text-center tableCell" style="color: #00bcd4;">${board.bdrccount}</td>
+							<td class="text-center tableCell">${notice.nbdate}</td>
+							<td class="text-center tableCell">${notice.nbhits }</td>
 						</tr>
+						</c:if>
 					</c:forEach>
 					</tbody>
 				</table>
-				<div align="right" class="col mt-2">
-					<c:if test="${sessionScope.loginId != null }">
-						<button type="button" onclick="loadToBoardWrite()" style="background-color:#00bcd4;" class="btn btm-sm fw-bold text-white writeButton">글작성</button>
+				<%-- <div align="right" class="col mt-2">
+					<c:if test="${sessionScope.loginId == 'admin' }">
+						<button  onclick="loadToBoardWrite()" style="background-color:gray;" class="btn btm-sm fw-bold text-white writeButton">글작성</button>
 					</c:if>
-				</div>
+				</div> --%>
 				</div>
 				
 				<!-- 페이징 시작 -->
 				<input type="hidden" id="pageNum" name="page" value="1">
-				<div class="block text-center" id="pageList">
-				  	<ul class="pagination">
+				<div class="block text-center" id="pageList" >
+					<ul class="pagination">
 					<c:choose>
 		           		<c:when test="${paging.prev }">
 		           			<li class="paginate_button"><a href="${paging.page -1 }" >이전</a></li>
@@ -215,7 +206,7 @@
 	                			<li class=""><a class="active">${num }</a></li>
 	                		</c:when>
 	                		<c:otherwise>
-	                			<li class="paginate_button "><a href="${num }" >${num }</a></li>
+	                			<li class="paginate_button"><a href="${num }" >${num }</a></li>
 	                		</c:otherwise>
 	                	</c:choose>
 	               	</c:forEach>
@@ -231,7 +222,7 @@
 					</ul>
 				</div>
 				<!-- 페이징 끝 -->
-				</form>
+			</form>
 		</section>
 	</main>
 	
@@ -240,6 +231,22 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 
+<script type="text/javascript">
+	var checkMsg = '${msg}';
+	if ( checkMsg.length > 0 ){
+		alert(checkMsg);
+	}
+	//선택한 검색 select option 으로 선택되도록 하기 
+	var searchOption = $("#searchTypeSel option");
+	var searchType = "${paging.searchType}";
+	if ( searchType.length > 0 ){
+		for ( var i = 0; i<searchOption.length; i++){
+			if (searchOption.eq(i).val() == searchType){
+				searchOption.eq(i).attr("selected", "selected");
+			}
+		}	
+	}
+</script>
 <script type="text/javascript">
 	var actionForm = $("#actionForm");
 	// $(".paginate_button a").click(function(e){ // click 이벤트는 동적 처리 불가능
@@ -251,22 +258,21 @@
 		actionForm.submit();
 	});
 </script>
-
 <script type="text/javascript">
-	var checkMsg = '${msg}';
-	if ( checkMsg.length > 0 ){
-		alert(checkMsg);
-	}
-	
-	//선택한 검색 select option 으로 선택되도록 하기 
+
+</script>
+<script type="text/javascript">
+
+	/* 선택한 검색 select option으로 선택되도록 하기 */
 	var searchOption = $("#searchTypeSel option");
+	console.log("searchOption.length : " + searchOption.length);
 	var searchType = "${paging.searchType}";
-	if ( searchType.length > 0 ){
-		for ( var i = 0; i<searchOption.length; i++){
-			if (searchOption.eq(i).val() == searchType){
+	if( searchType.length > 0 ){
+		for ( var i=0; i<searchOption.length; i++){
+			if( searchOption.eq(i).val() == searchType ){
 				searchOption.eq(i).attr("selected", "selected");
 			}
-		}	
+		}
 	}
 	
 	var keyword = '${paging.keyword}';
@@ -275,16 +281,7 @@
 	}
 	
 </script>
-<script type="text/javascript">
-	
-	console.log('${paging.searchVal}');
-	/* 글쓰기 버튼 클릭 */
-	function loadToBoardWrite(){
-		//글작성 페이지로 이동 
-		var bdcategory = "${paging.searchVal}";
-		location.href= "loadToBoardWrite?bdcategory="+bdcategory;
-	}
-</script>
+
 
 
 </html>
