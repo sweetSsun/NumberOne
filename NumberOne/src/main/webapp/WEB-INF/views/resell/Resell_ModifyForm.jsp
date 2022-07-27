@@ -90,6 +90,14 @@ option {
 	width: 100%;
 	vertical-align: middle
 }
+.gdprice {
+	border: none;
+	font-size: 20px;
+	height: 22px;
+	margin: auto;
+	width:100%;
+	vertical-align: middle;
+}
 
 .gd-header {
 	display: block;
@@ -238,11 +246,7 @@ div.detailimageBox {
 
 						<!-- 글 제목  -->
 						<div class="row">
-							<input type="text" <%-- 
-								size="60"
-								style="margin-left: 40px;"
-								 --%>
-								class="bdtitle" id="titleCheck" name="ubtitle" value="${ub_resellView.ubtitle }"> <span class="checkMsg"></span>
+							<input type="text" class="bdtitle" id="titleCheck" name="ubtitle" value="${ub_resellView.ubtitle }" placeholder="제목"> <span class="checkMsg"></span>
 						</div>
 						<hr>
 
@@ -260,12 +264,12 @@ div.detailimageBox {
 
 									</div>
 									<div class="col-7">
-										<input type="text" class="gdtitle" name="gd_names" value="${gdList.gdname }"> <input disabled class="d_none gdtitle gd_nameList line-through" type="text" value="${gdList.gdname }">
+										<input type="text" class="gdtitle" name="gd_names" value="${gdList.gdname }" placeholder="품목명"> <input disabled class="d_none gdtitle gd_nameList line-through" type="text" value="${gdList.gdname }">
 									</div>
 
 									<div class="col-3" style="display: flex;">
 										<!-- 한화 표시 -->
-										<span style="vertical-align: middle; margin: auto;">&#8361; </span> <input type="text" class="gdtitle" name="gd_price" value="${gdList.gdprice }"> <input disabled class="d_none gdtitle gd_priceList line-through" type="text" value="${gdList.gdprice }">
+										<span style="vertical-align: middle; margin: auto;">&#8361; </span> <input type="text" class="gdtitle" name="gd_price" value="${gdList.gdprice }" placeholder="가격"> <input disabled class="d_none gdtitle gd_priceList line-through" type="text" value="${gdList.gdprice }">
 									</div>
 
 
@@ -285,7 +289,7 @@ div.detailimageBox {
 
 					<!-- 상품 설명  -->
 					<div class="row" style="width: 100%; margin-left: 0;">
-						<textarea class="bdcontents" rows="17" cols="80" name="ubcontents" id="ubcontents">${ub_resellView.ubcontents}</textarea>
+						<textarea class="bdcontents" rows="17" cols="80" name="ubcontents" id="ubcontents" placeholder="상품상세설명">${ub_resellView.ubcontents}</textarea>
 					</div>
 
 					<!-- 파일첨부  -->
@@ -376,6 +380,9 @@ div.detailimageBox {
 	const gd_priceList = document.querySelectorAll(".gd_priceList"); //상품가격 (거래완료시)
 	const gd_names = document.getElementsByName('gd_names');	// input 상품명	(거래중)
 	const gd_price = document.getElementsByName('gd_price');	// input 상품가격	(거래중)
+	
+	/* 각 상품의 부모div */
+	const display_btn = document.getElementsByClassName("content-gd");
 </script>
 
 
@@ -704,7 +711,6 @@ if (loginCheck.length == 0) {
 	}
 
 	function  roomModifyCh(currentDetailCount){
-	
 		console.log("자취방 자랑글 수정 확인");
 		console.log(currentDetailCount);
 	
@@ -725,14 +731,28 @@ if (loginCheck.length == 0) {
 		
 		$("#ubdetailimg").val(detailImg);
 		
-		if($("#ubtitle").val()==""){
+		if($("#titleCheck").val()==""){
 			alert("제목을 입력하세요");
 			return false;
 		} else if ($("#ubcontents").val()==""){
 			alert("내용을 입력하세요");
 			return false;
+		} else {
+			for(let i = 0; i < display_btn.length; i++){
+				if(gd_names[i].value === '') {
+					//console.log(gdtitle_class[i].value);
+					gd_names[i].focus();
+					alert("상품 정보를 입력하세요");
+					return false;
+				}
+				else if(gd_price[i].value === '') {
+					//console.log(gdprice_class[i].value);
+					gd_price[i].focus();
+					alert("상품 가격을 입력하세요");
+					return false;
+				}
+			}
 		}
-		return true;
 	}
 </script>
 

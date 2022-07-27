@@ -179,10 +179,10 @@ public class AdminController {
 	}
 	
 	@RequestMapping (value="admin_selectResellView")
-	public ModelAndView admin_selectResellView(Paging paging, String codeIdx) {
+	public ModelAndView admin_selectResellView(Paging paging, String codeIdx, String ubsellbuy) {
 		System.out.println("중고거래 상세페이지 이동 요청_관리자");
-		// 상세 이동 코드 생성 필요
-		return null;
+		mav = asvc.admin_selectResellView(paging, codeIdx, ubsellbuy);
+		return mav;
 	}
 	
 	/* 커뮤니티 관리 */

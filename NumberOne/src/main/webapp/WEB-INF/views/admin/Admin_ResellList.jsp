@@ -98,13 +98,14 @@
                </thead>
                <tbody id="bdListTbody">
 	               <c:forEach items="${usedBoardList }" var="usedBoard">
-	                   <!-- 회원관리 목록 -->
+	                   <!-- 중고거래 관리 목록 -->
 	                   <tr style="border-bottom: solid #E0E0E0 1px;">
 	                      <td class="text-center overflow">${usedBoard.ubcode}</td>
 	                      <td class="text-center"><img src="${pageContext.request.contextPath }/resources/img/resell/${usedBoard.ubmainimg }"
 	                      		class="img-fluid" style="width:60px; height:60px; object-fit:fill;"></td>
-	                      <td class="overflow"><a href="#">
-	                      ${usedBoard.ubtitle}</a></td>
+	                      <td class="overflow">
+	                      	<a href="admin_selectResellView${paging.makeQueryPage(usedBoard.ubcode, paging.page)}&ubsellbuy=${usedBoard.ubsellbuy}"> ${usedBoard.ubtitle}</a>
+	                      </td>
 	                      <td class="text-center overflow pointer" onclick="writeMemberSellbuy('${usedBoard.ubnickname}')">${usedBoard.ubnickname}</td>
 	                      <td class="text-center overflow">${usedBoard.ubdate}</td>
 	                      <td class="text-center">${usedBoard.ubwarning}</td>
@@ -331,7 +332,8 @@
 						output += "<td class='text-center overflow'>" + result[i].ubcode + "</td>";
 						output += "<td class='text-center'><img src='${pageContext.request.contextPath }/resources/img/resell/" + result[i].ubmainimg
 						+ "' class='img-fluid' style='width:60px; height:60px;  object-fit:fill;'></td>";
-						output += "<td class='overflow'><a href='admin_selectResellView?ubcode=" + result[i].ubcode + "'>" + result[i].ubtitle + "</a></td>";
+						output += "<td class='overflow'><a href='admin_selectResellView?${paging.makeQueryPage(paging.page)}&codeIdx=" + result[i].ubcode
+								+ "&ubsellbuy=" + result[i].ubsellbuy + "'>" + result[i].ubtitle + "</a></td>";
 						output += "<td class='text-center overflow pointer' onclick='writeMemberSellbuy(\"" + result[i].ubnickname + "\")'>" + result[i].ubnickname + "</td>";
 						output += "<td class='text-center overflow'>" + result[i].ubdate + "</td>";
 						output += "<td class='text-center'>" + result[i].ubwarning + "</td>";

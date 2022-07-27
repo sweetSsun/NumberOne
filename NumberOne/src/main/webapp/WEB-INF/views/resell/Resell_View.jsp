@@ -49,7 +49,8 @@ textarea:focus {
 .boardDate {
 	color: gray;
 	font-size: 17px;
-	text-align: left;
+	position: absolute;
+    transform: translate(10%, 80%);
 }
 
 .bdhit {
@@ -260,20 +261,9 @@ textarea:focus {
 }
 /* 글목록 버튼 */
 #backList {
-	border: none;
 	width: 60px;
 	height: 30px;
-	border-radius: 5px;
-	background-color: #00a5ba;
 	margin-bottom: 13px;
-}
-/* 수정 / 삭제 버튼 */
-.md_del_Btn {
-	border: none;
-	width: 40px;
-	height: 30px;
-	border-radius: 5px;
-	background-color: #00a5ba;
 }
 
 .line-through {
@@ -450,13 +440,13 @@ textarea:focus {
 					<!-- 버튼 목록 -->
 					<div class="row" style="border-bottom: solid 1px #E0E0E0;">
 						<div class="col">
-							<button id="backList" type="button" class="fw-bold text-white">글목록</button>
+							<button id="backList" type="button" class="fw-bold btn-numberone">글목록</button>
 						</div>
 						<c:choose>
 							<%-- 관리자일 때 --%>
 							<c:when test="${sessionScope.loginId == 'admin' }">
 								<div align="right" class="col">
-									<input onclick="adminBoardStop('${ub_resellView.ubcode}')" type="button" style="left: 0;" class="btn btn-sm bg-secondary fw-bold text-white" value="정지">
+									<input onclick="adminBoardStop('${ub_resellView.ubcode}')" type="button" style="left: 0;" class="btn btn-sm btn-secondary fw-bold" value="정지">
 								</div>
 							</c:when>
 
@@ -488,9 +478,9 @@ textarea:focus {
 										<option value="9">거래완료</option>
 									</select>
 									<!-- 글수정 -->
-									<button onclick="resellModifyForm()" class="md_del_Btn fw-bold text-white" type="button">수정</button>
+									<button onclick="resellModifyForm()" class="fw-bold btn-numberone" type="button">수정</button>
 									<!-- 글삭제 -->
-									<input onclick="ubDeleteCheckModal()" type="button" class="md_del_Btn fw-bold text-white" value="삭제">
+									<input onclick="ubDeleteCheckModal()" type="button" class="fw-bold btn-numberone" value="삭제">
 								</div>
 							</c:when>
 						</c:choose>

@@ -602,7 +602,7 @@ for(let i = 0; i<display_btn.length; i++){
 	
 	removeBtn[i].onclick = function(){	
 			
-		display_btn[i].classList.add("d_none");
+		display_btn[i+1].classList.add("d_none");
 		
 		gdcheck_n[i].removeAttribute("name", "gd_names");
 		gdcheck_n[i].value = "";
