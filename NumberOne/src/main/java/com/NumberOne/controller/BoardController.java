@@ -177,6 +177,7 @@ public class BoardController {
 	 @RequestMapping ( value = "/selectReviewBoardView")
 	 public ModelAndView selectReviewBoardView(String codeIdx, Paging paging) {
 		 System.out.println("후기글 상세페이지 이동 요청");
+		 System.out.println("codeIdx : " + codeIdx);
 		 
 		 ModelAndView mav = bsvc.selectReviewBoardView(codeIdx, paging);
 		 

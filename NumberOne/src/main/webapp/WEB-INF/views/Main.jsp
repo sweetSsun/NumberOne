@@ -398,14 +398,30 @@
             	<c:forEach items="${boardList }" end="5" var="boardList">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;border-right: solid 20px white">
                         <div class="row ahover">
-                        <a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList.bdcode}">
-                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
-                        		<h3>${boardList.bdtitle }</h3>
-                        	</div>
-                        	<div class="col-lg-4 col-md-4 col-sm-4">	
-                        		<h4>${boardList.bddate }</h4>
-                        	</div>
-                       	</a>
+                        <c:choose>
+                        	<c:when test="${boardList.bdcategory eq '후기' }">
+                        		<!-- 후기글 상세페이지 -->
+	                        	<a href="${pageContext.request.contextPath }/selectReviewBoardView${paging.makeQueryPage(boardList.bdcategory, bdtype, boardList.bdcode, paging.page)}">
+		                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
+		                        		<h3>${boardList.bdtitle }</h3>
+		                        	</div>
+		                        	<div class="col-lg-4 col-md-4 col-sm-4">	
+		                        		<h4>${boardList.bddate }</h4>
+		                        	</div>
+		                       	</a>
+                        	</c:when>
+                        	
+                        	<c:otherwise>
+		                        <a href="${pageContext.request.contextPath }/selectBoardView${paging.makeQueryPage(boardList.bdcategory, bdtype, boardList.bdcode, paging.page)}">
+		                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
+		                        		<h3>${boardList.bdtitle }</h3>
+		                        	</div>
+		                        	<div class="col-lg-4 col-md-4 col-sm-4">	
+		                        		<h4>${boardList.bddate }</h4>
+		                        	</div>
+		                       	</a>
+                        	</c:otherwise>
+                       	</c:choose>
                         </div>
                     </div>
                 </c:forEach>
@@ -417,7 +433,7 @@
             	<c:forEach items="${noticeList }" end="5" var="noticeList">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row ahover">
-                        <a href="${pageContext.request.contextPath }/selectNoticeBoardView?nbcode=${noticeList.nbcode}">
+                        <a href="${pageContext.request.contextPath }/selectNoticeBoardView${paging.makeQueryPage(noticeList.nbcode, paging.page)}">
                         	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
                         		<h3>${noticeList.nbtitle }</h3>
                         	</div>
@@ -436,7 +452,7 @@
             	<c:forEach items="${boardList_free }" end="5" var="boardList_free">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row ahover">
-                        <a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList_free.bdcode}">
+                        <a href="${pageContext.request.contextPath }/selectBoardView${paging.makeQueryPage(boardList_free.bdcategory, bdtype, boardList_free.bdcode, paging.page)}">
                         	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
                         		<h3>${boardList_free.bdtitle }</h3>
                         	</div>
@@ -455,7 +471,7 @@
             	<c:forEach items="${boardList_qa }" end="5" var="boardList_qa">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row ahover">
-                        <a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList_qa.bdcode}">
+                        <a href="${pageContext.request.contextPath }/selectBoardView${paging.makeQueryPage(boardList_qa.bdcategory, bdtype, boardList_qa.bdcode, paging.page)}">
                         	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
                         		<h3>${boardList_qa.bdtitle }</h3>
                         	</div>
@@ -474,7 +490,7 @@
             	<c:forEach items="${boardList_info }" end="5" var="boardList_info">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row ahover">
-                        <a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList_info.bdcode}">
+                        <a href="${pageContext.request.contextPath }/selectBoardView${paging.makeQueryPage(boardList_info.bdcategory, bdtype, boardList_info.bdcode, paging.page)}">
                         	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
                         		<h3>${boardList_info.bdtitle }</h3>
                         	</div>
@@ -493,7 +509,7 @@
             	<c:forEach items="${boardList_review }" end="5" var="boardList_review">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row ahover">
-                        <a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList_review.bdcode}">
+                        <a href="${pageContext.request.contextPath }/selectReviewBoardView${paging.makeQueryPage(boardList_review.bdcategory, bdtype, boardList_review.bdcode, paging.page)}">
                         	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
                         		<h3>${boardList_review.bdtitle }</h3>
                         	</div>

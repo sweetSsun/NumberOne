@@ -89,7 +89,10 @@
 	.inputRpcontents{
 		font-size:20px;
 		border:none;
-		min-height: 2rem;
+	  overflow-y: hidden;
+	  resize: none;
+	  padding-bottom: 0.2em;
+		/* overflow-y: hidden; */
 	}
 	.outerCmtBox{
 		background-color : #F6F6F6;
@@ -156,6 +159,10 @@
    .bdnickname:hover{
    	color:#00bcd4;
    }
+   pre{
+   		font-family: 'pretendard';
+   }
+   
 </style>
 </head>
 <body>
@@ -230,13 +237,13 @@
 					<!-- 실험 -->
 					
 					<!-- 본문 글 내용-->
-					<div class="row">
 					<c:if test="${board.bdimg != null }">
+					<div class="row" style="height:367px;">
 						<div class="col img-container" >
 							<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
 						</div>
-					</c:if >
 					</div>
+					</c:if >
 					<div class="row mt-3 mb-1 boardContents">
 						<div class="col">
 							<textarea id="inputReply" rows="10%" cols="100%" readonly>${board.bdcontents }</textarea>
@@ -440,17 +447,14 @@
 
 <script type="text/javascript">
 	
-	const bdmid = '${board.bdmid}';
-	console.log(bdmid);
+	const bdmid = '${board.bdmid}'; //글작성자
+	const loginId = '${sessionScope.loginId}';//로그인 아이디
 	
 	var checkMsg = '${msg}';
 	if ( checkMsg.length > 0 ){
 		alert(checkMsg);
 	}
-	
-	
 </script>
-
 
 <script type="text/javascript">
 	//선택한 글번호 
@@ -465,6 +469,7 @@
 		checkBoardRecommend();//게시글 추천 확인
 		checkBoardWarning();//게시글 신고 확인 
 		var bddate = timeForToday("${board.bddate }"); //게시글 작성 시간
+		
 		
 		$("#bddate").text(bddate);
 		//$("#bddate").text(bddate);
@@ -748,14 +753,14 @@
 
 						if( replyList[i].rpprofile != 'nomprofile' ){//프로필 이미지가 있을 시 
 							if(  replyList[i].rpmstate == 9 ){//카카오 회원
-								output += "<img class=\"img-profile rounded-circle rpProfile\"  src='"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle rpProfile mt-1\"  src='"+replyList[i].rpprofile + "'>"
 							}else{
-								output += "<img class=\"img-profile rounded-circle rpProfile\"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle rpProfile mt-1\"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
 							}
 						
 						
 						}else{//프로필 이미지가 없을 시 
-							output += "<img class=\"img-profile rounded-circle rpProfile_None\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
+							output += "<img class=\"img-profile rounded-circle rpProfile_None mt-1\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
 						}
 						output += "</div>"
 						
@@ -774,7 +779,7 @@
 							output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton bg-secondary text-white fw-bold mt-2\" onclick=\"adminReplyStop('"+ replyList[i].rpcode +"')\" value=\"정지\">"
 						}
 						/* 댓글내용 */
-						output += "<textarea style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</textarea>"
+						output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
 						output += "</div>"
 						
 					}else{
@@ -782,12 +787,12 @@
 						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;'>" /* 프로필영역 */
 						if( replyList[i].rpprofile != 'nomprofile' ){//프로필 이미지가 있을 시 
 							if(  replyList[i].rpmstate == 9){//카카오 회원
-								output += "<img class=\"img-profile rounded-circle rpProfile\"  src='"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle rpProfile mt-1\"  src='"+replyList[i].rpprofile + "'>"
 							}else{
-								output += "<img class=\"img-profile rounded-circle rpProfile\"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle rpProfile mt-1\"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
 							}
 						}else{//프로필 이미지가 없을 시 
-							output += "<img class=\"img-profile rounded-circle rpProfile_None\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
+							output += "<img class=\"img-profile rounded-circle rpProfile_None mt-1\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
 						}
 						output += "</div>"
 							
@@ -803,7 +808,7 @@
 						
 						output += "<br>"
 						/* 댓글내용 */
-						output += "<textarea style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</textarea>"
+						output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
 						output += "</div>"
 					}
 
@@ -952,6 +957,7 @@ $("#inputReply").each(function () {
 	this.style.height = 'auto';
 	this.style.height = (this.scrollHeight) + 'px';
 	});
+
 
 </script>
 

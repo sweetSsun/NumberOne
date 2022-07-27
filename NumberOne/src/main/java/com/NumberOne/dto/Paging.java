@@ -125,6 +125,7 @@ public class Paging {
 	// 일반게시판 + 지역게시판 용
 	public String makeQueryPage( String searchVal, String bdtype, String codeIdx, int page) {
 		//System.out.println(codeIdx);
+		System.out.println("makeQuery: " + searchVal);
 		UriComponents uri = UriComponentsBuilder.newInstance()
 				.queryParam("bdtype", bdtype)
 				.queryParam("codeIdx", codeIdx)

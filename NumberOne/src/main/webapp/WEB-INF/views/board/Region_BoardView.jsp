@@ -140,6 +140,10 @@
    .bdnickname:hover{
    	color:#00bcd4;
    }
+    pre{
+	font-family: 'pretendard';
+   }
+     
 </style>
 </head>
 <body>
@@ -764,7 +768,7 @@
 							output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton bg-secondary text-white fw-bold mt-2\" onclick=\"adminReplyStop('"+ replyList[i].rpcode +"')\" value=\"정지\">"
 						}
 						/* 댓글내용 */
-						output += "<span class=\"inputRpcontents\">" + replyList[i].rpcontents + "</span>"
+						output += "<pre class=\"inputRpcontents\">" + replyList[i].rpcontents + "</pre>"
 						output += "</div>"
 						
 					}else{
@@ -793,7 +797,7 @@
 						
 						output += "<br>"
 						/* 댓글내용 */
-						output += "<span class=\"inputRpcontents\">" + replyList[i].rpcontents + "</span>"
+						output += "<pre class=\"inputRpcontents\">" + replyList[i].rpcontents + "</pre>"
 						output += "</div>"
 					}
 

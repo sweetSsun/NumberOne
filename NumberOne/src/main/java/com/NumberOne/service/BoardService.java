@@ -604,7 +604,7 @@ public class BoardService {
 		// history 없다면 입력
 		updateResult = bdao.insertState(bdcode, loginId, history);
 
-		System.out.println("updateStateResult: " + updateResult);
+		//System.out.println("updateStateResult: " + updateResult);
 
 		return updateResult;
 	}
@@ -617,12 +617,12 @@ public class BoardService {
 	      ReplyDto reply = new ReplyDto();
 	      
 	      String loginId = (String) session.getAttribute("loginId");
-	      System.out.println("로그인 아이디 : " + loginId);
-	      System.out.println("댓글작성할 글번호 : " + bdcode);
-	      System.out.println("작성할 댓글 내용 : " + rpcontents);
+	      //System.out.println("로그인 아이디 : " + loginId);
+	      //System.out.println("댓글작성할 글번호 : " + bdcode);
+	      //System.out.println("작성할 댓글 내용 : " + rpcontents);
 
 	      String maxRpcode = bdao.selectReplyMaxNumber();
-	      System.out.println("maxRpcode : " + maxRpcode);
+	      //System.out.println("maxRpcode : " + maxRpcode);
 	      String rpcode = "RP";
 
 	      if (maxRpcode == null) {
@@ -644,7 +644,7 @@ public class BoardService {
 	            rpcode = rpcode + rpcode_num;
 	         }
 	      }
-	      System.out.println(rpcode);
+	      //System.out.println(rpcode);
 
 	      // Reply 객체에 저장
 	      reply.setRpcontents(rpcontents);
