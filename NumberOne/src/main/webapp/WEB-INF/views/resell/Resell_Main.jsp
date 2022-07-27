@@ -197,6 +197,16 @@ div.col.mb-2 h3 {
 	height: 43rem;
 	/* border : 1px solid  #00bcd4; */
 }
+
+section div.checkout__form{
+	/* 페이지 제목 */
+	color: #1c1c1c; 
+    font-weight: 700; 
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+    font-size : 24px;
+}
 </style>
 </head>
 <body>
@@ -219,11 +229,14 @@ div.col.mb-2 h3 {
 
 		<%@ include file="/WEB-INF/views/includes/SideBar_Resell.jsp"%>
 		<!-- 사이드바 End-->
+					
+	<section>
+		<!-- 페이지명 -->
+		<div class="checkout__form" style="margin-top: 30px;">중고거래 페이지</div> 
+	
+		<div id="regionList">
 
-
-		<!--팔구 div 시작  -->
-		<section>
-			<div id="regionList">
+				<!--팔구 div 시작  -->
 				<div class="row sellbuyhead">
 					<div class="col mb-2" style="padding-top: 0.2rem;">
 						<h3 style="font-size: 2.3rem; font-weight: 700;">팔구</h3>
@@ -239,27 +252,34 @@ div.col.mb-2 h3 {
 								<a href="selectResellView?ubcode=${sellList.ubcode }&ubsellbuy=${sellList.ubsellbuy }&modifyCheck=LIST"> <img alt="" src="${pageContext.request.contextPath }/resources/img/resell/${sellList.ubmainimg }">
 								</a>
 							</div>
-							<div class="bottom" style="font-weight: 600; position: relative;">
-								<span class="soldCheckMsg_ bold"></span> <a href="selectResellView?ubcode=${sellList.ubcode }&ubsellbuy=${sellList.ubsellbuy }&modifyCheck=LIST">${sellList.ubtitle }</a>
-							</div>
-							<div style="height: 2rem; font-size: 1.6rem; padding: 0; color: grey;">${sellList.ubdatedef }&nbsp;
-								<span style="color: red; font-size: 1.8rem;" onclick="clickZzim('${sellList.ubcode }')" id="zzimCheck_${sellList.ubcode }"> <c:choose>
-										<c:when test="${sellList.zzimcheck != null }">
-											<i id="zzimState_${sellList.ubcode }" class='fa-heart fa-solid'></i>
-										</c:when>
-										<c:otherwise>
-											<i id="zzimState_${sellList.ubcode }" class='fa-heart fa-regular'></i>
-										</c:otherwise>
-									</c:choose>
-								</span> <span style="color: initial; font-size: 1.8rem;" id="zzimCount_${sellList.ubcode }"> ${sellList.ubzzim } </span>
-							</div>
-							<div class="bottom" style="font-size: 1.7rem; font-weight: 600; position: relative;">
-								<span onclick="writeMemberSellbuy('${sellList.ubnickname }')" style="height: 1.8rem; font-size: 1.6rem; padding: 0; color: initial; cursor: pointer;">${sellList.ubnickname }</span>
-							</div>
+						<div class="bottom" style="font-weight:600; position:relative;">
+							<span class="soldCheckMsg_ bold"></span>
+							<a href="selectResellView?ubcode=${sellList.ubcode }&ubsellbuy=${sellList.ubsellbuy }&modifyCheck=LIST">${sellList.ubtitle }</a>
 						</div>
+						<div style="height:2rem; font-size:1.6rem; padding:0; color:grey;">${sellList.ubdatedef }&nbsp;
+							<span style="color:red; font-size:1.8rem;" onclick="clickZzim('${sellList.ubcode }')" id="zzimCheck_${sellList.ubcode }">
+								<c:choose>
+									<c:when test="${sellList.zzimcheck != null }">
+										<i id="zzimState_${sellList.ubcode }" class='fa-heart fa-solid'></i> 
+									</c:when>
+									<c:otherwise>
+										<i id="zzimState_${sellList.ubcode }" class='fa-heart fa-regular'></i> 
+									</c:otherwise>
+								</c:choose>	
+							</span>
+							<span style="color:initial; font-size:1.8rem;" id="zzimCount_${sellList.ubcode }">
+								${sellList.ubzzim } 
+							</span>
+						</div>
+						<div class="bottom" style="font-size:1.7rem; font-weight:600; position:relative;">
+							<span onclick="writeMemberSellbuy('${sellList.ubnickname }')" style="height:1.8rem; font-size:1.6rem; padding:0; color:initial; cursor:pointer;">${sellList.ubnickname }</span>
+						</div>
+						<!-- 판매 상태 -->
 						<input type="hidden" class="ubstate_" value="${sellList.ubstate }">
+					</div>
+				</c:forEach>
 
-					</c:forEach>
+
 
 					<div style="height: 20px; float: left; width: 33.3333333%;"></div>
 				</div>
@@ -267,8 +287,6 @@ div.col.mb-2 h3 {
 				<!--팔구 div 끝  -->
 
 				<!--사구 div 시작  -->
-
-
 				<div class="row sellbuyhead" style="clear: both; margin-top: 50px;">
 					<div class="col mb-2" style="padding-top: 0.2rem;">
 						<h3 style="font-size: 2.3rem; font-weight: 700;">사구</h3>
@@ -313,6 +331,7 @@ div.col.mb-2 h3 {
 
 
 
+
 			</div>
 			<div style="clear: left;"></div>
 
@@ -331,6 +350,7 @@ div.col.mb-2 h3 {
 </body>
 
 <script type="text/javascript">
+
 	var checkMsg = '${msg}';
 	if (checkMsg.length > 0) {
 		alert(checkMsg);
@@ -425,6 +445,7 @@ div.col.mb-2 h3 {
 </script>
 
 <script type="text/javascript">
+
 	/* 거래완료 글 체크표시  */
 	// 페이지로드 시 거래완료된 글 확인
 	window.onload = function() {
@@ -438,9 +459,11 @@ div.col.mb-2 h3 {
 
 				console.log("거래완료글확인")
 				soldCheckMsg[i].textContent = "(거래완료) "
+
 			}
 		}
 	}
+
 </script>
 
 </html>
