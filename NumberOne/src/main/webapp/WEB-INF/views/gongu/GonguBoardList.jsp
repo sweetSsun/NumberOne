@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 공지게시판</title>
+<title>1인자 - 공구게시판</title>
 <!-- Jquery -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>  
 <!-- 부트스트랩 -->
@@ -95,7 +95,7 @@
 			<!-- <input type="hidden" name="searchVal" value="all"> -->
 			<div class="container">
 				<div class="row" style="margin:auto;">
-					<h2 class="text-center">공지게시판 : NoticeBoardList.jsp</h2>
+					<h2 class="text-center">공구게시판 : GonguBoardList.jsp</h2>
 				</div>
 					<div class="row ">
 						<!-- 검색기능 -->
@@ -117,7 +117,7 @@
 				</div>
 				
 				<div class="community" style="text-align:center;">
-					<span style="font-size:21px;" class="fw-bold text-white">공지게시판</span>
+					<span style="font-size:21px;" class="fw-bold text-white">공구게시판</span>
 				</div>
 				
 				<!-- 게시글 목록 -->
@@ -135,10 +135,10 @@
 						
 						<c:forEach items="${noticeList_fix }" var="notice_fix">
 							<c:if test="${notice_fix.nbfix == 1 }">
-							<!-- 공지게시판 : 상단에 띄울 고정 공지-->
+							<!-- 공구게시판 : 상단에 띄울 고정 공지-->
 							<tr class="fw-bold" style="border-bottom: solid #E0E0E0 1px;">
 								<td class="text-center tableCell">${notice_fix.nbcode}</td>
-								<td class="text-center tableCell">공지</td>
+								<td class="text-center tableCell"></td>
 								<td class="tableCell">
 									<a href="selectNoticeBoardView?codeIdx=${notice_fix.nbcode }">${notice_fix.nbtitle}</a>
 								</td>
@@ -156,9 +156,9 @@
 						<c:if test="${notice.nbfix != 1 }">
 						<tr style="border-bottom: solid #E0E0E0 1px;">
 							<td class="text-center tableCell">${notice.nbcode}</td>
-							<td class="bdcategory text-center tableCell">공지</td>
+							<td class="bdcategory text-center tableCell">공구</td>
 							<td class="tableCell">
-							 	<a href="selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}">${notice.nbtitle} 
+							 	<a href="selectGonguBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}">${notice.nbtitle} 
 							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;"></span> </a>
 							 </td>
 							<td class="text-center tableCell">
