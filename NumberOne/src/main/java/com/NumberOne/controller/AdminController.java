@@ -65,28 +65,13 @@ public class AdminController {
 		mav = asvc.admin_selectNoticeList(paging, ra, NbCheck);
 		return mav;
 	}
+	
 	@RequestMapping (value="admin_selectNoticeList_ajax")
 	public @ResponseBody String admin_selectNoticeList_ajax(Paging paging) {
 		System.out.println("공지 관리페이지 정렬 요청");
 		String noticeList_json = asvc.admin_selectNoticeList_ajax(paging);
 		return noticeList_json;
 	}
-	
-	/* 공구 관리 */
-	@RequestMapping (value="admin_selectGonguList")
-	public ModelAndView admin_selectGonguList(Paging paging, RedirectAttributes ra) {
-		System.out.println("공구 관리페이지 이동 요청");
-		String NbCheck = "Gb";
-		mav = asvc.admin_selectNoticeList(paging, ra, NbCheck);
-		return mav;
-	}
-	@RequestMapping (value="admin_selectGonguList_ajax")
-	public @ResponseBody String admin_selectGonguList_ajax(Paging paging) {
-		System.out.println("공구 관리페이지 정렬 요청");
-		String noticeList_json = asvc.admin_selectGonguList_ajax(paging);
-		return noticeList_json;
-	}	
-	
 	
 	@RequestMapping (value="admin_updateNbstate_ajax")
 	public @ResponseBody int admin_updateNbstate_ajax(String nbcode, int nbstate) {
@@ -121,15 +106,6 @@ public class AdminController {
 	public ModelAndView admin_loadToNoticeWrite(RedirectAttributes ra) {
 		System.out.println("공지 작성페이지 이동 요청");
 		String NbCheck = "Nb";
-		mav = asvc.admin_loadToNoticeWrite(ra, NbCheck);
-		return mav;
-	}
-	
-	//공구 작성페이지 이동
-	@RequestMapping (value="gongu_loadToBoardWrite")
-	public ModelAndView gongu_loadToBoardWrite(RedirectAttributes ra) {
-		System.out.println("공구 작성페이지 이동 요청");
-		String NbCheck = "Gb";
 		mav = asvc.admin_loadToNoticeWrite(ra, NbCheck);
 		return mav;
 	}
@@ -179,10 +155,10 @@ public class AdminController {
 	}
 	
 	@RequestMapping (value="admin_selectResellView")
-	public ModelAndView admin_selectResellView(Paging paging, String codeIdx) {
+	public ModelAndView admin_selectResellView(Paging paging, String codeIdx, String ubsellbuy) {
 		System.out.println("중고거래 상세페이지 이동 요청_관리자");
-		// 상세 이동 코드 생성 필요
-		return null;
+		mav = asvc.admin_selectResellView(paging, codeIdx, ubsellbuy);
+		return mav;
 	}
 	
 	/* 커뮤니티 관리 */

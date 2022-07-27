@@ -90,6 +90,14 @@ option {
 	width: 100%;
 	vertical-align: middle
 }
+.gdprice {
+	border: none;
+	font-size: 20px;
+	height: 22px;
+	margin: auto;
+	width:100%;
+	vertical-align: middle;
+}
 
 .gd-header {
 	display: block;
@@ -212,7 +220,7 @@ div.detailimageBox {
 					<div class="container-header">
 						<div class="row">
 							<div class="col-6">
-								<span style="font-size: 20px;">글상태 </span><span class="text-danger">*</span> <select class="bdCategoryList" id="totalOp" name="ubstate" onchange="resellState(this,'${gd_resellView}')">
+								<span style="font-size: 20px;">글상태 </span><span class="text-danger">*</span> <select class="bdCategoryList" id="totalOp" name="ubstate" >
 									<option value="1">거래중</option>
 									<option value="9">거래완료</option>
 								</select>
@@ -238,11 +246,7 @@ div.detailimageBox {
 
 						<!-- 글 제목  -->
 						<div class="row">
-							<input type="text" <%-- 
-								size="60"
-								style="margin-left: 40px;"
-								 --%>
-								class="bdtitle" id="titleCheck" name="ubtitle" value="${ub_resellView.ubtitle }"> <span class="checkMsg"></span>
+							<input type="text" class="bdtitle" id="titleCheck" name="ubtitle" value="${ub_resellView.ubtitle }" placeholder="제목"> <span class="checkMsg"></span>
 						</div>
 						<hr>
 
@@ -260,12 +264,12 @@ div.detailimageBox {
 
 									</div>
 									<div class="col-7">
-										<input type="text" class="gdtitle" name="gd_names" value="${gdList.gdname }"> <input disabled class="d_none gdtitle gd_nameList line-through" type="text" value="${gdList.gdname }">
+										<input type="text" class="gdtitle" name="gd_names" value="${gdList.gdname }" placeholder="품목명"> <input disabled class="d_none gdtitle gd_nameList line-through" type="text" value="${gdList.gdname }">
 									</div>
 
 									<div class="col-3" style="display: flex;">
 										<!-- 한화 표시 -->
-										<span style="vertical-align: middle; margin: auto;">&#8361; </span> <input type="text" class="gdtitle" name="gd_price" value="${gdList.gdprice }"> <input disabled class="d_none gdtitle gd_priceList line-through" type="text" value="${gdList.gdprice }">
+										<span style="vertical-align: middle; margin: auto;">&#8361; </span> <input type="text" class="gdtitle" name="gd_price" value="${gdList.gdprice }" placeholder="가격"> <input disabled class="d_none gdtitle gd_priceList line-through" type="text" value="${gdList.gdprice }">
 									</div>
 
 
@@ -285,7 +289,7 @@ div.detailimageBox {
 
 					<!-- 상품 설명  -->
 					<div class="row" style="width: 100%; margin-left: 0;">
-						<textarea class="bdcontents" rows="17" cols="80" name="ubcontents" id="ubcontents">${ub_resellView.ubcontents}</textarea>
+						<textarea class="bdcontents" rows="17" cols="80" name="ubcontents" id="ubcontents" placeholder="상품상세설명">${ub_resellView.ubcontents}</textarea>
 					</div>
 
 					<!-- 파일첨부  -->
@@ -364,18 +368,21 @@ div.detailimageBox {
 <!-- 페이지로드시 실행할 코드 스크립트 -->
 <script type="text/javascript">
 	const ubstate = '${ub_resellView.ubstate}'; // 글 상태 값 
-	const totalOp = document.getElementById("totalOp"); // 글 상태 select태그
+	const totalOp = document.getElementById("totalOp"); // 글상태 select태그(거래중, 거래완료) option들을 가지고있는  select태그
 	const ubrgcode = '${ub_resellView.ubrgcode}'; // 지역코드
 	const ubrgOp = document.getElementById("ubrgOp") // 지역 select태그
 	const ubcode = '${ub_resellView.ubcode}'; //글번호
 	const ubsellbuy = '${ub_resellView.ubsellbuy}'; //사구,팔구 확인
-	const selectStates = document.querySelectorAll(".selectStates"); // select태그 : 상품상태(거래중,거래완료) option들을 가지는 부모태그  
+	const selectStates = document.querySelectorAll(".selectStates"); // 상품 select태그 : 상품상태(거래중,거래완료) option들을 가지는 부모태그  
 	const select_gdcode = document.querySelectorAll(".select_gdcode"); //상품코드	
-	const select_gdstate = document.querySelectorAll(".select_gdstate");// 상품상태번호 ('1', '0');
+	const select_gdstate = document.querySelectorAll(".select_gdstate");// 상품 상태번호확인용 ('1', '0');
 	const gd_nameList = document.querySelectorAll(".gd_nameList"); //상품명  (거래완료시) 
 	const gd_priceList = document.querySelectorAll(".gd_priceList"); //상품가격 (거래완료시)
 	const gd_names = document.getElementsByName('gd_names');	// input 상품명	(거래중)
 	const gd_price = document.getElementsByName('gd_price');	// input 상품가격	(거래중)
+	
+	/* 각 상품의 부모div */
+	const display_btn = document.getElementsByClassName("content-gd");
 </script>
 
 
@@ -407,10 +414,9 @@ if (loginCheck.length == 0) {
 	for (let i = 0; i < ubrgOp.options.length; i++){
 		if (ubrgOp.options[i].value === ubrgcode) {
 			ubrgOp.options[i].selected = 'true';
-		}
-		
+		}		
 	}
-
+	
 	/* 페이지로드시 글의 거래상태체크 */
 		for (let i = 0; i < totalOp.options.length; i++) {
 			if (totalOp.options[i].value === ubstate) {
@@ -548,41 +554,9 @@ if (loginCheck.length == 0) {
 	}
 
 	
-	//		시간나면 연습용. 	이건 객체를 통째로 받아와서 스플릿 많이 해야함.   
-	function resellState(selOP, geTest) {
-
-		//console.log("글상태값 :", selOP.value);
-		//console.log("코드 :", geTest);
-	}
+	
 </script>
 
-
-<%--
-<!-- 상품 상태변경시 실행 스크립트  -->
-<script type="text/javascript">
-	/* 상품 상태변경 코드 */
-
-	function select_option(sel_tag, gd_code) {
-
-		console.log('매개변수확인(sel_tag) :', sel_tag.value);
-		console.log('매개변수확인(gd_code) :', gd_code);
-
-	}
-</script>
-
-<!-- 전페이지(상세페이지)로 돌아가기 -->
-<script type="text/javascript">
-	/* 수정취소 코드 */
-
-	let cancelModify = document.querySelector("#cancelModify");
-	cancelModify.addEventListener("click", backPage);
-	function backPage() {
-		console.log("수정취소버튼 클릭이벤트");
-		location.href = "selectResellView?ubcode=" + ubcode + "&ubsellbuy="
-				+ ubsellbuy + "&modifyCheck=LIST";
-	}
-</script>
- --%>
 
 <!-- 상품 상태변경 ajax  -->
 <script type="text/javascript">
@@ -621,31 +595,6 @@ if (loginCheck.length == 0) {
 	}
 </script>
 
-<%--
-<!-- 폼데이터 입력되었는지 체크하는 코드 스크립트  -->
-<script type="text/javascript">
-	/* 폼태그 데이터 공백 체크  */
-	/* onsubmit이벤트  false 일시 submit이벤트 취소*/
-	function checkFormData() {
-		let checkForm = true;		
-		console.log("폼데이터 핸들러 호출");
-	
-		
-		if (document.getElementById("contentsCheck").value == '') {
-			document.getElementById("contentsCheck").focus();
-			alert("내용을 작성해주세요.");
-			checkForm = false;
-
-		} else if (document.getElementById("fileName").value == '') {
-			alert("메인사진을 선택해주세요.");
-			document.getElementById("chooseFile_id").focus();
-			checkForm = false;
-		} 
-		
-		return checkForm;
-	}
-</script>
- --%>
 <script type="text/javascript">
 	function bdWriteCancelCheckModal(){
 	/* 게시글 작성 취소버튼 클릭시 모달 출력 */
@@ -704,7 +653,6 @@ if (loginCheck.length == 0) {
 	}
 
 	function  roomModifyCh(currentDetailCount){
-	
 		console.log("자취방 자랑글 수정 확인");
 		console.log(currentDetailCount);
 	
@@ -725,16 +673,33 @@ if (loginCheck.length == 0) {
 		
 		$("#ubdetailimg").val(detailImg);
 		
-		if($("#ubtitle").val()==""){
+		if($("#titleCheck").val()==""){
 			alert("제목을 입력하세요");
 			return false;
 		} else if ($("#ubcontents").val()==""){
 			alert("내용을 입력하세요");
 			return false;
+		} else {
+			for(let i = 0; i < display_btn.length; i++){
+				if(gd_names[i].value === '') {
+					//console.log(gdtitle_class[i].value);
+					gd_names[i].focus();
+					alert("상품 정보를 입력하세요");
+					return false;
+				}
+				else if(gd_price[i].value === '') {
+					//console.log(gdprice_class[i].value);
+					gd_price[i].focus();
+					alert("상품 가격을 입력하세요");
+					return false;
+				}
+			}
 		}
-		return true;
 	}
 </script>
+
+
+
 
 <%--    나중에 시간있으면 수정
 <!-- 이미지파일 미리보기 스크립트 -->

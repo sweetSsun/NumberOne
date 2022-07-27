@@ -372,14 +372,15 @@ background-color: #00BCD4;
                            		<div class="col-lg-6 col-md-12 col-sm-12">
                                		<input class="upload-name" 
                                		value="${memberInfo.mprofile }" placeholder="첨부파일" id="inputFile">
-                               		<input class="upload-name" placeholder="삭제할 파일" id="delFile" name="mprofile">
+                               		<input type="hidden" class="upload-name" placeholder="삭제할 파일" id="delFile" name="mprofile">
                             		</div>   
-                           		<div class="col-lg-3 col-md-12 col-sm-12">                      
+                           		<div class="col-lg-2 col-md-12 col-sm-12" style="text-align: center;">                      
                                		<label for="inputMfile">파일찾기</label> 
                                		<input type="file" id="inputMfile" name="mfile" value="" class="">
                            		</div>
-                           		<div class="col-lg-3 col-md-12 col-sm-12">                      
-                               		<input type="button" onclick="clear_test()" id="clickTest" name="" value="프로필 사진 삭제" class="">
+                           		<div class="col-lg-4 col-md-12 col-sm-12">                      
+                               		<input type="button" onclick="clear_test()" id="clickTest" name="" value="프로필 사진 삭제" 
+                               		style="width: 150px; height:40px; padding: 0px; border: 0px; background-color: #999999; color:white; ">
                            		</div>                        
                         		</div>   
                      		</div>
@@ -433,6 +434,7 @@ background-color: #00BCD4;
 	function clear_test(){
 		console.log("clear_test() 호출");
 		$("#delFile").val('${memberInfo.mprofile }');
+		$("#inputFile").val('');
 	}
 </script>
 
