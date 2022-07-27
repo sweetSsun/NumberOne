@@ -509,6 +509,12 @@ var inputEmailCheck = false;
  		function selectMemberEmail_ajax(inputEmail){
  			
 			console.log("이메일 중복 체크 함수 호출")
+			
+			if(inputEmail == '${memberInfo.memail}'){
+				console.log("기존 이메일");
+				return;
+			}
+			
 			$.ajax({
 				type : "get",
 				url : "selectMemberEmail_ajax",
