@@ -128,9 +128,8 @@ input {
 	font-size: 18px;
 }
 
-.bigger {
-	font-size: 2rem;
-}
+.bigger { font-size: 2rem; }
+.medium { font-size : 1.5rem;}
 
 .bdCategoryList {
 	color: #00bcd4;
@@ -160,7 +159,7 @@ input {
 }
 
 div.row.sellbuyhead {
-	margin-top: 2 rem;
+	margin-top: 10px;
 	background-color: #00bcd4;
 	margin-left: 0%;
 	margin-right: 0%;
@@ -205,6 +204,21 @@ div.col.mb-2 h3 {
 	height: 43rem;
 	/* border : 1px solid  #00bcd4; */
 }
+
+section div.checkout__form{
+	/* 페이지 제목 */
+	color: #1c1c1c; 
+    font-weight: 700; 
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+    font-size : 24px;
+}
+
+.btn-numberone{
+	/* 글쓰기 버튼 */
+	background-color: #00bcd4;
+}
 </style>
 
 </head>
@@ -227,13 +241,15 @@ div.col.mb-2 h3 {
 			<!-- 본문 -->
 			<div
 				class="container"
-				style="margin-top: 50px"
+				style="margin-top: 10px"
 			>
-				<h1 class="text-center">중고거래 사구 페이지</h1>
+				<!-- <h1 class="text-center">중고거래 사구 페이지</h1> -->
+				<!-- 페이지 제목 -->
+				<div class="checkout__form" style="margin-top: 30px;">중고거래 - 사구</div>
 
 				<!-- 검색기능시작 -->
 
-				<div class="row">
+				<div class="row" style="margin-top: 40px">
 
 					<div
 						class="col-5"
@@ -255,16 +271,15 @@ div.col.mb-2 h3 {
 							class="bigger"
 							placeholder="검색어를 입력하세요"
 							id="keyword"
-						>
+						> &nbsp;
 						<button
-							class="btn btn-secondary bigger"
+							class="btn btn-secondary medium"
 							onclick="selectRegion(1)"
-						>검색</button>
+						>검색</button> &nbsp;
 						<c:if test="${sessionScope.loginId != null}">
 							<button
 								type="button"
-								class="btn btn-primary bigger"
-								style="padding: .25rem .5rem;"
+								class="btn medium btn-numberone"
 								onclick="loadToWrite()"
 							>글쓰기</button>
 						</c:if>
@@ -738,9 +753,9 @@ div.col.mb-2 h3 {
 		for (let i = 0; i < ubstate.length; i++) {
 			if (ubstate[i].value === '9') {
 				
-				console.log("판매완료글확인")
-				soldCheckMsg[i].textContent = "(판매완료) "
-				break;
+				console.log("거래완료글확인")
+				soldCheckMsg[i].textContent = "(거래완료) "
+				
 			}
 		}
 	}

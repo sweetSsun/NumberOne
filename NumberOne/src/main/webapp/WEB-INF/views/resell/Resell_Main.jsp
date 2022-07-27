@@ -207,6 +207,16 @@ div.col.mb-2 h3{ color : white; }
 	height : 43rem;
 	/* border : 1px solid  #00bcd4; */
 }
+
+section div.checkout__form{
+	/* 페이지 제목 */
+	color: #1c1c1c; 
+    font-weight: 700; 
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+    font-size : 24px;
+}
 </style>
 </head>
 <body>
@@ -233,6 +243,9 @@ div.col.mb-2 h3{ color : white; }
 					
 				<!--팔구 div 시작  -->
 	<section>
+		<!-- 페이지명 -->
+		<div class="checkout__form" style="margin-top: 30px;">중고거래 페이지</div> 
+	
 		<div id="regionList">
 				<div class="row sellbuyhead">
 					<div class="col mb-2" style="padding-top:0.2rem;">
@@ -275,6 +288,10 @@ div.col.mb-2 h3{ color : white; }
 						<div class="bottom" style="font-size:1.7rem; font-weight:600; position:relative;">
 							<span onclick="writeMemberSellbuy('${sellList.ubnickname }')" style="height:1.8rem; font-size:1.6rem; padding:0; color:initial; cursor:pointer;">${sellList.ubnickname }</span>
 						</div>
+						<!-- 판매 상태 -->
+						<input type="hidden" class="ubstate_" value="${sellList.ubstate }">
+						<!-- sellbuy -->
+						<input type="hidden" class="ubsellbuy" value="${sellList.ubsellbuy }">
 					</div>
 				</c:forEach>
 
@@ -329,13 +346,11 @@ div.col.mb-2 h3{ color : white; }
 						<div class="bottom" style="font-size:1.7rem; font-weight:600; position:relative;">
 							<span onclick="writeMemberSellbuy('${buyList.ubnickname }')" style="height:1.8rem; font-size:1.6rem; padding:0; color:initial; cursor:pointer;">${buyList.ubnickname }</span>
 						</div>
-						<input
-							type="hidden"
-							class="ubstate_"
-							value="1"
-						>
+					<!-- 구매 상태 -->	
+					<input type="hidden" class="ubstate_" value="${buyList.ubstate }">
+					<!-- sellbuy -->
+					<input type="hidden" class="ubsellbuy" value="${buyList.ubsellbuy }">
 					</div>
-					
 				</c:forEach>
 						
 			</div>
@@ -367,6 +382,11 @@ div.col.mb-2 h3{ color : white; }
    if ( checkMsg.length > 0 ){
       alert(checkMsg);
    }
+   
+    // 페이지로드 시 판매완료된 글 확인
+	window.onload = function() {
+		soldCheck();
+	}
 </script>
 
 <script type="text/javascript">
@@ -463,5 +483,31 @@ div.col.mb-2 h3{ color : white; }
       
 </script>
 
+<script type="text/javascript">
+/* 판매상태가 담긴 span */
+const ubstate = document.querySelectorAll('.ubstate_');
+const ubsellbuy = document.querySelectorAll('.ubsellbuy');
+let soldCheckMsg = document.querySelectorAll('.soldCheckMsg_');
+console.log(soldCheckMsg);
+
+/* 판매완료 글 체크표시  */
+function soldCheck() {
+	for (let i = 0; i < ubstate.length; i++) {
+		console.log(i+"번 체크")
+		if (ubstate[i].value === '9') {
+			
+			console.log("판매완료글확인");
+			console.log(ubsellbuy[i]);
+			if(ubsellbuy[i].value =='S'){
+				soldCheckMsg[i].textContent = "(판매완료) ";
+			} else {
+				soldCheckMsg[i].textContent = "(거래완료) ";				
+			}
+			
+		} 
+	}
+}
+ 
+</script>
 
 </html>
