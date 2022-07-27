@@ -351,6 +351,7 @@ section{
 }
 
 section div.checkout__form{
+	/* 페이지 제목 */
 	color: #1c1c1c; 
     font-weight: 700; 
     border-bottom: 1px solid #e1e1e1;
