@@ -346,7 +346,11 @@
 		crfrMb += "<div class=\"row\" style=\"flex-wrap: nowrap;\">";
 		crfrMb += "<div class=\"col-9 frMember\">";
 		crfrMb += "<a onclick=\"opener.writeMemberSellbuy('" + crfrmnickname + "')\" style=\"cursor:pointer;\">";
-		crfrMb += "<img class=\"img-profile rounded-circle frMbImg\" src=\"${pageContext.request.contextPath }/resources/img/mprofileUpLoad/" + crfrmprofile + "\">";
+		if (crfrmprofile.length > 0){
+			crfrMb += "<img class=\"img-profile rounded-circle frMbImg\" src=\"${pageContext.request.contextPath }/resources/img/mprofileUpLoad/" + crfrmprofile + "\">";
+		} else {
+			crfrMb += "<img class=\"img-profile rounded-circle frMbImg\" src=\"${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png\">";
+		}
 		crfrMb += "<span> " + crfrmnickname + "</span>";
 		crfrMb += "</a>";
 		crfrMb += "</div>";

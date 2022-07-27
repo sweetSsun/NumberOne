@@ -16,11 +16,12 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.NumberOne.dao.AdminDao;
 import com.NumberOne.dao.BoardDao;
+import com.NumberOne.dao.ResellDao;
 import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.ContactDto;
+import com.NumberOne.dto.GoodsDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.NoticeDto;
-import com.NumberOne.dto.PageDto;
 import com.NumberOne.dto.Paging;
 import com.NumberOne.dto.ReplyDto;
 import com.NumberOne.dto.UsedBoardDto;
@@ -36,6 +37,8 @@ public class AdminService {
 	private AdminDao adao;
 	@Autowired
 	private BoardDao bdao;
+	@Autowired
+	private ResellDao rdao;
 	
 	@Autowired
 	private HttpSession session;
@@ -529,6 +532,55 @@ public class AdminService {
 		return updateResult;
 	}
 	
+	// 중고거래 상세페이지 이동 
+	public ModelAndView admin_selectResellView(Paging paging, String codeIdx, String ubsellbuy) {
+		System.out.println("AdminService.admin_selectResellView() 호출");
+		mav = new ModelAndView();
+		System.out.println("ubcode : " + codeIdx);
+		System.out.println("ubsellbuy : " + ubsellbuy);
+		
+		UsedBoardDto ubDto = new UsedBoardDto();
+		ubDto.setUbcode(codeIdx);
+		ubDto.setUbsellbuy(ubsellbuy);
+		
+		// 중고거래글 조회
+		UsedBoardDto ub_resellView = rdao.selectResellView(ubDto);
+		System.out.println(ub_resellView);
+		System.out.println(ub_resellView.getUbmid());
+
+		// 해당 글의 상품 조회
+		ArrayList<GoodsDto> gd_resellView = rdao.selectResellView_goods(ubDto);
+		
+		// 판매자의 다른 중고거래글 조회
+		ArrayList<UsedBoardDto> memberSellList
+				= rdao.selectResellView_List(ub_resellView.getUbmid(), ubDto.getUbcode());
+		
+		String[] ubDetailImg;
+
+		if (ub_resellView.getUbdetailimg() != null) {
+			ubDetailImg = ub_resellView.getUbdetailimg().split("___");
+
+			for (String dimg : ubDetailImg) {
+				System.out.println("디테일이미지들 : " + dimg);
+			}
+			mav.addObject("detailLength", ubDetailImg.length);
+			ub_resellView.setUbdetailimg_list(ubDetailImg);
+
+		}
+	
+		System.out.println("글 정보 : " + ub_resellView); // 글 정보
+		System.out.println("상품목록 : " + gd_resellView); // 글의 상품목록
+		System.out.println("판매자의 다른상품 : " + memberSellList); // 작성자의 다른 판매글목록
+
+		
+		mav.addObject("gd_resellView", gd_resellView);
+		mav.addObject("ub_resellView", ub_resellView);
+		mav.addObject("memberSellList", memberSellList);
+
+		mav.setViewName("admin/Admin_ResellView");
+		
+		return mav;
+	}
 	
 	/* 커뮤니티 관리 */
 	/* 경고/정지 관리 */

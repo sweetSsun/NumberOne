@@ -221,19 +221,18 @@
 	<select id="selectResellView_goods"
 		resultType="com.NumberOne.dto.GoodsDto">
 		SELECT GDCODE, GDUBCODE, GDNAME, GDPRICE, GDSTATE
-		FROM GOODS
-		GD, USEDBOARDS UB
+		FROM GOODS GD, USEDBOARDS UB
 		WHERE GDUBCODE = UBCODE AND UBCODE = #{ubcode}
 		AND
 		UBSELLBUY = #{ubsellbuy}
-		ORDER BY GDUBCODE
+		ORDER BY GDCODE
 
 	</select>
 
 	<!-- 글 상세정보 -->
 	<select id="selectResellView"
 		resultType="com.NumberOne.dto.UsedBoardDto">
-		SELECT UBNICKNAME, UBPROFILE, UBCODE, UBRGCODE, UBSELLBUY,
+		SELECT UBMSTATE, UBNICKNAME, UBPROFILE, UBCODE, UBRGCODE, UBSELLBUY,
 		UBMID, UBTITLE,
 		UBCONTENTS,
 		TO_CHAR(UBDATE, 'YYYY-MM-DD HH24:MI')
@@ -250,9 +249,7 @@
 		USEDBOARDS ORDER BY
 		UBCODE)
 		WHERE UBSELLBUY =
-		#{ubsellbuy} AND
-		(UBSTATE = 1
-		OR UBSTATE = 9)
+		#{ubsellbuy} 
 		) LEFT OUTER JOIN ZZIM_VIEW
 		ON UBCODE = ZZUBCODE,
 		MNICKNAME_VIEW
@@ -392,4 +389,14 @@
 		WHERE GDCODE = #{gdcode}
 	</update>
 
+
+<delete id="delete_gdInsertResult">
+	DELETE FROM GOODS
+	WHERE GDCODE = #{gdcode}
+</delete>
+
+<delete id="delete_ubInsertResult">
+DELETE FROM USEDBOARDS
+WHERE UBCODE = #{ubcode}
+</delete>
 </mapper>
