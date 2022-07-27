@@ -198,7 +198,6 @@ margin-top: 0px;
 									class="bdCategoryList"
 									name="ubrgcode"
 									id="regionCheck">
-									<option selected disabled="disabled" class="selectPlaceHolder">선택</option>
 									<option value="SEL">서울</option>
 									<option value="ICN">인천</option>
 									<option value="GGD">경기</option>
@@ -667,11 +666,13 @@ function mainimgCh(){
 		
 		/* 페이지 로드시 글쓰기를 누른 페이지의 지역으로 selected */
 		for(let i = 0; i < regionCheck.options.length; i++){
-			console.log('지역선택확인')
 			if(regionCheck.options[i].value === rgcode){
+			console.log('지역선택확인')
 				regionCheck.options[i].selected = 'true';
+			break;
 			}
-			
+		
+			// 
 			
 		}
 		
@@ -794,16 +795,19 @@ for(let i = 0; i<dsiplay_btn.length; i++){
 			
 			
 	for(let i = 0; i<gdtitle_class.length; i++){
+		if(!dsiplay_btn[i].classList.contains('d_none')){
+			console.log('디스플레이논 클래스 없음');
 		if(gdtitle_class[i].value === '') {
 			console.log(gdtitle_class[i].value)
 			gdtitle_class[i].focus();
 			alert("상품정보를 입력하세요");
-			checkForm = false;			
+			checkForm = false;
+			
 		}
-	}
+	}}
 	}
 		
-	return false;
+	return checkForm;
 	}
 		
 </script>

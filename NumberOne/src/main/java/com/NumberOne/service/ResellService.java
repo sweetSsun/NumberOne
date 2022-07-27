@@ -231,17 +231,19 @@ public class ResellService {
 
 		}
 
-		if (insertResult_ub > 0 && insertResult_gd > 0) {
+		if (insertResult_ub > 0 && insertResult_gd > 0) {			
 			System.out.println("insert성공");
 			System.out.println(ubDto.getUbsellbuy());
+			String sellbuy = ubDto.getUbsellbuy();
+					String searchVal = ubDto.getUbrgcode();
 			ra.addFlashAttribute("msg", "글이 작성되었습니다.");
 			if (ubDto.getUbsellbuy().equals("B")) {
 
-				mav.setViewName("redirect:/selectResellPageList?sellBuy=B&searchVal=전국");
+				mav.setViewName("redirect:/selectResellPageList?sellBuy="+sellbuy+"&searchVal="+searchVal);
 
 			} else {
 
-				mav.setViewName("redirect:/selectResellPageList?sellBuy=S&searchVal=전국");
+				mav.setViewName("redirect:/selectResellPageList?sellBuy="+sellbuy+"&searchVal="+searchVal);
 
 			}
 		} else {
