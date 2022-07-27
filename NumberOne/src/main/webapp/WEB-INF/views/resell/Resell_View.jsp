@@ -1,17 +1,10 @@
-<%@ page
-	language="java"
-	contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"
-%>
-<%@ taglib
-	prefix="c"
-	uri="http://java.sun.com/jsp/jstl/core"
-%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>${ub_resellView.ubtitle }- 1인자:중고거래 상세 페이지</title>
+<title>${ub_resellView.ubtitle }-1인자:중고거래 상세 페이지</title>
 <!-- Jquery -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <!-- 부트스트랩 -->
@@ -86,7 +79,8 @@ textarea:focus {
 .bdnickname {
 	font-size: 20px;
 }
-.bdnickname:hover{
+
+.bdnickname:hover {
 	color: #00bcd4;
 }
 
@@ -208,8 +202,7 @@ textarea:focus {
 	position: relative;
 	/* 이미지 슬라이더 */
 	overflow: hidden;
-	
-}	
+}
 
 .Resell_img {
 	position: relative;
@@ -314,92 +307,68 @@ textarea:focus {
 						<div class="col">
 							<c:choose>
 								<c:when test="${ub_resellView.ubsellbuy == 'B' }">
-									<a href="">
-										<span class="fw-bold boardCategory"> | 사구 </span>
+									<a href=""> <span class="fw-bold boardCategory"> | 사구 </span>
 									</a>
 								</c:when>
 
 								<c:otherwise>
-									<a href="">
-										<span class="fw-bold boardCategory"> | 팔구 </span>
+									<a href=""> <span class="fw-bold boardCategory"> | 팔구 </span>
 									</a>
 								</c:otherwise>
 							</c:choose>
-							<span
-								class="fw-bold"
-								style="color: gray; font-size: 20px"
-							>/</span>
+							<span class="fw-bold" style="color: gray; font-size: 20px">/</span>
 							<c:choose>
 								<c:when test="${ub_resellView.ubrgcode == 'ALL' }">
-									<a href="#">
-										<span class="bdregion">전국</span>
+									<a href="#"> <span class="bdregion">전국</span>
 									</a>
 								</c:when>
 								<c:when test="${ub_resellView.ubrgcode == 'SEL' }">
-									<a href="#">
-										<span class="bdregion">서울</span>
+									<a href="#"> <span class="bdregion">서울</span>
 									</a>
 								</c:when>
 								<c:when test="${ub_resellView.ubrgcode == 'ICN' }">
-									<a href="#">
-										<span class="bdregion">인천</span>
+									<a href="#"> <span class="bdregion">인천</span>
 									</a>
 								</c:when>
 								<c:when test="${ub_resellView.ubrgcode == 'GGD' }">
-									<a href="#">
-										<span class="bdregion">경기</span>
+									<a href="#"> <span class="bdregion">경기</span>
 									</a>
 								</c:when>
 								<c:when test="${ub_resellView.ubrgcode == 'GSD' }">
-									<a href="#">
-										<span class="bdregion">경상</span>
+									<a href="#"> <span class="bdregion">경상</span>
 									</a>
 								</c:when>
 								<c:when test="${ub_resellView.ubrgcode == 'JLD' }">
-									<a href="#">
-										<span class="bdregion">전라</span>
+									<a href="#"> <span class="bdregion">전라</span>
 									</a>
 								</c:when>
 								<c:when test="${ub_resellView.ubrgcode == 'CCD' }">
-									<a href="#">
-										<span class="bdregion">충청</span>
+									<a href="#"> <span class="bdregion">충청</span>
 									</a>
 								</c:when>
 								<c:when test="${ub_resellView.ubrgcode == 'GWD' }">
-									<a href="#">
-										<span class="bdregion">강원</span>
+									<a href="#"> <span class="bdregion">강원</span>
 									</a>
 								</c:when>
 								<c:when test="${ub_resellView.ubrgcode == 'JJD' }">
-									<a href="#">
-										<span class="bdregion">제주</span>
+									<a href="#"> <span class="bdregion">제주</span>
 									</a>
 								</c:when>
 
 							</c:choose>
 
-							<a href="#">
-								<span class="bdregion">(지역코드 확인)_${ub_resellView.ubrgcode }</span>
+							<a href="#"> <span class="bdregion">(지역코드 확인)_${ub_resellView.ubrgcode }</span>
 							</a>
 						</div>
 					</div>
 					<div class="row idDateHits">
 						<div class="col">
-							<span class="fw-bold boardTitle" id="soldCheckMsg"></span>
-							<span class="fw-bold boardTitle">${ub_resellView.ubtitle }</span> 
-							
-							<span
-								style="float: right;"
-								class="boardDate"
-							>${ub_resellView.ubdate }</span>
+							<span class="fw-bold boardTitle" id="soldCheckMsg"></span> <span class="fw-bold boardTitle">${ub_resellView.ubtitle }</span> <span style="float: right;" class="boardDate">${ub_resellView.ubdate }</span>
 						</div>
 					</div>
 
 					<!-- 중고거래 사진  -->
-					<div
-						class="row"
-						style="margin-top: 40px; height: 430px;"
-					>
+					<div class="row" style="margin-top: 40px; height: 430px;">
 						<!-- 상품 사진 -->
 						<div class="col-7">
 							<%-- 						<div class="Resell_img_container carousel slide" id="carousel-example-generic">
@@ -413,81 +382,32 @@ textarea:focus {
 						</div> --%>
 
 							<!-- 중고거래 상품 사진 : 이미지 슬라이드 (캐러셀) -->
-							<div
-								id="carouselExampleControlsNoTouching"
-								class="carousel slide"
-								data-bs-touch="false"
-								data-bs-interval="false"
-							>
+							<div id="carouselExampleControlsNoTouching" class="carousel slide" data-bs-touch="false" data-bs-interval="false">
 
 								<div class="carousel-indicators">
-									<button
-										type="button"
-										data-bs-target="#carouselExampleDark"
-										data-bs-slide-to="0"
-										class="active"
-										aria-current="true"
-										aria-label="Slide 1"
-									></button>
-									<c:forEach
-										items="${ub_resellView.ubdetailimg_list}"
-										begin="1"
-										varStatus="status"
-									>
-										<button
-											type="button"
-											data-bs-target="#carouselExampleDark"
-											data-bs-slide-to="${status.count }"
-											aria-label="Slide 2"
-										></button>
+									<button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+									<c:forEach items="${ub_resellView.ubdetailimg_list}" begin="1" varStatus="status">
+										<button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="${status.count }" aria-label="Slide 2"></button>
 									</c:forEach>
 								</div>
 								<div class="carousel-inner">
 									<!-- 1번 사진 -->
 									<div class="carousel-item active">
-										<img
-											style="object-fit: cover;"
-											class="active Resell_img d-block w-100"
-											src="${pageContext.request.contextPath }/resources/img/resell/${ub_resellView.ubmainimg}"
-										>
+										<img style="object-fit: cover;" class="active Resell_img d-block w-100" src="${pageContext.request.contextPath }/resources/img/resell/${ub_resellView.ubmainimg}">
 									</div>
 
-									<c:forEach
-										items="${ub_resellView.ubdetailimg_list}"
-										var="ubdetailimg_list"
-										begin="1"
-									>
+									<c:forEach items="${ub_resellView.ubdetailimg_list}" var="ubdetailimg_list" begin="1">
 										<div class="carousel-item">
-											<img
-												style="object-fit: cover;"
-												class="Resell_img d-block w-100"
-												src="${pageContext.request.contextPath }/resources/img/resell/${ubdetailimg_list}"
-											>
+											<img style="object-fit: cover;" class="Resell_img d-block w-100" src="${pageContext.request.contextPath }/resources/img/resell/${ubdetailimg_list}">
 										</div>
 									</c:forEach>
 
 								</div>
-								<button
-									class="carousel-control-prev"
-									type="button"
-									data-bs-target="#carouselExampleControlsNoTouching"
-									data-bs-slide="prev"
-								>
-									<span
-										class="carousel-control-prev-icon"
-										aria-hidden="true"
-									></span> <span class="visually-hidden">Previous</span>
+								<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="prev">
+									<span class="carousel-control-prev-icon" aria-hidden="true"></span> <span class="visually-hidden">Previous</span>
 								</button>
-								<button
-									class="carousel-control-next"
-									type="button"
-									data-bs-target="#carouselExampleControlsNoTouching"
-									data-bs-slide="next"
-								>
-									<span
-										class="carousel-control-next-icon"
-										aria-hidden="true"
-									></span> <span class="visually-hidden">Next</span>
+								<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControlsNoTouching" data-bs-slide="next">
+									<span class="carousel-control-next-icon" aria-hidden="true"></span> <span class="visually-hidden">Next</span>
 								</button>
 							</div>
 						</div>
@@ -498,121 +418,62 @@ textarea:focus {
 								<div class="col seller_and_buttons">
 									<!-- 프로필 -->
 									<c:choose>
-										<c:when test="${ub_resellView.ubprofile != null && ub_resellView.ubstate == 1 }">
-											<img
-												class="img-profile rounded-circle bdProfile"
-												src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/${ub_resellView.ubprofile }"
-											>
+										<c:when test="${ub_resellView.ubprofile != null && ub_resellView.ubmstate == 1 }">
+											<img class="img-profile rounded-circle bdProfile" src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/${ub_resellView.ubprofile }">
 										</c:when>
 
-										<c:when test="${ub_resellView.ubprofile != null && ub_resellView.ubstate == 9 }">
+										<c:when test="${ub_resellView.ubprofile != null && ub_resellView.ubmstate == 9 }">
 											<!-- 카카오 회원 -->
-											<img
-												class="img-profile rounded-circle bdProfile_Kakao"
-												src="${ub_resellView.ubprofile }"
-											>
+											<img class="img-profile rounded-circle bdProfile_Kakao" src="${ub_resellView.ubprofile }">
 										</c:when>
 
 										<c:otherwise>
-											<img
-												class="img-profile rounded-circle bdProfile"
-												src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png"
-											>
+											<img class="img-profile rounded-circle bdProfile" src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png">
 										</c:otherwise>
 									</c:choose>
 									<!-- 닉네임 -->
-									<a
-										id="memberInfo"
-										style="cursor: pointer"
-										onclick="writeMemberBoard('${ub_resellView.ubnickname}')"
-									>
-										<span class="fw-bold bdnickname">${ub_resellView.ubnickname}</span>
+									<a id="memberInfo" style="cursor: pointer" onclick="writeMemberBoard('${ub_resellView.ubnickname}')"> <span class="fw-bold bdnickname">${ub_resellView.ubnickname}</span>
 									</a>
 								</div>
 							</div>
 							<!-- 본문 글 내용-->
-							<textarea
-								style="margin-top: 10px; font-size: 18px;"
-								id="inputReply"
-								rows="15%"
-								readonly
-							>${ub_resellView.ubcontents}</textarea>
+							<textarea style="margin-top: 10px; font-size: 18px;" id="inputReply" rows="15%" readonly>${ub_resellView.ubcontents}</textarea>
 						</div>
 
 					</div>
 					<!--  -->
 					<!-- 파라미터 값 -->
 					<!--  -->
-					<input
-						type="hidden"
-						name="cmfrmid"
-						value="${sessionScope.loginId }"
-					>
-					<input
-						type="hidden"
-						name="cmfrmnickname"
-						value="${sessionScope.loginNickname }"
-					>
-					<input
-						type="hidden"
-						name="cmtomnickname"
-						value="${ub_resellView.ubnickname}"
-					>
-					<input
-						type="hidden"
-						name="cmtomid"
-						value="${ub_resellView.ubmid}"
-					>
-					<input
-						type="hidden"
-						name="gdtitle"
-						value="${ub_resellView.ubtitle }"
-					>
+					<input type="hidden" name="cmfrmid" value="${sessionScope.loginId }"> <input type="hidden" name="cmfrmnickname" value="${sessionScope.loginNickname }"> <input type="hidden" name="cmtomnickname" value="${ub_resellView.ubnickname}"> <input type="hidden" name="cmtomid" value="${ub_resellView.ubmid}"> <input type="hidden" name="gdtitle" value="${ub_resellView.ubtitle }">
 
 
 					<!-- 버튼 목록 -->
-					<div
-						class="row"
-						style="border-bottom: solid 1px #E0E0E0;">
+					<div class="row" style="border-bottom: solid 1px #E0E0E0;">
 						<div class="col">
-							<button
-								id="backList"
-								type="button"
-								class="fw-bold text-white">글목록</button>
+							<button id="backList" type="button" class="fw-bold text-white">글목록</button>
 						</div>
 						<c:choose>
 							<%-- 관리자일 때 --%>
 							<c:when test="${sessionScope.loginId == 'admin' }">
 								<div align="right" class="col">
-									<input
-										onclick="adminBoardStop('${ub_resellView.ubcode}')"
-										type="button"
-										style="left: 0;"
-										class="btn btn-sm bg-secondary fw-bold text-white"
-										value="정지">
+									<input onclick="adminBoardStop('${ub_resellView.ubcode}')" type="button" style="left: 0;" class="btn btn-sm bg-secondary fw-bold text-white" value="정지">
 								</div>
 							</c:when>
-							
+
 							<c:when test="${sessionScope.loginId != null && ub_resellView.ubmid != sessionScope.loginId}">
 
 								<%-- 작성자가 본인이 아니고 일반사용자일 때 --%>
 								<div style="text-align: end;" class="col">
 									<!-- 찜버튼 -->
-									<i	id="zzimBtn" style="font-size:25px;"
-										class="fa-regular fa-heart zzimChatBtn"></i>
+									<i id="zzimBtn" style="font-size: 25px;" class="fa-regular fa-heart zzimChatBtn"></i>
 									<!-- 찜 수 -->
-									<span
-										style="font-size: 20px;"
-										id="zzimCount">${ub_resellView.ubzzim }</span>
+									<span style="font-size: 20px;" id="zzimCount">${ub_resellView.ubzzim }</span>
 									<!-- <span style="font-size: 30px; color: gray;">|</span> -->
 									<!-- 채팅버튼 -->
-									<i	id="chatBtn" style="font-size:25px;"
-										class="fa-solid fa-comment-dots zzimChatBtn"></i> <span>&nbsp;</span>
+									<i id="chatBtn" style="font-size: 25px;" class="fa-solid fa-comment-dots zzimChatBtn"></i> <span>&nbsp;</span>
 									<!-- <span style="font-size: 30px; color: gray;">|</span> -->
 									<!-- 신고버튼 -->
-									<i	id="ubWarning" style="font-size:25px;"
-										onclick="ubWarningCheckModal()"
-										class='fa-solid fa-land-mine-on zzimChatBtn'></i>
+									<i id="ubWarning" style="font-size: 25px;" onclick="ubWarningCheckModal()" class='fa-solid fa-land-mine-on zzimChatBtn'></i>
 
 								</div>
 							</c:when>
@@ -626,10 +487,10 @@ textarea:focus {
 										<option value="1">거래중</option>
 										<option value="9">거래완료</option>
 									</select>
-								<!-- 글수정 -->
-								<button onclick="resellModifyForm()" class="md_del_Btn fw-bold text-white" type="button">수정</button>
-								<!-- 글삭제 -->
-								<input onclick="ubDeleteCheckModal()" type="button" class="md_del_Btn fw-bold text-white" value="삭제">
+									<!-- 글수정 -->
+									<button onclick="resellModifyForm()" class="md_del_Btn fw-bold text-white" type="button">수정</button>
+									<!-- 글삭제 -->
+									<input onclick="ubDeleteCheckModal()" type="button" class="md_del_Btn fw-bold text-white" value="삭제">
 								</div>
 							</c:when>
 						</c:choose>
@@ -640,10 +501,7 @@ textarea:focus {
 					<!--  -->
 					<!--  -->
 					<!-- 품목정보 옆 정사각형 -->
-					<div
-						class="row"
-						style="margin-top: 20px;"
-					>
+					<div class="row" style="margin-top: 20px;">
 						<div class="col-1">
 							<div class="square">
 								<c:choose>
@@ -659,65 +517,51 @@ textarea:focus {
 						</div>
 						<!-- 품목 정보 -->
 						<div class="col goods_info">
-							<c:forEach
-								items="${gd_resellView}"
-								var="gdList">
+							<c:forEach items="${gd_resellView}" var="gdList">
 								<div class="row goods_name_price">
 									<div class="col-9">
-										<input
-											type="checkbox"
-											class="selectCheckBox goods_name"
-											onclick="clickBox(this, '${gdList.gdname }')"
-											value="${gdList.gdname }">
-										<span class="goods_name gd_nameList">${gdList.gdname }</span>
+										<input type="checkbox" class="selectCheckBox goods_name" onclick="clickBox(this, '${gdList.gdname }')" value="${gdList.gdname }"> <span class="goods_name gd_nameList">${gdList.gdname }</span>
 
 									</div>
 									<div class="col-3">
 										<span class="goods_name gd_priceList">${gdList.gdprice }</span>
 									</div>
 								</div>
-								<input
-									type="hidden"
-									class="select_gdcode"
-									value="${gdList.gdcode }">
-								<input
-									type="hidden"
-									class="select_gdstate"
-									value="${gdList.gdstate }">
+								<input type="hidden" class="select_gdcode" value="${gdList.gdcode }">
+								<input type="hidden" class="select_gdstate" value="${gdList.gdstate }">
 							</c:forEach>
 						</div>
 					</div>
 				</form>
 
 				<hr>
-				<div class="row mb-2" >
+				<div class="row mb-2">
 					<div class="col text-center">
 						<c:choose>
 							<c:when test="${ub_resellView.ubsellbuy == 'B' }">
-								<span class="fw-bold boardCategory" > < 구매자의 다른 상품 > </span>
+								<span class="fw-bold boardCategory"> < 구매자의 다른 상품 > </span>
 							</c:when>
 
 							<c:otherwise>
-								<span class="fw-bold boardCategory" > < 거래자의 다른 상품  > </span>
+								<span class="fw-bold boardCategory"> < 거래자의 다른 상품 > </span>
 							</c:otherwise>
 						</c:choose>
 					</div>
 				</div>
 
 				<!-- 거래자의 다른 품목 리스트 -->
-				<div class="row" style="text-align:center;">
+				<div class="row" style="text-align: center;">
 					<c:forEach items="${ memberSellList}" var="sellList">
 						<div class="col-4">
-							<a href="selectResellView?ubcode=${sellList.ubcode}&ubsellbuy=${sellList.ubsellbuy}&modifyCheck=LIST">
-								<img style="width: 270px; height: 200px; object-fit: cover; border-top-left-radius:10px; border-top-right-radius:10px;" class="another_goods" alt="" src="${pageContext.request.contextPath }/resources/img/resell/${sellList.ubmainimg }">
+							<a href="selectResellView?ubcode=${sellList.ubcode}&ubsellbuy=${sellList.ubsellbuy}&modifyCheck=LIST"> <img style="width: 270px; height: 200px; object-fit: cover; border-top-left-radius: 10px; border-top-right-radius: 10px;" class="another_goods" alt="" src="${pageContext.request.contextPath }/resources/img/resell/${sellList.ubmainimg }">
 							</a>
 
 							<div class="card_body text-left fw-bold">
-								<!-- <div class="fw-bold text-white" style="width:270px; background-color:#00bcd4;">	 -->						
+								<!-- <div class="fw-bold text-white" style="width:270px; background-color:#00bcd4;">	 -->
 								<a href="selectResellView?ubcode=${sellList.ubcode}&ubsellbuy=${sellList.ubsellbuy}&modifyCheck=LIST"> ${sellList.ubtitle} </a>
 								<!-- </div> -->
 							</div>
-							<div class="card_footer  text-left" style="margin-bottom:30px;">
+							<div class="card_footer  text-left" style="margin-bottom: 30px;">
 								<!-- <div  style="width:270px; background-color:#00bcd4;"> -->
 								${sellList.ubdate}
 								<!-- </div> -->
@@ -732,27 +576,12 @@ textarea:focus {
 	</main>
 
 	<!-- 신고 확인 모달 -->
-	<div
-		class="modal fade"
-		id="ubWarningCheckModal"
-		tabindex="-1"
-		role="dialog"
-		aria-labelledby="exampleModalLabel"
-		aria-hidden="true"
-	>
-		<div
-			class="modal-dialog"
-			role="document"
-		>
+	<div class="modal fade" id="ubWarningCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">게시글 신고</h5>
-					<button
-						class="close"
-						type="button"
-						data-dismiss="modal"
-						aria-label="Close"
-					>
+					<button class="close" type="button" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">×</span>
 					</button>
 				</div>
@@ -761,15 +590,8 @@ textarea:focus {
 				</div>
 				<div class="modal-footer">
 					<input type="hidden">
-					<button
-						class="close btn btn-info text-white"
-						onclick="insertResellWarning()"
-					>네</button>
-					<button
-						class="close btn btn-secondary"
-						type="button"
-						data-dismiss="modal"
-					>아니오</button>
+					<button class="close btn btn-info text-white" onclick="insertResellWarning()">네</button>
+					<button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
 				</div>
 			</div>
 		</div>
@@ -777,27 +599,12 @@ textarea:focus {
 
 	<!--  -->
 	<!-- 삭제 확인 모달 -->
-	<div
-		class="modal fade"
-		id="ubDeleteCheckModal"
-		tabindex="-1"
-		role="dialog"
-		aria-labelledby="exampleModalLabel"
-		aria-hidden="true"
-	>
-		<div
-			class="modal-dialog"
-			role="document"
-		>
+	<div class="modal fade" id="ubDeleteCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title">게시글 삭제</h5>
-					<button
-						class="close"
-						type="button"
-						data-dismiss="modal"
-						aria-label="Close"
-					>
+					<button class="close" type="button" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">×</span>
 					</button>
 				</div>
@@ -806,15 +613,8 @@ textarea:focus {
 				</div>
 				<div class="modal-footer">
 					<input type="hidden">
-					<button
-						class="close btn btn-info text-white"
-						onclick="updateResellDelete()"
-					>네</button>
-					<button
-						class="close btn btn-secondary"
-						type="button"
-						data-dismiss="modal"
-					>아니오</button>
+					<button class="close btn btn-info text-white" onclick="updateResellDelete()">네</button>
+					<button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
 				</div>
 			</div>
 		</div>
@@ -822,11 +622,7 @@ textarea:focus {
 
 
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp"%>
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-		crossorigin="anonymous"
-	></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 
 <script type="text/javascript">
@@ -1062,7 +858,6 @@ textarea:focus {
 			success : function(result) {
 				console.log("결과", result);
 				if (result === 'SOLD') {
-					alert("변경성공 = 거래완료");
 
 					for (let i = 0; i < selectCheckBox.length; i++) {
 						console.log("길이", selectCheckBox.length)
@@ -1073,7 +868,6 @@ textarea:focus {
 					}
 
 				} else {
-					alert("변경성공 = 거래중");
 					for (var j = 0; j < select_gdstate.length; j++) {
 
 						if (select_gdstate[j].value === '0') {
@@ -1322,7 +1116,6 @@ $.ajax({
 	type : 'json',
 	async : false,
 	success : function(mInfo){		
-		alert('성공');
 		console.log('거래자정보',mInfo );
 				}
 		

@@ -541,7 +541,6 @@ div.col.mb-2 h3 {
 			data : paging,
 			success : function(result) {
 				output_page = '';
-				alert("성공");
 				console.log("결과 : " + result);
 				listOutput(result); //목록 출력용 함수
 				document.getElementById("regionList").innerHTML = output_page;
@@ -562,14 +561,13 @@ div.col.mb-2 h3 {
 					async : false,
 					data : paging,
 					success : function(result) {
-						alert("page_ajax");
 						console.log("결과페이지 : " + result.page);
 
 						let output_pageNum = "<ul class='pagination'>";
 						if (result.prev) {
-							output_pageNum += '<li class=\"paginate_button\" <a href=\"javascript:void(0);\" onclick=\"selectRegion('
+							output_pageNum += '<li class=\"paginate_button\"> <a href=\"javascript:void(0);\" onclick=\"selectRegion('
 									+ (result.page - 1)
-									+ ')\">[이전]</a></button>';
+									+ ')\">이전</a></button>';
 						} else {
 							output_pageNum += "<li class='paginate_button'><span>이전</span></li>";
 						}
@@ -635,7 +633,6 @@ paging.ajaxCheck = 'REGION';
 			async : false,
 			data : paging,			
 			success : function(result) {
-				alert("검색성공");
 				console.log("결과 : " + result);
 
 				output_page = '';
@@ -653,7 +650,6 @@ paging.ajaxCheck = 'REGION';
 					async : false,
 					data : paging,
 					success : function(result) {
-						alert("page_ajax");
 						console.log("결과페이지 : " + result.page);
 						
 						let output_pageNum = "<ul class='pagination'>";
@@ -739,7 +735,6 @@ paging.ajaxCheck = 'REGION';
 
 				console.log("거래완료글확인")
 				soldCheckMsg[i].textContent = "(거래완료) "
-				break;
 			}
 		}
 	}

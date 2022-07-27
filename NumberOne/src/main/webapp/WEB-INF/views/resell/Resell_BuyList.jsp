@@ -364,6 +364,7 @@ div.col.mb-2 h3 {
 	// 로컬스토리지 초기화
 	let storage = window.localStorage;
 	console.log('스토리지아이템갯수', storage.length); //현재 로컬스토리지에 저장된 아이템 갯수
+	
 
 	// 페이지로드 시 거래완료된 글 확인
 	window.onload = function() {
@@ -547,7 +548,6 @@ div.col.mb-2 h3 {
 			data : paging,
 			success : function(result) {
 				output_page = '';
-				alert("성공");
 				console.log("결과 : " + result);
 				listOutput(result); //목록 출력용 함수
 				document.getElementById("regionList").innerHTML = output_page;
@@ -568,14 +568,13 @@ div.col.mb-2 h3 {
 					async : false,
 					data : paging,
 					success : function(result) {
-						alert("page_ajax");
 						console.log("결과페이지 : " + result.page);
 
 						let output_pageNum = "<ul class='pagination'>";
 						if (result.prev) {
-							output_pageNum += '<li class=\"paginate_button\" <a href=\"javascript:void(0);\" onclick=\"selectRegion('
+							output_pageNum += '<li class=\"paginate_button\"> <a href=\"javascript:void(0);\" onclick=\"selectRegion('
 									+ (result.page - 1)
-									+ ')\">[이전]</a></button>';
+									+ ')\">이전</a></button>';
 						} else {
 							output_pageNum += "<li class='paginate_button'><span>이전</span></li>";
 						}
@@ -657,7 +656,7 @@ div.col.mb-2 h3 {
 				
 				console.log("거래완료글확인")
 				soldCheckMsg[i].textContent = "(거래완료) "
-				break;
+			
 			}
 		}
 	}
