@@ -212,11 +212,11 @@ textarea:focus {
 }	
 
 .Resell_img {
+/* 	object-fit: fill; */
 	position: relative;
 	width: 500px;
 	height: 400px;
 	display: none;
-	object-fit: cover;
 	border: solid 2px #00bcd4;
 }
 
@@ -446,7 +446,7 @@ textarea:focus {
 									<!-- 1번 사진 -->
 									<div class="carousel-item active">
 										<img
-											style="object-fit: cover;"
+											style="object-fit: contain;"
 											class="active Resell_img d-block w-100"
 											src="${pageContext.request.contextPath }/resources/img/resell/${ub_resellView.ubmainimg}"
 										>
@@ -459,7 +459,7 @@ textarea:focus {
 									>
 										<div class="carousel-item">
 											<img
-												style="object-fit: cover;"
+												style="object-fit: contain;"
 												class="Resell_img d-block w-100"
 												src="${pageContext.request.contextPath }/resources/img/resell/${ubdetailimg_list}"
 											>
@@ -621,11 +621,19 @@ textarea:focus {
 							<c:when test="${ub_resellView.ubmid == sessionScope.loginId}">
 								<!-- 판매 / 구매  -->
 								<div style="text-align: end;" class="col">
+									<!-- 찜버튼 -->
+									<i	id="zzimBtn" style="font-size:25px;"
+										class="fa-regular fa-heart zzimChatBtn"></i>
+									<!-- 찜 수 -->
+									<span
+										style="font-size: 20px;"
+										id="zzimCount">${ub_resellView.ubzzim }</span>
 									<!-- 판매중 / 판매완료 -->
 									<select class="select-size" id="totalOp">
 										<option value="1">거래중</option>
 										<option value="9">거래완료</option>
 									</select>
+								
 								<!-- 글수정 -->
 								<button onclick="resellModifyForm()" class="md_del_Btn fw-bold text-white" type="button">수정</button>
 								<!-- 글삭제 -->
@@ -835,12 +843,7 @@ textarea:focus {
 	if ( checkMsg.length > 0 ){
 		alert(checkMsg);
 	}
-
-	
 </script>
-
-
-
 <script type="text/javascript">
 	let zzim_Check = '${zzim_Check}';
 	//console.log("찜체크 : " + zzim_Check);
@@ -862,8 +865,6 @@ textarea:focus {
 
 	let ubzzim = '${ub_resellView.ubzzim }';	//찜 갯수
 </script>
-
-
 <script type="text/javascript">
 	// 게시글 경고 모달창 close 하는 스크립트
 	var modal = $(".modal");
@@ -873,11 +874,7 @@ textarea:focus {
 			$("#ubWarningCheckModal").modal("hide");
 		});
 	}
-	
-	
 </script>
-
-
 <!-- 페이지 로드 스크립트 -->
 <script type="text/javascript">
 	window.onload = function(){
@@ -886,7 +883,7 @@ textarea:focus {
 		checkResellWarning();	// 페이지 로드 시 회원의 현재 글 신고 여부확인
 		ubstateCheckFunction();	// 페이지 로드 시 글의 판매 상태 확인
 		soldCheck();			// 페이지 로드 시 판매완료된 글 확인
-		if (ubmid != loginId){
+		if (loginId != null){
 			myZzimCheck();			// 페이지 로드 시 회원의 현재 글 찜 여부확인
 		}
 	}
@@ -994,7 +991,7 @@ textarea:focus {
 <!-- 찜버튼 스크립트 -->
 <script type="text/javascript">
 	/* 찜버튼 이벤트 호출 함수 */
-	if (ubmid != loginId){
+	if (loginId != null){
 		zzimBtn.addEventListener('click', clickZzim);
 	}
 	function clickZzim() {
@@ -1111,8 +1108,6 @@ textarea:focus {
 <!--신고 스크립트  -->
 <script type="text/javascript">
 
-
-
 ///////////////////////////[신고]/////////////////////////////////
 	function ubWarningCheckModal() {
 		/* 게시글 신고 클릭 시 모달창 출력 */
@@ -1149,23 +1144,6 @@ textarea:focus {
 			});
 		}
 	}
-
-	function deleteResellWarning() {
-		/* 신고 취소 // 22.07.06 신고취소 안되도록 수정 */
-		$("#ubWarning").removeClass("text-danger");
-		$.ajax({
-			type : "get",
-			url : "deleteResellWarning_ajax",
-			data : {
-				"loginId" : loginId,
-				"ubcode" : ubcode
-			},
-			async : false,
-			success : function(deleteResult) {
-				console.log(deleteResult);
-			}
-		});
-	}
 </script>
 
 <script type="text/javascript">
@@ -1178,8 +1156,6 @@ textarea:focus {
 		});
 	}
 </script>
-
-
 <script type="text/javascript">
 	/* 게시글 수정, 삭제 */
 	function resellModifyForm() {
@@ -1323,61 +1299,6 @@ $.ajax({
 </script>
 
 <script type="text/javascript">
-	function ubWarningCheckModal() {
-		/* 게시글 신고 클릭 시 모달창 출력 */
-		if ($("#ubWarning").hasClass("text-danger")) {
-			alert("이미 신고접수된 게시물입니다.");
-		} else {
-			$("#ubWarningCheckModal").modal('show');
-		}
-	}
-
-
-	function insertResellWarning() {
-		/* 게시글 신고 */
-		console.log("게시글 신고자 : " + loginId);
-		console.log("신고할 글번호 : " + ubcode);
-		if ($("#ubWarning").hasClass("text-danger")) {
-			deleteResellWarning();
-		} else {
-			$.ajax({
-				type : "get",
-				url : "insertResellWarning_ajax",
-				data : {
-					"loginId" : loginId,
-					"ubcode" : ubcode
-				},
-				async : false,
-				success : function(insertResult) {
-					console.log(insertResult);
-					if (insertResult > 0) {
-						alert("게시글 신고가 접수되었습니다.")
-						$("#ubWarning").addClass("text-danger");
-					}
-				}
-			});
-		}
-	}
-
-	function deleteResellWarning() {
-		/* 신고 취소 // 22.07.06 신고취소 안되도록 수정 */
-		$("#ubWarning").removeClass("text-danger");
-		$.ajax({
-			type : "get",
-			url : "deleteResellWarning_ajax",
-			data : {
-				"loginId" : loginId,
-				"ubcode" : ubcode
-			},
-			async : false,
-			success : function(deleteResult) {
-				console.log(deleteResult);
-			}
-		});
-	}
-</script>
-
-<script type="text/javascript">
 	// 게시글 삭제 경고 모달창 close 하는 스크립트
 	var modal = $(".modal");
 	var close = $(".close");
@@ -1387,29 +1308,6 @@ $.ajax({
 		});
 	}
 </script>
-
-
-<script type="text/javascript">
-	/* 게시글 수정, 삭제 */
-	function resellModifyForm() {
-		/* 게시글 수정 페이지 이동  */
-		let modifyCheck = 'MODIFY';
-		location.href = "loadToResellModifyForm?ubcode=" + ubcode
-				+ "&ubsellbuy=" + ubsellbuy + "&modifyCheck=" + modifyCheck;
-	}
-
-	function ubDeleteCheckModal() {
-		/* 게시글 삭제버튼 클릭 시 모달 출력 */
-		$("#ubDeleteCheckModal").modal('show');
-	}
-	function updateResellDelete() {
-		/* 게시글 삭제(상태변경) */
-		//모달창에서 "네" 버튼 클릭 시 삭제
-		location.href = "updateResellDelete?ubcode=" + ubcode + "&ubsellbuy="
-				+ ubsellbuy;
-	}
-</script>
-
 <!-- 체크박스 선택이벤트 스크립트  -->
 <script type="text/javascript">
 	/* 체크박스 클릭 이벤트 */
@@ -1419,7 +1317,6 @@ $.ajax({
 	const cmtomnickname = document.getElementsByName("cmtomnickname")[0].value;
 	const cmtomid = ubmid;
 	const gdtitle = document.getElementsByName("gdtitle")[0].value;
-	
 
 	function clickBox(sel_boxTag, selOp) {
 		if (sel_boxTag.checked == true) {
