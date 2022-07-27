@@ -467,6 +467,7 @@ div.col.mb-2 h3 {
 	if (checkMsg.length > 0) {
 		alert(checkMsg);
 	}
+
 	// 로컬스토리지 초기화
 	let storage = window.localStorage;
 	console.log('스토리지아이템갯수', storage.length); //현재 로컬스토리지에 저장된 아이템 갯수

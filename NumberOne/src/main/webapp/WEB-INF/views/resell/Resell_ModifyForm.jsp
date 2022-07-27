@@ -574,13 +574,12 @@ div.detailimageBox {
 
 
 <script type="text/javascript">
-	/* 로그인된 회원인지 체크 */
-	let loginCheck = '${sessionScope.loginId}';
-	if (loginCheck.length === 0) {
-		alert("잘못된 접근입니다.");
-		location.href = "loadToLogin"
-	}
-	
+/* 로그인된 회원인지 체크 */
+let loginCheck = '${sessionScope.loginId}';
+if (loginCheck.length == 0) {	   
+   alert("로그인 후 이용가능합니다");
+   location.href = "loadToLogin"
+}
 </script>
 
 

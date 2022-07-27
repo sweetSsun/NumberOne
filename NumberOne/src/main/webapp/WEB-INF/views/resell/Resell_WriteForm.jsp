@@ -503,8 +503,19 @@ margin-top: 0px;
 		crossorigin="anonymous"
 	></script>
 </body>
-<!-- 페이지로드시 실행할 코드 스크립트 -->
+
 <script type="text/javascript">
+
+/* 로그인된 회원인지 체크 */
+let loginCheck = '${sessionScope.loginId}';
+if (loginCheck.length == 0) {	   
+   alert("로그인 후 이용가능합니다");
+   location.href = "loadToLogin"
+}
+
+</script>
+<script type="text/javascript">
+
 		// 게시글 작성 취소 경고 모달창 close 하는 스크립트
  		var modal = $(".modal");
 		var close = $(".close");
@@ -827,7 +838,7 @@ for(let i = 0; i<display_btn.length; i++){
 
 
 		
-<!-- 취소 핸들러 스크립트  -->
+<!-- 취소버튼클릭 이벤트핸들러 스크립트  -->
 <script type="text/javascript">
 const storage = window.localStorage; 
 

@@ -37,7 +37,29 @@ public class ResellService {
 	ResellDao rdao;
 
 	public static String savePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\resell";
+	
+	//로그인 확인 (파라미터: ra/리턴: mav)
+	public ModelAndView loginChToFail(RedirectAttributes ra) {
+		ModelAndView mav = new ModelAndView();
+		String loginId = (String) session.getAttribute("loginId");
+		
+		if(loginId == null) {
+			System.out.println("비로그인");
+			
+			//메세지
+			ra.addFlashAttribute("msg", "로그인 후 이용가능합니다");
+			
+			//실패페이지로 이동(실패 페이지에서 msg alert 띄우고, history back)
+			mav.setViewName("redirect:loadToFail");
+		
+		} else {
+			System.out.println("로그인");
 
+		}	
+		
+		return mav;
+	}
+	
 	
 	public ModelAndView selectResellMainPage(Paging paging) throws Exception {
 		System.out.println("selectResellMainPage 서비스 호출");

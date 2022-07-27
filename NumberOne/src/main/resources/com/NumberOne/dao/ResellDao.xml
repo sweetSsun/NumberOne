@@ -221,12 +221,11 @@
 	<select id="selectResellView_goods"
 		resultType="com.NumberOne.dto.GoodsDto">
 		SELECT GDCODE, GDUBCODE, GDNAME, GDPRICE, GDSTATE
-		FROM GOODS
-		GD, USEDBOARDS UB
+		FROM GOODS GD, USEDBOARDS UB
 		WHERE GDUBCODE = UBCODE AND UBCODE = #{ubcode}
 		AND
 		UBSELLBUY = #{ubsellbuy}
-		ORDER BY GDUBCODE
+		ORDER BY GDCODE
 
 	</select>
 

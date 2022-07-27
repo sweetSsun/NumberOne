@@ -377,12 +377,6 @@ div.col.mb-2 h3{ color : white; }
 
 <script type="text/javascript">
 
-   /* 로그인된 회원인지 체크 */
-   let loginCheck = '${sessionScope.loginId}';
-   if (loginCheck.length == 0) {	   
-      alert("로그인 후 이용가능합니다");
-      location.href = "loadToLogin"
-   }
 
    function searchKeyword() {
       var searchType = document.getElementById("searchType").value;
