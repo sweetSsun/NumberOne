@@ -251,7 +251,10 @@ section div.checkout__form{
 								</div>
 							</td>
 							<td class="tableCell">
-							 	<a href="selectReviewBoardView${paging.makeQueryPage(board.bdcode, paging.page)}">${board.bdtitle} 
+							 	<a href="selectReviewBoardView${paging.makeQueryPage(board.bdcode, paging.page)}">${board.bdtitle}
+							 	<c:if test="${board.bdimg != null }">
+									<i class="fa-regular fa-image"></i>
+								</c:if>
 							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
 							 </td>
 							<td class="text-center tableCell">

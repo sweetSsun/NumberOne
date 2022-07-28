@@ -183,7 +183,10 @@
 							<td class="tableCell">
 							 	<c:choose>
 									<c:when test="${board.bdcategory == '후기'  }">
-										<a href="selectReviewBoardView${paging.makeQueryPage(board.bdcode, paging.page)}">${board.bdtitle} 
+										<a href="selectReviewBoardView${paging.makeQueryPage(board.bdcode, paging.page)}">${board.bdtitle}
+											<c:if test="${board.bdimg != null }">
+									 		<i class="fa-regular fa-image"></i>
+									 		</c:if> 
 									 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
 									</c:when>
 									

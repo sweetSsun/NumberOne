@@ -79,6 +79,15 @@
 		font-size: 20px;
 		margin-left: 20px;
 	}
+section div.checkout__form{
+	/* 페이지 제목 */
+	color: #1c1c1c; 
+    font-weight: 700; 
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+    font-size : 24px;
+}	
 </style>
 </head>
 <body>
@@ -100,7 +109,7 @@
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h2 class="text-center">자취방자랑 글작성 페이지</h2>
+				<div class="checkout__form" style="margin-top: 30px;">자취방 자랑 - 글작성</div> 
 				<form action="insertRoomWrite" method="post" enctype="multipart/form-data" onsubmit="return roomRegisterCh()">
 					<input type="hidden" name="bdmid" value="${sessionScope.loginId }">
 				<div class="row">
