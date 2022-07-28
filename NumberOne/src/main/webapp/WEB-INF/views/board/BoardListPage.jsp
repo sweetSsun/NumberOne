@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 게시판 글목록 페이지</title>
+<title>1인자 - 일반게시판</title>
 <!-- Jquery -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>  
 <!-- 부트스트랩 -->
@@ -97,7 +97,7 @@ section div.checkout__form{
 		
 		<section>
 			<!-- 페이지명 -->
-			<div class="checkout__form" style="margin-top: 30px;">커뮤니티</div> 
+			<div class="checkout__form" style="margin-top: 30px;">전체게시판</div> 
 		
 		<!-- 본문 -->
 			<form action="selectBoardList" method="get"  id="actionForm">
