@@ -36,13 +36,11 @@ public interface ResellDao {
 
 	String loadToResellWriteForm(String loginId);
 
-	ArrayList<UsedBoardDto> selectResellPageList(@Param("paging") Paging paging, @Param("checkMethod") String checkMethod);
-
-	ArrayList<UsedBoardDto> selectResellRegionList_ajax(Paging paging);
+	ArrayList<UsedBoardDto> selectResellPageList(@Param("paging") Paging paging, @Param("pageCheck") String pageCheck);
 
 	String selectMemberId(String keyword);
 
-	ArrayList<UsedBoardDto> selectResellView_List(@Param("ubmid") String ubmid, @Param("ubcode") String ubcode);
+	ArrayList<UsedBoardDto> selectResellView_memberList(@Param("ubmid") String ubmid, @Param("ubcode") String ubcode);
 
 	String checkResellWarning_ajax(@Param("loginId") String loginId, @Param("ubcode") String ubcode);
 

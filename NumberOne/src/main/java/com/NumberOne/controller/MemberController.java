@@ -368,16 +368,6 @@ public class MemberController {
 	  		return emailCheckResult;  
 	  	}		
 		
-		//마이페이지 공구 
-		@RequestMapping(value = "/selectMyInfoGonguView")
-		public ModelAndView selectMyInfoGonguView(RedirectAttributes ra) {
-			System.out.println("마이페이지 커뮤니티");
-			mav = new ModelAndView();
-			mav = msvc.selectMyInfoGonguView(ra);
-			
-			return mav;
-			
-		}
 
 }
 
