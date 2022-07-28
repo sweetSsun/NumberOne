@@ -148,11 +148,11 @@
 										</c:when>
 										<c:when test="${board.bdcategory.equals('후기') }">
 											<!-- 후기글 상세 -->
-											<a href="selectReviewBoardView?bdcode=${board.bdcode }"><div class="text_leng">${board.bdtitle}</div></a>
+											<a href="selectReviewBoardView?codeIdx=${board.bdcode }"><div class="text_leng">${board.bdtitle}</div></a>
 										</c:when>										
 										<c:otherwise>
 											<!-- 일반글 상세 -->										
-											<a href="selectBoardView?bdcode=${board.bdcode }"><div class="text_leng">${board.bdtitle}</div></a>
+											<a href="selectBoardView?codeIdx=${board.bdcode }"><div class="text_leng">${board.bdtitle}</div></a>
 										</c:otherwise>
 									</c:choose>
 								</td>	
@@ -263,14 +263,14 @@
 											</a>
 										</c:when>
 										<c:when test="${reply.rpbdcategory.equals('후기') }">
-											<!-- 자랑 댓글 원본 글 상세 -->
-											<a href="selectReviewBoardView?bdcode=${reply.rpbdcode }">
+											<!-- 후기 댓글 원본 글 상세 -->
+											<a href="selectReviewBoardView?codeIdx=${reply.rpbdcode }">
 											<span style="text-overflow : ellipsis;"><div class="text_leng">${reply.rpbdtitle}</div></span>
 											</a>
 										</c:when>										
 										<c:otherwise>
 											<!-- 일반 댓글 원본 글 상세 -->										
-											<a href="selectBoardView?bdcode=${reply.rpbdcode }"><div class="text_leng">${reply.rpbdtitle}</div></a>
+											<a href="selectBoardView?codeIdx=${reply.rpbdcode }"><div class="text_leng">${reply.rpbdtitle}</div></a>
 										</c:otherwise>
 									</c:choose>
 								</td>
@@ -292,12 +292,12 @@
 											<a href="selectRoomList?bdcode=${reply.rpbdcode }&jsp=view"><div class="text_leng">${reply.rpcontents }</div></a>
 										</c:when>
 										<c:when test="${reply.rpbdcategory.equals('후기') }">
-											<!-- 자랑 댓글 원본 글 상세 -->
-											<a href="selectReviewBoardView?bdcode=${reply.rpbdcode }"><div class="text_leng">${reply.rpcontents }</div></a>
+											<!-- 후기 댓글 원본 글 상세 -->
+											<a href="selectReviewBoardView?codeIdx=${reply.rpbdcode }"><div class="text_leng">${reply.rpcontents }</div></a>
 										</c:when>										
 										<c:otherwise>
 											<!-- 일반 댓글 원본 글 상세 -->										
-											<a href="selectBoardView?bdcode=${reply.rpbdcode }"><div class="text_leng">${reply.rpcontents }</div></a>
+											<a href="selectBoardView?codeIdx=${reply.rpbdcode }"><div class="text_leng">${reply.rpcontents }</div></a>
 										</c:otherwise>
 									</c:choose>
 								</td>
@@ -330,7 +330,7 @@
 				<!-- 여백 -->
 				<div style="min-height: 230px;" id="scroll-scrap"></div>
 				<div class="row" >				
-					<h4 class="checkout__form" style="color: #00BCD4; margin-left: 30px;">스크랩 목록 (작성자 상세보기 test 중)</h4>
+					<h4 class="checkout__form" style="color: #00BCD4; margin-left: 30px;">스크랩 목록</h4>
 				</div>								
 				<!-- 여백 -->
 				<div style="min-height: 50px;" ></div>				
