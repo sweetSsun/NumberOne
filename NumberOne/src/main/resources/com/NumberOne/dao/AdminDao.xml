@@ -602,4 +602,12 @@
 	<select id="admin_selectMaxGbcode" resultType="String">
 		SELECT NVL(MAX(NBCODE),'GB00000') FROM NOTICEBOARDS WHERE NBCODE LIKE 'GB'||'%'
 	</select>
+	
+	
+	<!-- 공동구매/공구 카카오결제정보 DB입력 -->
+	<insert id="insertGonguResgister">
+		INSERT INTO GONGU (GNBCODE, GMID, GPHONE, GEMAIL, GADDR, GDATE)
+		VALUES (#{gnbcode}, #{gmid}, #{gphone}, #{gemail}, #{gaddr}, SYSDATE)
+	</insert>
+	
 </mapper>

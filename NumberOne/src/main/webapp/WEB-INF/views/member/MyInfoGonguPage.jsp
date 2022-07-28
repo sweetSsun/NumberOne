@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 마이페이지 중고거래</title>
+<title>1인자 - 마이페이지 공구</title>
 
 
 <!--jquery & bootstrap(5css)-->
@@ -124,45 +124,28 @@
 						<tr class="text-center" id="board_column">
 							<td>글번호</td>
 							<td>제목</td>
-							<td>날짜</td>						
+							<td>결제일</td>						
 							<td>진행사항</td>
 						</tr>
-						<c:forEach items="${zzimBoard }" var="zzim">
+						<c:forEach items="${gonguList }" var="gongu">
 						
 						<c:choose>
 						
-						<c:when test="${zzim.ubstate == 0}">
+						<c:when test="${gongu.gnbstate == 2}">
 							<tr style="border-bottom: solid #E0E0E0 1px;  color:gray; text-align: center; ">
-								<td>정지</td>
-								<td><span style="text-decoration : line-through;" class="delete_leng">${zzim.ubtitle }</span></td>
-								<td style="text-decoration : line-through;">${zzim.mnickname }</td>
-								<td style="text-decoration : line-through;">${zzim.ubdate }</td>
+								<td style="text-decoration : line-through;">${gongu.gnbcode }</td>
+								<td><span style="text-decoration : line-through;" class="delete_leng">${gongu.gnbtitle }</span></td>
+								<td style="text-decoration : line-through;">${gongu.gdate }</td>
+								<td>진행완료</td>
 							</tr>						
-						</c:when>
-
-						<c:when test="${zzim.ubstate == 2}">
-							<tr style="border-bottom: solid #E0E0E0 1px;  color:gray; text-align: center; ">
-								<td>삭제</td>
-								<td><span style="text-decoration : line-through;" class="delete_leng">${zzim.ubtitle }</span></td>
-								<td style="text-decoration : line-through;">${zzim.mnickname }</td>
-								<td style="text-decoration : line-through;">${zzim.ubdate }</td>
-							</tr>						
-						</c:when>						
+						</c:when>					
 						
 						<c:otherwise>
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center; ">
-							<td>${zzim.zzubcode }</td>
-							<c:choose>
-							<c:when test="${zzim.ubsellbuy == 'S' }">
-								<td><a href="selectResellView?ubcode=${zzim.zzubcode }&ubsellbuy=S&modifyCheck=LIST" class="text_leng">${zzim.ubtitle }</a></td>
-							</c:when>
-							<c:otherwise>
-								<td><a href="selectResellView?ubcode=${zzim.zzubcode }&ubsellbuy=B&modifyCheck=LIST" class="text_leng">${zzim.ubtitle }</a></td>						
-							</c:otherwise>
-							</c:choose> 
-								<td><div onclick="writeMemberSellbuy('${zzim.mnickname }')"
-								 class="text_leng">${zzim.mnickname }</div></td>
-								<td>${zzim.ubdate }</td>
+							<td>${gongu.gnbcode }</td>
+							<td><a href="selectNoticeBoardView?codeIdx=${gongu.gnbcode }" class="text_leng">${gongu.gnbtitle }</a></td>
+							<td>${gongu.gdate }</td>
+							<td>진행중</td>
 							</tr>
 						</c:otherwise> 
 						

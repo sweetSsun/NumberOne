@@ -559,8 +559,21 @@
 	}
 	
 	// 대화상대 신고 실패 시 수행할 기능
-	function failMemberWarning(){
-		alert("회원 신고에 실패했습니다.");
+	function failMemberWarning(type){
+		console.log(type+"타입 신고 실패");
+		if(type == 0){
+			//insert fail
+			console.log("무결성 제약조건 위반");
+			alert("회원 신고에 실패했습니다");
+		} else if(type == 2){
+			//비로그인
+			console.log("비로그인");
+			alert("로그인 후 이용가능합니다");
+		} else if(type ==3){
+			//본인 신고하는 경우
+			console.log("본인 신고 불가");
+			alert("본인은 신고할 수 없습니다");
+		}
 	}
 
 	

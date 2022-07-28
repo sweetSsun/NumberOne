@@ -674,9 +674,10 @@
 			url : "insertMemberWarning_ajax",
 			data : { "loginId" : "${sessionScope.loginId}", "wmedNickname" : wmedNickname },
 			success : function(insertResult){
-				console.log(insertResult);
+				console.log("신고 결과: "+insertResult);
+				
 				var mwOpenedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
-				if( insertResult > 0 ){ // 신고 성공
+				if( insertResult == 1 ){ // 신고 성공
 					
 					if(crcode == 'wMemberPopup'){
 						console.log("회원 정보에서 신고 성공")
@@ -689,11 +690,22 @@
 						}
 					
 				} else { // 신고 실패
-					popChatArr[mwOpenedIdx].failMemberWarning();
+					
+					if(crcode == 'wMemberPopup'){	
+					
+						console.log("회원 정보에서 신고 실패")
+						wMemberPopup.failMemberWarning(insertResult);
+						
+						} else {
+							console.log("채팅창에서 신고 실패")
+							popChatArr[mwOpenedIdx].failMemberWarning(insertResult);
+						}
+					
 				}
 			}
 		});
 	}
+	
 	
 </script>
 
