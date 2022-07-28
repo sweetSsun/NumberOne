@@ -109,7 +109,7 @@
 		<!-- 본문 -->
 			<div class="container">
 				<br>
-				<div class="checkout__form" style="margin-top: 20px;"><h4>마이페이지 공구</h4></div>
+				<div class="checkout__form" style="margin-top: 20px;"><h4>마이페이지 공구 (페이지 완성되면 링크 예정)</h4></div>
 				<br>
 				<br>
 				<!-- 참여 공구 목록 -->
