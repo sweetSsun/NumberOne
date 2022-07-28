@@ -23,7 +23,7 @@ import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.ChatMessageDto;
 import com.NumberOne.dto.ChatRoomDto;
 import com.NumberOne.dto.ContactDto;
-import com.NumberOne.dto.GoodsDto;
+import com.NumberOne.dto.GonguDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.ReplyDto;
 import com.NumberOne.dto.ScrapDto;
@@ -1085,10 +1085,10 @@ public class MemberService {
 				
 
 				//참여한 공구 목록 
-				//ArrayList<BoardDto> board = mdao.selectMyInfoMemberView_Boards(loginId);
-				//System.out.println(board);
+				ArrayList<GonguDto> gonguList = mdao.selectMyInfoGonguView(loginId);
+				System.out.println(gonguList);
 
-				//mav.addObject("board", board);
+				mav.addObject("gonguList", gonguList);
 	
 				mav.setViewName("member/MyInfoGonguPage");
 
