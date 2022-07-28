@@ -16,7 +16,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.NumberOne.dao.AdminDao;
 import com.NumberOne.dao.BoardDao;
+import com.NumberOne.dao.MemberDao;
 import com.NumberOne.dto.BoardDto;
+import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.NoticeDto;
 import com.NumberOne.dto.Paging;
 import com.NumberOne.dto.ReplyDto;
@@ -30,7 +32,10 @@ public class BoardService {
 	
 	@Autowired
 	private AdminDao adao;
-
+	
+	@Autowired
+	private MemberDao mdao;
+	
 	@Autowired
 	private HttpServletRequest request;
 
@@ -498,6 +503,19 @@ public class BoardService {
 			
 		} else { // 공구글 정보 조회
 			mav.setViewName("gongu/GonguBoardView");
+			
+			// 공구 회원정보 불러오기
+				String loginId;
+				if((String) session.getAttribute("loginId")!=null) {			
+					loginId = (String) session.getAttribute("loginId");
+				} else {
+					loginId = (String) session.getAttribute("kakaoId");			
+				}
+				
+				System.out.println("로그인 된 아이디 : " + loginId);
+				
+				MemberDto memberInfo = mdao.selectMyInfoMemberView(loginId);
+				mav.addObject("memberInfo", memberInfo);
 		}
 		return mav;
 	}

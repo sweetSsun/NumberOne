@@ -145,6 +145,60 @@
    	height: 350px;
    	object-fit: cover;
    }
+   
+   /* 참여버튼 */
+	.attendBtn {
+	  display: block;
+	  position: relative;	  
+	  width: 120px;
+	  left: 42%;
+	  padding: 0;
+	  margin: 10px 20px 10px 0;
+	  font-weight: 600;
+	  text-align: center;
+	  line-height: 50px;
+	  color: #FFF;
+	  border: none;
+	  border-radius: 5px;
+	  transition: all 0.2s ;
+	  background-color: #5DC8CD;
+	}
+	.btnLightBlue.btnPush {
+	  box-shadow: 0px 5px 0px 0px #1E8185;
+	}
+	.btnPush:hover {
+	  margin-top: 15px;
+	  margin-bottom: 5px;
+	}
+	.btnLightBlue.btnPush:hover {
+	  box-shadow: 0px 0px 0px 0px #1E8185;
+	}
+	
+	/* 참여 modal input태그*/
+	.attendDiv{
+		margin: 2%;
+	}
+	.attendInput {
+		height: 5vh;
+		border: 0;
+		border-radius: 15px;
+		outline: none;
+		padding-left: 10px;
+		background-color: rgb(233, 233, 233);
+
+	}
+	/* 참여 modal X버튼 */
+	.attendX{
+		border-radius: 100%;
+	    border: none;
+	    width: 7%;
+	}
+	
+	#btn-kakao-pay{
+		border: 0;
+    	background-color: transparent;
+	}
+	
 </style>
 </head>
 <body>
@@ -166,8 +220,7 @@
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h2 class="text-center">공구글 글상세페이지 : GonguBoardView.jsp :: admin에서 결제기능 꾸미고 수정할것</h2>
-				<form action="">
+				<h2 class="text-center">공구글 글상세페이지 : GonguBoardView.jsp</h2>
 					<div class="row">
 						<div class="col">
 							<a href="selectNoticeBoardList"><span class="fw-bold boardCategory"> | 공구게시판 </span></a> 
@@ -200,7 +253,7 @@
 						
 						<div align="right"  class="col-3 offset-md-3">
 							<span class="boardDate">${noticeBoard.nbdate } | </span> 
-							<span class="bdhit" style="right:0;"><i class="fa-regular fa-eye"></i>  ${noticeBoard.nbhits } 
+							<span class="bdhit" style="right:0;"><i class="fa-regular fa-eye"></i>  ${noticeBoard.nbhits } </span>
 						</div>
 					</div>
 					<!-- 실험 -->
@@ -216,15 +269,75 @@
 							<textarea id="inputReply" rows="10%" cols="100%" readonly>${noticeBoard.nbcontents }</textarea>
 							<%-- <text style="min-height:270px;">${board.bdcontents }</div> --%>
 						</div>
+						
+						<!-- 참여 버튼 -->
+						<div>
+							<button type="button" class="attendBtn btnLightBlue btnPush" onclick="showGonguModal()">참여</button>
+						</div>
+						
+						<!-- 공동구매 결제API -->
+						<div class="modal fade" id="gonguModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					        <div class="modal-dialog" role="document">
+					            <div class="modal-content">
+					                <div class="modal-header">
+					                    <h5 class="modal-title" id="updateNbstateModalLabel"> 공동구매 결제 양식 </h5>
+					                    <button class="attendX close" type="button" data-dismiss="modal" aria-label="Close">
+					                        <span aria-hidden="true">×</span>
+					                    </button>
+					                </div>
+					                
+					                <div class="modal-body">
+						                <form id="form-payment" class="row" method="post">
+											<div class="col-sm-8">
+												<div class="attendDiv">
+												<input class="attendInput" type="text" id="pay-id" name="pay-id" readonly="readonly" value="${sessionScope.loginId}" style="cursor:default;">
+												</div>
+												<div class="attendDiv">
+												<input class="attendInput" type="text" id="pay-tel" name="pay-tel" placeholder="전화번호를 입력하세요">
+												</div>
+												<div class="attendDiv">
+												<input class="attendInput" type="text" id="pay-email" name="pay-email" placeholder="이메일주소를 입력하세요">
+												</div>
+												<div class="attendDiv">
+												<input class="attendInput" type="text" id="pay-address" name="pay-address" placeholder="배송지주소를 입력하세요">
+												</div>
+											</div>
+											
+											<div class="col-sm-4">
+												<div style="height:70%; text-align: center;">
+													<span>${noticeBoard.nbtitle }</span>
+												</div>
+												<div>
+													<button id="btn-kakao-pay" type="button">
+													<img alt="카카오결제API" src="${pageContext.request.contextPath }/resources/img/payment_icon_yellow_medium.png">
+													<!-- small/ medium/ large -->
+													</button>
+												</div>
+											</div>
+											<!-- nbcode 넘겨주기 -->
+											<input type="hidden" id="gonguNbcode" value="${noticeBoard.nbcode }">
+											
+										</form>
+					                </div>
+					                
+					                <div class="modal-footer">
+					                    <button class="close btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+					                </div>
+					            </div>
+					        </div>
+					    </div>
+					    
+					    <!-- 공구 끝 -->
+					<!-- 본문 끝 -->
+					
 					</div>
-				</form>
 				
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
 				<div class="row mb-2">
 					<div class="col-2">
-							<a href="selectNoticeBoardList?NbCheck=GB?${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}">
-							<input  type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
-							</a>
+						<a href="selectNoticeBoardList?NbCheck=GB?${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}">
+						<input  type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
+						</a>
 					</div>
 				<%-- <c:choose>
 					<c:when test="${sessionScope.loginId == board.bdmid && sessionScope.loginId != 'admin' }">
@@ -403,6 +516,7 @@
 	}
 </script>
 
+<!--
 <script type="text/javascript">
 	//선택한 글번호 
 	var bdcode = '${board.bdcode}';
@@ -817,7 +931,7 @@
 	}
 </script>
 
-<!-- 관리자용 -->
+<!-- 관리자용 
 <script type="text/javascript">
 	function adminBoardStop(bdcode){
 		/* 관리자 - 게시글 정지  */
@@ -848,6 +962,8 @@
 	}
 	
 </script>
+-->
+
 <script type="text/javascript">
 
 /* Textarea 높이 자동 조절 ( 스크롤바 없애기 ) */
@@ -858,6 +974,142 @@ $("#inputReply").each(function () {
 	this.style.height = (this.scrollHeight) + 'px';
 	});
 
+</script>
+
+
+<script type="text/javascript">
+//모달창 close 하는 스크립트
+	var modal = $(".modal");
+	var close = $(".close");
+	for (var i = 0; i < close.length; i++){
+		close[i].addEventListener("click", function(){
+			$("#gonguModal").modal("hide");
+		});
+	}
+			
+	var btnObj_state;
+
+	var tel = "${memberInfo.mphone }";
+	var email = "${memberInfo.memail }";
+	var address = "${memberInfo.maddr }";
+	console.log("번호 "+tel);
+	console.log("이메일 "+email);
+	console.log("주소 "+address);
+	
+	// 공동구매 참여 양식 입력 모달창 출력
+	function showGonguModal(){
+		console.log("showGonguModal() 실행");
+		
+		console.log("selectLoginOut_ajax() 실행");
+		$.ajax({
+	  		type : 'get',
+	  		url : 'selectLoginOut_ajax',
+	  		async : false,
+	  		success : function(result){
+	  			if (result == "2"){ 
+	  				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+	  					location.href = "loadToLogin";
+	  				}
+	  				return;
+	  			}
+	  	
+		/* DB에서 참여한적이 있으면 안나타나게
+		 if (btnObj_stateText == "활성"){
+			$("#gonguModal").text(nbcode + "번 공구를 삭제 처리하시겠습니까?");
+		} else {
+			$("#updateNbstateModalBody").text(nbcode + "번 공구를 활성화 처리하시겠습니까?");
+		}
+		$("#nbcode_state").val(nbcode);
+		*/
+			$("#pay-tel").val(tel);
+			$("#pay-email").val(email);
+			$("#pay-address").val(address);
+			$("#gonguModal").modal("show");
+	  		}
+		});
+	}
+</script>
+
+<!-- 카카오페이 클릭 -->
+<script type="text/javascript">
+var loginId = $("#form-payment input[name='pay-id']").val();
+var nbcode =$("#gonguNbcode").val();
+console.log("loginId : "+loginId);
+console.log(nbcode);
+
+$("#btn-kakao-pay").click(function(){
+	console.log("카카오페이 클릭");
+	var tel = $("#form-payment input[name='pay-tel']").val();
+	var email = $("#form-payment input[name='pay-email']").val();
+	var address = $("#form-payment input[name='pay-address']").val();
+	console.log("tel : "+tel);
+	console.log("email : "+email);
+	console.log("address : "+address);
+
+	if(loginId == ""){
+		alert("아이디를 입력하세요");
+		$("#form-payment input[name='pay-name']").focus()
+		return;
+	}
+	if(tel == ""){
+		alert("전화번호를 입력하세요");
+		$("#form-payment input[name='pay-tel']").focus()
+		return;
+	}
+	if(email == ""){
+		alert("이메일을 입력하세요");
+		$("#form-payment input[name='pay-email']").focus()
+		return;
+	}
+	if(address == ""){
+		alert("주소를 입력하세요");
+		$("#form-payment input[name='pay-address']").focus()
+		return;
+	}
+	
+	console.log("selectLoginOut_ajax() 실행");
+	$.ajax({
+  		type : 'get',
+  		url : 'selectLoginOut_ajax',
+  		async : false,
+  		success : function(result){
+  			if (result == "2"){ 
+  				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+  					location.href = "loadToLogin";
+  				}
+  				return;
+  			}
+  			
+  			if(confirm("카카오페이 결제를 실행하시겠습니까?")){
+  				console.log("카카오페이 실행");	
+  			
+				// 카카오페이 결제전송
+				$.ajax({
+					type:'post',
+					url:'kakaopayReady',
+					dataType:'json',
+					data:{
+						nbcode:nbcode,
+						loginId:loginId,
+						tel: tel,
+						email: email,
+						address: address
+					},
+					success:function(response){
+						console.log("결제실행");
+						var payopen = response.next_redirect_pc_url
+						window.open(payopen,"","width=500, height=450, top=0px, left=500px, scrollbars=no, resizable=no");
+						console.log(response);
+						
+					}
+				})
+			
+  			}
+  			return;
+			
+  		}
+	})
+})
 </script>
 
 </html>
