@@ -693,8 +693,8 @@
 	function updateBoardDelete(){
 		/* 게시글 삭제(상태변경) */
 		//모달창에서 "네" 버튼 클릭 시 삭제
-		var bdcategory = '${board.bdcategory}';
-		location.href="updateBoardDelete?bdcode="+bdcode+"&bdcategory="+bdcategory+"&bdmid="+bdmid;
+		var bdcategory = '${board.bdrgcode}';
+		location.href="updateBoardDelete?bdtype=region&bdcode="+bdcode+"&bdcategory="+bdcategory+"&bdmid="+bdmid;
 	}
 	
 </script>

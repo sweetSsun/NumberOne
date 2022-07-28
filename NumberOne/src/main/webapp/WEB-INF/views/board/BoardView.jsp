@@ -449,6 +449,8 @@
 	
 	const bdmid = '${board.bdmid}'; //글작성자
 	const loginId = '${sessionScope.loginId}';//로그인 아이디
+	const bdcode = '${board.bdcode}';
+	const bdcategory = '${board.bdcategory}';
 	
 	var checkMsg = '${msg}';
 	if ( checkMsg.length > 0 ){
@@ -457,8 +459,7 @@
 </script>
 
 <script type="text/javascript">
-	//선택한 글번호 
-	var bdcode = '${board.bdcode}';
+
 	//현재 로그인중인 아이디
 
 	$(document).ready(function(){
@@ -699,10 +700,8 @@
 		$("#bdDeleteCheckModal").modal('show');
 	}
 	function updateBoardDelete(){
-		
-				/* 게시글 삭제(상태변경) */
+		/* 게시글 삭제(상태변경) */
 		//모달창에서 "네" 버튼 클릭 시 삭제
-		var bdcategory = '${board.bdcategory }';
 		location.href="updateBoardDelete?bdcode="+bdcode+"&bdcategory="+bdcategory+"&bdmid="+bdmid;
 	}
 	
