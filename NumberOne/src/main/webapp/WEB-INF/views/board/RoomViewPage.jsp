@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 자취방 자랑 상세</title>
+<title>1인자 - 자취방 자랑게시판</title>
 
 <%-- <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css"> --%>
  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> 
@@ -144,7 +144,7 @@
 	transition:all .35s;
 }
 
-#roomContents > textarea {
+#roomContents > div {
 	 width:100%; 
 	 height:86%; 
 	 overflow-y:scroll; 
@@ -248,7 +248,7 @@ div.menu{
 	width:800px; 
 	height:600px;
 	object-fit: contain;
-	background-color: rgb(0,0,0); /* Fallback color */
+	
   	background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
 }
 
@@ -391,7 +391,9 @@ section div.checkout__form{
 		<!-- 본문 -->
 			<div class="container" style="width:1220px !important;">
 					<!-- 페이지명 -->
-					<div class="checkout__form" style="margin-top: 30px;">자취방 자랑 상세 페이지</div> 
+					<div class="checkout__form pointer" style="margin-top: 30px;" onclick="location.href='selectRoomList'">
+						자취방 자랑게시판
+					</div> 
 				
 				<div class="row" style="margin:auto;">				
 					<div class="col-11"></div>
@@ -675,7 +677,11 @@ roomView_ajax(nowBdcode)
 				$("#roomMnickname").html(mnicknameOutput);
 
 				//글 내용
-				var roomContentsOutput = "<textarea class='scroll' readonly style='font-size:15px; resize:none;'>"+roomView.bdcontents+"</textarea>";
+				//var roomContentsOutput = "<textarea class='scroll' readonly style='font-size:15px; resize:none;'>"+roomView.bdcontents+"</textarea>";
+				var roomViewContents = roomView.bdcontents.replaceAll(" ", "&nbsp;");
+				roomViewContents = roomViewContents.replaceAll("\n", "<br>");
+				var roomContentsOutput = "<div class='scroll' readonly style='font-size:15px; resize:none;'>"+roomViewContents+"</div>";
+				
 				//시간 출력
 				roomContentsOutput += "<span style='font-size:15px; color:gray; margin:0px;'>"+timeForToday(roomView.bddate)+"</span>"
 				$("#roomContents").html(roomContentsOutput);

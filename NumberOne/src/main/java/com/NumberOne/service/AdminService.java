@@ -585,7 +585,7 @@ public class AdminService {
 		
 		// 판매자의 다른 중고거래글 조회
 		ArrayList<UsedBoardDto> memberSellList
-				= rdao.selectResellView_List(ub_resellView.getUbmid(), ubDto.getUbcode());
+				= rdao.selectResellView_memberList(ub_resellView.getUbmid(), ubDto.getUbcode());
 		
 		String[] ubDetailImg;
 

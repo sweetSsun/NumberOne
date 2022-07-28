@@ -840,7 +840,7 @@ public class BoardService {
 	}
 
 	// 게시글 삭제
-	public ModelAndView updateBoardDelete(String bdcode, String bdcategory, RedirectAttributes ra) {
+	public ModelAndView updateBoardDelete(String bdtype, String bdcode, String bdcategory, RedirectAttributes ra) {
 		System.out.println("BoardService.updateBoardDelete() 호출");
 		ModelAndView mav = new ModelAndView();
 		System.out.println("삭제할 글번호 : " + bdcode);
@@ -852,14 +852,22 @@ public class BoardService {
 		}
 
 		// 삭제 후 전체 글목록 페이지로 이동
-		if (bdcategory.equals("자랑")) {
-			System.out.println("자랑글 삭제 성공");
-			mav.setViewName("redirect:/selectRoomList");
-		} else {
-			System.out.println("일반글 삭제 성공");
-			ra.addAttribute("searchVal", bdcategory);
-			mav.setViewName("redirect:/selectCategoryBoardList");
-		} 
+		if(bdtype.equals("region") ) {
+			//지역글 상세페이지에서 삭제 시 
+			System.out.println("지역글 삭제 성공");
+			mav.addObject("searchVal",bdcategory);
+			mav.setViewName("redirect:/selectDetailBoardList");			
+		}else {
+			if (bdcategory.equals("자랑")) {
+				System.out.println("자랑글 삭제 성공");
+				mav.setViewName("redirect:/selectRoomList");
+			} else {
+				System.out.println("일반글 삭제 성공");
+				mav.addObject("searchVal",bdcategory);
+				mav.setViewName("redirect:/selectCategoryBoardList");
+			} 
+		}
+		
 
 		return mav;
 	}
