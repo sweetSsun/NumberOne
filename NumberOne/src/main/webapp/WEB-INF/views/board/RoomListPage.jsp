@@ -129,7 +129,7 @@
 	transition:all .35s;
 }
 
-textarea {
+#roomContents > div {
 	 width:100%; 
 	 height:90%; 
 	 overflow-y:scroll; 
@@ -137,6 +137,7 @@ textarea {
 	 border: none;
 	 padding-right:6px; 
 }
+
 textarea:focus { outline: none; }
 
 .gallerylist > ul > li > a:hover .top {bottom:36%;}
@@ -245,6 +246,7 @@ div.menu{
 	width:800px; 
 	height:600px;     
 	object-fit: contain;
+	background-color: rgb(0,0,0,0.8) ;
 }
 
 #reply{
@@ -956,7 +958,11 @@ function modalChange(type){
 		$("#roomMnickname").html(mnicknameOutput);
 		
 		//글 내용
-		var roomContentsOutput = "<textarea class='scroll' readonly style='font-size:15px; resize:none;'>"+roomView.bdcontents+"</textarea>";
+		//var roomContentsOutput = "<textarea class='scroll' readonly style='font-size:15px; resize:none;'>"+roomView.bdcontents+"</textarea>";
+		var roomViewContents = roomView.bdcontents.replaceAll(" ", "&nbsp;");
+		roomViewContents = roomViewContents.replaceAll("\n", "<br>");
+		var roomContentsOutput = "<div class='scroll' readonly style='font-size:15px; resize:none;'>"+roomViewContents+"</div>";
+		
 		//시간 출력
 		roomContentsOutput += "<span style='font-size:15px; color:grey; margin:0px;'>"+timeForToday(roomView.bddate)+"</span>"
 		$("#roomContents").html(roomContentsOutput);
