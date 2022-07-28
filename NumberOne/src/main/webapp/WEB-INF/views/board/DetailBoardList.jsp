@@ -99,7 +99,7 @@
 		
 		<section>
 		<!-- 페이지명 -->
-		<div class="checkout__form" style="margin-top: 30px;">${paging.searchVal }게시판</div> 
+		<div class="checkout__form" style="margin-top: 30px;">일반게시판</div> 
 		<!-- 본문 -->
 			<form action="selectCategoryBoardList" method="get" id="actionForm">
 			<div class="container">

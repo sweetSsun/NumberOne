@@ -101,7 +101,7 @@ section div.checkout__form{
 		<section>
 		<!-- 본문 -->
 		<!-- 페이지명 -->
-		<div class="checkout__form" style="margin-top: 30px;">공지게시판</div> 
+		<div class="checkout__form" style="margin-top: 30px;">일반게시판</div> 
 		
 			<form action="selectNoticeBoardList" method="get" id="actionForm">
 			<!-- <input type="hidden" name="searchVal" value="all"> -->
