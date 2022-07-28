@@ -153,6 +153,7 @@ div.col.mb-2 h3 {
 	color: white;
 }
 
+
 .float_ {
 	width: 33.3333333%;
 	height: 40rem;
