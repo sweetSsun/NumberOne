@@ -75,6 +75,15 @@
 		border: none;
 		font-size: 20px;
 	}
+section div.checkout__form{
+	/* 페이지 제목 */
+	color: #1c1c1c; 
+    font-weight: 700; 
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+    font-size : 24px;
+}
 
 </style>
 </head>
@@ -97,7 +106,7 @@
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-			<div class="checkout__form" style="margin-top: 30px;">커뮤니티</div> 
+			<div class="checkout__form" style="margin-top: 30px;">일반게시판 - 글작성</div> 
 				<form action="insertBoardWrite" method="post" enctype="multipart/form-data" onsubmit="return writeFormCheck();">
 					<input type="hidden" name="bdmid" value="${sessionScope.loginId }">
 				<div class="row">

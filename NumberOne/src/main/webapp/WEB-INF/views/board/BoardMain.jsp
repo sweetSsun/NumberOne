@@ -104,7 +104,9 @@ section{
 	.max_contents{
 		width: max-content;
 	}
-
+	a:hover{
+		color: #00bcd4; 
+	}
 
 section div.checkout__form{
 	/* 페이지 제목 */
@@ -196,7 +198,7 @@ section div.checkout__form{
 				</div>	
 				<div class="row mb-3">
 					<div class="col-1 board_category">
-						<a href="selectNoticeBoardList"><span class="text-white">공지</span></a>
+						<a href="selectNoticeBoardList?NbCheck=NB"><span class="text-white">공지</span></a>
 					</div>
 					<div class="col-11 bg-white">
 						<table class="boardList">

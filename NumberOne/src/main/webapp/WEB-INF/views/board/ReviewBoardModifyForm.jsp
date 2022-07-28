@@ -125,7 +125,15 @@
 		right: 5px; 
 		cursor: pointer;
    }  
-   
+   	section div.checkout__form{
+		/* 페이지 제목 */
+		color: #1c1c1c; 
+	    font-weight: 700; 
+	    border-bottom: 1px solid #e1e1e1;
+	    padding-bottom: 20px;
+	    margin-bottom: 25px;
+	    font-size : 24px;
+	} 
 </style>
 </head>
 <body>
@@ -147,13 +155,12 @@
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h2 class="text-center">후기글 수정페이지 : ReviewBoardModifyForm.jsp</h2>
+			<div class="checkout__form" style="margin-top: 30px;">일반게시판 - 글수정</div> 
 				<form action="updateBoardModify" method="post" enctype="multipart/form-data" >
 				<div class="row">
 					<input type="hidden" name="bdmid" value="${board.bdmid }">
 					<input type="hidden" name="bdcode" value="${board.bdcode }">
 					<input type="hidden" class="fw-bold" name="bdnickname" value="${board.bdnickname }">
-					<hr>
 				</div>
 				
 				<div class="row">
