@@ -74,8 +74,8 @@
                   <!-- 상태값 정렬 -->
                    <select class="categoryList" name="searchVal" id="searchValSel" onchange="nbSearchState(this.value)">
                      <option class="categorySel" value="all">전체</option>
-                     <option class="categorySel" value="active">활성</option>
-                     <option class="categorySel" value="inactive">삭제</option>
+                     <option class="categorySel" value="active">진행</option>
+                     <option class="categorySel" value="inactive">완료</option>
                   </select>
                </div>
             </div>
@@ -106,10 +106,10 @@
 	                      <td>
 	                      	<c:choose>
 	                      		<c:when test="${notice.nbstate == 1}">
-	                      			<button class="btn btn-sm btn-primary" type="button" onclick="showNbstateModal(this,'${notice.nbcode }')">활성</button>
+	                      			<button class="btn btn-sm btn-primary" type="button" onclick="showNbstateModal(this,'${notice.nbcode }')">진행</button>
 	                      		</c:when>
 	                      		<c:otherwise>
-	                      			<button class="btn btn-sm btn-secondary" type="button" onclick="showNbstateModal(this, '${notice.nbcode }')">삭제</button>
+	                      			<button class="btn btn-sm btn-secondary" type="button" onclick="showNbstateModal(this, '${notice.nbcode }')">완료</button>
 	                      		</c:otherwise>
 	                      	</c:choose>
 	                      </td>
@@ -248,10 +248,10 @@
 			btnObj_state = $(obj);
 			var btnObj_stateText = btnObj_state.text();
 			console.log("btnObj_stateText:"+btnObj_stateText);
-			if (btnObj_stateText == "활성"){
-				$("#updateNbstateModalBody").text(nbcode + "번 공구를 삭제 처리하시겠습니까?");
+			if (btnObj_stateText == "진행"){
+				$("#updateNbstateModalBody").text(nbcode + "번 공구를 완료 처리하시겠습니까?");
 			} else {
-				$("#updateNbstateModalBody").text(nbcode + "번 공구를 활성화 처리하시겠습니까?");
+				$("#updateNbstateModalBody").text(nbcode + "번 공구를 진행 처리하시겠습니까?");
 			}
 			$("#nbcode_state").val(nbcode);
 			$("#updateNbstateModal").modal("show");
@@ -276,10 +276,10 @@
 					var nbcode_state = $("#nbcode_state").val();
 					console.log(btnObj_state.text());
 					console.log($("#fixBtn_"+nbcode_state+" button").text());
-					if (btnObj_state.text() == "활성"){
+					if (btnObj_state.text() == "진행"){
 						// 고정공구일 때 바로 삭제 불가능
 						if( $("#fixBtn_"+nbcode_state+" button").text() == "고정" ){
-							alert("해당 공구의 고정을 취소 후 삭제해주세요.");
+							alert("해당 공구의 고정을 취소 후 완료해주세요.");
 							$("#updateNbstateModal").modal("hide");
 							return false;
 						}
@@ -295,10 +295,10 @@
 						success: function(result){
 							if(result > 0){
 								if (nbstate == 2){
-									btnObj_state.text("삭제").addClass("btn-secondary").removeClass("btn-primary");
+									btnObj_state.text("완료").addClass("btn-secondary").removeClass("btn-primary");
 									$("#fixBtn_"+nbcode_state).text("");
 								} else {
-									btnObj_state.text("활성").addClass("btn-primary").removeClass("btn-secondary");
+									btnObj_state.text("진행").addClass("btn-primary").removeClass("btn-secondary");
 									$("#fixBtn_"+nbcode_state).html("<button class='btn btn-sm btn-secondary' type='button' onclick='showNbfixModal(this,\"" + nbcode_state + "\")'>일반</button>");
 								}
 							}
@@ -448,9 +448,9 @@
 						output += "<td class='text-center'>" + result[i].nbhits + "</td>";
 						output += "<td class='text-center'>"
 						if (result[i].nbstate == 1){
-							output += "<button class='btn btn-sm btn-primary' type='button' onclick='showNbstateModal(this, \""+result[i].nbcode+"\")'>활성</button>";
+							output += "<button class='btn btn-sm btn-primary' type='button' onclick='showNbstateModal(this, \""+result[i].nbcode+"\")'>진행</button>";
 						} else {
-							output += "<button class='btn btn-sm btn-secondary' type='button' onclick='showNbstateModal(this,\""+result[i].nbcode+"\")'>삭제</button>";
+							output += "<button class='btn btn-sm btn-secondary' type='button' onclick='showNbstateModal(this,\""+result[i].nbcode+"\")'>완료</button>";
 						}
 						output += "</td>";
 						output += "<td id='fixBtn_"+result[i].nbcode+"' class='text-center'>"

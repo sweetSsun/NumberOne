@@ -221,7 +221,6 @@
 			<!-- 본문 -->
 			<div class="container">
 				<h2 class="text-center">공구글 글상세페이지 : GonguBoardView.jsp</h2>
-				<form action="">
 					<div class="row">
 						<div class="col">
 							<a href="selectNoticeBoardList"><span class="fw-bold boardCategory"> | 공구게시판 </span></a> 
@@ -332,7 +331,6 @@
 					<!-- 본문 끝 -->
 					
 					</div>
-				</form>
 				
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
 				<div class="row mb-2">
@@ -1034,7 +1032,7 @@ $("#inputReply").each(function () {
 
 <!-- 카카오페이 클릭 -->
 <script type="text/javascript">
-var loginId = $("#pay-id").val();
+var loginId = $("#form-payment input[name='pay-id']").val();
 var nbcode =$("#gonguNbcode").val();
 console.log("loginId : "+loginId);
 console.log(nbcode);

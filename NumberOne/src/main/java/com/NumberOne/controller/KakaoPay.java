@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.NumberOne.dto.GonguDto;
 import com.NumberOne.service.AdminService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
 public class KakaoPay {
@@ -34,7 +35,7 @@ public class KakaoPay {
 		gongu.setGphone(tel);
 	    
 	    String json_gongu = gongu.toString();
-	    System.out.println(json_gongu);
+	    System.out.println("GonguDto_json :: "+json_gongu);
 	    
 		StringBuilder urlBuilder = new StringBuilder("https://kapi.kakao.com/v1/payment/ready"); /*URL*/
 	    urlBuilder.append("?" + URLEncoder.encode("cid","UTF-8") + "=" + URLEncoder.encode("TC0ONETIME", "UTF-8"));
@@ -45,7 +46,7 @@ public class KakaoPay {
 	    urlBuilder.append("&" + URLEncoder.encode("total_amount","UTF-8") + "=" + URLEncoder.encode("100", "UTF-8")); //총액
 	    urlBuilder.append("&" + URLEncoder.encode("vat_amount","UTF-8") + "=" + URLEncoder.encode("0", "UTF-8")); //부가세
 	    urlBuilder.append("&" + URLEncoder.encode("tax_free_amount","UTF-8") + "=" + URLEncoder.encode("0", "UTF-8")); //면세
-	    urlBuilder.append("&" + URLEncoder.encode("approval_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayApproval?gongu="+json_gongu, "UTF-8")); //성공시 돌아갈주소
+	    //urlBuilder.append("&" + URLEncoder.encode("approval_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayApproval?gongu="+json_gongu, "UTF-8")); //준비성공시 승인
 	    urlBuilder.append("&" + URLEncoder.encode("fail_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayFail", "UTF-8")); //실패시 돌아갈주소
 	    urlBuilder.append("&" + URLEncoder.encode("cancel_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayCansel", "UTF-8")); //취소시 돌아갈주소
 	    //URLEncoder.encode("http://localhost:8080/controller/kakaopayApproval", "UTF-8"));  URLEncoder.encode("/kakaopayApproval", "UTF-8")
@@ -80,34 +81,25 @@ public class KakaoPay {
 		return sb.toString();
 	    
 	}
-	/*
+	
 	
 	@RequestMapping(value="/kakaopayApproval")// data 넘겨줘야함
-	public @ResponseBody String kakaopayApproval(GonguDto gongu, String pg_token) throws IOException {
+	public @ResponseBody String kakaopayApproval(String gongu, String pg_token) throws IOException {
 		System.out.println("kakaopayApproval 호출");
-		gongu = """
-            {
-            "gnbcode" : "Rohan",
-            "gmid" : "Singh",
-            "gphone" : "1990-12-15",
-            "gemail" : "34/Art",
-            "gaddr" : "California"
-            }
-            """;
-		
-		gongu = new Gson().fromJson(json, GonguDto.class);
+		//ObjectMapper gonguMapper = new ObjectMapper();
+		//gongu = gonguMapper.readValue("{\"gnbcode\":\"nbcode\",\"gmid\":\"loginId\",\"gaddr\":\"address\",\"gemail\":\"email\",\"gphone\":\"tel\"}", GonguDto.class);
+		//System.out.println(gongu);
 		
 		StringBuilder urlBuilder = new StringBuilder("https://kapi.kakao.com/v1/payment/ready"); //URL
 	    urlBuilder.append("?" + URLEncoder.encode("cid","UTF-8") + "=" + URLEncoder.encode("TC0ONETIME", "UTF-8"));
 	    urlBuilder.append("&" + URLEncoder.encode("tid","UTF-8") + "=" + URLEncoder.encode("T1234567890123456789", "UTF-8"));
-	    urlBuilder.append("&" + URLEncoder.encode("partner_order_id","UTF-8") + "=" + URLEncoder.encode(nbcode, "UTF-8"));//공구번호
-	    urlBuilder.append("&" + URLEncoder.encode("partner_user_id","UTF-8") + "=" + URLEncoder.encode(loginId, "UTF-8"));	//구매자
-	    urlBuilder.append("&" + URLEncoder.encode("pg_token","UTF-8") + "=" + URLEncoder.encode("xxxxxxxxxxxxxxxxxxxx", "UTF-8"));
+	    urlBuilder.append("&" + URLEncoder.encode("partner_order_id","UTF-8") + "=" + URLEncoder.encode("11", "UTF-8"));//공구번호
+	    urlBuilder.append("&" + URLEncoder.encode("partner_user_id","UTF-8") + "=" + URLEncoder.encode("22", "UTF-8"));	//구매자
+	    urlBuilder.append("&" + URLEncoder.encode("pg_token","UTF-8") + "=" + URLEncoder.encode(pg_token, "UTF-8"));
 	    
-	    urlBuilder.append("&" + URLEncoder.encode("approval_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayApproval", "UTF-8")); //성공시 돌아갈주소
+	    urlBuilder.append("&" + URLEncoder.encode("approval_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopaySuccess", "UTF-8")); //성공시 돌아갈주소
 	    urlBuilder.append("&" + URLEncoder.encode("fail_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayFail", "UTF-8")); //실패시 돌아갈주소
 	    urlBuilder.append("&" + URLEncoder.encode("cancel_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/loadToFail", "UTF-8")); //취소시 돌아갈주소
-	    //URLEncoder.encode("http://localhost:8080/controller/kakaopayApproval", "UTF-8"));  URLEncoder.encode("/kakaopayApproval", "UTF-8")
 	    	    
 	    URL url = new URL(urlBuilder.toString());
 	    System.out.println(urlBuilder.toString());
@@ -133,10 +125,8 @@ public class KakaoPay {
 	    conn.disconnect();
 	    System.out.println(sb.toString());
 	    
-	    System.out.println(gonguList);
 	    
 	    //공동구매/공구 카카오결제정보 DB입력 :: 결제가 완료되어야 넣도록
-	    
 	    //asvc.insertGonguRegister(gonguList);
 	    
 		return sb.toString();
@@ -144,15 +134,12 @@ public class KakaoPay {
 	}
 	
 	
-	/*
-	@RequestMapping(value="/kakaopayApproval")
-	public String kakaopayApproval(String gonguList, String pg_token) {
+	
+	@RequestMapping(value="/kakaopaySuccess")
+	public String kakaopaySuccess() {
 		System.out.println("/kakaopayApproval 결제성공 : 현재이동없음. 마이페이지로 보낼것");
-		System.out.println(gonguList);
-		System.out.println(pg_token);
-		//asvc.insertGonguRegister(gonguList); gonguList를 json에서 객체화
 		return "gongu/PaySuccess";
-	}*/
+	}
 	
 	@RequestMapping(value="/kakaopayFail")
 	public String kakaopayFail() {
