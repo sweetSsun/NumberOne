@@ -51,10 +51,9 @@
 		<section>
 		<!-- 본문 -->
          <form action="admin_selectNoticeList" method="get" id="actionForm">
-			<div class="container">
-	            <div class="row" style="margin:auto;">
-	                <h4 class="text-center">공구 관리페이지 : Admin_GonguList.jsp</h4>
-	            </div>
+			<div class="container" style="margin-top: 10px">
+				<!-- 페이지 제목 -->
+                <div class="checkout__form">공구 관리</div>
 	            <!-- 검색 -->
 	            <div class="row">
 					<div class="col-5" align="right">

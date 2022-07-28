@@ -35,7 +35,7 @@ public class ResellController {
 	}
 
 	@RequestMapping(value = "/selectResellView")
-	public ModelAndView selectResellView(UsedBoardDto ubDto, String modifyCheck) {
+	public ModelAndView selectResellView(UsedBoardDto ubDto, String modifyCheck) throws Exception {
 		System.out.println("selectResellView 호출");
 		System.out.println("ubDto : " + ubDto);
 		ModelAndView mav = new ModelAndView();
@@ -63,7 +63,7 @@ public class ResellController {
 	}
 
 	@RequestMapping(value = "/loadToResellModifyForm")
-	public ModelAndView loadToResellModifyForm(UsedBoardDto ubDto, String modifyCheck, RedirectAttributes ra ) {
+	public ModelAndView loadToResellModifyForm(UsedBoardDto ubDto, String modifyCheck, RedirectAttributes ra ) throws Exception {
 		System.out.println("loadToResellModifyForm 호출");
 		ModelAndView mav = new ModelAndView();
 	     mav = rsvc.loginChToFail(ra);

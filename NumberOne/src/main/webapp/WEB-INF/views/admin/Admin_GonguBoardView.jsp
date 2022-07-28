@@ -17,7 +17,7 @@
 
 
 
-<title>${noticeBoard.nbtitle} - 1인자:관리자 공구게시판</title>
+<title>${noticeBoard.nbtitle} - 1인자:공구게시판</title>
 
 <style type="text/css">
 	section{
@@ -139,8 +139,12 @@
 		
 		<section>
 			<!-- 본문 -->
-			<div class="container">
+			<div class="container" style="margin-top: 10px">
+				<!-- 페이지 제목 -->
+                <div class="checkout__form">공구게시판</div>
+                <!-- 
 				<h4 class="text-center">관리자 공구글 상세페이지 : GonguBoardView.jsp 임시로 커뮤니티와 연결시킴 관리자사이드바누르면 메인으로가용 </h4>
+                 -->
 				
 				<!-- <form action=""> -->
 					<div class="row">
