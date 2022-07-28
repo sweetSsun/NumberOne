@@ -166,7 +166,7 @@
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h2 class="text-center">공구글 글상세페이지 : GonguBoardView.jsp</h2>
+				<h2 class="text-center">공구글 글상세페이지 : GonguBoardView.jsp :: admin에서 결제기능 꾸미고 수정할것</h2>
 				<form action="">
 					<div class="row">
 						<div class="col">
@@ -222,11 +222,11 @@
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
 				<div class="row mb-2">
 					<div class="col-2">
-							<a href="selectGonguBoardList${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}">
+							<a href="selectNoticeBoardList?NbCheck=GB?${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}">
 							<input  type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
 							</a>
 					</div>
-				<c:choose>
+				<%-- <c:choose>
 					<c:when test="${sessionScope.loginId == board.bdmid && sessionScope.loginId != 'admin' }">
 						<div align="right" class="col" >
 							<!-- 수정,삭제 : 로그인 아이디 = 글작성자 -->
@@ -235,20 +235,14 @@
 						</div>
 					</c:when>
 					
-					<%-- <c:when test="${sessionScope.loginId != null && sessionScope.loginId != 'admin' }">
+					<c:when test="${sessionScope.loginId != null && sessionScope.loginId != 'admin' }">
 						<div align="right" class="col" >
 							<!-- 추천,신고 : 로그인 한 아이디  -->
 							<i id="bdRecommend" onclick="insertBoardRecommend()" class="fa-regular fa-thumbs-up  fa-2x icon"  style="margin-right: 2px; font-size:30px"></i>
 							<i id="bdWarning" onclick="bdWarningCheckModal()" class='fa-solid fa-land-mine-on  fa-2x icon' style="margin-right: 2px; font-size:30px"></i>
 						</div>
-					</c:when> --%>
-					
-					<c:when test="${sessionScope.loginId == 'admin' }">
-						<div align="right" class="col">
-							<input onclick="adminBoardStop('${board.bdcode}')" type="button" style="left:0;" class="middleBtn btn btn-sm bg-secondary fw-bold text-white" value="정지">
-						</div>
-					</c:when>
-				</c:choose>
+					</c:when> 
+				</c:choose> --%>
 				</div>
 				
 <%-- 				<c:if test="${noticeBoard.nbimg != null }">

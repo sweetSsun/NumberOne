@@ -774,10 +774,9 @@ if(storage.getItem('page') !=null ){
 	  			
 				console.log(ubcode);
 				var check = "adminPage"; // 관리자페이지에서 넘어왔음을 확인
-				location.href="admin_updateResellStop${paging.makeQueryPage(paging.page)}&ubcode="+ubcode+"&ubsellbuy="+ubsellbuy+";
+				location.href="admin_updateResellStop${paging.makeQueryPage(paging.page)}&ubcode="+ubcode+"&ubsellbuy="+ubsellbuy+"&check="+check;
 	  		}
 		});
-		
 	}
 </script>
 
