@@ -168,6 +168,9 @@ section div.checkout__form{
 							<td class="bdcategory text-center tableCell">공지</td>
 							<td class="tableCell">
 							 	<a href="selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}">${notice.nbtitle} 
+							 	<c:if test="${notice.nbimg != null }">
+									<i class="fa-regular fa-image"></i>
+								</c:if>
 							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;"></span> </a>
 							 </td>
 							<td class="text-center tableCell">
