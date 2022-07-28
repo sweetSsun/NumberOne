@@ -158,8 +158,7 @@ public interface MemberDao {
 	//마이페이지_공구
 	@Select("SELECT GNBCODE, NBTITLE AS GNBTITLE, GDATE, NBSTATE AS GNBSTATE, GMID FROM NOTICEBOARDS, GONGU WHERE GNBCODE = NBCODE AND GMID = #{loginId}")
 	ArrayList<GonguDto> selectMyInfoGonguView(String loginId);	
-		
-		
+
 	
 }
 
