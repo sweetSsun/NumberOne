@@ -1027,6 +1027,9 @@ public class MemberService {
 		 // 회원 신고 확인
 	      public String checkMemberWarning_ajax(String loginId, String wmedNickname) {
 	         System.out.println("service.checkMemberWarning_ajax() 호출");
+	         
+	         //로그인 확인
+	         
 	         String mbwnCheck="No";
 	         int mbwnCheckNum = mdao.checkMemberWarning_ajax(loginId, wmedNickname);
 	         if (mbwnCheckNum == 1) {
@@ -1038,6 +1041,9 @@ public class MemberService {
 	      // 회원 신고
 	      public int insertMemberWarning_ajax(String loginId, String wmedNickname) {
 	         System.out.println("service.insertMemberWarning_ajax() 호출");
+	         
+	         
+	         
 	         int insertResult = mdao.insertMemberWarning_ajax(loginId, wmedNickname);
 	         return insertResult;
 	      }

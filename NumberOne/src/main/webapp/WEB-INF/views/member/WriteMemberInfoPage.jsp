@@ -384,10 +384,12 @@
 						
 			</div>
 			<div class="third">
-				
-				<span class="profile" style="display: block;"> 
-				 <input type="button" id="warningBtn" class="Wbtn" style="width: 90px; " value="신고"> 
-				</span>	
+
+				<c:if test="${! sessionScope.loginNickname.equals(memberInfo.mnickname)}">				
+					<span class="profile" style="display: block;"> 
+				 		<input type="button" id="warningBtn" class="Wbtn" style="width: 90px; " value="신고"> 
+					</span>	
+				</c:if>
 				<span class="profile" style="display: block; padding-top: 15px;"> 
 				<input type="button" id="chatBtn" class="btn" style="width: 90px;" value="채팅">
 				</span>		
@@ -789,8 +791,19 @@ function warningPopup()  {
 	}
 	
 	// 대화상대 신고 실패 시 수행할 기능
-	function failMemberWarning(){
-		alert("회원 신고에 실패했습니다.");
+	function failMemberWarning(type){
+		console.log(type+"타입 신고 실패");
+		if(type == 0){
+			//insert fail
+			alert("회원 신고에 실패했습니다");
+		} else if(type == 2){
+			//비로그인
+			alert("로그인 후 이용가능합니다");
+		} else if(type ==3){
+			//본인 신고하는 경우
+			alert("본인은 신고할 수 없습니다");
+		}
+	
 	}
 
 	

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 자취방 자랑 상세</title>
+<title>1인자 - 자취방 자랑게시판</title>
 
 <%-- <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css"> --%>
  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> 
@@ -391,7 +391,9 @@ section div.checkout__form{
 		<!-- 본문 -->
 			<div class="container" style="width:1220px !important;">
 					<!-- 페이지명 -->
-					<div class="checkout__form" style="margin-top: 30px;"><span class="pointer" onclick="location.href='selectRoomList'">자취방 자랑</span> 상세 페이지</div> 
+					<div class="checkout__form pointer" style="margin-top: 30px;" onclick="location.href='selectRoomList'">
+						자취방 자랑게시판
+					</div> 
 				
 				<div class="row" style="margin:auto;">				
 					<div class="col-11"></div>
