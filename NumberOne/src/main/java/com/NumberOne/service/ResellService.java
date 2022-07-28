@@ -65,7 +65,7 @@ public class ResellService {
 		System.out.println("selectResellMainPage 서비스 호출");
 		ModelAndView mav = new ModelAndView();
 
-		String checkMethod = "Main";
+		String pageCheck = "Main";
 		
 		  //회원의 관심지역 출력용 
 		  if((String) session.getAttribute("loginRegion") != null) {
@@ -81,7 +81,7 @@ public class ResellService {
 
 		paging.setSellBuy("S");
 //		팔구리스트
-		ArrayList<UsedBoardDto> SellList = rdao.selectResellPageList(paging, checkMethod);
+		ArrayList<UsedBoardDto> SellList = rdao.selectResellPageList(paging, pageCheck);
 
 		//timeFuction에 리스트 넘기면 시간 ubdatedef에는 변경된 시간, ubdate에는 분까지 잘린 시간이 저장되어 리턴
 		SellList = timeFuction(SellList);
@@ -93,7 +93,7 @@ public class ResellService {
 
 //		사구리스트
 		paging.setSellBuy("B");
-		ArrayList<UsedBoardDto> BuyList = rdao.selectResellPageList(paging, checkMethod);
+		ArrayList<UsedBoardDto> BuyList = rdao.selectResellPageList(paging, pageCheck);
 		
 		//timeFuction에 리스트 넘기면 시간 ubdatedef에는 변경된 시간, ubdate에는 분 까지 잘린 시간이 저장되어 리턴
 		BuyList = timeFuction(BuyList);
@@ -281,7 +281,7 @@ public class ResellService {
 		System.out.println("selectResellPageList 서비스 호출");
 		ModelAndView mav = new ModelAndView();
 
-		String checkMethod = "NO";
+		String pageCheck = "NO";
 		System.out.println(paging.getSellBuy());
 		
 		/* 사이드바에서 지역선택 하지 않았을 경우 회원의 관심지역을 지역필드에 저장*/
@@ -291,7 +291,7 @@ public class ResellService {
 		
 				 
 		 else if (paging.getSearchVal().equals("all")) {
-			checkMethod = "write";				
+			pageCheck = "write";				
 			System.out.println("검색타입(searchType) : " + paging.getSearchType());
 			System.out.println("검색어(keyword) : " + paging.getKeyword());
 		}
@@ -305,7 +305,7 @@ public class ResellService {
 		paging.setTotalCount(totalCaount);
 		paging.calc();
 
-		ArrayList<UsedBoardDto> sell_buyList = rdao.selectResellPageList(paging, checkMethod);
+		ArrayList<UsedBoardDto> sell_buyList = rdao.selectResellPageList(paging, pageCheck);
 		
 
 		//timeFuction에 리스트 넘기면 시간 ubdatedef에는 변경된 시간, ubdate에는 분 까지 잘린 시간이 저장되어 리턴
@@ -333,7 +333,7 @@ public class ResellService {
 		System.out.println(paging);
 		mav.addObject("sell_buyList", sell_buyList);
 		mav.addObject("paging", paging);
-		mav.addObject("checkSearch", checkMethod);
+		mav.addObject("checkSearch", pageCheck);
 		
 		
 
@@ -353,20 +353,22 @@ public class ResellService {
 //   중고거래리스트 selected 지역으로 조회
 	public String selectResellRegionList_ajax(Paging paging) throws Exception {
 		System.out.println("selectResellRegionList_ajax 서비스 호출");
+		Gson gson = new Gson();
+	
+//		글목록 정보 저장용 참조변수 선언.
+		String sell_buyList;
+//		페이지네이션 정보 저장용 참조변수 선언.
+		String pageNumber; 
 
+		
 		System.out.println("검색타입(searchType) : " + paging.getSearchType());
 		System.out.println("검색어(keyword) : " + paging.getKeyword());
 		
-		
-		String checkMethod = "NO";
-		
+//		MAIN 에서 페이지접속시 확인하기 위한 참조변수
+		String pageCheck = "AJAX";
+				
 		paging.setPerPageNum(12);		
 	
-		
-		/*
-		 * if(paging.getSearchType()!=null) { checkMethod = "search"; }
-		 */
-		System.out.println("checkMethod : " + checkMethod);
 
 		int totalCount = rdao.selectPageTotalCount(paging);
 
@@ -375,27 +377,27 @@ public class ResellService {
 
 		System.out.println(paging);
 
-		ArrayList<UsedBoardDto> sellbuyList = rdao.selectResellRegionList_ajax(paging);
+		ArrayList<UsedBoardDto> sellbuyList = rdao.selectResellPageList(paging, pageCheck);
 
 		
 		sellbuyList = timeFuction(sellbuyList);
-		
-		
+				
 		System.out.println(sellbuyList);
-		Gson gson = new Gson();
+		
 
-		String sell_buyList = gson.toJson(sellbuyList);
-		String pageNumber = gson.toJson(paging);
-
+	
+		
 		if (paging.getAjaxCheck().equals("REGION")) {
+			sell_buyList = gson.toJson(sellbuyList);	
 			return sell_buyList;
 		} else {
+			pageNumber = gson.toJson(paging);
 			return pageNumber;
 		}
 
 	}
 
-	public ModelAndView selectResellView(UsedBoardDto ubDto, String modifyCheck) {
+	public ModelAndView selectResellView(UsedBoardDto ubDto, String modifyCheck) throws Exception {
 		System.out.println("selectResellView 서비스 호출");
 		ModelAndView mav = new ModelAndView();
 		System.out.println("서비스에서확인 : " + ubDto);
@@ -423,9 +425,10 @@ public class ResellService {
 
 		ArrayList<GoodsDto> gd_resellView = rdao.selectResellView_goods(ubDto);
 		
-		ArrayList<UsedBoardDto> memberSellList = rdao.selectResellView_List(ub_resellView.getUbmid(),
-				ubDto.getUbcode());
+		ArrayList<UsedBoardDto> memberSellList = rdao.selectResellView_memberList(ub_resellView.getUbmid(),	ubDto.getUbcode());
 		
+		memberSellList = timeFuction(memberSellList);
+		ub_resellView.setUbdatedef(timeFuction(ub_resellView.getUbdate()));
 		
 		String[] ubDetailImg;
 
@@ -462,6 +465,9 @@ public class ResellService {
 		return mav;
 
 	}
+
+
+
 
 	public String zzimClick_ajax(ZzimDto zzim) {
 		System.out.println("zzimClick_ajax 서비스 호출");
@@ -810,6 +816,7 @@ public class ResellService {
 		
 		return resellList;
 	}
+	
 
 	//찜 체크 : 매개변수가 리스트인 경우(리스트의 찜기록 추가해서 리스트 반환)
 	private ArrayList<UsedBoardDto> zzimCheck(ArrayList<UsedBoardDto> resellList) {

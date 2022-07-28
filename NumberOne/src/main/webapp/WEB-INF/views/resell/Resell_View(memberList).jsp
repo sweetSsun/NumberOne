@@ -273,28 +273,75 @@ textarea:focus {
 #sellList_title:hover{
 	color:#00bcd4;
 }
-
-/* div .blur_bg {
-width:100%;
-background-size:cover;
-/* opacity : 0.8; /* 여기 적힌 수치만큼 블러효과가 커집니다. 
-} */
-.subpic{
-	position: relative;
+/* List CSS */
+#regionList {
+	width: 100%;
+	height: 100%;
+	margin: auto;
+	padding-top: 10px;
+	overflow: hidden;
+	padding-top: 10px;
 }
 
-.imText{
-position: absolute;
-top:0;
-left:0;
-z-index: 1;
-color: white;
-font-size: 40px;
-width:100%;
-font-weight: bold;
-  background-color: rgb(52 50 50 / 80%); color: rgb(165 158 158 / 80%); 
-        padding:30%;  text-align: center;
-            height: 100%;
+div.row.sellbuyhead {
+	margin-top: 10px;
+	background-color: #00bcd4;
+	margin-left: 0%;
+	margin-right: 0%;
+	height: 3.2rem;
+}
+
+div.col.mb-2 h3 {
+	color: white;
+}
+
+.float_ {
+	width: 33.3333333%;
+	height: 30rem;
+	float: left;
+	padding: 1%;
+}
+
+#sellbuyscreen {
+	width: 100%;
+	margin-bottom: 10px;
+}
+
+#sellbuyscreen>a>img {
+	width: 100%;
+	height: 100%;
+	border-radius: 5px;
+	object-fit: cover;
+}
+
+.bottom {
+	font-size: 2rem;
+	padding: 0px;
+	margin: 0px 0px;
+	width: 100%;
+	height: 2.4rem;
+	overflow: hidden;
+	color: initial;
+}
+
+#sellList, #buyList {
+	height: 43rem;
+	/* border : 1px solid  #00bcd4; */
+}
+
+section div.checkout__form{
+	/* 페이지 제목 */
+	color: #1c1c1c; 
+    font-weight: 700; 
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+    font-size : 24px;
+}
+
+.btn-numberone{
+	/* 글쓰기 버튼 */
+	background-color: #00bcd4;
 }
 </style>
 </head>
@@ -417,8 +464,7 @@ font-weight: bold;
 							</div> --%>
 							
 							<!-- 다크 캐러셀 -->
-								
-
+							
 							<div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
 							  <div class="carousel-indicators">
 							    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -426,23 +472,19 @@ font-weight: bold;
 							     	<button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="${status.count }" aria-label="Slide 2"></button>
 							    </c:forEach>
 							  </div>
-							  <div id="blur_img">
 							  
 							  <div class="carousel-inner">
 							    <!-- 1번사진 -->
-							    <div class="carousel-item active subpic" data-bs-interval="10000">
+							    <div class="carousel-item active" data-bs-interval="10000">
 							      <img style="object-fit: contain;" class="active Resell_img d-block w-100" src="${pageContext.request.contextPath }/resources/img/resell/${ub_resellView.ubmainimg}">
-							    <span class="imgState"></span>
 							    </div>
 							    
 							    <c:forEach items="${ub_resellView.ubdetailimg_list}" var="ubdetailimg_list" begin="1">
-							    <div class="carousel-item subpic" data-bs-interval="2000">
+							    <div class="carousel-item" data-bs-interval="2000">
 							      <img style="object-fit: contain;" class="Resell_img d-block w-100" src="${pageContext.request.contextPath }/resources/img/resell/${ubdetailimg_list}">
-							      <span class="imgState"></span>
 							    </div>
 							    </c:forEach>
-							    	
-					
+							    
 							  </div>
 							  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
 							    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -452,12 +494,12 @@ font-weight: bold;
 							    <span class="carousel-control-next-icon" aria-hidden="true"></span>
 							    <span class="visually-hidden">Next</span>
 							  </button>
-							  
-							</div>
-								</div>
 							</div>
 							
-						
+							
+							
+							
+						</div>
 
 						<!-- 거래자 정보  / 본문-->
 						<div class="col-5">
@@ -479,7 +521,7 @@ font-weight: bold;
 										</c:otherwise>
 									</c:choose>
 									<!-- 닉네임 -->
-									<a id="memberInfo" style="cursor: pointer" onclick="writeMemberSellbuy('${ub_resellView.ubnickname}')"> <span class="fw-bold bdnickname">${ub_resellView.ubnickname}</span>
+									<a id="memberInfo" style="cursor: pointer" onclick="writeMemberBoard('${ub_resellView.ubnickname}')"> <span class="fw-bold bdnickname">${ub_resellView.ubnickname}</span>
 									</a>
 								</div>
 							</div>
@@ -589,7 +631,6 @@ font-weight: bold;
 				</form>
 
 				<hr>
-				
 				<div class="row mb-2">
 					<div class="col text-center">
 						<c:choose>
@@ -605,28 +646,45 @@ font-weight: bold;
 				</div>
 
 				<!-- 거래자의 다른 품목 리스트 -->
-				<div class="row">
-					<c:forEach items="${ memberSellList}" var="sellList">
-						<div class="col-4">
-							<a href="selectResellView?ubcode=${sellList.ubcode}&ubsellbuy=${sellList.ubsellbuy}&modifyCheck=LIST"> <img style="width: 270px; height: 200px; object-fit: cover; border-top-left-radius: 10px; border-top-right-radius: 10px;" class="another_goods" alt="" src="${pageContext.request.contextPath }/resources/img/resell/${sellList.ubmainimg }">
-							</a>
+				
+				
+				
+							<div id="regionList">
+					<!-- ajax 출력 시작지점  -->
 
-							<div class="card_body text-left fw-bold">
-								<!-- <div class="fw-bold text-white" style="width:270px; background-color:#00bcd4;">	 -->
-								<a id="sellList_title" href="selectResellView?ubcode=${sellList.ubcode}&ubsellbuy=${sellList.ubsellbuy}&modifyCheck=LIST"> ${sellList.ubtitle} 
-								<br>
-								${sellList.ubdatedef}
-								</a>
-								<!-- </div> -->
+					<div id="sellList">
+						<c:forEach items="${memberSellList}" var="sellList">
+							<div class="float_">
+								<div id="sellbuyscreen">
+									<a onclick="laodToView('${sellList.ubcode }')" href="javascript:void(0);"> <img alt="" src="${pageContext.request.contextPath }/resources/img/resell/${sellList.ubmainimg }">
+									</a>
+
+								</div>
+								<div class="bottom" style="font-weight: 600; position: relative;">
+									<span class="soldCheckMsg_ bold"></span> <a onclick="laodToView('${sellList.ubcode }')" href="javascript:void(0);">${sellList.ubtitle }</a>
+								</div>
+
+								<div style="height: 2rem; font-size: 1.6rem; padding: 0; color: grey;">${sellList.ubdatedef }&nbsp;
+
+				
+								</div>
+								<div class="bottom" style="font-size: 1.7rem; font-weight: 600; position: relative;">
+									<span onclick="writeMemberSellbuy('${sellList.ubnickname }')" style="height: 1.8rem; font-size: 1.6rem; padding: 0; color: initial; cursor: pointer;">${sellList.ubnickname }</span>
+								</div>
+								<input type="hidden" class="ubstate_" value="${sellList.ubstate }">
 							</div>
-<%-- 							<div class="card_footer  text-left" style="margin-bottom: 30px;">
-								<!-- <div  style="width:270px; background-color:#00bcd4;"> -->
-								${sellList.ubdate}
-								<!-- </div> -->
-							</div> --%>
-						</div>
-					</c:forEach>
+						</c:forEach>
+
+						<div style="height: 20px; float: left; width: 33.3333333%;"></div>
+					</div>
+
+
+
+		
 				</div>
+				
+				
+				
 			</div>
 		</section>
 	</main>
@@ -683,7 +741,7 @@ font-weight: bold;
 
 <script type="text/javascript">
 	
-	let checkMsg = '${msg}';
+	var checkMsg = '${msg}';
 	if ( checkMsg.length > 0 ){
 		alert(checkMsg);
 	}
@@ -691,7 +749,7 @@ font-weight: bold;
 </script>
 
 <script type="text/javascript">
-	
+	let zzim_Check = '${zzim_Check}';
 	//console.log("찜체크 : " + zzim_Check);
 	const warningBtn = document.getElementById("warningBtn"); //신고
 	const zzimBtn = document.getElementById("zzimBtn"); //찜버튼
@@ -708,240 +766,178 @@ font-weight: bold;
 	const gd_nameList = document.querySelectorAll(".gd_nameList"); //상품명 (복수 , c:forEach태그안에 있음)
 	const gd_priceList = document.querySelectorAll(".gd_priceList"); //상품가격 (복수 , c:forEach태그안에 있음))
 	const soldCheckMsg = document.getElementById("soldCheckMsg");
-	const blur_img = document.getElementById("blur_img");
-	const imgState = document.getElementsByClassName('imgState');
-	let zzim_Check = '${zzim_Check}';
+
 	let ubzzim = '${ub_resellView.ubzzim }';	//찜 갯수
 </script>
 
+<script type="text/javascript">
+	// 게시글 경고 모달창 close 하는 스크립트
+	var modal = $(".modal");
+	var close = $(".close");
+	for (var i = 0; i < close.length; i++) {
+		close[i].addEventListener("click", function() {
+			$("#ubWarningCheckModal").modal("hide");
+		});
+	}
+</script>
 
 <!-- 페이지 로드 스크립트 -->
 <script type="text/javascript">
-window.onload = function(){
-	console.log('페이지로드')
-	addPriceComma();		// 페이지 로드 시 가격에 콤마 표시
-	checkResellWarning();	// 페이지 로드 시 회원의 현재 글 신고 여부확인
-	ubstateCheckFunction();	// 페이지 로드 시 글의 거래 상태 확인
-	soldCheck();			// 페이지 로드 시 거래완료된 글 확인
-}
-
-function addPriceComma(){
-	/* 상품가격 콤마 추가 */
-	for (let i = 0; i < gd_priceList.length; i++) {
-		var gd_price = gd_priceList[i].innerText;
-		//console.log(gd_price.toLocaleString('ko-KR'));
-		var gd_price_comma = Number(gd_price).toLocaleString('ko-KR');
-		gd_priceList[i].innerText = " ₩ " + gd_price_comma;
+	window.onload = function(){
+		console.log('페이지로드')
+		addPriceComma();		// 페이지 로드 시 가격에 콤마 표시
+		checkResellWarning();	// 페이지 로드 시 회원의 현재 글 신고 여부확인
+		ubstateCheckFunction();	// 페이지 로드 시 글의 거래 상태 확인
+		soldCheck();			// 페이지 로드 시 거래완료된 글 확인
+		if (loginId != null){
+			myZzimCheck();			// 페이지 로드 시 회원의 현재 글 찜 여부확인
+		}
 	}
-}
+	
+	function addPriceComma(){
+		/* 상품가격 콤마 추가 */
+		for (let i = 0; i < gd_priceList.length; i++) {
+			var gd_price = gd_priceList[i].innerText;
+			//console.log(gd_price.toLocaleString('ko-KR'));
+			var gd_price_comma = Number(gd_price).toLocaleString('ko-KR');
+			gd_priceList[i].innerText = " ₩ " + gd_price_comma;
+		}
+	}
+	
+	function soldCheck() {
+		/* 거래완료글 체크표시  */
+    	if (ubstate === '9') {
+        	console.log("거래완료글확인")
+        	soldCheckMsg.textContent = "(거래완료) "
+      	}
+	}
 
-function soldCheck() {
-	/* 거래완료글 체크표시  */
-	if (ubstate === '9') {
-    	console.log("거래완료글확인")
-    	soldCheckMsg.textContent = "(거래완료) "
-  	}
-}
-
-function checkResellWarning() {
-	console.log('checkResellWarning 호출');
-	/* 게시글 신고 확인 */
-	$.ajax({
-		type : "get",
-		url : "checkResellWarning_ajax",
-		data : {
-			"loginId" : loginId,
-			"ubcode" : ubcode
-		},
-		async : false,
-		success : function(wnCheck) {
-			console.log("신고유무 확인 : " + wnCheck);
-			if (wnCheck === "Yes") {
-				$("#ubWarning").addClass("text-danger");
+	function checkResellWarning() {
+		console.log('checkResellWarning 호출');
+		/* 게시글 신고 확인 */
+		$.ajax({
+			type : "get",
+			url : "checkResellWarning_ajax",
+			data : {
+				"loginId" : loginId,
+				"ubcode" : ubcode
+			},
+			async : false,
+			success : function(wnCheck) {
+				console.log("신고유무 확인 : " + wnCheck);
+				if (wnCheck === "Yes") {
+					$("#ubWarning").addClass("text-danger");
+				}
 			}
-		}
-	});
-}
-
-function myZzimCheck(){
-	console.log('myZzimCheck 호출');
-	/* 로그인한 회원이 현재 글에 찜을 했는지 여부를 확인 */
-	if (zzim_Check === 'UNCHECK') {
-		/* zzimBtn.classList.add("blue");
-		zzimBtn.classList.remove("red"); */
-		
-		$("#zzimBtn").removeClass("fa-solid");
-		
-	} else if (zzim_Check === 'CHECK') {
-/* 			zzimBtn.classList.add("red");
-		zzimBtn.classList.remove("blue"); */
-		
-		$("#zzimBtn").addClass("fa-solid");
+		});
 	}
 
-}
+	function myZzimCheck(){
+		console.log('myZzimCheck 호출');
+		/* 로그인한 회원이 현재 글에 찜을 했는지 여부를 확인 */
+		if (zzim_Check === 'UNCHECK') {
+			/* zzimBtn.classList.add("blue");
+			zzimBtn.classList.remove("red"); */
+			
+			$("#zzimBtn").removeClass("fa-solid");
+			
+		} else if (zzim_Check === 'CHECK') {
+/* 			zzimBtn.classList.add("red");
+			zzimBtn.classList.remove("blue"); */
+			
+			$("#zzimBtn").addClass("fa-solid");
+		}
 
-/* 페이지로드시 글의 거래상태체크 */
-function ubstateCheckFunction(){
-	console.log('ubstateCheckFunction 호출');
-	console.log('글의 현재 상태값 : ', ubstate);
+	}
 	
-	if (ubstate === '9') { // 글의 상태값이 9(거래완료)이면 실행.
-		console.log('글의 상태: 거래완료 확인');
-	
-		for(imgState_ of imgState){
-			imgState_.classList.add('imText');
-			imgState_.innerText='거래완료';	
-		}
+	/* 페이지로드시 글의 거래상태체크 */
+	function ubstateCheckFunction(){
+		console.log('ubstateCheckFunction 호출');
+		console.log('글의 현재 상태값 : ', ubstate);
 		
-		for (let j = 0; j < select_gdstate.length; j++) {
-			gd_nameList[j].classList.add('line-through');
-			gd_priceList[j].classList.add('line-through');
-			selectCheckBox[j].setAttribute('disabled','disabled');
-		}
-	} else { //글의 상태값이 1(거래중)이면 실행
-		console.log('글의 상태: 거래중 확인');
-	
-		for(imgState_ of imgState){
-			imgState_.classList.remove('imText');
-			imgState_.innerText='';	
-		}
-		
-		for (let j = 0; j < select_gdstate.length; j++) {
-			if (select_gdstate[j].value === '0') {
-				console.log("상태값이 0인 : " + select_gdstate[j].value);
-				//css속성 주기
-				selectCheckBox[j].setAttribute('disabled','disabled');
+		if (ubstate === '9') { // 글의 상태값이 9(거래완료)이면 실행.
+			console.log('글의 상태: 거래완료 확인');
+			for (let j = 0; j < select_gdstate.length; j++) {
 				gd_nameList[j].classList.add('line-through');
 				gd_priceList[j].classList.add('line-through');
-				
+				selectCheckBox[j].setAttribute('disabled','disabled');
+			}
+		} else { //글의 상태값이 1(거래중)이면 실행
+			console.log('글의 상태: 거래중 확인');
 
-			} else {
-				console.log("상태값 1인 : " + select_gdstate[j].value);
-				selectCheckBox[j].removeAttribute('disabled');
-				gd_nameList[j].classList.remove('line-through');
-				gd_priceList[j].classList.remove('line-through');
+			for (let j = 0; j < select_gdstate.length; j++) {
+				if (select_gdstate[j].value === '0') {
+					console.log("상태값이 0인 : " + select_gdstate[j].value);
+					//css속성 주기
+					selectCheckBox[j].setAttribute('disabled','disabled');
+					gd_nameList[j].classList.add('line-through');
+					gd_priceList[j].classList.add('line-through');
+
+				} else {
+					console.log("상태값 1인 : " + select_gdstate[j].value);
+					selectCheckBox[j].removeAttribute('disabled');
+					gd_nameList[j].classList.remove('line-through');
+					gd_priceList[j].classList.remove('line-through');
+				}
+			}
+		}
+		
+		// 로그인아이디가 작성자와 같으면 select 태그 선택
+		if (ubmid === loginId){
+			for (let i = 0; i < totalOp.options.length; i++) {
+				if (totalOp.options[i].value == ubstate) 
+					/* 글의 거래상태 option (9:거래완료 ,1:거래중)와 
+					페이지 이동시 넘어온 글의 상태값 파라메터가 같을 경우 그 option에 selected 속성 추가*/
+					totalOp.options[i].selected = 'true';
 			}
 		}
 	}
-	
-	// 로그인아이디가 작성자와 같으면 select 태그 선택
-	if (ubmid === loginId){
-		for (let i = 0; i < totalOp.options.length; i++) {
-			if (totalOp.options[i].value == ubstate) 
-				/* 글의 거래상태 option (9:거래완료 ,1:거래중)와 
-				페이지 이동시 넘어온 글의 상태값 파라메터가 같을 경우 그 option에 selected 속성 추가*/
-				totalOp.options[i].selected = 'true';
-		}
-	}
-}
-
 </script>
 
-
-
+<!-- 찜버튼 스크립트 -->
 <script type="text/javascript">
-if(loginId.length >0){
-	myZzimCheck();		// 페이지 로드 시 회원의 현재 글 찜 여부확인
-	zzimBtn.addEventListener('click', clickZzim);
+	/* 찜버튼 이벤트 호출 함수 */
+	if (ubmid != null){
+		zzimBtn.addEventListener('click', clickZzim);
+	}
+	function clickZzim() {
 
-	if (ubmid != loginId){
-		chatBtn.addEventListener('click', chatInsert_Ajax);
+		$.ajax({
+			type : "get",
+			url : "zzimClick_ajax",
+			async : false, //전역변수 값 저장을 위해 필요
+			data : {
+				"zzubcode" : ubcode,
+				"zzmid" : loginId,
+				"zzim_Check" : zzim_Check
+			},
+
+			success : function(zzimCheck) {
+				console.log("zzimCheck : " + zzimCheck);
+
+				if (zzimCheck == 'CHECK') { //찜 했을 때
+					/* zzimBtn.classList.remove("blue");
+					zzimBtn.classList.add("red"); */
+					zzim_Check = 'CHECK';
+
+					ubzzim = Number(ubzzim)+1;
+					document.getElementById("zzimCount").innerHTML = ubzzim;
+					
+					$("#zzimBtn").addClass("fa-solid");
+					
+				} else { //찜 취소했을 때
+					/* zzimBtn.classList.remove("red");
+					zzimBtn.classList.add("blue"); */
+					zzim_Check = 'UNCHECK';
+					
+					$("#zzimBtn").removeClass("fa-solid");
+					
+					ubzzim = Number(ubzzim)-1;
+					document.getElementById("zzimCount").innerHTML = ubzzim;
 				}
-
-}
-/* 찜 클릭 핸들러 */
-function clickZzim(){
-	$.ajax({
-		type : "get",
-		url : "zzimClick_ajax",
-		async : false, //전역변수 값 저장을 위해 필요
-		data : {
-			"zzubcode" : ubcode,
-			"zzmid" : loginId,
-			"zzim_Check" : zzim_Check
-		},
-
-		success : function(zzimCheck) {
-			console.log("zzimCheck : " + zzimCheck);
-
-			if (zzimCheck == 'CHECK') { //찜 했을 때
-				/* zzimBtn.classList.remove("blue");
-				zzimBtn.classList.add("red"); */
-				zzim_Check = 'CHECK';
-
-				ubzzim = Number(ubzzim)+1;
-				document.getElementById("zzimCount").innerHTML = ubzzim;
-				
-				$("#zzimBtn").addClass("fa-solid");
-				
-			} else { //찜 취소했을 때
-				/* zzimBtn.classList.remove("red");
-				zzimBtn.classList.add("blue"); */
-				zzim_Check = 'UNCHECK';
-				
-				$("#zzimBtn").removeClass("fa-solid");
-				
-				ubzzim = Number(ubzzim)-1;
-				document.getElementById("zzimCount").innerHTML = ubzzim;
 			}
-		}
-	})
-	
-}
-
-/* 챗버튼 클릭 이벤트핸들러 */
-function chatInsert_Ajax() {
-   // 로그인 확인
-   $.ajax({
-      type : 'get',
-      url : 'selectLoginOut_ajax',
-      async : false,
-      success : function(result){
-         if (result === "2"){ 
-            if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
-               location.href = "loadToLogin"
-               return;
-            }
-            return;
-         }
-         
-         // 체크 확인
-         if(gd_names.length === '0'){
-            alert('관심있는 상품을 선택해주세요');
-            return;
-         }
-         
-         
-         $.ajax({
-   
-            type : 'post',
-            url : 'insertResellChat',
-            traditional : true,     // 배열 전송위해서 필요.  
-            async : false,
-            data : {
-               'gd_names' : gd_names,
-               'cmfrmid' : cmfrmid,
-               'cmfrmnickname' : cmfrmnickname,
-               'cmtomnickname' : cmtomnickname,
-               'cmtomid' : cmtomid,
-               'gdtitle' : gdtitle
-            },
-            dataType : 'json',
-            success : function(chatResult) {
-               alert('바르고 고운 말을 써주세요.');
-               console.log("chatResult : ", chatResult);
-      
-               popupChat(chatResult, cmtomnickname, '${ub_resellView.ubprofile }');
-      
-            }
-         })
-      }
-   })
-}
-
-
-	
+		})
+	}
 </script>
 
 
@@ -969,10 +965,7 @@ function chatInsert_Ajax() {
 			success : function(result) {
 				console.log("결과", result);
 				if (result === 'SOLD') {
-					for(imgState_ of imgState){
-						imgState_.classList.add('imText');
-						imgState_.innerText='거래완료';	
-						}
+
 					for (let i = 0; i < selectCheckBox.length; i++) {
 						console.log("길이", selectCheckBox.length)
 
@@ -982,11 +975,6 @@ function chatInsert_Ajax() {
 					}
 
 				} else {
-					
-					for(imgState_ of imgState){
-						imgState_.classList.remove('imText');
-						imgState_.innerText='';	
-					}
 					for (var j = 0; j < select_gdstate.length; j++) {
 
 						if (select_gdstate[j].value === '0') {
@@ -1160,7 +1148,63 @@ if(storage.getItem('page') !=null ){
 
 </script>
 
+<!--채팅 활성화  -->
+<script type="text/javascript">
+if (ubmid != loginId){
+	chatBtn.addEventListener('click', chatInsert_Ajax);
+}
 
+/* 챗버튼 클릭 이벤트핸들러 */
+function chatInsert_Ajax() {
+   // 로그인 확인
+   $.ajax({
+      type : 'get',
+      url : 'selectLoginOut_ajax',
+      async : false,
+      success : function(result){
+         if (result === "2"){ 
+            if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+               location.href = "loadToLogin"
+               return;
+            }
+            return;
+         }
+         
+         // 체크 확인
+         if(gd_names.length === '0'){
+            alert('관심있는 상품을 선택해주세요');
+            return;
+         }
+         
+         
+         $.ajax({
+   
+            type : 'post',
+            url : 'insertResellChat',
+            traditional : true,     // 배열 전송위해서 필요.  
+            async : false,
+            data : {
+               'gd_names' : gd_names,
+               'cmfrmid' : cmfrmid,
+               'cmfrmnickname' : cmfrmnickname,
+               'cmtomnickname' : cmtomnickname,
+               'cmtomid' : cmtomid,
+               'gdtitle' : gdtitle
+            },
+            dataType : 'json',
+            success : function(chatResult) {
+               alert('바르고 고운 말을 써주세요.');
+               console.log("chatResult : ", chatResult);
+      
+               popupChat(chatResult, cmtomnickname, '${ub_resellView.ubprofile }');
+      
+            }
+         })
+      }
+   })
+}
+
+</script>
 
 <!-- 작성자정보스크립트 -->
 <script type="text/javascript">
@@ -1275,336 +1319,6 @@ $.ajax({
 		/* 관리자 - 게시글 정지  */
 		console.log(ubcode);
 		location.href="admin_updateResellStop?ubcode="+ubcode+"&ubsellbuy=${ub_resellView.ubsellbuy}";
-	}
-</script>
-
-
-<script type="text/javascript">
-/**
-*
-* Version: 0.0.6
-* Author: Gianluca Guarini
-* Contact: gianluca.guarini@gmail.com
-* Website: http://www.gianlucaguarini.com/
-* Twitter: @gianlucaguarini
-*
-* Copyright (c) Gianluca Guarini
-*
-* Permission is hereby granted, free of charge, to any person
-* obtaining a copy of this software and associated documentation
-* files (the "Software"), to deal in the Software without
-* restriction, including without limitation the rights to use,
-* copy, modify, merge, publish, distribute, sublicense, and/or sell
-* copies of the Software, and to permit persons to whom the
-* Software is furnished to do so, subject to the following
-* conditions:
-*
-* The above copyright notice and this permission notice shall be
-* included in all copies or substantial portions of the Software.
-*
-* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
-* EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
-* OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-* NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT
-* HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY,
-* WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-* FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
-* OTHER DEALINGS IN THE SOFTWARE.
-**/
-
-
-(function(window, document, $) {
- 'use strict';
-
- // Plugin private cache
- // static vars
- var cache = {
-   filterId: 0
- },
-   $body = $('body');
-
- var Vague = function(elm, customOptions) {
-   // Default options
-   var defaultOptions = {
-     intensity: 5,
-     forceSVGUrl: false,
-     animationOptions: {
-       duration: 1000,
-       easing: 'linear'
-     }
-   },
-     // extend the default options with the ones passed to the plugin
-     options = $.extend(defaultOptions, customOptions),
-
-     /*
-      *
-      * Helpers
-      *
-      */
-
-     _browserPrefixes = ' -webkit- -moz- -o- -ms- '.split(' '),
-     _cssPrefixString = {},
-     _cssPrefix = function(property) {
-       if (_cssPrefixString[property] || _cssPrefixString[property] === '') return _cssPrefixString[property] + property;
-       var e = document.createElement('div');
-       var prefixes = ['', 'Moz', 'Webkit', 'O', 'ms', 'Khtml']; // Various supports...
-       for (var i in prefixes) {
-         if (typeof e.style[prefixes[i] + property] !== 'undefined') {
-           _cssPrefixString[property] = prefixes[i];
-           return prefixes[i] + property;
-         }
-       }
-       return property.toLowerCase();
-     },
-     // https://github.com/Modernizr/Modernizr/blob/master/feature-detects/css-filters.js
-     _support = {
-       cssfilters: function() {
-         var el = document.createElement('div');
-         el.style.cssText = _browserPrefixes.join('filter' + ':blur(2px); ');
-         return !!el.style.length && ((document.documentMode === undefined || document.documentMode > 9));
-       }(),
-
-       // https://github.com/Modernizr/Modernizr/blob/master/feature-detects/svg-filters.js
-       svgfilters: function() {
-         var result = false;
-         try {
-           result = typeof SVGFEColorMatrixElement !== undefined &&
-             SVGFEColorMatrixElement.SVG_FECOLORMATRIX_TYPE_SATURATE == 2;
-         } catch (e) {}
-         return result;
-       }()
-     },
-
-     /*
-      *
-      * PRIVATE VARS
-      *
-      */
-
-     _blurred = false,
-     // cache the right prefixed css filter property
-     _cssFilterProp = _cssPrefix('Filter'),
-     _svgGaussianFilter,
-     _filterId,
-     // to cache the jquery animation instance
-     _animation,
-
-     /*
-      *
-      * PRIVATE METHODS
-      *
-      */
-
-     /**
-      * Create any svg element
-      * @param  { String } tagName: svg tag name
-      * @return { SVG Node }
-      */
-
-     _createSvgElement = function(tagName) {
-       return document.createElementNS('http://www.w3.org/2000/svg', tagName);
-     },
-
-     /**
-      *
-      * Inject the svg tag into the DOM
-      * we will use it only if the css filters are not supported
-      *
-      */
-
-     _appendSVGFilter = function() {
-       // create the svg and the filter tags
-       var svg = _createSvgElement('svg'),
-         filter = _createSvgElement('filter');
-
-       // cache the feGaussianBlur tag and make it available
-       // outside of this function to easily update the blur intensity
-       _svgGaussianFilter = _createSvgElement('feGaussianBlur');
-
-       // hide the svg tag
-       // we don't want to see it into the DOM!
-       svg.setAttribute('style', 'position:absolute');
-       svg.setAttribute('width', '0');
-       svg.setAttribute('height', '0');
-       // set the id that will be used as link between the DOM element to blur and the svg just created
-       filter.setAttribute('id', 'blur-effect-id-' + cache.filterId);
-
-       filter.appendChild(_svgGaussianFilter);
-       svg.appendChild(filter);
-       // append the svg into the body
-       $body.append(svg);
-
-     };
-
-   /*
-    *
-    * PUBLIC VARS
-    *
-    */
-
-   // cache the DOM element to blur
-   this.$elm = elm instanceof $ ? elm : $(elm);
-
-
-   /*
-    *
-    * PUBLIC METHODS
-    *
-    */
-
-   /**
-    *
-    * Initialize the plugin creating a new svg if necessary
-    *
-    */
-
-   this.init = function() {
-     // checking the css filter feature
-     if (_support.svgfilters) {
-       _appendSVGFilter();
-     }
-     // cache the filter id
-     _filterId = cache.filterId;
-     // increment the filter id static var
-     cache.filterId++;
-
-     return this;
-
-   };
-
-   /**
-    *
-    * Blur the DOM element selected
-    *
-    */
-
-   this.blur = function() {
-
-     var cssFilterValue,
-       // variables needed to force the svg filter URL
-       loc = window.location,
-       svgUrl = options.forceSVGUrl ? loc.protocol + '//' + loc.host + loc.pathname + loc.search : '';
-
-     // use the css filters if supported
-     if (_support.cssfilters) {
-       cssFilterValue = 'blur(' + options.intensity + 'px)';
-       // .. or use the svg filters
-     } else if (_support.svgfilters) {
-       // update the svg stdDeviation tag to set up the blur intensity
-       _svgGaussianFilter.setAttribute('stdDeviation', options.intensity);
-       cssFilterValue = 'url(' + svgUrl + '#blur-effect-id-' + _filterId + ')';
-     } else {
-       // .. use the IE css filters
-       cssFilterValue = 'progid:DXImageTransform.Microsoft.Blur(pixelradius=' + options.intensity + ')';
-     }
-
-     // update the DOM element css
-     this.$elm[0].style[_cssFilterProp] = cssFilterValue;
-     // set the _blurred internal var to true to cache the element current status
-     _blurred = true;
-
-     return this;
-   };
-
-
-   /**
-    * Animate the blur intensity
-    * @param  { Int } newIntensity: new blur intensity value
-    * @param  { Object } customAnimationOptions: default jQuery animate options
-    */
-
-   this.animate = function(newIntensity, customAnimationOptions) {
-     // control the new blur intensity checking if it's a valid value
-     if (typeof newIntensity !== 'number') {
-       throw (typeof newIntensity + ' is not a valid number to animate the blur');
-     } else if (newIntensity < 0) {
-       throw ('I can animate only positive numbers');
-     }
-     // create a new jQuery deferred instance
-     var dfr = new $.Deferred();
-
-     // kill the previous animation
-     if (_animation) {
-       _animation.stop(true, true);
-     }
-
-     // trigger the animation using the jQuery Animation class
-     _animation = new $.Animation(options, {
-       intensity: newIntensity
-     }, $.extend(options.animationOptions, customAnimationOptions))
-       .progress($.proxy(this.blur, this))
-       .done(dfr.resolve);
-
-     // return the animation deferred promise
-     return dfr.promise();
-   };
-
-   /**
-    *
-    * Unblur the DOM element
-    *
-    */
-   this.unblur = function() {
-     // set the DOM filter property to none
-     this.$elm.css(_cssFilterProp, 'none');
-     _blurred = false;
-     return this;
-   };
-
-   /**
-    *
-    * Trigger alternatively the @blur and @unblur methods
-    *
-    */
-
-   this.toggleblur = function() {
-     if (_blurred) {
-       this.unblur();
-     } else {
-       this.blur();
-     }
-     return this;
-   };
-   /**
-    * Destroy the Vague.js instance removing also the svg filter injected into the DOM
-    */
-   this.destroy = function() {
-     // do we need to remove the svg filter?
-     if (_support.svgfilters) {
-       $('filter#blur-effect-id-' + _filterId).parent().remove();
-     }
-
-     this.unblur();
-
-     // clear all the property stored into this Vague.js instance
-     for (var prop in this) {
-       delete this[prop];
-     }
-
-     return this;
-   };
-   // init the plugin
-   return this.init();
- };
-
- // export the plugin as a jQuery function
- $.fn.Vague = function(options) {
-   return new Vague(this, options);
- };
-
-}(window, document, jQuery));
-
-</script>
-
-
-<script type="text/javascript">
-	// 게시글 경고 모달창 close 하는 스크립트
-	var modal = $(".modal");
-	var close = $(".close");
-	for (var i = 0; i < close.length; i++) {
-		close[i].addEventListener("click", function() {
-			$("#ubWarningCheckModal").modal("hide");
-		});
 	}
 </script>
 

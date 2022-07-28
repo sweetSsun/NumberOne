@@ -105,17 +105,17 @@ public class HomeController {
 	    
 		// 중고거래 팔구 목록 불러오기 /selectResellSellList
 	    Paging paging = new Paging();
-	    String checkMethod = "Main";
+	    String pageCheck = "Main";
 	    
 	    if((String) session.getAttribute("loginRegion") != null) {
 			paging.setSearchVal(rdao.selectRegionCode((String) session.getAttribute("loginRegion")));				
 		}
 	    paging.setSellBuy("S");	
-		ArrayList<UsedBoardDto> SellList = rdao.selectResellPageList(paging, checkMethod);
+		ArrayList<UsedBoardDto> SellList = rdao.selectResellPageList(paging, pageCheck);
 				
 		// 중고거래 사구 목록 불러오기 /selectResellBuyList
 		paging.setSellBuy("B");
-		ArrayList<UsedBoardDto> buyList = rdao.selectResellPageList(paging, checkMethod);
+		ArrayList<UsedBoardDto> buyList = rdao.selectResellPageList(paging, pageCheck);
 		
 		mav.addObject("SellList", SellList);
 		mav.addObject("buyList", buyList);
