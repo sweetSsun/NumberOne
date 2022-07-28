@@ -1028,8 +1028,6 @@ public class MemberService {
 	      public String checkMemberWarning_ajax(String loginId, String wmedNickname) {
 	         System.out.println("service.checkMemberWarning_ajax() 호출");
 	         
-	         //로그인 확인
-	         
 	         String mbwnCheck="No";
 	         int mbwnCheckNum = mdao.checkMemberWarning_ajax(loginId, wmedNickname);
 	         if (mbwnCheckNum == 1) {
@@ -1042,9 +1040,16 @@ public class MemberService {
 	      public int insertMemberWarning_ajax(String loginId, String wmedNickname) {
 	         System.out.println("service.insertMemberWarning_ajax() 호출");
 	         
+	         int insertResult=0;
 	         
+	         //잘못된 접근으로 이미 신고한 적 있는 회원을 다시 신고한 경우 오류 발생을 막기 위해 try-catch 사용
+	         try {
+	        	 insertResult = mdao.insertMemberWarning_ajax(loginId, wmedNickname);	    	 
+			} catch (Exception e) { 
+				//return 0
+				System.out.println("무결성 제약 조건 위반");
+			}
 	         
-	         int insertResult = mdao.insertMemberWarning_ajax(loginId, wmedNickname);
 	         return insertResult;
 	      }
 

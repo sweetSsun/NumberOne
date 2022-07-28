@@ -355,7 +355,27 @@ public class MemberController {
 	      @RequestMapping(value="/insertMemberWarning_ajax")
 	      public @ResponseBody int insertMemberWarning_ajax(String loginId, String wmedNickname) {
 	         System.out.println("회원 신고 요청");
+	         
+	         loginId = (String) session.getAttribute("loginId");
+	         String loginNickname = (String) session.getAttribute("loginNickname");
+	         System.out.println(loginNickname+", "+wmedNickname);
+	         
+	         //로그인 확인
+	         if(loginId == null) {
+	        	 System.out.println("비로그인");
+	        	 //비로그인 - 메소드 종료 2 리턴
+	        	 return 2;
+	         } else if (loginNickname.equals(wmedNickname)) {
+	        	 System.out.println("본인 신고 불가");
+	        	 //본인 신고 불가 - 메소드 종료 3 리턴
+	        	 return 3;
+	         }
+	         
+	         //본인이 아닌 경우 경고 메소드 진행
 	         int insertResult = msvc.insertMemberWarning_ajax(loginId, wmedNickname);
+	         
+	         System.out.println(insertResult);
+	         
 	         return insertResult;
 	      }
 

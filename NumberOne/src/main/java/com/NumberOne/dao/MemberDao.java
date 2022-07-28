@@ -147,11 +147,11 @@ public interface MemberDao {
 	   @Select("SELECT COUNT(*) FROM WARNINGMEMBERS WHERE WMMID = #{loginId} AND WMEDMID = (SELECT MID FROM MEMBERS WHERE MNICKNAME = #{wmedNickname})")
 	   int checkMemberWarning_ajax(@Param("loginId") String loginId, @Param("wmedNickname") String wmedNickname);
 
-	   // 회원 신고 (상대방 닉네임으로)
+	  // 회원 신고 (상대방 닉네임으로)
 	   @Insert("INSERT INTO WARNINGMEMBERS VALUES(#{loginId}, (SELECT MID FROM MEMBERS WHERE MNICKNAME = #{wmedNickname}))")
 	   int insertMemberWarning_ajax(@Param("loginId") String loginId, @Param("wmedNickname") String wmedNickname);
 
-		//이메일 중복 확인
+	  //이메일 중복 확인
 		@Select("SELECT COUNT(MEMAIL) FROM MEMBERS WHERE MEMAIL = #{inputEmail}")	
 		int selectMemberEmail_ajax(String inputEmail);
 	
