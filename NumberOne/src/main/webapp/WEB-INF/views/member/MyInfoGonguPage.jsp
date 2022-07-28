@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 마이페이지 중고거래</title>
+<title>1인자 - 마이페이지 공구</title>
 
 
 <!--jquery & bootstrap(5css)-->
@@ -109,7 +109,7 @@
 		<!-- 본문 -->
 			<div class="container">
 				<br>
-				<div class="checkout__form" style="margin-top: 20px;"><h4>마이페이지 공구 (페이지 완성되면 링크 예정)</h4></div>
+				<div class="checkout__form" style="margin-top: 20px;"><h4>마이페이지 공구</h4></div>
 				<br>
 				<br>
 				<!-- 참여 공구 목록 -->
@@ -143,7 +143,7 @@
 						<c:otherwise>
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center; ">
 							<td>${gongu.gnbcode }</td>
-							<td><a href="" class="text_leng">${gongu.gnbtitle }</a></td>
+							<td><a href="selectNoticeBoardView?codeIdx=${gongu.gnbcode }" class="text_leng">${gongu.gnbtitle }</a></td>
 							<td>${gongu.gdate }</td>
 							<td>진행중</td>
 							</tr>
