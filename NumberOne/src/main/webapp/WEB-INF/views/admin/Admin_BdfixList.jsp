@@ -48,10 +48,13 @@
 		<section>
 		<!-- 본문 -->
          <form action="admin_selectBdfixList" method="get" id="actionForm">
-			<div class="container">
-	            <div class="row" style="margin:auto;">
+			<div class="container" style="margin-top: 10px">
+				<!-- 페이지 제목 -->
+				<div class="checkout__form">커뮤니티 - 배너 관리</div>
+				
+<!-- 	            <div class="row" style="margin:auto;">
 	                <h4 class="text-center">커뮤니티-배너 관리페이지 : Admin_BdfixList.jsp</h4>
-	            </div>
+	            </div> -->
 	            <!-- 검색 -->
 	            <div class="row">
 					<div class="col-5" align="right">

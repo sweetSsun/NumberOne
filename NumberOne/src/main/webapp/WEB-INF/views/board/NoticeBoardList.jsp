@@ -101,7 +101,7 @@ section div.checkout__form{
 		<section>
 		<!-- 본문 -->
 		<!-- 페이지명 -->
-		<div class="checkout__form" style="margin-top: 30px;">공지게시판</div> 
+		<div class="checkout__form" style="margin-top: 30px;">일반게시판</div> 
 		
 			<form action="selectNoticeBoardList" method="get" id="actionForm">
 			<!-- <input type="hidden" name="searchVal" value="all"> -->
@@ -168,6 +168,9 @@ section div.checkout__form{
 							<td class="bdcategory text-center tableCell">공지</td>
 							<td class="tableCell">
 							 	<a href="selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}">${notice.nbtitle} 
+							 	<c:if test="${notice.nbimg != null }">
+									<i class="fa-regular fa-image"></i>
+								</c:if>
 							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;"></span> </a>
 							 </td>
 							<td class="text-center tableCell">

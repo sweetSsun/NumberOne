@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 공구작성</title>
+<title>1인자 - 공구게시판</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -74,10 +74,10 @@
 		
 		<section>
 		<!-- 본문 -->
-			<div class="container">
-				<div class="row" style="margin:auto;">
-					<h4 class="text-center">공구 작성페이지 : Gongu_BoardWriteForm.jsp</h4>
-				</div>
+			<div class="container" style="margin-top: 10px">
+				<!-- 페이지 제목 -->
+				<div class="checkout__form">공구게시판 - 글작성</div>
+				
 				<div>
  				<form action="admin_insertNoticeWrite" method="post" enctype="multipart/form-data" onsubmit="return inputCheck()">
 				<div class="row">

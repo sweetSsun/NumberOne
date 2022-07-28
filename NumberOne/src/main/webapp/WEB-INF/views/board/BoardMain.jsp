@@ -5,12 +5,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 커뮤니티 메인</title>
+<title>1인자 - 커뮤니티</title>
 <!-- 부트스트랩 -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 <style type="text/css">
 
 section{
@@ -104,7 +104,9 @@ section{
 	.max_contents{
 		width: max-content;
 	}
-
+	a:hover{
+		color: #00bcd4; 
+	}
 
 section div.checkout__form{
 	/* 페이지 제목 */
@@ -115,7 +117,20 @@ section div.checkout__form{
     margin-bottom: 25px;
     font-size : 24px;
 }
+/* 텍스트가 영역을 넘치도록 하는 속성 */
+.white-space {
+  white-space: nowrap;
+}
 
+/* 영역에 넘치는 요소를 숨겨주는 속성 */
+.overflow {
+  overflow: hidden;
+}
+
+/* 말줄임표 적용 */
+.ellipsis {
+  text-overflow: ellipsis;
+}
 </style>
 
 </head>
@@ -139,7 +154,7 @@ section div.checkout__form{
 			<section>
 
 		<!-- 페이지명 -->
-		<div class="checkout__form" style="margin-top: 30px;">커뮤니티 메인</div> 
+		<div class="checkout__form" style="margin-top: 30px;">커뮤니티</div> 
 			
 			<div class="container-fluid">
 
@@ -160,7 +175,7 @@ section div.checkout__form{
 								<a href="selectRoomList?bdcode=${room.bdcode }&jsp=modal">
 								<img class="img" src="${pageContext.request.contextPath }/resources/img/room/${room.bdimg }"></a>
 							</div>
-							<div class="text-center fw-bold mb-1" style="color: #00a5ba;">
+							<div class="text-center fw-bold mb-1 area white-space overflow ellipsis" style="color: #00a5ba; width:239px;">
 								<a href="selectRoomList?bdcode=${room.bdcode }&jsp=modal">
 								[${room.bdnickname}] <span class="text-black">${room.bdtitle }</span>
 								</a>
@@ -183,7 +198,7 @@ section div.checkout__form{
 				</div>	
 				<div class="row mb-3">
 					<div class="col-1 board_category">
-						<a href="selectNoticeBoardList"><span class="text-white">공지</span></a>
+						<a href="selectNoticeBoardList?NbCheck=NB"><span class="text-white">공지</span></a>
 					</div>
 					<div class="col-11 bg-white">
 						<table class="boardList">

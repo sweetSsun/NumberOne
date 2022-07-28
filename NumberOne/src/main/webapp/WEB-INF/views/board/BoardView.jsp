@@ -10,6 +10,7 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>  
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 
 <style type="text/css">
 	section {
@@ -161,8 +162,17 @@
    }
    pre{
    		font-family: 'pretendard';
+   		width: fit-content;
    }
-   
+	section div.checkout__form{
+		/* 페이지 제목 */
+		color: #1c1c1c; 
+	    font-weight: 700; 
+	    border-bottom: 1px solid #e1e1e1;
+	    padding-bottom: 20px;
+	    margin-bottom: 25px;
+	    font-size : 24px;
+	}   
 </style>
 </head>
 <body>
@@ -184,7 +194,8 @@
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h2 class="text-center">게시판 글상세페이지 : BoardView.jsp</h2>
+			<!-- 페이지명 -->
+			<div class="checkout__form" style="margin-top: 30px;">일반게시판</div> 
 				<form action="">
 					<div class="row">
 						<div class="col">
@@ -449,6 +460,8 @@
 	
 	const bdmid = '${board.bdmid}'; //글작성자
 	const loginId = '${sessionScope.loginId}';//로그인 아이디
+	const bdcode = '${board.bdcode}';
+	const bdcategory = '${board.bdcategory}';
 	
 	var checkMsg = '${msg}';
 	if ( checkMsg.length > 0 ){
@@ -457,8 +470,7 @@
 </script>
 
 <script type="text/javascript">
-	//선택한 글번호 
-	var bdcode = '${board.bdcode}';
+
 	//현재 로그인중인 아이디
 
 	$(document).ready(function(){
@@ -699,10 +711,8 @@
 		$("#bdDeleteCheckModal").modal('show');
 	}
 	function updateBoardDelete(){
-		
-				/* 게시글 삭제(상태변경) */
+		/* 게시글 삭제(상태변경) */
 		//모달창에서 "네" 버튼 클릭 시 삭제
-		var bdcategory = '${board.bdcategory }';
 		location.href="updateBoardDelete?bdcode="+bdcode+"&bdcategory="+bdcategory+"&bdmid="+bdmid;
 	}
 	

@@ -126,7 +126,7 @@ section div.checkout__form{
 		
 		<section>
 		<!-- 페이지명 -->
-		<div class="checkout__form" style="margin-top: 30px;">후기게시판</div>
+		<div class="checkout__form" style="margin-top: 30px;">일반게시판</div>
 		<!-- 본문 -->
 			<form action="selectCategoryBoardList" method="get" id="actionForm">
 			<div class="container">
@@ -251,7 +251,10 @@ section div.checkout__form{
 								</div>
 							</td>
 							<td class="tableCell">
-							 	<a href="selectReviewBoardView${paging.makeQueryPage(board.bdcode, paging.page)}">${board.bdtitle} 
+							 	<a href="selectReviewBoardView${paging.makeQueryPage(board.bdcode, paging.page)}">${board.bdtitle}
+							 	<c:if test="${board.bdimg != null }">
+									<i class="fa-regular fa-image"></i>
+								</c:if>
 							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
 							 </td>
 							<td class="text-center tableCell">

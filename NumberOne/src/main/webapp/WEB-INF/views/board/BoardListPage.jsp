@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 게시판 글목록 페이지</title>
+<title>1인자 - 일반게시판</title>
 <!-- Jquery -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>  
 <!-- 부트스트랩 -->
@@ -97,7 +97,7 @@ section div.checkout__form{
 		
 		<section>
 			<!-- 페이지명 -->
-			<div class="checkout__form" style="margin-top: 30px;">커뮤니티</div> 
+			<div class="checkout__form" style="margin-top: 30px;">전체게시판</div> 
 		
 		<!-- 본문 -->
 			<form action="selectBoardList" method="get"  id="actionForm">
@@ -197,7 +197,10 @@ section div.checkout__form{
 									</c:when>
 									
 									<c:otherwise>
-									 	<a href="selectBoardView${paging.makeQueryPage(board.bdcode, paging.page)}">${board.bdtitle} 
+									 	<a href="selectBoardView${paging.makeQueryPage(board.bdcode, paging.page)}">${board.bdtitle}
+									 		<c:if test="${board.bdimg != null }">
+									 		<i class="fa-regular fa-image"></i>
+									 		</c:if>
 									 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
 									</c:otherwise>
 								</c:choose>

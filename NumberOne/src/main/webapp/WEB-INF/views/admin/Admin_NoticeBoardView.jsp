@@ -13,7 +13,7 @@
 <!-- Css Styles -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 
-<title>${noticeBoard.nbtitle} - 1인자:관리자 공지게시판</title>
+<title>${noticeBoard.nbtitle} - 1인자:공지게시판</title>
 
 <style type="text/css">
 	section{
@@ -82,9 +82,9 @@
 		
 		<section>
 			<!-- 본문 -->
-			<div class="container">
-				<h4 class="text-center">관리자 공지글 상세페이지 : Admin_NoticeBoardView.jsp</h4>
-				
+			<div class="container" style="margin-top: 10px">
+				<!-- 페이지 제목 -->
+				<div class="checkout__form">일반게시판</div>
 				<form action="">
 					<div class="row">
 						<div class="col">

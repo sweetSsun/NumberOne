@@ -411,6 +411,20 @@ section div.checkout__form{
 	window.onload = function() {
 		soldCheck();
 	}
+	/* 거래완료 글 체크표시  */
+	function soldCheck() {
+		console.log('거래완료글체크시작')
+			
+		
+		for (let i = 0; i < ubstate.length; i++) {
+			if (ubstate[i].value === '9') {
+	
+				console.log("거래완료글확인")
+				soldCheckMsg[i].textContent = "(거래완료) "
+
+			}
+		}
+	}
 
 	/* 로컬스토리지 아이템 확인 */
 	if (storage.getItem('searchType') != null) {
@@ -452,13 +466,7 @@ section div.checkout__form{
 	const soldCheckMsg = document.querySelectorAll('.soldCheckMsg_');
 
 	console.log("체크메세지", checkSearch);
-<%-- 
-	if (checkSearch === 'write') { //글 작성 후 이동해왔을 시 [전국]으로 selected 하기위한 코드
 
-		console.log("체크메세지 : ", checkSearch);
-		regionInfo.options[0].selected = "true"; //0번인덱스가 [전국]
-	}
---%>
 	// 단순 페이지이동 ( 메인페이지에서 더보기 클릭 , 상세페이지에서 글목록 클릭, 사이드바에서 클릭)
 	//checkSearch의 값이 'NO' 일 경우
 	console.log('체크메세지 : NO')
@@ -634,6 +642,131 @@ section div.checkout__form{
 </script>
 
 
+
+<!-- ajax에 사용되는  페이지출력을 위한 스크립트 -->
+<script type="text/javascript">
+	/* ajax에 사용되는 글 목록 출력 함수 */
+	function listOutput(result) {
+
+		for ( let i in result) {
+
+			output_page += '<div id=\"sellList\"><div class=\"float_\">'
+					+ '<div id=\"sellbuyscreen\">'
+					+ '<a href=\"selectResellView?ubcode='
+					+ result[i].ubcode
+					+ '&ubsellbuy='
+					+ result[i].ubsellbuy
+					+ '&modifyCheck=LIST\">'
+					+ '<img alt=\"이미지\" src=\"${pageContext.request.contextPath }/resources/img/resell/'+result[i].ubmainimg+'\">'
+					+ '</a>'
+					+ '</div>'
+					+ '<div class=\"bottom\" style=\"font-weight:600; position:relative;\">'
+					+ '<span class=\"soldCheckMsg_ bold\"></span>'
+					+ '<a href=\"selectResellView?ubcode='
+					+ result[i].ubcode
+					+ '&ubsellbuy='
+					+ result[i].ubsellbuy
+					+ '&modifyCheck=LIST\">'
+					+ result[i].ubtitle
+					+ '</a>'
+					+ '</div>'
+					+ '<div style=\"height:2rem; font-size:1.6rem; padding:0; color:grey;\">'
+					+ result[i].ubdatedef
+					+ '&nbsp'
+					+ '<span style=\"color:red; font-size:1.8rem;\">'
+					+ '<i class=\"fa-regular fa-heart\"></i>'
+					+ '</span>'
+					+ '</div>'
+					+ '<div class=\"bottom\" style=\"font-size:1.7rem; font-weight:600; position:relative;\">'
+					+ '<span onclick=\"writeMemberSellbuy('
+					+ result[i].ubnickname
+					+ ')\" style=\"height:1.8rem; font-size:1.6rem; padding:0; color:initial; cursor:pointer;\">'
+					+ result[i].ubnickname
+					+ '</span>'
+					+ '</div>'
+					+ '<input type=\"hidden\" class=\"ubstate_\" value=\"'+result[i].ubstate+'\">'
+					+ '</div>';
+		}
+	}
+</script>
+
+<script type="text/javascript">
+
+</script>
+
+<script type="text/javascript">
+	/* 메인에서 찜 버튼 클릭 */
+	function clickZzim(ubcode) {
+
+		console.log(ubcode);
+		var loginId = '${loginId}';
+
+		//로그인 체크
+		if ('${loginId}'.length == 0) {
+			alert("script-로그인 후 이용가능합니다");
+		}
+
+		//찜 체크
+		var zzim_Check;
+		console.log($("#zzimState_" + ubcode).attr("class")[12]);
+		//현재 찜상태 s:찜O r:찜X
+		var zzimState = $("#zzimState_" + ubcode).attr("class")[12];
+		if (zzimState == 's') {
+			//현재 찜이 되어 있는 경우
+			console.log("zzim O")
+			zzim_Check = 'CHECK';
+		} else {
+			//현재 찜이 안되어 경우
+			console.log("zzim X")
+			zzim_Check = 'UNCHECK';
+		}
+
+		var zzimCount = $("#zzimCount_" + ubcode).text().trim();
+		console.log(zzimCount);
+
+		$.ajax({
+			type : "get",
+			url : "zzimClick_ajax",
+			async : false, //전역변수 값 저장을 위해 필요
+			data : {
+				"zzubcode" : ubcode,
+				"zzmid" : loginId,
+				"zzim_Check" : zzim_Check
+			},
+
+			success : function(zzimCheck) {
+				console.log("zzimCheck : " + zzimCheck);
+
+				if (zzimCheck == 'CHECK') { //찜 했을 때
+					//하트 채우기
+					$("#zzimState_" + ubcode).removeClass("fa-regular")
+							.addClass("fa-solid");
+
+					//증가
+					console.log("증가 요청");
+					if (zzimCount == 0) {
+						zzimCount = 1;
+					} else {
+						zzimCount = parseInt(zzimCount) + 1;
+					}
+
+				} else { //찜 취소했을 때
+					//하트 비우기
+					$("#zzimState_" + ubcode).removeClass("fa-solid").addClass(
+							"fa-regular");
+
+					//감소				
+					console.log("감소 요청");
+					zzimCount = parseInt(zzimCount) - 1;
+
+				}
+				$("#zzimCount_" + ubcode).text(zzimCount);
+			}
+		})
+	}
+</script>
+
+
 <%-- 
 <!-- 검색 스크립트  -->
 <script type="text/javascript">
@@ -719,138 +852,5 @@ paging.ajaxCheck = 'REGION';
 	}
 </script>
 --%>
-
-<!-- ajax에 사용되는  페이지출력을 위한 스크립트 -->
-<script type="text/javascript">
-	/* ajax에 사용되는 글 목록 출력 함수 */
-	function listOutput(result) {
-
-		for ( let i in result) {
-
-			output_page += '<div id=\"sellList\"><div class=\"float_\">'
-					+ '<div id=\"sellbuyscreen\">'
-					+ '<a href=\"selectResellView?ubcode='
-					+ result[i].ubcode
-					+ '&ubsellbuy='
-					+ result[i].ubsellbuy
-					+ '&modifyCheck=LIST\">'
-					+ '<img alt=\"이미지\" src=\"${pageContext.request.contextPath }/resources/img/resell/'+result[i].ubmainimg+'\">'
-					+ '</a>'
-					+ '</div>'
-					+ '<div class=\"bottom\" style=\"font-weight:600; position:relative;\">'
-					+ '<span class=\"soldCheckMsg_ bold\"></span>'
-					+ '<a href=\"selectResellView?ubcode='
-					+ result[i].ubcode
-					+ '&ubsellbuy='
-					+ result[i].ubsellbuy
-					+ '&modifyCheck=LIST\">'
-					+ result[i].ubtitle
-					+ '</a>'
-					+ '</div>'
-					+ '<div style=\"height:2rem; font-size:1.6rem; padding:0; color:grey;\">'
-					+ result[i].ubdatedef
-					+ '&nbsp'
-					+ '<span style=\"color:red; font-size:1.8rem;\">'
-					+ '<i class=\"fa-regular fa-heart\"></i>'
-					+ '</span>'
-					+ '</div>'
-					+ '<div class=\"bottom\" style=\"font-size:1.7rem; font-weight:600; position:relative;\">'
-					+ '<span onclick=\"writeMemberSellbuy('
-					+ result[i].ubnickname
-					+ ')\" style=\"height:1.8rem; font-size:1.6rem; padding:0; color:initial; cursor:pointer;\">'
-					+ result[i].ubnickname
-					+ '</span>'
-					+ '</div>'
-					+ '<input type=\"hidden\" class=\"ubstate_\" value=\"'+result[i].ubstate+'\">'
-					+ '</div>';
-		}
-	}
-</script>
-
-<script type="text/javascript">
-	/* 거래완료 글 체크표시  */
-	function soldCheck() {
-		for (let i = 0; i < ubstate.length; i++) {
-			if (ubstate[i].value === '9') {
-	
-				console.log("거래완료글확인")
-				soldCheckMsg[i].textContent = "(거래완료) "
-
-			}
-		}
-	}
-</script>
-
-<script type="text/javascript">
-	/* 메인에서 찜 버튼 클릭 */
-	function clickZzim(ubcode) {
-
-		console.log(ubcode);
-		var loginId = '${loginId}';
-
-		//로그인 체크
-		if ('${loginId}'.length == 0) {
-			alert("script-로그인 후 이용가능합니다");
-		}
-
-		//찜 체크
-		var zzim_Check;
-		console.log($("#zzimState_" + ubcode).attr("class")[12]);
-		//현재 찜상태 s:찜O r:찜X
-		var zzimState = $("#zzimState_" + ubcode).attr("class")[12];
-		if (zzimState == 's') {
-			//현재 찜이 되어 있는 경우
-			console.log("zzim O")
-			zzim_Check = 'CHECK';
-		} else {
-			//현재 찜이 안되어 경우
-			console.log("zzim X")
-			zzim_Check = 'UNCHECK';
-		}
-
-		var zzimCount = $("#zzimCount_" + ubcode).text().trim();
-		console.log(zzimCount);
-
-		$.ajax({
-			type : "get",
-			url : "zzimClick_ajax",
-			async : false, //전역변수 값 저장을 위해 필요
-			data : {
-				"zzubcode" : ubcode,
-				"zzmid" : loginId,
-				"zzim_Check" : zzim_Check
-			},
-
-			success : function(zzimCheck) {
-				console.log("zzimCheck : " + zzimCheck);
-
-				if (zzimCheck == 'CHECK') { //찜 했을 때
-					//하트 채우기
-					$("#zzimState_" + ubcode).removeClass("fa-regular")
-							.addClass("fa-solid");
-
-					//증가
-					console.log("증가 요청");
-					if (zzimCount == 0) {
-						zzimCount = 1;
-					} else {
-						zzimCount = parseInt(zzimCount) + 1;
-					}
-
-				} else { //찜 취소했을 때
-					//하트 비우기
-					$("#zzimState_" + ubcode).removeClass("fa-solid").addClass(
-							"fa-regular");
-
-					//감소				
-					console.log("감소 요청");
-					zzimCount = parseInt(zzimCount) - 1;
-
-				}
-				$("#zzimCount_" + ubcode).text(zzimCount);
-			}
-		})
-	}
-</script>
 
 </html>

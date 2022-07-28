@@ -145,6 +145,16 @@
    	height: 350px;
    	object-fit: cover;
    }
+	section div.checkout__form{
+	/* 페이지 제목 */
+	color: #1c1c1c; 
+    font-weight: 700; 
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+    font-size : 24px;
+	}
+
 </style>
 </head>
 <body>
@@ -166,11 +176,11 @@
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h2 class="text-center">공지글 글상세페이지 : NoticeBoardView.jsp</h2>
+			<div class="checkout__form" style="margin-top: 30px;">일반게시판</div>
 				<form action="">
 					<div class="row">
 						<div class="col">
-							<a href="selectNoticeBoardList"><span class="fw-bold boardCategory"> | 공지게시판 </span></a> 
+							<a href="selectNoticeBoardList?NbCheck=NB"><span class="fw-bold boardCategory"> | 공지게시판 </span></a> 
 							<%-- <span class="fw-bold" style="color:gray; font-size:20px">/</span> <a href="#"><span class="bdregion"> ${board.bdrgname}</span></a> --%>
 						</div>
 					</div>
