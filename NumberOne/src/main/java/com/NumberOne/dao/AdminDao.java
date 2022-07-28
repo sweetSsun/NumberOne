@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.ContactDto;
+import com.NumberOne.dto.GonguDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.NoticeDto;
 import com.NumberOne.dto.Paging;
@@ -77,5 +78,9 @@ public interface AdminDao {
 	
 	//관리자 - 댓글정지 
 	int admin_updateReplyStop(String rpcode);
+
+	
+	//공동구매/공구 카카오결제정보 DB입력 
+	int insertGonguResgister(GonguDto gongu);
 
 }

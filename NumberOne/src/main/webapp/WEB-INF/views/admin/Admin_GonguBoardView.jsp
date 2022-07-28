@@ -68,9 +68,9 @@
 	/* 참여버튼 */
 	.attendBtn {
 	  display: block;
-	  position: relative;
-	  float: left;
+	  position: relative;	  
 	  width: 120px;
+	  left: 42%;
 	  padding: 0;
 	  margin: 10px 20px 10px 0;
 	  font-weight: 600;
@@ -98,7 +98,7 @@
 		margin: 2%;
 	}
 	.attendInput {
-		height: 3vw;
+		height: 5vh;
 		border: 0;
 		border-radius: 15px;
 		outline: none;
@@ -117,6 +117,7 @@
 		border: 0;
     	background-color: transparent;
 	}
+	
 </style>
 
 <script type="text/javascript">
@@ -140,7 +141,7 @@
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h4 class="text-center">관리자 공구글 상세페이지 : GonguBoardView.jsp 임시로 커뮤니티와 연결시킴 관리자사이드바누르면 메인으로가용 </h4>
+				<h4 class="text-center">관리자 공구글 상세페이지 : GonguBoardView.jsp</h4>
 				
 				<!-- <form action=""> -->
 					<div class="row">
@@ -166,8 +167,8 @@
 					</div>
 					
 					<!-- 본문 글 내용-->
-					<div class="row mt-3 mb-1 boardContents">
-						<div class="col-lg-10">
+					<div class="mt-3 mb-1 boardContents" style="padding-bottom: 20px;">
+						<div>
 							<c:if test="${noticeBoard.nbimg != null }">
 								<img alt="" src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg}" style="max-width:100%; max-height:500px;">
 							</c:if>
@@ -175,7 +176,7 @@
 						</div>
 						
 						<!-- 참여 버튼 -->
-						<div class="col-lg-2">
+						<div>
 							<button class="attendBtn btnLightBlue btnPush" onclick="showGonguModal()">참여</button>
 						</div>
 						
@@ -194,7 +195,7 @@
 						                <form id="form-payment" class="row" method="post">
 											<div class="col-sm-8">
 												<div class="attendDiv">
-												<input class="attendInput" type="text" id="pay-id" name="pay-id" placeholder="아이디를 입력하세요" value="${sessionScope.loginId}">
+												<input class="attendInput" type="text" id="pay-id" name="pay-id" readonly="readonly" value="${sessionScope.loginId}" style="cursor:default;">
 												</div>
 												<div class="attendDiv">
 												<input class="attendInput" type="text" id="pay-tel" name="pay-tel" placeholder="전화번호를 입력하세요">
@@ -208,8 +209,8 @@
 											</div>
 											
 											<div class="col-sm-4">
-												<div style="height:70%">
-													<span>${noticeBoard.nbcontents }</span>
+												<div style="height:70%; text-align: center;">
+													<span>${noticeBoard.nbtitle }</span>
 												</div>
 												<div>
 													<button id="btn-kakao-pay" type="button">
@@ -232,7 +233,7 @@
 					    </div>
 						
 						<!-- 공구 끝 -->
-						<!-- 본문 끝 -->
+					<!-- 본문 끝 -->
 						
 					</div>
 				<!-- </form> -->
@@ -345,10 +346,32 @@ function kakaopay(){
 		});
 	}
 			
-	// 공동구매 참여 양식 입력 모달창 출력
 	var btnObj_state;
+
+	var tel = "${memberInfo.mphone }";
+	var email = "${memberInfo.memail }";
+	var address = "${memberInfo.maddr }";
+	console.log("번호 "+tel);
+	console.log("이메일 "+email);
+	console.log("주소 "+address);
+	
+	// 공동구매 참여 양식 입력 모달창 출력
 	function showGonguModal(){
 		console.log("showGonguModal() 실행");
+		
+		console.log("selectLoginOut_ajax() 실행");
+		$.ajax({
+	  		type : 'get',
+	  		url : 'selectLoginOut_ajax',
+	  		async : false,
+	  		success : function(result){
+	  			if (result == "2"){ 
+	  				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+	  					location.href = "loadToLogin";
+	  				}
+	  				return;
+	  			}
+	  	
 		/* DB에서 참여한적이 있으면 안나타나게
 		 if (btnObj_stateText == "활성"){
 			$("#gonguModal").text(nbcode + "번 공구를 삭제 처리하시겠습니까?");
@@ -357,12 +380,16 @@ function kakaopay(){
 		}
 		$("#nbcode_state").val(nbcode);
 		*/
-		$("#pay-tel").val('');
-		$("#pay-email").val('');
-		$("#pay-address").val('');
-		$("#gonguModal").modal("show");
+			$("#pay-tel").val(tel);
+			$("#pay-email").val(email);
+			$("#pay-address").val(address);
+			$("#gonguModal").modal("show");
+	  		}
+		});
 	}
 </script>
+
+<!-- 카카오페이 클릭 -->
 <script type="text/javascript">
 var loginId = $("#form-payment input[name='pay-id']").val();
 var nbcode =$("#gonguNbcode").val();
@@ -398,35 +425,49 @@ $("#btn-kakao-pay").click(function(){
 		$("#form-payment input[name='pay-address']").focus()
 		return;
 	}
-	alert("카카오페이 실행");
-	console.log("카카오페이 실행");
-
-	// 카카오페이 결제전송
+	
+	console.log("selectLoginOut_ajax() 실행");
 	$.ajax({
-		type:'post',
-		url:'kakaopay',
-		dataType:'json',
-			data:{
-				nbcode:nbcode,
-				loginId:loginId
-		},
-			success:function(response){
-			console.log("결제실행");
-			var payopen = response.next_redirect_pc_url
-			window.open(payopen,"","width=350, height=450, top=0px, left=500px, scrollbars=no, resizable=no");
-			console.log(response);
-
+  		type : 'get',
+  		url : 'selectLoginOut_ajax',
+  		async : false,
+  		success : function(result){
+  			if (result == "2"){ 
+  				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+  					location.href = "loadToLogin";
+  				}
+  				return;
+  			}
+  			
+  			if(confirm("카카오페이 결제를 실행하시겠습니까?")){
+  				console.log("카카오페이 실행");	
+  			
+				// 카카오페이 결제전송
+				$.ajax({
+					type:'post',
+					url:'kakaopayReady',
+					dataType:'json',
+					data:{
+						nbcode:nbcode,
+						loginId:loginId,
+						tel: tel,
+						email: email,
+						address: address
+					},
+					success:function(response){
+						console.log("결제실행");
+						var payopen = response.next_redirect_pc_url
+						window.open(payopen,"","width=500, height=450, top=0px, left=500px, scrollbars=no, resizable=no");
+						console.log(response);
+						
+						
+					}
+				})
 			
-			// 결과값에따라서 넣어주기! 결제성공했을때 !
-			/* if(response.approval_url.lenght>0){
-				alert("결제가 완료되었습니다.");
-				
-			} else if(response.cancel_url.length>0){
-				alert("결제를 취소하셨습니다.");
-			} else {
-				alert("결제 실패 :: 오류가 발생했습니다.");
-			} */
-		}
+  			}
+  			return;
+			
+  		}
 	})
 })
 </script>
