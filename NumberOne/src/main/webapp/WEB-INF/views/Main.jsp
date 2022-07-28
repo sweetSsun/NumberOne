@@ -412,6 +412,7 @@
                         	</c:when>
                         	
                         	<c:otherwise>
+                        	<c:if test="${boardList.bdcategory != '자랑' }">
 		                        <a href="${pageContext.request.contextPath }/selectBoardView${paging.makeQueryPage(boardList.bdcategory, bdtype, boardList.bdcode, paging.page)}">
 		                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
 		                        		<h3>${boardList.bdtitle }</h3>
@@ -420,6 +421,7 @@
 		                        		<h4>${boardList.bddate }</h4>
 		                        	</div>
 		                       	</a>
+                        	</c:if>
                         	</c:otherwise>
                        	</c:choose>
                         </div>
