@@ -158,9 +158,7 @@
 							<td class="text-center tableCell">${notice.nbcode}</td>
 							<td class="bdcategory text-center tableCell">공구</td>
 							<td class="tableCell">
-<!-- 임시로 관리자페이지 연결해놨음!!!!! -->
-							 	<a href="admin_selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}">${notice.nbtitle} 
-							<!-- <a href="selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}">${notice.nbtitle}  -->
+								<a href="selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}">${notice.nbtitle}
 							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;"></span> </a>
 							</td>
 							<td class="text-center tableCell">
