@@ -419,6 +419,7 @@
 		                       	</a>
                         	</c:otherwise>
                        	</c:choose>
+                       	</div>
                     </div>
                 </c:forEach>
                 </div>

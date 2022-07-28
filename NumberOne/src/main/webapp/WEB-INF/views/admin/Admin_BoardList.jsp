@@ -47,10 +47,11 @@
 		<section>
 		<!-- 본문 -->
          <form action="admin_selectBoardList" method="get" id="actionForm">
-			<div class="container">
-	            <div class="row" style="margin:auto;">
+			<div class="container" style="margin-top: 10px">
+				<div class="checkout__form">커뮤니티 - 경고/정지 관리</div>
+<!-- 	            <div class="row" style="margin:auto;">
 	                <h4 class="text-center">커뮤니티-경고/정지 관리페이지 : Admin_BoardList.jsp</h4>
-	            </div>
+	            </div> -->
 	            <!-- 검색 -->
 	            <div class="row">
 					<div class="col-5" align="right">
