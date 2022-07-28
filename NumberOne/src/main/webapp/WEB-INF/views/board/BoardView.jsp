@@ -185,8 +185,8 @@
                     <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
             </c:otherwise>
         </c:choose>
-        <!-- End of TopBar -->
-	
+        <!-- End of TopBar -->	
+
 	<main>
 		<!-- 사이드바 -->
 		<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
