@@ -10,7 +10,7 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> 
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
- 
+ <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 
 <style type="text/css">
 	section{
@@ -97,7 +97,7 @@
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h2 class="text-center"> 게시글 작성 페이지 : BoardWriteForm.jsp</h2>
+			<div class="checkout__form" style="margin-top: 30px;">커뮤니티</div> 
 				<form action="insertBoardWrite" method="post" enctype="multipart/form-data" onsubmit="return writeFormCheck();">
 					<input type="hidden" name="bdmid" value="${sessionScope.loginId }">
 				<div class="row">
