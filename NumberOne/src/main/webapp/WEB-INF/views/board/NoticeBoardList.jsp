@@ -168,6 +168,9 @@ section div.checkout__form{
 							<td class="bdcategory text-center tableCell">공지</td>
 							<td class="tableCell">
 							 	<a href="selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}">${notice.nbtitle} 
+							 	<c:if test="${notice.nbimg != null }">
+									<i class="fa-regular fa-image"></i>
+								</c:if>
 							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;"></span> </a>
 							 </td>
 							<td class="text-center tableCell">
@@ -187,6 +190,9 @@ section div.checkout__form{
 				</div> --%>
 				</div>
 				
+				<!-- NbCheck=NB -->
+            	<input type="hidden" name="NbCheck" value="NB">
+            	
 				<!-- 페이징 시작 -->
 				<input type="hidden" id="pageNum" name="page" value="1">
 				<div class="block text-center" id="pageList" >

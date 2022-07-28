@@ -193,7 +193,9 @@ public interface BoardDao {
 	
 	//공지게시판 전체 글 개수 조회 
 	int selectNoticeTotalCount(Paging paging);
-	
+	//공구게시판 전체 글 개수 조회 
+	int selectGonguTotalCount(Paging paging);
+		
 	//지역게시판 전체 글 개수 조회
 	int selectRegionTotalCount(Paging paging);
 	

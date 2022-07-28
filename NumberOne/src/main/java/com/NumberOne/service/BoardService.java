@@ -377,28 +377,27 @@ public class BoardService {
 	   //공지게시판 이동 및 검색 
 	   public ModelAndView selectNoticeBoardList(Paging paging, String NbCheck) {
 		   System.out.println(NbCheck);
-			if(NbCheck.equals("Nb")) {
-				System.out.println("BoardService.selectNoticeBoardList() 호출");
-			} else {
-				System.out.println("BoardService.selectGonguBoardList() 호출");
-			}
-			
+		   System.out.println("BoardService.selectNoticeBoardList() 호출");
+		   
 		   ModelAndView mav = new ModelAndView();
 		   
 		   //페이징 
 		   if(paging.getKeyword() == null) {
 			   paging.setKeyword("");
 		   }
-		   int totalCount = bdao.selectNoticeTotalCount(paging);
-		   paging.setTotalCount(totalCount);
-		   paging.calc(); // 페이지 처리 계산 실행 
-		   System.out.println(paging);
+		   
 		   
 		   
 		   //고정공지
 		   ArrayList<NoticeDto> noticeList_fix = bdao.selectNoticeList();
 		   
-		   if(NbCheck.equals("Nb")) { // controller에서 Nb를 넘겨받았다면, 공지조회해줘
+		   if(NbCheck.equals("NB")) { // NB 받았다면, 공지조회해줘
+			   
+			   int totalCount = bdao.selectNoticeTotalCount(paging);
+			   paging.setTotalCount(totalCount);
+			   paging.calc(); // 페이지 처리 계산 실행 
+			   System.out.println(paging);
+			   
 			   ArrayList<NoticeDto> noticeList = bdao.selectNoticeBoardList(paging);
 			   System.out.println(noticeList);
 			   
@@ -408,7 +407,13 @@ public class BoardService {
 			   mav.setViewName("board/NoticeBoardList");
 			   
 			   return mav;
-		   } else { // controller에서 Nb가아닌 Gb를 넘겨받았다면, 공구조회해줘
+		   } else { //  NB가아닌 GB를 받았다면, 공구조회해줘
+			   
+			   int totalCount = bdao.selectGonguTotalCount(paging);
+			   paging.setTotalCount(totalCount);
+			   paging.calc(); // 페이지 처리 계산 실행 
+			   System.out.println(paging);
+			   
 			   ArrayList<NoticeDto> GonguList = bdao.selectGonguBoardList(paging);
 			   System.out.println(GonguList);
 			   
@@ -817,7 +822,7 @@ public class BoardService {
 	}
 
 	// 게시글 삭제
-	public ModelAndView updateBoardDelete(String bdcode, String bdcategory, RedirectAttributes ra) {
+	public ModelAndView updateBoardDelete(String bdtype, String bdcode, String bdcategory, RedirectAttributes ra) {
 		System.out.println("BoardService.updateBoardDelete() 호출");
 		ModelAndView mav = new ModelAndView();
 		System.out.println("삭제할 글번호 : " + bdcode);
@@ -829,14 +834,22 @@ public class BoardService {
 		}
 
 		// 삭제 후 전체 글목록 페이지로 이동
-		if (bdcategory.equals("자랑")) {
-			System.out.println("자랑글 삭제 성공");
-			mav.setViewName("redirect:/selectRoomList");
-		} else {
-			System.out.println("일반글 삭제 성공");
-			ra.addAttribute("searchVal", bdcategory);
-			mav.setViewName("redirect:/selectCategoryBoardList");
-		} 
+		if(bdtype.equals("region") ) {
+			//지역글 상세페이지에서 삭제 시 
+			System.out.println("지역글 삭제 성공");
+			mav.addObject("searchVal",bdcategory);
+			mav.setViewName("redirect:/selectDetailBoardList");			
+		}else {
+			if (bdcategory.equals("자랑")) {
+				System.out.println("자랑글 삭제 성공");
+				mav.setViewName("redirect:/selectRoomList");
+			} else {
+				System.out.println("일반글 삭제 성공");
+				mav.addObject("searchVal",bdcategory);
+				mav.setViewName("redirect:/selectCategoryBoardList");
+			} 
+		}
+		
 
 		return mav;
 	}

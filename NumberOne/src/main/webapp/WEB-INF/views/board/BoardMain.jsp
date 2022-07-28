@@ -104,11 +104,9 @@ section{
 	.max_contents{
 		width: max-content;
 	}
-<<<<<<< HEAD
-	section div.checkout__form{
-=======
+
+
 section div.checkout__form{
->>>>>>> 73f1466a5503c4eb5ee6b6f342012f6a939dd983
 	/* 페이지 제목 */
 	color: #1c1c1c; 
     font-weight: 700; 
@@ -116,11 +114,21 @@ section div.checkout__form{
     padding-bottom: 20px;
     margin-bottom: 25px;
     font-size : 24px;
-<<<<<<< HEAD
-	}
-=======
 }
->>>>>>> 73f1466a5503c4eb5ee6b6f342012f6a939dd983
+/* 텍스트가 영역을 넘치도록 하는 속성 */
+.white-space {
+  white-space: nowrap;
+}
+
+/* 영역에 넘치는 요소를 숨겨주는 속성 */
+.overflow {
+  overflow: hidden;
+}
+
+/* 말줄임표 적용 */
+.ellipsis {
+  text-overflow: ellipsis;
+}
 </style>
 
 </head>
@@ -165,7 +173,7 @@ section div.checkout__form{
 								<a href="selectRoomList?bdcode=${room.bdcode }&jsp=modal">
 								<img class="img" src="${pageContext.request.contextPath }/resources/img/room/${room.bdimg }"></a>
 							</div>
-							<div class="text-center fw-bold mb-1" style="color: #00a5ba;">
+							<div class="text-center fw-bold mb-1 area white-space overflow ellipsis" style="color: #00a5ba; width:239px;">
 								<a href="selectRoomList?bdcode=${room.bdcode }&jsp=modal">
 								[${room.bdnickname}] <span class="text-black">${room.bdtitle }</span>
 								</a>

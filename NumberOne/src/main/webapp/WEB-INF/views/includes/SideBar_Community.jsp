@@ -31,7 +31,7 @@
 				
 				<div class="sideclose_room">
 					<span>
-						<a href="selectNoticeBoardList" title="공지방"><i class="fa-solid fa-volume-low"></i></a>
+						<a href="selectNoticeBoardList?NbCheck=NB" title="공지방"><i class="fa-solid fa-volume-low"></i></a>
 					</span>
 				</div>
 				<div class="sideclose_room">
@@ -61,7 +61,7 @@
 				</div>
 				<div class="sideclose_room">
 					<span>
-						<a href="selectGonguBoardList" title="공구방"><i class="fa-solid fa-box-open"></i></a>
+						<a href="selectGonguBoardList?NbCheck=GB" title="공구방"><i class="fa-solid fa-box-open"></i></a>
 					</span>
 				</div>
 			</div>
@@ -80,7 +80,7 @@
 				
 				<div class="sideroom">
 					<span>
-						<a href="selectNoticeBoardList"><i class="fa-solid fa-volume-low"></i>&nbsp;&nbsp;공지방</a>
+						<a href="selectNoticeBoardList?NbCheck=NB"><i class="fa-solid fa-volume-low"></i>&nbsp;&nbsp;공지방</a>
 					</span>
 				</div>
 				<div class="sideroom">
@@ -110,7 +110,7 @@
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="selectGonguBoardList"><i class="fa-solid fa-box-open"></i>&nbsp;&nbsp;공구방</a>
+						<a href="selectGonguBoardList?NbCheck=GB"><i class="fa-solid fa-box-open"></i>&nbsp;&nbsp;공구방</a>
 					</span>
 				</div>
 			</div>
