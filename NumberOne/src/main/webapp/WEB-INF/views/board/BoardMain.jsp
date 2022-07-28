@@ -56,7 +56,7 @@ section{
      height: 239px;
      border: solid #E0E0E0 2px;
      margin-top: 5%;
-     margin-bottom: 5%;
+    /*  margin-bottom: 5%; */
      
    }
    .img{
@@ -101,6 +101,34 @@ section{
 	.region_sel a:hover{
 	  color: white;		
 	}
+	.max_contents{
+		width: max-content;
+	}
+
+
+section div.checkout__form{
+	/* 페이지 제목 */
+	color: #1c1c1c; 
+    font-weight: 700; 
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+    font-size : 24px;
+}
+/* 텍스트가 영역을 넘치도록 하는 속성 */
+.white-space {
+  white-space: nowrap;
+}
+
+/* 영역에 넘치는 요소를 숨겨주는 속성 */
+.overflow {
+  overflow: hidden;
+}
+
+/* 말줄임표 적용 */
+.ellipsis {
+  text-overflow: ellipsis;
+}
 </style>
 
 </head>
@@ -122,8 +150,13 @@ section{
 		
 		<!-- 본문 -->
 			<section>
+
+		<!-- 페이지명 -->
+		<div class="checkout__form" style="margin-top: 30px;">커뮤니티 메인</div> 
+			
 			<div class="container-fluid">
-				<h2 class="text-center">게시판 메인 : BoardMain.jsp</h2>
+
+
 				<div class="row">
 					<div class="col mb-2">
 						<h3>자취방자랑</h3>
@@ -140,9 +173,13 @@ section{
 								<a href="selectRoomList?bdcode=${room.bdcode }&jsp=modal">
 								<img class="img" src="${pageContext.request.contextPath }/resources/img/room/${room.bdimg }"></a>
 							</div>
+							<div class="text-center fw-bold mb-1 area white-space overflow ellipsis" style="color: #00a5ba; width:239px;">
+								<a href="selectRoomList?bdcode=${room.bdcode }&jsp=modal">
+								[${room.bdnickname}] <span class="text-black">${room.bdtitle }</span>
+								</a>
+							</div>
 						</div>
 					</c:forEach>
-					
 				</div>
 				<hr>
 				<!-- 자취방자랑 Best 목록 끝 -->
@@ -167,7 +204,7 @@ section{
 								<tr>
 									<td class="tdTitle">
 									<div>
-										<a href="selectNoticeBoardView?nbcode=${notice.nbcode }">${notice.nbtitle}</a>
+										<a href="selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}">${notice.nbtitle}</a>
 									</div>
 									</td>
 								</tr>
@@ -186,7 +223,8 @@ section{
 									<tr>
 										<td class="tdTitle">
 										<div class="td_Div">
-											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
+											
+											<a href="selectBoardView${paging.makeQueryPage(board.bdcategory,bdtype, board.bdcode, paging.page) }">${board.bdtitle}
 												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
 										</div>
 										</td>
@@ -200,7 +238,7 @@ section{
 									<tr>
 										<td class="tdTitle">
 										<div class="td_Div">
-											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
+											<a href="selectBoardView${paging.makeQueryPage(board.bdcategory,bdtype, board.bdcode, paging.page) }">${board.bdtitle}
 												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
 										</div>
 										</td>
@@ -220,7 +258,7 @@ section{
 									<tr>
 										<td class="tdTitle">
 										<div class="td_Div">
-											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
+											<a href="selectBoardView${paging.makeQueryPage(board.bdcategory,bdtype, board.bdcode, paging.page) }">${board.bdtitle}
 												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
 										</div>
 										</td>
@@ -234,7 +272,7 @@ section{
 									<tr>
 										<td class="tdTitle">
 										<div class="td_Div">
-											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
+											<a href="selectBoardView${paging.makeQueryPage(board.bdcategory,bdtype, board.bdcode, paging.page) }">${board.bdtitle}
 												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
 										</div>
 										</td>
@@ -254,7 +292,7 @@ section{
 									<tr>
 										<td class="tdTitle">
 										<div class="td_Div">
-											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
+											<a href="selectBoardView${paging.makeQueryPage(board.bdcategory,bdtype, board.bdcode, paging.page) }">${board.bdtitle}
 												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
 										</div>
 										</td>
@@ -268,7 +306,7 @@ section{
 									<tr>
 										<td class="tdTitle">
 										<div class="td_Div">
-											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
+											<a href="selectBoardView${paging.makeQueryPage(board.bdcategory,bdtype, board.bdcode, paging.page) }">${board.bdtitle}
 												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
 										</div>
 										</td>
@@ -278,7 +316,7 @@ section{
 					</div>
 				</div>
 				<!-- 후기게시판 -->
-				<div class="row mb-5" >
+				<div class="row mb-3">
 					<div class="col-1 board_category">
 						<a href="selectCategoryBoardList?searchVal=후기"><span class="text-white">후기</span></a>
 					</div>
@@ -289,7 +327,7 @@ section{
 									<tr>
 										<td class="tdTitle">
 										<div class="td_Div">
-											<a href="selectReviewBoardView?bdcode=${board.bdcode }">${board.bdtitle}
+											<a href="selectReviewBoardView${paging.makeQueryPage(board.bdcategory, bdtype, board.bdcode, paging.page) }">${board.bdtitle}
 												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
 										</div>
 										</td>
@@ -305,7 +343,7 @@ section{
 									<tr>
 										<td class="tdTitle">
 										<div class="td_Div">
-											<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle}
+											<a href="selectReviewBoardView${paging.makeQueryPage(board.bdcategory, bdtype, board.bdcode, paging.page) }">${board.bdtitle}
 												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
 										</div>
 										</td>
@@ -315,6 +353,45 @@ section{
 						</table>
 					</div>
 				</div>
+				
+				<!-- 공구게시판 -->
+				<div class="row mb-5" >
+					<div class="col-1 board_category">
+						<a href="#"><span class="text-white">공구</span></a>
+					</div>
+					<div class="col-5 bg-white">
+						<table class="boardList">
+							<c:forEach items="${boardList_Review }" end="2" var="board">
+								<c:if test="${board.bdcategory.equals('후기') }">
+									<tr>
+										<td class="tdTitle">
+										<div class="td_Div">
+											<a href="selectReviewBoardView${paging.makeQueryPage(board.bdcategory, bdtype, board.bdcode, paging.page) }">${board.bdtitle}
+												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
+										</div>
+										</td>
+									</tr>
+								</c:if>
+							</c:forEach>
+						</table>
+					</div>
+					<div class="col-6 bg-white">
+						<table class="boardList">
+							<c:forEach items="${boardList_Review }" begin="3" end="5" var="board">
+								<c:if test="${board.bdcategory.equals('후기') }">
+									<tr>
+										<td class="tdTitle">
+										<div class="td_Div">
+											<a href="selectReviewBoardView${paging.makeQueryPage(board.bdcategory, bdtype, board.bdcode, paging.page) }">${board.bdtitle}
+												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
+										</div>
+										</td>
+									</tr>
+								</c:if>
+							</c:forEach>
+						</table>
+					</div>
+				</div>				
 				<!-- 게시판 목록 종료 -->
 				<hr>
 				
@@ -330,31 +407,31 @@ section{
 					
 				<div class="row">
 					<div class="col region_sel">
-						<a href="selectRegionBoardList">전체</a>
+						<a href="selectRegionBoardList"> <div>전체</div></a>
 					</div>
 					<div class="col region_sel">
-						<a href="selectDetailBoardList?searchVal=SEL">서울</a>
+						<a href="selectDetailBoardList?searchVal=SEL"> <div>서울</div></a>
 					</div>
 					<div class="col region_sel">
-						<a href="selectDetailBoardList?searchVal=ICN">인천</a>
+						<a href="selectDetailBoardList?searchVal=ICN"> <div>인천</div></a>
 					</div>
 					<div class="col region_sel">
-						<a href="selectDetailBoardList?searchVal=GGD">경기</a>
+						<a href="selectDetailBoardList?searchVal=GGD"> <div>경기</div></a>
 					</div>
 					<div class="col region_sel">
-						<a href="selectDetailBoardList?searchVal=GSD">경상</a>
+						<a href="selectDetailBoardList?searchVal=GSD"> <div>경상</div></a>
 					</div>
 					<div class="col region_sel">
-						<a href="selectDetailBoardList?searchVal=JLD">전라</a>
+						<a href="selectDetailBoardList?searchVal=JLD"> <div>전라</div></a>
 					</div>
 					<div class="col region_sel">
-						<a href="selectDetailBoardList?searchVal=CCD">충청</a>
+						<a href="selectDetailBoardList?searchVal=CCD"> <div>충청</div> </a>
 					</div>
 					<div class="col region_sel">
-						<a href="selectDetailBoardList?searchVal=GWD">강원</a>
+						<a href="selectDetailBoardList?searchVal=GWD"> <div>강원</div> </a>
 					</div>
 					<div class="col region_sel">
-						<a href="selectDetailBoardList?searchVal=JJD">제주</a>
+						<a href="selectDetailBoardList?searchVal=JJD"> <div>제주</div> </a>
 					</div>
 				</div>
 			</div>

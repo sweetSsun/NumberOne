@@ -13,7 +13,7 @@
 <!-- Css Styles -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 
-<title>${noticeBoard.nbtitle} - 1인자:관리자 공지게시판</title>
+<title>${noticeBoard.nbtitle} - 1인자:공지게시판</title>
 
 <style type="text/css">
 	section{
@@ -82,9 +82,9 @@
 		
 		<section>
 			<!-- 본문 -->
-			<div class="container">
-				<h4 class="text-center">관리자 공지글 상세페이지 : Admin_NoticeBoardView.jsp</h4>
-				
+			<div class="container" style="margin-top: 10px">
+				<!-- 페이지 제목 -->
+				<div class="checkout__form">일반게시판</div>
 				<form action="">
 					<div class="row">
 						<div class="col">
@@ -122,7 +122,7 @@
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
 				<div class="row mb-2">
 					<div class="col-2">
-						<a href="admin_selectNoticeList${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}">
+						<a href="admin_selectNoticeList?NbCheck=NB&${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}">
 						<input type="button" style="left:0;" class="middleBtn btn-numberone btn-sm fw-bold text-white" value="글목록">
 						</a> 
 					</div>

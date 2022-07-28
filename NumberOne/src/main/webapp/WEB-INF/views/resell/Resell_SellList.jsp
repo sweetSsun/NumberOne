@@ -1,12 +1,5 @@
-<%@ page
-	language="java"
-	contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"
-%>
-<%@ taglib
-	prefix="c"
-	uri="http://java.sun.com/jsp/jstl/core"
-%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,28 +7,13 @@
 <meta charset="UTF-8">
 <title>1인자 - 중고거래 팔구게시판</title>
 
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
-	integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
-	crossorigin="anonymous"
-	referrerpolicy="no-referrer"
-></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- 부트스트랩 -->
-<link
-	rel="stylesheet"
-	href="${pageContext.request.contextPath }/resources/css/style.css"
-	type="text/css"
->
-<link
-	rel="stylesheet"
-	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3"
-	crossorigin="anonymous"
->
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/listCss.css" type="text/css">
 
 <style type="text/css">
 * {
@@ -164,7 +142,7 @@ input {
 }
 
 div.row.sellbuyhead {
-	margin-top: 2 rem;
+	margin-top: 10px;
 	background-color: #00bcd4;
 	margin-left: 0%;
 	margin-right: 0%;
@@ -209,6 +187,26 @@ div.col.mb-2 h3 {
 	height: 43rem;
 	/* border : 1px solid  #00bcd4; */
 }
+
+
+.medium { 
+	/* 검색, 글쓰기 버튼 사이즈 */
+	font-size : 1.5rem;
+}
+.btn-numberone{
+	/* 글쓰기 버튼 */
+	background-color: #00bcd4;
+}
+section div.checkout__form{
+	/* 페이지 제목 */
+	color: #1c1c1c; 
+    font-weight: 700; 
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+    font-size : 24px;
+}
+
 </style>
 
 </head>
@@ -229,23 +227,22 @@ div.col.mb-2 h3 {
 		<%@ include file="/WEB-INF/views/includes/SideBar_Resell.jsp"%>
 		<section>
 			<!-- 본문 -->
+
 			<div
 				class="container"
-				style="margin-top: 50px"
+				style="margin-top: 10px"
 			>
-				<h1 class="text-center">중고거래 팔구 페이지</h1>
+				<!-- <h1 class="text-center">중고거래 팔구 페이지</h1> -->
+				<!-- 페이지명 -->
+					<div class="checkout__form" style="margin-top: 30px;">중고거래 - 팔구</div> 
 
-				<!--  -->
-				<div class="row">
-					<!-- 검색기능 -->
-					<div
-						class="col-5"
-						align="right"
-					>
-						<select
-							class="bigger searchType_"
-							id="searchType"
-						>
+
+				<!-- 검색기능시작 -->
+
+				<div class="row" style="margin-top: 40px">
+
+					<div class="col-5" align="right">
+						<select class="bigger searchType_" id="searchType">
 							<option value="ubtitle">제목</option>
 							<option value="ubcontents">내용</option>
 							<option value="total">제목+내용</option>
@@ -258,97 +255,87 @@ div.col.mb-2 h3 {
 							class="bigger"
 							placeholder="검색어를 입력하세요"
 							id="keyword"
-						>
+						>  &nbsp;
 						<button
-							class="btn btn-secondary bigger"
+							class="btn btn-secondary medium"
 							onclick="selectRegion(1)"
-						>검색</button>
+						>검색</button> &nbsp;
 						<c:if test="${sessionScope.loginId != null}">
 							<button
 								type="button"
-								class="btn btn-primary bigger"
-								style="padding: .25rem .5rem;"
-								onclick="location.href='${pageContext.request.contextPath }/loadToResellWriteForm?sell_buy=S'"
+								class="btn medium btn-numberone"
+								onclick="loadToWrite()"
 							>글쓰기</button>
+
 						</c:if>
 					</div>
 				</div>
-				<div
-					class="row"
-					style="margin-top: 20px;"
-				>
+				<!-- 검색기능끝 -->
+
+
+				<!-- 지역선택 -->
+				<div class="row" style="margin-top: 20px;">
+
 					<div class="col">
-						<select
-							class="bdCategoryList"
-							onchange="selectRegion(1)"
-							id="regionInfo"
-						>
+						<select class="bdCategoryList" onchange="selectRegion(1)" id="regionInfo">
 							<option value="all">전국</option>
-							<option value="서울">서울</option>
-							<option value="인천">인천</option>
-							<option value="경기">경기</option>
-							<option value="강원">강원</option>
-							<option value="충청">충청</option>
-							<option value="전라">전라</option>
-							<option value="경상">경상</option>
-							<option value="제주">제주</option>
+							<option value="SEL">서울</option>
+							<option value="ICN">인천</option>
+							<option value="GGD">경기</option>
+							<option value="GWD">강원</option>
+							<option value="CCD">충청</option>
+							<option value="JLD">전라</option>
+							<option value="GSD">경상</option>
+							<option value="JJD">제주</option>
 						</select>
 					</div>
 				</div>
 
+				<!-- 지역선택 끝 -->
+
 				<!-- 글목록 -->
 
-
 				<div class="row sellbuyhead">
-					<div
-						class="col mb-2"
-						style="padding-top: 0.2rem;"
-					>
+					<div class="col mb-2" style="padding-top: 0.2rem;">
 						<h3 style="font-size: 2.3rem; font-weight: 700;">팔구</h3>
 					</div>
 				</div>
 				<div id="regionList">
+					<!-- ajax 출력 시작지점  -->
+
 					<div id="sellList">
-						<c:forEach
-							items="${sell_buyList}"
-							var="sellList"
-						>
+						<c:forEach items="${sell_buyList}" var="sellList">
 							<div class="float_">
 								<div id="sellbuyscreen">
-									<a href="selectResellView?ubcode=${sellList.ubcode }&ubsellbuy=${sellList.ubsellbuy }&modifyCheck=LIST">
-										<img
-											alt=""
-											src="${pageContext.request.contextPath }/resources/img/resell/${sellList.ubmainimg }"
-										>
+									<a onclick="laodToView('${sellList.ubcode }')" href="javascript:void(0);"> <img alt="" src="${pageContext.request.contextPath }/resources/img/resell/${sellList.ubmainimg }">
 									</a>
 
 								</div>
-								<div
-									class="bottom"
-									style="font-weight: 600; position: relative;"
-								>
-									<span class="soldCheckMsg_ bold"></span>
-									<a href="selectResellView?ubcode=${sellList.ubcode }&ubsellbuy=${sellList.ubsellbuy }&modifyCheck=LIST">${sellList.ubtitle }</a>
+								<div class="bottom" style="font-weight: 600; position: relative;">
+									<span class="soldCheckMsg_ bold"></span> <a onclick="laodToView('${sellList.ubcode }')" href="javascript:void(0);">${sellList.ubtitle }</a>
 								</div>
 
 								<div style="height: 2rem; font-size: 1.6rem; padding: 0; color: grey;">${sellList.ubdatedef }&nbsp;
-									<span style="color: red; font-size: 1.8rem;"> <i class='fa-regular fa-heart'></i>
-									</span>
+
+									<span style="color: red; font-size: 1.8rem;" onclick="clickZzim('${sellList.ubcode }')" id="zzimCheck_${sellList.ubcode }"> <c:choose>
+											<c:when test="${sellList.zzimcheck != null }">
+												<i id="zzimState_${sellList.ubcode }" class='fa-heart fa-solid'></i>
+											</c:when>
+											<c:otherwise>
+												<i id="zzimState_${sellList.ubcode }" class='fa-heart fa-regular'></i>
+											</c:otherwise>
+										</c:choose>
+									</span> <span style="color: initial; font-size: 1.8rem;" id="zzimCount_${sellList.ubcode }"> ${sellList.ubzzim } </span>
+
+
 								</div>
-								<div
-									class="bottom"
-									style="font-size: 1.7rem; font-weight: 600; position: relative;"
-								>
-									<span
-										onclick="writeMemberSellbuy('${sellList.ubnickname }')"
-										style="height: 1.8rem; font-size: 1.6rem; padding: 0; color: initial; cursor: pointer;"
-									>${sell_List.ubnickname }</span>
+
+
+
+								<div class="bottom" style="font-size: 1.7rem; font-weight: 600; position: relative;">
+									<span onclick="writeMemberSellbuy('${sellList.ubnickname }')" style="height: 1.8rem; font-size: 1.6rem; padding: 0; color: initial; cursor: pointer;">${sellList.ubnickname }</span>
 								</div>
-								<input
-									type="hidden"
-									class="ubstate"
-									value="${sellList.ubstate }"
-								>
+								<input type="hidden" class="ubstate_" value="${sellList.ubstate }">
 							</div>
 						</c:forEach>
 
@@ -359,49 +346,37 @@ div.col.mb-2 h3 {
 
 				</div>
 				<div style="clear: left;"></div>
+				<!-- 글목록 끝-->
 
 
+				<!-- 페이지 번호 출력 -->
 
-
-				<input
-					type="hidden"
-					id="pageNum"
-					name="page"
-					value="1"
-				>
-				<div
-					class="block text-center"
-					id="pageList"
-				>
+				<input type="hidden" id="pageNum" name="page" value="1">
+				<div class="block text-center" id="pageList">
 					<ul class="pagination">
 						<c:choose>
 							<c:when test="${paging.prev }">
-								<li class="paginate_button"><a href="selectResellPageList?page=${paging.page-1 }&sellBuy=S">이전</a></li>
+								<li class="paginate_button"><a onclick="paginationBtn('${paging.page-1 }')" href="javascript:void(0);">이전</a></li>
 							</c:when>
 							<c:otherwise>
 								<li class="paginate_button"><span>이전</span></li>
 							</c:otherwise>
 						</c:choose>
 
-						<c:forEach
-							begin="${paging.startPage }"
-							end="${paging.endPage }"
-							var="num"
-							step="1"
-						>
+						<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="num" step="1">
 							<c:choose>
 								<c:when test="${paging.page == num }">
 									<li class=""><a class="active">${num }</a></li>
 								</c:when>
 								<c:otherwise>
-									<li class="paginate_button "><a href="selectResellPageList?page=${num}&sellBuy=S">${num }</a></li>
+									<li class="paginate_button "><a onclick="paginationBtn('${num}')" href="javascript:void(0);">${num }</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
 
 						<c:choose>
 							<c:when test="${paging.next }">
-								<li class="paginate_button"><a href="selectResellPageList?page=${paging.page+1 }&sellBuy=S">다음</a></li>
+								<li class="paginate_button"><a onclick="paginationBtn('${paging.page+1 }')" href="javascript:void(0);">다음</a></li>
 							</c:when>
 							<c:otherwise>
 								<li class="paginate_button"><span>다음</span></li>
@@ -409,7 +384,9 @@ div.col.mb-2 h3 {
 						</c:choose>
 					</ul>
 				</div>
-				<!-- 팔구div끝  -->
+				<!-- 페이지 번호 출력 -->
+
+
 
 			</div>
 		</section>
@@ -417,39 +394,57 @@ div.col.mb-2 h3 {
 
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp"%>
 
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
-		crossorigin="anonymous"
-	></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
 <script type="text/javascript">
-	const checkMsg = '${msg}'; //글작성 후 페이지 이동했을 때 출력 메시지
+	//글작성 후 페이지 이동했을 때 출력 메시지
+	const checkMsg = '${msg}';
 	if (checkMsg.length > 0) {
 		alert(checkMsg);
 	}
 
-	let storage = window.localStorage; //스토리지를  변수 초기화
+	// 로컬스토리지 초기화
+	let storage = window.localStorage;
+	console.log('스토리지아이템갯수', storage.length); //현재 로컬스토리지에 저장된 아이템 갯수
 
+	// 페이지로드 시 거래완료된 글 확인
 	window.onload = function() {
 		soldCheck();
 	}
+	/* 거래완료 글 체크표시  */
+	function soldCheck() {
+		console.log('거래완료글체크시작')
+			
+		
+		for (let i = 0; i < ubstate.length; i++) {
+			if (ubstate[i].value === '9') {
+	
+				console.log("거래완료글확인")
+				soldCheckMsg[i].textContent = "(거래완료) "
+
+			}
+		}
+	}
+
+	/* 로컬스토리지 아이템 확인 */
 	if (storage.getItem('searchType') != null) {
-		var searchType_storage = storage.getItem('searchType');
-		console.log('로컬스토리지 검색타입 : ', searchType_storage);
+		console.log('로컬스토리지 검색타입 : ', storage.getItem('searchType'));
+		storage.removeItem('searchType');
 	}
 	if (storage.getItem('keyword') != null) {
-		var keyword_storage = storage.getItem('keyword');
-		console.log('로컬스토리지 검색어 : ', keyword_storage);
+		console.log('로컬스토리지 검색어 : ', storage.getItem('keyword'));
+		storage.removeItem('keyword');
 	}
 	if (storage.getItem('selRegion') != null) {
-		var selRegion_storage = storage.getItem('selRegion');
-		console.log('로컬스토리지 선택지역 : ', selRegion_storage);
+		console.log('로컬스토리지 선택지역 : ', storage.getItem('selRegion'));
+		storage.removeItem('selRegion');
 	}
 	if (storage.getItem('page') != null) {
-		var page_storage = storage.getItem('page');
-		console.log('로컬스토리지 선택지역 : ', page_storage);
+		console.log('로컬스토리지 페이지번호 : ', storage.getItem('page'));
+		storage.removeItem('page');
 	}
+
+	storage.setItem('page', '1'); //페이지번호 기본값 1
 </script>
 
 
@@ -464,89 +459,92 @@ div.col.mb-2 h3 {
 	const ubstate = document.querySelectorAll('.ubstate_');
 
 	let regionInfo = document.getElementById("regionInfo");
-	let soldCheckMsg = document.querySelectorAll('.soldCheckMsg_');
+	let searchInfo = document.getElementById("searchType");
+
+	let selRegion = regionInfo.value; // 현재 선택되어있는 지역
+
+	const soldCheckMsg = document.querySelectorAll('.soldCheckMsg_');
 
 	console.log("체크메세지", checkSearch);
 
-	if (checkSearch === 'OK') { // 메인페이지에서 검색을 통해 페이지이동해 왔을 때 	
-		const searchType_main = '${paging.searchType}'; //매인에서 선택한 검색타입
-		const keyword_main = '${paging.keyword}'; //메인에서 입력한 검색어
-		console.log("메인페이지에서 검색");
-		console.log('메인에서 선택한 검색타입 : ', searchType_main);
-		console.log('메인에서 입력한 검색어 : ', keyword_main);
-		keyword.value = keyword_main;
+	// 단순 페이지이동 ( 메인페이지에서 더보기 클릭 , 상세페이지에서 글목록 클릭, 사이드바에서 클릭)
+	//checkSearch의 값이 'NO' 일 경우
+	console.log('체크메세지 : NO')
 
-		for (let i = 0; i < searchType.options.length; i++) {
-			if (searchType.options[i].value === searchType_main) {
-				searchType.options[i].selected = 'true';
+	console.log('지역확인 : ', selectRegion_param);
+	console.log('검색어확인 : ', searchedKeyword_param);
+	console.log('검색타입확인 : ', searchedType_param);
+
+	if (selectRegion_param != null) {
+		/* 페이지에 지역파라메터가 있다면 실행 : 파라메터와 일치하는 option에 selected*/
+
+		for (let i = 0; i < regionInfo.options.length; i++) {
+			if (regionInfo.options[i].value === selectRegion_param) {
+				regionInfo.options[i].selected = 'true';
 				break;
 			}
 		}
 	}
 
-	else if (checkSearch === 'write') { //글 작성 후 이동해왔을 시 [전국]으로 selected 하기위한 코드
+	if (searchedKeyword_param != null) {
+		/* 페이지에 검색어파라메터가 있다면 실행 : 검색input에 검색어출력*/
 
-		console.log("글 작성");
-		regionInfo.options[0].selected = "true"; //0번인덱스가 [전국]
+		document.getElementById('keyword').value = searchedKeyword_param;
+
 	}
 
-	else { // 단순 페이지이동 ( 메인페이지에서 더보기 클릭 , 상세페이지에서 글목록 클릭, 사이드바에서 클릭)
-		//checkSearch의 값이 'NO' 일 경우
-		console.log('체크메세지 : NO')
-		console.log('selectRegion_param : ', selectRegion_param);
-		console.log('searchedKeyword_param : ', searchedKeyword_param);
-		console.log('searchedKeyword_param : ', searchedType_param);
+	if (searchedType_param != null) {
+		/* 페이지에 검색타입파라메터가 있다면 실행 : 파라메터와 일치하는 option에 selected */
 
-		if (selectRegion_param != null) {
-			console.log('selectRegion_param 널아님');
-
-			for (let i = 0; i < regionInfo.options.length; i++) {
-				if (regionInfo.options[i].value === selectRegion_param) {
-					regionInfo.options[i].selected = 'true';
-					break;
-				}
-			}
-		}
-		if (searchedKeyword_param != null) {
-			console.log('searchedKeyword_param 널아님');
-			document.getElementById('keyword').value = searchedKeyword_param;
-
-		}
-		if (searchedType_param != null) {
-
-			console.log('searchedType_param 널아님');
-			for (let i = 0; i < searchType.options.length; i++) {
-				if (searchType.options[i].value === searchedType_param) {
-					searchType.options[i].selected = 'true';
-					break;
-				}
-			}
-
-		}
-	}
-</script>
-
-
-<script type="text/javascript">
-	/* 판매완료 글 체크표시  */
-	function soldCheck() {
-		for (let i = 0; i < ubstate.length; i++) {
-			console.log(ubstate[i].value);
-
-			if (ubstate[i].value === '9') {
-				console.log("판매완료글확인")
-				soldCheckMsg[i].textContent = "(판매완료) "
+		for (let i = 0; i < searchInfo.options.length; i++) {
+			if (searchInfo.options[i].value === searchedType_param) {
+				searchInfo.options[i].selected = 'true';
+				break;
 			}
 		}
 	}
 </script>
 
-
-<!-- 지역 검색 -->
+<!-- 페이지이동시 상세페이지에서 글목록으로 돌아올 때 필요한 값 저장. -->
 <script type="text/javascript">
-	/* 지역선택 이벤트  */
+	/* 페이지 이동 시 현재 페이지 정보 저장을 위한 이벤트 핸들러 */
 
-	storage.setItem('page', '1'); //페이지번호 디폴트 1
+	/* 페이지 번호저장. */
+	function paginationBtn(pageNum) {
+		storage.setItem('page', pageNum); // 로컬스토리지 페이지번호 저장
+
+		location.href = "selectResellPageList?page=" + pageNum
+				+ "&sellBuy=S&searchVal=" + selectRegion_param;
+	}
+
+	/* 상세페이지 클릭시 선택되어있는 검색타입, 검색어, 지역 저장 */
+
+	function laodToView(ubcode) {
+		storage.setItem('searchType',
+				document.getElementById("searchType").value); // 로컬스토리지 검색타입 저장
+		storage.setItem('keyword', document.getElementById("keyword").value); // 로컬스토리지 검색어 저장
+		storage.setItem('selRegion', regionInfo.value); // 로컬스토리지 선택지역 저장
+
+		location.href = "selectResellView?ubcode=" + ubcode
+				+ "&ubsellbuy=S&modifyCheck=LIST";
+	}
+
+	/* 글쓰기 버튼 클릭시 선택되어있는 검색타입, 검색어, 지역 저장*/
+	function loadToWrite() {
+		storage.setItem('searchType',
+				document.getElementById("searchType").value);
+		storage.setItem('keyword', document.getElementById("keyword").value);
+		storage.setItem('selRegion', regionInfo.value);
+
+		location.href = "loadToResellWriteForm?ubsellbuy=S&ubrgcode="
+				+ regionInfo.value;
+	}
+</script>
+
+
+<!-- 지역선택, 검색 스크립트 -->
+<script type="text/javascript">
+	/* 지역선택, 검색 이벤트  */
 
 	/* ajax를 위한 객체 생성 */
 	let paging = {
@@ -564,7 +562,7 @@ div.col.mb-2 h3 {
 		/* 객체에 이벤트가 실행되었을 때의 데이터를 저장  */
 		paging.searchType = document.getElementById("searchType").value;
 		paging.keyword = document.getElementById("keyword").value;
-		paging.searchVal = regionInfo.options[regionInfo.selectedIndex].value;
+		paging.searchVal = regionInfo.value;
 		paging.page = page;
 		paging.ajaxCheck = 'REGION'
 
@@ -574,14 +572,14 @@ div.col.mb-2 h3 {
 		console.log('검색어 : ', paging.keyword);
 		console.log('검색타입 : ', paging.searchType);
 		console.log("선택된 지역 : ", paging.searchVal);
-		console.log("페이지번호 : ", paging.searchVal);
+		console.log("페이지번호 : ", paging.page);
 		console.log('======================');
 
-		/* 로컬스토리지에 데이터 저장(글 목록을 select하기위해 필요한 데이터들) */
-		storage.setItem('searchType', paging.searchType); // 로컬스토리지에 검색타입 저장
-		storage.setItem('keyword', paging.keyword); // 로컬스토리이제 검색어 저장
-		storage.setItem('selRegion', paging.searchVal); // 로컬스토리이제 선택지역 저장
-		storage.setItem('page', paging.page); // 로컬스토리이제 페이지번호 저장
+		/* 로컬스토리지 데이터 저장(글 목록을 select하기위해 필요한 데이터들) */
+		storage.setItem('searchType', paging.searchType); // 로컬스토리지 검색타입 저장
+		storage.setItem('keyword', paging.keyword); // 로컬스토리지 검색어 저장
+		storage.setItem('selRegion', paging.searchVal); // 로컬스토리지 선택지역 저장
+		storage.setItem('page', paging.page); // 로컬스토리지 페이지번호 저장
 
 		//ajax를 통해 선택된 지역의 목록을 가져온다.		
 		$.ajax({
@@ -592,15 +590,15 @@ div.col.mb-2 h3 {
 			data : paging,
 			success : function(result) {
 				output_page = '';
-				alert("성공");
 				console.log("결과 : " + result);
 				listOutput(result); //목록 출력용 함수
 				document.getElementById("regionList").innerHTML = output_page;
 			}
 
 		})
-		/* 페이징  */
+		/* ajax의 data 는 data : 객체,   를 보내는 형식인데, paging 자체가 객체이므로 변수명만 작성해줘야 값이 전송된다.  */
 
+		////////////////////////* 페이지네이션 ajax *//////////////////////////
 		// ajax체크메세지 저장. (페이지번호출력을 위한 ajax인지, 지역목록출력을 위한 ajax 인지 구분하기위해)
 		paging.ajaxCheck = 'PAGE';
 
@@ -612,14 +610,12 @@ div.col.mb-2 h3 {
 					async : false,
 					data : paging,
 					success : function(result) {
-						alert("page_ajax");
 						console.log("결과페이지 : " + result.page);
 
 						let output_pageNum = "<ul class='pagination'>";
 						if (result.prev) {
-							output_pageNum += '<li class=\"paginate_button\" <a href=\"javascript:void(0);\" onclick=\"selectRegion('
-									+ (result.page - 1)
-									+ ')\">[이전]</a></button>';
+							output_pageNum += '<li class=\"paginate_button\"> <a href=\"javascript:void(0);\" onclick=\"selectRegion('
+									+ (result.page - 1) + ')\">이전</a></button>';
 						} else {
 							output_pageNum += "<li class='paginate_button'><span>이전</span></li>";
 						}
@@ -642,9 +638,135 @@ div.col.mb-2 h3 {
 						document.getElementById("pageList").innerHTML = output_pageNum;
 					}
 				})
-
 	}
 </script>
+
+
+
+<!-- ajax에 사용되는  페이지출력을 위한 스크립트 -->
+<script type="text/javascript">
+	/* ajax에 사용되는 글 목록 출력 함수 */
+	function listOutput(result) {
+
+		for ( let i in result) {
+
+			output_page += '<div id=\"sellList\"><div class=\"float_\">'
+					+ '<div id=\"sellbuyscreen\">'
+					+ '<a href=\"selectResellView?ubcode='
+					+ result[i].ubcode
+					+ '&ubsellbuy='
+					+ result[i].ubsellbuy
+					+ '&modifyCheck=LIST\">'
+					+ '<img alt=\"이미지\" src=\"${pageContext.request.contextPath }/resources/img/resell/'+result[i].ubmainimg+'\">'
+					+ '</a>'
+					+ '</div>'
+					+ '<div class=\"bottom\" style=\"font-weight:600; position:relative;\">'
+					+ '<span class=\"soldCheckMsg_ bold\"></span>'
+					+ '<a href=\"selectResellView?ubcode='
+					+ result[i].ubcode
+					+ '&ubsellbuy='
+					+ result[i].ubsellbuy
+					+ '&modifyCheck=LIST\">'
+					+ result[i].ubtitle
+					+ '</a>'
+					+ '</div>'
+					+ '<div style=\"height:2rem; font-size:1.6rem; padding:0; color:grey;\">'
+					+ result[i].ubdatedef
+					+ '&nbsp'
+					+ '<span style=\"color:red; font-size:1.8rem;\">'
+					+ '<i class=\"fa-regular fa-heart\"></i>'
+					+ '</span>'
+					+ '</div>'
+					+ '<div class=\"bottom\" style=\"font-size:1.7rem; font-weight:600; position:relative;\">'
+					+ '<span onclick=\"writeMemberSellbuy('
+					+ result[i].ubnickname
+					+ ')\" style=\"height:1.8rem; font-size:1.6rem; padding:0; color:initial; cursor:pointer;\">'
+					+ result[i].ubnickname
+					+ '</span>'
+					+ '</div>'
+					+ '<input type=\"hidden\" class=\"ubstate_\" value=\"'+result[i].ubstate+'\">'
+					+ '</div>';
+		}
+	}
+</script>
+
+<script type="text/javascript">
+
+</script>
+
+<script type="text/javascript">
+	/* 메인에서 찜 버튼 클릭 */
+	function clickZzim(ubcode) {
+
+		console.log(ubcode);
+		var loginId = '${loginId}';
+
+		//로그인 체크
+		if ('${loginId}'.length == 0) {
+			alert("script-로그인 후 이용가능합니다");
+		}
+
+		//찜 체크
+		var zzim_Check;
+		console.log($("#zzimState_" + ubcode).attr("class")[12]);
+		//현재 찜상태 s:찜O r:찜X
+		var zzimState = $("#zzimState_" + ubcode).attr("class")[12];
+		if (zzimState == 's') {
+			//현재 찜이 되어 있는 경우
+			console.log("zzim O")
+			zzim_Check = 'CHECK';
+		} else {
+			//현재 찜이 안되어 경우
+			console.log("zzim X")
+			zzim_Check = 'UNCHECK';
+		}
+
+		var zzimCount = $("#zzimCount_" + ubcode).text().trim();
+		console.log(zzimCount);
+
+		$.ajax({
+			type : "get",
+			url : "zzimClick_ajax",
+			async : false, //전역변수 값 저장을 위해 필요
+			data : {
+				"zzubcode" : ubcode,
+				"zzmid" : loginId,
+				"zzim_Check" : zzim_Check
+			},
+
+			success : function(zzimCheck) {
+				console.log("zzimCheck : " + zzimCheck);
+
+				if (zzimCheck == 'CHECK') { //찜 했을 때
+					//하트 채우기
+					$("#zzimState_" + ubcode).removeClass("fa-regular")
+							.addClass("fa-solid");
+
+					//증가
+					console.log("증가 요청");
+					if (zzimCount == 0) {
+						zzimCount = 1;
+					} else {
+						zzimCount = parseInt(zzimCount) + 1;
+					}
+
+				} else { //찜 취소했을 때
+					//하트 비우기
+					$("#zzimState_" + ubcode).removeClass("fa-solid").addClass(
+							"fa-regular");
+
+					//감소				
+					console.log("감소 요청");
+					zzimCount = parseInt(zzimCount) - 1;
+
+				}
+				$("#zzimCount_" + ubcode).text(zzimCount);
+			}
+		})
+	}
+</script>
+
+
 <%-- 
 <!-- 검색 스크립트  -->
 <script type="text/javascript">
@@ -684,7 +806,6 @@ paging.ajaxCheck = 'REGION';
 			async : false,
 			data : paging,			
 			success : function(result) {
-				alert("검색성공");
 				console.log("결과 : " + result);
 
 				output_page = '';
@@ -702,7 +823,6 @@ paging.ajaxCheck = 'REGION';
 					async : false,
 					data : paging,
 					success : function(result) {
-						alert("page_ajax");
 						console.log("결과페이지 : " + result.page);
 						
 						let output_pageNum = "<ul class='pagination'>";
@@ -732,53 +852,5 @@ paging.ajaxCheck = 'REGION';
 	}
 </script>
 --%>
-<!-- 페이지 출력 함수 -->
-<script type="text/javascript">
-	function listOutput(result) {
-
-		for ( let i in result) {
-
-			output_page += '<div id=\"sellList\"><div class=\"float_\">'
-					+ '<div id=\"sellbuyscreen\">'
-					+ '<a href=\"selectResellView?ubcode='
-					+ result[i].ubcode
-					+ '&ubsellbuy='
-					+ result[i].ubsellbuy
-					+ '&modifyCheck=LIST\">'
-					+ '<img alt=\"이미지\"	src=\"${pageContext.request.contextPath }/resources/img/resell/'+result[i].ubmainimg+'\">'
-					+ '</a>'
-					+ '</div>'
-					+ '<div class=\"bottom\" style=\"font-weight:600; position:relative;\">'
-					+ '<span class=\"soldCheckMsg_ bold\"></span>'
-					+ '<a href=\"selectResellView?ubcode='
-					+ result[i].ubcode
-					+ '&ubsellbuy='
-					+ result[i].ubsellbuy
-					+ '&modifyCheck=LIST\">'
-					+ result[i].ubtitle
-					+ '</a>'
-					+ '</div>'
-					+ '<div style=\"height:2rem; font-size:1.6rem; padding:0; color:grey;\">'
-					+ result[i].ubdatedef
-					+ '&nbsp'
-					+ '<span style=\"color:red; font-size:1.8rem;\">'
-					+ '<i class=\"fa-regular fa-heart\"></i>'
-					+ '</span>'
-					+ '</div>'
-					+ '<div class=\"bottom\" style=\"font-size:1.7rem; font-weight:600; position:relative;\">'
-					+ '<span onclick=\"writeMemberSellbuy('
-					+ result[i].ubnickname
-					+ ')\" style=\"height:1.8rem; font-size:1.6rem; padding:0; color:initial; cursor:pointer;\">'
-					+ result[i].ubnickname
-					+ '</span>'
-					+ '</div>'
-					+ '<input type=\"hidden\" class=\"ubstate_\" value=\"'+result[i].ubstate+'\">'
-					+ '</div>';
-		}
-	}
-</script>
-
-
-
 
 </html>

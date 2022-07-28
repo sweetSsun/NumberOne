@@ -129,24 +129,22 @@
 		font-size: 18px;
 	}
 	.img-container{
+
      overflow: hidden;
      display: flex;
-     align-items: center;
-     justify-content: center;
-     border: solid #E0E0E0 2px;
+/*      align-items: center; */
+/*      justify-content: center; */
+/*      border: solid #E0E0E0 2px; */
      margin-top: 2%;
-     width: 200px;
-     height: 200px;
+     width: 450px;
+     height: 350px;
      
    }
    #upload_Img{
-   	width: 200px;
-   	height: 200px;
+   	width: 450px;
+   	height: 350px;
    	object-fit: cover;
    }
-
-
-
 </style>
 </head>
 <body>
@@ -208,6 +206,11 @@
 					<!-- 실험 -->
 					
 					<!-- 본문 글 내용-->
+					<c:if test="${noticeBoard.nbimg != null }">
+						<div class="img-container" >
+							<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg }">
+						</div>
+					</c:if >
 					<div class="row mt-3 mb-1 boardContents">
 						<div class="col">
 							<textarea id="inputReply" rows="10%" cols="100%" readonly>${noticeBoard.nbcontents }</textarea>
@@ -219,7 +222,9 @@
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
 				<div class="row mb-2">
 					<div class="col-2">
-						<input onclick="boardList()" type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록"> 
+							<a href="selectNoticeBoardList?NbCheck=NB&${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}">
+							<input  type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
+							</a>
 					</div>
 				<c:choose>
 					<c:when test="${sessionScope.loginId == board.bdmid && sessionScope.loginId != 'admin' }">
@@ -237,23 +242,17 @@
 							<i id="bdWarning" onclick="bdWarningCheckModal()" class='fa-solid fa-land-mine-on  fa-2x icon' style="margin-right: 2px; font-size:30px"></i>
 						</div>
 					</c:when> --%>
-					
-					<c:when test="${sessionScope.loginId == 'admin' }">
-						<div align="right" class="col">
-							<input onclick="adminBoardStop('${board.bdcode}')" type="button" style="left:0;" class="middleBtn btn btn-sm bg-secondary fw-bold text-white" value="정지">
-						</div>
-					</c:when>
 				</c:choose>
 				</div>
 				
-				<c:if test="${noticeBoard.nbimg != null }">
+<%-- 				<c:if test="${noticeBoard.nbimg != null }">
 					<div class="img-container" >
 						<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg }">
 					</div>
 					<div style="background-color: #00bcd4; width: 200px; color:white;  margin-bottom: 2%;" class="text-center fw-bold">
 						업로드 이미지
 					</div>				
-				</c:if >
+				</c:if > --%>
 				
 				<%-- <!------------------ 댓글영역 ------------------->
 				<div class="mb-2" id="commentBox">
@@ -419,13 +418,7 @@
 	});
 </script>
 
-<script type="text/javascript">
-	/* 글목록 버튼 클릭 시 */
-	function boardList(){
-		/* 넘어온 게시판으로 다시 이동 */
-		location.href="selectNoticeBoardList";
-	}
-</script>
+
 
 <script type="text/javascript">
 		// 게시글 경고 모달창 close 하는 스크립트
@@ -826,12 +819,6 @@
 
 <!-- 관리자용 -->
 <script type="text/javascript">
-	function adminBoardStop(bdcode){
-		/* 관리자 - 게시글 정지  */
-		console.log(bdcode);
-		location.href="admin_updateBoardStop?bdcode="+bdcode;
-	}
-
 	function adminReplyStop(rpcode){
 		/* 관리자 - 댓글 정지 */
 		console.log(rpcode);

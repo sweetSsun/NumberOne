@@ -169,12 +169,12 @@ public class MemberService {
 				mav.setViewName("redirect:/loadToLogin");
 
 
-			}else if(loginMember.getMid().equals("admin")) {
-
-
-				session.setAttribute("loginId", loginMember.getMid());
-				session.setAttribute("loginNickname", loginMember.getMnickname());
-				mav.setViewName("redirect:/admin_loadToAdminMainPage");
+//			}else if(loginMember.getMid().equals("admin")) {
+//
+//
+//				session.setAttribute("loginId", loginMember.getMid());
+//				session.setAttribute("loginNickname", loginMember.getMnickname());
+//				mav.setViewName("redirect:/admin_loadToAdminMainPage");
 			
 			}else if(loginMember .getMstate() == 2){
 				ra.addFlashAttribute("msg", "탈퇴 처리 된 회원입니다.");
@@ -394,7 +394,10 @@ public class MemberService {
 		 
 		 member.setMid(loginId);
 		 
-		 //System.out.println(member);
+		 //삭제할 프로필 파일명
+		 String delFileName = member.getMprofile();
+		 //System.out.println("삭제할 파일: "+delFile);
+		 
 		     
 			 //이미지 파일
 		      MultipartFile mfile = member.getMfile();
@@ -414,10 +417,9 @@ public class MemberService {
 		         System.out.println("변경프로필 : " + mprofile);
 		      }else {
 		    	  if(loginProfile !=null) {
-		    		  System.out.println("변경 이미지 파일 없고, 기존 이미지 있음");
-		    		  System.out.println(member.getMprofile().substring(0, 4));
+		    		  //System.out.println("변경 이미지 파일 없고, 기존 이미지 있음");
 		    		  
-		    		  if(member.getMprofile().substring(0, 4).equals("del_")) {
+		    		  if(delFileName.length() != 0) {
 		    			  System.out.println("프로필 삭제");
 		    			  member.setMprofile("");  
 		    			  //System.out.println("프로필 삭제 if문 : "+member);
@@ -446,18 +448,38 @@ public class MemberService {
 		      
 	    	  int memberInfoModify = mdao.updateMyInfoMemberModify(member);
 	    	  
-	    	  if(memberInfoModify != 0) {
-	    		  
-	    		  System.out.println("회원정보가 수정 성공");
-	    		  session.setAttribute("loginProfile", member.getMprofile());
-	    		  ra.addFlashAttribute("msg", "회원정보가 수정 되었습니다.");
-	    		  mav.setViewName("redirect:/selectMyInfoMemberView");
-	    	  }else {
-	    		  System.out.println("회원정보가 수정 실패");
+	    	  if(memberInfoModify == 0) {
+	    		  System.out.println("회원정보 수정 실패");
 	    		  ra.addFlashAttribute("msg" , "회원 정보 수정을 실패하였습니다.");
 	    		  mav.setViewName("member/MyInfoMemberPage");
+	    		  
+	    		  //메소드 종료
+	    		  return mav;
 	    	  }
 	    	  
+	    	  System.out.println("회원정보 수정 성공");
+	    	  
+	    	  if(member.getMprofile().length() == 0 ) {
+	    		  session.setAttribute("loginProfile", null);
+	    	  } else {
+	    		  session.setAttribute("loginProfile", member.getMprofile());
+	    	  }
+	    	  
+	    	  ra.addFlashAttribute("msg", "회원정보가 수정 되었습니다.");
+    		  mav.setViewName("redirect:/selectMyInfoMemberView");
+	    		  
+    		  
+    		  //파일 처리
+    		  if(delFileName.length() != 0) {
+    			  System.out.println("기존 프로필 파일 삭제");
+    			  File delFile = new File(savePath, delFileName);
+    			  if(delFile.exists()) { //해당 파일 있는지 확인 후
+  					System.out.println(delFileName+"파일 삭제");
+  					delFile.delete(); //삭제
+  				}
+    		  }
+    		  
+    		  
 		return mav;
 	}	
 	
@@ -1001,9 +1023,74 @@ public class MemberService {
 			
 			return zzList_gson;
 		}
+		
+		 // 회원 신고 확인
+	      public String checkMemberWarning_ajax(String loginId, String wmedNickname) {
+	         System.out.println("service.checkMemberWarning_ajax() 호출");
+	         String mbwnCheck="No";
+	         int mbwnCheckNum = mdao.checkMemberWarning_ajax(loginId, wmedNickname);
+	         if (mbwnCheckNum == 1) {
+	            mbwnCheck = "Yes";
+	         }
+	         return mbwnCheck;
+	      }
+
+	      // 회원 신고
+	      public int insertMemberWarning_ajax(String loginId, String wmedNickname) {
+	         System.out.println("service.insertMemberWarning_ajax() 호출");
+	         int insertResult = mdao.insertMemberWarning_ajax(loginId, wmedNickname);
+	         return insertResult;
+	      }
+
+	  	//이메일 중복 확인 요청
+	  	public String selectMemberEmail_ajax(String inputEmail) {
+	  		System.out.println("MemberService.selectMemberEmail_ajax() 호출");
+	  		System.out.println(inputEmail);
+	  		int emailCheckResult = mdao.selectMemberEmail_ajax(inputEmail);
+	  		System.out.println(emailCheckResult);
+	  		if(emailCheckResult > 0) {
+	  			return "NO";
+	  		}else {
+	  			return "OK";
+	  		}
+	  	}
+
+	  	//마이페이지 _ 공구
+		public ModelAndView selectMyInfoGonguView(RedirectAttributes ra) {
+	
+				ModelAndView mav = new ModelAndView();
+				System.out.println("MemberService.selectMyInfoGonguView 호출");
+				
+				//로그인 여부 확인
+				if(session.getAttribute("loginId")==null) {
+					ra.addFlashAttribute("msg", "로그인 후 이용가능합니다.");
+					mav.setViewName("redirect:/loadToLogin");
+					return mav;
+				}
+				
+			    //String loginId = (String) session.getAttribute("loginId");
+				String loginId;
+				if((String) session.getAttribute("loginId")!=null) {			
+					loginId = (String) session.getAttribute("loginId");
+				} else {
+					loginId = (String) session.getAttribute("kakaoId");			
+				}
+				System.out.println("로그인 된 아이디 : " + loginId);
+				
+
+				//참여한 공구 목록 
+				//ArrayList<BoardDto> board = mdao.selectMyInfoMemberView_Boards(loginId);
+				//System.out.println(board);
+
+				//mav.addObject("board", board);
+	
+				mav.setViewName("member/MyInfoGonguPage");
+
+				return mav;
+			}
+		}
 
 
-}
 
 
 

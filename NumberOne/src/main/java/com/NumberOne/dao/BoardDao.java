@@ -38,6 +38,8 @@ public interface BoardDao {
 	
 	//공지글검색 목록 조회 
 	ArrayList<NoticeDto> selectNoticeBoardList( Paging paging );
+	//공구글검색 목록 조회
+	ArrayList<NoticeDto> selectGonguBoardList( Paging paging );
 	
 	//게시판 공지글 상세페이지 이동 
 	NoticeDto selectNoticeBoardView(String nbcode);
@@ -191,7 +193,9 @@ public interface BoardDao {
 	
 	//공지게시판 전체 글 개수 조회 
 	int selectNoticeTotalCount(Paging paging);
-	
+	//공구게시판 전체 글 개수 조회 
+	int selectGonguTotalCount(Paging paging);
+		
 	//지역게시판 전체 글 개수 조회
 	int selectRegionTotalCount(Paging paging);
 	

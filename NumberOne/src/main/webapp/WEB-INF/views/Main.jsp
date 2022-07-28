@@ -197,7 +197,9 @@
 		    margin: auto;
 			border-radius: 20px;
 		}
-
+		.owl-carousel .owl-dots.disabled, .owl-carousel .owl-nav.disabled {
+    		display: block! important;
+   		}
 		
 		/* 두번째 배너 */
 		.owl-carousel .owl-item img, .owl-stage-outer {
@@ -392,89 +394,34 @@
             <div class="featured__filter" style="margin-left: 5%; margin-right: 3%; margin-bottom: 5%; min-height: 170px;">
             	<!-- 전체보기 -->
                 <div class="row mix all active">
-            	<p><a href="loadToBoardMainPage"  style="float: right; margin-bottom: 20px; font-size: 15px;">더보기</a></p>
+            	<p><a href="selectBoardList"  style="float: right; margin-bottom: 20px; font-size: 15px;">더보기</a></p>
             	<c:forEach items="${boardList }" end="5" var="boardList">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;border-right: solid 20px white">
                         <div class="row ahover">
-                        <a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList.bdcode}">
-                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
-                        		<h3>${boardList.bdtitle }</h3>
-                        	</div>
-                        	<div class="col-lg-4 col-md-4 col-sm-4">	
-                        		<h4>${boardList.bddate }</h4>
-                        	</div>
-<<<<<<< HEAD
-                        </div>
-                    </div>
-                </c:forEach>
-                </div>
-                
-                <!-- 자유보기 -->
-                <div class="row mix free" style="display:none;">
-            	<p><a href="selectFreeBoardList"  style="float: right; margin-bottom: 15px;">더보기</a></p>
-            	<c:forEach items="${boardList_free }" end="5" var="boardList_free">
-                    <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
-                        <div class="row">
-                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
-                        		<h3><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList_free.bdcode}">${boardList_free.bdtitle }</a></h3>
-                        	</div>
-                        	<div class="col-lg-4 col-md-4 col-sm-4">	
-                        		<h4>${boardList_free.bddate }</h4>
-                        	</div>
-                        </div>
-                    </div>
-                </c:forEach>
-                </div>
-                
-                <!-- 질문보기 -->
-                <div class="row mix question" style="display:none;">
-            	<p><a href="#"  style="float: right; margin-bottom: 15px;">더보기</a></p>
-            	<c:forEach items="${boardList_qa }" end="5" var="boardList_qa">
-                    <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
-                        <div class="row">
-                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
-                        		<h3><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList_qa.bdcode}">${boardList_qa.bdtitle }</a></h3>
-                        	</div>
-                        	<div class="col-lg-4 col-md-4 col-sm-4">	
-                        		<h4>${boardList_qa.bddate }</h4>
-                        	</div>
-                        </div>
-                    </div>
-                </c:forEach>
-                </div>
-                
-                <!-- 정보보기 -->
-                <div class="row mix information" style="display:none;">
-				<p><a href="#"  style="float: right; margin-bottom: 15px;">더보기</a></p>
-            	<c:forEach items="${boardList_info }" end="5" var="boardList_info">
-                    <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
-                        <div class="row">
-                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
-                        		<h3><a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList_info.bdcode}">${boardList_info.bdtitle }</a></h3>
-                        	</div>
-                        	<div class="col-lg-4 col-md-4 col-sm-4">	
-                        		<h4>${boardList_info.bddate }</h4>
-                        	</div>
-                        </div>
-                    </div>
-                </c:forEach>
-                </div>
-                
-                <!-- 후기보기 -->
-                <div class="row mix review" style="display:none;">
-            	<p><a href="#"  style="float: right; margin-bottom: 20px;">더보기</a></p>
-            	<c:forEach items="${boardList_review }" end="5" var="boardList_review">
-                    <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
-                        <div class="row">
-                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
-                        		<h3><a href="${pageContext.request.contextPath }/selectReviewBoardView?bdcode=${boardList_review.bdcode}">${boardList_review.bdtitle }</a></h3>
-                        	</div>
-                        	<div class="col-lg-4 col-md-4 col-sm-4">	
-                        		<h4>${boardList_review.bddate }</h4>
-                        	</div>
-=======
-                       	</a>
->>>>>>> 1a879d57c1d3db46226b489f9072c71e46b5902e
+                        <c:choose>
+                        	<c:when test="${boardList.bdcategory eq '후기' }">
+                        		<!-- 후기글 상세페이지 -->
+	                        	<a href="${pageContext.request.contextPath }/selectReviewBoardView${paging.makeQueryPage(boardList.bdcategory, bdtype, boardList.bdcode, paging.page)}">
+		                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
+		                        		<h3>${boardList.bdtitle }</h3>
+		                        	</div>
+		                        	<div class="col-lg-4 col-md-4 col-sm-4">	
+		                        		<h4>${boardList.bddate }</h4>
+		                        	</div>
+		                       	</a>
+                        	</c:when>
+                        	
+                        	<c:otherwise>
+		                        <a href="${pageContext.request.contextPath }/selectBoardView${paging.makeQueryPage(boardList.bdcategory, bdtype, boardList.bdcode, paging.page)}">
+		                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
+		                        		<h3>${boardList.bdtitle }</h3>
+		                        	</div>
+		                        	<div class="col-lg-4 col-md-4 col-sm-4">	
+		                        		<h4>${boardList.bddate }</h4>
+		                        	</div>
+		                       	</a>
+                        	</c:otherwise>
+                       	</c:choose>
                         </div>
                     </div>
                 </c:forEach>
@@ -486,7 +433,7 @@
             	<c:forEach items="${noticeList }" end="5" var="noticeList">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row ahover">
-                        <a href="${pageContext.request.contextPath }/selectNoticeBoardView?nbcode=${noticeList.nbcode}">
+                        <a href="${pageContext.request.contextPath }/selectNoticeBoardView${paging.makeQueryPage(noticeList.nbcode, paging.page)}">
                         	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
                         		<h3>${noticeList.nbtitle }</h3>
                         	</div>
@@ -501,11 +448,11 @@
                 
                 <!-- 자유보기 -->
                 <div class="row mix free" style="display:none;">
-            	<p><a href="selectFreeBoardList"  style="float: right; margin-bottom: 15px;">더보기</a></p>
+            	<p><a href="selectCategoryBoardList?searchVal=자유"  style="float: right; margin-bottom: 15px;">더보기</a></p>
             	<c:forEach items="${boardList_free }" end="5" var="boardList_free">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row ahover">
-                        <a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList_free.bdcode}">
+                        <a href="${pageContext.request.contextPath }/selectBoardView${paging.makeQueryPage(boardList_free.bdcategory, bdtype, boardList_free.bdcode, paging.page)}">
                         	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
                         		<h3>${boardList_free.bdtitle }</h3>
                         	</div>
@@ -520,11 +467,11 @@
                 
                 <!-- 질문보기 -->
                 <div class="row mix question" style="display:none;">
-            	<p><a href="#"  style="float: right; margin-bottom: 15px;">더보기</a></p>
+            	<p><a href="selectCategoryBoardList?searchVal=질문"  style="float: right; margin-bottom: 15px;">더보기</a></p>
             	<c:forEach items="${boardList_qa }" end="5" var="boardList_qa">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row ahover">
-                        <a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList_qa.bdcode}">
+                        <a href="${pageContext.request.contextPath }/selectBoardView${paging.makeQueryPage(boardList_qa.bdcategory, bdtype, boardList_qa.bdcode, paging.page)}">
                         	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
                         		<h3>${boardList_qa.bdtitle }</h3>
                         	</div>
@@ -539,11 +486,11 @@
                 
                 <!-- 정보보기 -->
                 <div class="row mix information" style="display:none;">
-				<p><a href="#"  style="float: right; margin-bottom: 15px;">더보기</a></p>
+				<p><a href="selectCategoryBoardList?searchVal=정보"  style="float: right; margin-bottom: 15px;">더보기</a></p>
             	<c:forEach items="${boardList_info }" end="5" var="boardList_info">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row ahover">
-                        <a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList_info.bdcode}">
+                        <a href="${pageContext.request.contextPath }/selectBoardView${paging.makeQueryPage(boardList_info.bdcategory, bdtype, boardList_info.bdcode, paging.page)}">
                         	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
                         		<h3>${boardList_info.bdtitle }</h3>
                         	</div>
@@ -558,11 +505,11 @@
                 
                 <!-- 후기보기 -->
                 <div class="row mix review" style="display:none;">
-            	<p><a href="#"  style="float: right; margin-bottom: 20px;">더보기</a></p>
+            	<p><a href="selectCategoryBoardList?searchVal=후기"  style="float: right; margin-bottom: 20px;">더보기</a></p>
             	<c:forEach items="${boardList_review }" end="5" var="boardList_review">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #F2F2FF;">
                         <div class="row ahover">
-                        <a href="${pageContext.request.contextPath }/selectBoardView?bdcode=${boardList_review.bdcode}">
+                        <a href="${pageContext.request.contextPath }/selectReviewBoardView${paging.makeQueryPage(boardList_review.bdcategory, bdtype, boardList_review.bdcode, paging.page)}">
                         	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
                         		<h3>${boardList_review.bdtitle }</h3>
                         	</div>
@@ -603,13 +550,13 @@
 	   		<!-- 팔구보기 -->
 		        <div id="resell" style="margin-left: 5%; margin-right: 5%; margin-bottom: 3%; min-height: 170px; width: 90%;">
 	           		<div>
-	           			<p style="text-align: right; margin-bottom: 20px;"><a href="selectResellPageList?sellBuy=S">팔구보기</a></p>
+	           			<p style="text-align: right; margin-bottom: 20px;"><a href="selectResellPageList?sellBuy=S&ajaxCheck=LIST">팔구보기</a></p>
 	            	
 		            	<div id="owl-banner_resell" class="owl-carousel">           		
 		           			<c:forEach items="${SellList }" end="4" var="SellList">
 			                	<div class="item" style="height:25rem; padding-bottom: 10px;">
 			                        <div style="height:80%">
-	                        			<a href="selectResellPageList?sellBuy=S"><img class="owl-carousel-img" alt="중고판매상세이동" src="${pageContext.request.contextPath }/resources/img/resell/${SellList.ubmainimg}"></a>
+	                        			<a href="selectResellView?ubcode=${SellList.ubcode }&ubsellbuy=${SellList.ubsellbuy }&modifyCheck=LIST"><img class="owl-carousel-img" alt="중고판매상세이동" src="${pageContext.request.contextPath }/resources/img/resell/${SellList.ubmainimg}"></a>
 			                        </div>
 			                        <div style="margin-top: 10px; font-size: 16px; height:20%">
 			                        	<div>
@@ -629,14 +576,14 @@
 	       <!-- 사구보기 -->        
 		        <div id="rebuy" class="display_none" style="margin-left: 5%; margin-right: 5%; margin-bottom: 3%; min-height: 170px; width: 90%;">
 	           		<div>
-	           			<p style="text-align: right; margin-bottom: 20px;"><a href="selectResellPageList?sellBuy=B">사구보기</a></p>
+	           			<p style="text-align: right; margin-bottom: 20px;"><a href="selectResellPageList?sellBuy=B&ajaxCheck=LIST">사구보기</a></p>
 	           		  	
 		            	<div id="owl-banner_rebuy" class="owl-carousel">
 		           		
 		            		<c:forEach items="${buyList }" end="4" var="buyList">
 			                	<div class="item" style="height:25rem; padding-bottom: 10px;">
 			                        <div style="height:80%">
-	                        			<a href="selectResellPageList?sellBuy=B"><img class="owl-carousel-img" alt="중고구매상세이동" src="${pageContext.request.contextPath }/resources/img/resell/${buyList.ubmainimg}"></a>
+	                        			<a href="selectResellView?ubcode=${buyList.ubcode }&ubsellbuy=${buyList.ubsellbuy }&modifyCheck=LIST"><img class="owl-carousel-img" alt="중고구매상세이동" src="${pageContext.request.contextPath }/resources/img/resell/${buyList.ubmainimg}"></a>
 			                        </div>
 			                        <div style="margin-top: 10px; font-size: 16px; height:20%">
 			                        	<div>

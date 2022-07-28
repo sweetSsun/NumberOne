@@ -10,9 +10,10 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>  
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
-<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/listCss.css" type="text/css">
+<!-- Css Styles -->
 <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/listCss.css" type="text/css">
+
 <style type="text/css">
 	section{
 		max-width: 70%;
@@ -63,7 +64,18 @@
 	.malmeori{
 		display: none;
 	}
-	
+   .bdnickname:hover{
+   	color:#00bcd4;
+   }
+section div.checkout__form{
+	/* 페이지 제목 */
+	color: #1c1c1c; 
+    font-weight: 700; 
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+    font-size : 24px;
+}
 </style>
 </head>
 <body>
@@ -84,12 +96,13 @@
 		<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
 		
 		<section>
+			<!-- 페이지명 -->
+			<div class="checkout__form" style="margin-top: 30px;">커뮤니티</div> 
+		
 		<!-- 본문 -->
 			<form action="selectBoardList" method="get"  id="actionForm">
 			<div class="container">
-				<div class="row" style="margin:auto;">
-					<h2 class="text-center">게시판 글목록 페이지 : BoardListPage.jsp</h2>
-				</div>
+
 					<div class="row ">
 						<!-- 검색기능 -->
 						<div class="col-5" align="right">
@@ -153,7 +166,7 @@
 									<a href="selectNoticeBoardList">공지</a>
 								</td>
 								<td class="tableCell">
-									<a href="selectNoticeBoardView?nbcode=${notice.nbcode }">${notice.nbtitle}</a>
+									<a href="selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page) }">${notice.nbtitle}</a>
 								</td>
 								<td class="text-center tableCell">관리자</td>
 								<td class="text-center tableCell">${notice.nbdate}</td>
@@ -178,19 +191,22 @@
 							</td>
 							<td class="tableCell">
 								<c:choose>
-									<c:when test="${board.bdcategory == '후기'  }">
-										<a href="selectReviewBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
+									<c:when test="${board.bdcategory eq '후기'  }">
+										<a href="selectReviewBoardView${paging.makeQueryPage(board.bdcode, paging.page) }">${board.bdtitle} 
 									 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
 									</c:when>
 									
 									<c:otherwise>
-									 	<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
+									 	<a href="selectBoardView${paging.makeQueryPage(board.bdcode, paging.page)}">${board.bdtitle}
+									 		<c:if test="${board.bdimg != null }">
+									 		<i class="fa-regular fa-image"></i>
+									 		</c:if>
 									 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
 									</c:otherwise>
 								</c:choose>
 							 </td>
 							<td class="text-center tableCell">
-								<span style="cursor: pointer" onclick="writeMemberBoard('${board.bdnickname}')">${board.bdnickname}</span>
+								<span style="cursor: pointer" class="bdnickname" onclick="writeMemberBoard('${board.bdnickname}')">${board.bdnickname}</span>
 							</td>
 							<td class="text-center tableCell" id="bddate">${board.bddate}</td>
 							<td class="text-center tableCell">${board.bdhits }</td>

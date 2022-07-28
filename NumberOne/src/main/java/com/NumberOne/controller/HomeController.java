@@ -62,8 +62,6 @@ public class HomeController {
 		
 		ModelAndView mav = new ModelAndView();
 		
-		
-		
 		// 고정된 자랑글 불러오기 :: 메인배너로 & 자랑글상세 링크 필요
 		ArrayList<BoardDto> fixList = bdao.selectFixedRoomView();
 		//System.out.println(fixList);
@@ -73,7 +71,6 @@ public class HomeController {
 		ArrayList<BoardDto> boardList = bdao.selectBoardList();
 		//System.out.println(boardList);
 		mav.addObject("boardList", boardList);
-		
 		
 		String bdcategory_Free = "자유";
 		String bdcategory_qa = "질문";
@@ -108,23 +105,27 @@ public class HomeController {
 	    
 		// 중고거래 팔구 목록 불러오기 /selectResellSellList
 	    Paging paging = new Paging();
-	    String checkMethod = "Main";
+	    String pageCheck = "Main";
 	    
 	    if((String) session.getAttribute("loginRegion") != null) {
 			paging.setSearchVal(rdao.selectRegionCode((String) session.getAttribute("loginRegion")));				
 		}
 	    paging.setSellBuy("S");	
-		ArrayList<UsedBoardDto> SellList = rdao.selectResellPageList(paging, checkMethod);
+		ArrayList<UsedBoardDto> SellList = rdao.selectResellPageList(paging, pageCheck);
 				
 		// 중고거래 사구 목록 불러오기 /selectResellBuyList
 		paging.setSellBuy("B");
-		ArrayList<UsedBoardDto> buyList = rdao.selectResellPageList(paging, checkMethod);
+		ArrayList<UsedBoardDto> buyList = rdao.selectResellPageList(paging, pageCheck);
 		
 		mav.addObject("SellList", SellList);
 		mav.addObject("buyList", buyList);
-
+		mav.addObject("paging", paging);
 		
-		mav.setViewName("Main");
+		if(session.getAttribute("loginId") != null && session.getAttribute("loginId").equals("admin")) {
+			mav.setViewName("admin/Admin_Main");
+		} else {
+			mav.setViewName("Main");
+		}
 		return mav;
 		
 	}

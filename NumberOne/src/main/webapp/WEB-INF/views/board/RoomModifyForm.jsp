@@ -100,6 +100,15 @@
 		height : 190px; width: 260px;
 		display : inline-block; 
 	}
+section div.checkout__form{
+	/* 페이지 제목 */
+	color: #1c1c1c; 
+    font-weight: 700; 
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+    font-size : 24px;
+}	
 </style>
 </head>
 <body>
@@ -121,7 +130,7 @@
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h2 class="text-center">자취방 자랑 글수정 페이지</h2>
+				<div class="checkout__form" style="margin-top: 30px;">자취방 자랑 - 글수정</div> 
 				<form action="updateRoomView" method="post" enctype="multipart/form-data" onsubmit="return roomModifyCh(${detailCount})">
 				<div class="row">
 					<input type="hidden" name="bdmid" value="${board.bdmid }">
@@ -147,7 +156,7 @@
 				</div>
 				<hr>
 				<div class="row">
-					<input class="bdtitle" name="bdtitle" type="text" value="${board.bdtitle }">
+					<input class="bdtitle" name="bdtitle" type="text" value="${board.bdtitle }" placeholder="제목">
 				</div>
 				<hr>
 				<div class="row">

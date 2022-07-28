@@ -343,6 +343,41 @@ public class MemberController {
 			return zzimList_gson;
 		}
 
+	      // 회원 신고 확인 요청
+	      @RequestMapping(value="/checkMemberWarning_ajax")
+	      public @ResponseBody String checkMemberWarning_ajax(String loginId, String wmedNickname) {
+	         System.out.println("회원 신고 확인 요청");
+	         String mbwnCheck = msvc.checkMemberWarning_ajax(loginId, wmedNickname);
+	         return mbwnCheck;
+	      }
+	      
+	      // 회원 신고
+	      @RequestMapping(value="/insertMemberWarning_ajax")
+	      public @ResponseBody int insertMemberWarning_ajax(String loginId, String wmedNickname) {
+	         System.out.println("회원 신고 요청");
+	         int insertResult = msvc.insertMemberWarning_ajax(loginId, wmedNickname);
+	         return insertResult;
+	      }
+
+	  	//이메일 중복 확인 요청
+	  	@RequestMapping(value = "/selectMemberEmail_ajax")
+	  	public @ResponseBody String selectMemberEmail_ajax(String inputEmail) {
+	  		System.out.println("이메일 중복 확인 요청");
+	  		System.out.println("입력한 이메일 : " + inputEmail);
+	  		String emailCheckResult = msvc.selectMemberEmail_ajax(inputEmail);
+	  		return emailCheckResult;  
+	  	}		
+		
+		//마이페이지 공구 
+		@RequestMapping(value = "/selectMyInfoGonguView")
+		public ModelAndView selectMyInfoGonguView(RedirectAttributes ra) {
+			System.out.println("마이페이지 커뮤니티");
+			mav = new ModelAndView();
+			mav = msvc.selectMyInfoGonguView(ra);
+			
+			return mav;
+			
+		}
 
 }
 

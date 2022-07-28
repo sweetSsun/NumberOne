@@ -47,10 +47,9 @@
 		<section>
 		<!-- 본문 -->
          <form action="admin_selectResellList" method="get" id="actionForm">
-			<div class="container">
-	            <div class="row" style="margin:auto;">
-	                <h4 class="text-center">중고거래 관리페이지 : Admin_ResellList.jsp</h4>
-	            </div>
+			<div class="container" style="margin-top: 10px">
+				<!-- 페이지 제목 -->
+				<div class="checkout__form">중고거래 관리</div>
 	            <!-- 검색 -->
 	            <div class="row">
 					<div class="col-5" align="right">
@@ -98,13 +97,14 @@
                </thead>
                <tbody id="bdListTbody">
 	               <c:forEach items="${usedBoardList }" var="usedBoard">
-	                   <!-- 회원관리 목록 -->
+	                   <!-- 중고거래 관리 목록 -->
 	                   <tr style="border-bottom: solid #E0E0E0 1px;">
 	                      <td class="text-center overflow">${usedBoard.ubcode}</td>
 	                      <td class="text-center"><img src="${pageContext.request.contextPath }/resources/img/resell/${usedBoard.ubmainimg }"
 	                      		class="img-fluid" style="width:60px; height:60px; object-fit:fill;"></td>
-	                      <td class="overflow"><a href="#">
-	                      ${usedBoard.ubtitle}</a></td>
+	                      <td class="overflow">
+	                      	<a href="admin_selectResellView${paging.makeQueryPage(usedBoard.ubcode, paging.page)}&ubsellbuy=${usedBoard.ubsellbuy}"> ${usedBoard.ubtitle}</a>
+	                      </td>
 	                      <td class="text-center overflow pointer" onclick="writeMemberSellbuy('${usedBoard.ubnickname}')">${usedBoard.ubnickname}</td>
 	                      <td class="text-center overflow">${usedBoard.ubdate}</td>
 	                      <td class="text-center">${usedBoard.ubwarning}</td>
@@ -331,7 +331,8 @@
 						output += "<td class='text-center overflow'>" + result[i].ubcode + "</td>";
 						output += "<td class='text-center'><img src='${pageContext.request.contextPath }/resources/img/resell/" + result[i].ubmainimg
 						+ "' class='img-fluid' style='width:60px; height:60px;  object-fit:fill;'></td>";
-						output += "<td class='overflow'><a href='admin_selectResellView?ubcode=" + result[i].ubcode + "'>" + result[i].ubtitle + "</a></td>";
+						output += "<td class='overflow'><a href='admin_selectResellView?${paging.makeQueryPage(paging.page)}&codeIdx=" + result[i].ubcode
+								+ "&ubsellbuy=" + result[i].ubsellbuy + "'>" + result[i].ubtitle + "</a></td>";
 						output += "<td class='text-center overflow pointer' onclick='writeMemberSellbuy(\"" + result[i].ubnickname + "\")'>" + result[i].ubnickname + "</td>";
 						output += "<td class='text-center overflow'>" + result[i].ubdate + "</td>";
 						output += "<td class='text-center'>" + result[i].ubwarning + "</td>";

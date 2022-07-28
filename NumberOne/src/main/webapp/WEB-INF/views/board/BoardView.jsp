@@ -89,7 +89,10 @@
 	.inputRpcontents{
 		font-size:20px;
 		border:none;
-		min-height: 2rem;
+	  overflow-y: hidden;
+	  resize: none;
+	  padding-bottom: 0.2em;
+		/* overflow-y: hidden; */
 	}
 	.outerCmtBox{
 		background-color : #F6F6F6;
@@ -130,25 +133,36 @@
 		font-size: 18px;
 	}
 	.img-container{
+
      overflow: hidden;
      display: flex;
-     align-items: center;
-     justify-content: center;
-     border: solid #E0E0E0 2px;
+/*      align-items: center; */
+/*      justify-content: center; */
+/*      border: solid #E0E0E0 2px; */
      margin-top: 2%;
-     width: 200px;
-     height: 200px;
+     width: 450px;
+     height: 2350px;
      
    }
    #upload_Img{
-   	width: 200px;
-   	height: 200px;
+   	width: 450px;
+   	height: 350px;
    	object-fit: cover;
    }
    #inputModifyRpBox{
    	border: solid #E0E0E0 2px; 
    	border-radius:5px;
    }
+   .rpnickname:hover{
+   	color:#00bcd4;
+   }
+   .bdnickname:hover{
+   	color:#00bcd4;
+   }
+   pre{
+   		font-family: 'pretendard';
+   }
+   
 </style>
 </head>
 <body>
@@ -179,7 +193,7 @@
 							
 							<c:choose>
 								<c:when test="${board.bdrgcode == 'ALL' }">
-									<a href="selectRegionBoardList"><span class="bdregion"> ${board.bdrgname}</span></a>
+									<a href="selectRegionBoardList?searchVal=ALL"><span class="bdregion"> ${board.bdrgname}</span></a>
 								</c:when>
 							
 								<c:otherwise>
@@ -223,6 +237,13 @@
 					<!-- 실험 -->
 					
 					<!-- 본문 글 내용-->
+					<c:if test="${board.bdimg != null }">
+					<div class="row" style="height:367px;">
+						<div class="col img-container" >
+							<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
+						</div>
+					</div>
+					</c:if >
 					<div class="row mt-3 mb-1 boardContents">
 						<div class="col">
 							<textarea id="inputReply" rows="10%" cols="100%" readonly>${board.bdcontents }</textarea>
@@ -234,7 +255,22 @@
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
 				<div class="row mb-2">
 					<div class="col-2">
-						<input onclick="boardList()" type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록"> 
+						<c:choose>
+							<c:when test="${paging.searchVal eq 'ALL' }">
+							<!-- 전체 글목록 페이지 -->
+							<a href="selectBoardList${paging.makeQueryPage(board.bdcode, paging.page)}">
+							<input type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
+							</a>
+							</c:when>
+							
+							<c:otherwise>
+							<!-- 자유~후기 글목록 페이지 -->
+							<a href="selectCategoryBoardList${paging.makeQueryPage(paging.searchVal, bdtype, board.bdcode, paging.page) }">
+							<input type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
+							</a>
+							</c:otherwise>
+							
+						</c:choose>
 					</div>
 				<c:choose>
 					<c:when test="${sessionScope.loginId == board.bdmid && sessionScope.loginId != 'admin' }">
@@ -261,14 +297,14 @@
 				</c:choose>
 				</div>
 				
-				<c:if test="${board.bdimg != null }">
+<%-- 				<c:if test="${board.bdimg != null }">
 					<div class="img-container" >
 						<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
 					</div>
 					<div style="background-color: #00bcd4; width: 200px; color:white; margin-bottom: 2%;" class="text-center fw-bold">
 						업로드 이미지
 					</div>				
-				</c:if >
+				</c:if > --%>
 				
 				<!------------------ 댓글영역 ------------------->
 				<div class="mb-2" id="commentBox">
@@ -326,7 +362,7 @@
 					</textarea>                
                 </div>
                 <div class="modal-footer">
-                	<input type="hidden" id="rpContentsBefore">
+                	<input type="hidden" id="rpmid">
                     <button class="close btn text-white" style="background-color:#00bcd4" onclick="rpModify()">등록</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal" onclick="rpModifyCancel()">취소</button>
                 </div>
@@ -411,18 +447,20 @@
 
 <script type="text/javascript">
 	
+	const bdmid = '${board.bdmid}'; //글작성자
+	const loginId = '${sessionScope.loginId}';//로그인 아이디
+	const bdcode = '${board.bdcode}';
+	const bdcategory = '${board.bdcategory}';
+	
 	var checkMsg = '${msg}';
 	if ( checkMsg.length > 0 ){
 		alert(checkMsg);
 	}
 </script>
 
-
 <script type="text/javascript">
-	//선택한 글번호 
-	var bdcode = '${board.bdcode}';
+
 	//현재 로그인중인 아이디
-	var loginId = '${sessionScope.loginId}';
 
 	$(document).ready(function(){
 		selectReplyList();//게시글 댓글목록
@@ -431,6 +469,7 @@
 		checkBoardRecommend();//게시글 추천 확인
 		checkBoardWarning();//게시글 신고 확인 
 		var bddate = timeForToday("${board.bddate }"); //게시글 작성 시간
+		
 		
 		$("#bddate").text(bddate);
 		//$("#bddate").text(bddate);
@@ -467,15 +506,6 @@
 		return time+" | ";
 		
  	}
-	
-</script>
-
-<script type="text/javascript">
-	/* 글목록 버튼 클릭 시 */
-	function boardList(){
-		/* 넘어온 게시판으로 다시 이동 */
-		location.href="selectCategoryBoardList?searchVal=${board.bdcategory}";
-	}
 	
 </script>
 
@@ -658,6 +688,7 @@
 </script>
 
 <script type="text/javascript">
+	
 	/* 게시글 수정, 삭제 */
 	function loadToBoardModify(){
 		/* 게시글 수정 페이지 이동  */
@@ -669,11 +700,8 @@
 		$("#bdDeleteCheckModal").modal('show');
 	}
 	function updateBoardDelete(){
-		
-		var bdmid = '${board.bdmid}';
 		/* 게시글 삭제(상태변경) */
 		//모달창에서 "네" 버튼 클릭 시 삭제
-		var bdcategory = '${board.bdcategory }';
 		location.href="updateBoardDelete?bdcode="+bdcode+"&bdcategory="+bdcategory+"&bdmid="+bdmid;
 	}
 	
@@ -682,7 +710,7 @@
 <script type="text/javascript">
 	/* 댓글관련 메소드 */	
 
-	/* 댓글입력_ajax */
+	/* 댓글등록_ajax */
 	function insertReply(){
 		var inputComment = $("#inputComment").val();
 		console.log("글번호 : " + bdcode);
@@ -694,10 +722,13 @@
 			data : { "bdcode" : bdcode, "rpcontents" : inputComment},
 			async : false,
 			success : function(insertResult){
-				if( insertResult > 0 ){
+				if( insertResult == 2 ){
+					alert("로그인 상태가 아닙니다!");
+				}else{
 					$("#inputComment").val("");
 					selectReplyList();
 					selectReplyCount();
+					
 				}
 			}
 		});
@@ -723,25 +754,25 @@
 
 						if( replyList[i].rpprofile != 'nomprofile' ){//프로필 이미지가 있을 시 
 							if(  replyList[i].rpmstate == 9 ){//카카오 회원
-								output += "<img class=\"img-profile rounded-circle rpProfile\"  src='"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle rpProfile mt-1\"  src='"+replyList[i].rpprofile + "'>"
 							}else{
-								output += "<img class=\"img-profile rounded-circle rpProfile\"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle rpProfile mt-1\"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
 							}
 						
-						
 						}else{//프로필 이미지가 없을 시 
-							output += "<img class=\"img-profile rounded-circle rpProfile_None\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
+							output += "<img class=\"img-profile rounded-circle rpProfile_None mt-1\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
 						}
 						output += "</div>"
 						
 						output += "<div class=\"col-11\" style='border-bottom: solid #E0E0E0 1px;\'>"
 						/* 닉네임, 시간 */
-						output += "<span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span>"
+						output += "<a style=\"cursor:pointer\" onclick=\"writeMemberBoard('"+replyList[i].rpnickname+"')\"><span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span></a>"
 						output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span> "
+						output += "<input type=\"hidden\" value='"+replyList[i].rpmid+"'>"
 						
 						/* 수정, 삭제 버튼 */
-						output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"rpRemoveModal('"+ replyList[i].rpcode +"')\" value=\"삭제\">"
-						output += "<input style=\"margin-right:5px; border:solid gray 1px\" type=\"button\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"rpModifyModal('"+ replyList[i].rpcode +"')\" value=\"수정\">"
+						output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"rpRemoveModal('"+ replyList[i].rpcode +"','"+replyList[i].rpmid +"')\" value=\"삭제\">"
+						output += "<input style=\"margin-right:5px; border:solid gray 1px\" type=\"button\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"rpModifyModal('"+ replyList[i].rpcode +"','"+replyList[i].rpmid + "')\" value=\"수정\">"
 						output += "<br>"
 						
 						if( '${sessionScope.loginId}' == 'admin'){
@@ -749,7 +780,7 @@
 							output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton bg-secondary text-white fw-bold mt-2\" onclick=\"adminReplyStop('"+ replyList[i].rpcode +"')\" value=\"정지\">"
 						}
 						/* 댓글내용 */
-						output += "<textarea style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</textarea>"
+						output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
 						output += "</div>"
 						
 					}else{
@@ -757,19 +788,20 @@
 						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;'>" /* 프로필영역 */
 						if( replyList[i].rpprofile != 'nomprofile' ){//프로필 이미지가 있을 시 
 							if(  replyList[i].rpmstate == 9){//카카오 회원
-								output += "<img class=\"img-profile rounded-circle rpProfile\"  src='"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle rpProfile mt-1\"  src='"+replyList[i].rpprofile + "'>"
 							}else{
-								output += "<img class=\"img-profile rounded-circle rpProfile\"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle rpProfile mt-1\"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
 							}
 						}else{//프로필 이미지가 없을 시 
-							output += "<img class=\"img-profile rounded-circle rpProfile_None\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
+							output += "<img class=\"img-profile rounded-circle rpProfile_None mt-1\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
 						}
 						output += "</div>"
 							
 						output += "<div class=\"col-11\" style='border-bottom: solid #E0E0E0 1px;'>"
 						/* 닉네임, 시간 */
-						output += "<span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span>"
+						output += "<a style=\"cursor:pointer\" onclick=\"writeMemberBoard('"+replyList[i].rpnickname+"')\"><span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span></a>"
 						output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span> "
+						output += "<input type=\"hidden\" value='"+replyList[i].rpmid+"'>"
 						
 						if( '${sessionScope.loginId}' == 'admin'){
 							/* 관리자 - 댓글 정지 버튼 */
@@ -778,7 +810,7 @@
 						
 						output += "<br>"
 						/* 댓글내용 */
-						output += "<textarea style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</textarea>"
+						output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
 						output += "</div>"
 					}
 
@@ -803,9 +835,10 @@
 		});
 	}
 	
-	function rpModifyModal(rpcode){
+	function rpModifyModal(rpcode, rpmid){
 		/* 댓글수정 모달창 띄우기 */
 		console.log("댓글코드 : " + rpcode );
+		console.log("댓글작성자 : " +  rpmid);
 		
 		$.ajax({
 			type : "get",
@@ -817,12 +850,11 @@
 				//$("#rpContentsBefore").text(reply.rpcontents);
 				$("#inputModifyRpBox").val(reply.rpcontents);
 				$("#inputRpcode").val(reply.rpcode);
+				$("#rpmid").val(reply.rpmid);
 			},
 			error : function(reply) {
-				console.log("실휴패");
+				console.log("실패");
 			}
-			
-			
 		});
 		
 		$("#bdRpModifyModal").modal('show');
@@ -833,16 +865,19 @@
 		/* 댓글수정 */
 		var modifyRpContents = $("#inputModifyRpBox").val();
 		var inputRecode = $("#inputRpcode").val();
+		var rpmid = $("#rpmid").val();
 		console.log("수정할 댓글코드 : " + inputRecode);
 		
 		$.ajax({
 			type : "get",
 			url : "updateRpcontents_ajax",
-			data : { "rpcode":inputRecode, "rpcontents":modifyRpContents },
+			data : { "rpcode":inputRecode, "rpcontents":modifyRpContents, "rpmid":rpmid},
 			async : false,
 			success : function(updateResult){
 				console.log("updateResult : " + updateResult);
-				if (updateResult > 0 ){
+				if (updateResult == 2 ){
+					alert("댓글작성자만 수정가능합니다!");
+				}else{
 					alert("댓글이 수정되었습니다.");
 					selectReplyList();
 				}
@@ -876,10 +911,13 @@
 			success : function(removeResult){
 				console.log(removeResult);
 				
-				if(removeResult > 0){
+				if(removeResult == 2){
+					alert("댓글작성자만 삭제가능합니다!");
+				}else{
 					alert("댓글이 삭제되었습니다.");
 					selectReplyList();
 					selectReplyCount();
+					
 				}
 			}
 			
@@ -927,6 +965,7 @@ $("#inputReply").each(function () {
 	this.style.height = 'auto';
 	this.style.height = (this.scrollHeight) + 'px';
 	});
+
 
 </script>
 

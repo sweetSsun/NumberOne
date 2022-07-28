@@ -121,22 +121,25 @@
 							<c:otherwise>
 							
 								<c:choose>
+									
 									<c:when test="${sessionScope.loginProfile == null}">
-										<p style="font-size: 12.5px"><a href="selectMyInfoMemberView">${sessionScope.loginNickname} 님 &nbsp;&nbsp;
+										<p style="font-size: 12.5px"><a href="selectMyInfoMemberView"> ${sessionScope.loginNickname} 님 &nbsp;&nbsp;
 										<img class="img-profile rounded-circle" style="height: 50px; width:50px;" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png">
 		
 										</a></p>
 									</c:when>
+									
 									<c:when test="${sessionScope.loginId != null && sessionScope.kakaoId == null }">
 										<p style="font-size: 12.5px">
-											<a href="selectMyInfoMemberView">${sessionScope.loginNickname} 님 &nbsp;&nbsp;
+											<a href="selectMyInfoMemberView"> ${sessionScope.loginNickname} 님 &nbsp;&nbsp;
 												<img class="img-profile rounded-circle" style="height: 50px; width:50px;" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/${sessionScope.loginProfile }">
 											</a>
 										</p>
 									</c:when>									
+									
 									<c:otherwise>
 										<p style="font-size: 12.5px">
-											<a href="selectMyInfoMemberView">${sessionScope.loginNickname} 님 &nbsp;&nbsp;
+											<a href="selectMyInfoMemberView"> ${sessionScope.loginNickname} 님 &nbsp;&nbsp;
 												<img class="img-profile rounded-circle" style="height: 50px; width:50px;" src="${sessionScope.loginProfile }">
 											</a>
 										</p>
@@ -225,6 +228,7 @@
 
 </script>	
 	
+	
 <!-- 채팅 관련 스크립트 -->
 <script type="text/javascript">
 /* 채팅관련 스크립트 */
@@ -232,7 +236,7 @@
 	var popChatArr = []; // 현재 떠있는 채팅 팝업창을 담을 배열
 	
 	// 채팅 버튼 클릭시 채팅창 팝업되면서 기존 채팅방 메세지 목록 데이터 보내주는 함수
-	function popupChat(crcode){
+	function popupChat(crcode, crfrmnickname, crfrmprofile){
 		console.log("popupChat 호출");
 		let popOption = "width=450px, height=560px, top=300px, left=500px, scrollbars=no, resizable=no";
 		let openUrl = "loadToChat?crcode="+crcode;
@@ -268,12 +272,15 @@
 							popChat = window.open(openUrl, crcode, popOption); // 팝업창 열기
 							popChat.window.addEventListener("load", function(){
 								popChat.enterRoom(data); // 채팅방 목록 불러오기
+								popChat.crfrMbInfo(crfrmnickname, crfrmprofile);
 						 	});
 							popChatArr.push(popChat); // 채팅팝업 배열에 담기
 						}
 						console.log("배열의 길이 : " + popChatArr.length);
 					}
 				});
+				
+
 			}
 		});
 	}
@@ -323,7 +330,11 @@
 				break;
 			}
 			dropdownList += "<div class=\"\" >";
-			dropdownList += "<a class=\" dropdown-item d-flex align-items-center py-2\" href=\"#\" onclick=\"popupChat('" + data[i].crcode + "')\">";
+			if (data[i].crfrmprofile != null){ // 상대방 이미지가 있으면
+				dropdownList += "<a class=\" dropdown-item d-flex align-items-center py-2\" href=\"#\" onclick=\"popupChat('" + data[i].crcode + "', '" + data[i].crfrmnickname + "', '" + data[i].crfrmprofile + "')\">";
+			} else { // 없으면
+				dropdownList += "<a class=\" dropdown-item d-flex align-items-center py-2\" href=\"#\" onclick=\"popupChat('" + data[i].crcode + "', '" + data[i].crfrmnickname + "', '')\">";
+			}
 			dropdownList += "<div class=\"row\" style=\"width: 100%; --bs-gutter-x: 0;\">";
 			dropdownList += "<div class=\"col-1 text-center\">";
 			if (data[i].crfrmprofile != null){ // 상대방 이미지가 있으면
@@ -356,47 +367,57 @@
 		$("#chatRoomList").html(dropdownList);
 	}
 
-/* 렉 때문에 잠시 지움
+/* 렉 때문에 잠시 지움*/
 	<!-- 안읽은 채팅메세지 확인 뱃지 -->
 	//console.log('${sessionScope.loginId }');
 	if(${sessionScope.loginId != null}){
 	   $(window).on('load', function(){
+		   var loadUnReadCount = 0;
+		   $.ajax({
+               url:"selectSumUnReadCount",
+               data:{"loginId": "${sessionScope.loginId}"},
+               dataType:"json",
+               async:false, // async : false를 줌으로써 비동기를 동기로 처리 할 수 있다.
+               success:function(sumUnReadCount){
+	                  //console.log(sumUnReadCount);
+	                  if(sumUnReadCount != 0){
+		                  $("#chat-badge").text(sumUnReadCount);
+	                      loadUnReadCount = sumUnReadCount;
+	                  }
+            	}
+		   });
+               
 	         // 2초에 한번씩 채팅 목록 불러오기(실시간 알림 전용)
 	         setInterval(function(){
 	             // 읽지 않은 메세지 총 개수 불러오기 
-	             var sumUnReadCount = 0;
-	                   $.ajax({
-	                     url:"selectSumUnReadCount",
-	                     data:{"loginId": "${sessionScope.loginId}"},
-	                     dataType:"json",
-	                     async:false, // async : false를 줌으로써 비동기를 동기로 처리 할 수 있다.
-	                     success:function(sumUnReadCount){
-	                       //console.log(sumUnReadCount);
-	                       $("#chat-badge").text(sumUnReadCount);
-	                      // 읽지 않은 메세지 총 갯수가 0개가 아니면
-	                      if(sumUnReadCount != 0){
-	                          // 채팅 icon 깜빡거리기
-	                          $('.nav_chat-badge').addClass('iconBlink');
-	                          $('.nav_chat-badge').removeClass('d_none');
-	                      }else{
-	                          // 깜빡거림 없애기
-	                          $('.nav_chat-badge').removeClass('iconBlink');
-	                          $('.nav_chat-badge').addClass('d_none');
-	                      }
-	                     }
-	              });
-	
-	               },3000);
+                 $.ajax({
+	                 url:"selectSumUnReadCount",
+	                 data:{"loginId": "${sessionScope.loginId}"},
+	                 dataType:"json",
+	                 success:function(sumUnReadCount){
+		                  //console.log(sumUnReadCount);
+		                  // 읽지 않은 메세지 갯수가 0이면
+		                  if(sumUnReadCount == 0) {
+		                  	  $("#chat-badge").text("");
+		                  }
+		                  // 읽지 않은 메세지 갯수가 0이 아니면서 페이지 로드 값에서 변경됐으면
+		                  else if (sumUnReadCount != 0 && loadUnReadCount != sumUnReadCount) {
+		                      // 채팅 icon 깜빡거리기
+		                  	  $("#chat-badge").text(sumUnReadCount);
+		                      $('.nav_chat-badge').addClass('iconBlink');
+		                  }
+		                  // 페이지 로드 값과 동일하면
+		                  else {
+		                      // 깜빡거림 없애기
+		                      $('.nav_chat-badge').removeClass('iconBlink');
+		                  }
+                  	}
+            	});
+	          },2000);
 	    });
 	}
-	 */
-	<!-- 로그인 시 세션에 담긴 채팅메세지 갯수 뱃지 출력 -->
- 	if (${sessionScope.sumUnReadCount != 0 }){
-		var loginUnReadCount = ${sessionScope.sumUnReadCount};
-		console.log("안읽은 채팅 메세지 수 : " + loginUnReadCount);
-		$("#chat-badge").text(loginUnReadCount);
-	}
 </script>
+
 
 <!-- 마이페이지 미니브라우저 (커뮤니티부터!) -->
 <script type="text/javascript">
@@ -474,10 +495,8 @@
          });
       
    }
-   
-
-
 </script>
+
 
 <!-- 마이페이지 미니브라우저 (중고거래부터!) -->
 <script type="text/javascript">
@@ -545,6 +564,7 @@
    }
 </script>
 
+
 <!-- 찜목록 관련 스크립트 -->
 <script type="text/javascript">
 	// 찜 아이콘 클릭하면 찜목록 불러오고 드롭다운(최신순 5개까지 + 더보기)
@@ -576,7 +596,7 @@
 		});
 	});
 	
-	// 드롭다운 채팅방목록 입력 함수
+	// 드롭다운 찜목록 입력 함수
 	function outputZzimList(data){
 		console.log("찜목록 드롭다운 실행");
 		var zzimList = "<p class=\"dropdown-header\" style=\"font-size:11px;\">찜 목록</p>";
@@ -610,7 +630,71 @@
 		zzimList += "</div>";
 		$("#zzimList").html(zzimList);
 	}
+</script>
 
+
+<!-- 회원 신고 관련 스크립트 -->
+<script type="text/javascript">
+	// 회원 신고 확인 (팝업창 뜸과 동시에 수행)
+	function checkMemberWarning(wmedNickname, crcode){ // 여기서 crcode는 팝업창의 고유 name값임
+		console.log("checkMemberWarning 실행");		
+		console.log("신고 확인할 회원 닉네임 : " + wmedNickname);
+		$.ajax({
+			type : "get",
+			url : "checkMemberWarning_ajax",
+			data : { "loginId" : "${sessionScope.loginId}", "wmedNickname" : wmedNickname },
+			async: false,
+			success : function(mbwnCheck){
+				console.log("신고유무 확인 : " + mbwnCheck );
+				// 신고된 상태면 신고버튼 빨간색으로 출력
+				if( mbwnCheck == "Yes" ){
+					if(crcode == 'wMemberPopup'){
+						console.log("회원 정보에서 신고 확인 성공")
+						//버튼 모양 바꾸기
+						wMemberPopup.$("#warningBtn").removeClass("Wbtn").addClass("WbtnDisabled");
+						wMemberPopup.$("#warningBtn").val("신고완료");
+						//onclick 속성 제거
+						wMemberPopup.$("#warningBtn").removeAttr("onclick");
+						} else {
+							var mwOpenedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
+							popChatArr[mwOpenedIdx].$("#mbWarning").addClass("text-danger");
+						}	
+				}
+			}
+		});
+	}	
+	
+	// 회원 신고
+	function insertMemberWarning(wmedNickname, crcode){ // 여기서 crcode는 팝업창의 고유 name값임
+		console.log("신고자 : ${sessionScope.loginId}");
+		console.log("신고할 회원 닉네임 : " + wmedNickname);
+		
+ 		$.ajax({
+			type : "get",
+			url : "insertMemberWarning_ajax",
+			data : { "loginId" : "${sessionScope.loginId}", "wmedNickname" : wmedNickname },
+			success : function(insertResult){
+				console.log(insertResult);
+				var mwOpenedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
+				if( insertResult > 0 ){ // 신고 성공
+					
+					if(crcode == 'wMemberPopup'){
+						console.log("회원 정보에서 신고 성공")
+						wMemberPopup.successMemberWarning();
+						
+						} else {
+							console.log("채팅창에서 신고 성공")
+							var mwOpenedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
+							popChatArr[mwOpenedIdx].successMemberWarning();
+						}
+					
+				} else { // 신고 실패
+					popChatArr[mwOpenedIdx].failMemberWarning();
+				}
+			}
+		});
+	}
+	
 </script>
 
 </html>

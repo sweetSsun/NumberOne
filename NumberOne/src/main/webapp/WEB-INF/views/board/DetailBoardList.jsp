@@ -67,6 +67,18 @@
 	#inputSearchText{
 		font-size: 18px;
 	}
+   .bdnickname:hover{
+   	color:#00bcd4;
+   }
+   section div.checkout__form{
+	/* 페이지 제목 */
+	color: #1c1c1c; 
+    font-weight: 700; 
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+    font-size : 24px;
+}
 </style>
 </head>
 <body>
@@ -86,12 +98,11 @@
 		<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
 		
 		<section>
+		<!-- 페이지명 -->
+		<div class="checkout__form" style="margin-top: 30px;">${paging.searchVal }게시판</div> 
 		<!-- 본문 -->
 			<form action="selectCategoryBoardList" method="get" id="actionForm">
 			<div class="container">
-				<div class="row" style="margin:auto;">
-					<h2 class="text-center">${paging.searchVal }게시판 : ${paging.searchVal }BoardList.jsp</h2>
-				</div>
 				<input type="hidden" name="searchVal" value="${paging.searchVal }">
 					<div class="row ">
 						<!-- 검색기능 -->
@@ -114,7 +125,15 @@
 				</div>
 				
 				<div class=" community" style="text-align:center;">
-					<span style="font-size:21px;" class="fw-bold text-white">${paging.searchVal }게시판</span>
+					<c:choose>
+						<c:when test="${paging.searchVal eq 'all' }">
+							<span style="font-size:21px;" class="fw-bold text-white">전체게시판</span>
+						</c:when>
+						
+						<c:otherwise>
+							<span style="font-size:21px;" class="fw-bold text-white">${paging.searchVal }게시판</span>
+						</c:otherwise>
+					</c:choose>
 				</div>
 				
 				<!-- 게시글 목록 -->
@@ -138,7 +157,7 @@
 								<td class="text-center tableCell">${notice.nbcode}</td>
 								<td></td>
 								<td class="tableCell">
-									<a href="selectNoticeBoardView?nbcode=${notice.nbcode }">${notice.nbtitle}</a>
+									<a href="selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page) }">${notice.nbtitle}</a>
 								</td>
 								<td class="text-center tableCell">관리자</td>
 								<td class="text-center tableCell">${notice.nbdate}</td>
@@ -157,11 +176,14 @@
 							<td class="text-center tableCell">${board.bdcode}</td>
 							<td class="bdcategory text-center tableCell">${board.bdcategory}</td>
 							<td class="tableCell">
-							 	<a href="selectBoardView?bdcode=${board.bdcode }&keyword=${paging.keyword}">${board.bdtitle} 
+							 	<a href="selectBoardView${paging.makeQueryPage(board.bdcode, paging.page)}">${board.bdtitle}
+							 		<c:if test="${board.bdimg != null }">
+									<i class="fa-regular fa-image"></i>
+									</c:if> 
 							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
 							 </td>
 							<td class="text-center tableCell">
-								<span style="cursor: pointer" onclick="writeMemberBoard('${board.bdnickname}')">${board.bdnickname}</span>
+								<span style="cursor: pointer" class="bdnickname" onclick="writeMemberBoard('${board.bdnickname}')">${board.bdnickname}</span>
 							</td>
 							<td class="text-center tableCell">${board.bddate}</td>
 							<td class="text-center tableCell">${board.bdhits }</td>

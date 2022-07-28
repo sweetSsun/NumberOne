@@ -64,7 +64,18 @@
 	.malmeori{
 		display: none;
 	}
-	
+   .bdnickname:hover{
+   		color:#00bcd4;
+   }
+  section div.checkout__form{
+	/* 페이지 제목 */
+	color: #1c1c1c; 
+    font-weight: 700; 
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+    font-size : 24px;
+}	
 </style>
 </head>
 <body>
@@ -85,14 +96,14 @@
 		<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
 		
 		<section>
+		<!-- 페이지명 -->
+		<div class="checkout__form" style="margin-top: 30px;">지역게시판 : ${paging.bdrgname }</div> 
 		<!-- 본문 -->
 			<form action="selectDetailBoardList" method="get" id="actionForm">
 			<input type="hidden" name="searchVal" value="${paging.searchVal }">
 			<input type="hidden" name="bdrgname" value="${paging.bdrgname }">
 			<div class="container">
-				<div class="row" style="margin:auto;">
-					<h2 class="text-center">${paging.bdrgname }게시판 글목록 페이지 : Region${paging.searchVal }Board.jsp</h2>
-				</div>
+
 					<div class="row ">
 						<!-- 검색기능 -->
 						<div class="col-5" align="right">
@@ -170,20 +181,24 @@
 							</td>
 							
 							<td class="tableCell">
-								<c:choose>
+							 	<c:choose>
 									<c:when test="${board.bdcategory == '후기'  }">
-										<a href="selectReviewBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
+										<a href="selectReviewBoardView${paging.makeQueryPage(board.bdcode, paging.page)}">${board.bdtitle}
+											<c:if test="${board.bdimg != null }">
+									 		<i class="fa-regular fa-image"></i>
+									 		</c:if> 
 									 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
 									</c:when>
 									
 									<c:otherwise>
-									 	<a href="selectBoardView?bdcode=${board.bdcode }">${board.bdtitle} 
+									<c:set var="bdtype" value="region"/>
+									 	<a href="selectBoardView${paging.makeQueryPage(bdtype, board.bdcode, paging.page)}">${board.bdtitle} 
 									 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
 									</c:otherwise>
 								</c:choose>
 							 </td>
 							<td class="text-center tableCell">
-								<span style="cursor: pointer" onclick="writeMemberBoard('${board.bdnickname}')">${board.bdnickname}</span>
+								<span style="cursor: pointer" class="bdnickname" onclick="writeMemberBoard('${board.bdnickname}')">${board.bdnickname}</span>
 							</td>
 							<td class="text-center tableCell">${board.bddate}</td>
 							<td class="text-center tableCell">${board.bdhits }</td>

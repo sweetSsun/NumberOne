@@ -23,7 +23,6 @@ public class ResellController {
 	@Autowired
 	private ResellService rsvc;
 	
-	
 		
 	@RequestMapping(value = "/selectResellMainPage")
 	public ModelAndView selectResellMainPage(Paging paging) throws Exception {
@@ -36,7 +35,7 @@ public class ResellController {
 	}
 
 	@RequestMapping(value = "/selectResellView")
-	public ModelAndView selectResellView(UsedBoardDto ubDto, String modifyCheck) {
+	public ModelAndView selectResellView(UsedBoardDto ubDto, String modifyCheck) throws Exception {
 		System.out.println("selectResellView 호출");
 		System.out.println("ubDto : " + ubDto);
 		ModelAndView mav = new ModelAndView();
@@ -47,22 +46,31 @@ public class ResellController {
 	}
 
 	@RequestMapping(value = "/loadToResellWriteForm")
-	public ModelAndView loadToResellWriteForm(String sell_buy, RedirectAttributes ra) {
+	public ModelAndView loadToResellWriteForm(UsedBoardDto ubDto, RedirectAttributes ra) {
 		
 		System.out.println("loadToResellWriteForm 호출");
 		ModelAndView mav = new ModelAndView();
-		System.out.println("타이틀체크 : " + sell_buy);
-
-		mav = rsvc.loadToResellWriteForm(sell_buy, ra);
+		System.out.println("파라메터체크 : " + ubDto);
+	     //로그인 확인
+	       mav = rsvc.loginChToFail(ra);
+	       if(mav.getViewName() != null) {
+	          //setView에 loadtologin이 담겨있으면 메소드 중단
+	         return mav;
+	       }   
+		mav = rsvc.loadToResellWriteForm(ubDto, ra);
 
 		return mav;
 	}
 
 	@RequestMapping(value = "/loadToResellModifyForm")
-	public ModelAndView loadToResellModifyForm(UsedBoardDto ubDto, String modifyCheck) {
+	public ModelAndView loadToResellModifyForm(UsedBoardDto ubDto, String modifyCheck, RedirectAttributes ra ) throws Exception {
 		System.out.println("loadToResellModifyForm 호출");
 		ModelAndView mav = new ModelAndView();
-
+	     mav = rsvc.loginChToFail(ra);
+	       if(mav.getViewName() != null) {
+	          //setView에 loadtologin이 담겨있으면 메소드 중단
+	         return mav;
+	       }   
 		mav = rsvc.selectResellView(ubDto, modifyCheck);
 
 		return mav;
@@ -72,6 +80,11 @@ public class ResellController {
 	public ModelAndView updateResellModify(GoodsDto gdDto, UsedBoardDto ubDto, RedirectAttributes ra) throws IllegalStateException, IOException {
 		System.out.println("updateResellModify 호출");
 		ModelAndView mav = new ModelAndView();
+	     mav = rsvc.loginChToFail(ra);
+	       if(mav.getViewName() != null) {
+	          //setView에 loadtologin이 담겨있으면 메소드 중단
+	         return mav;
+	       }   
 System.out.println(gdDto);
 System.out.println(ubDto);
 		mav = rsvc.updateResellModify(gdDto, ubDto, ra);
@@ -83,7 +96,11 @@ System.out.println(ubDto);
 	public ModelAndView updateResellDelete(UsedBoardDto ubDto, RedirectAttributes ra) {
 		System.out.println("updateResellDelete 호출");
 		ModelAndView mav = new ModelAndView();
-
+	     mav = rsvc.loginChToFail(ra);
+	       if(mav.getViewName() != null) {
+	          //setView에 loadtologin이 담겨있으면 메소드 중단
+	         return mav;
+	       }   
 		mav = rsvc.updateResellDelete(ubDto, ra);
 
 		return mav;
@@ -93,18 +110,23 @@ System.out.println(ubDto);
 	@RequestMapping(value = "/insertResellWrite")
 	public ModelAndView insertResellWrite(GoodsDto gdDto, UsedBoardDto ubDto, RedirectAttributes ra)
 			throws IllegalStateException, IOException {
+		ModelAndView mav = new ModelAndView();
+		mav = rsvc.loginChToFail(ra);
+	       if(mav.getViewName() != null) {
+	          //setView에 loadtologin이 담겨있으면 메소드 중단
+	         return mav;
+	       }   
 		System.out.println("insertResellWrite 호출");
 		System.out.println(gdDto);
 		System.out.println(ubDto);
 
-		ModelAndView mav = new ModelAndView();
 		mav = rsvc.insertResellWrite(gdDto, ubDto, ra);
 
 		return mav;
 	}
 
 	@RequestMapping(value = "/selectResellRegionList_ajax")
-	public @ResponseBody String selectResellRegionList_ajax(Paging paging) {
+	public @ResponseBody String selectResellRegionList_ajax(Paging paging) throws Exception {
 
 		System.out.println("selectResellRegionList_ajax 요청");
 		System.out.println("파라메터확인 : " + paging);
@@ -148,16 +170,18 @@ System.out.println(ubDto);
 	}
 
 	@RequestMapping(value = "/selectResellPageList")
-	public ModelAndView selectResellPageList(Paging paging) throws Exception {
+	public ModelAndView selectResellPageList(Paging paging, RedirectAttributes ra) throws Exception {
 		System.out.println("selectResellPageList 호출");
 
 		ModelAndView mav = new ModelAndView();
+	
 		mav = rsvc.selectResellPageList(paging);
 
 		return mav;
 	}
 
-
+	
+	
 	/* 게시글 신고 */
 	// 게시글 신고 유무 확인
 	@RequestMapping(value = "/checkResellWarning_ajax")
@@ -174,6 +198,7 @@ System.out.println(ubDto);
 	@RequestMapping(value = "/insertResellWarning_ajax")
 	@ResponseBody
 	public int insertResellWarning_ajax(String loginId, String ubcode) {
+		
 		System.out.println("게시글 신고 요청_ajax");
 		System.out.println("로그인아이디:" + loginId);
 

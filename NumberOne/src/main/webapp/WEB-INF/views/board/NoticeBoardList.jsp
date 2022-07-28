@@ -70,6 +70,15 @@
 	#inputSearchText{
 		font-size: 18px;
 	}
+section div.checkout__form{
+	/* 페이지 제목 */
+	color: #1c1c1c; 
+    font-weight: 700; 
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+    font-size : 24px;
+}
 </style>
 </head>
 <body>
@@ -91,13 +100,13 @@
 		
 		<section>
 		<!-- 본문 -->
+		<!-- 페이지명 -->
+		<div class="checkout__form" style="margin-top: 30px;">공지게시판</div> 
+		
 			<form action="selectNoticeBoardList" method="get" id="actionForm">
 			<!-- <input type="hidden" name="searchVal" value="all"> -->
 			<div class="container">
-				<div class="row" style="margin:auto;">
-					<h2 class="text-center">공지게시판 : NoticeBoardList.jsp</h2>
-				</div>
-					<div class="row ">
+						<div class="row ">
 						<!-- 검색기능 -->
 						<div class="col-5" align="right">
 								<select name="searchType" class="searchType" id="searchTypeSel">
@@ -140,7 +149,7 @@
 								<td class="text-center tableCell">${notice_fix.nbcode}</td>
 								<td class="text-center tableCell">공지</td>
 								<td class="tableCell">
-									<a href="selectNoticeBoardView?nbcode=${notice_fix.nbcode }">${notice_fix.nbtitle}</a>
+									<a href="selectNoticeBoardView?codeIdx=${notice_fix.nbcode }">${notice_fix.nbtitle}</a>
 								</td>
 								<td class="text-center tableCell">관리자</td>
 								<td class="text-center tableCell">${notice_fix.nbdate}</td>
@@ -150,6 +159,7 @@
 						</c:forEach>
 					</thead>
 					
+					<!-- nbfix != 1 인 공지들 -->
 					<tbody id="bdCategoryList">
 					<c:forEach items="${noticeList }" var="notice">
 						<c:if test="${notice.nbfix != 1 }">
@@ -157,7 +167,10 @@
 							<td class="text-center tableCell">${notice.nbcode}</td>
 							<td class="bdcategory text-center tableCell">공지</td>
 							<td class="tableCell">
-							 	<a href="selectNoticeBoardView?nbcode=${notice.nbcode }">${notice.nbtitle} 
+							 	<a href="selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}">${notice.nbtitle} 
+							 	<c:if test="${notice.nbimg != null }">
+									<i class="fa-regular fa-image"></i>
+								</c:if>
 							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;"></span> </a>
 							 </td>
 							<td class="text-center tableCell">
@@ -177,6 +190,9 @@
 				</div> --%>
 				</div>
 				
+				<!-- NbCheck=NB -->
+            	<input type="hidden" name="NbCheck" value="NB">
+            	
 				<!-- 페이징 시작 -->
 				<input type="hidden" id="pageNum" name="page" value="1">
 				<div class="block text-center" id="pageList" >

@@ -36,10 +36,6 @@ body.sideon {
 }
 
 
-
-
-
-
 </style>
 
 
@@ -71,7 +67,12 @@ body.sideon {
 				</div>
 				<div class="sideclose_room">
 					<span>
-						<a href="admin_selectNoticeList" title="공지관리"><i class="fa-solid fa-volume-low"></i></a>
+						<a href="admin_selectNoticeList?NbCheck=NB" title="공지관리"><i class="fa-solid fa-volume-low"></i></a>
+					</span>
+				</div>
+				<div class="sideclose_room">
+					<span>
+						<a href="admin_selectNoticeList?NbCheck=GB" title="공구관리"><i class="fa-solid fa-box-open"></i></a>
 					</span>
 				</div>
 				<div class="sideclose_room">
@@ -108,7 +109,7 @@ body.sideon {
 			<div class="sidemenu">
 			
 				<div class="sidetitle_close">
-					<span><a href="admin_loadToAdminMainPage">관리자페이지</a></span>
+					<span><a href="${pageContext.request.contextPath }/">관리자페이지</a></span>
 				</div>
 				
 				<div class="side_admin">
@@ -118,7 +119,12 @@ body.sideon {
 				</div>
 				<div class="side_admin">
 					<span>
-						<a href="admin_selectNoticeList"><i class="fa-solid fa-volume-low"></i>&nbsp;&nbsp;공지방</a>
+						<a href="admin_selectNoticeList?NbCheck=NB"><i class="fa-solid fa-volume-low"></i>&nbsp;&nbsp;공지방</a>
+					</span>
+				</div>
+				<div class="side_admin" style="padding-left: 5px;">
+					<span>
+						<a href="admin_selectNoticeList?NbCheck=GB"><i class="fa-solid fa-box-open" style="font-size:large;"></i>&nbsp;&nbsp;공구방</a>
 					</span>
 				</div>
 				<div class="side_admin">

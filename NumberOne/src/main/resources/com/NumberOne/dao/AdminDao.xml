@@ -534,4 +534,72 @@
 	<update id="admin_updateReplyStop">
 		UPDATE REPLY SET RPSTATE=0 WHERE RPCODE=#{rpcode}
 	</update>
+	
+	<!-- 공구 관리 -->
+	<!-- 페이징 위한 공구 총 갯수 조회 -->
+	<select id="admin_selectGonguTotalCount" resultType="int">
+		SELECT COUNT(*)
+		FROM ADMIN_GBLIST_VIEW
+		<if test="keyword.length > 0 or searchVal == 'active' or searchVal == 'inactive'">
+			WHERE
+			<!-- 검색한 키워드 정렬 -->
+			<if test="keyword.length > 0">
+				<choose>
+					<when test="searchType == 'nbTitleContents'">
+						(NBTITLE LIKE '%'||#{keyword}||'%' OR NBCONTENTS LIKE '%'||#{keyword}||'%')
+					</when>
+					<otherwise>
+						${searchType} LIKE '%'||#{keyword}||'%'
+					</otherwise>				
+				</choose>
+				<if test="searchVal == 'active' or searchVal == 'inactive'">
+						AND
+				</if>
+			</if>
+		</if>
+		<!-- 상태값에 따른 정렬 -->
+		<if test="searchVal == 'active'">
+			NBSTATE=1
+		</if>
+		<if test="searchVal == 'inactive'">
+			NBSTATE=2
+		</if>
+	</select>
+	<!-- 페이징처리 후 공구 목록 조회 -->
+ 	<select id="admin_selectGonguList" resultType="com.NumberOne.dto.NoticeDto">
+		SELECT NBCODE, NBMID, NBTITLE, NBCONTENTS, TO_CHAR(NBDATE, 'MM-DD') NBDATE, NBIMG, NBSTATE, NBHITS, NBNICKNAME, NBFIX
+		FROM
+			(SELECT ROWNUM RN, ADMIN_GBLIST_VIEW.*
+			FROM ADMIN_GBLIST_VIEW
+			<if test="keyword.length > 0 or searchVal == 'active' or searchVal == 'inactive'">
+				WHERE
+				<!-- 검색한 키워드 정렬 -->
+				<if test="keyword.length > 0">
+					<choose>
+						<when test="searchType == 'nbTitleContents'">
+							(NBTITLE LIKE '%'||#{keyword}||'%' OR NBCONTENTS LIKE '%'||#{keyword}||'%')
+						</when>
+						<otherwise>
+							${searchType} LIKE '%'||#{keyword}||'%'
+						</otherwise>				
+					</choose>
+					<if test="searchVal == 'active' or searchVal == 'inactive'">
+							AND
+					</if>
+				</if>
+			</if>
+			<!-- 상태값에 따른 정렬 -->
+			<if test="searchVal == 'active'">
+				NBSTATE=1
+			</if>
+			<if test="searchVal == 'inactive'">
+				NBSTATE=2
+			</if>
+			)
+		WHERE RN BETWEEN ${startRow} AND ${endRow}			
+	</select>
+	<!-- 공구글 작성을 위한 gbcode 최대값 조회 -->
+	<select id="admin_selectMaxGbcode" resultType="String">
+		SELECT NVL(MAX(NBCODE),'GB00000') FROM NOTICEBOARDS WHERE NBCODE LIKE 'GB'||'%'
+	</select>
 </mapper>

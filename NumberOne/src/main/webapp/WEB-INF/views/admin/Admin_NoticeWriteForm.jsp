@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 공지작성</title>
+<title>1인자 - 공지게시판</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -74,10 +74,10 @@
 		
 		<section>
 		<!-- 본문 -->
-			<div class="container">
-				<div class="row" style="margin:auto;">
-					<h4 class="text-center">공지 작성페이지 : Admin_NoticeWriteForm.jsp</h4>
-				</div>
+			<div class="container" style="margin-top: 10px">
+				<!-- 페이지 제목 -->
+				<div class="checkout__form">공지게시판 - 글작성</div>
+				
 				<div>
  				<form action="admin_insertNoticeWrite" method="post" enctype="multipart/form-data" onsubmit="return inputCheck()">
 				<div class="row">
@@ -94,7 +94,7 @@
 				</div>
 				<div class="row mt-4 mb-2">
 					<div class="col btn-wrapper">
-						<input class="btn-numberone btn fw-bold text-white" type="submit" value="작성">
+						<input class="btn-numberone btn fw-bold text-white" type="submit" value="작성"><input type="hidden" name="NbCheck" value="NB">
 						<input onclick="$('#nbWriteCancelCheckModal').modal('show')" class="btn-numberone btn fw-bold text-white" type="button" value="취소">
 					</div>
 				</div>		
@@ -152,7 +152,7 @@
 	// 공지글 작성 취소
 	function writeBoardCancel(){
 		console.log("취소 버튼 클릭");
-		location.href="admin_selectNoticeList${paging.makeQueryPage(paging.page)}";
+		location.href="admin_selectNoticeList?NbCheck=NB&${paging.makeQueryPage(paging.page)}";
 	}
 	
 	// 제목, 내용 입력됐는지 확인

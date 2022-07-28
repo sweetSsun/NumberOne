@@ -33,6 +33,7 @@ public class UsedBoardDto {
 	
 	private String ubnickname;	//작성자 닉네임 (members 테이블 조인) 
 	private String ubprofile;	//상세페이지 출력용 작성자 프로필사진
+	private String ubmstate;	//상세페이지 조건용 작성자 상태
 	
 	private MultipartFile ubmainimgfile;	//대표사진파일
 	private MultipartFile[] ubdetailimgfile;	//상세사진파일
@@ -180,17 +181,25 @@ public class UsedBoardDto {
 	public void setZzimcheck(String zzimcheck) {
 		this.zzimcheck = zzimcheck;
 	}
+	public String getUbmstate() {
+		return ubmstate;
+	}
+	public void setUbmstate(String ubmstate) {
+		this.ubmstate = ubmstate;
+	}
 	@Override
 	public String toString() {
 		return "UsedBoardDto [ubcode=" + ubcode + ", ubrgcode=" + ubrgcode + ", ubsellbuy=" + ubsellbuy + ", ubmid="
 				+ ubmid + ", ubtitle=" + ubtitle + ", ubcontents=" + ubcontents + ", ubdate=" + ubdate + ", ubmainimg="
 				+ ubmainimg + ", ubdetailimg=" + ubdetailimg + ", ubstate=" + ubstate + ", ubwarning=" + ubwarning
-				+ ", ubzzim=" + ubzzim + ", ubnickname=" + ubnickname + ", ubprofile=" + ubprofile + ", ubmainimgfile="
-				+ ubmainimgfile + ", ubdetailimgfile=" + Arrays.toString(ubdetailimgfile) + ", ubdetailimg_list="
-				+ Arrays.toString(ubdetailimg_list) + ", ubdetailimg_originList="
-				+ Arrays.toString(ubdetailimg_originList) + ", ubgdname=" + ubgdname + ", gdprice=" + gdprice
-				+ ", gdprice2=" + gdprice2 + ", ubdatedef=" + ubdatedef + ", zzimcheck=" + zzimcheck + "]";
+				+ ", ubzzim=" + ubzzim + ", ubnickname=" + ubnickname + ", ubprofile=" + ubprofile + ", ubmstate="
+				+ ubmstate + ", ubmainimgfile=" + ubmainimgfile + ", ubdetailimgfile="
+				+ Arrays.toString(ubdetailimgfile) + ", ubdetailimg_list=" + Arrays.toString(ubdetailimg_list)
+				+ ", ubdetailimg_originList=" + Arrays.toString(ubdetailimg_originList) + ", ubgdname=" + ubgdname
+				+ ", gdprice=" + gdprice + ", gdprice2=" + gdprice2 + ", ubdatedef=" + ubdatedef + ", zzimcheck="
+				+ zzimcheck + "]";
 	}
+	
 
 	
 	
