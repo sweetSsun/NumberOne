@@ -60,14 +60,14 @@ public class AdminController {
 	/* 공지 관리 */
 	@RequestMapping (value="admin_selectNoticeList")
 	public ModelAndView admin_selectNoticeList(Paging paging, RedirectAttributes ra, String NbCheck) {
-		System.out.println("공지/공구 관리페이지 이동 요청");
+		System.out.println("공지 & 공구 관리페이지 이동 요청");
 		mav = asvc.admin_selectNoticeList(paging, ra, NbCheck);
 		return mav;
 	}
 	
 	@RequestMapping (value="admin_selectNoticeList_ajax")
 	public @ResponseBody String admin_selectNoticeList_ajax(Paging paging, String NbCheck) {
-		System.out.println("공지/공구 관리페이지 정렬 요청");
+		System.out.println("공지 & 공구 관리페이지 정렬 요청");
 		String noticeList_json = asvc.admin_selectNoticeList_ajax(paging, NbCheck);
 		return noticeList_json;
 	}
@@ -292,6 +292,14 @@ public class AdminController {
 		System.out.println("댓글 정지 요청");
 		int updateResult = asvc.admin_updateReplyStop_ajax(rpcode);
 		return updateResult;
+	}
+	
+	@RequestMapping (value="insertCheck_ajax")
+	public @ResponseBody String insertCheck_ajax(String gnbcode, String gmid) {
+		System.out.println("공동구매 참여 중복체크");
+		String checkResult = asvc.insertCheck_ajax(gnbcode, gmid);
+		System.out.println(checkResult);
+		return checkResult;
 	}
 	
 	

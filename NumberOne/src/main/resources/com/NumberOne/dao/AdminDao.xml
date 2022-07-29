@@ -609,5 +609,22 @@
 		INSERT INTO GONGU (GNBCODE, GMID, GPHONE, GEMAIL, GADDR, GDATE)
 		VALUES (#{gnbcode}, #{gmid}, #{gphone}, #{gemail}, #{gaddr}, SYSDATE)
 	</insert>
+	<!-- 공동구매/공구 카카오결제정보 DB삭제 -->
+	<insert id="deleteGonguResgister">
+		DELETE FROM GONGU WHERE GNBCODE = #{gnbcode} AND GMID = #{gmid}
+	</insert>
+	<!-- 공동구매/공구 카카오결제정보 DB확인 -->
+	<select id="insertCheck_ajax" resultType="String">
+		SELECT GMID FROM GONGU WHERE GNBCODE = #{gnbcode} AND GMID = #{gmid}
+	</select>
+	
+	<!-- 관리자_공동구매/공구 참여회원 목록 -->
+	<select id="admin_selectGonguAttendList" resultType="String">
+		SELECT GMID FROM GONGU WHERE GNBCODE = #{gnbcode} ORDER BY GMID
+	</select>
+	<!-- 관리자_공동구매/공구 참여회원 count -->
+	<select id="admin_selectGonguAttendCount" resultType="int">
+		SELECT COUNT(GMID) FROM GONGU WHERE GNBCODE = #{gnbcode}
+	</select>
 	
 </mapper>

@@ -505,17 +505,16 @@ public class BoardService {
 			mav.setViewName("gongu/GonguBoardView");
 			
 			// 공구 회원정보 불러오기
-				String loginId;
-				if((String) session.getAttribute("loginId")!=null) {			
-					loginId = (String) session.getAttribute("loginId");
-				} else {
-					loginId = (String) session.getAttribute("kakaoId");			
-				}
+			String loginId = (String) session.getAttribute("loginId");
+			
+			if(loginId == null) {
+				System.out.println("비회원입니다.");
 				
+			} else {
 				System.out.println("로그인 된 아이디 : " + loginId);
-				
 				MemberDto memberInfo = mdao.selectMyInfoMemberView(loginId);
-				mav.addObject("memberInfo", memberInfo);
+				mav.addObject("memberInfo", memberInfo);							
+			}			
 		}
 		return mav;
 	}
