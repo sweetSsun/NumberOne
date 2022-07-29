@@ -294,19 +294,17 @@ public class AdminService {
 		} else {
 			mav.setViewName("admin/Admin_GonguBoardView");
 			
-			// 회원정보 불러오기
-			String loginId;
-			if((String) session.getAttribute("loginId")!=null) {			
-				loginId = (String) session.getAttribute("loginId");
+			// 공구 회원정보 불러오기
+			String loginId = (String) session.getAttribute("loginId");
+			
+			if(loginId == null) {
+				System.out.println("비회원입니다.");
+				
 			} else {
-				loginId = (String) session.getAttribute("kakaoId");			
+				System.out.println("로그인 된 아이디 : " + loginId);
+				MemberDto memberInfo = mdao.selectMyInfoMemberView(loginId);
+				mav.addObject("memberInfo", memberInfo);							
 			}
-			// if null 일때는 안보내게 조건 함더 줘야함
-			System.out.println("로그인 된 아이디 : " + loginId);
-			
-			MemberDto memberInfo = mdao.selectMyInfoMemberView(loginId);
-			mav.addObject("memberInfo", memberInfo);
-			
 		}
 		return mav;
 	}
@@ -959,9 +957,9 @@ public class AdminService {
 	}
 		
 	// 공동구매 & 공구 참여내역 DB 찾기
-	public String insertCheck_ajax(String nbcode, String mid) {
+	public String insertCheck_ajax(String gnbcode, String gmid) {
 		System.out.println("insertCheck_ajax() 호출");
-		String gonguSelect = adao.insertCheck_ajax(nbcode, mid);
+		String gonguSelect = adao.insertCheck_ajax(gnbcode, gmid);
 		return gonguSelect;
 	}
 }

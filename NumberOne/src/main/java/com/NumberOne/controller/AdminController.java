@@ -295,9 +295,10 @@ public class AdminController {
 	}
 	
 	@RequestMapping (value="insertCheck_ajax")
-	public @ResponseBody String insertCheck_ajax(String nbcode, String mid) {
+	public @ResponseBody String insertCheck_ajax(String gnbcode, String gmid) {
 		System.out.println("공동구매 참여 중복체크");
-		String checkResult = asvc.insertCheck_ajax(nbcode, mid);
+		String checkResult = asvc.insertCheck_ajax(gnbcode, gmid);
+		System.out.println(checkResult);
 		return checkResult;
 	}
 	

@@ -1018,16 +1018,26 @@ $("#inputReply").each(function () {
 	  				type : 'get',
 	  				url : 'insertCheck_ajax',
 	  				async : false,
+	  				data:{
+						gnbcode:nbcode,
+						gmid:loginId
+					},
 	  				success : function (check){
-	  					
+	  					console.log("중복확인");
+	  					console.log("check : "+check);
 	  					// DB에서 참여한적이 있으면 안나타나게
-	  					if (check != null){
+	  					if (check != "") {
+	  						console.log("check!=null");
 	  						alert("이미 참여했습니다.");
-	  					}
+	  						return
+	  						
+	  					} else {
+	  						console.log("check==null");
 	  						$("#pay-tel").val(tel);
 	  						$("#pay-email").val(email);
 	  						$("#pay-address").val(address);
 	  						$("#gonguModal").modal("show");
+	  					}
   				  	}
 	  					
 	  			});

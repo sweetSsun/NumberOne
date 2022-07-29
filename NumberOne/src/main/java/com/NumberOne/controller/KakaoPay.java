@@ -122,7 +122,7 @@ public class KakaoPay {
 		GonguDto gongu = gson.fromJson(gonguJson, GonguDto.class);
 		System.out.println("gongu : "+gongu);
 		
-		//공동구매/공구 카카오결제정보 DB입력 :: 결제 전에 입력
+		/*공동구매/공구 카카오결제정보 DB입력 :: 결제 전에 입력 ------------- DB확인없이 결제하면 바로 입력하도록 함
     	asvc.insertGonguRegister(gongu);
     	
 		// 결제승인 시작
@@ -166,9 +166,9 @@ public class KakaoPay {
 	    } else {
 	    	asvc.deleteGonguRegister(gongu);
 	    	return "gongu/PayFail";
-	    }
+	    }*/
 	    
-		/*공동구매/공구 카카오결제정보 DB입력 :: 결제 전에 입력, 결제 실패하면 삭제할 것.
+		//공동구매/공구 카카오결제정보 DB입력 :: 결제 전에 입력, 결제 실패하면 삭제할 것. --- DB확인과 결제성공실패 여부에 따라 결과가 바뀜
     	int gonguInsert = asvc.insertGonguRegister(gongu);
     	
     	if (gonguInsert>0) {
@@ -231,7 +231,7 @@ public class KakaoPay {
     		System.out.println("DB입력실패");
     		return "gongu/PayFail";
     	}
-		*/
+		
 	    
 	    
 	}
