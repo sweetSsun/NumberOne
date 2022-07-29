@@ -160,8 +160,11 @@
 						<li style="margin-right: 30px;">
 							<a href="loadToBoardMainPage">커뮤니티</a>
 						</li>
-						<li>
+						<li style="margin-right: 30px;">
 							<a href="selectResellMainPage">중고거래</a>
+						</li>
+						<li>
+							<a href="selectGonguBoardList?NbCheck=GB">공동구매</a>
 						</li>
 					</ul>
 				</div>
