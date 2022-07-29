@@ -43,7 +43,7 @@
 					<span>					
 						<p style="float: left; font-size: 15px; margin-left: 20px; margin-top: 4rem; margin-bottom: 10px;">						
 							<a href="${pageContext.request.contextPath }/">
-							<img class="img-profile rounded-circle" style="height:50px; width:50px" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png">&nbsp;&nbsp;관리자님</a>
+							<img class="img-profile rounded-circle" style="height:50px; width:50px" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/77264d08-c014-4a60-b5c2-3564d6af7292_adminProfile.jpg">&nbsp;&nbsp;관리자님</a>
 						</p>
 			
 					 	<!-- 살아남은 미니박수^^~! -->
@@ -81,7 +81,7 @@
 		</div>
 	</header>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-	
+
 </body>
 <script type="text/javascript">
 console.log("스크립트 확인!");
