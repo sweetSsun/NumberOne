@@ -23,6 +23,8 @@ public interface ResellDao {
 	UsedBoardDto selectResellView(UsedBoardDto ubDto);
 
 	int selectPageTotalCount(Paging paging);
+	
+	int selectTransactionTotalCount(Paging paging);
 
 	ArrayList<GoodsDto> selectResellView_goods(UsedBoardDto ubDto);
 
