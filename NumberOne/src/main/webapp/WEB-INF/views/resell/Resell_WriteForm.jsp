@@ -637,7 +637,7 @@ if(resellTitle.options[resellTitle.selectedIndex].value == 'B'){
 		else{
 			
 			for(let i = 0; i < gdtitle_class.length; i++){
-				if(!display_btn[i].classList.contains('+1none')){
+				if(!display_btn[i].classList.contains('d_none')){
 					console.log('d_none 클래스 없음');
 				
 					if(gdtitle_class[i].value === '') {

@@ -146,22 +146,47 @@
 
 </select>
 
-			<!-- 글작성자의 다른 중고거래 글 SELECT -->
+			<!-- 글작성자의 다른 중고거래 글 SELECT (상세페이지) -->
 <select id="selectResellView_memberList"
 	resultType="com.NumberOne.dto.UsedBoardDto">
 
 	SELECT UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE,
-	UBCONTENTS, UBDATE, UBMAINIMG,
-	UBDETAILIMG, UBSTATE, UBZZIM, UBMSTATE, UBPROFILE, UBNICKNAME
+			UBCONTENTS, UBDATE, UBMAINIMG,UBDETAILIMG, UBSTATE, UBZZIM, 
+			UBMSTATE, UBPROFILE, UBNICKNAME
 	
-	FROM 
-	(SELECT ROWNUM RN, PAGESELECT_VIEW.*
-			FROM PAGESELECT_VIEW
-			WHERE UBMID = #{ubmid} AND UBCODE != #{ubcode} AND UBSTATE = 1)
+			FROM 
+				(SELECT ROWNUM RN, PAGESELECT_VIEW.*
+						FROM PAGESELECT_VIEW
+						WHERE UBMID = #{ubmid}						
+						 AND UBCODE != #{ubcode} AND UBSTATE = 1)
 	
-	WHERE RN BETWEEN 1 AND 6
+			WHERE RN BETWEEN 1 AND 6
 
 </select>
+
+			<!-- 글작성자의 다른 중고거래 글 SELECT ()-->
+<select id="selectResellTransactionList"
+	resultType="com.NumberOne.dto.UsedBoardDto">
+
+	SELECT  UBCODE, UBRGCODE, UBSELLBUY, UBMID,
+	UBTITLE, UBCONTENTS, UBDATE, UBMAINIMG,
+	UBDETAILIMG, UBSTATE, UBZZIM, UBMSTATE, UBPROFILE, UBNICKNAME
+	
+			FROM 
+				(SELECT ROWNUM RN, PAGESELECT_VIEW.*
+						FROM PAGESELECT_VIEW
+						WHERE UBMID IN
+										 (SELECT MID
+												FROM MEMBERS
+												WHERE MNICKNAME	
+												LIKE '%'||#{keyword}||'%'
+									  		)
+				)	
+			
+			WHERE RN BETWEEN #{startRow} AND #{endRow}
+		
+</select>
+
 
 					<!--   찜한 글인지 확인  -->
 
@@ -176,10 +201,9 @@
 <select id="checkResellWarning_ajax" resultType="String">
 	
 	SELECT WUEDUBCODE
-	FROM WARNINGUSEDBOARDS
-	WHERE WUMID = #{loginId}
-	AND
-	WUEDUBCODE = #{ubcode}
+			FROM WARNINGUSEDBOARDS
+			WHERE WUMID = #{loginId}
+			AND	WUEDUBCODE = #{ubcode}
 </select>
 					<!-- 게시글 신고 -->
 <insert id="insertResellWarning_ajax">
