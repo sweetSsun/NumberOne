@@ -48,7 +48,7 @@
 			
 					 	<!-- 살아남은 미니박수^^~! -->
 						 <p style="float: right; font-size: 12.5px; margin-right: 20px; margin-top: 4rem; margin-bottom: 10px;">
-							수고해주시는 관리자님께 박수 &nbsp;<img class="img-profile rounded-circle" style="height: 50px; width:50px" src="${pageContext.request.contextPath }/resources/img/clap.png">
+							수고해주시는 관리자님께 박수 &nbsp;<a href="selectMyInfoMemberView"><img class="img-profile rounded-circle" style="height: 50px; width:50px" src="${pageContext.request.contextPath }/resources/img/clap.png"></a>
 						 </p>
 					 </span>				 
 			 	 </div>
@@ -61,10 +61,11 @@
 						<li style="margin-right: 30px;">
 							<a href="loadToBoardMainPage">커뮤니티</a>
 						</li>
-
-						<li class="nav-item ">
+						<li class="nav-item" style="margin-right: 30px;">
 							<a href="selectResellMainPage">중고거래</a>
-
+						</li>
+						<li>
+							<a href="selectNoticeBoardList?NbCheck=GB">공동구매</a>
 						</li>
 					</ul>
 				</div>

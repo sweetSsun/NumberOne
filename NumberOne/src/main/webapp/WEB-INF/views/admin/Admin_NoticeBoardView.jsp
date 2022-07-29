@@ -73,7 +73,7 @@
 </head>
 <body>
 	<!-- TobBar -->
-	<%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
+	<%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
 	<!-- End of TobBar -->
 	
 	<main>

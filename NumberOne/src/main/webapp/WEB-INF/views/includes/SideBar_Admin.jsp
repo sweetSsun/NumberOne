@@ -72,12 +72,12 @@ body.sideon {
 				</div>
 				<div class="sideclose_room">
 					<span>
-						<a href="admin_selectNoticeList?NbCheck=GB" title="공구관리"><i class="fa-solid fa-box-open"></i></a>
+						<a href="admin_selectResellList" title="중고거래관리"><i class="fa-solid fa-carrot"></i></a>
 					</span>
 				</div>
 				<div class="sideclose_room">
 					<span>
-						<a href="admin_selectResellList" title="중고거래관리"><i class="fa-solid fa-carrot"></i></a>
+						<a href="admin_selectNoticeList?NbCheck=GB" title="공구관리"><i class="fa-solid fa-box-open"></i></a>
 					</span>
 				</div>
 				<div class="sideclose_room">
@@ -109,7 +109,7 @@ body.sideon {
 			<div class="sidemenu">
 			
 				<div class="sidetitle_close">
-					<span><a href="${pageContext.request.contextPath }/">관리자페이지</a></span>
+					<span><a href="${pageContext.request.contextPath }/">관리자</a></span>
 				</div>
 				
 				<div class="side_admin">
@@ -122,14 +122,14 @@ body.sideon {
 						<a href="admin_selectNoticeList?NbCheck=NB"><i class="fa-solid fa-volume-low"></i>&nbsp;&nbsp;공지방</a>
 					</span>
 				</div>
-				<div class="side_admin" style="padding-left: 5px;">
-					<span>
-						<a href="admin_selectNoticeList?NbCheck=GB"><i class="fa-solid fa-box-open" style="font-size:large;"></i>&nbsp;&nbsp;공구방</a>
-					</span>
-				</div>
-				<div class="side_admin">
+				<div class="side_admin" style="padding-left: 7px;">
 					<span>
 						<a href="admin_selectResellList"><i class="fa-solid fa-carrot"></i>&nbsp;&nbsp;중고거래</a>
+					</span>
+				</div>
+				<div class="side_admin" style="padding-left: 5px;">
+					<span>
+						<a href="admin_selectNoticeList?NbCheck=GB"><i class="fa-solid fa-box-open" style="font-size:large;"></i>&nbsp;&nbsp;공구관리</a>
 					</span>
 				</div>
 				

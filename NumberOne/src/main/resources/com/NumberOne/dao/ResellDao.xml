@@ -157,7 +157,8 @@
 			FROM 
 				(SELECT ROWNUM RN, PAGESELECT_VIEW.*
 						FROM PAGESELECT_VIEW
-						WHERE UBMID = #{ubmid}						
+						WHERE UBMID = #{ubmid}
+						
 						 AND UBCODE != #{ubcode} AND UBSTATE = 1)
 	
 			WHERE RN BETWEEN 1 AND 6
@@ -180,13 +181,28 @@
 												FROM MEMBERS
 												WHERE MNICKNAME	
 												LIKE '%'||#{keyword}||'%'
-									  		)
+										)
 				)	
 			
 			WHERE RN BETWEEN #{startRow} AND #{endRow}
 		
 </select>
 
+		
+				<!-- 글작성자의 다른 중고거래 글 전체갯수  -->
+<select id="selectTransactionTotalCount" resultType="int">
+
+			
+	SELECT  COUNT(UBCODE)					
+						FROM PAGESELECT_VIEW
+						WHERE UBMID IN
+										 (SELECT MID
+												FROM MEMBERS
+												WHERE MNICKNAME	
+												LIKE '%'||#{keyword}||'%'
+									  		)
+				
+</select>
 
 					<!--   찜한 글인지 확인  -->
 

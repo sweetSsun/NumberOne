@@ -713,7 +713,8 @@ font-weight: bold;
 	memberList_Btn.addEventListener('click', load_memberList);
 	
 	function load_memberList(){
-		location.href = 'selectResellTransactionList?sellBuy='+ubsellbuy+'&searchType=ubmid&keyword='+ubnickname+'&requestCheck=memberList';		
+		
+		location.href = 'selectResellTransactionList?searchType=ubmid&keyword='+ubnickname;		
 	}
 	
 	
