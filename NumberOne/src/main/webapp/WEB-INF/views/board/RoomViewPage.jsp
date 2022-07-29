@@ -776,52 +776,61 @@ roomView_ajax(nowBdcode)
 				//console.log(replys)
 				var replyOutput ="";
 				for(var i=0; i<replys.length; i++){			
-					console.log(replys[i]);
+					//console.log(replys[i]);
 					replyOutput += "<div id='reply_"+replys[i].rpcode+"' style='width:100%; margin-bottom:3px;' class='row' onmouseover='toggleReplyMenu(\""+replys[i].rpcode+"\", \"show\")' onmouseout='toggleReplyMenu(\""+replys[i].rpcode+"\", \"hide\")'>";
-					//댓글 작성자 프로필 이미지
-					replyOutput += "<div style='width:30px; padding-top: 10px'>";
-					replyOutput += "<img class='product-img' style='width:20px; height:20px; border-radius:50%;'";
-					if(replys[i].rpprofile != 'nomprofile'){
-						//console.log(replys[i].rpprofile);
-						console.log("프로필 있음");
-						if(replys[i].rpmstate == 1){
-							//일반 로그인
-							replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+replys[i].rpprofile+"'>";
-						} else if(replys[i].rpmstate == 9) {
-							//카카오 로그인
-							console.log(replys[i].rpprofile);
-							replyOutput += "src='"+replys[i].rpprofile+"'>";							
+					
+					if(replys[i].rpstate == 2){ //state == 1 댓글 출력 내용
+						//[삭제된 댓글입니다.] 출력
+						replyOutput += "<div style='font-size:15px; color:grey; margin:0px;'>[삭제된 댓글입니다.]</div>"
+						
+					} else { //state == 2 댓글 출력 내용
+					
+						//댓글 작성자 프로필 이미지
+						replyOutput += "<div style='width:30px;'>";
+						replyOutput += "<img class='product-img' style='width:20px; height:20px; border-radius:50%; margin-top:10px;'";
+						if(replys[i].rpprofile != 'nomprofile'){
+							console.log("프로필 있음")
+							if(replys[i].rpmid.substring(0, 1) == "@"){
+								//카카오 로그인
+								replyOutput += "src='"+replys[i].rpprofile+"'>";							
+							} else {
+								//일반 로그인
+								replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+replys[i].rpprofile+"'>";
+							}
+						} else {
+							replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png'>"; 
 						}
-					} else {
-						console.log("프로필 없음");
-						replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png'>"; 
-					}
-					replyOutput += "</img></div>";
-					//댓글 내용 부분 시작
-					replyOutput += "<div id='replyContents_"+replys[i].rpcode+"' style='width:320px; font-size:15px; padding-top:8px; word-break:break-word;'>"; 
-					//닉네임(진하게)
-					replyOutput += "<span onclick='writeMemberBoard(\""+replys[i].rpnickname+"\")' class='pointer' style='font-weight:600; margin:0px;'>"+replys[i].rpnickname+"&nbsp;&nbsp;</span>";
+						replyOutput += "</img></div>";
 					
-					//내용 
-					var reply_transform = replys[i].rpcontents.replaceAll(' ', '&nbsp;');
-					reply_transform = reply_transform.replaceAll('\n', '<br>');
-					//console.log(reply_transform);
-					replyOutput += reply_transform+"<br>";
+						//댓글 내용 부분 시작
+						replyOutput += "<div id='replyContents_"+replys[i].rpcode+"' style='width:320px; font-size:15px; padding-top:0px; word-break:break-word;'>"; 
 					
-					//댓글 작성 시간
-					replyOutput += "<span style='font-size:10px; color:grey; margin:0px;'>"+replys[i].rpdate+"</span>";
+						//닉네임(진하게)
+						replyOutput += "<span onclick='writeMemberBoard(\""+replys[i].rpnickname+"\")' class='pointer' style='font-weight:600; margin:0px;'>"+replys[i].rpnickname+"&nbsp;&nbsp;</span>";
 					
-					//댓글 작성자와 관리자에게만 보이는 ...
-					if(replys[i].rpmid == '${sessionScope.loginId}'){
-						console.log("댓글 작성자");
-						replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \""+replys[i].rpmid+"\")' style='font-size:15px;'>&#8943;</span>"; 
-					} else if ('${sessionScope.loginId}'=='admin'){
-						console.log("관리자");
-						replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \""+replys[i].rpmid+"\")' style='font-size:15px;'>&#8943;</span>"; 	
-					}
+						//내용
+						var reply_transform = replys[i].rpcontents.replaceAll(' ', '&nbsp;');
+						reply_transform = reply_transform.replaceAll('\n', '<br>');
+						//console.log(reply_transform);
+						//replyOutput += replys[i].rpcontents+"<br>";
+						replyOutput += reply_transform+"<br>";
 					
-				
-					replyOutput += "</div></div>";
+						//댓글 작성 시간
+						replyOutput += "<span style='font-size:10px; color:grey; margin:0px;'>"+replys[i].rpdate+"</span>";
+					
+						//댓글 작성자와 관리자에게만 보이는 ...
+						if(replys[i].rpmid == '${sessionScope.loginId}'){
+							console.log("댓글 작성자");
+							replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \""+replys[i].rpmid+"\")' style='font-size:15px;'>&#8943;</span>"; 
+						} else if ('${sessionScope.loginId}'=='admin'){
+							console.log("관리자");
+							replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \""+replys[i].rpmid+"\")' style='font-size:15px;'>&#8943;</span>"; 	
+						}
+						replyOutput += "</div>";
+						
+					} //state == 2 댓글 출력 내용 끝
+					
+					replyOutput += "</div>";
 				}
 			
 				//console.log(replyOutput);
