@@ -104,6 +104,7 @@
 		outline: none;
 		padding-left: 10px;
 		background-color: rgb(233, 233, 233);
+		width: 100%;
 
 	}
 	/* 참여 modal X버튼 */

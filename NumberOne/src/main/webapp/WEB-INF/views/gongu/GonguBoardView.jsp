@@ -185,6 +185,7 @@
 		outline: none;
 		padding-left: 10px;
 		background-color: rgb(233, 233, 233);
+		width: 100%;
 
 	}
 	/* 참여 modal X버튼 */
@@ -260,11 +261,11 @@
 					
 					<!-- 본문 글 내용-->
 					<c:if test="${noticeBoard.nbimg != null }">
-						<div class="img-container" >
+						<div class="img-container">
 							<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg }">
 						</div>
 					</c:if >
-					<div class="row mt-3 mb-1 boardContents">
+					<div class="row mt-3 mb-1 boardContents" style="padding-bottom: 20px;">
 						<div class="col">
 							<textarea id="inputReply" rows="10%" cols="100%" readonly>${noticeBoard.nbcontents }</textarea>
 							<%-- <text style="min-height:270px;">${board.bdcontents }</div> --%>
@@ -999,7 +1000,6 @@ $("#inputReply").each(function () {
 	// 공동구매 참여 양식 입력 모달창 출력
 	function showGonguModal(){
 		console.log("showGonguModal() 실행");
-		
 		console.log("selectLoginOut_ajax() 실행");
 		$.ajax({
 	  		type : 'get',
@@ -1012,20 +1012,27 @@ $("#inputReply").each(function () {
 	  				}
 	  				return;
 	  			}
-	  	
-		/* DB에서 참여한적이 있으면 안나타나게
-		 if (btnObj_stateText == "활성"){
-			$("#gonguModal").text(nbcode + "번 공구를 삭제 처리하시겠습니까?");
-		} else {
-			$("#updateNbstateModalBody").text(nbcode + "번 공구를 활성화 처리하시겠습니까?");
-		}
-		$("#nbcode_state").val(nbcode);
-		*/
-			$("#pay-tel").val(tel);
-			$("#pay-email").val(email);
-			$("#pay-address").val(address);
-			$("#gonguModal").modal("show");
-	  		}
+	  			
+	  			console.log("insertCheck_ajax() 실행");
+	  			$.ajax({
+	  				type : 'get',
+	  				url : 'insertCheck_ajax',
+	  				async : false,
+	  				success : function (check){
+	  					
+	  					// DB에서 참여한적이 있으면 안나타나게
+	  					if (check != null){
+	  						alert("이미 참여했습니다.");
+	  					}
+	  						$("#pay-tel").val(tel);
+	  						$("#pay-email").val(email);
+	  						$("#pay-address").val(address);
+	  						$("#gonguModal").modal("show");
+  				  	}
+	  					
+	  			});
+			}
+		
 		});
 	}
 </script>

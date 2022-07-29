@@ -14,8 +14,7 @@
 var msg = confirm("결제가 완료되었습니다. 마이페이지로 이동하시겠습니까?");
 
 	if(msg){
-		//opener.location.href = "selectMyInfoGonguView"; // mid 보내줘야할듯!
-		opener.location.href = "/";
+		opener.location.href = "selectMyInfoGonguView"; // loginId라서 매개변수 없어도ok
 		window.close();
 	} else {
 		opener.location.reload();
