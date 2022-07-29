@@ -23,7 +23,7 @@ import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.ChatMessageDto;
 import com.NumberOne.dto.ChatRoomDto;
 import com.NumberOne.dto.ContactDto;
-import com.NumberOne.dto.GoodsDto;
+import com.NumberOne.dto.GonguDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.ReplyDto;
 import com.NumberOne.dto.ScrapDto;
@@ -1027,6 +1027,7 @@ public class MemberService {
 		 // 회원 신고 확인
 	      public String checkMemberWarning_ajax(String loginId, String wmedNickname) {
 	         System.out.println("service.checkMemberWarning_ajax() 호출");
+	         
 	         String mbwnCheck="No";
 	         int mbwnCheckNum = mdao.checkMemberWarning_ajax(loginId, wmedNickname);
 	         if (mbwnCheckNum == 1) {
@@ -1038,7 +1039,17 @@ public class MemberService {
 	      // 회원 신고
 	      public int insertMemberWarning_ajax(String loginId, String wmedNickname) {
 	         System.out.println("service.insertMemberWarning_ajax() 호출");
-	         int insertResult = mdao.insertMemberWarning_ajax(loginId, wmedNickname);
+	         
+	         int insertResult=0;
+	         
+	         //잘못된 접근으로 이미 신고한 적 있는 회원을 다시 신고한 경우 오류 발생을 막기 위해 try-catch 사용
+	         try {
+	        	 insertResult = mdao.insertMemberWarning_ajax(loginId, wmedNickname);	    	 
+			} catch (Exception e) { 
+				//return 0
+				System.out.println("무결성 제약 조건 위반");
+			}
+	         
 	         return insertResult;
 	      }
 
@@ -1079,10 +1090,10 @@ public class MemberService {
 				
 
 				//참여한 공구 목록 
-				//ArrayList<BoardDto> board = mdao.selectMyInfoMemberView_Boards(loginId);
-				//System.out.println(board);
+				ArrayList<GonguDto> gonguList = mdao.selectMyInfoGonguView(loginId);
+				System.out.println(gonguList);
 
-				//mav.addObject("board", board);
+				mav.addObject("gonguList", gonguList);
 	
 				mav.setViewName("member/MyInfoGonguPage");
 

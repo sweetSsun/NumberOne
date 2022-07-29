@@ -16,9 +16,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.NumberOne.dao.AdminDao;
 import com.NumberOne.dao.BoardDao;
+import com.NumberOne.dao.MemberDao;
 import com.NumberOne.dao.ResellDao;
 import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.ContactDto;
+import com.NumberOne.dto.GonguDto;
 import com.NumberOne.dto.GoodsDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.NoticeDto;
@@ -39,6 +41,8 @@ public class AdminService {
 	private BoardDao bdao;
 	@Autowired
 	private ResellDao rdao;
+	@Autowired
+	private MemberDao mdao;
 	
 	@Autowired
 	private HttpSession session;
@@ -149,13 +153,8 @@ public class AdminService {
 	/* 공지 관리*/
 	// 공지 & 공구 관리페이지 이동
 	public ModelAndView admin_selectNoticeList(Paging paging, RedirectAttributes ra, String NbCheck) {
-		System.out.println(NbCheck);
-		if(NbCheck.equals("Nb")) {
-			System.out.println("AdminService.admin_selectNoticeList() 호출");
-		} else {
-			System.out.println("AdminService.admin_selectGonguList() 호출");
-		}
-		
+		System.out.println("AdminService.admin_selectNoticeList() 호출");
+
 		mav = new ModelAndView();
 		// 관리자 로그인 여부 체크
 		mav = loginAdminChToFail(ra);
@@ -255,10 +254,10 @@ public class AdminService {
 		if (updateResult > 0) {
 			if (nbcode.substring(0,2).equals("NB")){
 				ra.addFlashAttribute("msg", nbcode+" 공지가 비활성화 처리 되었습니다.");
-				mav.setViewName("redirect:/admin_selectNoticeList?searchVal=all&searchType=&keyword=&page=1");
+				mav.setViewName("redirect:/admin_selectNoticeList?NbCheck=NB&searchVal=all&searchType=&keyword=&page=1");
 			} else {
 				ra.addFlashAttribute("msg", nbcode+" 공구가 비활성화 처리 되었습니다.");
-				mav.setViewName("redirect:/admin_selectGonguList?searchVal=all&searchType=&keyword=&page=1");
+				mav.setViewName("redirect:/admin_selectNoticeList?NbCheck=GB&searchVal=all&searchType=&keyword=&page=1");
 			}
 		}
 		return mav;
@@ -294,6 +293,17 @@ public class AdminService {
 			mav.setViewName("admin/Admin_NoticeBoardView");
 		} else {
 			mav.setViewName("admin/Admin_GonguBoardView");
+			
+			// 공구 참여회원목록 불러오기
+			ArrayList<String> gonguList = adao.admin_selectGonguAttendList(nbcode);
+			System.out.println("gongu : "+gonguList);
+			// 공구 참여회원 수 불러오기
+			int gonguCount = adao.admin_selectGonguAttendCount(nbcode);
+			System.out.println("gongu : "+gonguCount);
+			
+			mav.addObject("gonguList", gonguList);
+			mav.addObject("gonguCount", gonguCount);
+			
 		}
 		return mav;
 	}
@@ -929,5 +939,26 @@ public class AdminService {
 	}
 
 	
-
+	
+	
+	// 공동구매 & 공구 카카오결제정보 DB입력 :: 성공/실패는 KakaoPay (controller)에서 판단; mav를 안쓰기 때문
+	public int insertGonguRegister(GonguDto gongu) {
+		System.out.println("insertGonguRegister() 호출");
+		int gonguRegister = adao.insertGonguResgister(gongu);
+		return gonguRegister;
+	}
+	
+	// 공동구매 & 공구 카카오결제정보 DB삭제
+	public int deleteGonguRegister(GonguDto gongu) {
+		System.out.println("deleteGonguRegister() 호출");
+		int gonguDelete = adao.insertGonguResgister(gongu);
+		return gonguDelete;
+	}
+		
+	// 공동구매 & 공구 참여내역 DB 찾기
+	public String insertCheck_ajax(String gnbcode, String gmid) {
+		System.out.println("insertCheck_ajax() 호출");
+		String gonguSelect = adao.insertCheck_ajax(gnbcode, gmid);
+		return gonguSelect;
+	}
 }

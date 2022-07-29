@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Update;
 
 import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.ContactDto;
-import com.NumberOne.dto.GoodsDto;
+import com.NumberOne.dto.GonguDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.ReplyDto;
 import com.NumberOne.dto.ScrapDto;
@@ -143,17 +143,22 @@ public interface MemberDao {
 	@Select("SELECT UBCODE, RGNAME AS UBRGCODE, UBSELLBUY, MNICKNAME AS UBNICKNAME, UBTITLE, UBMAINIMG, TO_CHAR(UBDATE, 'YYYY-MM-DD HH24:MI:SS') AS UBDATE FROM ZZIM ZZ INNER JOIN USEDBOARDS UB ON ZZ.ZZUBCODE = UB.UBCODE INNER JOIN REGION RG ON UB.UBRGCODE = RG.RGCODE INNER JOIN MEMBERS MB ON UB.UBMID = MB.MID WHERE ZZMID = #{loginId} AND UBSTATE = 1 ORDER BY UB.UBCODE DESC")
 	ArrayList<UsedBoardDto> selectZzimList_ajax(String loginId);
 	
-	  // 회원 신고 확인
-	   @Select("SELECT COUNT(*) FROM WARNINGMEMBERS WHERE WMMID = #{loginId} AND WMEDMID = (SELECT MID FROM MEMBERS WHERE MNICKNAME = #{wmedNickname})")
-	   int checkMemberWarning_ajax(@Param("loginId") String loginId, @Param("wmedNickname") String wmedNickname);
+	// 회원 신고 확인
+	@Select("SELECT COUNT(*) FROM WARNINGMEMBERS WHERE WMMID = #{loginId} AND WMEDMID = (SELECT MID FROM MEMBERS WHERE MNICKNAME = #{wmedNickname})")
+	int checkMemberWarning_ajax(@Param("loginId") String loginId, @Param("wmedNickname") String wmedNickname);
 
-	   // 회원 신고 (상대방 닉네임으로)
-	   @Insert("INSERT INTO WARNINGMEMBERS VALUES(#{loginId}, (SELECT MID FROM MEMBERS WHERE MNICKNAME = #{wmedNickname}))")
-	   int insertMemberWarning_ajax(@Param("loginId") String loginId, @Param("wmedNickname") String wmedNickname);
+	// 회원 신고 (상대방 닉네임으로)
+	@Insert("INSERT INTO WARNINGMEMBERS VALUES(#{loginId}, (SELECT MID FROM MEMBERS WHERE MNICKNAME = #{wmedNickname}))")
+	int insertMemberWarning_ajax(@Param("loginId") String loginId, @Param("wmedNickname") String wmedNickname);
 
-		//이메일 중복 확인
-		@Select("SELECT COUNT(MEMAIL) FROM MEMBERS WHERE MEMAIL = #{inputEmail}")	
-		int selectMemberEmail_ajax(String inputEmail);
+	//이메일 중복 확인
+	@Select("SELECT COUNT(MEMAIL) FROM MEMBERS WHERE MEMAIL = #{inputEmail}")	
+	int selectMemberEmail_ajax(String inputEmail);
+	
+	//마이페이지_공구
+	@Select("SELECT GNBCODE, NBTITLE AS GNBTITLE, GDATE, NBSTATE AS GNBSTATE, GMID FROM NOTICEBOARDS, GONGU WHERE GNBCODE = NBCODE AND GMID = #{loginId}")
+	ArrayList<GonguDto> selectMyInfoGonguView(String loginId);	
+
 	
 }
 

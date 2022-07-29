@@ -145,6 +145,16 @@
    	height: 350px;
    	object-fit: cover;
    }
+	section div.checkout__form{
+	/* 페이지 제목 */
+	color: #1c1c1c; 
+    font-weight: 700; 
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+    font-size : 24px;
+	}
+
 </style>
 </head>
 <body>
@@ -166,11 +176,11 @@
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h2 class="text-center">공지글 글상세페이지 : NoticeBoardView.jsp</h2>
+			<div class="checkout__form" style="margin-top: 30px;">일반게시판</div>
 				<form action="">
 					<div class="row">
 						<div class="col">
-							<a href="selectNoticeBoardList"><span class="fw-bold boardCategory"> | 공지게시판 </span></a> 
+							<a href="selectNoticeBoardList?NbCheck=NB"><span class="fw-bold boardCategory"> | 공지게시판 </span></a> 
 							<%-- <span class="fw-bold" style="color:gray; font-size:20px">/</span> <a href="#"><span class="bdregion"> ${board.bdrgname}</span></a> --%>
 						</div>
 					</div>
@@ -200,7 +210,7 @@
 						
 						<div align="right"  class="col-3 offset-md-3">
 							<span class="boardDate">${noticeBoard.nbdate } | </span> 
-							<span class="bdhit" style="right:0;"><i class="fa-regular fa-eye"></i>  ${noticeBoard.nbhits } 
+							<span class="bdhit" style="right:0;"><i class="fa-regular fa-eye"></i>  ${noticeBoard.nbhits } </span>
 						</div>
 					</div>
 					<!-- 실험 -->
@@ -227,7 +237,7 @@
 							</a>
 					</div>
 				<c:choose>
-					<c:when test="${sessionScope.loginId == board.bdmid && sessionScope.loginId != 'admin' }">
+					<c:when test="${sessionScope.loginId == 'admin' }">
 						<div align="right" class="col" >
 							<!-- 수정,삭제 : 로그인 아이디 = 글작성자 -->
 							<input onclick="loadToBoardModify()" type="button" style="margin-right: 2px; background-color: #00bcd4;" class="btn btn-sm fw-bold text-white" value="수정">
@@ -235,112 +245,16 @@
 						</div>
 					</c:when>
 					
-					<%-- <c:when test="${sessionScope.loginId != null && sessionScope.loginId != 'admin' }">
-						<div align="right" class="col" >
-							<!-- 추천,신고 : 로그인 한 아이디  -->
-							<i id="bdRecommend" onclick="insertBoardRecommend()" class="fa-regular fa-thumbs-up  fa-2x icon"  style="margin-right: 2px; font-size:30px"></i>
-							<i id="bdWarning" onclick="bdWarningCheckModal()" class='fa-solid fa-land-mine-on  fa-2x icon' style="margin-right: 2px; font-size:30px"></i>
-						</div>
-					</c:when> --%>
+
 				</c:choose>
 				</div>
 				
-<%-- 				<c:if test="${noticeBoard.nbimg != null }">
-					<div class="img-container" >
-						<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg }">
-					</div>
-					<div style="background-color: #00bcd4; width: 200px; color:white;  margin-bottom: 2%;" class="text-center fw-bold">
-						업로드 이미지
-					</div>				
-				</c:if > --%>
-				
-				<%-- <!------------------ 댓글영역 ------------------->
-				<div class="mb-2" id="commentBox">
-					<!-- 댓글개수 -->	
-					<div class="row">
-						<div class="col commentCount">
-							<i class="fa-regular fa-comment"></i> 댓글 <span class="text-info fw-bold" id="ReplyCount"></span>개
-						</div>
-					</div>
-					
-					<!-- 댓글목록_ajax -->
-					<div class="row" id="replyList_ajax">
-						
-					</div>
-					
-					<!-- 댓글입력박스 -->
-					<!-- 로그인 상태가 아닌 경우 댓글입력칸이 출력되지 않도록-->
-					<c:choose>
-					<c:when test="${sessionScope.loginId  != null }">
-						<div style="min-height:20%; border-radius:8px;" class="row outerCmtBox mt-3 mb-3">
-							<div class="innerCmtBox">
-								<!-- 댓글입력 -->
-								<textarea id="inputComment" style="border: solid #E0E0E0 3px; " class="mt-4 " rows="2" cols="100%" placeholder="상대방에게 불쾌감을 주는 욕설이나 댓글은 고지없이 삭제될 수 있습니다. "></textarea>
-							</div>
-							<div align="right" class="row">
-								<div align="right" class="col">
-									<button onclick="insertReply()" class="btn btn-sm bg-secondary mb-2 fw-bold text-white">등록</button>
-								</div>
-							</div>
-						</div>
-					</c:when>
-					</c:choose>
-				</div> --%>
+
 			</div>
 			
 		</section>
 	</main>
 	
-	<!--  --><!--  --><!--  --><!-- 모달 --><!--  --><!--  --><!--  -->
-	<!-- 댓글 수정 모달 -->
-	<div class="modal fade" id="bdRpModifyModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"> 댓글 수정 </h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body" style="margin:auto;" >
-					<input type="hidden" id="inputRpcode">
-					<textarea rows="5" cols="50" id="inputModifyRp" style="border: solid #E0E0E0 2px; border-radius:5px;">
-					
-					</textarea>                
-                </div>
-                <div class="modal-footer">
-                	<input type="hidden" >
-                    <button class="close btn text-white" style="background-color:#00bcd4" onclick="rpModify()">등록</button>
-                    <button class="close btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-                </div>
-            </div>
-        </div>
-    </div>
-	
-	
-	<!-- 게시글 신고 확인 모달 -->
-	<div class="modal fade" id="bdWarningCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title"> 게시글 신고 </h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body" >
-                	게시글을 신고하시겠습니까?
-                	<br> <span class="text-danger fw-bold">(※한번 신고한 게시글은 신고취소가 불가능합니다.)</span></div>
-                <div class="modal-footer">
-                	<input type="hidden" >
-                    <button class="close btn text-white" style="background-color:#00bcd4" onclick="insertBoardWarning()" >네</button>
-                    <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
-                </div>
-            </div>
-        </div>
-    </div>
     
     <!--  --><!-- 게시글 삭제 확인 모달 -->
 	<div class="modal fade" id="bdDeleteCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -365,28 +279,6 @@
         </div>
     </div>
     
-    <!--  --><!-- 댓글 삭제 확인 모달 -->
-	<div class="modal fade" id="rpDeleteCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" > 댓글 삭제 </h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body" >
-                	<span class="fw-bold">댓글을 삭제하시겠습니까?</span>
-                </div>	
-                <div class="modal-footer">
-                	<input type="hidden" value="rpcode" id="deleteRpcode">
-                    <button class="close btn text-white" style="background-color:#00bcd4" onclick="replyRemove()" >네</button>
-                    <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
-                </div>
-            </div>
-        </div>
-    </div>
     
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
 	<!-- 부트스트랩 -->
@@ -442,161 +334,6 @@
 		}
 </script>
 
-<script type="text/javascript">
-		// 댓글 수정 모달창 close 하는 스크립트
- 		var modal = $(".modal");
-		var close = $(".close");
-		for (var i = 0; i < close.length; i++){
-			close[i].addEventListener("click", function(){
-				$("#bdRpModifyModal").modal("hide");
-			});
-		}
-</script>
-
-<script type="text/javascript">
-		// 댓글 삭제 모달창 close 하는 스크립트
- 		var modal = $(".modal");
-		var close = $(".close");
-		for (var i = 0; i < close.length; i++){
-			close[i].addEventListener("click", function(){
-				$("#rpDeleteCheckModal").modal("hide");
-			});
-		}
-</script>
-
-<script type="text/javascript">
-	/* 게시글 추천, 신고 메소드 */
-	function checkBoardRecommend(){
-		/* 게시글 추천 확인 */
-		$.ajax({
-			type : "get",
-			url : "checkBoardRecommend_ajax",
-			data : { "loginId" : loginId, "bdcode" : bdcode },
-			async: false,
-			success : function(rcCheck){
-				console.log("추천유무 확인 : " + rcCheck);
-				if( rcCheck == "Yes" ){
-					$("#bdRecommend").addClass("text-primary");
-				}
-			}
-		});
-	}
-	function insertBoardRecommend(){
-		/* 게시글 추천 */
-		console.log("게시글 추천자 :" + loginId);
-		console.log("추천할 글번호 :" + bdcode);
-		
-		if( $("#bdRecommend").hasClass("text-primary") ){
-			deleteBoardRecommend();
-		}else{
-			$.ajax({
-				type : "get",
-				url : "insertBoardRecommend_ajax",
-				data : { "loginId" : loginId, "bdcode" : bdcode },
-				async: false,
-				success : function(recommend){
-					console.log(recommend);
-					if( recommend.length > 0 ){
-						$("#bdRecommend").addClass("text-primary");
-						updateBoardRecommendCount();
-					}
-				}
-			});
-		}
-	}
-	function deleteBoardRecommend(){
-		/* 추천 취소(추천한 상태에서 추천버튼 누를 시) */
-		console.log("추천취소할 사용자 : " + loginId);
-		console.log("추천취소할 게시글 : " + bdcode);
-		$("#bdRecommend").removeClass("text-primary");
-		$.ajax({
-			type : "get",
-			url : "deleteBoardRecommend_ajax",
-			data : { "loginId" : loginId, "bdcode" : bdcode },
-			async : false,
-			success : function(deleteResult){
-				console.log(deleteResult);
-				updateBoardRecommendCount();
-			}			
-		});
-	}
-	
-	function updateBoardRecommendCount(){
-		/* 게시글 추천수 출력 */
-		$.ajax({
-			type : "get",
-			url : "selectBoardRecommendCount_ajax",
-			async : false,
-			data : { "bdcode" : bdcode },
-			success : function(boardRecommendCount){
-				console.log("게시글 추천수 : " + boardRecommendCount);
-				$("#BoardRecommendSum").text(boardRecommendCount);
-			}
-		});
-	}
-	///////////////////////////[신고]/////////////////////////////////
-	function bdWarningCheckModal(){
-		/* 게시글 신고 클릭 시 모달창 출력 */
-		if( $("#bdWarning").hasClass("text-danger") ){
-			alert("이미 신고접수된 게시물입니다.");
-		}else{
-			$("#bdWarningCheckModal").modal('show');
-		}
-	}
-	
-	function checkBoardWarning(){
-		/* 게시글 신고 확인 */
-		$.ajax({
-			type : "get",
-			url : "checkBoardWarning_ajax",
-			data : { "loginId" : loginId, "bdcode" : bdcode },
-			async: false,
-			success : function(wnCheck){
-				console.log("신고유무 확인 : " + wnCheck );
-				if( wnCheck == "Yes" ){
-					$("#bdWarning").addClass("text-danger");
-				}
-			}
-		});
-	}
-	
-	function insertBoardWarning(){
-		/* 게시글 신고 */
-		console.log("게시글 신고자 : " + loginId);
-		console.log("신고할 글번호 : " + bdcode);
-		if( $("#bdWarning").hasClass("text-danger") ){
-			deleteBoardWarning();
-		}else{
-			$.ajax({
-				type : "get",
-				url : "insertBoardWarning_ajax",
-				data : { "loginId" : loginId, "bdcode" : bdcode },
-				async: false,
-				success : function(insertResult){
-					console.log(insertResult);
-					if( insertResult > 0 ){
-						alert("게시글 신고가 접수되었습니다.")
-						$("#bdWarning").addClass("text-danger");
-					}
-				}
-			});
-		}
-	}
-	
-	function deleteBoardWarning(){
-		/* 신고 취소 // 22.07.06 신고취소 안되도록 수정 */
-		$("#bdWarning").removeClass("text-danger");
-		$.ajax({
-			type : "get",
-			url : "deleteBoardWarning_ajax",
-			data : { "loginId" : loginId, "bdcode" : bdcode },
-			async : false,
-			success : function(deleteResult){
-				console.log(deleteResult);
-			}			
-		});
-	}
-</script>
 
 <script type="text/javascript">
 	/* 게시글 수정, 삭제 */

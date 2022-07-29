@@ -10,7 +10,7 @@
 <title>1인자 - 작성자 상세 페이지 (Board)</title>
 
 <!--jquery & bootstrap(5css)-->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
+<!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->   
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <!-- font awesome -->
 <script src="https://kit.fontawesome.com/8f795d5741.js" crossorigin="anonymous"></script>
@@ -384,10 +384,12 @@
 						
 			</div>
 			<div class="third">
-				
-				<span class="profile" style="display: block;"> 
-				 <input type="button" id="warningBtn" class="Wbtn" style="width: 90px; " value="신고"> 
-				</span>	
+
+				<c:if test="${! sessionScope.loginNickname.equals(memberInfo.mnickname)}">				
+					<span class="profile" style="display: block;"> 
+				 		<input type="button" id="warningBtn" class="Wbtn" style="width: 90px; " value="신고"> 
+					</span>	
+				</c:if>
 				<span class="profile" style="display: block; padding-top: 15px;"> 
 				<input type="button" id="chatBtn" class="btn" style="width: 90px;" value="채팅">
 				</span>		
@@ -441,6 +443,9 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
 </body>
+
+<script src="${pageContext.request.contextPath }/resources/js/jquery-3.3.1.min.js"></script>
+
 
 <script type="text/javascript">
 window.onload = function() {
@@ -789,8 +794,22 @@ function warningPopup()  {
 	}
 	
 	// 대화상대 신고 실패 시 수행할 기능
-	function failMemberWarning(){
-		alert("회원 신고에 실패했습니다.");
+	function failMemberWarning(type){
+		console.log(type+" 타입 신고 실패");
+		if(type == 0){
+			//insert fail
+			console.log("무결성 제약조건 위반");
+			alert("회원 신고에 실패했습니다");
+		} else if(type == 2){
+			//비로그인
+			console.log("비로그인");
+			alert("로그인 후 이용가능합니다");
+		} else if(type ==3){
+			//본인 신고하는 경우
+			console.log("본인 신고 불가");
+			alert("본인은 신고할 수 없습니다");
+		}
+	
 	}
 
 	

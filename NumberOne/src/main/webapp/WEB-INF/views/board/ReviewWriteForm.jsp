@@ -10,6 +10,7 @@
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>  
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
  
 <style type="text/css">
 	section{
@@ -107,7 +108,15 @@
     text-shadow: 0 0 0 rgba(250, 208, 0, 0.99);
     color: #00bcd4;
 }
-
+section div.checkout__form{
+	/* 페이지 제목 */
+	color: #1c1c1c; 
+    font-weight: 700; 
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+    font-size : 24px;
+}  
 </style>
 </head>
 <body>
@@ -130,7 +139,7 @@
 			<!-- 본문 -->
 			<form action="insertBoardWrite" method="post" enctype="multipart/form-data" onsubmit="return writeFormCheck();">
 			<div class="container">
-				<h2 class="text-center">후기글 작성페이지 : ReviewWriteForm.jsp</h2>
+			<div class="checkout__form" style="margin-top: 30px;">일반게시판 - 글작성</div>
 					<input type="hidden" name="bdmid" value="${sessionScope.loginId }">
 				<div class="row">
 					<div class="col-6">

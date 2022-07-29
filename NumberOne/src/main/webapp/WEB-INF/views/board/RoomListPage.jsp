@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 자취방 자랑 메인</title>
+<title>1인자 - 자취방 자랑게시판</title>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> 
@@ -439,7 +439,7 @@ h4:hover{
 				<!-- 페이지명 -->
 				<div class="checkout__form" style="margin-top: 30px;">
 					<a onclick="location.href='selectRoomList'" class="pointer">
-						<h4>자취방 자랑</h4>
+						<h4>자취방 자랑게시판</h4>
 					</a>
 				</div>
 			

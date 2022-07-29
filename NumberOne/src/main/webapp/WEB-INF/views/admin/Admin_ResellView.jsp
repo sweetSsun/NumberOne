@@ -284,8 +284,15 @@ textarea:focus {
 
 		<section>
 			<!-- 본문 -->
-			<div class="container">
-				<h2 class="text-center">관리자 중고거래 상세페이지 : Admin_ResellView.jsp</h2>
+			<div class="container" style="margin-top: 10px">
+				<!-- 페이지 제목 -->
+				<div class="checkout__form">중고거래</div>
+					<c:choose>
+						<c:when test="${ub_resellView.ubsellbuy == 'B' }">사구</c:when>
+						<c:otherwise>팔구</c:otherwise>
+					</c:choose>
+						
+				
 				<form action="insertResellChat">
 					<div class="row">
 						<div class="col">
