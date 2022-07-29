@@ -23,6 +23,12 @@ public class ReplyDto {
 	private String rpmstate;
 	private String bdstate;
 	
+	//대댓글 
+	private String rpparent;	//부모댓글
+	private int rpdepth;
+	private String rpgroupnum;	//가장 최상단의 부모댓글 
+	
+	
 	public String getRpcode() {
 		return rpcode;
 	}
@@ -102,14 +108,33 @@ public class ReplyDto {
 	public void setBdstate(String bdstate) {
 		this.bdstate = bdstate;
 	}
+	public String getRpparent() {
+		return rpparent;
+	}
+	public void setRpparent(String rpparent) {
+		this.rpparent = rpparent;
+	}
+	public int getRpdepth() {
+		return rpdepth;
+	}
+	public void setRpdepth(int rpdepth) {
+		this.rpdepth = rpdepth;
+	}
+	public String getRpgroupnum() {
+		return rpgroupnum;
+	}
+	public void setRpgroupnum(String rpgroupnum) {
+		this.rpgroupnum = rpgroupnum;
+	}
 	@Override
 	public String toString() {
 		return "ReplyDto [rpcode=" + rpcode + ", rpbdcode=" + rpbdcode + ", rpcontents=" + rpcontents + ", rpmid="
 				+ rpmid + ", rpdate=" + rpdate + ", rpstate=" + rpstate + ", rpbdtitle=" + rpbdtitle + ", rpbdcategory="
 				+ rpbdcategory + ", rpnickname=" + rpnickname + ", rpprofile=" + rpprofile + ", rpmprofile="
-				+ rpmprofile + ", rpmstate=" + rpmstate + ", bdstate=" + bdstate + "]";
+				+ rpmprofile + ", rpmstate=" + rpmstate + ", bdstate=" + bdstate + ", rpparent=" + rpparent
+				+ ", rpdepth=" + rpdepth + ", rpgroupnum=" + rpgroupnum + "]";
 	}
-	
+
 	
 	
 	
