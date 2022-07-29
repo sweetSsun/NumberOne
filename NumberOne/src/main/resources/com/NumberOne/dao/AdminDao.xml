@@ -611,10 +611,10 @@
 	</insert>
 	<!-- 공동구매/공구 카카오결제정보 DB삭제 -->
 	<insert id="deleteGonguResgister">
-		DELETE FROM GONGU WHERE GNBCODE = #{gnbcode} AND GMID = #{gmid};
+		DELETE FROM GONGU WHERE GNBCODE = #{gnbcode} AND GMID = #{gmid}
 	</insert>
 	<!-- 공동구매/공구 카카오결제정보 DB확인 -->
 	<select id="insertCheck_ajax" resultType="String">
-		SELECT MID FROM GONGU WHERE NBCODE = #{gnbcode} AND GMID = #{gmid}; 
+		SELECT GMID FROM GONGU WHERE GNBCODE = #{gnbcode} AND GMID = #{gmid}
 	</select>
 </mapper>

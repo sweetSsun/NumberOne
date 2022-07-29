@@ -85,5 +85,5 @@ public interface AdminDao {
 	//공동구매 & 공구 카카오결제정보 DB삭제 
 	int deleteGonguResgister(GonguDto gongu);
 	//공동구매 & 공구 카카오결제정보 DB찾기 
-	String insertCheck_ajax(String nbcode, String mid);
+	String insertCheck_ajax(@Param("gnbcode") String gnbcode, @Param("gmid") String gmid);
 }
