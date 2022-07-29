@@ -797,7 +797,13 @@ section div.checkout__form{
 				console.log(replyList);
 				output += "<div class=\"row\">"
 				for( var i=0; i < replyList.length; i++ ){
+					if( replyList[i].rpstate == 2 ){//삭제된 댓글일 때
+						output += "<div style='border-bottom: solid #E0E0E0 1px; height:60px; line-height:60px;' >"
+						output += "    <span style=\"color:gray; font-size:20px;\"> ( 삭제된 댓글입니다. ) </span>"
+						output += "</div>"
 					
+					}else{
+						
 					if( replyList[i].rpmid == '${sessionScope.loginId}' ){//동일한 아이디 (댓글 수정, 삭제 버튼)
 						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;' >" /* 프로필영역 */
 
@@ -865,6 +871,7 @@ section div.checkout__form{
 				}
 				output += "</div>"
 			}
+					}
 		});
 		$("#replyList_ajax").html(output);
 	}

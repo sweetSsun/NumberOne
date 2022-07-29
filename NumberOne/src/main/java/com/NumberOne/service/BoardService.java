@@ -1411,6 +1411,49 @@ public class BoardService {
 	}
 	
 	
+	//대댓글 등록 
+	public int insertBoardRe_Reply_ajax(ReplyDto reply, String bdcode, String loginId) {
+		System.out.println("BoardnService.insertBoardRe_Reply_ajax() 호출");
+		
+		 String rpcode_parent = reply.getRpcode();
+		
+		//모댓글의 최대 RPDEPTH 구하기 
+		int rp_depth = bdao.selectreplyMaxDepth(rpcode_parent)+1;
+		System.out.println("댓글깊이 : " + rp_depth);
+			
+		
+	      String maxRpcode = bdao.selectReplyMaxNumber();
+	      //System.out.println("maxRpcode : " + maxRpcode);
+	      String rpcode = "RP";
+
+	      if (maxRpcode == null) {
+	         rpcode = rpcode + "00001";
+	      } else {
+	    	  
+	         String rpcode_stirng = maxRpcode.substring(4);
+	         int rpcode_num = Integer.parseInt(rpcode_stirng) + 1;
+
+	         if (rpcode_num < 10) {
+	            rpcode = rpcode + "0000" + rpcode_num;
+	         } else if (rpcode_num < 100) {
+	            rpcode = rpcode + "000" + rpcode_num;
+	         } else if (rpcode_num < 1000) {
+	            rpcode = rpcode + "00" + rpcode_num;
+	         } else if (rpcode_num < 10000) {
+	            rpcode = rpcode + "0" + rpcode_num;
+	         } else {
+	            rpcode = rpcode + rpcode_num;
+	         }
+	      }
+		
+	    reply.setRpdepth(rp_depth);
+	      
+		int insertResult = bdao.insertBoardRe_Reply_ajax(rpcode, bdcode, reply.getRpcontents(), rpcode_parent, reply.getRpdepth(), loginId);
+		
+		return insertResult;
+	}
+	
+	
 
 }
 
