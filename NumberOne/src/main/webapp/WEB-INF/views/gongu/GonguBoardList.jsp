@@ -87,7 +87,7 @@
 	<main>
 		
 		<!-- 사이드바 -->
-		<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
+		<%@ include file="/WEB-INF/views/includes/SideBar_Gongu.jsp" %>
 		
 		<section>
 		<!-- 본문 -->

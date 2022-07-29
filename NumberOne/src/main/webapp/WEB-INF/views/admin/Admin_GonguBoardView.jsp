@@ -133,7 +133,7 @@
 </head>
 <body>
 	<!-- TobBar -->
-	<%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
+	<%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
 	<!-- End of TobBar -->
 	
 	<main>
@@ -179,10 +179,10 @@
 						
 						<!-- 참여 버튼 -->
 						<div>
-							<button class="attendBtn btnLightBlue btnPush" onclick="showAttendModal()">참여 인원 : ${gonguCount }명</button>
+							<button class="attendBtn btnLightBlue btnPush" onclick="showAttendModal()">현재 참여 인원 </br> ${gonguCount }명</button>
 						</div>
 						
-						<!-- 공동구매 결제API -->
+						<!-- 공동구매 결제API 대신 참여확인 modal -->
 						<div class="modal fade" id="attendModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 					        <div class="modal-dialog" role="document">
 					            <div class="modal-content">

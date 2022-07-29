@@ -216,7 +216,7 @@
 	
 	<main>
 		<!-- 사이드바 -->
-		<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
+		<%@ include file="/WEB-INF/views/includes/SideBar_Gongu.jsp" %>
 		
 		<section>
 			<!-- 본문 -->
@@ -271,12 +271,15 @@
 							<%-- <text style="min-height:270px;">${board.bdcontents }</div> --%>
 						</div>
 						
-						<!-- 참여 버튼 -->
-						<div>
-							<button type="button" class="attendBtn btnLightBlue btnPush" onclick="showGonguModal()">참여</button>
-						</div>
 						
-						<!-- 공동구매 결제API -->
+						<!-- 참여 버튼 :: 진행중이면 나타나게하고 아니면 X -->
+						<c:if test="${noticeBoard.nbstate == 1 }">
+							<div>
+								<button type="button" class="attendBtn btnLightBlue btnPush" onclick="showGonguModal()">참여</button>
+							</div>
+						</c:if>
+						
+						<!-- 공동구매 결제API modal-->
 						<div class="modal fade" id="gonguModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 					        <div class="modal-dialog" role="document">
 					            <div class="modal-content">
