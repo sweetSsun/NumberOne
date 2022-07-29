@@ -287,13 +287,12 @@ background-size:cover;
 position: absolute;
 top:0;
 left:0;
-z-index: 1;
 color: white;
-font-size: 40px;
+font-size: 60px;
 width:100%;
 font-weight: bold;
-  background-color: rgb(52 50 50 / 80%); color: rgb(165 158 158 / 80%); 
-        padding:30%;  text-align: center;
+  background-color: rgb(107 101 101 / 55%); color: rgb(255 255 255 / 43%); 
+        padding-top:155px;  text-align: center;
             height: 100%;
 }
 </style>
@@ -592,15 +591,9 @@ font-weight: bold;
 				
 				<div class="row mb-2">
 					<div class="col text-center">
-						<c:choose>
-							<c:when test="${ub_resellView.ubsellbuy == 'B' }">
 								<span class="fw-bold boardCategory"> < 구매자의 다른 상품 > </span>
-							</c:when>
-
-							<c:otherwise>
-								<span class="fw-bold boardCategory"> < 거래자의 다른 상품 > </span>
-							</c:otherwise>
-						</c:choose>
+								<span id="memberList_Btn">++더보기</span>
+				
 					</div>
 				</div>
 
@@ -699,19 +692,31 @@ font-weight: bold;
 	const loginId = '${sessionScope.loginId}'; //로그인된 아이디
 	const ubcode = '${ub_resellView.ubcode}'; //현재 글번호
 	const ubmid = '${ub_resellView.ubmid}'; //작성자아이디
-	const ubsellbuy = '${ub_resellView.ubsellbuy}'; //사구, 팔구  분류
+	const ubnickname = '${ub_resellView.ubnickname}';	//작성자닉네임
+	const ubsellbuy = '${ub_resellView.ubsellbuy}'; //사구, 팔구  구분
 	const ubstate = '${ub_resellView.ubstate}'; // 글 상태 값 
 	const totalOp = document.getElementById("totalOp"); // 글 상태 select태그
-	const selectCheckBox = document.querySelectorAll(".selectCheckBox"); // 상품 상태 checkbox (복수 , c:forEach태그안에 있음) 
-	const select_gdcode = document.querySelectorAll(".select_gdcode"); //상품코드	(복수 , c:forEach태그안에 있음) 
-	const select_gdstate = document.querySelectorAll(".select_gdstate");//상품상태 (복수 , c:forEach태그안에 있음) 
-	const gd_nameList = document.querySelectorAll(".gd_nameList"); //상품명 (복수 , c:forEach태그안에 있음)
-	const gd_priceList = document.querySelectorAll(".gd_priceList"); //상품가격 (복수 , c:forEach태그안에 있음))
-	const soldCheckMsg = document.getElementById("soldCheckMsg");
-	const blur_img = document.getElementById("blur_img");
-	const imgState = document.getElementsByClassName('imgState');
+	const selectCheckBox = document.querySelectorAll(".selectCheckBox"); // 상품 상태 checkbox 
+	const select_gdcode = document.querySelectorAll(".select_gdcode"); //상품코드	
+	const select_gdstate = document.querySelectorAll(".select_gdstate");//상품상태 
+	const gd_nameList = document.querySelectorAll(".gd_nameList"); //상품명 
+	const gd_priceList = document.querySelectorAll(".gd_priceList"); //상품가격 
+	const soldCheckMsg = document.getElementById("soldCheckMsg");	// 제목에 '판매완료'Text 출력하기용
+	//const blur_img = document.getElementById("blur_img");	
+	const imgState = document.getElementsByClassName('imgState');	// 이미지에 '판매완료' Text 띄우기용
+	const memberList_Btn = document.getElementById('memberList_Btn');	//회원의 중고거래 글 더보기
+	
 	let zzim_Check = '${zzim_Check}';
 	let ubzzim = '${ub_resellView.ubzzim }';	//찜 갯수
+	
+	
+	memberList_Btn.addEventListener('click', load_memberList);
+	
+	function load_memberList(){
+		location.href = 'selectResellTransactionList?sellBuy='+ubsellbuy+'&searchType=ubmid&keyword='+ubnickname+'&requestCheck=memberList';		
+	}
+	
+	
 </script>
 
 
@@ -907,7 +912,7 @@ function chatInsert_Ajax() {
          }
          
          // 체크 확인
-         if(gd_names.length === '0'){
+         if(gd_names.length == '0'){
             alert('관심있는 상품을 선택해주세요');
             return;
          }

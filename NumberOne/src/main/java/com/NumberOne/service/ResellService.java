@@ -348,8 +348,99 @@ public class ResellService {
 		return mav;
 
 	}
-
 	
+	public ModelAndView selectResellTransactionList(Paging paging) throws Exception {
+		System.out.println("글 작성자의 거래물품정보 서비스 호출");
+		ModelAndView mav = new ModelAndView();
+		
+		System.out.println(paging);
+				 
+		paging.setPerPageNum(12);
+		
+		
+		
+		int totalCaount = rdao.selectPageTotalCount(paging);
+		
+		paging.setTotalCount(totalCaount);
+		paging.calc();
+
+		
+		ArrayList<UsedBoardDto> member_transactionList = rdao.selectResellTransactionList(paging);
+		
+		
+		//timeFuction에 리스트 넘기면 시간 ubdatedef에는 변경된 시간, ubdate에는 분 까지 잘린 시간이 저장되어 리턴
+		member_transactionList = timeFuction(member_transactionList);
+		
+		//zzimCheck에 리스트 넘기면 로그인 id가 zzim 기록이 있는 경우 zzimcheck에 mid 저장
+		member_transactionList = zzimCheck(member_transactionList);
+				
+		
+		
+		System.out.println("글정보 확인");
+		System.out.println("거래중 목록 : " + member_transactionList);
+		
+		System.out.println("페이지정보");
+		System.out.println(paging);
+		mav.addObject("member_transactionList", member_transactionList);
+		mav.addObject("paging", paging);
+		
+	
+			mav.setViewName("resell/Resell_transactionList");
+
+
+		return mav;
+
+	}
+	
+	
+//	public ModelAndView selectResellTransactionList(Paging paging) throws Exception {
+//		System.out.println("글 작성자의 거래물품정보 서비스 호출");
+//		ModelAndView mav = new ModelAndView();
+//		
+//		System.out.println(paging);
+//				 
+//		paging.setPerPageNum(12);
+//		
+//		
+//		
+//		int totalCaount = rdao.selectPageTotalCount(paging);
+//		
+//		paging.setTotalCount(totalCaount);
+//		paging.calc();
+//
+//		ArrayList<UsedBoardDto> member_completedList = rdao.selectResellTransactionList(paging, 1);
+//		
+//		ArrayList<UsedBoardDto> member_tradingList = rdao.selectResellTransactionList(paging, 9);
+//		
+//		
+//		//timeFuction에 리스트 넘기면 시간 ubdatedef에는 변경된 시간, ubdate에는 분 까지 잘린 시간이 저장되어 리턴
+//		member_completedList = timeFuction(member_completedList);
+//		member_tradingList = timeFuction(member_tradingList);
+//		
+//		//zzimCheck에 리스트 넘기면 로그인 id가 zzim 기록이 있는 경우 zzimcheck에 mid 저장
+//		member_completedList = zzimCheck(member_completedList);
+//		member_tradingList = zzimCheck(member_tradingList);
+//				
+//		
+//		
+//		System.out.println("글정보 확인");
+//		System.out.println("거래중 목록 : " + member_tradingList);
+//		System.out.println("거래완료 목록 : " + member_completedList);
+//		
+//		System.out.println("페이지정보");
+//		System.out.println(paging);
+//		mav.addObject("member_tradingList", member_tradingList);
+//		mav.addObject("member_completedList", member_completedList);
+//		mav.addObject("paging", paging);
+//		
+//	
+//			mav.setViewName("resell/Resell_transactionList");
+//
+//
+//		return mav;
+//
+//	}
+//	
 //   중고거래리스트 selected 지역으로 조회
 	public String selectResellRegionList_ajax(Paging paging) throws Exception {
 		System.out.println("selectResellRegionList_ajax 서비스 호출");
