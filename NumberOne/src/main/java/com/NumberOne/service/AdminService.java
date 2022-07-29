@@ -294,14 +294,14 @@ public class AdminService {
 		} else {
 			mav.setViewName("admin/Admin_GonguBoardView");
 			
-			// 공구 회원정보 불러오기
+			// 회원정보 불러오기
 			String loginId;
 			if((String) session.getAttribute("loginId")!=null) {			
 				loginId = (String) session.getAttribute("loginId");
 			} else {
 				loginId = (String) session.getAttribute("kakaoId");			
 			}
-			
+			// if null 일때는 안보내게 조건 함더 줘야함
 			System.out.println("로그인 된 아이디 : " + loginId);
 			
 			MemberDto memberInfo = mdao.selectMyInfoMemberView(loginId);
@@ -944,20 +944,24 @@ public class AdminService {
 	
 	
 	
-	// 공동구매/공구 카카오결제정보 DB입력
+	// 공동구매 & 공구 카카오결제정보 DB입력 :: 성공/실패는 KakaoPay (controller)에서 판단; mav를 안쓰기 때문
 	public int insertGonguRegister(GonguDto gongu) {
 		System.out.println("insertGonguRegister() 호출");
-		
 		int gonguRegister = adao.insertGonguResgister(gongu);
-		
-		if(gonguRegister>0) {
-			System.out.println("DB입력 성공");
-		} else {
-			System.out.println("DB입력 실패");
-		}
-	
 		return gonguRegister;
 	}
 	
-
+	// 공동구매 & 공구 카카오결제정보 DB삭제
+	public int deleteGonguRegister(GonguDto gongu) {
+		System.out.println("deleteGonguRegister() 호출");
+		int gonguDelete = adao.insertGonguResgister(gongu);
+		return gonguDelete;
+	}
+		
+	// 공동구매 & 공구 참여내역 DB 찾기
+	public String insertCheck_ajax(String nbcode, String mid) {
+		System.out.println("insertCheck_ajax() 호출");
+		String gonguSelect = adao.insertCheck_ajax(nbcode, mid);
+		return gonguSelect;
+	}
 }
