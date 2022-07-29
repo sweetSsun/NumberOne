@@ -60,7 +60,7 @@ public class BoardService {
 			ra.addFlashAttribute("msg", "로그인 후 이용가능합니다");
 			
 			//실패페이지로 이동(실패 페이지에서 msg alert 띄우고, history back)
-			mav.setViewName("redirect:loadToFail");
+			mav.setViewName("redirect:/loadToFail");
 		
 		} else {
 			System.out.println("로그인");
@@ -94,7 +94,7 @@ public class BoardService {
 			ra.addFlashAttribute("msg", "로그인 후 이용가능합니다");
 			
 			//실패페이지로 이동(msg alert 띄우고, history back)
-			mav.setViewName("redirect:loadToFail");
+			mav.setViewName("redirect:/loadToFail");
 
 		} else if (loginId != null && ! loginId.equals(checkId)) {
 			System.out.println("작성자 본인 아님");
@@ -103,7 +103,7 @@ public class BoardService {
 			ra.addFlashAttribute("msg", "작성자가 아닙니다");
 				
 			//실패페이지로 이동(msg alert 띄우고, history back)
-			mav.setViewName("redirect:loadToFail");
+			mav.setViewName("redirect:/loadToFail");
 				
 		} else {
 			System.out.println("작성자 본인");
@@ -1453,7 +1453,39 @@ public class BoardService {
 	}
 	
 	
-
+	/*공동구매&공구-진행완료 게시판 이동 및 검색 
+	   public ModelAndView selectGonguEndBoardList(Paging paging) {
+		   System.out.println("BoardService.selectGonguEndBoardList() 호출");
+		   
+		   ModelAndView mav = new ModelAndView();
+		   
+		   //페이징 
+		   if(paging.getKeyword() == null) {
+			   paging.setKeyword("");
+		   }
+		   
+		   //고정공지
+		   ArrayList<NoticeDto> noticeList_fix = bdao.selectNoticeList();
+		   			   
+		   int totalCount = bdao.selectGonguTotalCount(paging);
+		   paging.setTotalCount(totalCount);
+		   paging.calc(); // 페이지 처리 계산 실행 
+		   System.out.println(paging);
+		   
+		   ArrayList<NoticeDto> GonguEndList = bdao.selectGonguEndBoardList(paging);
+		   System.out.println(GonguEndList);
+		   
+		   mav.addObject("noticeList_fix", noticeList_fix);
+		   mav.addObject("noticeList", GonguEndList);
+		   mav.addObject("paging", paging);
+		   mav.setViewName("gongu/GonguBoardEndList");			   
+		   return mav;
+		   
+		   
+	   }*/
+	   
+	   
+	   
 }
 
 

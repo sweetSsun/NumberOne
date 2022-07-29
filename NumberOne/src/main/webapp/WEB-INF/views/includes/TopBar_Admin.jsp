@@ -65,7 +65,7 @@
 							<a href="selectResellMainPage">중고거래</a>
 						</li>
 						<li>
-							<a href="selectGonguBoardList?NbCheck=GB">공동구매</a>
+							<a href="selectNoticeBoardList?NbCheck=GB">공동구매</a>
 						</li>
 					</ul>
 				</div>
