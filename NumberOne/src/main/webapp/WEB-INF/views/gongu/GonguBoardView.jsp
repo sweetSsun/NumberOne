@@ -979,7 +979,8 @@ $("#inputReply").each(function () {
 
 
 <script type="text/javascript">
-//모달창 close 하는 스크립트
+
+	//모달창 close 하는 스크립트
 	var modal = $(".modal");
 	var close = $(".close");
 	for (var i = 0; i < close.length; i++){
@@ -987,9 +988,7 @@ $("#inputReply").each(function () {
 			$("#gonguModal").modal("hide");
 		});
 	}
-			
-	var btnObj_state;
-
+	
 	var tel = "${memberInfo.mphone }";
 	var email = "${memberInfo.memail }";
 	var address = "${memberInfo.maddr }";

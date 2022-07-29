@@ -294,17 +294,16 @@ public class AdminService {
 		} else {
 			mav.setViewName("admin/Admin_GonguBoardView");
 			
-			// 공구 회원정보 불러오기
-			String loginId = (String) session.getAttribute("loginId");
+			// 공구 참여회원목록 불러오기
+			ArrayList<String> gonguList = adao.admin_selectGonguAttendList(nbcode);
+			System.out.println("gongu : "+gonguList);
+			// 공구 참여회원 수 불러오기
+			int gonguCount = adao.admin_selectGonguAttendCount(nbcode);
+			System.out.println("gongu : "+gonguCount);
 			
-			if(loginId == null) {
-				System.out.println("비회원입니다.");
-				
-			} else {
-				System.out.println("로그인 된 아이디 : " + loginId);
-				MemberDto memberInfo = mdao.selectMyInfoMemberView(loginId);
-				mav.addObject("memberInfo", memberInfo);							
-			}
+			mav.addObject("gonguList", gonguList);
+			mav.addObject("gonguCount", gonguCount);
+			
 		}
 		return mav;
 	}

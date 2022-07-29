@@ -617,4 +617,14 @@
 	<select id="insertCheck_ajax" resultType="String">
 		SELECT GMID FROM GONGU WHERE GNBCODE = #{gnbcode} AND GMID = #{gmid}
 	</select>
+	
+	<!-- 관리자_공동구매/공구 참여회원 목록 -->
+	<select id="admin_selectGonguAttendList" resultType="String">
+		SELECT GMID FROM GONGU WHERE GNBCODE = #{gnbcode} ORDER BY GMID
+	</select>
+	<!-- 관리자_공동구매/공구 참여회원 count -->
+	<select id="admin_selectGonguAttendCount" resultType="int">
+		SELECT COUNT(GMID) FROM GONGU WHERE GNBCODE = #{gnbcode}
+	</select>
+	
 </mapper>
