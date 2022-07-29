@@ -356,10 +356,9 @@ public class ResellService {
 		System.out.println(paging);
 				 
 		paging.setPerPageNum(12);
+			
 		
-		
-		
-		int totalCaount = rdao.selectPageTotalCount(paging);
+		int totalCaount = rdao.selectTransactionTotalCount(paging);
 		
 		paging.setTotalCount(totalCaount);
 		paging.calc();

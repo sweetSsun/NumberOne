@@ -547,8 +547,7 @@ function showList(list_Tag){
 <!-- 페이지이동시 상세페이지에서 글목록으로 돌아올 때 필요한 값 저장. -->
 <script type="text/javascript">
 /* 페이지 이동 시 현재 페이지 정보 저장을 위한 이벤트 핸들러 */
- const ubsellbuy = '${member_transactionList.ubsellbuy}';
- 
+  
  /* 페이지 번호저장. */
 	function paginationBtn(pageNum) {
 		storage.setItem('page', pageNum); // 로컬스토리지 페이지번호 저장
@@ -566,16 +565,8 @@ function showList(list_Tag){
 				+ "&ubsellbuy=B&modifyCheck=LIST";
 	}
 	
-	/* 글쓰기 버튼 클릭시 선택되어있는 검색타입, 검색어, 지역 저장*/
-	function loadToWrite(){
-		storage.setItem('searchType',
-				document.getElementById("searchType").value); 
-		storage.setItem('keyword', document.getElementById("keyword").value); 
-		storage.setItem('selRegion',
-				regionInfo.value); 
 
-		location.href = "loadToResellWriteForm?ubsellbuy=B&ubrgcode="+regionInfo.value;
-	}	
+
 </script>
 
 
