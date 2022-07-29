@@ -200,6 +200,16 @@
     	background-color: transparent;
 	}
 	
+	section div.checkout__form{
+	/* 페이지 제목 */
+	color: #1c1c1c; 
+    font-weight: 700; 
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+    font-size : 24px;
+}
+	
 </style>
 </head>
 <body>
@@ -219,122 +229,124 @@
 		<%@ include file="/WEB-INF/views/includes/SideBar_Gongu.jsp" %>
 		
 		<section>
+			<!-- 페이지명 -->
+			<div class="checkout__form" style="margin-top: 30px;">공구게시판</div> 
+
 			<!-- 본문 -->
 			<div class="container">
-				<h2 class="text-center">공구글 글상세페이지 : GonguBoardView.jsp</h2>
-					<div class="row">
-						<div class="col">
-							<a href="selectNoticeBoardList"><span class="fw-bold boardCategory"> | 공구게시판 </span></a> 
-							<%-- <span class="fw-bold" style="color:gray; font-size:20px">/</span> <a href="#"><span class="bdregion"> ${board.bdrgname}</span></a> --%>
-						</div>
+				<div class="row">
+					<div class="col">
+						<a href="selectNoticeBoardList"><span class="fw-bold boardCategory"> | 공구게시판 </span></a> 
+						<%-- <span class="fw-bold" style="color:gray; font-size:20px">/</span> <a href="#"><span class="bdregion"> ${board.bdrgname}</span></a> --%>
 					</div>
-					<div class="row" >
-						<div class="col">
-							<span class="fw-bold boardTitle">${noticeBoard.nbtitle }</span>  
-						</div>
+				</div>
+				<div class="row" >
+					<div class="col">
+						<span class="fw-bold boardTitle">${noticeBoard.nbtitle }</span>  
 					</div>
-					<div class="row idDateHits">
-						<div class="col-6">
-						<%-- 	<c:choose>
-								<c:when test="${board.bdmprofile != null && board.bdmstate == 1 }">
-									<img class="img-profile rounded-circle bdProfile"  src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/${board.bdmprofile}">
-								</c:when>
-								
-								<c:when test="${board.bdmprofile != null && board.bdmstate == 9 }">
-									<!-- 카카오 회원 -->
-									<img class="img-profile rounded-circle bdProfile_Kakao" src="${board.bdmprofile}">
-								</c:when>
-								
-								<c:otherwise>
-									<img class="img-profile rounded-circle bdProfile"  src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png">
-								</c:otherwise>
-							</c:choose> --%>
-							<span class="fw-bold bdnickname">관리자</span>
-						</div>
-						
-						<div align="right"  class="col-3 offset-md-3">
-							<span class="boardDate">${noticeBoard.nbdate } | </span> 
-							<span class="bdhit" style="right:0;"><i class="fa-regular fa-eye"></i>  ${noticeBoard.nbhits } </span>
-						</div>
+				</div>
+				<div class="row idDateHits">
+					<div class="col-6">
+					<%-- 	<c:choose>
+							<c:when test="${board.bdmprofile != null && board.bdmstate == 1 }">
+								<img class="img-profile rounded-circle bdProfile"  src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/${board.bdmprofile}">
+							</c:when>
+							
+							<c:when test="${board.bdmprofile != null && board.bdmstate == 9 }">
+								<!-- 카카오 회원 -->
+								<img class="img-profile rounded-circle bdProfile_Kakao" src="${board.bdmprofile}">
+							</c:when>
+							
+							<c:otherwise>
+								<img class="img-profile rounded-circle bdProfile"  src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png">
+							</c:otherwise>
+						</c:choose> --%>
+						<span class="fw-bold bdnickname">관리자</span>
 					</div>
-					<!-- 실험 -->
 					
-					<!-- 본문 글 내용-->
-					<c:if test="${noticeBoard.nbimg != null }">
-						<div class="img-container">
-							<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg }">
-						</div>
-					</c:if >
-					<div class="row mt-3 mb-1 boardContents" style="padding-bottom: 20px;">
-						<div class="col">
-							<textarea id="inputReply" rows="10%" cols="100%" readonly>${noticeBoard.nbcontents }</textarea>
-							<%-- <text style="min-height:270px;">${board.bdcontents }</div> --%>
-						</div>
-						
-						
-						<!-- 참여 버튼 :: 진행중이면 나타나게하고 아니면 X -->
-						<c:if test="${noticeBoard.nbstate == 1 }">
-							<div>
-								<button type="button" class="attendBtn btnLightBlue btnPush" onclick="showGonguModal()">참여</button>
-							</div>
-						</c:if>
-						
-						<!-- 공동구매 결제API modal-->
-						<div class="modal fade" id="gonguModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-					        <div class="modal-dialog" role="document">
-					            <div class="modal-content">
-					                <div class="modal-header">
-					                    <h5 class="modal-title" id="updateNbstateModalLabel"> 공동구매 결제 양식 </h5>
-					                    <button class="attendX close" type="button" data-dismiss="modal" aria-label="Close">
-					                        <span aria-hidden="true">×</span>
-					                    </button>
-					                </div>
-					                
-					                <div class="modal-body">
-						                <form id="form-payment" class="row" method="post">
-											<div class="col-sm-8">
-												<div class="attendDiv">
-												<input class="attendInput" type="text" id="pay-id" name="pay-id" readonly="readonly" value="${sessionScope.loginId}" style="cursor:default;">
-												</div>
-												<div class="attendDiv">
-												<input class="attendInput" type="text" id="pay-tel" name="pay-tel" placeholder="전화번호를 입력하세요">
-												</div>
-												<div class="attendDiv">
-												<input class="attendInput" type="text" id="pay-email" name="pay-email" placeholder="이메일주소를 입력하세요">
-												</div>
-												<div class="attendDiv">
-												<input class="attendInput" type="text" id="pay-address" name="pay-address" placeholder="배송지주소를 입력하세요">
-												</div>
-											</div>
-											
-											<div class="col-sm-4">
-												<div style="height:70%; text-align: center;">
-													<span>${noticeBoard.nbtitle }</span>
-												</div>
-												<div>
-													<button id="btn-kakao-pay" type="button">
-													<img alt="카카오결제API" src="${pageContext.request.contextPath }/resources/img/payment_icon_yellow_medium.png">
-													<!-- small/ medium/ large -->
-													</button>
-												</div>
-											</div>
-											<!-- nbcode 넘겨주기 -->
-											<input type="hidden" id="gonguNbcode" value="${noticeBoard.nbcode }">
-											
-										</form>
-					                </div>
-					                
-					                <div class="modal-footer">
-					                    <button class="close btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-					                </div>
-					            </div>
-					        </div>
-					    </div>
-					    
-					    <!-- 공구 끝 -->
-					<!-- 본문 끝 -->
-					
+					<div align="right"  class="col-3 offset-md-3">
+						<span class="boardDate">${noticeBoard.nbdate } | </span> 
+						<span class="bdhit" style="right:0;"><i class="fa-regular fa-eye"></i>  ${noticeBoard.nbhits } </span>
 					</div>
+				</div>
+				<!-- 실험 -->
+				
+				<!-- 본문 글 내용-->
+				<c:if test="${noticeBoard.nbimg != null }">
+					<div class="img-container">
+						<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg }">
+					</div>
+				</c:if >
+				<div class="row mt-3 mb-1 boardContents" style="padding-bottom: 20px;">
+					<div class="col">
+						<textarea id="inputReply" rows="10%" cols="100%" readonly>${noticeBoard.nbcontents }</textarea>
+						<%-- <text style="min-height:270px;">${board.bdcontents }</div> --%>
+					</div>
+					
+					
+					<!-- 참여 버튼 :: 진행중이면 나타나게하고 아니면 X -->
+					<c:if test="${noticeBoard.nbstate == 1 }">
+						<div>
+							<button type="button" class="attendBtn btnLightBlue btnPush" onclick="showGonguModal()">참여</button>
+						</div>
+					</c:if>
+					
+					<!-- 공동구매 결제API modal-->
+					<div class="modal fade" id="gonguModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+				        <div class="modal-dialog" role="document">
+				            <div class="modal-content">
+				                <div class="modal-header">
+				                    <h5 class="modal-title" id="updateNbstateModalLabel"> 공동구매 결제 양식 </h5>
+				                    <button class="attendX close" type="button" data-dismiss="modal" aria-label="Close">
+				                        <span aria-hidden="true">×</span>
+				                    </button>
+				                </div>
+				                
+				                <div class="modal-body">
+					                <form id="form-payment" class="row" method="post">
+										<div class="col-sm-8">
+											<div class="attendDiv">
+											<input class="attendInput" type="text" id="pay-id" name="pay-id" readonly="readonly" value="${sessionScope.loginId}" style="cursor:default;">
+											</div>
+											<div class="attendDiv">
+											<input class="attendInput" type="text" id="pay-tel" name="pay-tel" placeholder="전화번호를 입력하세요">
+											</div>
+											<div class="attendDiv">
+											<input class="attendInput" type="text" id="pay-email" name="pay-email" placeholder="이메일주소를 입력하세요">
+											</div>
+											<div class="attendDiv">
+											<input class="attendInput" type="text" id="pay-address" name="pay-address" placeholder="배송지주소를 입력하세요">
+											</div>
+										</div>
+										
+										<div class="col-sm-4">
+											<div style="height:70%; text-align: center;">
+												<span>${noticeBoard.nbtitle }</span>
+											</div>
+											<div>
+												<button id="btn-kakao-pay" type="button">
+												<img alt="카카오결제API" src="${pageContext.request.contextPath }/resources/img/payment_icon_yellow_medium.png">
+												<!-- small/ medium/ large -->
+												</button>
+											</div>
+										</div>
+										<!-- nbcode 넘겨주기 -->
+										<input type="hidden" id="gonguNbcode" value="${noticeBoard.nbcode }">
+										
+									</form>
+				                </div>
+				                
+				                <div class="modal-footer">
+				                    <button class="close btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+				                </div>
+				            </div>
+				        </div>
+				    </div>
+				    
+				    <!-- 공구 끝 -->
+				<!-- 본문 끝 -->
+				
+				</div>
 				
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
 				<div class="row mb-2">
