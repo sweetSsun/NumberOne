@@ -170,7 +170,7 @@ System.out.println(ubDto);
 	}
 
 	@RequestMapping(value = "/selectResellPageList")
-	public ModelAndView selectResellPageList(Paging paging, RedirectAttributes ra) throws Exception {
+	public ModelAndView selectResellPageList(Paging paging) throws Exception {
 		System.out.println("selectResellPageList 호출");
 
 		ModelAndView mav = new ModelAndView();
@@ -178,7 +178,20 @@ System.out.println(ubDto);
 		mav = rsvc.selectResellPageList(paging);
 
 		return mav;
-	}
+			}
+
+	@RequestMapping(value = "/selectResellTransactionList")
+	public ModelAndView selectResellTransactionList(Paging paging) throws Exception {
+		System.out.println("selectResellTransactionList 호출");
+
+		ModelAndView mav = new ModelAndView();
+	
+		mav = rsvc.selectResellTransactionList(paging);
+
+		return mav;
+			}
+	
+	
 
 	
 	

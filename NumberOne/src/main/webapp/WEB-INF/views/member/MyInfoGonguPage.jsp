@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 마이페이지 중고거래</title>
+<title>1인자 - 마이페이지 공구</title>
 
 
 <!--jquery & bootstrap(5css)-->
@@ -143,7 +143,7 @@
 						<c:otherwise>
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center; ">
 							<td>${gongu.gnbcode }</td>
-							<td><a href="" class="text_leng">${gongu.gnbtitle }</a></td>
+							<td><a href="selectNoticeBoardView?codeIdx=${gongu.gnbcode }" class="text_leng">${gongu.gnbtitle }</a></td>
 							<td>${gongu.gdate }</td>
 							<td>진행중</td>
 							</tr>

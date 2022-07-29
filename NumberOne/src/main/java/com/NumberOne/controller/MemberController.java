@@ -388,7 +388,23 @@ public class MemberController {
 	  		System.out.println("입력한 이메일 : " + inputEmail);
 	  		String emailCheckResult = msvc.selectMemberEmail_ajax(inputEmail);
 	  		return emailCheckResult;  
-	  	}		
+	  	}
+	  	
+		
+		//마이페이지 공구
+		
+		@RequestMapping(value = "/selectMyInfoGonguView")
+		public ModelAndView selectMyInfoGonguView(RedirectAttributes ra) {
+			System.out.println("마이페이지 공구");
+			mav = new ModelAndView();
+			mav = msvc.selectMyInfoGonguView(ra);
+			
+			return mav;
+	
+		}
+		
+	  	
+	  	
 		
 	  	
 
