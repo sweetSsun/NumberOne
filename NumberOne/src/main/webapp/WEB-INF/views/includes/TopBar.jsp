@@ -164,7 +164,7 @@
 							<a href="selectResellMainPage">중고거래</a>
 						</li>
 						<li>
-							<a href="selectGonguBoardList">공동구매</a>
+							<a href="selectGonguBoardList?gbstate=ing">공동구매</a>
 						</li>
 					</ul>
 				</div>

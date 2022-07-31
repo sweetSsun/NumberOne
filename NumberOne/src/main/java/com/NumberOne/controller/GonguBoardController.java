@@ -100,9 +100,9 @@ public class GonguBoardController {
 	/* 일반 페이지 */
 	//공구게시판 이동 및 글검색
 	 @RequestMapping ( value = "/selectGonguBoardList")
-	 public ModelAndView selectGonguBoardList(Paging paging) {
+	 public ModelAndView selectGonguBoardList(Paging paging, String gbstate) {
 		 System.out.println("공지글 이동 및 검색 요청");
-		 ModelAndView mav = gbsvc.selectGonguBoardList(paging);
+		 ModelAndView mav = gbsvc.selectGonguBoardList(paging, gbstate);
 		 
 		 return mav;
 	 }
