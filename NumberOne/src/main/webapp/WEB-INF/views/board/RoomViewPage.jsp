@@ -789,7 +789,7 @@ roomView_ajax(nowBdcode)
 					//console.log(replys[i]);
 					//댓글 들여쓰기 여백
 					var rppadding = (parseInt(replys[i].rpdepth)-1)*5;
-					console.log("rppadding: "+rppadding);
+					//console.log("rppadding: "+rppadding);
 					replyOutput += "<div id='reply_"+replys[i].rpcode+"' style='box-sizing:border-box; width:100%; margin-bottom:3px; ";
 					replyOutput += "padding-left:"+rppadding+"%;' "
 					replyOutput += "class='row' onmouseover='toggleReplyMenu(\""+replys[i].rpcode+"\", \"show\")' onmouseout='toggleReplyMenu(\""+replys[i].rpcode+"\", \"hide\")'>";
@@ -799,7 +799,12 @@ roomView_ajax(nowBdcode)
 						replyOutput += "<div style='font-size:15px; color:grey; margin:0px;'>[삭제된 댓글입니다.]</div>"
 						
 					} else { //state == 2 댓글 출력 내용
-					
+						
+						if(replys[i].rpdepth != 1){
+							//답글인 경우 화살표 추가
+							replyOutput += "<div style='width:2%; font-size:15px; font-weight:bold; padding-top:2%;'>⤷</div>";
+						}
+						
 						//댓글 작성자 프로필 이미지
 						replyOutput += "<div style='min-width:30px; width:8%'>";
 						replyOutput += "<img class='product-img' style='width:20px; height:20px; border-radius:50%; margin-top:10px;'";
@@ -819,7 +824,10 @@ roomView_ajax(nowBdcode)
 						replyOutput += "</img></div>";
 					
 						//댓글 내용 부분 시작
-						replyOutput += "<div id='replyContents_"+replys[i].rpcode+"' style='width:90%; font-size:15px; padding-top:0px; word-break:break-word;'>"; 
+						//rpcontents 길이
+						var contentswidth = 90 - parseInt(rppadding);
+						//console.log(contentswidth)
+						replyOutput += "<div id='replyContents_"+replys[i].rpcode+"' style='width:"+contentswidth+"%; font-size:15px; padding-top:0px; word-break:break-word;'>"; 
 					
 						//닉네임(진하게)
 						replyOutput += "<span onclick='writeMemberBoard(\""+replys[i].rpnickname+"\")' class='pointer' style='font-weight:600; margin:0px;'>"+replys[i].rpnickname+"&nbsp;&nbsp;</span>";
