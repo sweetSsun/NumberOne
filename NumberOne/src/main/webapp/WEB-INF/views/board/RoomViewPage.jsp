@@ -683,7 +683,8 @@ roomView_ajax(nowBdcode)
 				var roomContentsOutput = "<div class='scroll' readonly style='font-size:15px; resize:none;'>"+roomViewContents+"</div>";
 				
 				//시간 출력
-				roomContentsOutput += "<span style='font-size:15px; color:gray; margin:0px;'>"+timeForToday(roomView.bddate)+"</span>"
+				roomContentsOutput += "<span style='font-size:15px; color:gray; margin:0px;' title='"+roomView.bddate+"'>";
+				roomContentsOutput += timeForToday(roomView.bddate)+"</span>";
 				$("#roomContents").html(roomContentsOutput);
 				//$("#roomContents").html("<textarea class='scroll' readonly style='font-size:15px; resize:none;'>"+roomView.bdcontents+"</textarea>");
 				

@@ -17,7 +17,7 @@
 
 
 
-<title>${noticeBoard.nbtitle} - 1인자:공구게시판</title>
+<title>${gonguBoard.gbtitle} - 1인자:공구게시판</title>
 
 <style type="text/css">
 	section{
@@ -25,7 +25,7 @@
 		margin: auto;
 		margin-top: 0%;
 	}
-	.textarea-NbView{
+	.textarea-GbView{
 		border: none;
 		resize: none;
 		width: -webkit-fill-available;
@@ -133,7 +133,7 @@
 </head>
 <body>
 	<!-- TobBar -->
-	<%@ include file= "/WEB-INF/views/includes/TopBar.jsp" %>
+	<%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
 	<!-- End of TobBar -->
 	
 	<main>
@@ -153,41 +153,41 @@
 					</div>
 					<div class="row" >
 						<div class="col">
-							<span class="fw-bold boardTitle">${noticeBoard.nbtitle }</span>  
+							<span class="fw-bold boardTitle">${gonguBoard.gbtitle }</span>  
 						</div>
 					</div>
 					<div class="row idDateHits">
 						<div class="col-6">
 							<!-- 닉네임 출력으로 바꾸기 -->
-							<span class="fw-bold bdnickname">${noticeBoard.nbnickname }</span>
+							<span class="fw-bold bdnickname">${gonguBoard.gbnickname }</span>
 						</div>
 						
 						<div align="right" class="col-3 offset-md-3">
-							<span class="boardDate">${noticeBoard.nbdate } | </span> 
-							<span class="bdhit" style="right:0;"><i class="fa-regular fa-eye"></i>${noticeBoard.nbhits}</span> 
+							<span class="boardDate">${gonguBoard.gbdate } | </span> 
+							<span class="bdhit" style="right:0;"><i class="fa-regular fa-eye"></i>${gonguBoard.gbhits}</span> 
 						</div>
 					</div>
 					
 					<!-- 본문 글 내용-->
 					<div class="mt-3 mb-1 boardContents" style="padding-bottom: 20px;">
 						<div>
-							<c:if test="${noticeBoard.nbimg != null }">
-								<img alt="" src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg}" style="max-width:100%; max-height:500px;">
+							<c:if test="${gonguBoard.gbimg != null }">
+								<img alt="" src="${pageContext.request.contextPath }/resources/img/gonguUpLoad/${gonguBoard.gbimg}" style="max-width:100%; max-height:500px;">
 							</c:if>
-							<textarea class="textarea-NbView" readonly>${noticeBoard.nbcontents }</textarea>
+							<textarea class="textarea-GbView" readonly>${gonguBoard.gbcontents }</textarea>
 						</div>
 						
 						<!-- 참여 버튼 -->
 						<div>
-							<button class="attendBtn btnLightBlue btnPush" onclick="showAttendModal()">참여 인원 : ${gonguCount }명</button>
+							<button class="attendBtn btnLightBlue btnPush" onclick="showAttendModal()">현재 참여 인원 </br> ${gonguCount }명</button>
 						</div>
 						
-						<!-- 공동구매 결제API -->
+						<!-- 공동구매 결제API 대신 참여확인 modal -->
 						<div class="modal fade" id="attendModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 					        <div class="modal-dialog" role="document">
 					            <div class="modal-content">
 					                <div class="modal-header">
-					                    <h5 class="modal-title" id="updateNbstateModalLabel"> 공동구매 참여 목록 </h5>
+					                    <h5 class="modal-title" id="updateGbstateModalLabel"> 공동구매 참여 목록 </h5>
 					                    <button class="attendX close" type="button" data-dismiss="modal" aria-label="Close">
 					                        <span aria-hidden="true">×</span>
 					                    </button>
@@ -205,11 +205,11 @@
 											
 											<div class="col-sm-4">
 												<div style="height:70%; text-align: center;">
-													<span>${noticeBoard.nbtitle }</span>
+													<span>${gonguBoard.gbtitle }</span>
 												</div>
 											</div>
-											<!-- nbcode 넘겨주기 -->
-											<input type="hidden" id="gonguNbcode" value="${noticeBoard.nbcode }">
+											<!-- gbcode 넘겨주기 -->
+											<input type="hidden" id="gonguGbcode" value="${gonguBoard.gbcode }">
 											
 										</form>
 					                </div>
@@ -232,7 +232,7 @@
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
 				<div class="row mb-2">
 					<div class="col-2">
-						<a href="admin_selectNoticeList?NbCheck=GB&${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}">
+						<a href="admin_selectGonguList?${paging.makeQueryPage(gonguBoard.gbcode, paging.page)}">
 						<input type="button" style="left:0;" class="middleBtn btn-numberone btn-sm fw-bold text-white" value="글목록">
 						</a> 
 					</div>
@@ -262,7 +262,7 @@
 </script>
 
 <script type="text/javascript">
-	// 공지글 삭제 요청 (nbstate 0으로 변경)
+	// 공지글 삭제 요청 (gbstate 0으로 변경)
 	$("#deleteBtn").click(function(){
 		console.log("공구 삭제 요청");
 		$.ajax({
@@ -277,10 +277,10 @@
 	  				return;
 	  			}
 	  			
-				var nbstate = 2;
-				var nbcode = '${noticeBoard.nbcode}';
-				console.log("nbcode : " + nbcode);
-				location.href="admin_updateNbstate?nbcode="+nbcode+"&nbstate="+nbstate;
+				var gbstate = 2;
+				var gbcode = '${gonguBoard.gbcode}';
+				console.log("gbcode : " + gbcode);
+				location.href="admin_updateGbstate?gbcode="+gbcode+"&gbstate="+gbstate;
 	  		}
 		});
 	});
@@ -299,12 +299,12 @@
 	  				return;
 	  			}
 	  			
-				var nbcode = '${noticeBoard.nbcode}';
-				console.log("nbcode : " + nbcode);
+				var gbcode = '${gonguBoard.gbcode}';
+				console.log("gbcode : " + gbcode);
 				//console.log("paging : " + ${paging});
-				var url = "admin_selectNoticeModify${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}";
+				var url = "admin_selectGonguModify${paging.makeQueryPage(gonguBoard.gbcode, paging.page)}";
 				console.log(url);
-				location.href="admin_selectNoticeModify${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}";
+				location.href="admin_selectGonguModify${paging.makeQueryPage(gonguBoard.gbcode, paging.page)}";
 	  		}
 		});
 	});

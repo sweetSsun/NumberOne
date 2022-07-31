@@ -352,17 +352,24 @@
 		<%-- <c:forEach items="${memberInfo }" var="memberInfo"> --%>
 		<div class="parent"  style="margin-bottom : 0px;">
 		<c:choose>
-		<c:when test="${memberInfo.mprofile != null}">
+		<c:when test="${memberInfo.mprofile  == null}">
+			<!-- 프로필 사진 없을 때 -->
+			<img style="height: 100px; width: 100px; border: 1px solid #949494; padding: 3px; margin: 0px; border-radius: 50%;"  
+    			src="${pageContext.request.contextPath }/resources/img/profile.png" alt="">	
+		</c:when>
+		<c:when test="${memberInfo.mid.substring(0, 1).equals('@')}">
+			<!-- 카카오 프로필 -->
 			<div class="first">
+    		<img style="height: 100px; width: 100px; border: 1px solid #949494; padding: 3px; margin: 0px; border-radius: 50%;" 
+    			src="${memberInfo.mprofile }" alt="">	
+			</div>
+		</c:when>
+		<c:otherwise>
+			<!-- 일반 프로필 -->
+    		<div class="first">
     		<img style="height: 100px; width: 100px; border: 1px solid #949494; padding: 3px; margin: 0px; border-radius: 50%;" 
     			src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/${memberInfo.mprofile }" alt="">	
 			</div>
-			
-		</c:when>
-		<c:otherwise>
-    		<img style="height: 100px; width: 100px; border: 1px solid #949494; padding: 3px; margin: 0px; border-radius: 50%;"  
-    			src="${pageContext.request.contextPath }/resources/img/profile.png" alt="">	
-
 		</c:otherwise>
 		</c:choose> 
 			<div class="second">	
@@ -375,7 +382,7 @@
 				<span class="profile" style="display: block;"> 
 				<textarea class="spantitle" style="border: 0px; background-color:white; resize: none; height: 25px; overflow: hidden;"  disabled>지역&nbsp;&nbsp;|&nbsp;</textarea>
 				<textarea style="border: 0px; background-color:white; resize: none; height: 25px; overflow: hidden; text-align: left; color:black;" disabled >${memberInfo.mregion }</textarea>
-				</span>	
+				</span>
 				
 				<span class="profile" style="display: block;"> 
 				<textarea id="sTextarea" class="spantitle" style="border: 0px; background-color:white; resize: none;" disabled>상태메세지&nbsp;&nbsp;|&nbsp;</textarea>
@@ -455,12 +462,13 @@ window.onload = function() {
 		alert("잘못된 접근입니다.");
 		location.href = "loadToLogin"
 	}
+}	
 </script>
 
 <script type="text/javascript">
  console.log("스크립트 확인!!!")
 
-function boardreplySwitch(type){
+function boardreplySwitch(type){	 
    console.log(type+"버튼 클릭");
    window.opener.boardreplySwitch('${memberInfo.mnickname }', type);
 } 
@@ -721,7 +729,7 @@ console.log("loginId : " + loginId);
 warningBtn.addEventListener('click', warningPopup);
 
 function warningPopup()  {
-
+	var check = false;
 	// 로그인 확인
 	$.ajax({
 		type : 'get',
@@ -730,15 +738,20 @@ function warningPopup()  {
 		success : function(result){
 			if (result == "2"){ 
 				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
-					opener.location.href = "loadToLogin"
-					window.close();
-					return;
+					//opener.location.href = "loadToLogin"
+					//opener.closeMini('wMemberPopup');
+					check = true;
+					//창닫기(안됨)
+					
+					
 				}
-				return;
+				
 			}
 			
+
+			
+			
 			//신고 확인 모달창 띄우기
-			mbWarningCheckModal();
 			
 			/*
 			console.log("wmedNickname2 : " + wmedNickname);
@@ -746,14 +759,25 @@ function warningPopup()  {
 			
 			window.opener.insertMemberWarning(wmedNickname, 'wMemberPopup');
 			*/
+			
+			
 		}
 	})
+	if(check){
+		window.opener.closeMini();
+	} else {
+		mbWarningCheckModal();
+		
+	}
 }
 
 
 	// 채팅방 입장과 동시에 대화상대 신고 했는지 확인
 	$(document).ready(function (){
 		opener.checkMemberWarning(wmedNickname, 'wMemberPopup');
+		//console.log('${type}');
+		opener.boardreplySwitch('${memberInfo.mnickname }', '${type}');
+		
 	});
 	
 	// 신고 모달창 close 하는 스크립트
@@ -794,7 +818,7 @@ function warningPopup()  {
 	}
 	
 	// 대화상대 신고 실패 시 수행할 기능
-	function failMemberWarning(type){
+	function failMemberWarning2(type){
 		console.log(type+" 타입 신고 실패");
 		if(type == 0){
 			//insert fail
@@ -812,6 +836,11 @@ function warningPopup()  {
 	
 	}
 
+	function failMemberWarning(){
+		console.log("신고 실패");
+		alert("회원 신고에 실패했습니다");
+
+	}
 	
 </script>
 

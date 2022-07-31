@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.NumberOne.dao.GonguBoardDao">
+
+	<!-- 관리자 게시판 -->
+	<!-- 페이징 위한 공구 총 갯수 조회 -->
+	<select id="admin_selectGonguTotalCount" resultType="int">
+		SELECT COUNT(*)
+		FROM ADMIN_GBLIST_VIEW
+		<if test="keyword.length > 0 or searchVal == 'active' or searchVal == 'inactive'">
+			WHERE
+			<!-- 검색한 키워드 정렬 -->
+			<if test="keyword.length > 0">
+				<choose>
+					<when test="searchType == 'gbTitleContents'">
+						(GBTITLE LIKE '%'||#{keyword}||'%' OR GBCONTENTS LIKE '%'||#{keyword}||'%')
+					</when>
+					<otherwise>
+						${searchType} LIKE '%'||#{keyword}||'%'
+					</otherwise>				
+				</choose>
+				<if test="searchVal == 'active' or searchVal == 'inactive'">
+						AND
+				</if>
+			</if>
+		</if>
+		<!-- 상태값에 따른 정렬 -->
+		<if test="searchVal == 'active'">
+			GBSTATE=1
+		</if>
+		<if test="searchVal == 'inactive'">
+			GBSTATE=2
+		</if>
+	</select>
+	
+	<!-- 페이징처리 후 공구 목록 조회 -->
+ 	<select id="admin_selectGonguList" resultType="com.NumberOne.dto.GonguBoardDto">
+		SELECT GBCODE, GBMID, GBTITLE, GBCONTENTS, TO_CHAR(GBDATE, 'MM-DD') GBDATE, GBIMG, GBSTATE, GBHITS, GBNICKNAME, GBFIX
+		FROM
+			(SELECT ROWNUM RN, ADMIN_GBLIST_VIEW.*
+			FROM ADMIN_GBLIST_VIEW
+			<if test="keyword.length > 0 or searchVal == 'active' or searchVal == 'inactive'">
+				WHERE
+				<!-- 검색한 키워드 정렬 -->
+				<if test="keyword.length > 0">
+					<choose>
+						<when test="searchType == 'gbTitleContents'">
+							(GBTITLE LIKE '%'||#{keyword}||'%' OR GBCONTENTS LIKE '%'||#{keyword}||'%')
+						</when>
+						<otherwise>
+							${searchType} LIKE '%'||#{keyword}||'%'
+						</otherwise>				
+					</choose>
+					<if test="searchVal == 'active' or searchVal == 'inactive'">
+							AND
+					</if>
+				</if>
+			</if>
+			<!-- 상태값에 따른 정렬 -->
+			<if test="searchVal == 'active'">
+				GBSTATE=1
+			</if>
+			<if test="searchVal == 'inactive'">
+				GBSTATE=2
+			</if>
+			)
+		WHERE RN BETWEEN ${startRow} AND ${endRow}
+			
+	</select>
+	 
+	 <!-- 공구 상태 변경 -->
+	<update id="admin_updateGbstate_ajax">
+		UPDATE GONGUBOARDS 
+		SET GBSTATE=${gbstate}
+		WHERE GBCODE=#{gbcode}
+	</update>
+
+	 <!-- 공구 상태 변경 -->
+	<update id="admin_updateGbfix_ajax">
+		UPDATE GONGUBOARDS 
+		SET GBFIX=${gbfix}
+		WHERE GBCODE=#{gbcode}
+	</update>
+	
+	<!-- 공구글 작성을 위한 gbcode 최대값 조회 -->
+	<select id="admin_selectMaxGbcode" resultType="String">
+		SELECT NVL(MAX(GBCODE),'GB00000') FROM GONGUBOARDS
+	</select>
+	
+	<!-- 공구 작성 -->
+	<insert id="admin_insertGonguWrite">
+		INSERT INTO GONGUBOARDS (GBCODE, GBMID, GBTITLE, GBCONTENTS, GBDATE, GBIMG)
+		VALUES (#{gbcode}, #{gbmid}, #{gbtitle}, #{gbcontents}, SYSDATE, #{gbimg})
+	</insert>
+	
+	<!-- 공구 수정 -->
+	<update id="admin_updateGonguModify">
+		UPDATE GONGUBOARDS SET GBTITLE=#{gbtitle}, GBCONTENTS=#{gbcontents}, GBIMG=#{gbimg}
+		WHERE GBCODE=#{gbcode}
+	</update>
+	
+		
+		
+	<!-- 일반 공구게시판 -->
+	<select id="selectGonguTotalCount" resultType="int">
+	<!-- 페이징 위한 공구게시판 총 갯수 조회 -->
+		SELECT COUNT(*)
+		FROM GONGUBOARDS WHERE GBFIX != 1
+		<!-- AND GBSTATE = 1 // 같은 기능으로 각 페이지에서 설정하기 위함  -->
+		<if test="keyword.length > 0 ">
+			AND
+			<choose>
+				<when test="searchType == 'gbTitleContents'">
+					(GBTITLE LIKE '%'||#{keyword}||'%' OR GBCONTENTS LIKE '%'||#{keyword}||'%')
+				</when>
+
+				<otherwise>
+					${searchType} LIKE '%'||#{keyword}||'%'
+				</otherwise>	
+			</choose>		
+		</if>
+	</select>
+	<!-- 페이징처리 후 전체 공구 글목록 조회 -->
+ 	<select id="selectGonguBoardList" resultType="com.NumberOne.dto.GonguBoardDto">
+		SELECT *
+		FROM ( select ROWNUM RN, VIEW_LATESTGONGULIST.*
+		       from VIEW_LATESTGONGULIST 
+		
+ 		<if test="keyword.length > 0">
+ 			WHERE
+ 			<choose>
+ 				<when test="searchType == 'gbTitleContents' ">
+ 					(GBTITLE LIKE '%'||#{keyword}||'%' OR GBCONTENTS LIKE '%'||#{keyword}||'%')
+ 				</when>
+ 				
+ 				<otherwise>
+					${searchType} LIKE '%'||#{keyword}||'%'
+				</otherwise>
+ 			</choose>
+ 		</if>
+ 		)
+ 		WHERE RN BETWEEN ${startRow} AND ${endRow}	
+	</select>
+	
+ 	 <!-- 공구글 상세 -->
+ 	 <select id="selectGonguBoardView" resultType="com.NumberOne.dto.GonguBoardDto">	
+ 	SELECT GBCODE,GBMID,GBTITLE,GBCONTENTS,TO_CHAR(GBDATE,'YY-MM-DD HH24:MI') AS GBDATE,
+		GBIMG,GBSTATE,GBHITS,MB.MNICKNAME AS GBNICKNAME, GBFIX
+ 	FROM GONGUBOARDS GB, MEMBERS MB
+ 	WHERE GBCODE = #{gbcode} AND GB.GBMID = MB.MID
+ 	</select>
+ 	 
+	<!-- 공지글 조회수 증가 -->
+	<update id="updateGonguBdHits">
+	UPDATE GONGUBOARDS
+	SET GBHITS = GBHITS + 1
+	WHERE GBCODE = #{gbcode}
+	</update>
+	
+	
+	
+	<!-- 공동구매/공구 카카오결제정보 DB입력 -->
+	<insert id="insertGonguResgister">
+		INSERT INTO GONGU (GNBCODE, GMID, GPHONE, GEMAIL, GADDR, GDATE)
+		VALUES (#{gnbcode}, #{gmid}, #{gphone}, #{gemail}, #{gaddr}, SYSDATE)
+	</insert>
+	<!-- 공동구매/공구 카카오결제정보 DB삭제 -->
+	<insert id="deleteGonguResgister">
+		DELETE FROM GONGU WHERE GNBCODE = #{gnbcode} AND GMID = #{gmid}
+	</insert>
+	<!-- 공동구매/공구 카카오결제정보 DB확인 -->
+	<select id="insertCheck_ajax" resultType="String">
+		SELECT GMID FROM GONGU WHERE GNBCODE = #{gnbcode} AND GMID = #{gmid}
+	</select>
+	
+	
+	<!-- 관리자_공동구매/공구 참여회원 목록 -->
+	<select id="admin_selectGonguAttendList" resultType="String">
+		SELECT GMID FROM GONGU WHERE GNBCODE = #{gnbcode} ORDER BY GMID
+	</select>
+	<!-- 관리자_공동구매/공구 참여회원 count -->
+	<select id="admin_selectGonguAttendCount" resultType="int">
+		SELECT COUNT(GMID) FROM GONGU WHERE GNBCODE = #{gnbcode}
+	</select>
+	
+</mapper>
