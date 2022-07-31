@@ -84,7 +84,7 @@ public class ChatController {
 	@RequestMapping(value = "/closePopup")
 	public String closePopup() {
 		System.out.println("팝업창 닫기");
-		return "chat/closePopup";
+		return "closePopup";
 	}
 	
 }
