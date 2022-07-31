@@ -633,9 +633,9 @@
 	
 	<select id="selectreplyMaxDepth" resultType="int">
 		<!-- 모댓글의 최대 depth 구하기 -->
-		SELECT MAX(RPDEPTH)
+		SELECT NVL(MAX(RPDEPTH),0)
 		FROM REPLY
-		WHERE RPCODE = #{rerpcode}
+		WHERE RPGROUPNUMt = #{rerpcode}
 	
 	</select>
 	
