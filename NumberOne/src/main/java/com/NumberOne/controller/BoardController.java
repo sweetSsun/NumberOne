@@ -142,21 +142,12 @@ public class BoardController {
 		return mav;
 	}
 
-	//공구게시판 이동 및 글검색
-	 @RequestMapping ( value = "/selectGonguBoardList")
-	 public ModelAndView selectGonguBoardList( Paging paging ) {
-		 System.out.println("공지글 이동 및 검색 요청");
-		 String NbCheck = "Gb";
-		 ModelAndView mav = bsvc.selectNoticeBoardList(paging, NbCheck);
-		 
-		 return mav;
-	 }
 	 
-	 //공지 & 공구 게시판 이동 및 글검색
+	 //공지게시판 이동 및 글검색
 	 @RequestMapping ( value = "/selectNoticeBoardList")
-	 public ModelAndView selectNoticeBoardList(Paging paging, String NbCheck) {
+	 public ModelAndView selectNoticeBoardList(Paging paging) {
 		 System.out.println("공지글 이동 및 검색 요청");
-		 ModelAndView mav = bsvc.selectNoticeBoardList(paging, NbCheck);
+		 ModelAndView mav = bsvc.selectNoticeBoardList(paging);
 		 
 		 return mav;
 	 }

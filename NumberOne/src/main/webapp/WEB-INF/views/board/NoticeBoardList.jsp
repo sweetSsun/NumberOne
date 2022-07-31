@@ -189,10 +189,7 @@ section div.checkout__form{
 					</c:if>
 				</div> --%>
 				</div>
-				
-				<!-- NbCheck=NB -->
-            	<input type="hidden" name="NbCheck" value="NB">
-            	
+
 				<!-- 페이징 시작 -->
 				<input type="hidden" id="pageNum" name="page" value="1">
 				<div class="block text-center" id="pageList" >

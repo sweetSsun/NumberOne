@@ -60,7 +60,7 @@ public class BoardService {
 			ra.addFlashAttribute("msg", "로그인 후 이용가능합니다");
 			
 			//실패페이지로 이동(실패 페이지에서 msg alert 띄우고, history back)
-			mav.setViewName("redirect:loadToFail");
+			mav.setViewName("redirect:/loadToFail");
 		
 		} else {
 			System.out.println("로그인");
@@ -94,7 +94,7 @@ public class BoardService {
 			ra.addFlashAttribute("msg", "로그인 후 이용가능합니다");
 			
 			//실패페이지로 이동(msg alert 띄우고, history back)
-			mav.setViewName("redirect:loadToFail");
+			mav.setViewName("redirect:/loadToFail");
 
 		} else if (loginId != null && ! loginId.equals(checkId)) {
 			System.out.println("작성자 본인 아님");
@@ -103,7 +103,7 @@ public class BoardService {
 			ra.addFlashAttribute("msg", "작성자가 아닙니다");
 				
 			//실패페이지로 이동(msg alert 띄우고, history back)
-			mav.setViewName("redirect:loadToFail");
+			mav.setViewName("redirect:/loadToFail");
 				
 		} else {
 			System.out.println("작성자 본인");
@@ -380,8 +380,7 @@ public class BoardService {
 		}
 	   
 	   //공지게시판 이동 및 검색 
-	   public ModelAndView selectNoticeBoardList(Paging paging, String NbCheck) {
-		   System.out.println(NbCheck);
+	   public ModelAndView selectNoticeBoardList(Paging paging) {
 		   System.out.println("BoardService.selectNoticeBoardList() 호출");
 		   
 		   ModelAndView mav = new ModelAndView();
@@ -391,43 +390,24 @@ public class BoardService {
 			   paging.setKeyword("");
 		   }
 		   
-		   
-		   
 		   //고정공지
 		   ArrayList<NoticeDto> noticeList_fix = bdao.selectNoticeList();
+
+		   int totalCount = bdao.selectNoticeTotalCount(paging);
+		   paging.setTotalCount(totalCount);
+		   paging.calc(); // 페이지 처리 계산 실행 
+		   System.out.println(paging);
 		   
-		   if(NbCheck.equals("NB")) { // NB 받았다면, 공지조회해줘
-			   
-			   int totalCount = bdao.selectNoticeTotalCount(paging);
-			   paging.setTotalCount(totalCount);
-			   paging.calc(); // 페이지 처리 계산 실행 
-			   System.out.println(paging);
-			   
-			   ArrayList<NoticeDto> noticeList = bdao.selectNoticeBoardList(paging);
-			   System.out.println(noticeList);
-			   
-			   mav.addObject("noticeList_fix", noticeList_fix);
-			   mav.addObject("noticeList", noticeList);
-			   mav.addObject("paging", paging);
-			   mav.setViewName("board/NoticeBoardList");
-			   
-			   return mav;
-		   } else { //  NB가아닌 GB를 받았다면, 공구조회해줘
-			   
-			   int totalCount = bdao.selectGonguTotalCount(paging);
-			   paging.setTotalCount(totalCount);
-			   paging.calc(); // 페이지 처리 계산 실행 
-			   System.out.println(paging);
-			   
-			   ArrayList<NoticeDto> GonguList = bdao.selectGonguBoardList(paging);
-			   System.out.println(GonguList);
-			   
-			   mav.addObject("noticeList_fix", noticeList_fix);
-			   mav.addObject("noticeList", GonguList);
-			   mav.addObject("paging", paging);
-			   mav.setViewName("gongu/GonguBoardList");			   
-			   return mav;
-		   }		   
+		   ArrayList<NoticeDto> noticeList = bdao.selectNoticeBoardList(paging);
+		   System.out.println(noticeList);
+		   
+		   mav.addObject("noticeList_fix", noticeList_fix);
+		   mav.addObject("noticeList", noticeList);
+		   mav.addObject("paging", paging);
+		   mav.setViewName("board/NoticeBoardList");
+		   
+		   return mav;
+		     
 	   }
 
 		// 자취방 자랑 메인 페이지(목록)
@@ -497,25 +477,9 @@ public class BoardService {
 		
 		mav.addObject("noticeBoard", noticeBoard);
 		mav.addObject("paging", paging);
-
-		if (nbcode.substring(0,2).equals("NB")){ // 공지글 정보 조회
-			mav.setViewName("board/NoticeBoardView");
-			
-		} else { // 공구글 정보 조회
-			mav.setViewName("gongu/GonguBoardView");
-			
-			// 공구 회원정보 불러오기
-			String loginId = (String) session.getAttribute("loginId");
-			
-			if(loginId == null) {
-				System.out.println("비회원입니다.");
-				
-			} else {
-				System.out.println("로그인 된 아이디 : " + loginId);
-				MemberDto memberInfo = mdao.selectMyInfoMemberView(loginId);
-				mav.addObject("memberInfo", memberInfo);							
-			}			
-		}
+		
+		mav.setViewName("board/NoticeBoardView");
+		
 		return mav;
 	}
 
@@ -1451,9 +1415,8 @@ public class BoardService {
 		
 		return insertResult;
 	}
-	
-	
-
+	   
+	   
 }
 
 
