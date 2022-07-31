@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.NumberOne.dto.GonguDto;
 import com.NumberOne.service.AdminService;
+import com.NumberOne.service.GonguBoardService;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -24,18 +25,18 @@ import com.google.gson.JsonParser;
 public class KakaoPay {
 	
 	@Autowired
-	private AdminService asvc;
+	private GonguBoardService gbsvc;
 	
 	@Autowired
 	private HttpSession session;
 	
 	@RequestMapping(value="/kakaopayReady")// data 넘겨줘야함
-	public @ResponseBody String kakaopayReady(String nbcode, String loginId, String tel, String email, String address) throws IOException {
+	public @ResponseBody String kakaopayReady(String gbcode, String loginId, String tel, String email, String address) throws IOException {
 		System.out.println("kakaopayReady 호출");
 		
 		// 객체 저장
 		GonguDto gongu = new GonguDto();
-		gongu.setGnbcode(nbcode);
+		gongu.setGnbcode(gbcode);
 		gongu.setGmid(loginId);
 		gongu.setGaddr(address);
 		gongu.setGemail(email);
@@ -53,7 +54,7 @@ public class KakaoPay {
 	    
 		StringBuilder urlBuilder = new StringBuilder("https://kapi.kakao.com/v1/payment/ready"); /*URL*/
 	    urlBuilder.append("?" + URLEncoder.encode("cid","UTF-8") + "=" + URLEncoder.encode("TC0ONETIME", "UTF-8"));
-	    urlBuilder.append("&" + URLEncoder.encode("partner_order_id","UTF-8") + "=" + URLEncoder.encode(nbcode, "UTF-8"));//공구번호
+	    urlBuilder.append("&" + URLEncoder.encode("partner_order_id","UTF-8") + "=" + URLEncoder.encode(gbcode, "UTF-8"));//공구번호
 	    urlBuilder.append("&" + URLEncoder.encode("partner_user_id","UTF-8") + "=" + URLEncoder.encode(loginId, "UTF-8"));	//구매자
 	    urlBuilder.append("&" + URLEncoder.encode("item_name","UTF-8") + "=" + URLEncoder.encode("1인자 자취템 공동구매", "UTF-8"));//판매이름
 	    urlBuilder.append("&" + URLEncoder.encode("quantity","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); //개수
@@ -62,7 +63,7 @@ public class KakaoPay {
 	    urlBuilder.append("&" + URLEncoder.encode("tax_free_amount","UTF-8") + "=" + URLEncoder.encode("0", "UTF-8")); //면세
 	    //urlBuilder.append("&" + URLEncoder.encode("approval_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopaySuccess", "UTF-8")); //준비성공시 승인
 	    //urlBuilder.append("&" + URLEncoder.encode("approval_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayApproval?gongu="+"aaaaa", "UTF-8")); //준비성공시 승인
-	    //urlBuilder.append("&" + URLEncoder.encode("approval_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayApproval?nbcode="+nbcode+"&loginId="+loginId+"&address="+address+"&email="+email+"&tel="+tel, "UTF-8")); //준비성공시 승인
+	    //urlBuilder.append("&" + URLEncoder.encode("approval_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayApproval?gbcode="+gbcode+"&loginId="+loginId+"&address="+address+"&email="+email+"&tel="+tel, "UTF-8")); //준비성공시 승인
 	    urlBuilder.append("&" + URLEncoder.encode("approval_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayApproval?gonguJson="+URLEncoder.encode(gonguJson, "UTF-8"), "UTF-8")); //준비성공시 승인
 	    urlBuilder.append("&" + URLEncoder.encode("fail_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayFail", "UTF-8")); //실패시 돌아갈주소
 	    urlBuilder.append("&" + URLEncoder.encode("cancel_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayCansel", "UTF-8")); //취소시 돌아갈주소
@@ -169,7 +170,7 @@ public class KakaoPay {
 	    }*/
 	    
 		//공동구매/공구 카카오결제정보 DB입력 :: 결제 전에 입력, 결제 실패하면 삭제할 것. --- DB확인과 결제성공실패 여부에 따라 결과가 바뀜
-    	int gonguInsert = asvc.insertGonguRegister(gongu);
+    	int gonguInsert = gbsvc.insertGonguRegister(gongu);
     	
     	if (gonguInsert>0) {
     	
@@ -216,7 +217,7 @@ public class KakaoPay {
 		    	
 		    //공동구매/공구 카카오결제 실패 :: 입력된 DB 삭제 후, 실패페이지로 이동		    	
 		    } else {
-		    	int deleteResult = asvc.deleteGonguRegister(gongu);
+		    	int deleteResult = gbsvc.deleteGonguRegister(gongu);
 		    	
 		    	if(deleteResult>0) {
 		    		System.out.println("DB입력성공-결제실패-DB삭제성공");

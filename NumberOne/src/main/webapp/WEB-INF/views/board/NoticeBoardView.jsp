@@ -180,7 +180,7 @@
 				<form action="">
 					<div class="row">
 						<div class="col">
-							<a href="selectNoticeBoardList?NbCheck=NB"><span class="fw-bold boardCategory"> | 공지게시판 </span></a> 
+							<a href="selectNoticeBoardList"><span class="fw-bold boardCategory"> | 공지게시판 </span></a> 
 							<%-- <span class="fw-bold" style="color:gray; font-size:20px">/</span> <a href="#"><span class="bdregion"> ${board.bdrgname}</span></a> --%>
 						</div>
 					</div>
@@ -232,7 +232,7 @@
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
 				<div class="row mb-2">
 					<div class="col-2">
-							<a href="selectNoticeBoardList?NbCheck=NB&${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}">
+							<a href="selectNoticeBoardList?${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}">
 							<input  type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
 							</a>
 					</div>
