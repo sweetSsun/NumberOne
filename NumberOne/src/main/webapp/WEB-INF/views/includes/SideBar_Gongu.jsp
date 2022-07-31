@@ -31,7 +31,7 @@
 				
 				<div class="sideclose_room">
 					<span>
-						<a href="selectNoticeBoardList?NbCheck=GB" title="진행중"><i class="fa-solid fa-box-open"></i></a>
+						<a href="selectGonguBoardList" title="진행중"><i class="fa-solid fa-box-open"></i></a>
 					</span>
 				</div>
 				<div class="sideclose_room">
@@ -55,7 +55,7 @@
 				
 				<div class="sideroom" style="margin-bottom: 15px;">
 					<span>
-						<a href="selectNoticeBoardList?NbCheck=GB"><i class="fa-solid fa-box-open"></i>&nbsp;&nbsp;진행중</a>
+						<a href="selectGonguBoardList"><i class="fa-solid fa-box-open"></i>&nbsp;&nbsp;진행중</a>
 					</span>
 				</div>
 				<div class="sideroom">

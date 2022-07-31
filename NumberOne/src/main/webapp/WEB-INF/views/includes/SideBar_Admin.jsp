@@ -67,7 +67,7 @@ body.sideon {
 				</div>
 				<div class="sideclose_room">
 					<span>
-						<a href="admin_selectNoticeList?NbCheck=NB" title="공지관리"><i class="fa-solid fa-volume-low"></i></a>
+						<a href="admin_selectNoticeList" title="공지관리"><i class="fa-solid fa-volume-low"></i></a>
 					</span>
 				</div>
 				<div class="sideclose_room">
@@ -77,7 +77,7 @@ body.sideon {
 				</div>
 				<div class="sideclose_room">
 					<span>
-						<a href="admin_selectNoticeList?NbCheck=GB" title="공구관리"><i class="fa-solid fa-box-open"></i></a>
+						<a href="admin_selectGonguList" title="공구관리"><i class="fa-solid fa-box-open"></i></a>
 					</span>
 				</div>
 				<div class="sideclose_room">
@@ -119,7 +119,7 @@ body.sideon {
 				</div>
 				<div class="side_admin">
 					<span>
-						<a href="admin_selectNoticeList?NbCheck=NB"><i class="fa-solid fa-volume-low"></i>&nbsp;&nbsp;공지방</a>
+						<a href="admin_selectNoticeList"><i class="fa-solid fa-volume-low"></i>&nbsp;&nbsp;공지방</a>
 					</span>
 				</div>
 				<div class="side_admin" style="padding-left: 7px;">
@@ -129,7 +129,7 @@ body.sideon {
 				</div>
 				<div class="side_admin" style="padding-left: 5px;">
 					<span>
-						<a href="admin_selectNoticeList?NbCheck=GB"><i class="fa-solid fa-box-open" style="font-size:large;"></i>&nbsp;&nbsp;공구관리</a>
+						<a href="admin_selectGonguList"><i class="fa-solid fa-box-open" style="font-size:large;"></i>&nbsp;&nbsp;공구관리</a>
 					</span>
 				</div>
 				
