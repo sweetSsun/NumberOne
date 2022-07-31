@@ -324,8 +324,9 @@ public class GonguBoardService {
 	
 	/* 일반 페이지 */
 	//공구게시판 이동 및 검색 
-   public ModelAndView selectGonguBoardList(Paging paging) {
+   public ModelAndView selectGonguBoardList(Paging paging, String gbstate) {
 	   System.out.println("BoardService.selectGonguBoardList() 호출");
+	   System.out.println("gbstate : "+gbstate);
 	   
 	   ModelAndView mav = new ModelAndView();
 	   
@@ -348,7 +349,12 @@ public class GonguBoardService {
 	   mav.addObject("noticeList_fix", noticeList_fix);
 	   mav.addObject("GonguList", GonguList);
 	   mav.addObject("paging", paging);
-	   mav.setViewName("gongu/GonguBoardList");			   
+	   
+	   if(gbstate.equals("ing")) {
+		   mav.setViewName("gongu/GonguBoardList");		   
+	   } else {
+		   mav.setViewName("gongu/GonguBoardListEnd");
+	   }
 	
 	   return mav;	     
    }

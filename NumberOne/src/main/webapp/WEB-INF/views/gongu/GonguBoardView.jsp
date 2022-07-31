@@ -236,7 +236,7 @@
 			<div class="container">
 				<div class="row">
 					<div class="col">
-						<a href="selectGonguBoardList"><span class="fw-bold boardCategory"> | 공구게시판 </span></a> 
+						<a href="selectGonguBoardList?gbstate=ing"><span class="fw-bold boardCategory"> | 공구게시판 : 진행중 </span></a> 
 						<%-- <span class="fw-bold" style="color:gray; font-size:20px">/</span> <a href="#"><span class="bdregion"> ${board.bdrgname}</span></a> --%>
 					</div>
 				</div>
@@ -351,9 +351,20 @@
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
 				<div class="row mb-2">
 					<div class="col-2">
-						<a href="selectGonguBoardList?${paging.makeQueryPage(gonguBoard.gbcode, paging.page)}">
-						<input  type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
-						</a>
+						<c:choose>
+						<c:when test="${gonguBoard.gbstate == 1 }">
+							<a href="selectGonguBoardList?gbstate=ing&${paging.makeQueryPage(gonguBoard.gbcode, paging.page)}">
+								<input  type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
+							</a>
+						</c:when>
+						
+						<%-- <c:if test="${gonguBoard.gbstate == 2 }"> --%>
+						<c:otherwise>
+							<a href="selectGonguBoardList?gbstate=end&${paging.makeQueryPage(gonguBoard.gbcode, paging.page)}">
+								<input  type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
+							</a>
+						</c:otherwise>
+						</c:choose>
 					</div>
 				<%-- <c:choose>
 					<c:when test="${sessionScope.loginId == board.bdmid && sessionScope.loginId != 'admin' }">

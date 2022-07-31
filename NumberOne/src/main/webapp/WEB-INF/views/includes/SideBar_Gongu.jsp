@@ -31,12 +31,12 @@
 				
 				<div class="sideclose_room">
 					<span>
-						<a href="selectGonguBoardList" title="진행중"><i class="fa-solid fa-box-open"></i></a>
+						<a href="selectGonguBoardList?gbstate=ing" title="진행중"><i class="fa-solid fa-box-open"></i></a>
 					</span>
 				</div>
 				<div class="sideclose_room">
 					<span>
-						<a href="selectGonguEndBoardList" title="진행완료"><i class="fa-solid fa-box"></i></a>
+						<a href="selectGonguBoardList?gbstate=end" title="진행완료"><i class="fa-solid fa-box"></i></a>
 					</span>
 				</div>
 			</div>
@@ -55,12 +55,12 @@
 				
 				<div class="sideroom" style="margin-bottom: 15px;">
 					<span>
-						<a href="selectGonguBoardList"><i class="fa-solid fa-box-open"></i>&nbsp;&nbsp;진행중</a>
+						<a href="selectGonguBoardList?gbstate=ing"><i class="fa-solid fa-box-open"></i>&nbsp;&nbsp;진행중</a>
 					</span>
 				</div>
 				<div class="sideroom">
 					<span>
-						<a href="selectGonguEndBoardList"><i class="fa-solid fa-box" style="font-size: x-large"></i>&nbsp;&nbsp;진행완료</a>
+						<a href="selectGonguBoardList?gbstate=end"><i class="fa-solid fa-box" style="font-size: x-large"></i>&nbsp;&nbsp;진행완료</a>
 					</span>
 				</div>
 			</div>

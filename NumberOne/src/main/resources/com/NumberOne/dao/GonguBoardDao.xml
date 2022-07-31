@@ -108,9 +108,8 @@
 	<select id="selectGonguTotalCount" resultType="int">
 	<!-- 페이징 위한 공구게시판 총 갯수 조회 -->
 		SELECT COUNT(*)
-		FROM GONGUBOARDS
-		WHERE GBSTATE = 1
-		AND GBFIX != 1
+		FROM GONGUBOARDS WHERE GBFIX != 1
+		<!-- AND GBSTATE = 1 // 같은 기능으로 각 페이지에서 설정하기 위함  -->
 		<if test="keyword.length > 0 ">
 			AND
 			<choose>
