@@ -159,6 +159,14 @@ public interface MemberDao {
 	@Select("SELECT GNBCODE, NBTITLE AS GNBTITLE, GDATE, NBSTATE AS GNBSTATE, GMID FROM NOTICEBOARDS, GONGU WHERE GNBCODE = NBCODE AND GMID = #{loginId}")
 	ArrayList<GonguDto> selectMyInfoGonguView(String loginId);	
 
+	//임시번호 확인 요청
+	@Select("SELECT MPW FROM MEMBERS WHERE MID = #{mid} AND MPW = #{mpw}")
+	String selectTemporaryNum_ajax(@Param("mid") String mid, @Param("mpw") String mpw);
+
+	// 임시번호 비밀번호로 변경
+	@Update ("UPDATE MEMBERS SET MPW = #{mpw} WHERE MID = #{mid}")
+	int updateTemporaryNum(@Param("mid")String mid, @Param("mpw")String mpw);
+	
 	
 }
 
