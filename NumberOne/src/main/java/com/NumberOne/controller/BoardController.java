@@ -201,6 +201,27 @@ public class BoardController {
 		 return insertResult;
 	 }
 	 
+	 //댓글등록 + 대댓글 ajax
+	 @RequestMapping ( value = "/insertBoardReply_ajax2")
+	 @ResponseBody
+	 public int insertBoardReply_ajax2(ReplyDto reply) {
+		 System.out.println("댓글등록 요청_ajax(+ 대댓글)");
+		 
+		 //로그인 확인
+		 String loginId = (String) session.getAttribute("loginId");
+		 if(loginId == null) {
+			 //로그인 하지 않았을 경우
+			 return 2;
+		 }
+		 
+		 //set rpmid
+		 reply.setRpmid(loginId);
+		 
+		 int insertResult = bsvc.insertBoardReply_ajax(reply);
+		 
+		 return insertResult;
+	 }
+	 
 	 //댓글목록 조회(ajax)
 	 @RequestMapping ( value = "/selectBoardReplyList_ajax")
 	 @ResponseBody
