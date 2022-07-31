@@ -259,9 +259,7 @@
 	<!-- 페이징 위한 공지게시판 총 갯수 조회 -->
 		SELECT COUNT(*)
 		FROM NOTICEBOARDS
-		WHERE NBCODE LIKE 'NB'||'%' 
-		AND NBSTATE = 1
-		AND NBFIX != 1
+		WHERE NBSTATE = 1 AND NBFIX != 1
 		<if test="keyword.length > 0 ">
 			AND
 			<choose>
@@ -394,12 +392,11 @@
  	
  	<select id="selectBoardReplyList" resultType="com.NumberOne.dto.ReplyDto">
  		<!-- 댓글목록 조회 -->
- 		SELECT RP.*, MB.MNICKNAME AS RPNICKNAME, 
+ 		SELECT RP.*, MB.MNICKNAME AS RPNICKNAME,
  			   MB.MPROFILE AS RPPROFILE, MB.MSTATE AS RPMSTATE 
 		FROM REPLY RP, MEMBERS MB 
 		WHERE RP.RPMID = MB.MID
 		AND RPBDCODE = #{bdcode}
-		AND RPSTATE = 1
  		ORDER BY RPCODE 
  	</select>
  	
@@ -408,7 +405,6 @@
  		SELECT COUNT(*)
 		FROM REPLY 
 		WHERE RPBDCODE = #{bdcode}
-		AND RPSTATE = 1 
  	</select>
  	 
  	<update id="updateReplyState_ajax">
@@ -591,46 +587,23 @@
    </select>
 	
 	
-	<select id="selectGonguTotalCount" resultType="int">
-	<!-- 페이징 위한 공구게시판 총 갯수 조회 -->
-		SELECT COUNT(*)
-		FROM NOTICEBOARDS
-		WHERE NBCODE LIKE 'GB'||'%' 
-		AND NBSTATE = 1
-		AND NBFIX != 1
-		<if test="keyword.length > 0 ">
-			AND
-			<choose>
-				<when test="searchType == 'nbTitleContents'">
-					(NBTITLE LIKE '%'||#{keyword}||'%' OR NBCONTENTS LIKE '%'||#{keyword}||'%')
-				</when>
-
-				<otherwise>
-					${searchType} LIKE '%'||#{keyword}||'%'
-				</otherwise>	
-			</choose>		
-		</if>
+	
+	<select id="selectreplyMaxDepth" resultType="int">
+		<!-- 모댓글의 최대 depth 구하기 -->
+		SELECT MAX(RPDEPTH)
+		FROM REPLY
+		WHERE RPCODE = #{rerpcode}
+	
 	</select>
-	<!-- 페이징처리 후 전체 공구 글목록 조회 -->
- 	<select id="selectGonguBoardList" resultType="com.NumberOne.dto.NoticeDto">
-		SELECT *
-		FROM ( select ROWNUM RN, VIEW_LATESTGONGULIST.*
-		       from VIEW_LATESTGONGULIST 
+	
+	<insert id="insertBoardRe_Reply_ajax">
+		<!-- 대댓글 등록 -->
+		INSERT INTO REPLY (RPCODE, RPBDCODE, RPCONTENTS, RPMID, RPDATE, RPPARENT, RPDEPTH, RPGROUPNUM )
+		VALUES ( #{rpcode}, #{bdcode}, #{rpcontents}, #{loginId}, SYSDATE, #{rpcode_parent}, #{rp_depth}, #{rpcode_parent} )
 		
- 		<if test="keyword.length > 0">
- 			WHERE
- 			<choose>
- 				<when test="searchType == 'nbTitleContents' ">
- 					(NBTITLE LIKE '%'||#{keyword}||'%' OR NBCONTENTS LIKE '%'||#{keyword}||'%')
- 				</when>
- 				
- 				<otherwise>
-					${searchType} LIKE '%'||#{keyword}||'%'
-				</otherwise>
- 			</choose>
- 		</if>
- 		)
- 		WHERE RN BETWEEN ${startRow} AND ${endRow}	
-	</select>
+		
+	
+	</insert>
+	
 	
  </mapper>

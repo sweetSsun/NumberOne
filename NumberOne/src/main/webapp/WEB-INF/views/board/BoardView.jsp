@@ -185,8 +185,8 @@
                     <%@ include file= "/WEB-INF/views/includes/TopBar_Admin.jsp" %>
             </c:otherwise>
         </c:choose>
-        <!-- End of TopBar -->
-	
+        <!-- End of TopBar -->	
+
 	<main>
 		<!-- 사이드바 -->
 		<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
@@ -760,7 +760,13 @@
 				output += "<div class=\"row\">"
 				for( var i=0; i < replyList.length; i++ ){
 					
-					if( replyList[i].rpmid == '${sessionScope.loginId}' ){//동일한 아이디 (댓글 수정, 삭제 버튼)
+					if( replyList[i].rpstate == 2 ){//삭제된 댓글일 때
+						output += "<div style='border-bottom: solid #E0E0E0 1px; height:60px; line-height:60px;' >"
+						output += "    <span style=\"color:gray; font-size:20px;\"> ( 삭제된 댓글입니다. ) </span>"
+						output += "</div>"
+					
+					}else{	//삭제된 댓글이 아닐 때 
+					if( replyList[i].rpmid == loginId ){//동일한 아이디 (댓글 수정, 삭제 버튼)
 						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;' >" /* 프로필영역 */
 
 						if( replyList[i].rpprofile != 'nomprofile' ){//프로필 이미지가 있을 시 
@@ -826,6 +832,8 @@
 					}
 
 				}
+						
+					}
 				output += "</div>"
 			}
 		});
@@ -840,7 +848,7 @@
 			data : { "bdcode" : bdcode },
 			async : false,
 			success : function(replyCount){
-				console.log(replyCount);
+				console.log("댓글개수 : "+replyCount);
 				$("#ReplyCount").text(replyCount);
 			}
 		});

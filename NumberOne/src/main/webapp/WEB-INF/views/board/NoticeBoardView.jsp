@@ -180,7 +180,7 @@
 				<form action="">
 					<div class="row">
 						<div class="col">
-							<a href="selectNoticeBoardList?NbCheck=NB"><span class="fw-bold boardCategory"> | 공지게시판 </span></a> 
+							<a href="selectNoticeBoardList"><span class="fw-bold boardCategory"> | 공지게시판 </span></a> 
 							<%-- <span class="fw-bold" style="color:gray; font-size:20px">/</span> <a href="#"><span class="bdregion"> ${board.bdrgname}</span></a> --%>
 						</div>
 					</div>
@@ -232,7 +232,7 @@
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
 				<div class="row mb-2">
 					<div class="col-2">
-							<a href="selectNoticeBoardList?NbCheck=NB&${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}">
+							<a href="selectNoticeBoardList?${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}">
 							<input  type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
 							</a>
 					</div>
@@ -282,7 +282,7 @@
     
 	<%@ include file="/WEB-INF/views/includes/BottomBar.jsp" %>
 	<!-- 부트스트랩 -->
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script> 
 </body>
 
 <script type="text/javascript">

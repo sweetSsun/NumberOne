@@ -59,16 +59,16 @@ public class AdminController {
 	
 	/* 공지 관리 */
 	@RequestMapping (value="admin_selectNoticeList")
-	public ModelAndView admin_selectNoticeList(Paging paging, RedirectAttributes ra, String NbCheck) {
-		System.out.println("공지/공구 관리페이지 이동 요청");
-		mav = asvc.admin_selectNoticeList(paging, ra, NbCheck);
+	public ModelAndView admin_selectNoticeList(Paging paging, RedirectAttributes ra) {
+		System.out.println("공지 관리페이지 이동 요청");
+		mav = asvc.admin_selectNoticeList(paging, ra);
 		return mav;
 	}
 	
 	@RequestMapping (value="admin_selectNoticeList_ajax")
-	public @ResponseBody String admin_selectNoticeList_ajax(Paging paging, String NbCheck) {
-		System.out.println("공지/공구 관리페이지 정렬 요청");
-		String noticeList_json = asvc.admin_selectNoticeList_ajax(paging, NbCheck);
+	public @ResponseBody String admin_selectNoticeList_ajax(Paging paging) {
+		System.out.println("공지 관리페이지 정렬 요청");
+		String noticeList_json = asvc.admin_selectNoticeList_ajax(paging);
 		return noticeList_json;
 	}
 	
@@ -102,16 +102,16 @@ public class AdminController {
 	
 	//공지 작성페이지 이동
 	@RequestMapping (value="admin_loadToNoticeWrite")
-	public ModelAndView admin_loadToNoticeWrite(RedirectAttributes ra, String NbCheck) {
-		System.out.println("공지 & 공구 작성페이지 이동 요청");
-		mav = asvc.admin_loadToNoticeWrite(ra, NbCheck);
+	public ModelAndView admin_loadToNoticeWrite(RedirectAttributes ra) {
+		System.out.println("공구 작성페이지 이동 요청");
+		mav = asvc.admin_loadToNoticeWrite(ra);
 		return mav;
 	}
 	
 	@RequestMapping (value="admin_insertNoticeWrite")
-	public ModelAndView admin_insertNoticeWrite(NoticeDto notice, RedirectAttributes ra, String NbCheck) throws IllegalStateException, IOException {
-		System.out.println("작성한 공지 & 공구 입력 요청");
-		mav = asvc.admin_insertNoticeWrite(notice, ra, NbCheck);
+	public ModelAndView admin_insertNoticeWrite(NoticeDto notice, RedirectAttributes ra) throws IllegalStateException, IOException {
+		System.out.println("작성한 공지 입력 요청");
+		mav = asvc.admin_insertNoticeWrite(notice, ra);
 		return mav;
 	}
 	
@@ -293,6 +293,7 @@ public class AdminController {
 		int updateResult = asvc.admin_updateReplyStop_ajax(rpcode);
 		return updateResult;
 	}
+
 	
 	
 	

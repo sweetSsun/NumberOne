@@ -102,7 +102,7 @@
 		
 		<section>
 			<!-- 페이지명 -->
-			<div class="checkout__form" style="margin-top: 30px;">공구게시판</div>		
+			<div class="checkout__form" style="margin-top: 30px;">공구게시판 : 진행완료</div>		
 
 		<!-- 본문 -->
 			<form action="selectGonguBoardList?gbstate=ing" method="get" id="actionForm">
@@ -161,11 +161,10 @@
 						</c:forEach>
 					</thead>
 					
-					<!-- gbstate == 1 인 일반 공구들 -->
+					<!-- gbstate == 2 인 완료된 공구들 -->
 					<tbody id="bdCategoryList">
 					<c:forEach items="${GonguList }" var="gongu">
-						<c:if test="${gongu.gbstate == 1 }">
-						<%-- <c:if test="${gongu.gbfix != 1 }"> --%>
+						<c:if test="${gongu.gbstate == 2 }">
 						<tr style="border-bottom: solid #E0E0E0 1px;">
 							<td class="text-center tableCell">${gongu.gbcode}</td>
 							<td class="bdcategory text-center tableCell">공구</td>

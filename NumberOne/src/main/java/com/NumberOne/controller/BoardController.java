@@ -142,21 +142,12 @@ public class BoardController {
 		return mav;
 	}
 
-	//공구게시판 이동 및 글검색
-	 @RequestMapping ( value = "/selectGonguBoardList")
-	 public ModelAndView selectGonguBoardList( Paging paging ) {
-		 System.out.println("공지글 이동 및 검색 요청");
-		 String NbCheck = "Gb";
-		 ModelAndView mav = bsvc.selectNoticeBoardList(paging, NbCheck);
-		 
-		 return mav;
-	 }
 	 
-	 //공지 & 공구 게시판 이동 및 글검색
+	 //공지게시판 이동 및 글검색
 	 @RequestMapping ( value = "/selectNoticeBoardList")
-	 public ModelAndView selectNoticeBoardList(Paging paging, String NbCheck) {
+	 public ModelAndView selectNoticeBoardList(Paging paging) {
 		 System.out.println("공지글 이동 및 검색 요청");
-		 ModelAndView mav = bsvc.selectNoticeBoardList(paging, NbCheck);
+		 ModelAndView mav = bsvc.selectNoticeBoardList(paging);
 		 
 		 return mav;
 	 }
@@ -573,6 +564,26 @@ public class BoardController {
 		 int updateResult = bsvc.updateReplyState_ajax(rpcode);
 		 
 		 return updateResult;
+	 }
+	 
+	 ///////
+	 //대댓글 등록
+	 @RequestMapping ( value = "/insertBoardRe_Reply_ajax")
+	 @ResponseBody
+	 public int insertBoardRe_Reply_ajax(ReplyDto reply, String bdcode) {
+		 System.out.println("대댓글 등록 요청_ajax");
+		 
+		 String loginId = (String)session.getAttribute("loginId");
+		 
+		 if(loginId == null ) {
+			 
+			 return 2;
+		 }
+		 
+		 int updateResult = bsvc.insertBoardRe_Reply_ajax(reply, bdcode, loginId);
+		 
+		 return updateResult;
+		 
 	 }
 	 
 	 

@@ -38,9 +38,7 @@ public interface BoardDao {
 	
 	//공지글검색 목록 조회 
 	ArrayList<NoticeDto> selectNoticeBoardList( Paging paging );
-	//공구글검색 목록 조회
-	ArrayList<NoticeDto> selectGonguBoardList( Paging paging );
-	
+
 	//게시판 공지글 상세페이지 이동 
 	NoticeDto selectNoticeBoardView(String nbcode);
 	
@@ -96,7 +94,7 @@ public interface BoardDao {
 			+ "LEFT OUTER JOIN (SELECT BD.BDCODE AS RPBDCODE, COUNT(*) AS BDRPCOUNT "
 			+ "                        FROM BOARDS BD LEFT OUTER JOIN REPLY RP "
 			+ "                        ON BD.BDCODE = RP.RPBDCODE "
-			+ "                        WHERE RP.RPSTATE = 1 "
+			+ "                        WHERE RP.RPSTATE = 1 OR RP.RPSTATE = 2 "
 			+ "                        GROUP BY BD.BDCODE "
 			+ "                        ORDER BY BD.BDCODE) RPCOUNT "
 			+ "ON BD.BDCODE = RPCOUNT.RPBDCODE "
@@ -193,8 +191,6 @@ public interface BoardDao {
 	
 	//공지게시판 전체 글 개수 조회 
 	int selectNoticeTotalCount(Paging paging);
-	//공구게시판 전체 글 개수 조회 
-	int selectGonguTotalCount(Paging paging);
 		
 	//지역게시판 전체 글 개수 조회
 	int selectRegionTotalCount(Paging paging);
@@ -204,17 +200,14 @@ public interface BoardDao {
 	
 	//자랑방 검색한 글 개수 조회
 	int selectSearchRoomCount(Paging paging);
+	
+	//모댓글의 최대 depth 구하기 
+	int selectreplyMaxDepth(String rerpcode);
+	
+	//----대댓글 등록----
+	int insertBoardRe_Reply_ajax(@Param("rpcode")String rpcode, @Param("bdcode")String bdcode, @Param("rpcontents")String rpcontents, 
+				@Param("rpcode_parent")String rpcode_parent, @Param("rp_depth")int rp_depth, @Param("loginId")String loginId);
 
 	
-	
-	
-
-	
-	
-	
-	
-
-
-
 	
 }

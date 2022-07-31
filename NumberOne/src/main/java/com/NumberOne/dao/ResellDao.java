@@ -23,6 +23,8 @@ public interface ResellDao {
 	UsedBoardDto selectResellView(UsedBoardDto ubDto);
 
 	int selectPageTotalCount(Paging paging);
+	
+	int selectTransactionTotalCount(Paging paging);
 
 	ArrayList<GoodsDto> selectResellView_goods(UsedBoardDto ubDto);
 
@@ -42,6 +44,8 @@ public interface ResellDao {
 
 	ArrayList<UsedBoardDto> selectResellView_memberList(@Param("ubmid") String ubmid, @Param("ubcode") String ubcode);
 
+	ArrayList<UsedBoardDto> selectResellTransactionList(Paging paging);
+	
 	String checkResellWarning_ajax(@Param("loginId") String loginId, @Param("ubcode") String ubcode);
 
 	int insertResellWarning_ajax(@Param("loginId") String loginId, @Param("ubcode") String ubcode);
@@ -65,6 +69,9 @@ public interface ResellDao {
 	void delete_gdInsertResult(GoodsDto gdDto);
 
 	void delete_ubInsertResult(UsedBoardDto ubDto);
+
+
+	
 
 	
 	

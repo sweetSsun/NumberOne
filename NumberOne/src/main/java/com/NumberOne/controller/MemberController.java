@@ -284,11 +284,13 @@ public class MemberController {
 
 		//마이페이지 미니브라우저 & 프로필가져오기
 		@RequestMapping(value="/loadToWriteMemberBoard")
-		public ModelAndView loadToWriteMemberBoard(String nickname) {
+		public ModelAndView loadToWriteMemberBoard(String nickname, String type) {
 			System.out.println("미니브라우저 마이페이지 Board 페이지 요청");
+			System.out.println("팝업 요청 타입: "+type);
 			mav = new ModelAndView();
 			System.out.println("미니브라우저 닉네임 : "+nickname);
 			mav = msvc.selectWriteMemberInfo_member(nickname);
+			mav.addObject("type", type);
 			mav.setViewName("member/WriteMemberInfoPage");
 			
 			return mav;
@@ -436,7 +438,6 @@ public class MemberController {
 		return mav;
 
 		}
-
 
 }
 
