@@ -207,7 +207,7 @@ div.detailimageBox {
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h2 class="text-center">중고거래 글수정페이지 : Resell_ModifyForm.jsp</h2>
+<div class="checkout__form" style="margin-top: 30px;">중고거래 수정페이지</div>
 				<h1 class="text-center" id="titleMsg"></h1>
 
 				<form action="updateResellModify" method="post" enctype="multipart/form-data" onsubmit="return roomModifyCh('${detailLength}')">

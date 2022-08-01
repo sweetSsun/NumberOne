@@ -38,16 +38,14 @@ public class BoardController {
 		
 		System.out.println(paging);
 		ModelAndView mav = new ModelAndView();
-		mav=bsvc.selectRoomList(paging);
+		mav=bsvc.selectRoomList(paging, bdcode, jsp);
 		
 		if(bdcode != "") {
 			//bdcode 추가
 			mav.addObject("bdcode", bdcode);
-			if(jsp !=null) {
-				if(jsp.equals("view")) {
-					//상세보기 페이지로 이동
-					mav.setViewName("board/RoomViewPage");
-				}
+			if(jsp !=null && jsp.equals("view")) {
+				//상세보기 페이지로 이동
+				mav.setViewName("board/RoomViewPage");
 			}
 		}
 		return mav;
