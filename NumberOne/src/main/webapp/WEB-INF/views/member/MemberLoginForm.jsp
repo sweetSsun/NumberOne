@@ -124,7 +124,7 @@ background-color: white;
                              <div class="row">
                              	<div class="col-lg-12 col-md-12 col-sm-12">
                              		<div class="checkout__input" style="text-align: center;">
-                                 		<input type="text" id="userMpw" name="mpw" style="width: 400px;"> 
+                                 		<input type="password" id="userMpw" name="mpw" style="width: 400px;"> 
                              		</div>
                              	</div>
                             </div>
