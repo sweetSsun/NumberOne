@@ -864,15 +864,12 @@ function modalChange(type){
 		console.log(bdcode+"번글 roomView() 호출");
 		nowBdcode = bdcode; 
 		nowModalNum = $("#modalNum_"+nowBdcode).attr("class");
-		//console.log(nowBdcode+"/"+nowModalNum);
-		//console.log('${roomCount}');
+		//console.log(nowBdcode+"/"+nowModalNum)
 		
 		if(nowModalNum == 0){
-			//첫번째 모달이면 왼쪽 화살표 지우기
 			$("#prevArrow").addClass("d_none");
 			$("#nextArrow").removeClass("d_none");
-		} else if (nowModalNum == 9 || nowModalNum =='${roomCount}'){
-			//마지막 모달이면 오른쪽 화살표 지우기
+		} else if (nowModalNum == 9){
 			$("#prevArrow").removeClass("d_none");
 			$("#nextArrow").addClass("d_none");
 		} else {
