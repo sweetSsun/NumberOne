@@ -82,12 +82,17 @@
 	}
 	.outerCmtBox{
 		background-color : #F6F6F6;
-		display: table;
+		/*display: table;*/
 		vertical-align: middle;
 	}
 	.innerCmtBox{
 		display: table-cell;
 		margin: auto;
+	}
+	.innerCmtBtn{
+		display: table-cell;
+		margin: auto;
+		vertical-align: middle;
 	}
 	.replyButton{
 		background-color: #F4F4F4;
@@ -321,14 +326,12 @@
 					<c:choose>
 					<c:when test="${sessionScope.loginId  != null }">
 						<div style="min-height:20%; border-radius:8px;" class="row outerCmtBox mt-3 mb-3">
-							<div class="col">
-								<div class="col innerCmtBox">
-									<!-- 댓글입력 -->
-									<textarea id="inputComment" style="border: solid #E0E0E0 3px; " class="mt-4 " rows="2" cols="110%" placeholder="상대방에게 불쾌감을 주는 욕설이나 댓글은 고지없이 삭제될 수 있습니다. "></textarea>
-								</div>
-							<div align="right" class="col">
-								<button onclick="insertReply()" class="btn btn-sm bg-secondary mb-2 fw-bold text-white">등록</button>
+							<div class="row innerCmtBox">
+								<!-- 댓글입력 -->
+								<textarea id="inputComment" style="border: solid #E0E0E0 3px; " class="mt-4 " rows="2" width="100%" placeholder="상대방에게 불쾌감을 주는 욕설이나 댓글은 고지없이 삭제될 수 있습니다. "></textarea>
 							</div>
+							<div align="right" class="col innerCmtBtn">
+								<button onclick="insertReply()" class="btn btn-sm btn-secondary mb-2 fw-bold">등록</button>
 							</div>
 						</div>
 					</c:when>					
