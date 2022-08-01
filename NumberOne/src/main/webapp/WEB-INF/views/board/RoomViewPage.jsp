@@ -360,6 +360,12 @@ section div.checkout__form{
     font-size : 24px;
 }
 
+.btn-numberone{
+	/* 글쓰기 버튼 */
+	background-color : #00bcd4;
+	font-size : 1.5rem;
+	color : white;
+}
 </style>
 </head>
 <body>
@@ -399,8 +405,8 @@ section div.checkout__form{
 					<div class="col-11"></div>
 					<div class="col-1">
 						<!-- 글쓰기 버튼 -->
-						<c:if test="${sessionScope.loginId != null}">
-							<button class="btn btn-primary btn-lg" onclick="location.href='${pageContext.request.contextPath }/loadToWriteRoom'">글쓰기</button>
+						<c:if test="${sessionScope.loginId != null && sessionScope.loginId != 'admin'}">
+							<button type="button" class="btn btn-numberone" onclick="location.href='${pageContext.request.contextPath }/loadToWriteRoom'">글쓰기</button>
 						</c:if>
 					</div>
 					
@@ -542,16 +548,25 @@ function adminRvBan(){
 		return false;
 	}
 	
+	// 고정배너 정지하려고 하면 중지
+	/*
+	// adminRvBan을 실행할 때 bdfix를 보내줘서, bdfix에 따라 정지 불가능하도록
+ 	if (bdfix == 1){
+		alert("고정상태인 글은 정지할 수 없습니다.");
+		return;
+	} */
+	
 	$.ajax({
 			type : "get",
 			url : "admin_updateRoomStop_ajax",
-			data : { "bdcode" : nowBdcode},
+			data : { "bdcode" : nowBdcode, "check" : "adminPage"}, // 관리자페이지에서 넘어왔음을 확인
 			async : false,
 			success : function(updateResult){
 				if( updateResult > 0 ){
 					console.log("관리자 자랑글 정지 성공!");
+					alert(nowBdcode + "번 글이 정지 처리되었습니다.");
 					//일단 목록 페이지 다시 로드
-					location.href = "${pageContext.request.contextPath }/selectRoomList";
+					location.href = "${pageContext.request.contextPath }/admin_selectBoardList?page=${paging.page}";
 				}
 			}
 		});
@@ -598,6 +613,18 @@ roomView_ajax(nowBdcode)
 	function roomView_ajax(bdcode){
 		console.log(bdcode+"번글 roomView() 호출");
 		nowBdcode = bdcode; 
+		
+		//상세 보기 div 초기화
+		$("#roomMprofile").html("");
+		  $("#roomMnickname").html("");
+		  $("#roomContents").html("");
+		  $("#reply").html("");
+		  nowRpcode = "";
+		  nowRpmid = "";
+		  nowWb = "";
+		  nowModalNum = null;
+		  nowRpparent ="";
+		  $("#inputReply").val("");
 		
 		$.ajax({
 			type : "get",

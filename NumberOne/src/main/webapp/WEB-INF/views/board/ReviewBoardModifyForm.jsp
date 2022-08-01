@@ -218,7 +218,7 @@
 						<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
 						<span class="x" onclick="currentImgStateUpdate()">&nbsp;X&nbsp;</span>
 					</div>
-					<div style="background-color: #00bcd4; width: 200px; color:white;" class="text-center fw-bold">
+					<div id="img-guide" style="background-color: #00bcd4; width: 200px; color:white;" class="text-center fw-bold">
 						업로드 이미지
 					</div>			
 				</c:if >
@@ -337,6 +337,7 @@
 		console.log(delImgCheck);
 		
 		$("#img-container").css("display", "none");
+		$("#img-guide").css("display", "none");
 	}
 </script>
 

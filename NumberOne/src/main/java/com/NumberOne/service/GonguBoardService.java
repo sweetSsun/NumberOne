@@ -269,10 +269,10 @@ public class GonguBoardService {
 		return mav;
 	}
 	
-	// 수정 공지 DB에 입력
+	// 수정 공구 DB에 입력
 	public ModelAndView admin_updateGonguModify(GonguBoardDto modiGonguboard, Paging paging, RedirectAttributes ra) throws IllegalStateException, IOException {
 		System.out.println("GonguBoardService.admin_updateGonguModify() 호출");
-		//System.out.println("originImg : " + modiNotice.getOriginImg());
+		//System.out.println("originImg : " + modiGonguboard.getOriginImg_gb());
 		//System.out.println("paging : " + paging);
 
 		mav = new ModelAndView();

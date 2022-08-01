@@ -648,7 +648,7 @@ h4:hover{
  				<c:choose>
  					<c:when test="${sessionScope.loginId != null }">
 		 				<textarea class="scroll" id="inputReply" placeholder="댓글 달기..." style="height:60px;" onkeydown="replyEnter(event)"></textarea>&nbsp;&nbsp;
-		 				<button onclick='replyResister()'>게시</button>
+		 				<button onclick='replyResister()' style="background-color:#00bcd4; color: aliceblue; font-size: medium;">게시</button>
  					</c:when>
  					<c:otherwise>
 		 				<textarea class="scroll" id="inputReply" type="text" readonly="readonly" placeholder="로그인 후 이용 가능합니다" style="height:60px;"></textarea>&nbsp;&nbsp;
@@ -726,7 +726,7 @@ h4:hover{
 		
 		//선택한 searchType 유지하기
 		console.log('${paging.searchType}');
-		var searchTypeOption = $("#searchTypeSel option");
+		const searchTypeOption = $("#searchTypeSel option");
 		if ('${paging.searchType}'.length > 0) {
 			for (var i = 0; i < searchTypeOption.length; i++){
 				if (searchTypeOption.eq(i).val() == '${paging.searchType}'){
@@ -754,6 +754,14 @@ h4:hover{
 		console.log(searchText);
 		location.href="selectRoomList?searchVal="+orderBy+"&searchType="+searchType+"&keyword="+searchText;	
 	}	
+	
+	function replyAt(mnickname){
+		console.log(mnickname+"로 검색 요청");
+		$("#searchText").val(mnickname);	
+		$("#searchTypeSel").val('bdnickname').prop("selected",true);
+		$("#actionForm").submit();
+		
+	}
 
 </script>
 
@@ -768,6 +776,14 @@ function adminRvBan(){
 		return false;
 	}
 	
+	// 고정배너 정지하려고 하면 중지
+	/*
+	// adminRvBan을 실행할 때 bdfix를 보내줘서, bdfix에 따라 정지 불가능하도록
+ 	if (bdfix == 1){
+		alert("고정상태인 글은 정지할 수 없습니다.");
+		return;
+	} */
+	
 	$.ajax({
 			type : "get",
 			url : "admin_updateRoomStop_ajax",
@@ -775,8 +791,9 @@ function adminRvBan(){
 			async : false,
 			success : function(updateResult){
 				if( updateResult > 0 ){
+					alert(nowBdcode + "번 글이 정지 처리되었습니다.");
 					console.log("관리자 자랑글 정지 성공!");
-					location.href = "${pageContext.request.contextPath }/selectRoomList";
+					location.href = "${pageContext.request.contextPath }/selectRoomList?page=${paging.page}";
 				}
 			}
 		});
@@ -864,12 +881,16 @@ function modalChange(type){
 		console.log(bdcode+"번글 roomView() 호출");
 		nowBdcode = bdcode; 
 		nowModalNum = $("#modalNum_"+nowBdcode).attr("class");
-		//console.log(nowBdcode+"/"+nowModalNum)
+		//console.log(nowBdcode+"/"+nowModalNum);
+		//console.log('${roomCount}');
+		nowRpparent =""; //rpparent 초기화
 		
 		if(nowModalNum == 0){
+			//첫번째 모달이면 왼쪽 화살표 지우기
 			$("#prevArrow").addClass("d_none");
 			$("#nextArrow").removeClass("d_none");
-		} else if (nowModalNum == 9){
+		} else if (nowModalNum == 9 || nowModalNum =='${roomCount}'){
+			//마지막 모달이면 오른쪽 화살표 지우기
 			$("#prevArrow").removeClass("d_none");
 			$("#nextArrow").addClass("d_none");
 		} else {
@@ -936,7 +957,7 @@ function modalChange(type){
 			//left and right controls
 			imgHtml += "<a class='left carousel-control' href='#myCarousel' data-slide='prev'>";	
 			imgHtml += "<span class='glyphicon glyphicon-chevron-left'></span>";
-			imgHtml += "<span class='sr-only'>Previous</span>"
+			imgHtml += "<span class='sr-only'>Previous</span>";
 			imgHtml += "</a>";
 			imgHtml += "<a class='right carousel-control' href='#myCarousel' data-slide='next'>";	
 			imgHtml += "<span class='glyphicon glyphicon-chevron-right'></span>";
@@ -1119,11 +1140,30 @@ function modalChange(type){
 						replyOutput += "<span onclick='writeMemberBoard(\""+replys[i].rpnickname+"\")' class='pointer' style='font-weight:600; margin:0px;'>"+replys[i].rpnickname+"&nbsp;&nbsp;</span>";
 					
 						//내용
-						var reply_transform = replys[i].rpcontents.replaceAll(' ', '&nbsp;');
-						reply_transform = reply_transform.replaceAll('\n', '<br>');
+						//console.log(replys[i].rpcontents);
+						
+						if(replys[i].rpdepth>1){
+							console.log("답글");
+							//원댓글 아이디
+							var reply_at = replys[i].rpcontents.split(' ')[0].split('@')[1]; //원댓글 아이디
+							replyOutput += "<span class='pointer' onclick='replyAt(\""+reply_at+"\")' ";
+							replyOutput += "style='color:rgb(0, 55, 107);'>@"+reply_at+"</span>&nbsp;";
+							//답글 내용
+							var reply_transform = replys[i].rpcontents.replace(' ', '___');
+							reply_transform = reply_transform.split('___')[1].replaceAll(' ', '&nbsp;');
+							reply_transform = reply_transform.replaceAll('\n', '<br>');
+							replyOutput += reply_transform+"<br>";
+							
+						} else {
+							console.log("댓글");
+							var reply_transform = replys[i].rpcontents.replaceAll(' ', '&nbsp;');
+							reply_transform = reply_transform.replaceAll('\n', '<br>');
+							replyOutput += reply_transform+"<br>";
+						}
+ 
 						//console.log(reply_transform);
 						//replyOutput += replys[i].rpcontents+"<br>";
-						replyOutput += reply_transform+"<br>";
+						//replyOutput += reply_transform+"<br>";
 					
 						//댓글 작성 시간
 						replyOutput += "<span style='font-size:10px; color:grey; margin:0px;'>"+replys[i].rpdate+"</span>&nbsp;&nbsp;";
@@ -1418,13 +1458,14 @@ function modalChange(type){
 	  $("#roomMnickname").html("");
 	  $("#roomContents").html("");
 	  $("#reply").html("");
-	  $("#reply").html("");
 	  nowBdcode = "";
 	  nowBdmid = "";
 	  nowRpcode = "";
 	  nowRpmid = "";
 	  nowWb = "";
-	  
+	  nowModalNum = null;
+	  nowRpparent ="";
+	  $("#inputReply").val("");
 	}
 	
 	//모달 닫기 다른 방법

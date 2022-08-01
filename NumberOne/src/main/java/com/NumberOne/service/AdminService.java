@@ -256,7 +256,6 @@ public class AdminService {
 		mav.addObject("noticeBoard", noticeBoard);
 		mav.addObject("paging", paging);
 
-		System.out.println(nbcode.substring(0,2));
 		mav.setViewName("admin/Admin_NoticeBoardView");
 		
 		return mav;
@@ -548,7 +547,7 @@ public class AdminService {
 		
 //		System.out.println(paging);
 		ArrayList<BoardDto> boardList = adao.admin_selectBoardList(paging);
-//		System.out.println("boardList : " + boardList);
+		System.out.println("boardList : " + boardList);
 		mav.addObject("paging", paging);
 		mav.addObject("boardList", boardList);
 		mav.setViewName("admin/Admin_BoardList");

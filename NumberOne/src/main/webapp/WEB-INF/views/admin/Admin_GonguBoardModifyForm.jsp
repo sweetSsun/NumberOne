@@ -79,7 +79,7 @@
  				<form action="admin_updateGonguModify${paging.makeQueryPage(gonguBoard.gbcode, paging.page)}" method="post" enctype="multipart/form-data" onsubmit="return inputCheck()">
  				<!-- 수정 불가능한 값 숨기고 submit에는 데이터 넘겨주는 변수 -->
  				<input type="hidden" name="gbcode" value="${gonguBoard.gbcode }">
- 				<input type="hidden" name="originImg" value="${gonguBoard.gbimg }">
+ 				<input type="hidden" name="originImg_gb" value="${gonguBoard.gbimg }">
  				
  				<div class="row">
 					<input type="text" id="title" class="bdtitle" name="gbtitle" maxlength="50" value="${gonguBoard.gbtitle }">

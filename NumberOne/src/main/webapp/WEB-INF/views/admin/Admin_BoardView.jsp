@@ -19,14 +19,14 @@
 		margin: auto;
 		margin-top: 0%;
 	}
-	.textarea-NbView{
-		border: none;
-		resize: none;
-		width: -webkit-fill-available;
-		min-height: 20rem;
-	}
 	textarea:focus {
     	outline: none;
+	}
+	#inputReply{
+		border: none;
+		width: -webkit-fill-available;
+		resize: none;
+		height: auto;
 	}
 	#inputComment{
 		resize: none;
@@ -77,6 +77,11 @@
 	}
 	.inputRpcontents{
 		font-size:20px;
+		border:none;
+	  overflow-y: hidden;
+	  resize: none;
+	  padding-bottom: 0.2em;
+		/* overflow-y: hidden; */
 	}
 	.outerCmtBox{
 		background-color : #F6F6F6;
@@ -121,9 +126,31 @@
 	#inputSearchText{
 		font-size: 18px;
 	}
+	.img-container{
+/*     overflow: hidden; */
+     display: flex;
+/*      align-items: center; */
+/*      justify-content: center; */
+/*      border: solid #E0E0E0 2px; */
+     margin-top: 5%;
+     width: 200px;
+     height: 200px;
+   }
+   #upload_Img{
+   	width: 450px;
+   	height: 350px;
+   	object-fit: cover;
+   }
+   #inputModifyRpBox{
+   	border: solid #E0E0E0 2px; 
+   	border-radius:5px;
+   }
 	pre{
    		font-family: 'pretendard';
    }
+   #rerp_writeBtn:hover{
+	cursor: pointer;
+	}  
 </style>
 </head>
 <body>
@@ -178,12 +205,17 @@
 					
 					
 					<!-- 본문 글 내용-->
+					<c:if test="${board.bdimg != null }">
+					<div class="row" style="height:367px;">
+						<div class="col img-container" >
+							<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg }">
+						</div>
+					</div>
+					</c:if >
 					<div class="row mt-3 mb-1 boardContents">
 						<div class="col">
-							<c:if test="${board.bdimg != null }">
-								<img alt="" src="${pageContext.request.contextPath }/resources/img/board/${board.bdimg}" style="max-width:100%; max-height:500px;">
-							</c:if>
-							<textarea class="textarea-NbView" readonly>${board.bdcontents }</textarea>
+							<textarea id="inputReply" rows="10%" cols="100%" readonly>${board.bdcontents }</textarea>
+							<%-- <text style="min-height:270px;">${board.bdcontents }</div> --%>
 						</div>
 					</div>
 				</form>
@@ -396,77 +428,117 @@
 			async : false,
 			success : function(replyList){
 				console.log(replyList);
-				output += "<div class=\"row\">"
-				for( var i=0; i < replyList.length; i++ ){
-					
-					if( replyList[i].rpmid == '${sessionScope.loginId}' ){//동일한 아이디 (댓글 수정, 삭제 버튼)
-						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;' >" /* 프로필영역 */
-
-						if( replyList[i].rpprofile != 'nomprofile' ){//프로필 이미지가 있을 시 
-							if(  replyList[i].rpmstate == 9 ){//카카오 회원
-								output += "<img class=\"img-profile rounded-circle rpProfile mt-1\"  src='"+replyList[i].rpprofile + "'>"
-							}else{
-								output += "<img class=\"img-profile rounded-circle rpProfile mt-1\"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
-							}
+				output += "<div class=\"row\" style=\"padding-right:0;\">"
+					for( var i=0; i < replyList.length; i++ ){
+						var rppadding = (parseInt(replyList[i].rpdepth)-1)*3;
+						output += "<div class=\"row\" style='border-bottom: solid #E0E0E0 1px; padding-left:"+rppadding+"%; padding-right:0;'>";
 						
-						}else{//프로필 이미지가 없을 시 
-							output += "<img class=\"img-profile rounded-circle rpProfile_None mt-1\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
-						}
-						output += "</div>"
-						
-						output += "<div class=\"col-11\" style='border-bottom: solid #E0E0E0 1px;\'>"
-						/* 닉네임, 시간 */
-						output += "<a style=\"cursor:pointer\" onclick=\"writeMemberBoard('"+replyList[i].rpnickname+"')\"><span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span></a>"
-						output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span> "
-						output += "<input type=\"hidden\" value='"+replyList[i].rpmid+"'>"
-						
-						/* 수정, 삭제 버튼 */
-						output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"rpRemoveModal('"+ replyList[i].rpcode +"','"+replyList[i].rpmid +"')\" value=\"삭제\">"
-						output += "<input style=\"margin-right:5px; border:solid gray 1px\" type=\"button\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"rpModifyModal('"+ replyList[i].rpcode +"','"+replyList[i].rpmid + "')\" value=\"수정\">"
-						output += "<br>"
-						
-						if( '${sessionScope.loginId}' == 'admin'){
-							/* 관리자 - 댓글 정지 버튼 */
-							output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton btn-secondary fw-bold mt-2\" onclick=\"adminReplyStop('"+ replyList[i].rpcode +"')\" value=\"정지\">"
-						}
-						/* 댓글내용 */
-						output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
-						output += "</div>"
-						
-					}else{
-						
-						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;'>" /* 프로필영역 */
-						if( replyList[i].rpprofile != 'nomprofile' ){//프로필 이미지가 있을 시 
-							if(  replyList[i].rpmstate == 9){//카카오 회원
-								output += "<img class=\"img-profile rounded-circle rpProfile mt-1\"  src='"+replyList[i].rpprofile + "'>"
-							}else{
-								output += "<img class=\"img-profile rounded-circle rpProfile mt-1\"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
-							}
-						}else{//프로필 이미지가 없을 시 
-							output += "<img class=\"img-profile rounded-circle rpProfile_None mt-1\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
-						}
-						output += "</div>"
+						if( replyList[i].rpstate == 2 ){//삭제된 댓글일 때
 							
-						output += "<div class=\"col-11\" style='border-bottom: solid #E0E0E0 1px;'>"
-						/* 닉네임, 시간 */
-						output += "<a style=\"cursor:pointer\" onclick=\"writeMemberBoard('"+replyList[i].rpnickname+"')\"><span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span></a>"
-						output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span> "
-						output += "<input type=\"hidden\" value='"+replyList[i].rpmid+"'>"
+							output += "<div style='height:60px; line-height:60px;' >"
+							output += "    <span style=\"color:gray; font-size:20px;\"> [ 삭제된 댓글입니다. ] </span>"
+							output += "</div>"
+							output += "</div>"
 						
-						if( '${sessionScope.loginId}' == 'admin'){
+						}else{	//삭제된 댓글이 아닐 때 
+						if( replyList[i].rpmid == loginId ){//동일한 아이디 (댓글 수정, 삭제 버튼)
+							
+							console.log(rppadding);
+						
+							//output += "<div class=\"row\" style='left:"+rppadding+";'>"
+							output += "<div class=\"col-1\" style=\"text-align: right;\" >" /* 프로필영역 */
+							
+							if( replyList[i].rpprofile != 'nomprofile' ){//프로필 이미지가 있을 시 
+				                if(replyList[i].rpdepth != 1){
+				                     //답글인 경우 화살표 추가
+				                     output += "<span class=\"fw-bold\" style=\"font-size:18px;\">⤷<span>";
+				                   }
+								if(  replyList[i].rpmstate == 9 ){//카카오 회원
+									output += "<img class=\"img-profile rounded-circle rpProfile mt-1\"  src='"+replyList[i].rpprofile + "'>"
+								}else{
+									output += "<img class=\"img-profile rounded-circle rpProfile mt-1\"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+								}
+							
+							}else{//프로필 이미지가 없을 시 
+								if(replyList[i].rpdepth != 1){
+				                     //답글인 경우 화살표 추가
+				                     output += "<span class=\"fw-bold\" style=\"font-size:18px;\">⤷<span>";
+				                   }
+								output += "<img class=\"img-profile rounded-circle rpProfile_None mt-1\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
+							}
+							output += "</div>"
+							
+							output += "<div class=\"col-11\" style=\"padding-left:0;\">"
+							/* 닉네임, 시간 */
+							output += "<a style=\"cursor:pointer\" onclick=\"writeMemberBoard('"+replyList[i].rpnickname+"')\"><span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span></a>"
+							output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span> "
+							output += "<input type=\"hidden\" value='"+replyList[i].rpmid+"'>"
+							
+							/* 답글쓰기 버튼 */
+							if( loginId != null || replyList[i].rpdepth < 5){
+								output += "<span id=\"rerp_writeBtn\" onclick=\"rerp_writeBtn('"+ replyList[i].rpcode +"','" + replyList[i].rpnickname +"')\" class='fw-bold' style='color: gray;'>&nbsp;&nbsp;답글쓰기</span>"
+							}
+							
+							
+							/* 수정, 삭제 버튼 */
+							output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"rpRemoveModal('"+ replyList[i].rpcode +"','"+replyList[i].rpmid +"')\" value=\"삭제\">"
+							output += "<input style=\"margin-right:5px; border:solid gray 1px\" type=\"button\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"rpModifyModal('"+ replyList[i].rpcode +"','"+replyList[i].rpmid + "')\" value=\"수정\">"
+							output += "<br>"
+							
+							if( '${sessionScope.loginId}' == 'admin'){
+								/* 관리자 - 댓글 정지 버튼 */
+								output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton bg-secondary text-white fw-bold mt-2\" onclick=\"adminReplyStop('"+ replyList[i].rpcode +"')\" value=\"정지\">"
+							}
+							/* 댓글내용 */
+							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
+							output += "</div>"
+							
+						}else{ // 로그인아이디 != 글작성자
+			
+							output += "<div class=\"col-1\" style=\"text-align: right;\">" /* 프로필영역 */
+							if( replyList[i].rpprofile != 'nomprofile' ){//프로필 이미지가 있을 시 
+								if(replyList[i].rpdepth != 1){
+				                     //답글인 경우 화살표 추가
+				                     output += "<span class=\"fw-bold\" style=\"font-size:18px;\">⤷<span>";
+				                   }
+								if(  replyList[i].rpmstate == 9){//카카오 회원
+									output += "<img class=\"img-profile rounded-circle rpProfile mt-1\"  src='"+replyList[i].rpprofile + "'>"
+								}else{
+									output += "<img class=\"img-profile rounded-circle rpProfile mt-1\"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+								}
+							}else{//프로필 이미지가 없을 시 
+								output += "<img class=\"img-profile rounded-circle rpProfile_None mt-1\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
+							}
+							output += "</div>"
+								
+							output += "<div class=\"col-11\" style=\"padding-left:0;\" >"
+							/* 닉네임, 시간 */
+							output += "<a style=\"cursor:pointer\" onclick=\"writeMemberBoard('"+replyList[i].rpnickname+"')\"><span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span></a>"
+							output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span> "
+							output += "<input type=\"hidden\" value='"+replyList[i].rpmid+"'>"
+							
+							/* 답글쓰기 버튼 */
+							if( loginId != null || replyList[i].rpdepth < 5 ){
+								output += "<span id=\"rerp_writeBtn\" onclick=\"rerp_writeBtn('"+ replyList[i].rpcode +"','" + replyList[i].rpnickname +"')\" class='fw-bold' style='color: gray;'>&nbsp;&nbsp;답글쓰기</span>"
+							}
+							
 							/* 관리자 - 댓글 정지 버튼 */
-							output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton btn-secondary fw-bold mt-2\" onclick=\"adminReplyStop('"+ replyList[i].rpcode +"')\" value=\"정지\">"
+							if( '${sessionScope.loginId}' == 'admin'){
+								output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton bg-secondary text-white fw-bold mt-2\" onclick=\"adminReplyStop('"+ replyList[i].rpcode +"')\" value=\"정지\">"
+							}
+							
+							output += "<br>"
+							/* 댓글내용 */
+							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
+							output += "</div>"
 						}
-						
-						output += "<br>"
-						/* 댓글내용 */
-						output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
-						output += "</div>"
-					}
 
+							output += "</div>"//한줄 끝
+					}
+							
+						}//for문 종료
+					output += "</div>"
 				}
-				output += "</div>"
-			}
 		});
 		$("#replyList_ajax").html(output);
 	}
