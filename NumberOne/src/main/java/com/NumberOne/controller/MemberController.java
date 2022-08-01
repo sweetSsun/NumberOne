@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.NumberOne.dto.ChatMessageDto;
 import com.NumberOne.dto.ContactDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.service.MemberService;
@@ -245,17 +244,7 @@ public class MemberController {
 			return mav;
 	
 		}		
-		// (삭제 예정) 작성자 상세페이지 _ Board
-		/*@RequestMapping(value = "/selectWriteMemberInfo_ajax")
-		public @ResponseBody String selectWriteMemberInfo_ajax (String nickname) {
-			System.out.println("작성자 상세페이지 _ selectWriteMemberInfo");
-			System.out.println("controller.nickname : " + nickname);
-			String boardList_ajax = msvc.selectWriteMemberInfo_ajax(nickname);
-			return boardList_ajax;
-			
-		}*/
 
-		
 		//카카오아이디 중복 확인
 		@RequestMapping(value = "/memberKakaoLogin")
 		public ModelAndView memberKakaoLogin(MemberDto member, RedirectAttributes ra) {
@@ -279,7 +268,7 @@ public class MemberController {
 		}
 		
 		
-		/* 현석 :  mail API 에러 때문에 주석처리 시작
+		/* 현석 :  mail API 에러 때문에 주석처리 시작*/
 		//비밀번호 찾기 - 회원 정보 확인
 		@RequestMapping(value = "/selectLookforPw_ajax")
 		public @ResponseBody String selectLookforPw_ajax(String checkMid , String checkMemail, MemberDto member) {
@@ -290,7 +279,7 @@ public class MemberController {
 			
 			return pwCheckResult;  
 		}	
-현석 :  mail API 에러 때문에 주석처리 끝	*/
+		/*현석 :  mail API 에러 때문에 주석처리 끝	*/
 		
 
 		//마이페이지 미니브라우저 & 프로필가져오기
@@ -403,19 +392,56 @@ public class MemberController {
 	
 		}
 		
-	  	
-	  	
+
+		//임시번호 페이지 이동
+		@RequestMapping(value="/loadToTemporaryNum")
+		public ModelAndView loadToTemporaryNum(String mid) {
+			System.out.println("임시번호 입력 페이지 요청");
+			System.out.println(mid);
+			mav = new ModelAndView();
+			mav.addObject("checkId", mid);
+			mav.setViewName("member/TemporaryNumForm");
+			return mav;
+		}	
 		
-	  	
+		//임시번호 확인
+		@RequestMapping(value = "/selectTemporaryNum_ajax")
+		public @ResponseBody String selectTemporaryNum_ajax(String mid , String mpw) {
+			System.out.println("임시번호 확인 요청");
+			System.out.println("입력한 아이디 : " + mid);
+			System.out.println("입력한 비번 : " + mpw);
+			String tpwCheckResult = msvc.selectTemporaryNum_ajax(mid , mpw);
+			
+			return tpwCheckResult;  
+		}
+		  
+		//임시번호 변경
+		@RequestMapping(value = "/updateTemporaryNum")
+		public ModelAndView updateTemporaryNum(RedirectAttributes ra, String mid , String mpw) throws IllegalStateException, IOException {		
+			System.out.println("임시번호 변경");
+			System.out.println("임시번호 변경 할 아이디 :" +mid);
+			System.out.println("임시번호 변경 할 비번 :" +mpw);
+			
+			mav = new ModelAndView();
+			
+/*			if(mpw.equals("")) {
+				
+				mav = msvc.updateTemporaryNum(ra, mid , mpw);
+				ra.addFlashAttribute("msg" , "변경된 비밀번호가 없습니다.\n 재인증 하시기 바랍니다.");
+				//mav.addObject("checkId", mid);
+				//mav.setViewName("member/TemporaryNumForm");	
+
+			}else {*/
+				
+				mav = msvc.updateTemporaryNum(ra, mid , mpw);
+				/* } */
+			
+	
+		return mav;
+
+		}
 
 }
-
-
-
-
-
-
-
 
 
 

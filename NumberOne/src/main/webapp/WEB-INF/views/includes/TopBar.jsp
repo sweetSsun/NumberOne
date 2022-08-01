@@ -211,7 +211,7 @@
 							</li>
 <!--  								
 							<!-- 로그아웃 -->
- 							<li style="margin-right: 15px;"><a href="" id="logoutBtn">로그아웃</a></li>
+ 							<li style="margin-right: 15px;"><a href="selectMemberLogout" id="logoutBtn">로그아웃</a></li>
 							<!-- 고객센터(문의)	-->				
 							<li ><a href="selectMyInfoQuestionListView">고객센터</a></li>
 						</c:otherwise>
