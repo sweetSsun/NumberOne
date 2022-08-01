@@ -819,7 +819,7 @@
 						output += "<input type=\"hidden\" value='"+replyList[i].rpmid+"'>"
 						
 						/* 답글쓰기 버튼 */
-						if( loginId != null && replyList[i].rpdepth < 5){
+						if( loginId != null || replyList[i].rpdepth < 5){
 							output += "<span id=\"rerp_writeBtn\" onclick=\"rerp_writeBtn('"+ replyList[i].rpcode +"','" + replyList[i].rpnickname +"')\" class='fw-bold' style='color: gray;'>&nbsp;&nbsp;답글쓰기</span>"
 						}
 						
@@ -862,7 +862,7 @@
 						output += "<input type=\"hidden\" value='"+replyList[i].rpmid+"'>"
 						
 						/* 답글쓰기 버튼 */
-						if( loginId != null && replyList[i].rpdepth < 5 ){
+						if( loginId != null || replyList[i].rpdepth < 5 ){
 							output += "<span id=\"rerp_writeBtn\" onclick=\"rerp_writeBtn('"+ replyList[i].rpcode +"','" + replyList[i].rpnickname +"')\" class='fw-bold' style='color: gray;'>&nbsp;&nbsp;답글쓰기</span>"
 						}
 						
