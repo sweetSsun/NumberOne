@@ -175,30 +175,32 @@
 							<c:if test="${gonguBoard.gbimg != null }">
 								<img alt="" src="${pageContext.request.contextPath }/resources/img/gonguUpLoad/${gonguBoard.gbimg}" style="max-width:100%; max-height:500px;">
 							</c:if>
-							<textarea class="textarea-GbView" readonly>${gonguBoard.gbcontents }</textarea>
 						</div>
+						<div>
+							<textarea class="textarea-GbView" readonly>${gonguBoard.gbcontents }</textarea>
 						
-						<!-- 참여 버튼 -->
-						<c:choose>
-							<c:when test="${gonguBoard.gbstate == 1 }">
+							<!-- 참여 버튼 -->
+							<c:choose>
+								<c:when test="${gonguBoard.gbstate == 1 }">
+									<div>
+										<c:choose>
+											<c:when test="${gonguCount > 0 }">
+												<button class="attendBtn btnLightBlue btnPush" onclick="showAttendModal()">현재 참여 인원 </br> ${gonguCount }명</button>
+											</c:when>
+											<c:otherwise>
+												<button class="attendBtn btnLightBlue btnPush" style="cursor: default;">현재 참여 인원 </br> ${gonguCount }명</button>
+											</c:otherwise>
+										</c:choose>
+									</div>
+								</c:when>
+								<%-- <c:if test="${gonguBoard.gbstate == 2 }"> 진행완료되면 총 참여인원만 나타나게. 목록은 X --%>
+							<c:otherwise>
 								<div>
-									<c:choose>
-										<c:when test="${gonguCount > 0 }">
-											<button class="attendBtn btnLightBlue btnPush" onclick="showAttendModal()">현재 참여 인원 </br> ${gonguCount }명</button>
-										</c:when>
-										<c:otherwise>
-											<button class="attendBtn btnLightBlue btnPush" style="cursor: default;">현재 참여 인원 </br> ${gonguCount }명</button>
-										</c:otherwise>
-									</c:choose>
+									<button type="button" class="attendBtn btnLightBlue btnPush" onclick="showAttendModal()" style="width:300px; left:32%;">총 참여 인원 ${gonguCount }명 </br> 참여해주셔서 감사합니다. </button>
 								</div>
-							</c:when>
-							<%-- <c:if test="${gonguBoard.gbstate == 2 }"> 진행완료되면 총 참여인원만 나타나게. 목록은 X --%>
-						<c:otherwise>
-							<div>
-								<button type="button" class="attendBtn btnLightBlue btnPush" onclick="showAttendModal()" style="width:300px; left:32%;">총 참여 인원 ${gonguCount }명 </br> 참여해주셔서 감사합니다. </button>
-							</div>
-						</c:otherwise>
-						</c:choose>
+							</c:otherwise>
+							</c:choose>
+						</div>
 							
 						<!-- 공동구매 결제API 대신 참여확인 modal -->
 						<div class="modal fade" id="attendModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -277,6 +279,18 @@
      if( checkMsg.length > 0 ){
         alert(checkMsg);
      }
+</script>
+
+<script type="text/javascript">
+
+/* Textarea 높이 자동 조절 ( 스크롤바 없애기 ) */
+$(".textarea-GbView").each(function () {
+	this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
+	}).on('input', function () {
+	this.style.height = 'auto';
+	this.style.height = (this.scrollHeight) + 'px';
+	});
+
 </script>
 
 <script type="text/javascript">
