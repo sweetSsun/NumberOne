@@ -181,14 +181,14 @@ background-color: #00BCD4;
                                 <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p>비밀번호<span>*</span></p>
-                                        <input type="text" placeholder="영문&숫자 6~20자로 입력해주세요." id="inputMpw" name="mpw">
+                                        <input type="password" placeholder="영문&숫자 6~20자로 입력해주세요." id="inputMpw" name="mpw">
 									<span id="pwCheckMsg" class="msg"></span>                                      
                                     </div>
                                 </div>
                                 <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p>비밀번호확인<span>*</span></p>
-                                        <input type="text" placeholder="비밀번호를 확인해주세요." id="checkMpw">
+                                        <input type="password" placeholder="비밀번호를 확인해주세요." id="checkMpw">
 									<span id="pwReCheckMsg" class="msg"></span>                                    
                                     </div>
                                 </div>
