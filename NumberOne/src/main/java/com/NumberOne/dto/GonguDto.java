@@ -5,70 +5,70 @@ import lombok.Data;
 @Data
 public class GonguDto {
 	//공구게시판
-	private String gnbcode;
-	private String gmid;
-	private String gphone;
-	private String gemail;
-	private String gaddr;
-	private String gdate;
+	private String ggbcode;
+	private String ggmid;
+	private String ggphone;
+	private String ggemail;
+	private String ggaddr;
+	private String ggdate;
 
-	private String gnbtitle; // 글 제목 (마이페이지 공구)
-	private String gnbstate; // 글 상태 (마이페이지 공구) 
+	private String ggbtitle; // 글 제목 (마이페이지 공구)
+	private String ggbstate; // 글 상태 (마이페이지 공구) 
 	
-	public String getGnbcode() {
-		return gnbcode;
+	public String getGgbcode() {
+		return ggbcode;
 	}
-	public void setGnbcode(String gnbcode) {
-		this.gnbcode = gnbcode;
+	public void setGgbcode(String ggbcode) {
+		this.ggbcode = ggbcode;
 	}
-	public String getGmid() {
-		return gmid;
+	public String getGgmid() {
+		return ggmid;
 	}
-	public void setGmid(String gmid) {
-		this.gmid = gmid;
+	public void setGmid(String ggmid) {
+		this.ggmid = ggmid;
 	}
-	public String getGphone() {
-		return gphone;
+	public String getGgphone() {
+		return ggphone;
 	}
-	public void setGphone(String gphone) {
-		this.gphone = gphone;
+	public void setGphone(String ggphone) {
+		this.ggphone = ggphone;
 	}
-	public String getGemail() {
-		return gemail;
+	public String getGgemail() {
+		return ggemail;
 	}
-	public void setGemail(String gemail) {
-		this.gemail = gemail;
+	public void setGemail(String ggemail) {
+		this.ggemail = ggemail;
 	}
-	public String getGaddr() {
-		return gaddr;
+	public String getGgaddr() {
+		return ggaddr;
 	}
-	public void setGaddr(String gaddr) {
-		this.gaddr = gaddr;
+	public void setGaddr(String ggaddr) {
+		this.ggaddr = ggaddr;
 	}
-	public String getGdate() {
-		return gdate;
+	public String getGgdate() {
+		return ggdate;
 	}
-	public void setGdate(String gdate) {
-		this.gdate = gdate;
+	public void setGdate(String ggdate) {
+		this.ggdate = ggdate;
 	}
-	public String getGnbtitle() {
-		return gnbtitle;
+	public String getGgbtitle() {
+		return ggbtitle;
 	}
-	public void setGnbtitle(String gnbtitle) {
-		this.gnbtitle = gnbtitle;
+	public void setGgbtitle(String ggbtitle) {
+		this.ggbtitle = ggbtitle;
 	}
-	public String getGnbstate() {
-		return gnbstate;
+	public String getGgbstate() {
+		return ggbstate;
 	}
-	public void setGnbstate(String gmcount) {
-		this.gnbstate = gnbstate;
+	public void setGgbstate(String ggbstate) {
+		this.ggbstate = ggbstate;
 	}
 
 	@Override
 	public String toString() {
-		return "GonguDto [gnbcode=" + gnbcode + ", gmid=" + gmid + ", gphone=" + gphone + ", gemail=" + gemail
+		return "GonguDto [ggbcode=" + ggbcode + ", ggmid=" + ggmid + ", ggphone=" + ggphone + ", ggemail=" + ggemail
 
-				+ ", gaddr=" + gaddr + ", gdate=" + gdate + ", gnbtitle=" + gnbtitle + ", gnbstate=" + gnbstate + "]";
+				+ ", ggaddr=" + ggaddr + ", gdate=" + ggdate + ", ggbtitle=" + ggbtitle + ", ggbstate=" + ggbstate + "]";
 	}
 
 	

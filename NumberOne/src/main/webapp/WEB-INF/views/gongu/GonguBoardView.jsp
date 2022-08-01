@@ -1044,8 +1044,8 @@ $("#inputReply").each(function () {
 	  				url : 'insertCheck_ajax',
 	  				async : false,
 	  				data:{
-						gnbcode:gbcode,
-						gmid:loginId
+						ggbcode:gbcode,
+						ggmid:loginId
 					},
 	  				success : function (check){
 	  					console.log("중복확인");

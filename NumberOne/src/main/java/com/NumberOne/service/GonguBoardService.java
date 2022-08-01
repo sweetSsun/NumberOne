@@ -412,9 +412,9 @@ public class GonguBoardService {
 	}
 		
 	//공구 참여내역 DB 찾기
-	public String insertCheck_ajax(String gnbcode, String gmid) {
+	public String insertCheck_ajax(String ggbcode, String ggmid) {
 		System.out.println("insertCheck_ajax() 호출");
-		String gonguSelect = gbdao.insertCheck_ajax(gnbcode, gmid);
+		String gonguSelect = gbdao.insertCheck_ajax(ggbcode, ggmid);
 		return gonguSelect;
 	}
 }
