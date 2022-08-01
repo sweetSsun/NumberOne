@@ -24,7 +24,7 @@
 	.row .col-1{
 		width: auto;
 	}
-	#inputReply{
+	.inputReply{
 		border: none;
 		width: -webkit-fill-available;
 		resize: none;
@@ -132,18 +132,14 @@
 
      overflow: hidden;
      display: flex;
-/*      align-items: center; */
-/*      justify-content: center; */
-/*      border: solid #E0E0E0 2px; */
      margin-top: 2%;
      width: 450px;
-     height: 350px;
+     height: 100%;
      
    }
    #upload_Img{
-   	width: 450px;
-   	height: 350px;
-   	object-fit: cover;
+   	max-height: 500px;
+   	object-fit: contain;
    }
    
    /* 참여버튼 */
@@ -280,92 +276,104 @@
 				<!-- 실험 -->
 				
 				<!-- 본문 글 내용-->
-				<c:if test="${gonguBoard.gbimg != null }">
-					<div class="img-container">
-						<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/gonguUpLoad/${gonguBoard.gbimg }">
-					</div>
-				</c:if >
-				<div class="row mt-3 mb-1 boardContents" style="padding-bottom: 20px;">
-					<div class="col">
-						<textarea id="inputReply" rows="10%" cols="100%" readonly>${gonguBoard.gbcontents }</textarea>
-						<%-- <text style="min-height:270px;">${board.bdcontents }</div> --%>
-					</div>
-					
-					
-					<!-- 진행중이면 '참여' 버튼이 나타나게하고 진행완료면 '총 참여인원' 버튼이 나타나게. -->
-					<c:choose>
-					<c:when test="${gonguBoard.gbstate == 1 }">
-						<div>
-							<button type="button" class="attendBtn btnLightBlue btnPush" onclick="showGonguModal()">참여</button>
+				<div>
+					<c:if test="${gonguBoard.gbimg != null }">
+						<div class="img-container" style="height:100%">
+							<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/gonguUpLoad/${gonguBoard.gbimg }">
 						</div>
-					</c:when>
-					
-					<%-- <c:if test="${gonguBoard.gbstate == 2 }"> 진행완료되면 총 참여인원만 나타나게. 목록은 X --%>
-					<c:otherwise>
-						<div>
-							<button type="button" class="attendBtn btnLightBlue" style="width:300px; left:32%; cursor:default; box-shadow:0px -5px 0px 0px #1e8185;">총 참여 인원 ${gonguCount }명 </br> 참여해주셔서 감사합니다. </button>
+					</c:if >
+					<div class="row mt-3 mb-1 boardContents" style="padding-bottom: 20px;">
+						<div class="col">
+							<textarea class="inputReply" rows="10%" cols="100%" readonly>${gonguBoard.gbcontents }</textarea>
+							<hr>
+							<textarea class="inputReply" rows="10%" cols="100%" readonly>
+# 참여 방법
+로그인 > 참여 버튼 > 양식 입력 > kakao결제
+
+* 주의사항
+- 양식에 제대로 입력하지 않으면 발송이 되지 않습니다. 꼭 주의하셔서 입력바랍니다.
+만약 잘못 입력했으면 문의를 남겨주세요
+
+- kakao결제시 천천히 진행해주세요ㅎㅎ 
+익숙한 노란 창으로 바뀐 후에 결제버튼을 눌러주시기 바랍니다.
+</textarea>
 						</div>
-					</c:otherwise>
-					</c:choose>
+						
 					
+						<!-- 진행중이면 '참여' 버튼이 나타나게하고 진행완료면 '총 참여인원' 버튼이 나타나게. -->
+						<c:choose>
+						<c:when test="${gonguBoard.gbstate == 1 }">
+							<div>
+								<button type="button" class="attendBtn btnLightBlue btnPush" onclick="showGonguModal()">참여</button>
+							</div>
+						</c:when>
+						
+						<%-- <c:if test="${gonguBoard.gbstate == 2 }"> 진행완료되면 총 참여인원만 나타나게. 목록은 X --%>
+						<c:otherwise>
+							<div>
+								<button type="button" class="attendBtn btnLightBlue" style="width:300px; left:32%; cursor:default; box-shadow:0px -5px 0px 0px #1e8185;">총 참여 인원 ${gonguCount }명 </br> 참여해주셔서 감사합니다. </button>
+							</div>
+						</c:otherwise>
+						</c:choose>
+						
+						
+						<!-- 공동구매 결제API modal-->
+						<div class="modal fade" id="gonguModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+					        <div class="modal-dialog" role="document">
+					            <div class="modal-content">
+					                <div class="modal-header">
+					                    <h5 class="modal-title" id="updateGbstateModalLabel"> 공동구매 결제 양식 </h5>
+					                    <button class="attendX close" type="button" data-dismiss="modal" aria-label="Close">
+					                        <span aria-hidden="true">×</span>
+					                    </button>
+					                </div>
+					                
+					                <div class="modal-body">
+						                <form id="form-payment" class="row" method="post">
+											<div class="col-sm-8">
+												<div class="attendDiv">
+												<input class="attendInput" type="text" id="pay-id" name="pay-id" readonly="readonly" value="${sessionScope.loginId}" style="cursor:default;">
+												</div>
+												<div class="attendDiv">
+												<input class="attendInput" type="text" id="pay-tel" name="pay-tel" placeholder="전화번호를 입력하세요">
+												</div>
+												<div class="attendDiv">
+												<input class="attendInput" type="text" id="pay-email" name="pay-email" placeholder="이메일주소를 입력하세요">
+												</div>
+												<div class="attendDiv">
+												<input class="attendInput" type="text" id="pay-address" name="pay-address" placeholder="배송지주소를 입력하세요">
+												</div>
+											</div>
+											
+											<div class="col-sm-4">
+												<div style="height:70%; text-align: center;">
+													<span>${gonguBoard.gbtitle }</span>
+												</div>
+												<div>
+													<button id="btn-kakao-pay" type="button">
+													<img alt="카카오결제API" src="${pageContext.request.contextPath }/resources/img/payment_icon_yellow_medium.png">
+													<!-- small/ medium/ large -->
+													</button>
+												</div>
+											</div>
+											<!-- gbcode 넘겨주기 -->
+											<input type="hidden" id="gonguGbcode" value="${gonguBoard.gbcode }">
+											
+										</form>
+					                </div>
+					                
+					                <div class="modal-footer">
+					                    <button class="close btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+					                </div>
+					            </div>
+					        </div>
+					    </div>
+					    
+					    <!-- 공구 끝 -->
+					<!-- 본문 끝 -->
 					
-					<!-- 공동구매 결제API modal-->
-					<div class="modal fade" id="gonguModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-				        <div class="modal-dialog" role="document">
-				            <div class="modal-content">
-				                <div class="modal-header">
-				                    <h5 class="modal-title" id="updateGbstateModalLabel"> 공동구매 결제 양식 </h5>
-				                    <button class="attendX close" type="button" data-dismiss="modal" aria-label="Close">
-				                        <span aria-hidden="true">×</span>
-				                    </button>
-				                </div>
-				                
-				                <div class="modal-body">
-					                <form id="form-payment" class="row" method="post">
-										<div class="col-sm-8">
-											<div class="attendDiv">
-											<input class="attendInput" type="text" id="pay-id" name="pay-id" readonly="readonly" value="${sessionScope.loginId}" style="cursor:default;">
-											</div>
-											<div class="attendDiv">
-											<input class="attendInput" type="text" id="pay-tel" name="pay-tel" placeholder="전화번호를 입력하세요">
-											</div>
-											<div class="attendDiv">
-											<input class="attendInput" type="text" id="pay-email" name="pay-email" placeholder="이메일주소를 입력하세요">
-											</div>
-											<div class="attendDiv">
-											<input class="attendInput" type="text" id="pay-address" name="pay-address" placeholder="배송지주소를 입력하세요">
-											</div>
-										</div>
-										
-										<div class="col-sm-4">
-											<div style="height:70%; text-align: center;">
-												<span>${gonguBoard.gbtitle }</span>
-											</div>
-											<div>
-												<button id="btn-kakao-pay" type="button">
-												<img alt="카카오결제API" src="${pageContext.request.contextPath }/resources/img/payment_icon_yellow_medium.png">
-												<!-- small/ medium/ large -->
-												</button>
-											</div>
-										</div>
-										<!-- gbcode 넘겨주기 -->
-										<input type="hidden" id="gonguGbcode" value="${gonguBoard.gbcode }">
-										
-									</form>
-				                </div>
-				                
-				                <div class="modal-footer">
-				                    <button class="close btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-				                </div>
-				            </div>
-				        </div>
-				    </div>
-				    
-				    <!-- 공구 끝 -->
-				<!-- 본문 끝 -->
-				
+					</div>
 				</div>
-				
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
 				<div class="row mb-2">
 					<div class="col-2">
@@ -1012,7 +1020,7 @@
 <script type="text/javascript">
 
 /* Textarea 높이 자동 조절 ( 스크롤바 없애기 ) */
-$("#inputReply").each(function () {
+$(".inputReply").each(function () {
 	this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
 	}).on('input', function () {
 	this.style.height = 'auto';
@@ -1032,7 +1040,6 @@ $("#inputReply").each(function () {
 			$("#gonguModal").modal("hide");
 		});
 	}
-	
 	var tel = "${memberInfo.mphone }";
 	var email = "${memberInfo.memail }";
 	var address = "${memberInfo.maddr }";
@@ -1129,7 +1136,7 @@ $("#btn-kakao-pay").click(function(){
 	
 	console.log("selectLoginOut_ajax() 실행");
 	$.ajax({
-  		type : 'get',
+  		type : 'post',
   		url : 'selectLoginOut_ajax',
   		async : false,
   		success : function(result){
@@ -1156,10 +1163,19 @@ $("#btn-kakao-pay").click(function(){
 						address: address
 					},
 					success:function(response){
-						console.log("결제실행");
-						var payopen = response.next_redirect_pc_url
-						window.open(payopen,"","width=500, height=450, top=0px, left=500px, scrollbars=no, resizable=no");
-						console.log(response);
+						console.log("response : " + response);
+						var objCount = Object.keys(response).length;
+						// console.log(objCount); 카카오페이 결제준비 중 실패시(Response code: 400) alert 주기 위한 조건. 
+						// 성공과 실패시 받는 키의 개수가 다름.(선생님찬스) (메세지도 다르므로 다른 방법으로 줄 수 도 있음)
+						
+						if(objCount > 2){
+							console.log("결제실행");
+							var payopen = response.next_redirect_pc_url
+							window.open(payopen,"","width=500, height=450, top=0px, left=500px, scrollbars=no, resizable=no");
+						} else {
+							console.log("결제준비실패 : Response code: 400")
+							alert("입력 양식을 확인 해주세요. 이상이 없는데도 반복되면 문의바랍니다.");	
+						}
 						
 					}
 				})

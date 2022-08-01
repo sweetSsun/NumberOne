@@ -21,8 +21,8 @@
 	textarea:focus {
     	outline: none;
 	}
-	.row .col-1{
-		/* width: auto; */
+	.col-1{
+		/* width: 70px; */
 	}
 	#inputReply{
 		border: none;
