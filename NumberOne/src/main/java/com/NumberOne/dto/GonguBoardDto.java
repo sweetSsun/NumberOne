@@ -18,12 +18,17 @@ public class GonguBoardDto {
 	private int gbfix;			//고정공지
 	
 	// 파일 처리를 위한 필드
-	private MultipartFile gbimgfile;//공지글 작성 시 파일 저장
+	private MultipartFile gbimgfile;	//공지글 작성 시 파일 저장
 	private String originImg_gb;		//공지글 수정 시 수정 전의 기존 파일명
 
 	// 글 출력시 필요한 필드
 	private String gbnickname;      //작성자 닉네임
+	
+	private String gb_contents;		//DB입력 전 view 내용 :: 아래 부분과 합쳐서 보내기 위함
+	private String gb_item_name;	//카카오페이결제시 불러올 item_name 품목이름
+	private String gb_total_amount;	//카카오페이결제시 불러올 total_amount 가격
 
+	
 	public String getGbcode() {
 		return gbcode;
 	}
@@ -120,12 +125,37 @@ public class GonguBoardDto {
 		this.gbnickname = gbnickname;
 	}
 
+	public String getGb_contents() {
+		return gb_contents;
+	}
+
+	public void setGb_contents(String gb_contents) {
+		this.gb_contents = gb_contents;
+	}
+	
+	public String getGb_item_name() {
+		return gb_item_name;
+	}
+
+	public void setGb_item_name(String gb_item_name) {
+		this.gb_item_name = gb_item_name;
+	}
+
+	public String getGb_total_amount() {
+		return gb_total_amount;
+	}
+
+	public void setGb_total_amount(String gb_total_amount) {
+		this.gb_total_amount = gb_total_amount;
+	}
+	
+	
 	@Override
 	public String toString() {
 		return "GonguBoardDto [gbcode=" + gbcode + ", gbmid=" + gbmid + ", gbtitle=" + gbtitle + ", gbcontents="
 				+ gbcontents + ", gbdate=" + gbdate + ", gbimg=" + gbimg + ", gbstate=" + gbstate + ", gbhits=" + gbhits
 				+ ", gbfix=" + gbfix + ", gbimgfile=" + gbimgfile + ", originImg_gb=" + originImg_gb + ", gbnickname="
-				+ gbnickname + "]";
+				+ gbnickname + ", gb_contents=" + gb_contents + ", gb_item_name=" + gb_item_name + ", gb_total_amount=" + gb_total_amount + "]";
 	}
 
 	

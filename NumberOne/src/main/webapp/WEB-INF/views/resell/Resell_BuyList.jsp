@@ -310,7 +310,7 @@ section div.checkout__form{
 									</c:when>
 									
 									<c:otherwise>
-										<a onclick="laodToView('${buyList.ubcode }')" href="javascript:void(0);"> <img alt="" src="${pageContext.request.contextPath }/resources/img/logo.jpg">
+										<a onclick="laodToView('${buyList.ubcode }')" href="javascript:void(0);"> <img alt="" src="${pageContext.request.contextPath }/resources/img/logo_bada.png">
 									</a>
 									
 									</c:otherwise>
