@@ -235,7 +235,8 @@
       console.log("닫으려는 팝업창 : " + popArr);
       //console.log("popArr.length : " + popArr.length);
       if (popArr != null){
-         const length = popArr.length;
+
+	      const length = popArr.length;
          
          for (var i = 0; i < length; i++){
             console.log("실행");         
@@ -254,7 +255,6 @@
 <script type="text/javascript">
 /* 채팅관련 스크립트 */
    var popChat;       // 채팅팝업 이름
-   //var popChatArr = []; // 현재 떠있는 채팅 팝업창을 담을 배열
    var popArr = []; // 현재 떠있는 팝업창을 담을 배열
    
    // 채팅 버튼 클릭시 채팅창 팝업되면서 기존 채팅방 메세지 목록 데이터 보내주는 함수
@@ -275,21 +275,21 @@
                  return;
               }
 
-            $.ajax({
+            // 팝업창 열기
+            popChat = window.open(openUrl, crcode, popOption); 
+            openPopup(crcode);
+           /*  $.ajax({
                url: "selectChatRoomMessage",
                data: {"crcode":crcode},
                async:false,
                dataType:"json",
                success:function(data){
-                  // 팝업창 열기
-                  popChat = window.open(openUrl, crcode, popOption); 
                   popChat.window.addEventListener("load", function(){
-                     popChat.enterRoom(data); // 채팅방 목록 불러오기
-                     popChat.crfrMbInfo(crfrmnickname, crfrmprofile);
+                     //popChat.enterRoom(data); // 채팅방 목록 불러오기
+                    // popChat.crfrMbInfo(crfrmnickname, crfrmprofile);
                   });
-                  openPopup(crcode);
                }
-            });
+            }); */
             
 
          }
@@ -697,10 +697,10 @@
 						wMemberPopup.$("#warningBtn").removeClass("Wbtn").addClass("WbtnDisabled");
 						wMemberPopup.$("#warningBtn").val("신고완료");
 						
-						} else {
-							var mwOpenedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
-							popChatArr[mwOpenedIdx].$("#mbWarning").addClass("text-danger");
-						}	
+					} else {
+						console.log(popChat.getElementById("mbWarning"));
+						popChat.getElementById("mbWarning").classList.add("text-danger");
+					}	
 				}
 			}
 		});
@@ -717,8 +717,7 @@
 			data : { "loginId" : "${sessionScope.loginId}", "wmedNickname" : wmedNickname },
 			success : function(insertResult){
 				console.log("신고 결과: "+insertResult);
-				
-				var mwOpenedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
+				console.log("함수호출한 자식 : " + $(popChat))
 				if( insertResult == 1 ){ // 신고 성공
 					
 					if(crcode == 'wMemberPopup'){
@@ -727,8 +726,8 @@
 						
 					} else {
 						console.log("채팅창에서 신고 성공")
-						var mwOpenedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
-						popChatArr[mwOpenedIdx].successMemberWarning();
+						popChat.successMemberWarning();
+
 					}
 					
 				} else { // 신고 실패
@@ -736,10 +735,9 @@
 					if(crcode == 'wMemberPopup'){	
 						console.log("회원 정보에서 신고 실패")
 						wMemberPopup.failMemberWarning2(insertResult);
-						
 					} else {
 						console.log("채팅창에서 신고 실패")
-						popChatArr[mwOpenedIdx].failMemberWarning2(insertResult);
+						popChat.failMemberWarning2(insertResult);
 					}
 					
 				}
@@ -748,14 +746,6 @@
 				console.log("회원 신고 - 연결실패");
 			}
 		});
-	}
-	
-	//미니브라우저 window.close()가 안먹혀서 만들어 봄
-	function closeMini(windowName){
-		console.log("closeMini() 호출");
-		console.log(windowName);
-		//wMemberPopup.close();
-		window.open("closePopup", windowName);
 	}
 	
 	

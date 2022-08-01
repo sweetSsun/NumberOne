@@ -611,6 +611,12 @@
 		INSERT INTO REPLY (RPCODE, RPBDCODE, RPCONTENTS, RPMID, RPDATE, RPPARENT, RPDEPTH, RPGROUPNUM )
 		VALUES ( #{rpcode}, #{bdcode}, #{rpcontents}, #{loginId}, SYSDATE, #{rpcode_parent}, #{rp_depth}, #{rpcode_parent} )
 	</insert>
-	
-	
+		
+	<select id="selectRoomList_page" resultType="int">
+		<!-- 자랑: 특정글의 rn 조회 -->
+		select * from 
+ 	 	(select rownum rn, r.bdcode 
+		from (select * from roomlist order by bdcode desc) r)
+		where bdcode = #{bdcode}
+	</select>
  </mapper>

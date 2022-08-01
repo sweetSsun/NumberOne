@@ -131,7 +131,7 @@
             </table>
             <!-- 공구작성 버튼 -->
             <div align="right" class="col mt-2">
-				<button class="btn-numberone btn-sm fw-bold" type="button" onclick="location.href='admin_loadToGonguWrite">공구작성</button>
+				<button class="btn-numberone btn-sm fw-bold" type="button" onclick="location.href='admin_loadToGonguWrite'">공구작성</button>
             </div>
             
    			<!-- 페이징 시작 -->
