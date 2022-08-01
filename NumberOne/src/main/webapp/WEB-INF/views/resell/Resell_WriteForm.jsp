@@ -575,37 +575,45 @@ if(resellTitle.options[resellTitle.selectedIndex].value == 'B'){
 	addBtn.addEventListener('click',addBtnFunction);
 
 	/* 추가버튼 클릭 */
+	let removeBool = false;
+	
 	function addBtnFunction(){
+
 		console.log('추가버튼 이벤트핸들러호출');
 		
 		for(let i = 0; i<display_btn.length; i++){
 		
 			/* display_btn[i] 중에 d_none 클래스 유무를 확인해서 boolean 타입 반환 */
+			console.log('div갯수', display_btn.length);
+			
 		if(display_btn[i].classList.contains('d_none')){ 
 			
 			display_btn[i].classList.remove("d_none");
 			
-			gdcheck_n[i].setAttribute("name", "gd_names");
-			gdcheck_p[i].setAttribute("name", "gd_price");
-			
+			gdcheck_n[i-1].setAttribute("name", "gd_names");
+			gdcheck_p[i-1].setAttribute("name", "gd_price");
 			break; // 한번 실행하고 종료. 
 		}			
 		}		
 	}
 	/* 제거버튼 클릭 */
-	for(let i = 0; i<display_btn.length; i++){
+
 		
-		removeBtn[i].addEventListener('click', function(){
+		for(let i = 0; i<display_btn.length; i++){//5
 			
-			display_btn[i+1].classList.add("d_none");
-			
-			gdcheck_n[i].removeAttribute("name", "gd_names");
-			gdcheck_n[i].value = "";
-			gdcheck_p[i].removeAttribute("name", "gd_price");
-			gdcheck_p[i].value = "";
-					
-		})
-	}
+			removeBtn[i].addEventListener('click', function(){//4    사이즈맞추기
+				
+				display_btn[i].classList.add("d_none");
+				
+				gdcheck_n[i].removeAttribute("name", "gd_names");
+				gdcheck_n[i].value = "";
+				gdcheck_p[i].removeAttribute("name", "gd_price");
+				gdcheck_p[i].value = "";
+				
+				
+			})
+		}
+	
 </script>
 
 
@@ -630,8 +638,7 @@ if(resellTitle.options[resellTitle.selectedIndex].value == 'B'){
 			checkForm = false;
 		} 		
 		
-		)
-		else if (document.getElementById("mainImg").value === '') {
+				else if (document.getElementById("mainImg").value === '') {
 			if(resellTitle.value === 'S'){				
 			alert("대표 사진은 필수 사항입니다!");
 			document.getElementById("mainImg").focus();

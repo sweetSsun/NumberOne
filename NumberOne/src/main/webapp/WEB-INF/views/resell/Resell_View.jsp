@@ -436,7 +436,7 @@ font-weight: bold;
 							    <div class="carousel-item active subpic" data-bs-interval="10000">
 							     
 							      <c:choose>
-							      <c:when test="">
+							      <c:when test="${ub_resellView.ubmainimg!= null}">
 							      <img style="object-fit: contain;" class="active Resell_img d-block w-100" src="${pageContext.request.contextPath }/resources/img/resell/${ub_resellView.ubmainimg}">
 							      </c:when>
 							      <c:otherwise>
@@ -450,7 +450,7 @@ font-weight: bold;
 							    <div class="carousel-item subpic" data-bs-interval="2000">
 							    <c:choose>
 							    
-							    <c:when test="">
+							    <c:when test="${ubdetailimg_list != null}">
 							      <img style="object-fit: contain;" class="Resell_img d-block w-100" src="${pageContext.request.contextPath }/resources/img/resell/${ubdetailimg_list}">
 							    </c:when>
 							    <c:otherwise>
