@@ -843,7 +843,7 @@ roomView_ajax(nowBdcode)
 						replyOutput += "<span style='font-size:10px; color:grey; margin:0px;'>"+replys[i].rpdate+"</span>&nbsp;&nbsp;";
 					
 						//답글 달기 버튼 (7/31 추가)
-						if(replys[i].rpdepth ==null || replys[i].rpdepth != 4){
+						if(replys[i].rpdepth ==null || replys[i].rpdepth < 4){
 							//level 4까지만 가능
 							replyOutput += "<span class='pointer' style='font-size:13px; font-weight:blod; color:grey; margin:0px;' onclick='rereplyform(\""+replys[i].rpcode+"\", \""+replys[i].rpnickname+"\")'>답글 달기</span>";
 						}
@@ -915,7 +915,7 @@ roomView_ajax(nowBdcode)
 	var nowBdmid;
 	var nowRpmid;
 	var nowWb;
-	var nowRpparent;
+	var nowRpparent ="";
 	
 	function replyEnter(e){
 		if(e.keyCode==13 && !e.shiftKey){
@@ -928,7 +928,7 @@ roomView_ajax(nowBdcode)
 		console.log("댓글 등록 요청");
 		var rpcontents = $("#inputReply").val();  
 
-		if(nowRpparent == null){
+		if(nowRpparent == ""){
 			console.log("작성글에 댓글 입력 요청")
 			
 		} else {
@@ -949,11 +949,14 @@ roomView_ajax(nowBdcode)
 					//목록 페이지 댓글수 업데이트
 					logUpdate('bdreplies', 'up');
 				}
+			},
+			error : function(){
+				console.log("댓글 등록 실패");
 			}
 			
 		});
 		
-		nowRpparent = null;
+		nowRpparent = "";
 	}
 	
 	//조회/추천/즐찾/댓글수 증가/감소시 목록 페이지 업데이트
