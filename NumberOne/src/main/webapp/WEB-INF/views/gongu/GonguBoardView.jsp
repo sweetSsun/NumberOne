@@ -291,7 +291,7 @@
 						<%-- <text style="min-height:270px;">${board.bdcontents }</div> --%>
 					</div>
 					
-					
+				
 					<!-- 진행중이면 '참여' 버튼이 나타나게하고 진행완료면 '총 참여인원' 버튼이 나타나게. -->
 					<c:choose>
 					<c:when test="${gonguBoard.gbstate == 1 }">

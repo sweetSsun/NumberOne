@@ -122,14 +122,6 @@
 	
 </style>
 
-<script type="text/javascript">
-	var checkMsg = "${msg}"
-	console.log(checkMsg.length);
-	if(checkMsg.length > 0){
-		alert(checkMsg);
-	}
-</script>
-
 </head>
 <body>
 	<!-- TobBar -->
@@ -190,7 +182,14 @@
 						<c:choose>
 							<c:when test="${gonguBoard.gbstate == 1 }">
 								<div>
-									<button class="attendBtn btnLightBlue btnPush" onclick="showAttendModal()">현재 참여 인원 </br> ${gonguCount }명</button>
+									<c:choose>
+										<c:when test="${gonguCount > 0 }">
+											<button class="attendBtn btnLightBlue btnPush" onclick="showAttendModal()">현재 참여 인원 </br> ${gonguCount }명</button>
+										</c:when>
+										<c:otherwise>
+											<button class="attendBtn btnLightBlue btnPush" style="cursor: default;">현재 참여 인원 </br> ${gonguCount }명</button>
+										</c:otherwise>
+									</c:choose>
 								</div>
 							</c:when>
 							<%-- <c:if test="${gonguBoard.gbstate == 2 }"> 진행완료되면 총 참여인원만 나타나게. 목록은 X --%>

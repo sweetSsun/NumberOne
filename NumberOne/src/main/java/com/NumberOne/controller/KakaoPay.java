@@ -37,10 +37,10 @@ public class KakaoPay {
 		// 객체 저장
 		GonguDto gongu = new GonguDto();
 		gongu.setGgbcode(gbcode);
-		gongu.setGmid(loginId);
-		gongu.setGaddr(address);
-		gongu.setGemail(email);
-		gongu.setGphone(tel);
+		gongu.setGgmid(loginId);
+		gongu.setGgaddr(address);
+		gongu.setGgemail(email);
+		gongu.setGgphone(tel);
 		
 		// 객체를 json 형태로 바꾸는 법
 		Gson gson = new Gson();
