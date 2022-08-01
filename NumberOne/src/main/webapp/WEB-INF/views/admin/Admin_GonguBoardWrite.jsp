@@ -79,14 +79,18 @@
 				<div class="checkout__form">공구게시판 - 글작성</div>
 				
 				<div>
- 				<form action="admin_insertBoardWrite" method="post" enctype="multipart/form-data" onsubmit="return inputCheck()">
+ 				<form action="admin_insertGonguWrite" method="post" enctype="multipart/form-data" onsubmit="return inputCheck()">
 				<div class="row">
 					<input type="text" id="title" class="bdtitle" name="gbtitle" placeholder="제목을 입력하세요" maxlength="50">
 				</div>
 				<hr>
 				<div class="row">
-					<textarea id="contents" class="bdcontents textarea-GbView" rows="17" cols="40" name="gbcontents"
+					<textarea id="contents" class="bdcontents textarea-GbView" rows="17" cols="40" name="gb_contents"
 						maxlength="2000"  placeholder="내용을 입력하세요"></textarea>
+				</div>
+				<div class="row" style="padding:2vh;">
+					<input type="text" id="item_name" name="gb_item_name" placeholder="공동구매 제목 또는 상품 이름을 입력하세요" style="margin-bottom:2vh"><br>
+					<input type="text" id="item_price" name="gb_total_amount" placeholder="가격을 입력하세요">
 				</div>
 				<div class="row mt-4">
 					<div id="imgScreen" style="width:200px; height:200px;" class="d_none"><img id='previewImg' style="width:100%; height:100%;"></img></div>
@@ -152,15 +156,21 @@
 	// 공지글 작성 취소
 	function writeBoardCancel(){
 		console.log("취소 버튼 클릭");
-		location.href="admin_selectBoardList?${paging.makeQueryPage(paging.page)}";
+		location.href="admin_selectGonguList?${paging.makeQueryPage(paging.page)}";
 	}
 	
 	// 제목, 내용 입력됐는지 확인
 	function inputCheck(){
 		var titleObj = $("#title");
 		var contentsObj = $("#contents");
+		var itemNameObj = $("#item_name");
+		var itemPriceObj = $("#item_price");
+		
 		console.log(titleObj.val());
 		console.log(contentsObj.val());
+		console.log(itemNameObj.val());
+		console.log(itemPriceObj.val());
+		
 		if (titleObj.val().length == 0){
 			alert("제목을 입력해주세요.");
 			titleObj.focus();
@@ -169,6 +179,16 @@
 		if (contentsObj.val().length == 0){
 			alert("내용을 입력해주세요.");
 			contentsObj.focus();
+			return false;
+		}
+		if (itemNameObj.val().length == 0){
+			alert("공동구매 제목 또는 상품 이름을 입력해주세요.");
+			itemNameObj.focus();
+			return false;
+		}
+		if (itemPriceObj.val().length == 0){
+			alert("가격을 입력해주세요.");
+			itemPriceObj.focus();
 			return false;
 		}
 	}

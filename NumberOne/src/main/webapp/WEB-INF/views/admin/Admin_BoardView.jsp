@@ -22,6 +22,12 @@
 	textarea:focus {
     	outline: none;
 	}
+	#inputReply{
+		border: none;
+		width: -webkit-fill-available;
+		resize: none;
+		height: auto;
+	}
 	#inputComment{
 		resize: none;
 		height: auto;

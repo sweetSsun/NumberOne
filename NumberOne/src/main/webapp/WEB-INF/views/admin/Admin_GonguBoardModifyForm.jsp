@@ -79,15 +79,19 @@
  				<form action="admin_updateGonguModify${paging.makeQueryPage(gonguBoard.gbcode, paging.page)}" method="post" enctype="multipart/form-data" onsubmit="return inputCheck()">
  				<!-- 수정 불가능한 값 숨기고 submit에는 데이터 넘겨주는 변수 -->
  				<input type="hidden" name="gbcode" value="${gonguBoard.gbcode }">
- 				<input type="hidden" name="originImg" value="${gonguBoard.gbimg }">
+ 				<input type="hidden" name="originImg_gb" value="${gonguBoard.gbimg }">
  				
  				<div class="row">
 					<input type="text" id="title" class="bdtitle" name="gbtitle" maxlength="50" value="${gonguBoard.gbtitle }">
 				</div>
 				<hr>
 				<div class="row">
-					<textarea id="contents" class="bdcontents textarea-gbView" rows="17" cols="40" name="gbcontents"  
-						maxlength="2000" placeholder="내용을 입력하세요">${gonguBoard.gbcontents }</textarea>
+					<textarea id="contents" class="bdcontents textarea-gbView" rows="17" cols="40" name="gb_contents"  
+						maxlength="2000" placeholder="내용을 입력하세요">${gonguBoard.gb_contents }</textarea>
+				</div>
+				<div class="row" style="padding:2vh;">
+					<input type="text" id="item_name" name="gb_item_name" placeholder="공동구매 제목 또는 상품 이름을 입력하세요" style="margin-bottom:2vh" value="${gonguBoard.gb_item_name }"><br>
+					<input type="text" id="item_price" name="gb_total_amount" placeholder="가격을 입력하세요" value="${gonguBoard.gb_total_amount }">
 				</div>
 				<div class="row mt-4">
 					<!-- 기존 이미지가 있으면 -->
@@ -169,8 +173,14 @@
 	function inputCheck(){
 		var titleObj = $("#title");
 		var contentsObj = $("#contents");
+		var itemNameObj = $("#item_name");
+		var itemPriceObj = $("#item_price");
+		
 		console.log(titleObj.val());
 		console.log(contentsObj.val());
+		console.log(itemNameObj.val());
+		console.log(itemPriceObj.val());
+		
 		if (titleObj.val().length == 0){
 			alert("제목을 입력해주세요.");
 			titleObj.focus();
@@ -179,6 +189,16 @@
 		if (contentsObj.val().length == 0){
 			alert("내용을 입력해주세요.");
 			contentsObj.focus();
+			return false;
+		}
+		if (itemNameObj.val().length == 0){
+			alert("공동구매 제목 또는 상품 이름을 입력해주세요.");
+			itemNameObj.focus();
+			return false;
+		}
+		if (itemPriceObj.val().length == 0){
+			alert("가격을 입력해주세요.");
+			itemPriceObj.focus();
 			return false;
 		}
 	}
