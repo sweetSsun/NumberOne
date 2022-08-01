@@ -148,7 +148,16 @@
                 <div class="checkout__form">공구게시판</div>
 					<div class="row">
 						<div class="col">
-							<a href="#"><span class="fw-bold boardCategory"> | 공구게시판</span></a> 
+							<c:choose>
+							<c:when test="${gonguBoard.gbstate == 1 }">
+								<a href="#"><span class="fw-bold boardCategory"> | 공구게시판 : 진행중</span></a>
+								<%-- <span class="fw-bold" style="color:gray; font-size:20px">/</span> <a href="#"><span class="bdregion"> ${board.bdrgname}</span></a> --%>
+							</c:when>
+							<%-- <c:if test="${gonguBoard.gbstate == 2 }"> --%>
+							<c:otherwise>
+								<a href="#"><span class="fw-bold boardCategory"> | 공구게시판 : 진행완료</span></a>
+							</c:otherwise>
+							</c:choose>							 
 						</div>
 					</div>
 					<div class="row" >
@@ -236,6 +245,7 @@
 						
 					</div>
 				<!-- </form> -->
+				
 				
 				
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
