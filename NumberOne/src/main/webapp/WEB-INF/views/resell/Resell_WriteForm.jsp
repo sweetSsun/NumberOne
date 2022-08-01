@@ -200,9 +200,9 @@ input:focus {
 						<hr>
 
 						<!-- 품목 -->
-						<div class="container-gd mb-3">
+						<div class="container-gd mb-3" >
 
-							<div class="row my-3 content-gd">
+							<div class="row my-3 checkFormClass">
 								<div class="col-7 pl-4">
 									<input type="text" class="gdtitle" name="gd_names" placeholder="품목명">
 								</div>
@@ -215,7 +215,7 @@ input:focus {
 								</div>
 							</div>
 
-							<div class="row my-3 d_none content-gd">
+							<div class="row my-3 d_none content-gd checkFormClass">
 								<div class="col-7 pl-4">
 									<input type="text" class="gdcheck_n gdtitle" name="" style="width: 100%" placeholder="품목명">
 								</div>
@@ -228,7 +228,7 @@ input:focus {
 								</div>
 							</div>
 
-							<div class="row my-3 d_none content-gd">
+							<div class="row my-3 d_none content-gd checkFormClass">
 								<div class="col-7 pl-4">
 									<input type="text" class="gdcheck_n gdtitle" name="" style="width: 100%" placeholder="품목명">
 								</div>
@@ -241,7 +241,7 @@ input:focus {
 								</div>
 							</div>
 
-							<div class="row my-3 d_none content-gd">
+							<div class="row my-3 d_none content-gd checkFormClass">
 								<div class="col-7 pl-4">
 									<input type="text" class="gdcheck_n gdtitle" name="" style="width: 100%" placeholder="품목명">
 								</div>
@@ -254,7 +254,7 @@ input:focus {
 								</div>
 							</div>
 
-							<div class="row my-3 d_none content-gd">
+							<div class="row my-3 d_none content-gd checkFormClass">
 								<div class="col-7 pl-4">
 									<input type="text" class="gdcheck_n gdtitle " name="" style="width: 100%" placeholder="품목명">
 								</div>
@@ -342,8 +342,9 @@ if (loginCheck.length == 0) {
    alert("로그인 후 이용가능합니다");
    location.href = "loadToLogin"
 }
-
+ 
 </script>
+
 <script type="text/javascript">
 
 		// 게시글 작성 취소 경고 모달창 close 하는 스크립트
@@ -575,7 +576,6 @@ if(resellTitle.options[resellTitle.selectedIndex].value == 'B'){
 	addBtn.addEventListener('click',addBtnFunction);
 
 	/* 추가버튼 클릭 */
-	let removeBool = false;
 	
 	function addBtnFunction(){
 
@@ -584,24 +584,22 @@ if(resellTitle.options[resellTitle.selectedIndex].value == 'B'){
 		for(let i = 0; i<display_btn.length; i++){
 		
 			/* display_btn[i] 중에 d_none 클래스 유무를 확인해서 boolean 타입 반환 */
-			console.log('div갯수', display_btn.length);
 			
 		if(display_btn[i].classList.contains('d_none')){ 
 			
 			display_btn[i].classList.remove("d_none");
 			
-			gdcheck_n[i-1].setAttribute("name", "gd_names");
-			gdcheck_p[i-1].setAttribute("name", "gd_price");
+			gdcheck_n[i].setAttribute("name", "gd_names");
+			gdcheck_p[i].setAttribute("name", "gd_price");			
 			break; // 한번 실행하고 종료. 
 		}			
 		}		
 	}
+	
 	/* 제거버튼 클릭 */
-
-		
-		for(let i = 0; i<display_btn.length; i++){//5
-			
-			removeBtn[i].addEventListener('click', function(){//4    사이즈맞추기
+	
+			for(let i = 0; i<display_btn.length; i++){//5  --> 4로변경
+		removeBtn[i].addEventListener('click', function(){//4    사이즈맞추기   3번인덱스까지는 에러안남. 4번인덱스 입력되면 에러
 				
 				display_btn[i].classList.add("d_none");
 				
@@ -609,11 +607,13 @@ if(resellTitle.options[resellTitle.selectedIndex].value == 'B'){
 				gdcheck_n[i].value = "";
 				gdcheck_p[i].removeAttribute("name", "gd_price");
 				gdcheck_p[i].value = "";
-				
-				
 			})
 		}
+	//해결: display_btn변수의 맨 처음 클래스(인덱스)를 제거해서   removeBtn 인덱스길이와 같게 함  
+
 	
+	
+
 </script>
 
 
@@ -648,7 +648,7 @@ if(resellTitle.options[resellTitle.selectedIndex].value == 'B'){
 		else{
 			
 			for(let i = 0; i < gdtitle_class.length; i++){
-				if(!display_btn[i].classList.contains('d_none')){
+				if(!document.getElementsByClassName('checkFormClass')[i].classList.contains('d_none')){
 					console.log('d_none 클래스 없음');
 				
 					if(gdtitle_class[i].value === '') {
