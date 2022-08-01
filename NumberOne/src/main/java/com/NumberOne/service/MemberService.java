@@ -8,10 +8,13 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.UUID;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -51,7 +54,7 @@ public class MemberService {
 	
 	 @Autowired private HttpServletRequest request;
 	 @Autowired private HttpSession session;
-	 //@Autowired private JavaMailSender mailSender;
+	 @Autowired private JavaMailSender mailSender;
 
 	
 	
@@ -851,7 +854,7 @@ public class MemberService {
 
 		      
 		   }
-/* 현석 :  mail API 에러 때문에 주석처리 시작
+/* 현석 :  mail API 에러 때문에 주석처리 시작 */
 		//비밀번호 찾기 요청
 		public String selectLookforPw_ajax(String checkMid, String checkMemail) {
 			System.out.println("MemberService.selectLookforPw_ajax() 호출");
@@ -885,17 +888,17 @@ public class MemberService {
 							content +="<div style=\"background-color: #36454f; height: 2px; width: 800px;\"></div>";
 							content +="<div style=\"height: 10px; width: 800px;\"></div>";
 							content +="<div><br>";
-							content +="<p style=\"height: 24px; font-size: 14px; font-weight: bold; color:#36454f; \" >&nbsp;&nbsp; 안녕하세요 " + checkMid + "님,</p>";
-							content +="<p style=\"height: 24px; font-size: 14px; font-weight: bold; color:#36454f; \" >&nbsp;&nbsp; 인증번호를 보내드리오니 아래 일인자 바로가기 버튼을 클릭하여 인증 하신 후</p>";
-							content +="<p style=\"height: 24px; font-size: 14px; font-weight: bold; color:#36454f; \" >&nbsp;&nbsp; 비밀번호를 변경하시기 바랍니다.</p><br>";
+							content +="<p style=\"height: 24px; font-size: 14px; color:#36454f; \" >&nbsp;&nbsp; 안녕하세요 " + checkMid + "님,</p>";
+							content +="<p style=\"height: 24px; font-size: 14px; color:#36454f; \" >&nbsp;&nbsp; 인증번호를 보내드리오니 아래 비밀번호변경하기 버튼을 클릭하여 인증 하신 후</p>";
+							content +="<p style=\"height: 24px; font-size: 14px; color:#36454f; \" >&nbsp;&nbsp; 비밀번호를 변경하시기 바랍니다.</p><br>";
 							
 							content +="<p style=\"height: 24px; font-size: 15px; font-weight: bold; color:#36454f; \" >&nbsp;&nbsp; 인증번호 : " +temporaryPw+ "</p>";
 							content +="</div>";
 							
-							content +="<div style=\"width:800px; padding-left: 22%;\">";
+							content +="<div style=\"width:800px; padding-left: 300px;\">";
 					        content += "<button style='text-align:center; border:0px; border-radius: 4px; height:40px; width: 150px; margin:20px;";
 					        content += "margin-left: 10px; background-color: #00bcd4; color: white; font-weight: bold;font-family : pretendard;'>";
-					        content += "<a href=\"http://localhost:8080/controller12/loadToTemporaryNum?mid="+ checkMid + "\"; style=\" color:white; text-decoration: none;\"  >일인자 바로가기</a></button>";			        
+					        content += "<a href=\"http://localhost:8080/controller12/loadToTemporaryNum?mid="+ checkMid + "\"; style=\" color:white; text-decoration: none;\"  >비밀번호변경하기</a></button>";			        
 					        content +="</div>";
 					        
 							content +="<div style=\"height: 10px; width: 800px;\"></div>";
@@ -942,7 +945,7 @@ public class MemberService {
 			
 		
 	}
- 현석 :  mail API 에러 때문에 주석처리 끝 */
+ /*현석 :  mail API 에러 때문에 주석처리 끝 */
 		
 		
 		//미니브라우저 작성글 내역
@@ -1133,6 +1136,15 @@ public class MemberService {
 			ModelAndView mav = new ModelAndView();
 			  System.out.println("MemberService.updateTemporaryNum() 호출"); 
 			
+		if (mpw.equals("")) {
+			
+			mav.addObject("checkId", mid);
+			mav.setViewName("member/TemporaryNumForm");
+			
+			return mav;
+		
+		}else {
+
 	    	  int changePwResult = mdao.updateTemporaryNum(mid, mpw);
 	    	  System.out.println("changePwResult : "+changePwResult);
 	    	  
@@ -1142,14 +1154,7 @@ public class MemberService {
 	    		  mav.setViewName("redirect:/loadToTemporaryNum");
 
 	    		  return mav;
-	    		  
-	    	  }else if(mpw == null) {
-	    		  System.out.println("회원정보 수정 실패");
-	    		  ra.addFlashAttribute("msg" , "회원 정보 수정을 실패하였습니다.");
-	    		  mav.setViewName("redirect:/loadToTemporaryNum");
-	    		  
-	    		  return mav;
-	    	  
+
 	    	  }  else {
 	    	  
 	    		  ra.addFlashAttribute("msg", "비밀번호가 수정 되었습니다. 로그인 해주시기 바랍니다.");
@@ -1157,7 +1162,7 @@ public class MemberService {
 	    		  return mav;
 	    	  }	
 			
-			
+			}
 		}
 
 }

@@ -268,7 +268,7 @@ public class MemberController {
 		}
 		
 		
-		/* 현석 :  mail API 에러 때문에 주석처리 시작
+		/* 현석 :  mail API 에러 때문에 주석처리 시작*/
 		//비밀번호 찾기 - 회원 정보 확인
 		@RequestMapping(value = "/selectLookforPw_ajax")
 		public @ResponseBody String selectLookforPw_ajax(String checkMid , String checkMemail, MemberDto member) {
@@ -279,7 +279,7 @@ public class MemberController {
 			
 			return pwCheckResult;  
 		}	
-		현석 :  mail API 에러 때문에 주석처리 끝	*/
+		/*현석 :  mail API 에러 때문에 주석처리 끝	*/
 		
 
 		//마이페이지 미니브라우저 & 프로필가져오기
@@ -424,14 +424,16 @@ public class MemberController {
 			
 			mav = new ModelAndView();
 			
-			if(mpw != null) {
+			if(mpw.equals("")) {
 				
 				mav = msvc.updateTemporaryNum(ra, mid , mpw);
+				ra.addFlashAttribute("msg" , "변경된 비밀번호가 없습니다.\n 재인증 하시기 바랍니다.");
+				//mav.addObject("checkId", mid);
+				//mav.setViewName("member/TemporaryNumForm");	
 
 			}else {
 				
-				ra.addFlashAttribute("msg" , "변경할 비밀번호를 입력하시기바랍니다.");
-				mav.setViewName("member/loadToTemporaryNum");	
+				mav = msvc.updateTemporaryNum(ra, mid , mpw);
 			}
 			
 	
