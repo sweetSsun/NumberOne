@@ -727,7 +727,9 @@ console.log("wmedNickname : " + wmedNickname);
 console.log("loginId : " + loginId);
 
 //신고버튼 클릭
-warningBtn.addEventListener('click', warningPopup);
+if(warningBtn != null){
+	warningBtn.addEventListener('click', warningPopup);
+}
 
 function warningPopup()  {
 	var check = false;
