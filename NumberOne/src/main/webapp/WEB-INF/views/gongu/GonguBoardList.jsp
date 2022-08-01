@@ -105,16 +105,16 @@
 			<div class="checkout__form" style="margin-top: 30px;">공구게시판</div>		
 
 		<!-- 본문 -->
-			<form action="selectNoticeBoardList" method="get" id="actionForm">
+			<form action="selectGonguBoardList?gbstate=ing" method="get" id="actionForm">
 			<!-- <input type="hidden" name="searchVal" value="all"> -->
 			<div class="container">
 				<div class="row ">
 					<!-- 검색기능 -->
 					<div class="col-5" align="right">
 							<select name="searchType" class="searchType" id="searchTypeSel">
-								<option value="nbTitle">제목</option>
-								<option value="nbContents">내용</option>
-								<option value="nbTitleContents">제목+내용</option>
+								<option value="gbTitle">제목</option>
+								<option value="gbContents">내용</option>
+								<option value="gbTitleContents">제목+내용</option>
 							</select>
 					</div>
 					<div class="col-7 ">
@@ -151,7 +151,7 @@
 								<td class="text-center tableCell">${notice_fix.nbcode}</td>
 								<td class="text-center tableCell"></td>
 								<td class="tableCell">
-									<a href="selectNoticeBoardView?codeIdx=${notice_fix.nbcode }">${notice_fix.nbtitle}</a>
+									<a href="selectGonguBoardView?codeIdx=${notice_fix.nbcode }">${notice_fix.nbtitle}</a>
 								</td>
 								<td class="text-center tableCell">관리자</td>
 								<td class="text-center tableCell">${notice_fix.nbdate}</td>
@@ -161,22 +161,23 @@
 						</c:forEach>
 					</thead>
 					
-					<!-- nbfix != 1 인 공지들 -->
+					<!-- gbstate == 1 인 일반 공구들 -->
 					<tbody id="bdCategoryList">
-					<c:forEach items="${noticeList }" var="notice">
-						<c:if test="${notice.nbfix != 1 }">
+					<c:forEach items="${GonguList }" var="gongu">
+						<c:if test="${gongu.gbstate == 1 }">
+						<%-- <c:if test="${gongu.gbfix != 1 }"> --%>
 						<tr style="border-bottom: solid #E0E0E0 1px;">
-							<td class="text-center tableCell">${notice.nbcode}</td>
+							<td class="text-center tableCell">${gongu.gbcode}</td>
 							<td class="bdcategory text-center tableCell">공구</td>
 							<td class="tableCell">
-								<a href="selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}">${notice.nbtitle}
+								<a href="selectGonguBoardView${paging.makeQueryPage(gongu.gbcode, paging.page)}">${gongu.gbtitle}
 							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;"></span> </a>
 							</td>
 							<td class="text-center tableCell">
 								관리자
 							</td>
-							<td class="text-center tableCell">${notice.nbdate}</td>
-							<td class="text-center tableCell">${notice.nbhits }</td>
+							<td class="text-center tableCell">${gongu.gbdate}</td>
+							<td class="text-center tableCell">${gongu.gbhits }</td>
 						</tr>
 						</c:if>
 					</c:forEach>
@@ -188,10 +189,7 @@
 					</c:if>
 				</div> --%>
 				</div>
-				
-				<!-- NbCheck=NB -->
-            	<input type="hidden" name="NbCheck" value="GB">
-            
+
 				<!-- 페이징 시작 -->
 				<input type="hidden" id="pageNum" name="page" value="1">
 				<div class="block text-center" id="pageList" >

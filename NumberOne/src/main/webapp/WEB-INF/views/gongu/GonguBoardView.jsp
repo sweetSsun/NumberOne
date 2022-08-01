@@ -236,13 +236,13 @@
 			<div class="container">
 				<div class="row">
 					<div class="col">
-						<a href="selectNoticeBoardList"><span class="fw-bold boardCategory"> | 공구게시판 </span></a> 
+						<a href="selectGonguBoardList?gbstate=ing"><span class="fw-bold boardCategory"> | 공구게시판 : 진행중 </span></a> 
 						<%-- <span class="fw-bold" style="color:gray; font-size:20px">/</span> <a href="#"><span class="bdregion"> ${board.bdrgname}</span></a> --%>
 					</div>
 				</div>
 				<div class="row" >
 					<div class="col">
-						<span class="fw-bold boardTitle">${noticeBoard.nbtitle }</span>  
+						<span class="fw-bold boardTitle">${gonguBoard.gbtitle }</span>  
 					</div>
 				</div>
 				<div class="row idDateHits">
@@ -265,27 +265,27 @@
 					</div>
 					
 					<div align="right"  class="col-3 offset-md-3">
-						<span class="boardDate">${noticeBoard.nbdate } | </span> 
-						<span class="bdhit" style="right:0;"><i class="fa-regular fa-eye"></i>  ${noticeBoard.nbhits } </span>
+						<span class="boardDate">${gonguBoard.gbdate } | </span> 
+						<span class="bdhit" style="right:0;"><i class="fa-regular fa-eye"></i>  ${gonguBoard.gbhits } </span>
 					</div>
 				</div>
 				<!-- 실험 -->
 				
 				<!-- 본문 글 내용-->
-				<c:if test="${noticeBoard.nbimg != null }">
+				<c:if test="${gonguBoard.gbimg != null }">
 					<div class="img-container">
-						<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg }">
+						<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/gonguUpLoad/${gonguBoard.gbimg }">
 					</div>
 				</c:if >
 				<div class="row mt-3 mb-1 boardContents" style="padding-bottom: 20px;">
 					<div class="col">
-						<textarea id="inputReply" rows="10%" cols="100%" readonly>${noticeBoard.nbcontents }</textarea>
+						<textarea id="inputReply" rows="10%" cols="100%" readonly>${gonguBoard.gbcontents }</textarea>
 						<%-- <text style="min-height:270px;">${board.bdcontents }</div> --%>
 					</div>
 					
 					
 					<!-- 참여 버튼 :: 진행중이면 나타나게하고 아니면 X -->
-					<c:if test="${noticeBoard.nbstate == 1 }">
+					<c:if test="${gonguBoard.gbstate == 1 }">
 						<div>
 							<button type="button" class="attendBtn btnLightBlue btnPush" onclick="showGonguModal()">참여</button>
 						</div>
@@ -296,7 +296,7 @@
 				        <div class="modal-dialog" role="document">
 				            <div class="modal-content">
 				                <div class="modal-header">
-				                    <h5 class="modal-title" id="updateNbstateModalLabel"> 공동구매 결제 양식 </h5>
+				                    <h5 class="modal-title" id="updateGbstateModalLabel"> 공동구매 결제 양식 </h5>
 				                    <button class="attendX close" type="button" data-dismiss="modal" aria-label="Close">
 				                        <span aria-hidden="true">×</span>
 				                    </button>
@@ -321,7 +321,7 @@
 										
 										<div class="col-sm-4">
 											<div style="height:70%; text-align: center;">
-												<span>${noticeBoard.nbtitle }</span>
+												<span>${gonguBoard.gbtitle }</span>
 											</div>
 											<div>
 												<button id="btn-kakao-pay" type="button">
@@ -330,8 +330,8 @@
 												</button>
 											</div>
 										</div>
-										<!-- nbcode 넘겨주기 -->
-										<input type="hidden" id="gonguNbcode" value="${noticeBoard.nbcode }">
+										<!-- gbcode 넘겨주기 -->
+										<input type="hidden" id="gonguGbcode" value="${gonguBoard.gbcode }">
 										
 									</form>
 				                </div>
@@ -351,9 +351,20 @@
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
 				<div class="row mb-2">
 					<div class="col-2">
-						<a href="selectNoticeBoardList?NbCheck=GB?${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}">
-						<input  type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
-						</a>
+						<c:choose>
+						<c:when test="${gonguBoard.gbstate == 1 }">
+							<a href="selectGonguBoardList?gbstate=ing&${paging.makeQueryPage(gonguBoard.gbcode, paging.page)}">
+								<input  type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
+							</a>
+						</c:when>
+						
+						<%-- <c:if test="${gonguBoard.gbstate == 2 }"> --%>
+						<c:otherwise>
+							<a href="selectGonguBoardList?gbstate=end&${paging.makeQueryPage(gonguBoard.gbcode, paging.page)}">
+								<input  type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
+							</a>
+						</c:otherwise>
+						</c:choose>
 					</div>
 				<%-- <c:choose>
 					<c:when test="${sessionScope.loginId == board.bdmid && sessionScope.loginId != 'admin' }">
@@ -374,9 +385,9 @@
 				</c:choose> --%>
 				</div>
 				
-<%-- 				<c:if test="${noticeBoard.nbimg != null }">
+<%-- 				<c:if test="${gonguBoard.gbimg != null }">
 					<div class="img-container" >
-						<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg }">
+						<img title="업로드 이미지" id="upload_Img" alt="" src="${pageContext.request.contextPath }/resources/img/gonguUpLoad/${gonguBoard.gbimg }">
 					</div>
 					<div style="background-color: #00bcd4; width: 200px; color:white;  margin-bottom: 2%;" class="text-center fw-bold">
 						업로드 이미지
@@ -1033,7 +1044,7 @@ $("#inputReply").each(function () {
 	  				url : 'insertCheck_ajax',
 	  				async : false,
 	  				data:{
-						gnbcode:nbcode,
+						gnbcode:gbcode,
 						gmid:loginId
 					},
 	  				success : function (check){
@@ -1064,9 +1075,9 @@ $("#inputReply").each(function () {
 <!-- 카카오페이 클릭 -->
 <script type="text/javascript">
 var loginId = $("#form-payment input[name='pay-id']").val();
-var nbcode =$("#gonguNbcode").val();
+var gbcode =$("#gonguGbcode").val();
 console.log("loginId : "+loginId);
-console.log(nbcode);
+console.log(gbcode);
 
 $("#btn-kakao-pay").click(function(){
 	console.log("카카오페이 클릭");
@@ -1120,7 +1131,7 @@ $("#btn-kakao-pay").click(function(){
 					url:'kakaopayReady',
 					dataType:'json',
 					data:{
-						nbcode:nbcode,
+						gbcode:gbcode,
 						loginId:loginId,
 						tel: tel,
 						email: email,
