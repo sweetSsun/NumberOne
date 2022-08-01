@@ -16,7 +16,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.NumberOne.dao.AdminDao;
 import com.NumberOne.dao.BoardDao;
+import com.NumberOne.dao.MemberDao;
 import com.NumberOne.dto.BoardDto;
+import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.NoticeDto;
 import com.NumberOne.dto.Paging;
 import com.NumberOne.dto.ReplyDto;
@@ -30,7 +32,10 @@ public class BoardService {
 	
 	@Autowired
 	private AdminDao adao;
-
+	
+	@Autowired
+	private MemberDao mdao;
+	
 	@Autowired
 	private HttpServletRequest request;
 
@@ -55,7 +60,7 @@ public class BoardService {
 			ra.addFlashAttribute("msg", "로그인 후 이용가능합니다");
 			
 			//실패페이지로 이동(실패 페이지에서 msg alert 띄우고, history back)
-			mav.setViewName("redirect:loadToFail");
+			mav.setViewName("redirect:/loadToFail");
 		
 		} else {
 			System.out.println("로그인");
@@ -89,7 +94,7 @@ public class BoardService {
 			ra.addFlashAttribute("msg", "로그인 후 이용가능합니다");
 			
 			//실패페이지로 이동(msg alert 띄우고, history back)
-			mav.setViewName("redirect:loadToFail");
+			mav.setViewName("redirect:/loadToFail");
 
 		} else if (loginId != null && ! loginId.equals(checkId)) {
 			System.out.println("작성자 본인 아님");
@@ -98,7 +103,7 @@ public class BoardService {
 			ra.addFlashAttribute("msg", "작성자가 아닙니다");
 				
 			//실패페이지로 이동(msg alert 띄우고, history back)
-			mav.setViewName("redirect:loadToFail");
+			mav.setViewName("redirect:/loadToFail");
 				
 		} else {
 			System.out.println("작성자 본인");
@@ -375,8 +380,7 @@ public class BoardService {
 		}
 	   
 	   //공지게시판 이동 및 검색 
-	   public ModelAndView selectNoticeBoardList(Paging paging, String NbCheck) {
-		   System.out.println(NbCheck);
+	   public ModelAndView selectNoticeBoardList(Paging paging) {
 		   System.out.println("BoardService.selectNoticeBoardList() 호출");
 		   
 		   ModelAndView mav = new ModelAndView();
@@ -386,52 +390,42 @@ public class BoardService {
 			   paging.setKeyword("");
 		   }
 		   
-		   
-		   
 		   //고정공지
 		   ArrayList<NoticeDto> noticeList_fix = bdao.selectNoticeList();
+
+		   int totalCount = bdao.selectNoticeTotalCount(paging);
+		   paging.setTotalCount(totalCount);
+		   paging.calc(); // 페이지 처리 계산 실행 
+		   System.out.println(paging);
 		   
-		   if(NbCheck.equals("NB")) { // NB 받았다면, 공지조회해줘
-			   
-			   int totalCount = bdao.selectNoticeTotalCount(paging);
-			   paging.setTotalCount(totalCount);
-			   paging.calc(); // 페이지 처리 계산 실행 
-			   System.out.println(paging);
-			   
-			   ArrayList<NoticeDto> noticeList = bdao.selectNoticeBoardList(paging);
-			   System.out.println(noticeList);
-			   
-			   mav.addObject("noticeList_fix", noticeList_fix);
-			   mav.addObject("noticeList", noticeList);
-			   mav.addObject("paging", paging);
-			   mav.setViewName("board/NoticeBoardList");
-			   
-			   return mav;
-		   } else { //  NB가아닌 GB를 받았다면, 공구조회해줘
-			   
-			   int totalCount = bdao.selectGonguTotalCount(paging);
-			   paging.setTotalCount(totalCount);
-			   paging.calc(); // 페이지 처리 계산 실행 
-			   System.out.println(paging);
-			   
-			   ArrayList<NoticeDto> GonguList = bdao.selectGonguBoardList(paging);
-			   System.out.println(GonguList);
-			   
-			   mav.addObject("noticeList_fix", noticeList_fix);
-			   mav.addObject("noticeList", GonguList);
-			   mav.addObject("paging", paging);
-			   mav.setViewName("gongu/GonguBoardList");			   
-			   return mav;
-		   }		   
+		   ArrayList<NoticeDto> noticeList = bdao.selectNoticeBoardList(paging);
+		   System.out.println(noticeList);
+		   
+		   mav.addObject("noticeList_fix", noticeList_fix);
+		   mav.addObject("noticeList", noticeList);
+		   mav.addObject("paging", paging);
+		   mav.setViewName("board/NoticeBoardList");
+		   
+		   return mav;
+		     
 	   }
 
 		// 자취방 자랑 메인 페이지(목록)
-		public ModelAndView selectRoomList(Paging paging) {
+		public ModelAndView selectRoomList(Paging paging, String bdcode, String jsp) {
 			System.out.println("BoardService.selectRoomList() 호출");
 			ModelAndView mav = new ModelAndView();
 			
-			//페이징 없는 글목록
-			//ArrayList<BoardDto> roomList = bdao.selectRoomList();
+			//출력할 페이지 찾기
+			if(bdcode != null && jsp == null) {
+				//배너에서 상세 모달 요청
+				System.out.println(bdcode+"의 rn 조회");
+				int rn = bdao.selectRoomList_page(bdcode);
+				System.out.println(rn);
+				//System.out.println(rn/10);
+				int page = (int) Math.ceil((double) rn/10);
+				System.out.println(page+"페이지");
+				paging.setPage(page);
+			}
 			
 			//System.out.println("1번:"+paging);
 			
@@ -459,9 +453,10 @@ public class BoardService {
 			//페이징을 위한 글 목록 받기
 			
 			ArrayList<BoardDto> roomList = bdao.selectRoomList_paging(paging);
+			/*
 			for (int i = 0; i < roomList.size(); i++) {
 				System.out.println(roomList.get(i).getBdcode()+" "+roomList.get(i).getBdhits()+" "+roomList.get(i).getBdreply()+" "+roomList.get(i).getBdrecommend()+" "+roomList.get(i).getBdscrap());
-			}
+			}*/
 			
 			if(paging.getSearchType().equals("bdtitle||bdcontents")) {
 				paging.setSearchType("bdtc");
@@ -470,6 +465,7 @@ public class BoardService {
 			//mav에 object와 view 저장
 			mav.addObject("paging", paging);
 			mav.addObject("roomList", roomList);
+			mav.addObject("roomCount", roomList.size()-1);
 			mav.setViewName("board/RoomListPage");
 
 			return mav;
@@ -492,13 +488,9 @@ public class BoardService {
 		
 		mav.addObject("noticeBoard", noticeBoard);
 		mav.addObject("paging", paging);
-
-		if (nbcode.substring(0,2).equals("NB")){ // 공지글 정보 조회
-			mav.setViewName("board/NoticeBoardView");
-			
-		} else { // 공구글 정보 조회
-			mav.setViewName("gongu/GonguBoardView");
-		}
+		
+		mav.setViewName("board/NoticeBoardView");
+		
 		return mav;
 	}
 
@@ -691,9 +683,9 @@ public class BoardService {
 	public String selectBoardReplyList_ajax(String bdcode) {
 		System.out.println("BoardService.selectBoardReplyList_ajax() 호출");
 
-		ArrayList<ReplyDto> replyList = bdao.selectBoardReplyList(bdcode);
+		ArrayList<ReplyDto> replyList = bdao.selectBoardReplyList2(bdcode);
 		// System.out.println(replyList);
-
+		
 		// 프로필 사진 없는 경우 rpprofile에 nomprofile 저장
 		for (int i = 0; i < replyList.size(); i++) {
 			if (replyList.get(i).getRpprofile() == null) {
@@ -1393,7 +1385,120 @@ public class BoardService {
 	}
 	
 	
+	//대댓글 등록 
+	public int insertBoardRe_Reply_ajax(ReplyDto reply, String bdcode, String loginId) {
+		System.out.println("BoardnService.insertBoardRe_Reply_ajax() 호출");
+		
+		 String rpcode_parent = reply.getRpcode();
+		
+		//모댓글의 최대 RPDEPTH 구하기 
+		int rp_depth = bdao.selectreplyMaxDepth(rpcode_parent)+1;
+		System.out.println("댓글깊이 : " + rp_depth);
+			
+		
+	      String maxRpcode = bdao.selectReplyMaxNumber();
+	      //System.out.println("maxRpcode : " + maxRpcode);
+	      String rpcode = "RP";
 
+	      if (maxRpcode == null) {
+	         rpcode = rpcode + "00001";
+	      } else {
+	    	  
+	         String rpcode_stirng = maxRpcode.substring(4);
+	         int rpcode_num = Integer.parseInt(rpcode_stirng) + 1;
+
+	         if (rpcode_num < 10) {
+	            rpcode = rpcode + "0000" + rpcode_num;
+	         } else if (rpcode_num < 100) {
+	            rpcode = rpcode + "000" + rpcode_num;
+	         } else if (rpcode_num < 1000) {
+	            rpcode = rpcode + "00" + rpcode_num;
+	         } else if (rpcode_num < 10000) {
+	            rpcode = rpcode + "0" + rpcode_num;
+	         } else {
+	            rpcode = rpcode + rpcode_num;
+	         }
+	      }
+		
+	    reply.setRpdepth(rp_depth);
+	      
+		int insertResult = bdao.insertBoardRe_Reply_ajax(rpcode, bdcode, reply.getRpcontents(), rpcode_parent, reply.getRpdepth(), loginId);
+		
+		return insertResult;
+	}
+
+	//댓글 등록(+ 대댓글 기능) 
+	public int insertBoardReply_ajax(ReplyDto reply) {
+		System.out.println("BoardnService.insertBoardReply_ajax (+ 대댓글) 호출");
+		
+	      String maxRpcode = bdao.selectReplyMaxNumber();
+	      //System.out.println("maxRpcode : " + maxRpcode);
+	      String rpcode = "RP";
+
+	      if (maxRpcode == null) {
+	         rpcode = rpcode + "00001";
+	      } else {
+	    	  
+	         String rpcode_stirng = maxRpcode.substring(4);
+	         int rpcode_num = Integer.parseInt(rpcode_stirng) + 1;
+
+	         if (rpcode_num < 10) {
+	            rpcode = rpcode + "0000" + rpcode_num;
+	         } else if (rpcode_num < 100) {
+	            rpcode = rpcode + "000" + rpcode_num;
+	         } else if (rpcode_num < 1000) {
+	            rpcode = rpcode + "00" + rpcode_num;
+	         } else if (rpcode_num < 10000) {
+	            rpcode = rpcode + "0" + rpcode_num;
+	         } else {
+	            rpcode = rpcode + rpcode_num;
+	         }
+	      }
+	      
+	    //set rpcode  
+	    reply.setRpcode(rpcode); 
+	    
+		int insertResult = bdao.insertBoardReply_ajax(reply);
+		
+		return insertResult;
+	}
+
+
+	
+	
+	/*공동구매&공구-진행완료 게시판 이동 및 검색 
+	   public ModelAndView selectGonguEndBoardList(Paging paging) {
+		   System.out.println("BoardService.selectGonguEndBoardList() 호출");
+		   
+		   ModelAndView mav = new ModelAndView();
+		   
+		   //페이징 
+		   if(paging.getKeyword() == null) {
+			   paging.setKeyword("");
+		   }
+		   
+		   //고정공지
+		   ArrayList<NoticeDto> noticeList_fix = bdao.selectNoticeList();
+		   			   
+		   int totalCount = bdao.selectGonguTotalCount(paging);
+		   paging.setTotalCount(totalCount);
+		   paging.calc(); // 페이지 처리 계산 실행 
+		   System.out.println(paging);
+		   
+		   ArrayList<NoticeDto> GonguEndList = bdao.selectGonguEndBoardList(paging);
+		   System.out.println(GonguEndList);
+		   
+		   mav.addObject("noticeList_fix", noticeList_fix);
+		   mav.addObject("noticeList", GonguEndList);
+		   mav.addObject("paging", paging);
+		   mav.setViewName("gongu/GonguBoardEndList");			   
+		   return mav;
+		   
+		   
+	   }*/
+
+	   
+	   
 }
 
 

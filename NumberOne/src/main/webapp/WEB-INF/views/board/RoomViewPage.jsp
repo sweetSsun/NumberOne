@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 자취방 자랑 상세</title>
+<title>1인자 - 자취방 자랑게시판</title>
 
 <%-- <link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css"> --%>
  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> 
@@ -360,6 +360,12 @@ section div.checkout__form{
     font-size : 24px;
 }
 
+.btn-numberone{
+	/* 글쓰기 버튼 */
+	background-color : #00bcd4;
+	font-size : 1.5rem;
+	color : white;
+}
 </style>
 </head>
 <body>
@@ -391,14 +397,16 @@ section div.checkout__form{
 		<!-- 본문 -->
 			<div class="container" style="width:1220px !important;">
 					<!-- 페이지명 -->
-					<div class="checkout__form" style="margin-top: 30px;"><span class="pointer" onclick="location.href='selectRoomList'">자취방 자랑</span> 상세 페이지</div> 
+					<div class="checkout__form pointer" style="margin-top: 30px;" onclick="location.href='selectRoomList'">
+						자취방 자랑게시판
+					</div> 
 				
 				<div class="row" style="margin:auto;">				
 					<div class="col-11"></div>
 					<div class="col-1">
 						<!-- 글쓰기 버튼 -->
-						<c:if test="${sessionScope.loginId != null}">
-							<button class="btn btn-primary btn-lg" onclick="location.href='${pageContext.request.contextPath }/loadToWriteRoom'">글쓰기</button>
+						<c:if test="${sessionScope.loginId != null && sessionScope.loginId != 'admin'}">
+							<button type="button" class="btn btn-numberone" onclick="location.href='${pageContext.request.contextPath }/loadToWriteRoom'">글쓰기</button>
 						</c:if>
 					</div>
 					
@@ -516,6 +524,16 @@ section div.checkout__form{
  
 </body>
 
+<script type="text/javascript">
+	function rereplyform(rpcode, rpnickname){
+		console.log(rpcode+"에 답글 달기폼 요청");
+		nowRpparent = rpcode; //reparent 필드에 저장
+		$("#inputReply").val("@"+rpnickname+" ");
+		$("#inputReply").focus();
+		
+	}
+</script>
+
 
 <script type="text/javascript">
 
@@ -530,16 +548,25 @@ function adminRvBan(){
 		return false;
 	}
 	
+	// 고정배너 정지하려고 하면 중지
+	/*
+	// adminRvBan을 실행할 때 bdfix를 보내줘서, bdfix에 따라 정지 불가능하도록
+ 	if (bdfix == 1){
+		alert("고정상태인 글은 정지할 수 없습니다.");
+		return;
+	} */
+	
 	$.ajax({
 			type : "get",
 			url : "admin_updateRoomStop_ajax",
-			data : { "bdcode" : nowBdcode},
+			data : { "bdcode" : nowBdcode, "check" : "adminPage"}, // 관리자페이지에서 넘어왔음을 확인
 			async : false,
 			success : function(updateResult){
 				if( updateResult > 0 ){
 					console.log("관리자 자랑글 정지 성공!");
+					alert(nowBdcode + "번 글이 정지 처리되었습니다.");
 					//일단 목록 페이지 다시 로드
-					location.href = "${pageContext.request.contextPath }/selectRoomList";
+					location.href = "${pageContext.request.contextPath }/admin_selectBoardList?page=${paging.page}";
 				}
 			}
 		});
@@ -586,6 +613,18 @@ roomView_ajax(nowBdcode)
 	function roomView_ajax(bdcode){
 		console.log(bdcode+"번글 roomView() 호출");
 		nowBdcode = bdcode; 
+		
+		//상세 보기 div 초기화
+		$("#roomMprofile").html("");
+		  $("#roomMnickname").html("");
+		  $("#roomContents").html("");
+		  $("#reply").html("");
+		  nowRpcode = "";
+		  nowRpmid = "";
+		  nowWb = "";
+		  nowModalNum = null;
+		  nowRpparent ="";
+		  $("#inputReply").val("");
 		
 		$.ajax({
 			type : "get",
@@ -681,7 +720,8 @@ roomView_ajax(nowBdcode)
 				var roomContentsOutput = "<div class='scroll' readonly style='font-size:15px; resize:none;'>"+roomViewContents+"</div>";
 				
 				//시간 출력
-				roomContentsOutput += "<span style='font-size:15px; color:gray; margin:0px;'>"+timeForToday(roomView.bddate)+"</span>"
+				roomContentsOutput += "<span style='font-size:15px; color:gray; margin:0px;' title='"+roomView.bddate+"'>";
+				roomContentsOutput += timeForToday(roomView.bddate)+"</span>";
 				$("#roomContents").html(roomContentsOutput);
 				//$("#roomContents").html("<textarea class='scroll' readonly style='font-size:15px; resize:none;'>"+roomView.bdcontents+"</textarea>");
 				
@@ -773,52 +813,81 @@ roomView_ajax(nowBdcode)
 				//console.log(replys)
 				var replyOutput ="";
 				for(var i=0; i<replys.length; i++){			
-					console.log(replys[i]);
-					replyOutput += "<div id='reply_"+replys[i].rpcode+"' style='width:100%; margin-bottom:3px;' class='row' onmouseover='toggleReplyMenu(\""+replys[i].rpcode+"\", \"show\")' onmouseout='toggleReplyMenu(\""+replys[i].rpcode+"\", \"hide\")'>";
-					//댓글 작성자 프로필 이미지
-					replyOutput += "<div style='width:30px; padding-top: 10px'>";
-					replyOutput += "<img class='product-img' style='width:20px; height:20px; border-radius:50%;'";
-					if(replys[i].rpprofile != 'nomprofile'){
-						//console.log(replys[i].rpprofile);
-						console.log("프로필 있음");
-						if(replys[i].rpmstate == 1){
-							//일반 로그인
-							replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+replys[i].rpprofile+"'>";
-						} else if(replys[i].rpmstate == 9) {
-							//카카오 로그인
-							console.log(replys[i].rpprofile);
-							replyOutput += "src='"+replys[i].rpprofile+"'>";							
+					//console.log(replys[i]);
+					//댓글 들여쓰기 여백
+					var rppadding = (parseInt(replys[i].rpdepth)-1)*5;
+					//console.log("rppadding: "+rppadding);
+					replyOutput += "<div id='reply_"+replys[i].rpcode+"' style='box-sizing:border-box; width:100%; margin-bottom:3px; ";
+					replyOutput += "padding-left:"+rppadding+"%;' "
+					replyOutput += "class='row' onmouseover='toggleReplyMenu(\""+replys[i].rpcode+"\", \"show\")' onmouseout='toggleReplyMenu(\""+replys[i].rpcode+"\", \"hide\")'>";
+					
+					if(replys[i].rpstate == 2){ //state == 1 댓글 출력 내용
+						//[삭제된 댓글입니다.] 출력
+						replyOutput += "<div style='font-size:15px; color:grey; margin:0px;'>[삭제된 댓글입니다.]</div>"
+						
+					} else { //state == 2 댓글 출력 내용
+						
+						if(replys[i].rpdepth != 1){
+							//답글인 경우 화살표 추가
+							replyOutput += "<div style='width:2%; font-size:15px; font-weight:bold; padding-top:2%;'>⤷</div>";
 						}
-					} else {
-						console.log("프로필 없음");
-						replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png'>"; 
-					}
-					replyOutput += "</img></div>";
-					//댓글 내용 부분 시작
-					replyOutput += "<div id='replyContents_"+replys[i].rpcode+"' style='width:320px; font-size:15px; padding-top:8px; word-break:break-word;'>"; 
-					//닉네임(진하게)
-					replyOutput += "<span onclick='writeMemberBoard(\""+replys[i].rpnickname+"\")' class='pointer' style='font-weight:600; margin:0px;'>"+replys[i].rpnickname+"&nbsp;&nbsp;</span>";
+						
+						//댓글 작성자 프로필 이미지
+						replyOutput += "<div style='min-width:30px; width:8%'>";
+						replyOutput += "<img class='product-img' style='width:20px; height:20px; border-radius:50%; margin-top:10px;'";
+						if(replys[i].rpprofile != 'nomprofile'){
+							console.log("프로필 있음")
+							if(replys[i].rpmid.substring(0, 1) == "@"){
+								//카카오 로그인
+								replyOutput += "src='"+replys[i].rpprofile+"'>";							
+							} else {
+								//일반 로그인
+								replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+replys[i].rpprofile+"'>";
+							}
+						} else {
+							//프로필 없는 경우
+							replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png'>"; 
+						}
+						replyOutput += "</img></div>";
 					
-					//내용 
-					var reply_transform = replys[i].rpcontents.replaceAll(' ', '&nbsp;');
-					reply_transform = reply_transform.replaceAll('\n', '<br>');
-					//console.log(reply_transform);
-					replyOutput += reply_transform+"<br>";
+						//댓글 내용 부분 시작
+						//rpcontents 길이
+						var contentswidth = 90 - parseInt(rppadding);
+						//console.log(contentswidth)
+						replyOutput += "<div id='replyContents_"+replys[i].rpcode+"' style='width:"+contentswidth+"%; font-size:15px; padding-top:0px; word-break:break-word;'>"; 
 					
-					//댓글 작성 시간
-					replyOutput += "<span style='font-size:10px; color:grey; margin:0px;'>"+replys[i].rpdate+"</span>";
+						//닉네임(진하게)
+						replyOutput += "<span onclick='writeMemberBoard(\""+replys[i].rpnickname+"\")' class='pointer' style='font-weight:600; margin:0px;'>"+replys[i].rpnickname+"&nbsp;&nbsp;</span>";
 					
-					//댓글 작성자와 관리자에게만 보이는 ...
-					if(replys[i].rpmid == '${sessionScope.loginId}'){
-						console.log("댓글 작성자");
-						replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \""+replys[i].rpmid+"\")' style='font-size:15px;'>&#8943;</span>"; 
-					} else if ('${sessionScope.loginId}'=='admin'){
-						console.log("관리자");
-						replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \""+replys[i].rpmid+"\")' style='font-size:15px;'>&#8943;</span>"; 	
-					}
+						//내용
+						var reply_transform = replys[i].rpcontents.replaceAll(' ', '&nbsp;');
+						reply_transform = reply_transform.replaceAll('\n', '<br>');
+						//console.log(reply_transform);
+						//replyOutput += replys[i].rpcontents+"<br>";
+						replyOutput += reply_transform+"<br>";
 					
-				
-					replyOutput += "</div></div>";
+						//댓글 작성 시간
+						replyOutput += "<span style='font-size:10px; color:grey; margin:0px;'>"+replys[i].rpdate+"</span>&nbsp;&nbsp;";
+					
+						//답글 달기 버튼 (7/31 추가)
+						if(replys[i].rpdepth ==null || replys[i].rpdepth < 4){
+							//level 4까지만 가능
+							replyOutput += "<span class='pointer' style='font-size:13px; font-weight:blod; color:grey; margin:0px;' onclick='rereplyform(\""+replys[i].rpcode+"\", \""+replys[i].rpnickname+"\")'>답글 달기</span>";
+						}
+						
+						//댓글 작성자와 관리자에게만 보이는 ...
+						if(replys[i].rpmid == '${sessionScope.loginId}'){
+							console.log("댓글 작성자");
+							replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \""+replys[i].rpmid+"\")' style='font-size:15px;'>&#8943;</span>"; 
+						} else if ('${sessionScope.loginId}'=='admin'){
+							console.log("관리자");
+							replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \""+replys[i].rpmid+"\")' style='font-size:15px;'>&#8943;</span>"; 	
+						}
+						replyOutput += "</div>";
+						
+					} //state == 2 댓글 출력 내용 끝
+					
+					replyOutput += "</div>";
 				}
 			
 				//console.log(replyOutput);
@@ -867,11 +936,13 @@ roomView_ajax(nowBdcode)
 </script>
 
 <script type="text/javascript">
+	//필드 선언
 	var nowBdcode;
 	var nowRpcode;
 	var nowBdmid;
 	var nowRpmid;
 	var nowWb;
+	var nowRpparent ="";
 	
 	function replyEnter(e){
 		if(e.keyCode==13 && !e.shiftKey){
@@ -882,12 +953,19 @@ roomView_ajax(nowBdcode)
 
 	function replyResister(){
 		console.log("댓글 등록 요청");
-		var rpcontents = $("#inputReply").val();
+		var rpcontents = $("#inputReply").val();  
+
+		if(nowRpparent == ""){
+			console.log("작성글에 댓글 입력 요청")
+			
+		} else {
+			console.log(nowRpparent+"에 답글 입력 요청")
+		}
 		
 		$.ajax({
 			type : "get",
-			url : "insertBoardReply_ajax",
-			data : { "bdcode" : nowBdcode, "rpcontents" : rpcontents},
+			url : "insertBoardReply_ajax2",
+			data : { "rpbdcode" : nowBdcode, "rpcontents" : rpcontents, "rpparent" : nowRpparent },
 			async : false,
 			success : function(insertResult){
 				if( insertResult > 0 ){
@@ -898,8 +976,14 @@ roomView_ajax(nowBdcode)
 					//목록 페이지 댓글수 업데이트
 					logUpdate('bdreplies', 'up');
 				}
+			},
+			error : function(){
+				console.log("댓글 등록 실패");
 			}
+			
 		});
+		
+		nowRpparent = "";
 	}
 	
 	//조회/추천/즐찾/댓글수 증가/감소시 목록 페이지 업데이트

@@ -38,7 +38,7 @@
 
 
 	SELECT  UBCODE, UBRGCODE, UBSELLBUY, UBMID,
-	UBTITLE, UBCONTENTS, UBDATE, UBMAINIMG,
+	UBTITLE, UBCONTENTS, TO_CHAR(UBDATE, 'YYYY-MM-DD HH24:MI:SS') UBDATE, UBMAINIMG,
 	UBDETAILIMG, UBSTATE, UBZZIM, UBMSTATE, UBPROFILE, UBNICKNAME
 	
 			FROM 
@@ -78,6 +78,10 @@
 	<choose>
 		<when test="pageCheck=='Main'">
 			WHERE RN BETWEEN 1 AND 3
+		</when>
+		
+		<when test="pageCheck=='HomepageMain'">
+			WHERE RN BETWEEN 1 AND 6
 		</when>
 
 		<otherwise>
@@ -128,7 +132,7 @@
 <select id="selectResellView"
 	resultType="com.NumberOne.dto.UsedBoardDto">
 	SELECT UBCODE, UBRGCODE, UBSELLBUY,
-	UBMID, UBTITLE, UBCONTENTS, UBDATE, UBMAINIMG,
+	UBMID, UBTITLE, UBCONTENTS, TO_CHAR(UBDATE, 'YYYY-MM-DD') UBDATE, UBMAINIMG,
 	UBDETAILIMG, UBSTATE, UBZZIM, UBMSTATE, UBPROFILE, UBNICKNAME
 			FROM PAGESELECT_VIEW
 			WHERE UBSELLBUY = #{ubsellbuy} AND UBCODE = #{ubcode}
@@ -146,21 +150,62 @@
 
 </select>
 
-			<!-- 글작성자의 다른 중고거래 글 SELECT -->
+			<!-- 글작성자의 다른 중고거래 글 SELECT (상세페이지) -->
 <select id="selectResellView_memberList"
 	resultType="com.NumberOne.dto.UsedBoardDto">
 
 	SELECT UBCODE, UBRGCODE, UBSELLBUY, UBMID, UBTITLE,
-	UBCONTENTS, UBDATE, UBMAINIMG,
+			UBCONTENTS, TO_CHAR(UBDATE, 'YYYY-MM-DD') UBDATE, UBMAINIMG, UBDETAILIMG, UBSTATE, UBZZIM, 
+			UBMSTATE, UBPROFILE, UBNICKNAME
+	
+			FROM 
+				(SELECT ROWNUM RN, PAGESELECT_VIEW.*
+						FROM PAGESELECT_VIEW
+						WHERE UBMID = #{ubmid}
+						
+						 AND UBCODE != #{ubcode} AND UBSTATE = 1)
+	
+			WHERE RN BETWEEN 1 AND 6
+
+</select>
+
+			<!-- 글작성자의 다른 중고거래 글 SELECT ()-->
+<select id="selectResellTransactionList"
+	resultType="com.NumberOne.dto.UsedBoardDto">
+
+	SELECT  UBCODE, UBRGCODE, UBSELLBUY, UBMID,
+	UBTITLE, UBCONTENTS, TO_CHAR(UBDATE, 'YYYY-MM-DD HH24:MI:SS') UBDATE, UBMAINIMG,
 	UBDETAILIMG, UBSTATE, UBZZIM, UBMSTATE, UBPROFILE, UBNICKNAME
 	
-	FROM 
-	(SELECT ROWNUM RN, PAGESELECT_VIEW.*
-			FROM PAGESELECT_VIEW
-			WHERE UBMID = #{ubmid} AND UBCODE != #{ubcode} AND UBSTATE = 1)
-	
-	WHERE RN BETWEEN 1 AND 6
+			FROM 
+				(SELECT ROWNUM RN, PAGESELECT_VIEW.*
+						FROM PAGESELECT_VIEW
+						WHERE UBMID IN
+										 (SELECT MID
+												FROM MEMBERS
+												WHERE MNICKNAME	
+												LIKE '%'||#{keyword}||'%'
+										)
+				)	
+			
+			WHERE RN BETWEEN #{startRow} AND #{endRow}
+		
+</select>
 
+		
+				<!-- 글작성자의 다른 중고거래 글 전체갯수  -->
+<select id="selectTransactionTotalCount" resultType="int">
+
+			
+	SELECT  COUNT(UBCODE)					
+						FROM PAGESELECT_VIEW
+						WHERE UBMID IN
+										 (SELECT MID
+												FROM MEMBERS
+												WHERE MNICKNAME	
+												LIKE '%'||#{keyword}||'%'
+									  		)
+				
 </select>
 
 					<!--   찜한 글인지 확인  -->
@@ -176,10 +221,9 @@
 <select id="checkResellWarning_ajax" resultType="String">
 	
 	SELECT WUEDUBCODE
-	FROM WARNINGUSEDBOARDS
-	WHERE WUMID = #{loginId}
-	AND
-	WUEDUBCODE = #{ubcode}
+			FROM WARNINGUSEDBOARDS
+			WHERE WUMID = #{loginId}
+			AND	WUEDUBCODE = #{ubcode}
 </select>
 					<!-- 게시글 신고 -->
 <insert id="insertResellWarning_ajax">
@@ -241,7 +285,7 @@
 
 	<update id="updateResellModify_ub">
 		UPDATE USEDBOARDS
-		SET UBSTATE = #{ubstate}, UBCONTENTS
+		SET UBTITLE = #{ubtitle}, UBSTATE = #{ubstate}, UBCONTENTS
 		= #{ubcontents}, UBRGCODE =
 		#{ubrgcode},
 		UBMAINIMG = #{ubmainimg},

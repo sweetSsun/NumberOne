@@ -185,8 +185,11 @@ background-color: #00BCD4;
 						$("#resultLookforIdMsg").text("귀하의 아이디는 "+result+" 입니다.").css("color" , "green"); 
 						$("#findButton").css("display", "none");
 						var output = "";
-						output ="<button onclick = \"location.href = 'loadToLogin' \" class=\"site-btn\" style=\"border-radius: 4px; margin-left: 305px;\">로그인하러가기</button>"
-							$("#login").html(output);  
+						output +="<div>"
+						output +="<button onclick = \"location.href = 'loadToLogin' \" class=\"site-btn\" style=\"border-radius: 4px; margin-left: 30%;\">로그인하러가기</button>&nbsp;"
+						output +="<button onclick = \"location.href = 'loadToLookforPw' \" class=\"site-btn\" style=\"border-radius: 4px; \">비밀번호찾기</button>"
+						output +="</div>"
+						$("#login").html(output);  
 						
 						}else {
 						$("#resultLookforIdMsg").text("일치하는 회원정보가 없습니다.").css("color" , "red");  		

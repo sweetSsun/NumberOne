@@ -22,7 +22,7 @@
 		margin: auto;
 		margin-top: 0%;
 	}
-	.textarea-NbView{
+	.textarea-GbView{
 		resize: none;
 		width: -webkit-fill-available;
 		min-height: 20rem;
@@ -76,24 +76,24 @@
 				<!-- 페이지 제목 -->
                 <div class="checkout__form">공구게시판 - 글수정</div>
 				<div>
- 				<form action="admin_updateNoticeModify${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}" method="post" enctype="multipart/form-data" onsubmit="return inputCheck()">
+ 				<form action="admin_updateGonguModify${paging.makeQueryPage(gonguBoard.gbcode, paging.page)}" method="post" enctype="multipart/form-data" onsubmit="return inputCheck()">
  				<!-- 수정 불가능한 값 숨기고 submit에는 데이터 넘겨주는 변수 -->
- 				<input type="hidden" name="nbcode" value="${noticeBoard.nbcode }">
- 				<input type="hidden" name="originImg" value="${noticeBoard.nbimg }">
+ 				<input type="hidden" name="gbcode" value="${gonguBoard.gbcode }">
+ 				<input type="hidden" name="originImg_gb" value="${gonguBoard.gbimg }">
  				
  				<div class="row">
-					<input type="text" id="title" class="bdtitle" name="nbtitle" maxlength="50" value="${noticeBoard.nbtitle }">
+					<input type="text" id="title" class="bdtitle" name="gbtitle" maxlength="50" value="${gonguBoard.gbtitle }">
 				</div>
 				<hr>
 				<div class="row">
-					<textarea id="contents" class="bdcontents textarea-NbView" rows="17" cols="40" name="nbcontents"  
-						maxlength="2000" placeholder="내용을 입력하세요">${noticeBoard.nbcontents }</textarea>
+					<textarea id="contents" class="bdcontents textarea-gbView" rows="17" cols="40" name="gbcontents"  
+						maxlength="2000" placeholder="내용을 입력하세요">${gonguBoard.gbcontents }</textarea>
 				</div>
 				<div class="row mt-4">
 					<!-- 기존 이미지가 있으면 -->
-					<c:if test="${noticeBoard.nbimg != null }">
+					<c:if test="${gonguBoard.gbimg != null }">
 						<div id="originImgScreen" style="width:200px; height:200px;" class="">
-							<img src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg}" style="width:100%; height:100%;"
+							<img src="${pageContext.request.contextPath }/resources/img/gonguUpLoad/${gonguBoard.gbimg}" style="width:100%; height:100%;"
 								id="originImg">
 						</div>
 					</c:if>
@@ -101,12 +101,12 @@
 					<div id="imgScreen" style="width:200px; height:200px;" class="d_none">
 						<img id='previewImg' style="width:100%; height:100%;"></img>
 					</div>
-					<input type="file" id="nbImg" name="nbimgfile" class="" accept="image/*" onchange="readImg(this)"> 
+					<input type="file" id="gbImg" name="gbimgfile" class="" accept="image/*" onchange="readImg(this)"> 
 				</div>
 				<div class="row mt-4 mb-2">
 					<div class="col btn-wrapper">
 						<input class="btn-numberone btn fw-bold text-white" type="submit" value="수정">
-						<input onclick="$('#nbWriteCancelCheckModal').modal('show')" class="btn-numberone btn fw-bold text-white" type="button" value="취소">
+						<input onclick="$('#gbWriteCancelCheckModal').modal('show')" class="btn-numberone btn fw-bold text-white" type="button" value="취소">
 					</div>
 				</div>	
  				
@@ -119,7 +119,7 @@
 	
 	
 	<!-- 게시글 작성 취소 확인 -->
-	<div class="modal fade" id="nbWriteCancelCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+	<div class="modal fade" id="gbWriteCancelCheckModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
         aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -153,7 +153,7 @@
 	var close = $(".close");
 	for (var i = 0; i < close.length; i++){
 		close[i].addEventListener("click", function(){
-			$("#nbWriteCancelCheckModal").modal("hide");
+			$("#gbWriteCancelCheckModal").modal("hide");
 		});
 	}
 </script>
@@ -162,7 +162,7 @@
 	// 공구글 수정 취소
 	function writeBoardCancel(){
 		console.log("취소 버튼 클릭");
-		location.href="admin_selectNoticeBoardView${paging.makeQueryPage(noticeBoard.nbcode, paging.page)}";
+		location.href="admin_selectGonguBoardView${paging.makeQueryPage(gonguBoard.gbcode, paging.page)}";
 	}
 	
 	// 제목, 내용 입력됐는지 확인
@@ -214,8 +214,8 @@
 		
 		if(checkType.indexOf(file_type) == -1){
 			alert('이미지 파일만 선택할 수 있습니다.');
-			$("#nbImg").val("");
-			$("#nbImg").replaceWith($("#nbImg").clone(true));
+			$("#gbImg").val("");
+			$("#gbImg").replaceWith($("#gbImg").clone(true));
 			return false;
 		}
 	}

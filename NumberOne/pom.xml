@@ -211,23 +211,24 @@
 		    <version>2.13.3</version>
 		</dependency>
 
-  <!-- 현석 :  mail API 에러 때문에 주석처리 시작 
-		자바 메일
-		https://mvnrepository.com/artifact/javax.mail/mail
-		<dependency>
+  <!-- 현석 :  mail API 에러 때문에 주석처리 시작 -->
+		<!--자바 메일-->
+		<!-- https://mvnrepository.com/artifact/javax.mail/mail -->
+		 <dependency>
     		<groupId>javax.mail</groupId>
     		<artifactId>mail</artifactId>
     		<version>1.4.7</version>
-		</dependency>
-		 현석 :  mail API 에러 때문에 주석처리 끝 -->
+		</dependency> 
+		<!-- 현석 :  mail API 에러 때문에 주석처리 끝 -->
 		
 		<!-- spring-context-support -->
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-context-support -->
-		<dependency>
+		 <dependency>
     		<groupId>org.springframework</groupId>
     		<artifactId>spring-context-support</artifactId>
     		<version>${org.springframework-version}</version>
-		</dependency>		
+		</dependency> 		
+	
 	</dependencies>
 	
 	

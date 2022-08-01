@@ -24,7 +24,7 @@
 		border:1px solid black;
 		margin-left: auto; margin-right: auto;
 	}
-	.textarea-NbView{
+	.textarea-GbView{
 		resize: none;
 		width: -webkit-fill-available;
 		min-height: 20rem;
@@ -79,22 +79,22 @@
 				<div class="checkout__form">공구게시판 - 글작성</div>
 				
 				<div>
- 				<form action="admin_insertNoticeWrite" method="post" enctype="multipart/form-data" onsubmit="return inputCheck()">
+ 				<form action="admin_insertGonguWrite" method="post" enctype="multipart/form-data" onsubmit="return inputCheck()">
 				<div class="row">
-					<input type="text" id="title" class="bdtitle" name="nbtitle" placeholder="제목을 입력하세요" maxlength="50">
+					<input type="text" id="title" class="bdtitle" name="gbtitle" placeholder="제목을 입력하세요" maxlength="50">
 				</div>
 				<hr>
 				<div class="row">
-					<textarea id="contents" class="bdcontents textarea-NbView" rows="17" cols="40" name="nbcontents"
+					<textarea id="contents" class="bdcontents textarea-GbView" rows="17" cols="40" name="gbcontents"
 						maxlength="2000"  placeholder="내용을 입력하세요"></textarea>
 				</div>
 				<div class="row mt-4">
 					<div id="imgScreen" style="width:200px; height:200px;" class="d_none"><img id='previewImg' style="width:100%; height:100%;"></img></div>
-					<input type="file" id="nbImg" name="nbimgfile" class="" accept="image/*" onchange="readImg(this)"> 
+					<input type="file" id="gbImg" name="gbimgfile" class="" accept="image/*" onchange="readImg(this)"> 
 				</div>
 				<div class="row mt-4 mb-2">
 					<div class="col btn-wrapper">
-						<input class="btn-numberone btn fw-bold text-white" type="submit" value="작성"><input type="hidden" name="NbCheck" value="GB">
+						<input class="btn-numberone btn fw-bold text-white" type="submit" value="작성">
 						<input onclick="$('#gbWriteCancelCheckModal').modal('show')" class="btn-numberone btn fw-bold text-white" type="button" value="취소">
 					</div>
 				</div>		
@@ -152,7 +152,7 @@
 	// 공지글 작성 취소
 	function writeBoardCancel(){
 		console.log("취소 버튼 클릭");
-		location.href="admin_selectNoticeList?NbCheck=GB&${paging.makeQueryPage(paging.page)}";
+		location.href="admin_selectGonguList?${paging.makeQueryPage(paging.page)}";
 	}
 	
 	// 제목, 내용 입력됐는지 확인
@@ -203,8 +203,8 @@
 		
 		if(checkType.indexOf(file_type) == -1){
 			alert('이미지 파일만 선택할 수 있습니다.');
-			$("#nbImg").val("");
-			$("#nbImg").replaceWith($("#nbImg").clone(true));
+			$("#gbImg").val("");
+			$("#gbImg").replaceWith($("#gbImg").clone(true));
 			return false;
 		}
 	}

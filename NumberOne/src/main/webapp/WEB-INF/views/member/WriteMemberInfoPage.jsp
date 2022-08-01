@@ -10,7 +10,7 @@
 <title>1인자 - 작성자 상세 페이지 (Board)</title>
 
 <!--jquery & bootstrap(5css)-->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
+<!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->   
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 <!-- font awesome -->
 <script src="https://kit.fontawesome.com/8f795d5741.js" crossorigin="anonymous"></script>
@@ -352,17 +352,24 @@
 		<%-- <c:forEach items="${memberInfo }" var="memberInfo"> --%>
 		<div class="parent"  style="margin-bottom : 0px;">
 		<c:choose>
-		<c:when test="${memberInfo.mprofile != null}">
+		<c:when test="${memberInfo.mprofile  == null}">
+			<!-- 프로필 사진 없을 때 -->
+			<img style="height: 100px; width: 100px; border: 1px solid #949494; padding: 3px; margin: 0px; border-radius: 50%;"  
+    			src="${pageContext.request.contextPath }/resources/img/profile.png" alt="">	
+		</c:when>
+		<c:when test="${memberInfo.mid.substring(0, 1).equals('@')}">
+			<!-- 카카오 프로필 -->
 			<div class="first">
+    		<img style="height: 100px; width: 100px; border: 1px solid #949494; padding: 3px; margin: 0px; border-radius: 50%;" 
+    			src="${memberInfo.mprofile }" alt="">	
+			</div>
+		</c:when>
+		<c:otherwise>
+			<!-- 일반 프로필 -->
+    		<div class="first">
     		<img style="height: 100px; width: 100px; border: 1px solid #949494; padding: 3px; margin: 0px; border-radius: 50%;" 
     			src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/${memberInfo.mprofile }" alt="">	
 			</div>
-			
-		</c:when>
-		<c:otherwise>
-    		<img style="height: 100px; width: 100px; border: 1px solid #949494; padding: 3px; margin: 0px; border-radius: 50%;"  
-    			src="${pageContext.request.contextPath }/resources/img/profile.png" alt="">	
-
 		</c:otherwise>
 		</c:choose> 
 			<div class="second">	
@@ -375,7 +382,7 @@
 				<span class="profile" style="display: block;"> 
 				<textarea class="spantitle" style="border: 0px; background-color:white; resize: none; height: 25px; overflow: hidden;"  disabled>지역&nbsp;&nbsp;|&nbsp;</textarea>
 				<textarea style="border: 0px; background-color:white; resize: none; height: 25px; overflow: hidden; text-align: left; color:black;" disabled >${memberInfo.mregion }</textarea>
-				</span>	
+				</span>
 				
 				<span class="profile" style="display: block;"> 
 				<textarea id="sTextarea" class="spantitle" style="border: 0px; background-color:white; resize: none;" disabled>상태메세지&nbsp;&nbsp;|&nbsp;</textarea>
@@ -384,10 +391,12 @@
 						
 			</div>
 			<div class="third">
-				
-				<span class="profile" style="display: block;"> 
-				 <input type="button" id="warningBtn" class="Wbtn" style="width: 90px; " value="신고"> 
-				</span>	
+
+				<c:if test="${! sessionScope.loginNickname.equals(memberInfo.mnickname)}">				
+					<span class="profile" style="display: block;"> 
+				 		<input type="button" id="warningBtn" class="Wbtn" style="width: 90px; " value="신고"> 
+					</span>	
+				</c:if>
 				<span class="profile" style="display: block; padding-top: 15px;"> 
 				<input type="button" id="chatBtn" class="btn" style="width: 90px;" value="채팅">
 				</span>		
@@ -442,6 +451,9 @@
 
 </body>
 
+<script src="${pageContext.request.contextPath }/resources/js/jquery-3.3.1.min.js"></script>
+
+
 <script type="text/javascript">
 window.onload = function() {
 	/* 로그인된 회원인지 체크 */
@@ -450,12 +462,13 @@ window.onload = function() {
 		alert("잘못된 접근입니다.");
 		location.href = "loadToLogin"
 	}
+}	
 </script>
 
 <script type="text/javascript">
  console.log("스크립트 확인!!!")
 
-function boardreplySwitch(type){
+function boardreplySwitch(type){	 
    console.log(type+"버튼 클릭");
    window.opener.boardreplySwitch('${memberInfo.mnickname }', type);
 } 
@@ -666,6 +679,7 @@ function chatInsert_Ajax() {
 			if (result == "2"){ 
 				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
 					opener.location.href = "loadToLogin"
+					opener.closePopup("memberPop");
 					window.close();
 					return;
 				}
@@ -713,10 +727,12 @@ console.log("wmedNickname : " + wmedNickname);
 console.log("loginId : " + loginId);
 
 //신고버튼 클릭
-warningBtn.addEventListener('click', warningPopup);
+if(warningBtn != null){
+	warningBtn.addEventListener('click', warningPopup);
+}
 
 function warningPopup()  {
-
+	var check = false;
 	// 로그인 확인
 	$.ajax({
 		type : 'get',
@@ -725,15 +741,20 @@ function warningPopup()  {
 		success : function(result){
 			if (result == "2"){ 
 				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
-					opener.location.href = "loadToLogin"
-					window.close();
-					return;
+					//check = true;
+					//창닫기(안됨)
+					opener.closePopup("memberPop");
+					opener.closeMini('memberPop');
+					//opener.location.href = "loadToLogin"
+					
 				}
-				return;
+				
 			}
 			
+
+			
+			
 			//신고 확인 모달창 띄우기
-			mbWarningCheckModal();
 			
 			/*
 			console.log("wmedNickname2 : " + wmedNickname);
@@ -741,14 +762,25 @@ function warningPopup()  {
 			
 			window.opener.insertMemberWarning(wmedNickname, 'wMemberPopup');
 			*/
+			
+			
 		}
 	})
+	if(check){
+		window.opener.closeMini();
+	} else {
+		mbWarningCheckModal();
+		
+	}
 }
 
 
 	// 채팅방 입장과 동시에 대화상대 신고 했는지 확인
 	$(document).ready(function (){
 		opener.checkMemberWarning(wmedNickname, 'wMemberPopup');
+		//console.log('${type}');
+		opener.boardreplySwitch('${memberInfo.mnickname }', '${type}');
+		
 	});
 	
 	// 신고 모달창 close 하는 스크립트
@@ -789,10 +821,35 @@ function warningPopup()  {
 	}
 	
 	// 대화상대 신고 실패 시 수행할 기능
-	function failMemberWarning(){
-		alert("회원 신고에 실패했습니다.");
+	function failMemberWarning2(type){
+		console.log(type+" 타입 신고 실패");
+		if(type == 0){
+			//insert fail
+			console.log("무결성 제약조건 위반");
+			alert("회원 신고에 실패했습니다");
+		} else if(type == 2){
+			//비로그인
+			console.log("비로그인");
+			alert("로그인 후 이용가능합니다");
+		} else if(type ==3){
+			//본인 신고하는 경우
+			console.log("본인 신고 불가");
+			alert("본인은 신고할 수 없습니다");
+		}
+	
 	}
 
+	function failMemberWarning(){
+		console.log("신고 실패");
+		alert("회원 신고에 실패했습니다");
+
+	}
+	
+	// 팝업창 닫힘 이벤트 (부모창의 배열에서 제거)
+	window.onbeforeunload = function() {
+		console.log("사용자정보 닫힘");
+		opener.closePopup("memberPop");
+	};
 	
 </script>
 

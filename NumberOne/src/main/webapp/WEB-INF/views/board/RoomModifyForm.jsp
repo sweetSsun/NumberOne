@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 자취방 자랑 글수정</title>
+<title>1인자 - 자취방 자랑게시판</title>
 <!-- Jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
@@ -130,7 +130,7 @@ section div.checkout__form{
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<div class="checkout__form" style="margin-top: 30px;">자취방 자랑 - 글수정</div> 
+				<div class="checkout__form" style="margin-top: 30px;">자취방 자랑게시판 - 글수정</div> 
 				<form action="updateRoomView" method="post" enctype="multipart/form-data" onsubmit="return roomModifyCh(${detailCount})">
 				<div class="row">
 					<input type="hidden" name="bdmid" value="${board.bdmid }">

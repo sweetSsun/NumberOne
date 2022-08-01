@@ -70,6 +70,17 @@
 	#inputSearchText{
 		font-size: 18px;
 	}
+	
+	section div.checkout__form{
+	/* 페이지 제목 */
+	color: #1c1c1c; 
+    font-weight: 700; 
+    border-bottom: 1px solid #e1e1e1;
+    padding-bottom: 20px;
+    margin-bottom: 25px;
+    font-size : 24px;
+}
+
 </style>
 </head>
 <body>
@@ -87,38 +98,38 @@
 	<main>
 		
 		<!-- 사이드바 -->
-		<%@ include file="/WEB-INF/views/includes/SideBar_Community.jsp" %>
+		<%@ include file="/WEB-INF/views/includes/SideBar_Gongu.jsp" %>
 		
 		<section>
+			<!-- 페이지명 -->
+			<div class="checkout__form" style="margin-top: 30px;">공구게시판</div>		
+
 		<!-- 본문 -->
-			<form action="selectNoticeBoardList" method="get" id="actionForm">
+			<form action="selectGonguBoardList?gbstate=ing" method="get" id="actionForm">
 			<!-- <input type="hidden" name="searchVal" value="all"> -->
 			<div class="container">
-				<div class="row" style="margin:auto;">
-					<h2 class="text-center">공구게시판 : GonguBoardList.jsp</h2>
-				</div>
-					<div class="row ">
-						<!-- 검색기능 -->
-						<div class="col-5" align="right">
-								<select name="searchType" class="searchType" id="searchTypeSel">
-									<option value="nbTitle">제목</option>
-									<option value="nbContents">내용</option>
-									<option value="nbTitleContents">제목+내용</option>
-								</select>
-						</div>
-						<div class="col-7 ">
-							<input type="text" name="keyword" placeholder="검색어를 입력하세요" id="inputSearchText">
-							<button class="btn btn-sm btn-secondary">검색</button>
-						</div>
-					</div>		
-				</div>
-				<div class="row" style="margin-top: 20px;">
+				<div class="row ">
+					<!-- 검색기능 -->
+					<div class="col-5" align="right">
+							<select name="searchType" class="searchType" id="searchTypeSel">
+								<option value="gbTitle">제목</option>
+								<option value="gbContents">내용</option>
+								<option value="gbTitleContents">제목+내용</option>
+							</select>
+					</div>
+					<div class="col-7 ">
+						<input type="text" name="keyword" placeholder="검색어를 입력하세요" id="inputSearchText">
+						<button class="btn btn-sm btn-secondary">검색</button>
+					</div>
+				</div>		
+			</div>
+			<div class="row" style="margin-top: 20px;">
 					
-				</div>
+			</div>
 				
-				<div class="community" style="text-align:center;">
-					<span style="font-size:21px;" class="fw-bold text-white">공구게시판</span>
-				</div>
+			<div class="community" style="text-align:center;">
+				<span style="font-size:21px;" class="fw-bold text-white">공구게시판</span>
+			</div>
 				
 				<!-- 게시글 목록 -->
 				<div class="row">
@@ -140,7 +151,7 @@
 								<td class="text-center tableCell">${notice_fix.nbcode}</td>
 								<td class="text-center tableCell"></td>
 								<td class="tableCell">
-									<a href="selectNoticeBoardView?codeIdx=${notice_fix.nbcode }">${notice_fix.nbtitle}</a>
+									<a href="selectGonguBoardView?codeIdx=${notice_fix.nbcode }">${notice_fix.nbtitle}</a>
 								</td>
 								<td class="text-center tableCell">관리자</td>
 								<td class="text-center tableCell">${notice_fix.nbdate}</td>
@@ -150,24 +161,23 @@
 						</c:forEach>
 					</thead>
 					
-					<!-- nbfix != 1 인 공지들 -->
+					<!-- gbstate == 1 인 일반 공구들 -->
 					<tbody id="bdCategoryList">
-					<c:forEach items="${noticeList }" var="notice">
-						<c:if test="${notice.nbfix != 1 }">
+					<c:forEach items="${GonguList }" var="gongu">
+						<c:if test="${gongu.gbstate == 1 }">
+						<%-- <c:if test="${gongu.gbfix != 1 }"> --%>
 						<tr style="border-bottom: solid #E0E0E0 1px;">
-							<td class="text-center tableCell">${notice.nbcode}</td>
-							<td class="bdcategory text-center tableCell">공구</td>
+							<td class="text-center tableCell">${gongu.gbcode}</td>
+							<td class="bdcategory text-center tableCell">진행</td>
 							<td class="tableCell">
-<!-- 임시로 관리자페이지 연결해놨음!!!!! -->
-							 	<a href="admin_selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}">${notice.nbtitle} 
-							<!-- <a href="selectNoticeBoardView${paging.makeQueryPage(notice.nbcode, paging.page)}">${notice.nbtitle}  -->
+								<a href="selectGonguBoardView${paging.makeQueryPage(gongu.gbcode, paging.page)}">${gongu.gbtitle}
 							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;"></span> </a>
 							</td>
 							<td class="text-center tableCell">
 								관리자
 							</td>
-							<td class="text-center tableCell">${notice.nbdate}</td>
-							<td class="text-center tableCell">${notice.nbhits }</td>
+							<td class="text-center tableCell">${gongu.gbdate}</td>
+							<td class="text-center tableCell">${gongu.gbhits }</td>
 						</tr>
 						</c:if>
 					</c:forEach>
@@ -179,10 +189,7 @@
 					</c:if>
 				</div> --%>
 				</div>
-				
-				<!-- NbCheck=NB -->
-            	<input type="hidden" name="NbCheck" value="GB">
-            
+
 				<!-- 페이징 시작 -->
 				<input type="hidden" id="pageNum" name="page" value="1">
 				<div class="block text-center" id="pageList" >

@@ -348,16 +348,19 @@
 				<!-- 두번째배너 -->
 				<div class="col-lg-3 col-sm-3" style="margin: auto;">
 					<div id="banner_second" class="owl-carousel" style="width: auto; height: 50vh;">
-										
-					    <div class="item" style="height:100%">
-	                		<a href="selectRoomList">
-	                			<img style="height:50vh;" alt="자랑방목록이동" src="${pageContext.request.contextPath }/resources/img/banner/house_ad.jpg">
+						<div class="item" style="height:100%">
+	                		<a href="selectGonguBoardList?gbstate=ing" title="공동구매">
+	                			<img style="height:50vh;" alt="공동구매이동1" src="${pageContext.request.contextPath }/resources/img/banner/numberoneGagu.png">
 	               			</a>
 					    </div>
-			        
 					    <div class="item" style="height:100%">
-	                		<a href="selectRoomList">
-	                			<img style="height:50vh;" alt="자랑방목록이동" src="${pageContext.request.contextPath }/resources/img/banner/house_ad2.jpg">
+	                		<a href="selectGonguBoardList?gbstate=ing" title="공동구매">
+	                			<img style="height:50vh;" alt="공동구매이동2" src="${pageContext.request.contextPath }/resources/img/banner/gongu003.jpg">
+	               			</a>
+					    </div>		
+					    <div class="item" style="height:100%">
+	                		<a href="selectCategoryBoardList?searchVal=정보" title="정보방">
+	                			<img style="height:50vh;" alt="정보방목록이동" src="${pageContext.request.contextPath }/resources/img/banner/thehouse_sky.jpg">
 	               			</a>
 					    </div>						      
 			        </div>
@@ -412,14 +415,16 @@
                         	</c:when>
                         	
                         	<c:otherwise>
+                        	<c:if test="${boardList.bdcategory != '자랑' }">
 		                        <a href="${pageContext.request.contextPath }/selectBoardView${paging.makeQueryPage(boardList.bdcategory, bdtype, boardList.bdcode, paging.page)}">
 		                        	<div class="col-lg-8 col-md-8 col-sm-8 overflow_twoline">
 		                        		<h3>${boardList.bdtitle }</h3>
 		                        	</div>
-		                        	<div class="col-lg-4 col-md-4 col-sm-4">	
+		                        	<div class="col-lg-4 col-md-4 col-sm-4">
 		                        		<h4>${boardList.bddate }</h4>
 		                        	</div>
 		                       	</a>
+                        	</c:if>
                         	</c:otherwise>
                        	</c:choose>
                         </div>
@@ -553,10 +558,17 @@
 	           			<p style="text-align: right; margin-bottom: 20px;"><a href="selectResellPageList?sellBuy=S&ajaxCheck=LIST">팔구보기</a></p>
 	            	
 		            	<div id="owl-banner_resell" class="owl-carousel">           		
-		           			<c:forEach items="${SellList }" end="4" var="SellList">
+		           			<c:forEach items="${SellList }" end="5" var="SellList">
 			                	<div class="item" style="height:25rem; padding-bottom: 10px;">
 			                        <div style="height:80%">
-	                        			<a href="selectResellView?ubcode=${SellList.ubcode }&ubsellbuy=${SellList.ubsellbuy }&modifyCheck=LIST"><img class="owl-carousel-img" alt="중고판매상세이동" src="${pageContext.request.contextPath }/resources/img/resell/${SellList.ubmainimg}"></a>
+			                        	<c:choose>
+											<c:when test="${SellList.ubmainimg != null}">
+												<a href="selectResellView?ubcode=${SellList.ubcode }&ubsellbuy=${SellList.ubsellbuy }&modifyCheck=LIST"><img class="owl-carousel-img" alt="중고판매상세이동" src="${pageContext.request.contextPath }/resources/img/resell/${SellList.ubmainimg}"></a>
+		                                    </c:when>
+		                                    <c:otherwise>
+		                                    	<a href="selectResellView?ubcode=${SellList.ubcode }&ubsellbuy=${SellList.ubsellbuy }&modifyCheck=LIST"><img class="owl-carousel-img" alt="중고판매상세이동" src="${pageContext.request.contextPath }/resources/img/logo_bada.png"></a>
+	                                    	</c:otherwise>
+										</c:choose>
 			                        </div>
 			                        <div style="margin-top: 10px; font-size: 16px; height:20%">
 			                        	<div>
@@ -580,10 +592,17 @@
 	           		  	
 		            	<div id="owl-banner_rebuy" class="owl-carousel">
 		           		
-		            		<c:forEach items="${buyList }" end="4" var="buyList">
+		            		<c:forEach items="${buyList }" end="5" var="buyList">
 			                	<div class="item" style="height:25rem; padding-bottom: 10px;">
 			                        <div style="height:80%">
-	                        			<a href="selectResellView?ubcode=${buyList.ubcode }&ubsellbuy=${buyList.ubsellbuy }&modifyCheck=LIST"><img class="owl-carousel-img" alt="중고구매상세이동" src="${pageContext.request.contextPath }/resources/img/resell/${buyList.ubmainimg}"></a>
+	                        			<c:choose>
+											<c:when test="${buyList.ubmainimg != null}">
+												<a href="selectResellView?ubcode=${buyList.ubcode }&ubsellbuy=${buyList.ubsellbuy }&modifyCheck=LIST"><img class="owl-carousel-img" alt="중고구매상세이동" src="${pageContext.request.contextPath }/resources/img/resell/${buyList.ubmainimg}"></a>
+		                                    </c:when>
+		                                    <c:otherwise>
+		                                    	<a href="selectResellView?ubcode=${buyList.ubcode }&ubsellbuy=${buyList.ubsellbuy }&modifyCheck=LIST"><img class="owl-carousel-img" alt="중고구매상세이동" src="${pageContext.request.contextPath }/resources/img/logo_bada.png"></a>
+	                                    	</c:otherwise>
+										</c:choose>
 			                        </div>
 			                        <div style="margin-top: 10px; font-size: 16px; height:20%">
 			                        	<div>

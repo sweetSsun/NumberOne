@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.ContactDto;
+import com.NumberOne.dto.GonguDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.NoticeDto;
 import com.NumberOne.dto.Paging;
@@ -23,17 +24,14 @@ public interface AdminDao {
 	MemberDto admin_selectMemberInfo_ajax(String mid);
 
 	int admin_selectNoticeTotalCount(Paging paging);
-	int admin_selectGonguTotalCount(Paging paging);
 
 	ArrayList<NoticeDto> admin_selectNoticeList(Paging paging);
-	ArrayList<NoticeDto> admin_selectGonguList(Paging paging);
 	
 	int admin_updateNbstate_ajax(@Param("nbcode") String nbcode, @Param("nbstate") int nbstate);
 
 	int admin_updateNbfix_ajax(@Param("nbcode") String nbcode, @Param("nbfix") int nbfix);
 	
 	String admin_selectMaxNbcode();
-	String admin_selectMaxGbcode();
 
 	int admin_insertNoticeWrite(NoticeDto notice);
 
@@ -78,4 +76,5 @@ public interface AdminDao {
 	//관리자 - 댓글정지 
 	int admin_updateReplyStop(String rpcode);
 
+	
 }

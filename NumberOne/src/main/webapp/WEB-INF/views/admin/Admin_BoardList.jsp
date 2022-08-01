@@ -105,7 +105,8 @@
 	                        <c:choose>
 					        	<c:when test="${board.bdcategory.equals('자랑') }">
 						       		<!-- 자랑글 상세 -->
-						        	<a href="selectRoomList?bdcode=${board.bdcode }&jsp=view">
+						        	<a href="selectRoomList?&bdcode=${board.bdcode }&jsp=view&page=${paging.page}">
+						        	<%-- <a href="selectRoomList?bdcode=${board.bdcode }&jsp=view"> --%>
 						        		<span class="overflow">${board.bdtitle}</span>
 						        	</a>
 					        	</c:when>
@@ -132,10 +133,12 @@
 	                      <td class="text-center">
 	                      	<c:choose>
 	                      		<c:when test="${board.bdstate == 1}">
-	                      			<button class="btn btn-sm btn-warning" type="button" onclick="showBdstateModal(this,'${board.bdcode }')">경고</button>
+	                      			<button class="btn btn-sm btn-warning" type="button" onclick="showBdstateModal(this,'${board.bdcode }', '${board.bdfix }')">경고</button>
 	                      		</c:when>
 	                      		<c:otherwise>
-	                      			<button class="btn btn-sm btn-danger" type="button" onclick="showBdstateModal(this, '${board.bdcode }')">정지</button>
+	                      			<%-- <c:if test="${board.bdfix == 0 }"> --%>
+	                      			   <button class="btn btn-sm btn-danger" type="button" onclick="showBdstateModal(this, '${board.bdcode }', '${board.bdfix }')">정지</button>
+	                      			<%-- </c:if> --%>
 	                      		</c:otherwise>
 	                      	</c:choose>
 	                      </td>
@@ -203,6 +206,7 @@
                 <div class="modal-body" id="updateBdstateModalBody"> </div>
                 <div class="modal-footer">
                 	<input type="hidden" id="bdcode">
+                	<input type="hidden" id="bdfix">
                     <button class="btn btn-primary" onclick="updateBdstate()">네</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
@@ -228,7 +232,7 @@
 		
 		// 글상태 변경 확인 모달창 출력
 		var btnObj;
-		function showBdstateModal(obj, bdcode){
+		function showBdstateModal(obj, bdcode, bdfix){
 			console.log("showBdstateModal() 실행");
 			btnObj = $(obj);
 			var btnObjText = btnObj.text();
@@ -239,6 +243,7 @@
 				$("#updateBdstateModalBody").text(bdcode + "번 게시글의 정지를 취소하시겠습니까?");
 			}
 			$("#bdcode").val(bdcode);
+			$("#bdfix").val(bdfix);
 			$("#updateBdstateModal").modal("show");
 		}
 		
@@ -258,7 +263,16 @@
 		  				return;
 		  			}
 		  			
-					var bdcode = $("#bdcode").val();
+		  			// 고정배너 정지하려고 하면 중지
+		  			let bdfix = $("#bdfix").val();
+		  			console.log("bdfix : " + bdfix);
+		  			if (bdfix == 1){
+		  				alert("고정상태인 글은 정지할 수 없습니다.");
+		  				$("#updateBdstateModal").modal("hide");
+		  				return;
+		  			}
+		  			
+					let bdcode = $("#bdcode").val();
 					console.log(btnObj.text());
 					if (btnObj.text() == "경고"){
 						var bdstate = 0;				
@@ -373,9 +387,9 @@
 						output += "<td class='text-center'>" + result[i].bdwarning + "</td>";
 						output += "<td class='text-center'>"
 						if (result[i].bdstate == 1){
-							output += "<button class='btn btn-sm btn-warning' type='button' onclick='showBdstateModal(this, \""+result[i].bdcode+"\")'>경고</button>";
+							output += "<button class='btn btn-sm btn-warning' type='button' onclick='showBdstateModal(this, \""+result[i].bdcode+"\", \""+result[i].bdfix+"\")'>경고</button>";
 						} else {
-							output += "<button class='btn btn-sm btn-danger' type='button' onclick='showBdstateModal(this,\""+result[i].bdcode+"\")'>정지</button>";
+							output += "<button class='btn btn-sm btn-danger' type='button' onclick='showBdstateModal(this,\""+result[i].bdcode+"\", \""+result[i].bdfix+"\")'>정지</button>";
 						}
 						output += "</td>";
 						output += "</tr>";

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 자취방 자랑 메인</title>
+<title>1인자 - 자취방 자랑게시판</title>
 
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"> 
@@ -437,11 +437,16 @@ h4:hover{
 			<div class="container">
 			<br>
 				<!-- 페이지명 -->
+				<!-- 
 				<div class="checkout__form" style="margin-top: 30px;">
 					<a onclick="location.href='selectRoomList'" class="pointer">
-						<h4>자취방 자랑</h4>
+						<h4>자취방 자랑게시판</h4>
 					</a>
 				</div>
+				-->
+				<div class="checkout__form pointer" style="margin-top: 30px;" onclick="location.href='selectRoomList'">
+						자취방 자랑게시판
+				</div> 
 			
 				<!--
 				<div style="padding-left:auto; padding-right:auto;">
@@ -643,7 +648,7 @@ h4:hover{
  				<c:choose>
  					<c:when test="${sessionScope.loginId != null }">
 		 				<textarea class="scroll" id="inputReply" placeholder="댓글 달기..." style="height:60px;" onkeydown="replyEnter(event)"></textarea>&nbsp;&nbsp;
-		 				<button onclick='replyResister()'>게시</button>
+		 				<button onclick='replyResister()' style="background-color:#00bcd4; color: aliceblue; font-size: medium;">게시</button>
  					</c:when>
  					<c:otherwise>
 		 				<textarea class="scroll" id="inputReply" type="text" readonly="readonly" placeholder="로그인 후 이용 가능합니다" style="height:60px;"></textarea>&nbsp;&nbsp;
@@ -683,6 +688,17 @@ h4:hover{
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 </body>
+
+<script type="text/javascript">
+	function rereplyform(rpcode, rpnickname){
+		console.log(rpcode+"에 답글 달기폼 요청");
+		nowRpparent = rpcode; //reparent 필드에 저장
+		$("#inputReply").val("@"+rpnickname+" ");
+		$("#inputReply").focus();
+		
+	}
+</script>
+
 <script type="text/javascript">
 
 	$(document).ready(function () {
@@ -710,7 +726,7 @@ h4:hover{
 		
 		//선택한 searchType 유지하기
 		console.log('${paging.searchType}');
-		var searchTypeOption = $("#searchTypeSel option");
+		const searchTypeOption = $("#searchTypeSel option");
 		if ('${paging.searchType}'.length > 0) {
 			for (var i = 0; i < searchTypeOption.length; i++){
 				if (searchTypeOption.eq(i).val() == '${paging.searchType}'){
@@ -738,6 +754,14 @@ h4:hover{
 		console.log(searchText);
 		location.href="selectRoomList?searchVal="+orderBy+"&searchType="+searchType+"&keyword="+searchText;	
 	}	
+	
+	function replyAt(mnickname){
+		console.log(mnickname+"로 검색 요청");
+		$("#searchText").val(mnickname);	
+		$("#searchTypeSel").val('bdnickname').prop("selected",true);
+		$("#actionForm").submit();
+		
+	}
 
 </script>
 
@@ -752,6 +776,14 @@ function adminRvBan(){
 		return false;
 	}
 	
+	// 고정배너 정지하려고 하면 중지
+	/*
+	// adminRvBan을 실행할 때 bdfix를 보내줘서, bdfix에 따라 정지 불가능하도록
+ 	if (bdfix == 1){
+		alert("고정상태인 글은 정지할 수 없습니다.");
+		return;
+	} */
+	
 	$.ajax({
 			type : "get",
 			url : "admin_updateRoomStop_ajax",
@@ -759,8 +791,9 @@ function adminRvBan(){
 			async : false,
 			success : function(updateResult){
 				if( updateResult > 0 ){
+					alert(nowBdcode + "번 글이 정지 처리되었습니다.");
 					console.log("관리자 자랑글 정지 성공!");
-					location.href = "${pageContext.request.contextPath }/selectRoomList";
+					location.href = "${pageContext.request.contextPath }/selectRoomList?page=${paging.page}";
 				}
 			}
 		});
@@ -842,17 +875,22 @@ function modalChange(type){
 	var modal = document.getElementById("myModal");
 	var span = document.getElementsByClassName("close")[0];
 	var nowModalNum;
-
+	var nowRpparent ="";
+	
 	function roomView_ajax(bdcode){
 		console.log(bdcode+"번글 roomView() 호출");
 		nowBdcode = bdcode; 
 		nowModalNum = $("#modalNum_"+nowBdcode).attr("class");
-		//console.log(nowBdcode+"/"+nowModalNum)
+		//console.log(nowBdcode+"/"+nowModalNum);
+		//console.log('${roomCount}');
+		nowRpparent =""; //rpparent 초기화
 		
 		if(nowModalNum == 0){
+			//첫번째 모달이면 왼쪽 화살표 지우기
 			$("#prevArrow").addClass("d_none");
 			$("#nextArrow").removeClass("d_none");
-		} else if (nowModalNum == 9){
+		} else if (nowModalNum == 9 || nowModalNum =='${roomCount}'){
+			//마지막 모달이면 오른쪽 화살표 지우기
 			$("#prevArrow").removeClass("d_none");
 			$("#nextArrow").addClass("d_none");
 		} else {
@@ -919,7 +957,7 @@ function modalChange(type){
 			//left and right controls
 			imgHtml += "<a class='left carousel-control' href='#myCarousel' data-slide='prev'>";	
 			imgHtml += "<span class='glyphicon glyphicon-chevron-left'></span>";
-			imgHtml += "<span class='sr-only'>Previous</span>"
+			imgHtml += "<span class='sr-only'>Previous</span>";
 			imgHtml += "</a>";
 			imgHtml += "<a class='right carousel-control' href='#myCarousel' data-slide='next'>";	
 			imgHtml += "<span class='glyphicon glyphicon-chevron-right'></span>";
@@ -964,7 +1002,8 @@ function modalChange(type){
 		var roomContentsOutput = "<div class='scroll' readonly style='font-size:15px; resize:none;'>"+roomViewContents+"</div>";
 		
 		//시간 출력
-		roomContentsOutput += "<span style='font-size:15px; color:grey; margin:0px;'>"+timeForToday(roomView.bddate)+"</span>"
+		roomContentsOutput += "<span style='font-size:15px; color:grey; margin:0px;' title='"+roomView.bddate+"'>";
+		roomContentsOutput += timeForToday(roomView.bddate)+"</span>";
 		$("#roomContents").html(roomContentsOutput);
 		//$("#roomContents").html("<textarea class='scroll' readonly style='font-size:15px; resize:none;'>"+roomView.bdcontents+"</textarea>");
 		
@@ -1053,53 +1092,187 @@ function modalChange(type){
 			success: function(replys){
 				//console.log(replys)
 				var replyOutput ="";
+				for(var i=0; i<replys.length; i++){			
+					//console.log(replys[i]);
+					//댓글 들여쓰기 여백
+					var rppadding = (parseInt(replys[i].rpdepth)-1)*5;
+					//console.log("rppadding: "+rppadding);
+					replyOutput += "<div id='reply_"+replys[i].rpcode+"' style='box-sizing:border-box; width:100%; margin-bottom:3px; ";
+					replyOutput += "padding-left:"+rppadding+"%;' "
+					replyOutput += "class='row' onmouseover='toggleReplyMenu(\""+replys[i].rpcode+"\", \"show\")' onmouseout='toggleReplyMenu(\""+replys[i].rpcode+"\", \"hide\")'>";
+					
+					if(replys[i].rpstate == 2){ //state == 1 댓글 출력 내용
+						//[삭제된 댓글입니다.] 출력
+						replyOutput += "<div style='font-size:15px; color:grey; margin:0px;'>[삭제된 댓글입니다.]</div>"
+						
+					} else { //state == 2 댓글 출력 내용
+						
+						if(replys[i].rpdepth != 1){
+							//답글인 경우 화살표 추가
+							replyOutput += "<div style='width:2%; font-size:15px; font-weight:bold; padding-top:2%;'>⤷</div>";
+						}
+						
+						//댓글 작성자 프로필 이미지
+						replyOutput += "<div style='min-width:30px; width:8%'>";
+						replyOutput += "<img class='product-img' style='width:20px; height:20px; border-radius:50%; margin-top:10px;'";
+						if(replys[i].rpprofile != 'nomprofile'){
+							console.log("프로필 있음")
+							if(replys[i].rpmid.substring(0, 1) == "@"){
+								//카카오 로그인
+								replyOutput += "src='"+replys[i].rpprofile+"'>";							
+							} else {
+								//일반 로그인
+								replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+replys[i].rpprofile+"'>";
+							}
+						} else {
+							//프로필 없는 경우
+							replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png'>"; 
+						}
+						replyOutput += "</img></div>";
+					
+						//댓글 내용 부분 시작
+						//rpcontents 길이
+						var contentswidth = 90 - parseInt(rppadding);
+						//console.log(contentswidth)
+						replyOutput += "<div id='replyContents_"+replys[i].rpcode+"' style='width:"+contentswidth+"%; font-size:15px; padding-top:0px; word-break:break-word;'>"; 
+					
+						//닉네임(진하게)
+						replyOutput += "<span onclick='writeMemberBoard(\""+replys[i].rpnickname+"\")' class='pointer' style='font-weight:600; margin:0px;'>"+replys[i].rpnickname+"&nbsp;&nbsp;</span>";
+					
+						//내용
+						//console.log(replys[i].rpcontents);
+						
+						if(replys[i].rpdepth>1){
+							console.log("답글");
+							//원댓글 아이디
+							var reply_at = replys[i].rpcontents.split(' ')[0].split('@')[1]; //원댓글 아이디
+							replyOutput += "<span class='pointer' onclick='replyAt(\""+reply_at+"\")' ";
+							replyOutput += "style='color:rgb(0, 55, 107);'>@"+reply_at+"</span>&nbsp;";
+							//답글 내용
+							var reply_transform = replys[i].rpcontents.replace(' ', '___');
+							reply_transform = reply_transform.split('___')[1].replaceAll(' ', '&nbsp;');
+							reply_transform = reply_transform.replaceAll('\n', '<br>');
+							replyOutput += reply_transform+"<br>";
+							
+						} else {
+							console.log("댓글");
+							var reply_transform = replys[i].rpcontents.replaceAll(' ', '&nbsp;');
+							reply_transform = reply_transform.replaceAll('\n', '<br>');
+							replyOutput += reply_transform+"<br>";
+						}
+ 
+						//console.log(reply_transform);
+						//replyOutput += replys[i].rpcontents+"<br>";
+						//replyOutput += reply_transform+"<br>";
+					
+						//댓글 작성 시간
+						replyOutput += "<span style='font-size:10px; color:grey; margin:0px;'>"+replys[i].rpdate+"</span>&nbsp;&nbsp;";
+					
+						//답글 달기 버튼 (7/31 추가)
+						if(replys[i].rpdepth ==null || replys[i].rpdepth < 4){
+							//level 4까지만 가능
+							replyOutput += "<span class='pointer' style='font-size:13px; font-weight:blod; color:grey; margin:0px;' onclick='rereplyform(\""+replys[i].rpcode+"\", \""+replys[i].rpnickname+"\")'>답글 달기</span>";
+						}
+						
+						//댓글 작성자와 관리자에게만 보이는 ...
+						if(replys[i].rpmid == '${sessionScope.loginId}'){
+							console.log("댓글 작성자");
+							replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \""+replys[i].rpmid+"\")' style='font-size:15px;'>&#8943;</span>"; 
+						} else if ('${sessionScope.loginId}'=='admin'){
+							console.log("관리자");
+							replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \""+replys[i].rpmid+"\")' style='font-size:15px;'>&#8943;</span>"; 	
+						}
+						replyOutput += "</div>";
+						
+					} //state == 2 댓글 출력 내용 끝
+					
+					replyOutput += "</div>";
+				}
+			
+				//console.log(replyOutput);
+				$("#reply").html(replyOutput);
+
+				if(scroll == "bottom"){
+					//댓글 등록시 스크롤 하단으로 이동
+					//console.log("하단 요청")
+					$("#reply").scrollTop($("#reply")[0].scrollHeight);
+				} else if(scroll=="top"){
+					//console.log("상단 요청")
+					$("#reply").scrollTop(0);
+				}
+			}
+		})
+	}
+	
+	
+	//댓글 출력
+	/*
+	function replyPrint(scroll){
+		$.ajax({
+			type : "get",
+			url : "selectBoardReplyList_ajax",
+			data : { "bdcode" : nowBdcode },
+			dataType : "json",
+			async : false,
+			success: function(replys){
+				//console.log(replys)
+				var replyOutput ="";
 				for(var i=0; i<replys.length; i++){
 					//console.log(replys[i]);
 					replyOutput += "<div id='reply_"+replys[i].rpcode+"' style='width:100%; margin-bottom:3px;' class='row' onmouseover='toggleReplyMenu(\""+replys[i].rpcode+"\", \"show\")' onmouseout='toggleReplyMenu(\""+replys[i].rpcode+"\", \"hide\")'>";
-					//댓글 작성자 프로필 이미지
-					replyOutput += "<div style='width:30px;'>";
-					replyOutput += "<img class='product-img' style='width:20px; height:20px; border-radius:50%; margin-top:10px;'";
-					if(replys[i].rpprofile != 'nomprofile'){
-						console.log("프로필 있음")
-						if(replys[i].rpmid.substring(0, 1) == "@"){
-							//카카오 로그인
-							replyOutput += "src='"+replys[i].rpprofile+"'>";							
+					
+					if(replys[i].rpstate == 2){ //state == 1 댓글 출력 내용
+						//[삭제된 댓글입니다.] 출력
+						replyOutput += "<div style='font-size:15px; color:grey; margin:0px;'>[삭제된 댓글입니다.]</div>"
+						
+					} else { //state == 2 댓글 출력 내용
+					
+						//댓글 작성자 프로필 이미지
+						replyOutput += "<div style='width:30px;'>";
+						replyOutput += "<img class='product-img' style='width:20px; height:20px; border-radius:50%; margin-top:10px;'";
+						if(replys[i].rpprofile != 'nomprofile'){
+							console.log("프로필 있음")
+							if(replys[i].rpmid.substring(0, 1) == "@"){
+								//카카오 로그인
+								replyOutput += "src='"+replys[i].rpprofile+"'>";							
+							} else {
+								//일반 로그인
+								replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+replys[i].rpprofile+"'>";
+							}
 						} else {
-							//일반 로그인
-							replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+replys[i].rpprofile+"'>";
+							replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png'>"; 
 						}
-					} else {
-						replyOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png'>"; 
-					}
-					replyOutput += "</img></div>";
+						replyOutput += "</img></div>";
 					
-					//댓글 내용 부분 시작
-					replyOutput += "<div id='replyContents_"+replys[i].rpcode+"' style='width:320px; font-size:15px; padding-top:0px; word-break:break-word;'>"; 
+						//댓글 내용 부분 시작
+						replyOutput += "<div id='replyContents_"+replys[i].rpcode+"' style='width:320px; font-size:15px; padding-top:0px; word-break:break-word;'>"; 
 					
-					//닉네임(진하게)
-					replyOutput += "<span onclick='writeMemberBoard(\""+replys[i].rpnickname+"\")' class='pointer' style='font-weight:600; margin:0px;'>"+replys[i].rpnickname+"&nbsp;&nbsp;</span>";
+						//닉네임(진하게)
+						replyOutput += "<span onclick='writeMemberBoard(\""+replys[i].rpnickname+"\")' class='pointer' style='font-weight:600; margin:0px;'>"+replys[i].rpnickname+"&nbsp;&nbsp;</span>";
 					
-					//내용
-					var reply_transform = replys[i].rpcontents.replaceAll(' ', '&nbsp;');
-					reply_transform = reply_transform.replaceAll('\n', '<br>');
-					//console.log(reply_transform);
-					//replyOutput += replys[i].rpcontents+"<br>";
-					replyOutput += reply_transform+"<br>";
+						//내용
+						var reply_transform = replys[i].rpcontents.replaceAll(' ', '&nbsp;');
+						reply_transform = reply_transform.replaceAll('\n', '<br>');
+						//console.log(reply_transform);
+						//replyOutput += replys[i].rpcontents+"<br>";
+						replyOutput += reply_transform+"<br>";
 					
-					//댓글 작성 시간
-					replyOutput += "<span style='font-size:10px; color:grey; margin:0px;'>"+replys[i].rpdate+"</span>";
+						//댓글 작성 시간
+						replyOutput += "<span style='font-size:10px; color:grey; margin:0px;'>"+replys[i].rpdate+"</span>";
 					
-					//댓글 작성자와 관리자에게만 보이는 ...
-					if(replys[i].rpmid == '${sessionScope.loginId}'){
-						console.log("댓글 작성자");
-						replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \""+replys[i].rpmid+"\")' style='font-size:15px;'>&#8943;</span>"; 
-					} else if ('${sessionScope.loginId}'=='admin'){
-						console.log("관리자");
-						replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \""+replys[i].rpmid+"\")' style='font-size:15px;'>&#8943;</span>"; 	
-					}
+						//댓글 작성자와 관리자에게만 보이는 ...
+						if(replys[i].rpmid == '${sessionScope.loginId}'){
+							console.log("댓글 작성자");
+							replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \""+replys[i].rpmid+"\")' style='font-size:15px;'>&#8943;</span>"; 
+						} else if ('${sessionScope.loginId}'=='admin'){
+							console.log("관리자");
+							replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \""+replys[i].rpmid+"\")' style='font-size:15px;'>&#8943;</span>"; 	
+						}
+						replyOutput += "</div>";
+						
+					} //state == 2 댓글 출력 내용 끝
 					
-					
-					replyOutput += "</div></div>";
+					replyOutput += "</div>";
 				}
 				
 				//console.log(replyOutput);
@@ -1115,7 +1288,7 @@ function modalChange(type){
 				}
 			}
 		})
-	}	
+	}*/	
 	
 	//조회/추천/즐찾/댓글수 증가/감소시 목록 페이지 업데이트
 	function logUpdate(logType, updown){
@@ -1199,6 +1372,7 @@ function modalChange(type){
 		}
 	}
 
+	/*
 	function replyResister(){
 		console.log("댓글 등록 요청");
 		
@@ -1225,6 +1399,41 @@ function modalChange(type){
 				}
 			}
 		});
+	}*/
+	
+	function replyResister(){
+		console.log("댓글 등록 요청");
+		var rpcontents = $("#inputReply").val();  
+
+		if(nowRpparent == ""){
+			console.log("작성글에 댓글 입력 요청")
+			
+		} else {
+			console.log(nowRpparent+"에 답글 입력 요청")
+		}
+		
+		$.ajax({
+			type : "get",
+			url : "insertBoardReply_ajax2",
+			data : { "rpbdcode" : nowBdcode, "rpcontents" : rpcontents, "rpparent" : nowRpparent },
+			async : false,
+			success : function(insertResult){
+				if( insertResult > 0 ){
+					console.log("댓글 등록 성공!");
+					$("#inputReply").val("");
+					replyPrint('bottom');
+					
+					//목록 페이지 댓글수 업데이트
+					logUpdate('bdreplies', 'up');
+				}
+			},
+			error : function(){
+				console.log("댓글 등록 실패");
+			}
+			
+		});
+		
+		nowRpparent = "";
 	}
 	
 	
@@ -1249,13 +1458,14 @@ function modalChange(type){
 	  $("#roomMnickname").html("");
 	  $("#roomContents").html("");
 	  $("#reply").html("");
-	  $("#reply").html("");
 	  nowBdcode = "";
 	  nowBdmid = "";
 	  nowRpcode = "";
 	  nowRpmid = "";
 	  nowWb = "";
-	  
+	  nowModalNum = null;
+	  nowRpparent ="";
+	  $("#inputReply").val("");
 	}
 	
 	//모달 닫기 다른 방법

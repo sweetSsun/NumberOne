@@ -108,10 +108,10 @@
 		
 			<div class="row">			
 				
-				<!-- 로고이미지 -->
-				<div class="col-lg-12 col-sm-12 logoimg">
-					<a href="${pageContext.request.contextPath }/"><img style="height:100px; min-width:140px;"src="${pageContext.request.contextPath }/resources/img/logo_bada.png"></a>
-				
+				            <!-- 로고이미지 -->
+            <div class="col-lg-12 col-sm-12 logoimg">
+               <a href="${pageContext.request.contextPath }/"><img style="height:120px; min-width:140px;"src="${pageContext.request.contextPath }/resources/img/logo_bada_topbar.png"></a>
+					
 					<span style="float:right; margin-top: 5%;">				
 						<c:choose>
 							<c:when test="${sessionScope.loginId == null && sessionScope.kakaoId == null }">
@@ -160,8 +160,11 @@
 						<li style="margin-right: 30px;">
 							<a href="loadToBoardMainPage">커뮤니티</a>
 						</li>
-						<li>
+						<li style="margin-right: 30px;">
 							<a href="selectResellMainPage">중고거래</a>
+						</li>
+						<li>
+							<a href="selectGonguBoardList?gbstate=ing">공동구매</a>
 						</li>
 					</ul>
 				</div>
@@ -208,7 +211,7 @@
 							</li>
 <!--  								
 							<!-- 로그아웃 -->
- 							<li style="margin-right: 15px;"><a href="selectMemberLogout">로그아웃</a></li>
+ 							<li style="margin-right: 15px;"><a href="#" id="logoutBtn">로그아웃</a></li>
 							<!-- 고객센터(문의)	-->				
 							<li ><a href="selectMyInfoQuestionListView">고객센터</a></li>
 						</c:otherwise>
@@ -223,75 +226,101 @@
 
 </body>
 <script type="text/javascript">
-	console.log("스크립트 확인!");
-	
+   console.log("스크립트 확인!");
 
-</script>	
-	
-	
+   // 로그아웃 버튼 클릭 시 팝업창 닫고나서 로그아웃
+   $("#logoutBtn").click(function(){
+      console.log("모든 팝업창 닫기");
+      popArr = JSON.parse( localStorage.getItem('${sessionScope.loginId}') );
+      console.log("닫으려는 팝업창 : " + popArr);
+      //console.log("popArr.length : " + popArr.length);
+      if (popArr != null){
+	      const length = popArr.length;
+         
+         for (var i = 0; i < length; i++){
+            console.log("실행");         
+            var windowName = popArr[0];
+            window.open("closePopup", windowName);
+         } 
+      }
+      
+      location.href="${pageContext.request.contextPath}/selectMemberLogout"; // 로그아웃
+   });
+   
+</script>   
+   
+   
 <!-- 채팅 관련 스크립트 -->
 <script type="text/javascript">
 /* 채팅관련 스크립트 */
-	var popChat;		 // 채팅팝업 이름
-	var popChatArr = []; // 현재 떠있는 채팅 팝업창을 담을 배열
-	
-	// 채팅 버튼 클릭시 채팅창 팝업되면서 기존 채팅방 메세지 목록 데이터 보내주는 함수
-	function popupChat(crcode, crfrmnickname, crfrmprofile){
-		console.log("popupChat 호출");
-		let popOption = "width=450px, height=560px, top=300px, left=500px, scrollbars=no, resizable=no";
-		let openUrl = "loadToChat?crcode="+crcode;
-	  	$.ajax({
-	  		type : 'get',
-	  		url : 'selectLoginOut_ajax',
-	  		async : false,
-	  		success : function(result){
-	  			if (result == "2"){ 
-	  				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
-	  					location.href = "loadToLogin"
-	  					return;
-	  				}
-	  				return;
-	  			}
+   var popChat;       // 채팅팝업 이름
+   var popArr = []; // 현재 떠있는 팝업창을 담을 배열
+   
+   // 채팅 버튼 클릭시 채팅창 팝업되면서 기존 채팅방 메세지 목록 데이터 보내주는 함수
+   function popupChat(crcode, crfrmnickname, crfrmprofile){
+      console.log("popupChat 호출");
+      let popOption = "width=450px, height=560px, top=300px, left=500px, scrollbars=no, resizable=no";
+      let openUrl = "loadToChat?crcode="+crcode;
+        $.ajax({
+           type : 'get',
+           url : 'selectLoginOut_ajax',
+           async : false,
+           success : function(result){
+              if (result == "2"){ 
+                 if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
+                    location.href = "loadToLogin"
+                    return;
+                 }
+                 return;
+              }
 
-				$.ajax({
-					url: "selectChatRoomMessage",
-					data: {"crcode":crcode},
-					async:false,
-					dataType:"json",
-					success:function(data){
-						console.log(popChatArr.some(popChat => popChat.name === crcode));
-						// 해당 채팅방 팝업이 열려있으면
-						if (popChatArr.some(popChat => popChat.name === crcode)) { 
-							var openedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
-							//console.log(popChatArr[openedIdx]);
-							popChatArr[openedIdx].focus(); // 해당 채팅창 팝업에 focus
-						} 
-						
-						// 열려있지 않으면
-						else { 
-							popChat = window.open(openUrl, crcode, popOption); // 팝업창 열기
-							popChat.window.addEventListener("load", function(){
-								popChat.enterRoom(data); // 채팅방 목록 불러오기
-								popChat.crfrMbInfo(crfrmnickname, crfrmprofile);
-						 	});
-							popChatArr.push(popChat); // 채팅팝업 배열에 담기
-						}
-						console.log("배열의 길이 : " + popChatArr.length);
-					}
-				});
-				
+            // 팝업창 열기
+            popChat = window.open(openUrl, crcode, popOption); 
+            openPopup(crcode);
+           /*  $.ajax({
+               url: "selectChatRoomMessage",
+               data: {"crcode":crcode},
+               async:false,
+               dataType:"json",
+               success:function(data){
+                  popChat.window.addEventListener("load", function(){
+                     //popChat.enterRoom(data); // 채팅방 목록 불러오기
+                    // popChat.crfrMbInfo(crfrmnickname, crfrmprofile);
+                  });
+               }
+            }); */
+            
 
-			}
-		});
-	}
-	
-	// 특정 채팅방(자식창) 닫힐 경우 배열에서 제거하는 함수
-	function closeChat(crcode){
-		console.log("채팅방 닫힘");
-		var openedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
-		popChatArr.splice(openedIdx, 1); // 채팅팝업 배열에서 제거
-	}
-	
+         }
+      });
+   }
+   
+   // 특정 팝업창 열릴 경우 배열에 추가하는 함수
+   function openPopup(winName) {
+	   // Storage에 있으면 배열에 담기
+	   if (localStorage.getItem('${sessionScope.loginId}') != null){ 
+	      popArr = JSON.parse( localStorage.getItem('${sessionScope.loginId}') );
+	   }
+	   // 해당 채팅방 팝업이 열려있지 않으면 popArr에 담기
+	   if (!popArr.includes(winName)) {  
+	      popArr.push(winName);
+	   } 
+	   localStorage.removeItem('${sessionScope.loginId}');
+	   localStorage.setItem('${sessionScope.loginId}', JSON.stringify(popArr));
+	   console.log("스토리지 확인 : " + popArr);
+   }
+   
+   // 특정 채팅방(자식창) 닫힐 경우 배열에서 제거하는 함수
+   function closePopup(winName){
+      console.log("팝업창 닫힘");
+      let index = popArr.indexOf(winName);
+      popArr.splice(index, 1);
+      console.log("닫힌 후 popArr : " + popArr);
+      localStorage.removeItem('${sessionScope.loginId}');
+      localStorage.setItem('${sessionScope.loginId}', JSON.stringify(popArr));
+      
+   }
+   	
 	// 채팅 아이콘 클릭하면 채팅방 목록 불러오고 드롭다운(안읽은 메세지 > 최신순)
 	$(document).on("click", "#dropdownChat", function(e){
 	  	$.ajax({
@@ -426,8 +455,8 @@
   
    
    function writeMemberBoard(nickname){
-      console.log("팝업 스트립트 확인!!!");
-      let wMemberPopupUrl = "loadToWriteMemberBoard?nickname="+nickname;
+      console.log("글작성자 팝업 요청!!!");
+      let wMemberPopupUrl = "loadToWriteMemberBoard?nickname="+nickname+"&type=b";
       let wMemberPopupOption = "width=660, height=820, top=300px, left=500px, scrollbars=no, resizable=no";
       
 	   // 로그인 확인
@@ -444,24 +473,34 @@
 	  				return;
 	  			}
 	  			
-	  			// 판매자정보 팝업
+	  			// 글작성자 정보 팝업
 			    $.ajax({
 			         url: "selectWriteMemberInfo_ajax",
 			         data: {"nickname":nickname},
 			         async:false,
 			         dataType:"json",
 			         success:function(result){
-			        	 wMemberPopup = window.open(wMemberPopupUrl, "", wMemberPopupOption, nickname);
+			        	//열려있는 팝업창인지 확인 
+			        	console.log(result);	 
+			        	 wMemberPopup = window.open(wMemberPopupUrl, "memberPop", wMemberPopupOption, nickname);
+			        	 // 열리는 팝업을 배열에 담는 function 호출
+			        	 openPopup("memberPop");
+			        	 /*
 			        	 wMemberPopup.window.addEventListener("load", function(){
-			        		 wMemberPopup.writeMemberBoard(result);
-		        		 });
+			        		 console.log("자식창 로드시 실행되는 함수 연결") 			
+			        		 //이미 자식창이 열려있는 경우 여길 안옴 
+			        		 //wMemberPopup.writeMemberBoard(result);
+			        		 
+		        		 });*/
+			        	 
+			        	 //wMemberPopup.writeMemberBoard(result); 
 		        	 }
 		         });
 	  		}
 	  	})
    }
-
-      
+   
+   
    function boardreplySwitch(nickname, type){
          console.log("팝업 작성글 버튼 클릭!!!");
          
@@ -505,8 +544,8 @@
   
    
    function writeMemberSellbuy(nickname){
-      console.log("(중고거래)팝업 스트립트 확인!!!");
-      let wMemberPopupUrl = "loadToWriteMemberBoard?nickname="+nickname;
+      console.log("중고거래 팝업 요청!!!");
+      let wMemberPopupUrl = "loadToWriteMemberBoard?nickname="+nickname+"&type=s";
       let wMemberPopupOption = "width=660, height=820, top=300px, left=500px, scrollbars=no, resizable=no";
       
       
@@ -518,12 +557,15 @@
          success:function(result){
            console.log(result);
             //console.log(nickname);
-            wMemberPopup = window.open(wMemberPopupUrl, "", wMemberPopupOption, nickname);
-            
+            wMemberPopup = window.open(wMemberPopupUrl, "memberPop", wMemberPopupOption, nickname);
+        	// 열리는 팝업을 배열에 담는 function 호출
+            openPopup("memberPop");
+            /*
             wMemberPopup.window.addEventListener("load", function(){
                wMemberPopup.writeMemberSellBuy(result);
             });
-            
+            */
+            //wMemberPopup.writeMemberSellBuy(result);
          }
       });
    }
@@ -653,12 +695,11 @@
 						//버튼 모양 바꾸기
 						wMemberPopup.$("#warningBtn").removeClass("Wbtn").addClass("WbtnDisabled");
 						wMemberPopup.$("#warningBtn").val("신고완료");
-						//onclick 속성 제거
-						wMemberPopup.$("#warningBtn").removeAttr("onclick");
-						} else {
-							var mwOpenedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
-							popChatArr[mwOpenedIdx].$("#mbWarning").addClass("text-danger");
-						}	
+						
+					} else {
+						console.log(popChat.getElementById("mbWarning"));
+						popChat.getElementById("mbWarning").classList.add("text-danger");
+					}	
 				}
 			}
 		});
@@ -674,26 +715,38 @@
 			url : "insertMemberWarning_ajax",
 			data : { "loginId" : "${sessionScope.loginId}", "wmedNickname" : wmedNickname },
 			success : function(insertResult){
-				console.log(insertResult);
-				var mwOpenedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
-				if( insertResult > 0 ){ // 신고 성공
+				console.log("신고 결과: "+insertResult);
+				console.log("함수호출한 자식 : " + $(popChat))
+				if( insertResult == 1 ){ // 신고 성공
 					
 					if(crcode == 'wMemberPopup'){
 						console.log("회원 정보에서 신고 성공")
 						wMemberPopup.successMemberWarning();
 						
-						} else {
-							console.log("채팅창에서 신고 성공")
-							var mwOpenedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
-							popChatArr[mwOpenedIdx].successMemberWarning();
-						}
+					} else {
+						console.log("채팅창에서 신고 성공")
+						popChat.successMemberWarning();
+
+					}
 					
 				} else { // 신고 실패
-					popChatArr[mwOpenedIdx].failMemberWarning();
+					
+					if(crcode == 'wMemberPopup'){	
+						console.log("회원 정보에서 신고 실패")
+						wMemberPopup.failMemberWarning2(insertResult);
+					} else {
+						console.log("채팅창에서 신고 실패")
+						popChat.failMemberWarning2(insertResult);
+					}
+					
 				}
+			},
+			error : function(){
+				console.log("회원 신고 - 연결실패");
 			}
 		});
 	}
+	
 	
 </script>
 

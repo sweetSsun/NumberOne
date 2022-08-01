@@ -5,12 +5,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 커뮤니티 메인</title>
+<title>1인자 - 커뮤니티</title>
 <!-- 부트스트랩 -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>   
 <!-- 부트스트랩 -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
-
+<link rel="stylesheet" href="${pageContext.request.contextPath }/resources/css/style.css" type="text/css">
 <style type="text/css">
 
 section{
@@ -104,7 +104,9 @@ section{
 	.max_contents{
 		width: max-content;
 	}
-
+	a:hover{
+		color: #00bcd4; 
+	}
 
 section div.checkout__form{
 	/* 페이지 제목 */
@@ -152,7 +154,7 @@ section div.checkout__form{
 			<section>
 
 		<!-- 페이지명 -->
-		<div class="checkout__form" style="margin-top: 30px;">커뮤니티 메인</div> 
+		<div class="checkout__form" style="margin-top: 30px;">커뮤니티</div> 
 			
 			<div class="container-fluid">
 
@@ -196,7 +198,7 @@ section div.checkout__form{
 				</div>	
 				<div class="row mb-3">
 					<div class="col-1 board_category">
-						<a href="selectNoticeBoardList"><span class="text-white">공지</span></a>
+						<a href="selectNoticeBoardList?NbCheck=NB"><span class="text-white">공지</span></a>
 					</div>
 					<div class="col-11 bg-white">
 						<table class="boardList">
@@ -354,44 +356,6 @@ section div.checkout__form{
 					</div>
 				</div>
 				
-				<!-- 공구게시판 -->
-				<div class="row mb-5" >
-					<div class="col-1 board_category">
-						<a href="#"><span class="text-white">공구</span></a>
-					</div>
-					<div class="col-5 bg-white">
-						<table class="boardList">
-							<c:forEach items="${boardList_Review }" end="2" var="board">
-								<c:if test="${board.bdcategory.equals('후기') }">
-									<tr>
-										<td class="tdTitle">
-										<div class="td_Div">
-											<a href="selectReviewBoardView${paging.makeQueryPage(board.bdcategory, bdtype, board.bdcode, paging.page) }">${board.bdtitle}
-												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
-										</div>
-										</td>
-									</tr>
-								</c:if>
-							</c:forEach>
-						</table>
-					</div>
-					<div class="col-6 bg-white">
-						<table class="boardList">
-							<c:forEach items="${boardList_Review }" begin="3" end="5" var="board">
-								<c:if test="${board.bdcategory.equals('후기') }">
-									<tr>
-										<td class="tdTitle">
-										<div class="td_Div">
-											<a href="selectReviewBoardView${paging.makeQueryPage(board.bdcategory, bdtype, board.bdcode, paging.page) }">${board.bdtitle}
-												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
-										</div>
-										</td>
-									</tr>
-								</c:if>
-							</c:forEach>
-						</table>
-					</div>
-				</div>				
 				<!-- 게시판 목록 종료 -->
 				<hr>
 				
