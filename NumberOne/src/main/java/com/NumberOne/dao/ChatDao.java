@@ -37,7 +37,7 @@ public interface ChatDao {
 
 	MemberDto selectCrfrMember(String mid);
 
-
+	ChatRoomDto selectCrMember(String crcode);
 
 	
 }
