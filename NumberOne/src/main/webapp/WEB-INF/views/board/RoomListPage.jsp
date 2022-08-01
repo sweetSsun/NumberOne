@@ -759,6 +759,7 @@ h4:hover{
 		console.log(mnickname+"로 검색 요청");
 		$("#searchText").val(mnickname);	
 		$("#searchTypeSel").val('bdnickname').prop("selected",true);
+		$("#actionForm").attr("action", "selectByRpnickname");
 		$("#actionForm").submit();
 		
 	}

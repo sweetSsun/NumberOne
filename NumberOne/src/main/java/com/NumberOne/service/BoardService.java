@@ -17,11 +17,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.NumberOne.dao.AdminDao;
 import com.NumberOne.dao.BoardDao;
 import com.NumberOne.dao.MemberDao;
+import com.NumberOne.dao.ResellDao;
 import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.NoticeDto;
 import com.NumberOne.dto.Paging;
 import com.NumberOne.dto.ReplyDto;
+import com.NumberOne.dto.UsedBoardDto;
 import com.google.gson.Gson;
 
 @Service
@@ -35,6 +37,9 @@ public class BoardService {
 	
 	@Autowired
 	private MemberDao mdao;
+	
+	@Autowired
+	private ResellDao rdao;
 	
 	@Autowired
 	private HttpServletRequest request;
@@ -457,10 +462,7 @@ public class BoardService {
 			for (int i = 0; i < roomList.size(); i++) {
 				System.out.println(roomList.get(i).getBdcode()+" "+roomList.get(i).getBdhits()+" "+roomList.get(i).getBdreply()+" "+roomList.get(i).getBdrecommend()+" "+roomList.get(i).getBdscrap());
 			}*/
-			
-			if(paging.getSearchType().equals("bdtitle||bdcontents")) {
-				paging.setSearchType("bdtc");
-			}
+
 			
 			//mav에 object와 view 저장
 			mav.addObject("paging", paging);
@@ -1461,6 +1463,33 @@ public class BoardService {
 		int insertResult = bdao.insertBoardReply_ajax(reply);
 		
 		return insertResult;
+	}
+
+	
+	//대댓글 닉네임 태그
+	public ModelAndView selectByRpnickname(Paging paging) {
+		System.out.println("BoardnService.selectByRpnickname() 호출");
+		ModelAndView mav = new ModelAndView();
+		
+		//일반글 조회
+		ArrayList<BoardDto> boardList = bdao.selectBoardList_Paging(paging);
+		mav.addObject("boardList", boardList);
+		
+		//자랑글 조회
+		ArrayList<BoardDto> roomList =bdao.selectRoomList_paging(paging);
+		mav.addObject("roomList", roomList);
+		
+		//중고글 조회
+		paging.setSellBuy("SB");	
+		paging.setSearchType("ubmid");
+		paging.setSearchVal("all");
+		ArrayList<UsedBoardDto> resellList = rdao.selectResellPageList(paging, "write");
+		mav.addObject("resellList", resellList);
+		
+		//setView
+		mav.setViewName("board/RpnicknameTag");
+		
+		return mav;
 	}
 
 
