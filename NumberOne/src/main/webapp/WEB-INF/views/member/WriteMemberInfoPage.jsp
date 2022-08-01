@@ -845,7 +845,7 @@ function warningPopup()  {
 
 	}
 	
-	// 채팅방 닫힘 이벤트 (부모창의 배열에서 제거)
+	// 팝업창 닫힘 이벤트 (부모창의 배열에서 제거)
 	window.onbeforeunload = function() {
 		console.log("사용자정보 닫힘");
 		opener.closePopup("memberPop");
