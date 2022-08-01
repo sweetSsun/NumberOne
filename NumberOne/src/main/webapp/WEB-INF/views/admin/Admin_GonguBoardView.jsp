@@ -31,6 +31,15 @@
 		width: -webkit-fill-available;
 		min-height: 20rem;
 	}
+	.textarea-GbView-2{
+		border: none; 
+		resize: none;
+		background-color: #eaf8ff; /* #F2F2FF; */
+		border-radius: 25px;
+		cursor: default;
+		height: fit-content;
+		
+	}
 	textarea:focus {
     	outline: none;
 	}
@@ -177,7 +186,11 @@
 							</c:if>
 						</div>
 						<div>
-							<textarea class="textarea-GbView" style="padding-bottom: 20px;" readonly>${gonguBoard.gbcontents }</textarea>
+							<textarea class="textarea-GbView" style="padding-bottom: 20px;" readonly>${gonguBoard.gb_contents }</textarea>
+							<div class="row">
+								<textarea class="textarea-GbView-2" style="width:70%; margin-right:5%;" readonly>${gonguBoard.gb_item_name }</textarea>
+								<textarea class="textarea-GbView-2" style="width:20%" readonly>${gonguBoard.gb_total_amount }</textarea>
+							</div>
 							<hr>
 							<textarea class="textarea-GbView" readonly>
 # 참여 방법
