@@ -168,7 +168,7 @@
 						<%-- <c:if test="${gongu.gbfix != 1 }"> --%>
 						<tr style="border-bottom: solid #E0E0E0 1px;">
 							<td class="text-center tableCell">${gongu.gbcode}</td>
-							<td class="bdcategory text-center tableCell">공구</td>
+							<td class="bdcategory text-center tableCell">진행</td>
 							<td class="tableCell">
 								<a href="selectGonguBoardView${paging.makeQueryPage(gongu.gbcode, paging.page)}">${gongu.gbtitle}
 							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;"></span> </a>

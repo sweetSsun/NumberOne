@@ -236,8 +236,16 @@
 			<div class="container">
 				<div class="row">
 					<div class="col">
-						<a href="selectGonguBoardList?gbstate=ing"><span class="fw-bold boardCategory"> | 공구게시판 : 진행중 </span></a> 
-						<%-- <span class="fw-bold" style="color:gray; font-size:20px">/</span> <a href="#"><span class="bdregion"> ${board.bdrgname}</span></a> --%>
+						<c:choose>
+						<c:when test="${gonguBoard.gbstate == 1 }">
+							<a href="selectGonguBoardList?gbstate=ing"><span class="fw-bold boardCategory"> | 공구게시판 : 진행중 </span></a> 
+							<%-- <span class="fw-bold" style="color:gray; font-size:20px">/</span> <a href="#"><span class="bdregion"> ${board.bdrgname}</span></a> --%>
+						</c:when>
+						<%-- <c:if test="${gonguBoard.gbstate == 2 }"> --%>
+						<c:otherwise>
+							<a href="selectGonguBoardList?gbstate=ing"><span class="fw-bold boardCategory"> | 공구게시판 : 진행완료 </span></a>
+						</c:otherwise>
+						</c:choose>
 					</div>
 				</div>
 				<div class="row" >
@@ -284,12 +292,22 @@
 					</div>
 					
 					
-					<!-- 참여 버튼 :: 진행중이면 나타나게하고 아니면 X -->
-					<c:if test="${gonguBoard.gbstate == 1 }">
+					<!-- 진행중이면 '참여' 버튼이 나타나게하고 진행완료면 '총 참여인원' 버튼이 나타나게. -->
+					<c:choose>
+					<c:when test="${gonguBoard.gbstate == 1 }">
 						<div>
 							<button type="button" class="attendBtn btnLightBlue btnPush" onclick="showGonguModal()">참여</button>
 						</div>
-					</c:if>
+					</c:when>
+					
+					<%-- <c:if test="${gonguBoard.gbstate == 2 }"> 진행완료되면 총 참여인원만 나타나게. 목록은 X --%>
+					<c:otherwise>
+						<div>
+							<button type="button" class="attendBtn btnLightBlue" style="width:300px; left:32%; cursor:default; box-shadow:0px -5px 0px 0px #1e8185;">총 참여 인원 ${gonguCount }명 </br> 참여해주셔서 감사합니다. </button>
+						</div>
+					</c:otherwise>
+					</c:choose>
+					
 					
 					<!-- 공동구매 결제API modal-->
 					<div class="modal fade" id="gonguModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -1044,8 +1062,8 @@ $("#inputReply").each(function () {
 	  				url : 'insertCheck_ajax',
 	  				async : false,
 	  				data:{
-						gnbcode:gbcode,
-						gmid:loginId
+						ggbcode:gbcode,
+						ggmid:loginId
 					},
 	  				success : function (check){
 	  					console.log("중복확인");
