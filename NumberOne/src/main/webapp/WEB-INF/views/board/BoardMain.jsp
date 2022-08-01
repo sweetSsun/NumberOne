@@ -356,44 +356,6 @@ section div.checkout__form{
 					</div>
 				</div>
 				
-				<!-- 공구게시판 -->
-				<div class="row mb-5" >
-					<div class="col-1 board_category">
-						<a href="#"><span class="text-white">공구</span></a>
-					</div>
-					<div class="col-5 bg-white">
-						<table class="boardList">
-							<c:forEach items="${boardList_Review }" end="2" var="board">
-								<c:if test="${board.bdcategory.equals('후기') }">
-									<tr>
-										<td class="tdTitle">
-										<div class="td_Div">
-											<a href="selectReviewBoardView${paging.makeQueryPage(board.bdcategory, bdtype, board.bdcode, paging.page) }">${board.bdtitle}
-												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
-										</div>
-										</td>
-									</tr>
-								</c:if>
-							</c:forEach>
-						</table>
-					</div>
-					<div class="col-6 bg-white">
-						<table class="boardList">
-							<c:forEach items="${boardList_Review }" begin="3" end="5" var="board">
-								<c:if test="${board.bdcategory.equals('후기') }">
-									<tr>
-										<td class="tdTitle">
-										<div class="td_Div">
-											<a href="selectReviewBoardView${paging.makeQueryPage(board.bdcategory, bdtype, board.bdcode, paging.page) }">${board.bdtitle}
-												<span class="text-info fw-bold" style="font-size:15px;">&nbsp;${board.bdrpcount }</span></a>
-										</div>
-										</td>
-									</tr>
-								</c:if>
-							</c:forEach>
-						</table>
-					</div>
-				</div>				
 				<!-- 게시판 목록 종료 -->
 				<hr>
 				

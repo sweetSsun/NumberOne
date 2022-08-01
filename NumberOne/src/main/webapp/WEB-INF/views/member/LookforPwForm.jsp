@@ -147,7 +147,7 @@ background-color: #00BCD4;
 	
   
 	
-	  <%--  현석 :  mail API 에러 때문에 주석처리 시작
+	  <%--  현석 :  mail API 에러 때문에 주석처리 시작--%>
 	<script type="text/javascript">
 
 		
@@ -172,7 +172,7 @@ background-color: #00BCD4;
 				
 					success : function(result){
 						if(result.length != 0) {
-							$("#resultLookforPwMsg").text("메일로 임시비밀번호를 발송하였습니다.").css("color" , "green");    
+							$("#resultLookforPwMsg").text("메일로 인증번호를 발송하였습니다.").css("color" , "green");    
 							//임시 비밀번호 생성 메소드 연결
 							//location.href = "${pageContext.request.contextPath}/updatePw?mid="+checkMid+"&memail="+checkMemail;
 							
@@ -191,7 +191,7 @@ background-color: #00BCD4;
 		}
 	
 	</script>
-현석 :  mail API 에러 때문에 주석처리 끝 --%>
+ <%--현석 :  mail API 에러 때문에 주석처리 끝 --%>
 	<!-- ra 메세지 -->
 	<script type="text/javascript">
 		var checkMsg = '${msg}';

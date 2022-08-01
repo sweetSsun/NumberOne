@@ -101,7 +101,7 @@
 		<div style="min-height: 80px;" id="scroll-board"></div>
 		<!-- 본문 -->
 			<div class="container">
-				<div class="checkout__form" style="margin-top: 30px;"><h4>마이페이지 커뮤니티</h4></div>
+				<div class="checkout__form" style="margin-top: 30px;">마이페이지 커뮤니티</div>
 				<br>
 				<br>
 				<!-- 작성글 목록 -->

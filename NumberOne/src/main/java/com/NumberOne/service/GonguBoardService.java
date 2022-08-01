@@ -359,7 +359,7 @@ public class GonguBoardService {
 	   return mav;	     
    }
 	   
-   //공지글상세 페이지 이동
+   //공구글상세 페이지 이동
 	public ModelAndView selectGonguBoardView(String gbcode, Paging paging) {
 		System.out.println("BoardService.selectGonguBoardView() 호출");
 		
@@ -367,7 +367,7 @@ public class GonguBoardService {
 
 		System.out.println("gbcode:" + gbcode);
 
-		// 공지글 조회수 업데이트
+		//공구글 조회수 업데이트
 		gbdao.updateGonguBdHits(gbcode);
 		GonguBoardDto gonguBoard = gbdao.selectGonguBoardView(gbcode);
 		System.out.println(gonguBoard);
@@ -375,10 +375,14 @@ public class GonguBoardService {
 		mav.addObject("gonguBoard", gonguBoard);
 		mav.addObject("paging", paging);
 
+		// 공구 참여회원 수 불러오기
+		int gonguCount = gbdao.admin_selectGonguAttendCount(gbcode);
+		System.out.println("gongu : "+gonguCount);
+		mav.addObject("gonguCount", gonguCount);
 		
 		mav.setViewName("gongu/GonguBoardView");
 			
-		// 공구 회원정보 불러오기
+		//공구 회원정보 불러오기
 		String loginId = (String) session.getAttribute("loginId");
 		
 		if(loginId == null) {
@@ -387,7 +391,7 @@ public class GonguBoardService {
 		} else {
 			System.out.println("로그인 된 아이디 : " + loginId);
 			MemberDto memberInfo = mdao.selectMyInfoMemberView(loginId);
-			mav.addObject("memberInfo", memberInfo);							
+			mav.addObject("memberInfo", memberInfo);
 		}			
 	
 		return mav;
@@ -412,9 +416,9 @@ public class GonguBoardService {
 	}
 		
 	//공구 참여내역 DB 찾기
-	public String insertCheck_ajax(String gnbcode, String gmid) {
+	public String insertCheck_ajax(String ggbcode, String ggmid) {
 		System.out.println("insertCheck_ajax() 호출");
-		String gonguSelect = gbdao.insertCheck_ajax(gnbcode, gmid);
+		String gonguSelect = gbdao.insertCheck_ajax(ggbcode, ggmid);
 		return gonguSelect;
 	}
 }
