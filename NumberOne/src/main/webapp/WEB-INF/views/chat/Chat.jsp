@@ -380,7 +380,7 @@
 	  		success : function(result){
 	  			if (result == "2"){ 
 	  				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
-	  					opener.closeChat(crcode);
+	  					opener.closePopup(crcode);
 	  					opener.location.href = "loadToLogin";
 	  					opener.focus();
 	  					window.close();
@@ -516,7 +516,7 @@
 	// 채팅방 닫힘 이벤트 (부모창의 배열에서 제거)
 	window.onbeforeunload = function() {
 		console.log("채팅방 닫힘");
-		opener.closeChat(crcode);
+		opener.closePopup(crcode);
 	};
 </script>
 
