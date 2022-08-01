@@ -422,21 +422,10 @@ public class MemberController {
 			System.out.println("임시번호 변경 할 아이디 :" +mid);
 			System.out.println("임시번호 변경 할 비번 :" +mpw);
 			
-			mav = new ModelAndView();
-			
-/*			if(mpw.equals("")) {
-				
-				mav = msvc.updateTemporaryNum(ra, mid , mpw);
-				ra.addFlashAttribute("msg" , "변경된 비밀번호가 없습니다.\n 재인증 하시기 바랍니다.");
-				//mav.addObject("checkId", mid);
-				//mav.setViewName("member/TemporaryNumForm");	
+				mav = new ModelAndView();
 
-			}else {*/
-				
 				mav = msvc.updateTemporaryNum(ra, mid , mpw);
-				/* } */
-			
-	
+
 		return mav;
 
 		}
