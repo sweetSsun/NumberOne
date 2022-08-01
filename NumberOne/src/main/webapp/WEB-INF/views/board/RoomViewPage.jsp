@@ -360,6 +360,12 @@ section div.checkout__form{
     font-size : 24px;
 }
 
+.btn-numberone{
+	/* 글쓰기 버튼 */
+	background-color : #00bcd4;
+	font-size : 1.5rem;
+	color : white;
+}
 </style>
 </head>
 <body>
@@ -399,8 +405,8 @@ section div.checkout__form{
 					<div class="col-11"></div>
 					<div class="col-1">
 						<!-- 글쓰기 버튼 -->
-						<c:if test="${sessionScope.loginId != null}">
-							<button class="btn btn-primary btn-lg" onclick="location.href='${pageContext.request.contextPath }/loadToWriteRoom'">글쓰기</button>
+						<c:if test="${sessionScope.loginId != null && sessionScope.loginId != 'admin'}">
+							<button type="button" class="btn btn-numberone" onclick="location.href='${pageContext.request.contextPath }/loadToWriteRoom'">글쓰기</button>
 						</c:if>
 					</div>
 					
@@ -598,6 +604,18 @@ roomView_ajax(nowBdcode)
 	function roomView_ajax(bdcode){
 		console.log(bdcode+"번글 roomView() 호출");
 		nowBdcode = bdcode; 
+		
+		//상세 보기 div 초기화
+		$("#roomMprofile").html("");
+		  $("#roomMnickname").html("");
+		  $("#roomContents").html("");
+		  $("#reply").html("");
+		  nowRpcode = "";
+		  nowRpmid = "";
+		  nowWb = "";
+		  nowModalNum = null;
+		  nowRpparent ="";
+		  $("#inputReply").val("");
 		
 		$.ajax({
 			type : "get",
