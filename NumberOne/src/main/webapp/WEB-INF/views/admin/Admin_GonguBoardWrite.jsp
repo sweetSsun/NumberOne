@@ -79,7 +79,7 @@
 				<div class="checkout__form">공구게시판 - 글작성</div>
 				
 				<div>
- 				<form action="admin_insertBoardWrite" method="post" enctype="multipart/form-data" onsubmit="return inputCheck()">
+ 				<form action="admin_insertGonguWrite" method="post" enctype="multipart/form-data" onsubmit="return inputCheck()">
 				<div class="row">
 					<input type="text" id="title" class="bdtitle" name="gbtitle" placeholder="제목을 입력하세요" maxlength="50">
 				</div>
@@ -152,7 +152,7 @@
 	// 공지글 작성 취소
 	function writeBoardCancel(){
 		console.log("취소 버튼 클릭");
-		location.href="admin_selectBoardList?${paging.makeQueryPage(paging.page)}";
+		location.href="admin_selectGonguList?${paging.makeQueryPage(paging.page)}";
 	}
 	
 	// 제목, 내용 입력됐는지 확인

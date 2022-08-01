@@ -11,7 +11,7 @@
 </body>
 <script type="text/javascript">
 
-	alert("결제 실패했습니다. 다시 결제해주세요");	
+	alert("결제실패했습니다. 다시 결제해주세요");	
 	opener.location.reload();
 	window.close();
 	

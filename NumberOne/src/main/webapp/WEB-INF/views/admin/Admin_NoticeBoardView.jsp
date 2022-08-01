@@ -21,6 +21,12 @@
 		margin: auto;
 		margin-top: 0%;
 	}
+	#inputReply{
+		border: none;
+		width: -webkit-fill-available;
+		resize: none;
+		height: auto;
+	}
 	.textarea-NbView{
 		border: none;
 		resize: none;
@@ -114,7 +120,7 @@
 							<c:if test="${noticeBoard.nbimg != null }">
 								<img alt="" src="${pageContext.request.contextPath }/resources/img/noticeUpLoad/${noticeBoard.nbimg}" style="max-width:100%; max-height:500px;">
 							</c:if>
-							<textarea class="textarea-NbView" readonly>${noticeBoard.nbcontents }</textarea>
+							<textarea id="inputReply" readonly>${noticeBoard.nbcontents }</textarea>
 						</div>
 					</div>
 				</form>
@@ -190,6 +196,18 @@
 		});
 	});
 	
+</script>
+
+<script type="text/javascript">
+
+/* Textarea 높이 자동 조절 ( 스크롤바 없애기 ) */
+$("#inputReply").each(function () {
+	this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
+	}).on('input', function () {
+	this.style.height = 'auto';
+	this.style.height = (this.scrollHeight) + 'px';
+	});
+
 </script>
 
 </body>
