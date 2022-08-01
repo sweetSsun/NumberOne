@@ -131,20 +131,20 @@
 						
 						<c:choose>
 						
-						<c:when test="${gongu.gnbstate == 2}">
+						<c:when test="${gongu.ggbstate == 2}">
 							<tr style="border-bottom: solid #E0E0E0 1px;  color:gray; text-align: center; ">
-								<td style="text-decoration : line-through;">${gongu.gnbcode }</td>
-								<td><span style="text-decoration : line-through;" class="delete_leng">${gongu.gnbtitle }</span></td>
-								<td style="text-decoration : line-through;">${gongu.gdate }</td>
+								<td style="text-decoration : line-through;">${gongu.ggbcode }</td>
+								<td><span style="text-decoration : line-through;" class="delete_leng">${gongu.ggbtitle }</span></td>
+								<td style="text-decoration : line-through;">${gongu.ggdate }</td>
 								<td>진행완료</td>
 							</tr>						
 						</c:when>					
 						
 						<c:otherwise>
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center; ">
-							<td>${gongu.gnbcode }</td>
-							<td><a href="selectNoticeBoardView?codeIdx=${gongu.gnbcode }" class="text_leng">${gongu.gnbtitle }</a></td>
-							<td>${gongu.gdate }</td>
+							<td>${gongu.ggbcode }</td>
+							<td><a href="selectNoticeBoardView?codeIdx=${gongu.ggbcode }" class="text_leng">${gongu.ggbtitle }</a></td>
+							<td>${gongu.ggdate }</td>
 							<td>진행중</td>
 							</tr>
 						</c:otherwise> 

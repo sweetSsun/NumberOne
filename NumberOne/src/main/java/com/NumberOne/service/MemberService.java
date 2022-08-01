@@ -1137,7 +1137,6 @@ public class MemberService {
 			  System.out.println("MemberService.updateTemporaryNum() 호출"); 
 			
 		if (mpw.equals("")) {
-			
 			mav.addObject("checkId", mid);
 			mav.setViewName("member/TemporaryNumForm");
 			

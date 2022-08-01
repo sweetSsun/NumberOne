@@ -424,17 +424,17 @@ public class MemberController {
 			
 			mav = new ModelAndView();
 			
-			if(mpw.equals("")) {
+/*			if(mpw.equals("")) {
 				
 				mav = msvc.updateTemporaryNum(ra, mid , mpw);
 				ra.addFlashAttribute("msg" , "변경된 비밀번호가 없습니다.\n 재인증 하시기 바랍니다.");
 				//mav.addObject("checkId", mid);
 				//mav.setViewName("member/TemporaryNumForm");	
 
-			}else {
+			}else {*/
 				
 				mav = msvc.updateTemporaryNum(ra, mid , mpw);
-			}
+				/* } */
 			
 	
 		return mav;

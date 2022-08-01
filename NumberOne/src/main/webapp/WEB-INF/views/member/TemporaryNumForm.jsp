@@ -192,22 +192,22 @@ background-color: white;
 						obj.html(obj.html().replace(/\n/g,'<br/>'));
 						$("#findButton").css("display", "none");
 						var output = "";
-						output+="<form action=\"updateTemporaryNum\" method=\"post\" enctype=\"multipart/form-data\ onsubmit=\"return joinFormCheck()\">"
+						output+="<form action=\"updateTemporaryNum\" method=\"post\" enctype=\"multipart/form-data\" onsubmit=\"return joinFormCheck()\">";
 						
-						output +="<div class=\"checkout__input\" style=\"text-align: center;\">"
-						output +="<input type=\"hidden\" value=\"${checkId }\" id=\"checkMid\" name=\"mid\"style=\"width: 400px;\"> "							
-						output +="<input type=\"password\" id=\"changeMpw\" name=\"mpw\" style=\"width: 400px;\" placeholder=\"변경할 비밀번호를 입력해주세요.\">"
-							output +="<span id=\"pwCheckMsg\" class=\"msg\"></span>"
-						output +="</div>"
+						output +="<div class=\"checkout__input\" style=\"text-align: center;\">";
+						output +="<input type=\"hidden\" value=\"${checkId }\" id=\"checkMid\" name=\"mid\"style=\"width: 400px;\"> ";							
+						output +="<input onkeyup='pwlengthch()' type=\"password\" id=\"changeMpw\" name=\"mpw\" style=\"width: 400px;\" placeholder=\"변경할 비밀번호를 입력해주세요.\">";
+							output +="<p id=\"pwCheckMsg\" class=\"msg\"></p>";
+						output +="</div>";
 							
-						output +="<div class=\"checkout__input\" style=\"text-align: center;\">"
-						output +="<input type=\"password\" id=\"reCheckMpw\"  name=\"reCheckMpw\" style=\"width: 400px;\"  placeholder=\"비밀번호를 다시 확인해주세요.\"> "
-							output +="<span id=\"pwReCheckMsg\" class=\"msg\"></span>"
-						output +="</div>"
+						output +="<div class=\"checkout__input\" style=\"text-align: center;\">";
+						output +="<input onkeyup='repwlengthch()' type=\"password\" id=\"reCheckMpw\"  name=\"reCheckMpw\" style=\"width: 400px;\"  placeholder=\"비밀번호를 다시 확인해주세요.\"> ";
+							output +="<p id=\"pwReCheckMsg\" class=\"msg\"></p>";
+						output +="</div>";
 						
-						output +="<button type=\"submit\" onclick = \"location.href = 'loadToLogin' \" class=\"site-btn\" style=\"border-radius: 4px; margin-left: 39%;\">비밀번호 변경하기</button>"						
+						output +="<button type=\"submit\" class=\"site-btn\" style=\"border-radius: 4px; margin-left: 39%;\">비밀번호 변경하기</button>";						
 						
-						output+="</form>"
+						output+="</form>";
 						
 						$("#TemporaryNumResult").html(output);  
 						
@@ -233,9 +233,10 @@ var inputPwCheck = false;
 
 <!-- 비밀번호 길이 확인 -->
 
-	$("#changeMpw").keyup(function(){
-		//var changeMpw = $("#changeMpw").val();
-		//console.log("changeMpw : " + changeMpw);
+	function pwlengthch(){
+		console.log("비밀번호 길이 확인 함수 호출");
+		
+		changeMpw = $("#changeMpw").val();
 		if( changeMpw.length == 0 ){
 			$("#pwCheckMsg").css("color","red").text("비밀번호를 입력해주세요.");
 			inputPwCheck = false;
@@ -247,12 +248,16 @@ var inputPwCheck = false;
 			inputPwCheck = true;
 			
 		}
-	});
+	}
 	</script>
 	
 	
 <!-- 비밀번호 재확인 -->
 <script type="text/javascript">
+
+function repwlengthch(){
+	console.log("재확인 비번 길이 확인 함수 호출");
+
 	$("#reCheckMpw").keyup(function(){
 		var changeMpw = $("#changeMpw").val();
 		console.log("changeMpw : " + changeMpw);
@@ -268,6 +273,8 @@ var inputPwCheck = false;
 			
 		}
 	});
+	
+}
 	</script>
 
 

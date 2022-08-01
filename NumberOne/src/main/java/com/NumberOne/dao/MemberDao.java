@@ -156,7 +156,7 @@ public interface MemberDao {
 	int selectMemberEmail_ajax(String inputEmail);
 	
 	//마이페이지_공구
-	@Select("SELECT GNBCODE, NBTITLE AS GNBTITLE, GDATE, NBSTATE AS GNBSTATE, GMID FROM NOTICEBOARDS, GONGU WHERE GNBCODE = NBCODE AND GMID = #{loginId}")
+	@Select("SELECT GGBCODE, NBTITLE AS GGBTITLE, GGDATE, NBSTATE AS GGBSTATE, GGMID FROM NOTICEBOARDS, GONGU WHERE GGBCODE = NBCODE AND GGMID = #{loginId}")
 	ArrayList<GonguDto> selectMyInfoGonguView(String loginId);	
 
 	//임시번호 확인 요청
