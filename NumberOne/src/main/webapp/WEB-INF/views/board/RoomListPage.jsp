@@ -648,7 +648,7 @@ h4:hover{
  				<c:choose>
  					<c:when test="${sessionScope.loginId != null }">
 		 				<textarea class="scroll" id="inputReply" placeholder="댓글 달기..." style="height:60px;" onkeydown="replyEnter(event)"></textarea>&nbsp;&nbsp;
-		 				<button onclick='replyResister()'>게시</button>
+		 				<button onclick='replyResister()' style="background-color:#00bcd4; color: aliceblue; font-size: medium;">게시</button>
  					</c:when>
  					<c:otherwise>
 		 				<textarea class="scroll" id="inputReply" type="text" readonly="readonly" placeholder="로그인 후 이용 가능합니다" style="height:60px;"></textarea>&nbsp;&nbsp;
