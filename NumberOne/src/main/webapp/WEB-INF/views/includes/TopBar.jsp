@@ -211,7 +211,7 @@
 							</li>
 <!--  								
 							<!-- 로그아웃 -->
- 							<li style="margin-right: 15px;"><a href="selectMemberLogout" id="logoutBtn">로그아웃</a></li>
+ 							<li style="margin-right: 15px;"><a href="#" id="logoutBtn">로그아웃</a></li>
 							<!-- 고객센터(문의)	-->				
 							<li ><a href="selectMyInfoQuestionListView">고객센터</a></li>
 						</c:otherwise>
@@ -233,9 +233,9 @@
       console.log("모든 팝업창 닫기");
       popArr = JSON.parse( localStorage.getItem('${sessionScope.loginId}') );
       console.log("닫으려는 팝업창 : " + popArr);
-      console.log("popArr.length : " + popArr.length);
-      const length = popArr.length;
+      //console.log("popArr.length : " + popArr.length);
       if (popArr != null){
+         const length = popArr.length;
          
          for (var i = 0; i < length; i++){
             console.log("실행");         
@@ -247,7 +247,7 @@
       location.href="${pageContext.request.contextPath}/selectMemberLogout"; // 로그아웃
    });
    
-</script>   
+</script>  
    
    
 <!-- 채팅 관련 스크립트 -->
