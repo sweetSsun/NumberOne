@@ -629,10 +629,14 @@ if(resellTitle.options[resellTitle.selectedIndex].value == 'B'){
 			alert("내용을 입력하세요");
 			checkForm = false;
 		} 		
+		
+		)
 		else if (document.getElementById("mainImg").value === '') {
+			if(resellTitle.value === 'S'){				
 			alert("대표 사진은 필수 사항입니다!");
 			document.getElementById("mainImg").focus();
 			checkForm = false;
+			}
 		}			
 		else{
 			
@@ -665,7 +669,7 @@ if(resellTitle.options[resellTitle.selectedIndex].value == 'B'){
 
 <!-- 취소버튼클릭 이벤트핸들러 스크립트  -->
 <script type="text/javascript">
-const storage = window.ltrueStorage; 
+const storage = window.localStorage; 
 
 //기본값 (스토리지에 아이템 없을 때 사용)
 let searchType = '';
@@ -699,7 +703,7 @@ if(storage.getItem('page') !=null ){
 
 		console.log("취소버튼 클릭이벤트");
 		
-		location.//ef = 'selectResellPageList?sellBuy='+ubsellbuy+'&searchType='+searchType+'&keyword='+keyword+'&searchVal='+selRegion+'&page='+page;
+		location.ef = 'selectResellPageList?sellBuy='+ubsellbuy+'&searchType='+searchType+'&keyword='+keyword+'&searchVal='+selRegion+'&page='+page;
 	}
 
 </script>

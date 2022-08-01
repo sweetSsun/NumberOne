@@ -105,7 +105,7 @@ public class HomeController {
 	    
 		// 중고거래 팔구 목록 불러오기 /selectResellSellList
 	    Paging paging = new Paging();
-	    String pageCheck = "Main";
+	    String pageCheck = "HomepageMain";
 	    
 	    if((String) session.getAttribute("loginRegion") != null) {
 			paging.setSearchVal(rdao.selectRegionCode((String) session.getAttribute("loginRegion")));				
