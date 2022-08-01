@@ -679,6 +679,7 @@ function chatInsert_Ajax() {
 			if (result == "2"){ 
 				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
 					opener.location.href = "loadToLogin"
+					opener.closePopup("memberPop");
 					window.close();
 					return;
 				}
@@ -726,7 +727,9 @@ console.log("wmedNickname : " + wmedNickname);
 console.log("loginId : " + loginId);
 
 //신고버튼 클릭
-warningBtn.addEventListener('click', warningPopup);
+if(warningBtn != null){
+	warningBtn.addEventListener('click', warningPopup);
+}
 
 function warningPopup()  {
 	var check = false;
@@ -738,11 +741,11 @@ function warningPopup()  {
 		success : function(result){
 			if (result == "2"){ 
 				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
-					//opener.location.href = "loadToLogin"
-					//opener.closeMini('wMemberPopup');
-					check = true;
+					//check = true;
 					//창닫기(안됨)
-					
+					opener.closePopup("memberPop");
+					opener.closeMini('memberPop');
+					//opener.location.href = "loadToLogin"
 					
 				}
 				
@@ -841,6 +844,12 @@ function warningPopup()  {
 		alert("회원 신고에 실패했습니다");
 
 	}
+	
+	// 팝업창 닫힘 이벤트 (부모창의 배열에서 제거)
+	window.onbeforeunload = function() {
+		console.log("사용자정보 닫힘");
+		opener.closePopup("memberPop");
+	};
 	
 </script>
 

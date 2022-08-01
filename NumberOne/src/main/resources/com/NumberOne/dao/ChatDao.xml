@@ -120,11 +120,17 @@
 	
 	<!-- 채팅방의 상대방 프로필 이미지 조회 -->
 	<select id="selectCrfrMember" resultType="com.NumberOne.dto.MemberDto">
-		SELECT MNICKNAME, MPROFILE
+		SELECT MNICKNAME, MPROFILE, MSTATE
 		FROM MEMBERS
 		WHERE MID = #{mid}
 	</select>
 	
+	<!-- 채팅방 참여자 조회 -->
+	<select id="selectCrMember" resultType="com.NumberOne.dto.ChatRoomDto">
+		SELECT CRCODE, CRFRMID, CRTOMID
+		FROM CHATROOM
+		WHERE CRCODE = #{crcode}
+	</select>
 
 	
 </mapper>

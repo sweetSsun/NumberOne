@@ -102,7 +102,7 @@
 		
 		<section>
 			<!-- 페이지명 -->
-			<div class="checkout__form" style="margin-top: 30px;">공구게시판 : 진행완료</div>		
+			<div class="checkout__form" style="margin-top: 30px;">공구게시판</div>		
 
 		<!-- 본문 -->
 			<form action="selectGonguBoardList?gbstate=ing" method="get" id="actionForm">
@@ -167,7 +167,7 @@
 						<c:if test="${gongu.gbstate == 2 }">
 						<tr style="border-bottom: solid #E0E0E0 1px;">
 							<td class="text-center tableCell">${gongu.gbcode}</td>
-							<td class="bdcategory text-center tableCell">공구</td>
+							<td class="bdcategory text-center tableCell">완료</td>
 							<td class="tableCell">
 								<a href="selectGonguBoardView${paging.makeQueryPage(gongu.gbcode, paging.page)}">${gongu.gbtitle}
 							 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;"></span> </a>

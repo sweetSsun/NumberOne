@@ -672,9 +672,9 @@ public class BoardService {
 	public String selectBoardReplyList_ajax(String bdcode) {
 		System.out.println("BoardService.selectBoardReplyList_ajax() 호출");
 
-		ArrayList<ReplyDto> replyList = bdao.selectBoardReplyList(bdcode);
+		ArrayList<ReplyDto> replyList = bdao.selectBoardReplyList2(bdcode);
 		// System.out.println(replyList);
-
+		
 		// 프로필 사진 없는 경우 rpprofile에 nomprofile 저장
 		for (int i = 0; i < replyList.size(); i++) {
 			if (replyList.get(i).getRpprofile() == null) {
@@ -1415,6 +1415,77 @@ public class BoardService {
 		
 		return insertResult;
 	}
+
+	//댓글 등록(+ 대댓글 기능) 
+	public int insertBoardReply_ajax(ReplyDto reply) {
+		System.out.println("BoardnService.insertBoardReply_ajax (+ 대댓글) 호출");
+		
+	      String maxRpcode = bdao.selectReplyMaxNumber();
+	      //System.out.println("maxRpcode : " + maxRpcode);
+	      String rpcode = "RP";
+
+	      if (maxRpcode == null) {
+	         rpcode = rpcode + "00001";
+	      } else {
+	    	  
+	         String rpcode_stirng = maxRpcode.substring(4);
+	         int rpcode_num = Integer.parseInt(rpcode_stirng) + 1;
+
+	         if (rpcode_num < 10) {
+	            rpcode = rpcode + "0000" + rpcode_num;
+	         } else if (rpcode_num < 100) {
+	            rpcode = rpcode + "000" + rpcode_num;
+	         } else if (rpcode_num < 1000) {
+	            rpcode = rpcode + "00" + rpcode_num;
+	         } else if (rpcode_num < 10000) {
+	            rpcode = rpcode + "0" + rpcode_num;
+	         } else {
+	            rpcode = rpcode + rpcode_num;
+	         }
+	      }
+	      
+	    //set rpcode  
+	    reply.setRpcode(rpcode); 
+	    
+		int insertResult = bdao.insertBoardReply_ajax(reply);
+		
+		return insertResult;
+	}
+
+
+	
+	
+	/*공동구매&공구-진행완료 게시판 이동 및 검색 
+	   public ModelAndView selectGonguEndBoardList(Paging paging) {
+		   System.out.println("BoardService.selectGonguEndBoardList() 호출");
+		   
+		   ModelAndView mav = new ModelAndView();
+		   
+		   //페이징 
+		   if(paging.getKeyword() == null) {
+			   paging.setKeyword("");
+		   }
+		   
+		   //고정공지
+		   ArrayList<NoticeDto> noticeList_fix = bdao.selectNoticeList();
+		   			   
+		   int totalCount = bdao.selectGonguTotalCount(paging);
+		   paging.setTotalCount(totalCount);
+		   paging.calc(); // 페이지 처리 계산 실행 
+		   System.out.println(paging);
+		   
+		   ArrayList<NoticeDto> GonguEndList = bdao.selectGonguEndBoardList(paging);
+		   System.out.println(GonguEndList);
+		   
+		   mav.addObject("noticeList_fix", noticeList_fix);
+		   mav.addObject("noticeList", GonguEndList);
+		   mav.addObject("paging", paging);
+		   mav.setViewName("gongu/GonguBoardEndList");			   
+		   return mav;
+		   
+		   
+	   }*/
+
 	   
 	   
 }

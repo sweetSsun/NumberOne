@@ -211,7 +211,7 @@
 							</li>
 <!--  								
 							<!-- 로그아웃 -->
- 							<li style="margin-right: 15px;"><a href="selectMemberLogout">로그아웃</a></li>
+ 							<li style="margin-right: 15px;"><a href="#" id="logoutBtn">로그아웃</a></li>
 							<!-- 고객센터(문의)	-->				
 							<li ><a href="selectMyInfoQuestionListView">고객센터</a></li>
 						</c:otherwise>
@@ -233,9 +233,9 @@
       console.log("모든 팝업창 닫기");
       popArr = JSON.parse( localStorage.getItem('${sessionScope.loginId}') );
       console.log("닫으려는 팝업창 : " + popArr);
-      console.log("popArr.length : " + popArr.length);
-      const length = popArr.length;
+      //console.log("popArr.length : " + popArr.length);
       if (popArr != null){
+	      const length = popArr.length;
          
          for (var i = 0; i < length; i++){
             console.log("실행");         
@@ -254,8 +254,7 @@
 <script type="text/javascript">
 /* 채팅관련 스크립트 */
    var popChat;       // 채팅팝업 이름
-   //var popChatArr = []; // 현재 떠있는 채팅 팝업창을 담을 배열
-   var popArr = []; // 현재 떠있는 채팅 팝업창을 담을 배열
+   var popArr = []; // 현재 떠있는 팝업창을 담을 배열
    
    // 채팅 버튼 클릭시 채팅창 팝업되면서 기존 채팅방 메세지 목록 데이터 보내주는 함수
    function popupChat(crcode, crfrmnickname, crfrmprofile){
@@ -275,43 +274,48 @@
                  return;
               }
 
-            $.ajax({
+            // 팝업창 열기
+            popChat = window.open(openUrl, crcode, popOption); 
+            openPopup(crcode);
+           /*  $.ajax({
                url: "selectChatRoomMessage",
                data: {"crcode":crcode},
                async:false,
                dataType:"json",
                success:function(data){
-                  // 팝업창 열기
-                  popChat = window.open(openUrl, crcode, popOption); 
                   popChat.window.addEventListener("load", function(){
-                     popChat.enterRoom(data); // 채팅방 목록 불러오기
-                     popChat.crfrMbInfo(crfrmnickname, crfrmprofile);
-                   });
-                  // Storage에 있으면 배열에 담기
-                  if (localStorage.getItem('${sessionScope.loginId}') != null){ 
-                     popArr = JSON.parse( localStorage.getItem('${sessionScope.loginId}') );
-                  }
-                  // 해당 채팅방 팝업이 열려있지 않으면 popArr에 담기
-                  if (!popArr.includes(crcode)) {  
-                     popArr.push(crcode);
-                  } 
-                  localStorage.removeItem('${sessionScope.loginId}');
-                  localStorage.setItem('${sessionScope.loginId}', JSON.stringify(popArr));
-                  console.log("스토리지 확인 : " + popArr);
+                     //popChat.enterRoom(data); // 채팅방 목록 불러오기
+                    // popChat.crfrMbInfo(crfrmnickname, crfrmprofile);
+                  });
                }
-            });
+            }); */
             
 
          }
       });
    }
    
+   // 특정 팝업창 열릴 경우 배열에 추가하는 함수
+   function openPopup(winName) {
+	   // Storage에 있으면 배열에 담기
+	   if (localStorage.getItem('${sessionScope.loginId}') != null){ 
+	      popArr = JSON.parse( localStorage.getItem('${sessionScope.loginId}') );
+	   }
+	   // 해당 채팅방 팝업이 열려있지 않으면 popArr에 담기
+	   if (!popArr.includes(winName)) {  
+	      popArr.push(winName);
+	   } 
+	   localStorage.removeItem('${sessionScope.loginId}');
+	   localStorage.setItem('${sessionScope.loginId}', JSON.stringify(popArr));
+	   console.log("스토리지 확인 : " + popArr);
+   }
+   
    // 특정 채팅방(자식창) 닫힐 경우 배열에서 제거하는 함수
-   function closeChat(crcode){
-      console.log("채팅방 닫힘");
-      let index = popArr.indexOf(crcode);
+   function closePopup(winName){
+      console.log("팝업창 닫힘");
+      let index = popArr.indexOf(winName);
       popArr.splice(index, 1);
-      console.log("popArr : " + popArr);
+      console.log("닫힌 후 popArr : " + popArr);
       localStorage.removeItem('${sessionScope.loginId}');
       localStorage.setItem('${sessionScope.loginId}', JSON.stringify(popArr));
       
@@ -479,6 +483,8 @@
 			        	//열려있는 팝업창인지 확인 
 			        	console.log(result);	 
 			        	 wMemberPopup = window.open(wMemberPopupUrl, "memberPop", wMemberPopupOption, nickname);
+			        	 // 열리는 팝업을 배열에 담는 function 호출
+			        	 openPopup("memberPop");
 			        	 /*
 			        	 wMemberPopup.window.addEventListener("load", function(){
 			        		 console.log("자식창 로드시 실행되는 함수 연결") 			
@@ -552,7 +558,8 @@
            console.log(result);
             //console.log(nickname);
             wMemberPopup = window.open(wMemberPopupUrl, "memberPop", wMemberPopupOption, nickname);
-
+        	// 열리는 팝업을 배열에 담는 function 호출
+            openPopup("memberPop");
             /*
             wMemberPopup.window.addEventListener("load", function(){
                wMemberPopup.writeMemberSellBuy(result);
@@ -689,10 +696,10 @@
 						wMemberPopup.$("#warningBtn").removeClass("Wbtn").addClass("WbtnDisabled");
 						wMemberPopup.$("#warningBtn").val("신고완료");
 						
-						} else {
-							var mwOpenedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
-							popChatArr[mwOpenedIdx].$("#mbWarning").addClass("text-danger");
-						}	
+					} else {
+						console.log(popChat.getElementById("mbWarning"));
+						popChat.getElementById("mbWarning").classList.add("text-danger");
+					}	
 				}
 			}
 		});
@@ -709,8 +716,7 @@
 			data : { "loginId" : "${sessionScope.loginId}", "wmedNickname" : wmedNickname },
 			success : function(insertResult){
 				console.log("신고 결과: "+insertResult);
-				
-				var mwOpenedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
+				console.log("함수호출한 자식 : " + $(popChat))
 				if( insertResult == 1 ){ // 신고 성공
 					
 					if(crcode == 'wMemberPopup'){
@@ -719,8 +725,8 @@
 						
 					} else {
 						console.log("채팅창에서 신고 성공")
-						var mwOpenedIdx = popChatArr.findIndex(popChat => popChat.name === crcode); // 인덱스 찾기
-						popChatArr[mwOpenedIdx].successMemberWarning();
+						popChat.successMemberWarning();
+
 					}
 					
 				} else { // 신고 실패
@@ -728,10 +734,9 @@
 					if(crcode == 'wMemberPopup'){	
 						console.log("회원 정보에서 신고 실패")
 						wMemberPopup.failMemberWarning2(insertResult);
-						
 					} else {
 						console.log("채팅창에서 신고 실패")
-						popChatArr[mwOpenedIdx].failMemberWarning2(insertResult);
+						popChat.failMemberWarning2(insertResult);
 					}
 					
 				}
@@ -740,14 +745,6 @@
 				console.log("회원 신고 - 연결실패");
 			}
 		});
-	}
-	
-	//미니브라우저 window.close()가 안먹혀서 만들어 봄
-	function closeMini(){
-		console.log("closeMini() 호출");
-		console.log(wMemberPopup);
-		wMemberPopup.close();
-		
 	}
 	
 	

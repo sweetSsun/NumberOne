@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -230,26 +231,38 @@
 					<div class="subtitle">
 						<!-- 상대방 정보 -->
 		                <div class="" id="frMemberInfo">
-<%-- 						
 		                	<div class="row" style="flex-wrap: nowrap;">
 								<div class="col-9 frMember">
-		                			<img class="img-profile rounded-circle frMbImg" src="${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png">
-		                			<span>상대방닉네임</span>
+									<a onclick="opener.writeMemberSellbuy('${crfrMember.mnickname}')" style="cursor:pointer;">
+										<c:choose>
+											<c:when test="${crfrMember.mprofile != null && crfrMember.mstate == 1 }">
+												<img class="img-profile rounded-circle" style="height: 45px; width:45px;" src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/${crfrMember.mprofile}">
+											</c:when>
+											
+											<c:when test="${crfrMember.mprofile != null && crfrMember.mstate == 9 }">
+												<img class="img-profile rounded-circle" style="height: 40px; width:40px;" src="${crfrMember.mprofile}">
+											</c:when>
+											
+											<c:otherwise>
+												<img class="img-profile rounded-circle" style="height: 45px; width:45px;" src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png">
+											</c:otherwise>
+										</c:choose>
+			                			<span>${crfrMember.mnickname}</span>
+			                		</a>
 								</div>
 								<div class="col-3">
 		                			<i id="mbWarning" onclick="mbWarningCheckModal()" class='fa-solid fa-land-mine-on fa-2x icon warningBtn'></i>
 								</div>
 
 		                	</div>
-		                  --%>
 		                </div>
+		                
+		                
 		                <!-- 메세지 출력 -->
 		                <div class="subtitle listArea" id="chatList">
 			                <!--
 			                받은 메세지 들어갈 부분 div 왼쪽정렬
 			                보낸 메세지 들어갈 부분 div 오른쪽정렬 -->
-			                                    
-			                  	                    
 			            </div>
 					</div>
 				</div>
@@ -328,19 +341,41 @@
 <script type="text/javascript">
 	let crcode = "${param.crcode }";
 	console.log("해당 채팅방 코드 : " + crcode)
-	var wmedNickname = ""; // 대화상대 닉네임
 	
-	// 채팅방 접속시 기존 채팅방의 대화목록 불러오기
-     	// 팝업창 ajax가 불가하므로 부모창(Topbar)에서 데이터 보내줌
-      function enterRoom(msgList){
-         for (var i = 0; i < msgList.length; i++){
-            //console.log(msgList[i].cmcontents);
-            checkLR(msgList[i], false); // DB 입력시간으로 출력하기 위한 boolean값 전송
-         } 
-      }
+	var wmedNickname = "${crfrMember.mnickname}"; // 대화상대 닉네임
+	var msgList = new Array(); // DB에 저장된 메세지 저장할 배열
+	
+	// 채팅방 입장과 동시에 
+	$(document).ready(function (){
+    	<c:forEach items="${msgList }" var="msg" varStatus="loop">
+			var msg = {
+				cmcode: "${msg.cmcode}",
+				cmcrcode: "${msg.cmcrcode}",
+				cmfrmid: "${msg.cmfrmid}",
+				cmfrmnickname: "${msg.cmfrmnickname}",
+				cmcontents: "${msg.cmcontents}",
+				cmdate: "${msg.cmdate}",
+				cmread: "${msg.cmread}"
+			}
+			msgList.push(msg);
+		</c:forEach>
+		
+		enterRoom(msgList); // 메세지 출력
+		
+		opener.popChat = this;
+		opener.checkMemberWarning(wmedNickname, crcode); // 대화상대 신고 했는지 확인
+	});
+	
+	
+	 // 채팅방 접속시 기존 채팅방의 대화목록 불러오기
+     function enterRoom(msgList){
+        for (var i = 0; i < msgList.length; i++){
+           checkLR(msgList[i], false); // DB 입력시간으로 출력하기 위한 boolean값 전송
+        } 
+     }
 	
 	// 채팅방 접속시 채팅방의 상대방 정보 출력
-	function crfrMbInfo(crfrmnickname, crfrmprofile){
+/* 	function crfrMbInfo(crfrmnickname, crfrmprofile){
 		console.log("crfrMbInfo 호출");
 		var crfrMb = "";
 		crfrMb += "<div class=\"row\" style=\"flex-wrap: nowrap;\">";
@@ -361,7 +396,7 @@
 			
 		wmedNickname = crfrmnickname;
 		$("#frMemberInfo").html(crfrMb);
-	}
+	} */
 	
 	// enter키 이벤트
 	$(document).on("keydown", $("#inputMsg"), function(e){
@@ -380,7 +415,7 @@
 	  		success : function(result){
 	  			if (result == "2"){ 
 	  				if(confirm("로그인 후 이용가능합니다. 로그인 하시겠습니까?")){
-	  					opener.closeChat(crcode);
+	  					opener.closePopup(crcode);
 	  					opener.location.href = "loadToLogin";
 	  					opener.focus();
 	  					window.close();
@@ -403,6 +438,7 @@
 		
 	var chatUrl = "${pageContext.request.contextPath }/chatWskMessage";
 	var chatWebSocket = new SockJS(chatUrl);
+	
 	// 연결시 실행 (채팅방 입장)
 	chatWebSocket.onopen = function() {
 	    console.log("open");
@@ -416,6 +452,7 @@
 		chatWebSocket.send(jsonData);
 	}
 	
+	
 	// 메세지 전송
 	function sendMessage(cmcontents){
 		// 단순히 전송만 함. 전송한 사람에게도 메세지를 다시 뿌려줄 것이고, 거기에서 checkLR 할거임! (시스템 시간 띄우는 것 때문에)
@@ -428,6 +465,7 @@
 		chatWebSocket.send(jsonData);
 	}
 		
+	
 	// 메세지 수신
 	chatWebSocket.onmessage = function(data) {
    		var receiveMsg = JSON.parse(data.data);
@@ -436,18 +474,19 @@
    		checkLR(receiveMsg, true); // 현재 서버시간으로 출력하기 위한 boolean값 전송
     };
     
+    
     // 추가된 메세지의 보낸 사람이 나인지 상대방인지 확인
-       function checkLR(data, dateCheck){
-          var LR = (data.cmfrmid != "${sessionScope.loginId}") ? "left":"right";
-          appendMessage(LR, data, dateCheck);
-          //console.log("checkLR에서의 dateCheck : " + dateCheck);
-       }
+    function checkLR(data, dateCheck){
+       var LR = (data.cmfrmid != "${sessionScope.loginId}") ? "left":"right";
+       appendMessage(LR, data, dateCheck);
+       //console.log("checkLR에서의 dateCheck : " + dateCheck);
+    }
 	    
 	    
     // 메세지 append
     var dateLine = []; // 날짜를 담을 배열
     function appendMessage(LR, data, dateCheck){
-    	//console.log(dateLine);
+    	//console.log(data);
       	var message = ""; // 입력해줄 output
       	
     	/* DB 저장 메세지인지 실시간인지 날짜와 시간 체크 */
@@ -481,6 +520,7 @@
               
     }
 
+    
     // 서버시간 return 함수
     function serverDate(){
 		var now = new Date();
@@ -490,6 +530,9 @@
 			month = "0" + month;
 		}
   		let date = now.getDate();  	// 일
+		if (date < 10) {
+			date = "0" + date;
+		}
 		let hour = now.getHours();		// 시간
 		if (hour < 10) {
 			hour = "0" + hour;
@@ -513,20 +556,22 @@
 		  console.log(event);
 	}
 	
+	
 	// 채팅방 닫힘 이벤트 (부모창의 배열에서 제거)
 	window.onbeforeunload = function() {
 		console.log("채팅방 닫힘");
-		opener.closeChat(crcode);
+		opener.closePopup(crcode);
 	};
+	
 </script>
 
 <!-- 신고 관련 스크립트 -->
 <script type="text/javascript">
+	// 신고된 회원일 경우 class 부여
+	function checkMemberWarning(){
+		$("#mbWarning").addClass("text-danger");
+	}
 
-	// 채팅방 입장과 동시에 대화상대 신고 했는지 확인
-	$(document).ready(function (){
-		opener.checkMemberWarning(wmedNickname, crcode);
-	});
 	
 	// 신고 모달창 close 하는 스크립트
 	var modal = $(".modal");
@@ -537,6 +582,7 @@
 		});
 	}
 	
+	
 	// 신고 클릭 시 모달창 출력
 	function mbWarningCheckModal(){
 		if( $("#mbWarning").hasClass("text-danger") ){
@@ -546,17 +592,21 @@
 		}
 	}
 	
+	
 	// 모달창에서 "네" 클릭 시 대화상대 신고
 	function insertMemberWarning(){
 		console.log("신고할 회원 : " + wmedNickname);
+		opener.popChat = this;
 		opener.insertMemberWarning(wmedNickname, crcode);
 	}
+	
 	
 	// 대화상대 신고 성공 시 수행할 기능
 	function successMemberWarning(){
 		alert("회원 신고가 접수되었습니다.");
 		$("#mbWarning").addClass("text-danger");
 	}
+	
 	
 	// 대화상대 신고 실패 시 수행할 기능(타입별로 구분)
 	function failMemberWarning2(type){
@@ -577,11 +627,11 @@
 	}
 	
 	// 대화상대 신고 실패 시 수행할 기능
-	function failMemberWarning(){
+/* 	function failMemberWarning(){
 		console.log("신고 실패");
 		alert("회원 신고에 실패했습니다");
 
-	}
+	} */
 
 	
 </script>

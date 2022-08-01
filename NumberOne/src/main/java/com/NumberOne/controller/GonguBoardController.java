@@ -120,10 +120,10 @@ public class GonguBoardController {
 	
 	
 	@RequestMapping (value="insertCheck_ajax")
-	public @ResponseBody String insertCheck_ajax(String gnbcode, String gmid) {
+	public @ResponseBody String insertCheck_ajax(String ggbcode, String ggmid) {
 		System.out.println("공동구매 참여 중복체크");
-		String checkResult = gbsvc.insertCheck_ajax(gnbcode, gmid);
-		System.out.println(checkResult);
+		String checkResult = gbsvc.insertCheck_ajax(ggbcode, ggmid);
+		System.out.println("checkResult - null이면 중복X : "+checkResult);
 		return checkResult;
 	}
 	

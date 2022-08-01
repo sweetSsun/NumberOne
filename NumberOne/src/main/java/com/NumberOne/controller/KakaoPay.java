@@ -36,7 +36,7 @@ public class KakaoPay {
 		
 		// 객체 저장
 		GonguDto gongu = new GonguDto();
-		gongu.setGnbcode(gbcode);
+		gongu.setGgbcode(gbcode);
 		gongu.setGmid(loginId);
 		gongu.setGaddr(address);
 		gongu.setGemail(email);
@@ -54,7 +54,7 @@ public class KakaoPay {
 	    
 		StringBuilder urlBuilder = new StringBuilder("https://kapi.kakao.com/v1/payment/ready"); /*URL*/
 	    urlBuilder.append("?" + URLEncoder.encode("cid","UTF-8") + "=" + URLEncoder.encode("TC0ONETIME", "UTF-8"));
-	    urlBuilder.append("&" + URLEncoder.encode("partner_order_id","UTF-8") + "=" + URLEncoder.encode(gbcode, "UTF-8"));//공구번호
+	    urlBuilder.append("&" + URLEncoder.encode("partner_order_id","UTF-8") + "=" + URLEncoder.encode(gongu.getGgbcode(), "UTF-8"));//공구번호
 	    urlBuilder.append("&" + URLEncoder.encode("partner_user_id","UTF-8") + "=" + URLEncoder.encode(loginId, "UTF-8"));	//구매자
 	    urlBuilder.append("&" + URLEncoder.encode("item_name","UTF-8") + "=" + URLEncoder.encode("1인자 자취템 공동구매", "UTF-8"));//판매이름
 	    urlBuilder.append("&" + URLEncoder.encode("quantity","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); //개수
@@ -178,8 +178,8 @@ public class KakaoPay {
 			StringBuilder urlBuilder = new StringBuilder("https://kapi.kakao.com/v1/payment/approve"); //URL
 		    urlBuilder.append("?" + URLEncoder.encode("cid","UTF-8") + "=" + URLEncoder.encode("TC0ONETIME", "UTF-8"));
 		    urlBuilder.append("&" + URLEncoder.encode("tid","UTF-8") + "=" + URLEncoder.encode(tid, "UTF-8"));
-		    urlBuilder.append("&" + URLEncoder.encode("partner_order_id","UTF-8") + "=" + URLEncoder.encode(gongu.getGnbcode(), "UTF-8"));//공구번호
-		    urlBuilder.append("&" + URLEncoder.encode("partner_user_id","UTF-8") + "=" + URLEncoder.encode(gongu.getGmid(), "UTF-8"));	//구매자
+		    urlBuilder.append("&" + URLEncoder.encode("partner_order_id","UTF-8") + "=" + URLEncoder.encode(gongu.getGgbcode(), "UTF-8"));//공구번호
+		    urlBuilder.append("&" + URLEncoder.encode("partner_user_id","UTF-8") + "=" + URLEncoder.encode(gongu.getGgmid(), "UTF-8"));	//구매자
 		    urlBuilder.append("&" + URLEncoder.encode("pg_token","UTF-8") + "=" + URLEncoder.encode(pg_token, "UTF-8"));
 		    
 		    urlBuilder.append("&" + URLEncoder.encode("approval_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopaySuccess", "UTF-8")); //성공시 돌아갈주소

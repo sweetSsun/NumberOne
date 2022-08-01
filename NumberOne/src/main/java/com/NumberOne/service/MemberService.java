@@ -8,10 +8,13 @@ import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.UUID;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -48,14 +51,10 @@ public class MemberService {
 	@Autowired
 	private ResellService rssvc;
 	
-	/*	현석 :  mail API 에러 때문에 주석처리 시작 
-	@Autowired
-	private JavaMailSender mailSender;
-	 현석 :  mail API 에러 때문에 주석처리 끝 */ 
 	
 	 @Autowired private HttpServletRequest request;
 	 @Autowired private HttpSession session;
-	 
+	 @Autowired private JavaMailSender mailSender;
 
 	
 	
@@ -263,12 +262,13 @@ public class MemberService {
 		ModelAndView mav = new ModelAndView();
 		System.out.println("MemberService.selectMyInfoMemberView 호출");
 
-		String loginId;
-		if((String) session.getAttribute("loginId")!=null) {			
+		String loginId = (String) session.getAttribute("loginId");
+		/*String loginId;
+		if((String) session.getAttribute("loginId")!=null) {
 			loginId = (String) session.getAttribute("loginId");
 		} else {
 			loginId = (String) session.getAttribute("kakaoId");			
-		}
+		}*/
 		
 		System.out.println("로그인 된 아이디 : " + loginId);
 		
@@ -488,13 +488,14 @@ public class MemberService {
 		
 		ModelAndView mav = new ModelAndView();
 		  System.out.println("MemberService.uupdateMemberWithdraw() 호출"); 
-		  //String loginId = (String) session.getAttribute("loginId");
+		  String loginId = (String) session.getAttribute("loginId");
+		  /*
 			String loginId;
 			if((String) session.getAttribute("loginId")!=null) {			
 				loginId = (String) session.getAttribute("loginId");
 			} else {
 				loginId = (String) session.getAttribute("kakaoId");			
-			}
+			}*/
 		  System.out.println("로그인 된 아이디 : " + loginId);
 
 		  int updateMemberWithdraw = mdao.updateMemberWithdraw(loginId);
@@ -527,13 +528,14 @@ public class MemberService {
 			return mav;
 		}
 		
-	    //String loginId = (String) session.getAttribute("loginId");
+	    String loginId = (String) session.getAttribute("loginId");
+		/*
 		String loginId;
 		if((String) session.getAttribute("loginId")!=null) {			
 			loginId = (String) session.getAttribute("loginId");
 		} else {
 			loginId = (String) session.getAttribute("kakaoId");			
-		}
+		}*/
 		System.out.println("로그인 된 아이디 : " + loginId);
 		
 
@@ -570,13 +572,14 @@ public class MemberService {
 			return mav;
 		}
 		
-	    //String loginId = (String) session.getAttribute("loginId");
-		String loginId;
+	    String loginId = (String) session.getAttribute("loginId");
+		
+	    /*String loginId;
 		if((String) session.getAttribute("loginId")!=null) {			
 			loginId = (String) session.getAttribute("loginId");
 		} else {
 			loginId = (String) session.getAttribute("kakaoId");			
-		}
+		}*/
 		System.out.println("로그인 된 아이디 : " + loginId);
 
 		
@@ -647,13 +650,14 @@ public class MemberService {
 			return mav;
 		}
 		
-		//String loginId = (String) session.getAttribute("loginId");
+		String loginId = (String) session.getAttribute("loginId");
+		/*
 		String loginId;
 		if((String) session.getAttribute("loginId")!=null) {			
 			loginId = (String) session.getAttribute("loginId");
 		} else {
 			loginId = (String) session.getAttribute("kakaoId");			
-		}
+		}*/
 		System.out.println("로그인 된 아이디 : " + loginId);
 		
 
@@ -678,13 +682,14 @@ public class MemberService {
 			return mav;
 		}
 		
-	    //String loginId = (String) session.getAttribute("loginId");
-		String loginId;
+	    String loginId = (String) session.getAttribute("loginId");
+		/*
+	    String loginId;
 		if((String) session.getAttribute("loginId")!=null) {			
 			loginId = (String) session.getAttribute("loginId");
 		} else {
 			loginId = (String) session.getAttribute("kakaoId");			
-		}
+		}*/
 		System.out.println("로그인 된 아이디 : " + loginId);
 		mav.setViewName("member/MyInfoQuestionForm");
 
@@ -703,13 +708,14 @@ public class MemberService {
 			return mav;
 		}
 		
-	    //String loginId = (String) session.getAttribute("loginId");
-		String loginId;
+	    String loginId = (String) session.getAttribute("loginId");
+		/*
+	    String loginId;
 		if((String) session.getAttribute("loginId")!=null) {			
 			loginId = (String) session.getAttribute("loginId");
 		} else {
 			loginId = (String) session.getAttribute("kakaoId");			
-		}
+		}*/
 		System.out.println("로그인 된 아이디 : " + loginId);
 		
 		//글번호 생성(CT00001) 
@@ -848,7 +854,7 @@ public class MemberService {
 
 		      
 		   }
-/* 현석 :  mail API 에러 때문에 주석처리 시작
+/* 현석 :  mail API 에러 때문에 주석처리 시작 */
 		//비밀번호 찾기 요청
 		public String selectLookforPw_ajax(String checkMid, String checkMemail) {
 			System.out.println("MemberService.selectLookforPw_ajax() 호출");
@@ -862,7 +868,7 @@ public class MemberService {
 				System.out.println("회원정보 있음");
 				
 				//임시 비밀번호 생성
-				String subject = "임시비밀번호가 발급되었습니다.";
+				String subject = "[일인자]인증번호가 발급되었습니다.";
 				String content = "";
 				String from = "pj220810@naver.com";
 				String to = checkMemail;
@@ -874,24 +880,35 @@ public class MemberService {
 					
 					
 
-		       // 메일 내용
-				content += "<style>a{text-decoration: none;}</style>";
-		        content += "<div style='margin: 50px;'>";
-		        content += "<div style='height: 30px; width:800px; padding: 15px; font-size: 20px; font-family : pretendard; border-bottom : 1px solid gray; '>";
-		        content += "<span style='color:gray;'>임시비밀번호가 발급되었습니다!</span></div>";		       
-		        content += "<div style='width:800px; border-radius: 4px; padding: 20px 20px 20px 10px;'>";
-		        content += "<div style='color:#747474; font-size: 14px; padding: 10px; font-family : pretendard;'>안녕하세요,&nbsp;<span style='font-weight: bold;'>"+ checkMid + " 님 </span></div>";
-		        content += "<div style='color:#747474; font-size: 14px; padding: 10px; font-family : pretendard;'>회원님의 임시 비밀번호를 보내드립니다.</div>";
-		        content += "<div style='color:#747474; font-size: 14px; padding: 10px; font-family : pretendard;'>임시 비밀번호 : <span style='font-weight: bold;'>" +temporaryPw+ "</span></div>";
-		        content += "</div>";
-		        content += "<div style='color:#747474; font-size: 13px; padding: 10px;font-family : pretendard;'>";
-		        content += "임시비밀번호로 로그인 후 반드시 <span style='color: #00bcd4; font-weight: bold;font-family : pretendard;'>마이페이지 회원정보 > 수정</span> 에서 비밀번호를 재설정하여 주시기 바랍니다.</div>";
-		        content += "<br>";
-		        content += "<button style='text-align:center; border:0px; border-radius: 4px; height:50px; width: 250px; margin:20px;";
-		        content += "margin-left: 10px; background-color: #00bcd4; color: white; font-weight: bold;font-family : pretendard;'>";
-		        content += "<a href=\"http://localhost:8080/controller12/loadToLogin\">일인자사이트로 바로가기</a></button>";
-		        content += "</div>";
-								
+		       // 메일 내용 
+							content +="<div style=\"height: 24px;\"></div>";
+							content +="<div style=\"font-family : pretendard; \">";
+							content +="<div style=\"text-align: center; width: 800px; font-size: 30px; font-weight: bold; color:#36454f; \">NumberOne</div><br>";
+							content +="<div style=\"background-color: #00bcd4; height: 5px; width: 800px;\"></div><br>";
+							content +="<div style=\"background-color: #36454f; height: 2px; width: 800px;\"></div>";
+							content +="<div style=\"height: 10px; width: 800px;\"></div>";
+							content +="<div><br>";
+							content +="<p style=\"height: 24px; font-size: 14px; color:#36454f; \" >&nbsp;&nbsp; 안녕하세요 " + checkMid + "님,</p>";
+							content +="<p style=\"height: 24px; font-size: 14px; color:#36454f; \" >&nbsp;&nbsp; 인증번호를 보내드리오니 아래 비밀번호변경하기 버튼을 클릭하여 인증 하신 후</p>";
+							content +="<p style=\"height: 24px; font-size: 14px; color:#36454f; \" >&nbsp;&nbsp; 비밀번호를 변경하시기 바랍니다.</p><br>";
+							
+							content +="<p style=\"height: 24px; font-size: 15px; font-weight: bold; color:#36454f; \" >&nbsp;&nbsp; 인증번호 : " +temporaryPw+ "</p>";
+							content +="</div>";
+							
+							content +="<div style=\"width:800px; padding-left: 300px;\">";
+					        content += "<button style='text-align:center; border:0px; border-radius: 4px; height:40px; width: 150px; margin:20px;";
+					        content += "margin-left: 10px; background-color: #00bcd4; color: white; font-weight: bold;font-family : pretendard;'>";
+					        content += "<a href=\"http://localhost:8080/controller/loadToTemporaryNum?mid="+ checkMid + "\"; style=\" color:white; text-decoration: none;\"  >비밀번호변경하기</a></button>";			        
+					        content +="</div>";
+					        
+							content +="<div style=\"height: 10px; width: 800px;\"></div>";
+							content +="<div style=\"background-color: #36454f; height: 2px; width: 800px;\"></div><br>";
+							content +="<div style=\"background-color: #00bcd4; height: 5px; width: 800px;\"></div>";
+							content +="</div>"; 							
+					
+					
+		        System.out.println(content);
+		       
 				try {
 					//Helper객체 생성
 					MimeMessage mail = mailSender.createMimeMessage();
@@ -928,7 +945,7 @@ public class MemberService {
 			
 		
 	}
- 현석 :  mail API 에러 때문에 주석처리 끝 */
+ /*현석 :  mail API 에러 때문에 주석처리 끝 */
 		
 		
 		//미니브라우저 작성글 내역
@@ -1079,7 +1096,9 @@ public class MemberService {
 					return mav;
 				}
 				
-			    //String loginId = (String) session.getAttribute("loginId");
+			    
+				String loginId = (String) session.getAttribute("loginId");
+				/*
 				String loginId;
 				if((String) session.getAttribute("loginId")!=null) {			
 					loginId = (String) session.getAttribute("loginId");
@@ -1087,7 +1106,7 @@ public class MemberService {
 					loginId = (String) session.getAttribute("kakaoId");			
 				}
 				System.out.println("로그인 된 아이디 : " + loginId);
-				
+				*/
 
 				//참여한 공구 목록 
 				ArrayList<GonguDto> gonguList = mdao.selectMyInfoGonguView(loginId);
@@ -1099,7 +1118,53 @@ public class MemberService {
 
 				return mav;
 			}
+
+		//임시번호 확인
+		public String selectTemporaryNum_ajax(String mid , String mpw) {
+			System.out.println("MemberService.selectTemporaryNum_ajax() 호출");
+			String TemporaryNumResult = mdao.selectTemporaryNum_ajax(mid,mpw);
+			System.out.println("임시비번 : "+ TemporaryNumResult);
+			if(TemporaryNumResult != null) {
+				return TemporaryNumResult;
+			}else {
+				return null;
+			}
 		}
+
+
+		public ModelAndView updateTemporaryNum(RedirectAttributes ra, String mid, String mpw) {
+			ModelAndView mav = new ModelAndView();
+			  System.out.println("MemberService.updateTemporaryNum() 호출"); 
+			
+		if (mpw.equals("")) {
+			mav.addObject("checkId", mid);
+			mav.setViewName("member/TemporaryNumForm");
+			
+			return mav;
+		
+		}else {
+
+	    	  int changePwResult = mdao.updateTemporaryNum(mid, mpw);
+	    	  System.out.println("changePwResult : "+changePwResult);
+	    	  
+	    	  if(changePwResult == 0) {
+	    		  System.out.println("회원정보 수정 실패");
+	    		  ra.addFlashAttribute("msg" , "회원 정보 수정을 실패하였습니다.");
+	    		  mav.setViewName("redirect:/loadToTemporaryNum");
+
+	    		  return mav;
+
+	    	  }  else {
+	    	  
+	    		  ra.addFlashAttribute("msg", "비밀번호가 수정 되었습니다. 로그인 해주시기 바랍니다.");
+	    		  mav.setViewName("redirect:/loadToLogin");
+	    		  return mav;
+	    	  }	
+			
+			}
+		}
+
+}
 
 
 
