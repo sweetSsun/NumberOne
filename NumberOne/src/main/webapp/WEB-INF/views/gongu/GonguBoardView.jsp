@@ -142,6 +142,16 @@
    	object-fit: contain;
    }
    
+   	.textarea-GbView-2{
+		border: none; 
+		resize: none;
+		background-color: #eaf8ff; /* #F2F2FF; */
+		border-radius: 25px;
+		cursor: default;
+		height: fit-content;
+		
+	}
+	
    /* 참여버튼 */
 	.attendBtn {
 	  display: block;
@@ -284,7 +294,11 @@
 					</c:if >
 					<div class="row mt-3 mb-1 boardContents" style="padding-bottom: 20px;">
 						<div class="col">
-							<textarea class="inputReply" rows="10%" cols="100%" readonly>${gonguBoard.gbcontents }</textarea>
+							<textarea class="inputReply" rows="10%" cols="100%" readonly>${gonguBoard.gb_contents }</textarea>
+							<div class="row">
+								<textarea id="item_name" class="textarea-GbView-2" style="width:70%; margin-right:5%;" readonly>${gonguBoard.gb_item_name }</textarea>
+								<textarea id="item_price" class="textarea-GbView-2" style="width:20%" readonly>${gonguBoard.gb_total_amount }</textarea>
+							</div>
 							<hr>
 							<textarea class="inputReply" rows="10%" cols="100%" readonly>
 # 참여 방법
@@ -348,6 +362,8 @@
 											<div class="col-sm-4">
 												<div style="height:70%; text-align: center;">
 													<span>${gonguBoard.gbtitle }</span>
+													<textarea class="textarea-GbView-2" style="width:100%" readonly>${gonguBoard.gb_item_name }</textarea><br>
+													<textarea class="textarea-GbView-2" style="width:100%" readonly>${gonguBoard.gb_total_amount }</textarea>
 												</div>
 												<div>
 													<button id="btn-kakao-pay" type="button">
@@ -1040,12 +1056,15 @@ $(".inputReply").each(function () {
 			$("#gonguModal").modal("hide");
 		});
 	}
+	
+
+	
 	var tel = "${memberInfo.mphone }";
 	var email = "${memberInfo.memail }";
 	var address = "${memberInfo.maddr }";
-	console.log("번호 "+tel);
-	console.log("이메일 "+email);
-	console.log("주소 "+address);
+	console.log("번호 : "+tel);
+	console.log("이메일 : "+email);
+	console.log("주소 : "+address);
 	
 	// 공동구매 참여 양식 입력 모달창 출력
 	function showGonguModal(){
@@ -1101,8 +1120,12 @@ $(".inputReply").each(function () {
 <script type="text/javascript">
 var loginId = $("#form-payment input[name='pay-id']").val();
 var gbcode =$("#gonguGbcode").val();
+var item_name = $("#item_name").val();
+var item_price = $("#item_price").val();
 console.log("loginId : "+loginId);
 console.log(gbcode);
+console.log("제목/품목 : "+item_name);
+console.log("가격 : "+item_price);
 
 $("#btn-kakao-pay").click(function(){
 	console.log("카카오페이 클릭");
@@ -1158,6 +1181,8 @@ $("#btn-kakao-pay").click(function(){
 					data:{
 						gbcode:gbcode,
 						loginId:loginId,
+						item_name:item_name,
+						item_price:item_price,
 						tel: tel,
 						email: email,
 						address: address
