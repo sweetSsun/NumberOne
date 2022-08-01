@@ -768,6 +768,14 @@ function adminRvBan(){
 		return false;
 	}
 	
+	// 고정배너 정지하려고 하면 중지
+	/*
+	// adminRvBan을 실행할 때 bdfix를 보내줘서, bdfix에 따라 정지 불가능하도록
+ 	if (bdfix == 1){
+		alert("고정상태인 글은 정지할 수 없습니다.");
+		return;
+	} */
+	
 	$.ajax({
 			type : "get",
 			url : "admin_updateRoomStop_ajax",
@@ -775,8 +783,9 @@ function adminRvBan(){
 			async : false,
 			success : function(updateResult){
 				if( updateResult > 0 ){
+					alert(nowBdcode + "번 글이 정지 처리되었습니다.");
 					console.log("관리자 자랑글 정지 성공!");
-					location.href = "${pageContext.request.contextPath }/selectRoomList";
+					location.href = "${pageContext.request.contextPath }/selectRoomList?page=${paging.page}";
 				}
 			}
 		});
