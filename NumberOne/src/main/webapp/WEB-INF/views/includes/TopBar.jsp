@@ -313,10 +313,10 @@
    
    // 특정 채팅방(자식창) 닫힐 경우 배열에서 제거하는 함수
    function closePopup(winName){
-      console.log("채팅방 닫힘");
+      console.log("팝업창 닫힘");
       let index = popArr.indexOf(winName);
       popArr.splice(index, 1);
-      console.log("popArr : " + popArr);
+      console.log("닫힌 후 popArr : " + popArr);
       localStorage.removeItem('${sessionScope.loginId}');
       localStorage.setItem('${sessionScope.loginId}', JSON.stringify(popArr));
       
@@ -751,11 +751,11 @@
 	}
 	
 	//미니브라우저 window.close()가 안먹혀서 만들어 봄
-	function closeMini(){
+	function closeMini(windowName){
 		console.log("closeMini() 호출");
-		console.log(wMemberPopup);
-		wMemberPopup.close();
-		
+		console.log(windowName);
+		//wMemberPopup.close();
+		window.open("closePopup", windowName);
 	}
 	
 	
