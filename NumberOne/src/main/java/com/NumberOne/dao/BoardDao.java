@@ -208,6 +208,12 @@ public interface BoardDao {
 	int insertBoardRe_Reply_ajax(@Param("rpcode")String rpcode, @Param("bdcode")String bdcode, @Param("rpcontents")String rpcontents, 
 				@Param("rpcode_parent")String rpcode_parent, @Param("rp_depth")int rp_depth, @Param("loginId")String loginId);
 
+	//댓글 목록 조회2 (+ 대댓글)
+	ArrayList<ReplyDto> selectBoardReplyList2(String bdcode);
+
+	//공구게시판-진행완료 글 조회
+	//ArrayList<NoticeDto> selectGonguEndBoardList(Paging paging);
+
 	
 	
 }
