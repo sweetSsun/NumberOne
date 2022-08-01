@@ -238,7 +238,6 @@
 				<!-- </form> -->
 				
 				
-				
 				<!-- 글목록, 글수정, 글삭제 버튼 -->
 				<div class="row mb-2">
 					<div class="col-2">
