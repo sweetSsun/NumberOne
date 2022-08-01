@@ -674,7 +674,7 @@ public class BoardService {
 
 		ArrayList<ReplyDto> replyList = bdao.selectBoardReplyList2(bdcode);
 		// System.out.println(replyList);
-
+		
 		// 프로필 사진 없는 경우 rpprofile에 nomprofile 저장
 		for (int i = 0; i < replyList.size(); i++) {
 			if (replyList.get(i).getRpprofile() == null) {

@@ -178,6 +178,9 @@ section div.checkout__form{
     margin-bottom: 25px;
     font-size : 24px;
 }
+#rerp_writeBtn:hover{
+	cursor: pointer;
+} 
 </style>
 </head>
 <body>
@@ -371,7 +374,7 @@ section div.checkout__form{
 							<div class="col">
 								<div class="col innerCmtBox">
 									<!-- 댓글입력 -->
-									<textarea id="inputComment" style="border: solid #E0E0E0 3px; " class="mt-4 " rows="2" cols="120%" placeholder="상대방에게 불쾌감을 주는 욕설이나 댓글은 고지없이 삭제될 수 있습니다. "></textarea>
+									<textarea id="inputComment" style="border: solid #E0E0E0 3px; " class="mt-4 " rows="2" cols="110%" placeholder="상대방에게 불쾌감을 주는 욕설이나 댓글은 고지없이 삭제될 수 있습니다. "></textarea>
 								</div>
 							<div align="right" class="col">
 								<button onclick="insertReply()" class="btn btn-sm bg-secondary mb-2 fw-bold text-white">등록</button>
@@ -494,6 +497,7 @@ section div.checkout__form{
 	console.log("게시판 : " + bdcategory);
 	
 	const bdmid = '${board.bdmid}';
+	var nowRpparent = "";
 	
 	var checkMsg = '${msg}';
 	if ( checkMsg.length > 0 ){
@@ -762,25 +766,38 @@ section div.checkout__form{
 <script type="text/javascript">
 	/* 댓글관련 메소드 */	
 
-	/* 댓글입력_ajax */
+	/* 댓글등록_ajax */
 	function insertReply(){
 		var inputComment = $("#inputComment").val();
 		console.log("글번호 : " + bdcode);
 		console.log("입력댓글 : " + inputComment);
 		
+		if( nowRpparent == "" ){
+			
+			console.log("첫댓글 : " + nowRpparent);
+			
+		}else{
+			
+			console.log("대댓글 부모 : " + nowRpparent);
+		}
+		
 		$.ajax({
 			type : "get",
-			url : "insertBoardReply_ajax",
-			data : { "bdcode" : bdcode, "rpcontents" : inputComment},
+			url : "insertBoardReply_ajax2",
+			data : { "rpbdcode" : bdcode, "rpcontents" : inputComment, "rpparent":nowRpparent},
 			async : false,
 			success : function(insertResult){
-				if( insertResult > 0 ){
+				if( insertResult == 2 ){
+					alert("로그인 상태가 아닙니다!");
+				}else{
 					$("#inputComment").val("");
 					selectReplyList();
 					selectReplyCount();
+					
 				}
 			}
 		});
+		nowRpparent == "";
 	}
 	
 	/* 댓글목록 조회_ajax */
@@ -796,27 +813,43 @@ section div.checkout__form{
 			success : function(replyList){
 				console.log(replyList);
 				output += "<div class=\"row\">"
+				
 				for( var i=0; i < replyList.length; i++ ){
+					var rppadding = (parseInt(replyList[i].rpdepth)-1)*3;
+					output += "<div class=\"row\" style='padding-left:"+rppadding+"%;'>";
+					
 					if( replyList[i].rpstate == 2 ){//삭제된 댓글일 때
+						
 						output += "<div style='border-bottom: solid #E0E0E0 1px; height:60px; line-height:60px;' >"
-						output += "    <span style=\"color:gray; font-size:20px;\"> ( 삭제된 댓글입니다. ) </span>"
+						output += "    <span style=\"color:gray; font-size:20px;\"> [ 삭제된 댓글입니다. ] </span>"
+						output += "</div>"
 						output += "</div>"
 					
-					}else{
+					}else{	//삭제된 댓글이 아닐 때 
+					if( replyList[i].rpmid == loginId ){//동일한 아이디 (댓글 수정, 삭제 버튼)
 						
-					if( replyList[i].rpmid == '${sessionScope.loginId}' ){//동일한 아이디 (댓글 수정, 삭제 버튼)
+						console.log(rppadding);
+					
+						//output += "<div class=\"row\" style='left:"+rppadding+";'>"
 						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;' >" /* 프로필영역 */
-
+						
 						if( replyList[i].rpprofile != 'nomprofile' ){//프로필 이미지가 있을 시 
-							if(  replyList[i].rpmstate == 9){//카카오 회원
-								output += "<img style=\"margin-top:6px;\" class=\"img-profile rounded-circle rpProfile\"  src='"+replyList[i].rpprofile + "'>"
+			                if(replyList[i].rpdepth != 1){
+			                     //답글인 경우 화살표 추가
+			                     output += "<span class=\"fw-bold\" style=\"font-size:18px;\">⤷<span>";
+			                   }
+							if(  replyList[i].rpmstate == 9 ){//카카오 회원
+								output += "<img class=\"img-profile rounded-circle rpProfile mt-1\"  src='"+replyList[i].rpprofile + "'>"
 							}else{
-								output += "<img style=\"margin-top:6px;\" class=\"img-profile rounded-circle rpProfile\"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle rpProfile mt-1\"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
 							}
 						
-						
 						}else{//프로필 이미지가 없을 시 
-							output += "<img style=\"margin-top:6px;\" class=\"img-profile rounded-circle rpProfile_None\"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
+							if(replyList[i].rpdepth != 1){
+			                     //답글인 경우 화살표 추가
+			                     output += "<span class=\"fw-bold\" style=\"font-size:18px;\">⤷<span>";
+			                   }
+							output += "<img class=\"img-profile rounded-circle rpProfile_None mt-1\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
 						}
 						output += "</div>"
 						
@@ -824,10 +857,17 @@ section div.checkout__form{
 						/* 닉네임, 시간 */
 						output += "<a style=\"cursor:pointer\" onclick=\"writeMemberBoard('"+replyList[i].rpnickname+"')\"><span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span></a>"
 						output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span> "
+						output += "<input type=\"hidden\" value='"+replyList[i].rpmid+"'>"
+						
+						/* 답글쓰기 버튼 */
+						if( loginId != null && replyList[i].rpdepth < 5 ){
+							output += "<span id=\"rerp_writeBtn\" onclick=\"rerp_writeBtn('"+ replyList[i].rpcode +"','" + replyList[i].rpnickname +"')\" class='fw-bold' style='color: gray;'>&nbsp;&nbsp;답글쓰기</span>"
+						}
+						
 						
 						/* 수정, 삭제 버튼 */
-						output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"rpRemoveModal('"+ replyList[i].rpcode +"')\" value=\"삭제\">"
-						output += "<input style=\"margin-right:5px; border:solid gray 1px\" type=\"button\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"rpModifyModal('"+ replyList[i].rpcode +"')\" value=\"수정\">"
+						output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"rpRemoveModal('"+ replyList[i].rpcode +"','"+replyList[i].rpmid +"')\" value=\"삭제\">"
+						output += "<input style=\"margin-right:5px; border:solid gray 1px\" type=\"button\" class=\"btn-sm replyButton fw-bold mt-2\" onclick=\"rpModifyModal('"+ replyList[i].rpcode +"','"+replyList[i].rpmid + "')\" value=\"수정\">"
 						output += "<br>"
 						
 						if( '${sessionScope.loginId}' == 'admin'){
@@ -835,20 +875,24 @@ section div.checkout__form{
 							output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton bg-secondary text-white fw-bold mt-2\" onclick=\"adminReplyStop('"+ replyList[i].rpcode +"')\" value=\"정지\">"
 						}
 						/* 댓글내용 */
-						output += "<pre class=\"inputRpcontents\">" + replyList[i].rpcontents + "</pre>"
+						output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
 						output += "</div>"
 						
-					}else{
-						
+					}else{ // 로그인아이디 != 글작성자
+		
 						output += "<div class=\"col-1\" style='border-bottom: solid #E0E0E0 1px;'>" /* 프로필영역 */
 						if( replyList[i].rpprofile != 'nomprofile' ){//프로필 이미지가 있을 시 
+							if(replyList[i].rpdepth != 1){
+			                     //답글인 경우 화살표 추가
+			                     output += "<span class=\"fw-bold\" style=\"font-size:18px;\">⤷<span>";
+			                   }
 							if(  replyList[i].rpmstate == 9){//카카오 회원
-								output += "<img style=\"margin-top:6px;\" class=\"img-profile rounded-circle rpProfile\"  src='"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle rpProfile mt-1\"  src='"+replyList[i].rpprofile + "'>"
 							}else{
-								output += "<img style=\"margin-top:6px;\" class=\"img-profile rounded-circle rpProfile\"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle rpProfile mt-1\"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
 							}
 						}else{//프로필 이미지가 없을 시 
-							output += "<img style=\"margin-top:6px;\" class=\"img-profile rounded-circle rpProfile_None\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
+							output += "<img class=\"img-profile rounded-circle rpProfile_None mt-1\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
 						}
 						output += "</div>"
 							
@@ -856,22 +900,30 @@ section div.checkout__form{
 						/* 닉네임, 시간 */
 						output += "<a style=\"cursor:pointer\" onclick=\"writeMemberBoard('"+replyList[i].rpnickname+"')\"><span class=\"fw-bold rpnickname\">" + replyList[i].rpnickname + "</span></a>"
 						output += "<span class=\"commentDate\">&nbsp;" + replyList[i].rpdate + "</span> "
+						output += "<input type=\"hidden\" value='"+replyList[i].rpmid+"'>"
 						
+						/* 답글쓰기 버튼 */
+						if( loginId != null && replyList[i].rpdepth < 5 ){
+							output += "<span id=\"rerp_writeBtn\" onclick=\"rerp_writeBtn('"+ replyList[i].rpcode +"','" + replyList[i].rpnickname +"')\" class='fw-bold' style='color: gray;'>&nbsp;&nbsp;답글쓰기</span>"
+						}
+						
+						/* 관리자 - 댓글 정지 버튼 */
 						if( '${sessionScope.loginId}' == 'admin'){
-							/* 관리자 - 댓글 정지 버튼 */
 							output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton bg-secondary text-white fw-bold mt-2\" onclick=\"adminReplyStop('"+ replyList[i].rpcode +"')\" value=\"정지\">"
 						}
 						
 						output += "<br>"
 						/* 댓글내용 */
-						output += "<pre class=\"inputRpcontents\">" + replyList[i].rpcontents + "</pre>"
+						output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
 						output += "</div>"
 					}
 
 				}
+						
+						output += "</div>"//한줄 끝
+					}//for문 종료
 				output += "</div>"
 			}
-					}
 		});
 		$("#replyList_ajax").html(output);
 	}
@@ -959,6 +1011,15 @@ section div.checkout__form{
 			}
 			
 		});
+	}
+	
+	/* 답글쓰기 버튼 클릭 시  */
+	function rerp_writeBtn(rpcode, rpnickname){
+		
+		$("#inputComment").val(" @" + rpnickname + " ");
+		$("#inputComment").focus();
+		
+		nowRpparent = rpcode;
 	}
 </script>
 
