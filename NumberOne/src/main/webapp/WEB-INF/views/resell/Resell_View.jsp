@@ -50,7 +50,7 @@ textarea:focus {
 	color: gray;
 	font-size: 17px;
 	position: absolute;
-    transform: translate(10%, 80%);
+    transform: translate(20%, 80%);
 }
 
 .bdhit {
@@ -316,7 +316,7 @@ font-weight: bold;
 		<section>
 			<!-- 본문 -->
 			<div class="container">
-				<h2 class="text-center">중고거래 상세페이지 : Resell_View</h2>
+			<div class="checkout__form" style="margin-top: 30px;">중고거래 상세페이지</div> 
 				<form action="insertResellChat">
 					<div class="row">
 						<div class="col">
@@ -377,9 +377,13 @@ font-weight: bold;
 						</div>
 					</div>
 					<div class="row idDateHits">
-						<div class="col">
-							<span class="fw-bold boardTitle" id="soldCheckMsg"></span> <span class="fw-bold boardTitle">${ub_resellView.ubtitle }</span> <span style="float: right;" class="boardDate">${ub_resellView.ubdate }</span>
-						</div>
+                  <div class="col-9">
+                     <span class="fw-bold boardTitle" id="soldCheckMsg"></span>
+                     <span class="fw-bold boardTitle">${ub_resellView.ubtitle }</span> 
+                  </div>
+                  <div class="col-3" style="text-align: center">
+                     <span class="boardDate">${ub_resellView.ubdate }</span>
+                     </div>
 					</div>
 
 					<!-- 중고거래 사진  -->
@@ -430,13 +434,31 @@ font-weight: bold;
 							  <div class="carousel-inner">
 							    <!-- 1번사진 -->
 							    <div class="carousel-item active subpic" data-bs-interval="10000">
+							     
+							      <c:choose>
+							      <c:when test="">
 							      <img style="object-fit: contain;" class="active Resell_img d-block w-100" src="${pageContext.request.contextPath }/resources/img/resell/${ub_resellView.ubmainimg}">
+							      </c:when>
+							      <c:otherwise>
+							      <img style="object-fit: contain;" class="active Resell_img d-block w-100" src="${pageContext.request.contextPath }/resources/img/logo.jpg">
+							      </c:otherwise>
+							      </c:choose>
 							    <span class="imgState"></span>
 							    </div>
 							    
 							    <c:forEach items="${ub_resellView.ubdetailimg_list}" var="ubdetailimg_list" begin="1">
 							    <div class="carousel-item subpic" data-bs-interval="2000">
+							    <c:choose>
+							    
+							    <c:when test="">
 							      <img style="object-fit: contain;" class="Resell_img d-block w-100" src="${pageContext.request.contextPath }/resources/img/resell/${ubdetailimg_list}">
+							    </c:when>
+							    <c:otherwise>
+							     <img style="object-fit: contain;" class="Resell_img d-block w-100" src="${pageContext.request.contextPath }/resources/img/logo.jpg">
+							    
+							    </c:otherwise>
+							    
+							    </c:choose>  
 							      <span class="imgState"></span>
 							    </div>
 							    </c:forEach>

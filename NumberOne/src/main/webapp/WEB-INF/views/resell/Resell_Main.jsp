@@ -249,8 +249,19 @@ section div.checkout__form{
 					<c:forEach items="${SellList}" var="sellList">
 						<div class="float_">
 							<div id="sellbuyscreen">
-								<a href="selectResellView?ubcode=${sellList.ubcode }&ubsellbuy=${sellList.ubsellbuy }&modifyCheck=LIST"> <img alt="" src="${pageContext.request.contextPath }/resources/img/resell/${sellList.ubmainimg }">
-								</a>
+								
+																								<c:choose>
+								<c:when test="${sellList.ubmainimg != null}">
+									<a href="selectResellView?ubcode=${sellList.ubcode }&ubsellbuy=${sellList.ubsellbuy }&modifyCheck=LIST"> <img alt="" src="${pageContext.request.contextPath }/resources/img/resell/${sellList.ubmainimg }">
+									</a>
+									</c:when>
+									
+									<c:otherwise>
+										<a href="selectResellView?ubcode=${sellList.ubcode }&ubsellbuy=${sellList.ubsellbuy }&modifyCheck=LIST">  <img alt="" src="${pageContext.request.contextPath }/resources/img/logo.jpg">
+									</a>
+									
+									</c:otherwise>
+</c:choose>
 							</div>
 						<div class="bottom" style="font-weight:600; position:relative;">
 							<span class="soldCheckMsg_ bold"></span>
@@ -301,8 +312,18 @@ section div.checkout__form{
 					<c:forEach items="${BuyList}" var="buyList">
 						<div class="float_">
 							<div id="sellbuyscreen">
-								<a href="selectResellView?ubcode=${buyList.ubcode }&ubsellbuy=${buyList.ubsellbuy }&modifyCheck=LIST"> <img alt="" src="${pageContext.request.contextPath }/resources/img/resell/${buyList.ubmainimg }">
-								</a>
+																																<c:choose>
+								<c:when test="${buyList.ubmainimg != null}">
+									<a href="selectResellView?ubcode=${buyList.ubcode }&ubsellbuy=${buyList.ubsellbuy }&modifyCheck=LIST"> <img alt="" src="${pageContext.request.contextPath }/resources/img/resell/${buyList.ubmainimg }">
+									</a>
+									</c:when>
+									
+									<c:otherwise>
+										<a href="selectResellView?ubcode=${buyList.ubcode }&ubsellbuy=${buyList.ubsellbuy }&modifyCheck=LIST">  <img alt="" src="${pageContext.request.contextPath }/resources/img/logo.jpg">
+									</a>
+									
+									</c:otherwise>
+</c:choose>
 							</div>
 							<div class="bottom" style="font-weight: 600; position: relative;">
 								<span class="soldCheckMsg_ bold"></span> <a href="selectResellView?ubcode=${buyList.ubcode }&ubsellbuy=${buyList.ubsellbuy }&modifyCheck=LIST">${buyList.ubtitle }</a>

@@ -648,7 +648,7 @@ h4:hover{
  				<c:choose>
  					<c:when test="${sessionScope.loginId != null }">
 		 				<textarea class="scroll" id="inputReply" placeholder="댓글 달기..." style="height:60px;" onkeydown="replyEnter(event)"></textarea>&nbsp;&nbsp;
-		 				<button onclick='replyResister()'>게시</button>
+		 				<button onclick='replyResister()' style="background-color:#00bcd4; color: aliceblue; font-size: medium;">게시</button>
  					</c:when>
  					<c:otherwise>
 		 				<textarea class="scroll" id="inputReply" type="text" readonly="readonly" placeholder="로그인 후 이용 가능합니다" style="height:60px;"></textarea>&nbsp;&nbsp;
@@ -864,12 +864,15 @@ function modalChange(type){
 		console.log(bdcode+"번글 roomView() 호출");
 		nowBdcode = bdcode; 
 		nowModalNum = $("#modalNum_"+nowBdcode).attr("class");
-		//console.log(nowBdcode+"/"+nowModalNum)
+		//console.log(nowBdcode+"/"+nowModalNum);
+		//console.log('${roomCount}');
 		
 		if(nowModalNum == 0){
+			//첫번째 모달이면 왼쪽 화살표 지우기
 			$("#prevArrow").addClass("d_none");
 			$("#nextArrow").removeClass("d_none");
-		} else if (nowModalNum == 9){
+		} else if (nowModalNum == 9 || nowModalNum =='${roomCount}'){
+			//마지막 모달이면 오른쪽 화살표 지우기
 			$("#prevArrow").removeClass("d_none");
 			$("#nextArrow").addClass("d_none");
 		} else {

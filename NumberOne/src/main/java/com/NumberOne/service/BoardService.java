@@ -411,12 +411,21 @@ public class BoardService {
 	   }
 
 		// 자취방 자랑 메인 페이지(목록)
-		public ModelAndView selectRoomList(Paging paging) {
+		public ModelAndView selectRoomList(Paging paging, String bdcode, String jsp) {
 			System.out.println("BoardService.selectRoomList() 호출");
 			ModelAndView mav = new ModelAndView();
 			
-			//페이징 없는 글목록
-			//ArrayList<BoardDto> roomList = bdao.selectRoomList();
+			//출력할 페이지 찾기
+			if(bdcode != null && jsp == null) {
+				//배너에서 상세 모달 요청
+				System.out.println(bdcode+"의 rn 조회");
+				int rn = bdao.selectRoomList_page(bdcode);
+				System.out.println(rn);
+				//System.out.println(rn/10);
+				int page = (int) Math.ceil((double) rn/10);
+				System.out.println(page+"페이지");
+				paging.setPage(page);
+			}
 			
 			//System.out.println("1번:"+paging);
 			
@@ -444,9 +453,10 @@ public class BoardService {
 			//페이징을 위한 글 목록 받기
 			
 			ArrayList<BoardDto> roomList = bdao.selectRoomList_paging(paging);
+			/*
 			for (int i = 0; i < roomList.size(); i++) {
 				System.out.println(roomList.get(i).getBdcode()+" "+roomList.get(i).getBdhits()+" "+roomList.get(i).getBdreply()+" "+roomList.get(i).getBdrecommend()+" "+roomList.get(i).getBdscrap());
-			}
+			}*/
 			
 			if(paging.getSearchType().equals("bdtitle||bdcontents")) {
 				paging.setSearchType("bdtc");
@@ -455,6 +465,7 @@ public class BoardService {
 			//mav에 object와 view 저장
 			mav.addObject("paging", paging);
 			mav.addObject("roomList", roomList);
+			mav.addObject("roomCount", roomList.size()-1);
 			mav.setViewName("board/RoomListPage");
 
 			return mav;
