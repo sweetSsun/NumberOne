@@ -178,10 +178,20 @@
 						</div>
 						
 						<!-- 참여 버튼 -->
-						<div>
-							<button class="attendBtn btnLightBlue btnPush" onclick="showAttendModal()">현재 참여 인원 </br> ${gonguCount }명</button>
-						</div>
-						
+						<c:choose>
+							<c:when test="${gonguBoard.gbstate == 1 }">
+								<div>
+									<button class="attendBtn btnLightBlue btnPush" onclick="showAttendModal()">현재 참여 인원 </br> ${gonguCount }명</button>
+								</div>
+							</c:when>
+							<%-- <c:if test="${gonguBoard.gbstate == 2 }"> 진행완료되면 총 참여인원만 나타나게. 목록은 X --%>
+						<c:otherwise>
+							<div>
+								<button type="button" class="attendBtn btnLightBlue btnPush" onclick="showAttendModal()" style="width:300px; left:32%;">총 참여 인원 ${gonguCount }명 </br> 참여해주셔서 감사합니다. </button>
+							</div>
+						</c:otherwise>
+						</c:choose>
+							
 						<!-- 공동구매 결제API 대신 참여확인 modal -->
 						<div class="modal fade" id="attendModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 					        <div class="modal-dialog" role="document">
