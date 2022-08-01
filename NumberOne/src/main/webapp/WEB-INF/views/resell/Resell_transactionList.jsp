@@ -252,8 +252,18 @@ section div.checkout__form{
 						<c:forEach items="${member_transactionList}" var="transactionList">
 							<div class="float_">
 								<div id="sellbuyscreen">
-									<a onclick="laodToView('${transactionList.ubcode }')" href="javascript:void(0);"> <img alt="" src="${pageContext.request.contextPath }/resources/img/resell/${transactionList.ubmainimg }">
+																<c:choose>
+								<c:when test="${buyList.ubmainimg != null}">
+									<a onclick="laodToView('${buyList.ubcode }')" href="javascript:void(0);"> <img alt="" src="${pageContext.request.contextPath }/resources/img/resell/${buyList.ubmainimg }">
 									</a>
+									</c:when>
+									
+									<c:otherwise>
+										<a onclick="laodToView('${buyList.ubcode }')" href="javascript:void(0);"> <img alt="" src="${pageContext.request.contextPath }/resources/img/logo.jpg">
+									</a>
+									
+									</c:otherwise>
+</c:choose>
 
 								</div>
 								<div class="bottom" style="font-weight: 600; position: relative;">

@@ -307,8 +307,18 @@ section div.checkout__form{
 						<c:forEach items="${sell_buyList}" var="sellList">
 							<div class="float_">
 								<div id="sellbuyscreen">
+																	<c:choose>
+								<c:when test="${sellList.ubmainimg != null}">
 									<a onclick="laodToView('${sellList.ubcode }')" href="javascript:void(0);"> <img alt="" src="${pageContext.request.contextPath }/resources/img/resell/${sellList.ubmainimg }">
 									</a>
+									</c:when>
+									
+									<c:otherwise>
+										<a onclick="laodToView('${sellList.ubcode }')" href="javascript:void(0);"> <img alt="" src="${pageContext.request.contextPath }/resources/img/logo.jpg">
+									</a>
+									
+									</c:otherwise>
+</c:choose>
 
 								</div>
 								<div class="bottom" style="font-weight: 600; position: relative;">
