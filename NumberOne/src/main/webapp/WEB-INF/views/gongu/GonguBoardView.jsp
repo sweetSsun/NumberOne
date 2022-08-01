@@ -24,7 +24,7 @@
 	.row .col-1{
 		width: auto;
 	}
-	#inputReply{
+	.inputReply{
 		border: none;
 		width: -webkit-fill-available;
 		resize: none;
@@ -284,8 +284,19 @@
 					</c:if >
 					<div class="row mt-3 mb-1 boardContents" style="padding-bottom: 20px;">
 						<div class="col">
-							<textarea id="inputReply" rows="10%" cols="100%" readonly>${gonguBoard.gbcontents }</textarea>
-							<%-- <text style="min-height:270px;">${board.bdcontents }</div> --%>
+							<textarea class="inputReply" rows="10%" cols="100%" readonly>${gonguBoard.gbcontents }</textarea>
+							<hr>
+							<textarea class="inputReply" rows="10%" cols="100%" readonly>
+# 참여 방법
+로그인 > 참여 버튼 > 양식 입력 > kakao결제
+
+* 주의사항
+- 양식에 제대로 입력하지 않으면 발송이 되지 않습니다. 꼭 주의하셔서 입력바랍니다.
+만약 잘못 입력했으면 문의를 남겨주세요
+
+- kakao결제시 천천히 진행해주세요ㅎㅎ 
+익숙한 노란 창으로 바뀐 후에 결제버튼을 눌러주시기 바랍니다.
+</textarea>
 						</div>
 						
 					
@@ -1009,7 +1020,7 @@
 <script type="text/javascript">
 
 /* Textarea 높이 자동 조절 ( 스크롤바 없애기 ) */
-$("#inputReply").each(function () {
+$(".inputReply").each(function () {
 	this.setAttribute('style', 'height:' + (this.scrollHeight) + 'px;overflow-y:hidden;');
 	}).on('input', function () {
 	this.style.height = 'auto';
@@ -1029,7 +1040,6 @@ $("#inputReply").each(function () {
 			$("#gonguModal").modal("hide");
 		});
 	}
-	
 	var tel = "${memberInfo.mphone }";
 	var email = "${memberInfo.memail }";
 	var address = "${memberInfo.maddr }";
@@ -1126,7 +1136,7 @@ $("#btn-kakao-pay").click(function(){
 	
 	console.log("selectLoginOut_ajax() 실행");
 	$.ajax({
-  		type : 'get',
+  		type : 'post',
   		url : 'selectLoginOut_ajax',
   		async : false,
   		success : function(result){
@@ -1153,10 +1163,19 @@ $("#btn-kakao-pay").click(function(){
 						address: address
 					},
 					success:function(response){
-						console.log("결제실행");
-						var payopen = response.next_redirect_pc_url
-						window.open(payopen,"","width=500, height=450, top=0px, left=500px, scrollbars=no, resizable=no");
-						console.log(response);
+						console.log("response : " + response);
+						var objCount = Object.keys(response).length;
+						// console.log(objCount); 카카오페이 결제준비 중 실패시(Response code: 400) alert 주기 위한 조건. 
+						// 성공과 실패시 받는 키의 개수가 다름.(선생님찬스) (메세지도 다르므로 다른 방법으로 줄 수 도 있음)
+						
+						if(objCount > 2){
+							console.log("결제실행");
+							var payopen = response.next_redirect_pc_url
+							window.open(payopen,"","width=500, height=450, top=0px, left=500px, scrollbars=no, resizable=no");
+						} else {
+							console.log("결제준비실패 : Response code: 400")
+							alert("입력 양식을 확인 해주세요. 이상이 없는데도 반복되면 문의바랍니다.");	
+						}
 						
 					}
 				})

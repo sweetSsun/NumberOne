@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 
 import javax.servlet.http.HttpSession;
@@ -32,13 +33,14 @@ public class KakaoPay {
 	
 	@RequestMapping(value="/kakaopayReady")// data 넘겨줘야함
 	public @ResponseBody String kakaopayReady(String gbcode, String loginId, String tel, String email, String address) throws IOException {
+		System.out.println(address);
 		System.out.println("kakaopayReady 호출");
-		
+		//address = URLDecoder.decode(address, "UTF-8");
 		// 객체 저장
 		GonguDto gongu = new GonguDto();
 		gongu.setGgbcode(gbcode);
 		gongu.setGgmid(loginId);
-		gongu.setGgaddr(address);
+		//gongu.setGgaddr(address); 한글3글자이상 encode가 안되서 직접 param 으로 보냄
 		gongu.setGgemail(email);
 		gongu.setGgphone(tel);
 		
@@ -64,7 +66,7 @@ public class KakaoPay {
 	    //urlBuilder.append("&" + URLEncoder.encode("approval_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopaySuccess", "UTF-8")); //준비성공시 승인
 	    //urlBuilder.append("&" + URLEncoder.encode("approval_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayApproval?gongu="+"aaaaa", "UTF-8")); //준비성공시 승인
 	    //urlBuilder.append("&" + URLEncoder.encode("approval_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayApproval?gbcode="+gbcode+"&loginId="+loginId+"&address="+address+"&email="+email+"&tel="+tel, "UTF-8")); //준비성공시 승인
-	    urlBuilder.append("&" + URLEncoder.encode("approval_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayApproval?gonguJson="+URLEncoder.encode(gonguJson, "UTF-8"), "UTF-8")); //준비성공시 승인
+	    urlBuilder.append("&" + URLEncoder.encode("approval_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayApproval?address="+address+"&gonguJson="+URLEncoder.encode(gonguJson, "UTF-8"), "UTF-8")); //준비성공시 승인
 	    urlBuilder.append("&" + URLEncoder.encode("fail_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayFail", "UTF-8")); //실패시 돌아갈주소
 	    urlBuilder.append("&" + URLEncoder.encode("cancel_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayCansel", "UTF-8")); //취소시 돌아갈주소
 	    //URLEncoder.encode("http://localhost:8080/controller/kakaopayApproval", "UTF-8"));  URLEncoder.encode("/kakaopayApproval", "UTF-8")
@@ -73,6 +75,7 @@ public class KakaoPay {
 	    URL url = new URL(urlBuilder.toString());
 	    System.out.println(urlBuilder.toString());
 	    
+	    boolean check = true; // 중간에서 오류났을 때 false (Response code:400)
 	    HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 	    conn.setRequestMethod("POST");
 	    conn.setRequestProperty("Authorization", "KakaoAK d795e4053130015a11889eac7a7c468c");
@@ -81,9 +84,13 @@ public class KakaoPay {
 	    BufferedReader rd;
 	    if(conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
 	        rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+	        System.out.println("결제준비 성공");
 	    } else {
 	        rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+	        System.out.println("결제준비 실패. 입력양식 확인필요");
+	        check = false;
 	    }
+	    
 	    StringBuilder sb = new StringBuilder();
 	    String line;
 	    
@@ -93,16 +100,19 @@ public class KakaoPay {
 	    rd.close();
 	    conn.disconnect();
 	    System.out.println(sb.toString());
-	    
 	    // tid 저장은 했는데 어떻게 넘겨요? >> Session 에 담는 방법 & 전역변수에 담는 방법이 있음 (private String tid;)
 	    // String tid = sb.substring(8,28); 내생각ㅎㅎ;
 	    // sb 객체에서 한가지 값을 찾는 코드
-	    JsonObject sbjobj = (JsonObject) JsonParser.parseString(sb.toString());
-	    System.out.println("sb_JsonObject :"+sbjobj);
 	    
-	    System.out.println("sb_tid :"+sbjobj.get("tid").getAsString());
-	    String tid = sbjobj.get("tid").getAsString();
-	    session.setAttribute("tid", tid);
+	    
+	    if(check) {
+	    	JsonObject sbjobj = (JsonObject) JsonParser.parseString(sb.toString());
+	    	System.out.println("sb_JsonObject :"+sbjobj);
+	    	
+	    	System.out.println("sb_tid :"+sbjobj.get("tid").getAsString());
+	    	String tid = sbjobj.get("tid").getAsString();
+	    	session.setAttribute("tid", tid);
+	    } // <중간에서 오류났을 때 false (Response code:400)
 	    
 		return sb.toString();
 	    
@@ -110,17 +120,18 @@ public class KakaoPay {
 	
 	
 	@RequestMapping(value="/kakaopayApproval")// data 받아야함
-	public String kakaopayApproval(String gonguJson, String pg_token) throws IOException {
+	public String kakaopayApproval(String gonguJson, String pg_token, String address) throws IOException {
 		System.out.println("kakaopayApproval 호출");
-		
 		System.out.println("gonguJson : " + gonguJson);
 		System.out.println("pg_token : " + pg_token);
+		System.out.println("address : " + address); // 한글 변환이 안되서 별도로 보내줌
 		String tid = (String) session.getAttribute("tid");
 		System.out.println("tid : " + tid);
 		
 		// json을 객체로 바꾸는 법
 		Gson gson = new Gson();
 		GonguDto gongu = gson.fromJson(gonguJson, GonguDto.class);
+		gongu.setGaddr(address); // 별도로 받은 주소 저장
 		System.out.println("gongu : "+gongu);
 		
 		/*공동구매/공구 카카오결제정보 DB입력 :: 결제 전에 입력 ------------- DB확인없이 결제하면 바로 입력하도록 함
@@ -241,13 +252,13 @@ public class KakaoPay {
 	// ajax > 새 페이지에서 이동하므로 생략됨
 	@RequestMapping(value="/kakaopaySuccess")
 	public String kakaopaySuccess() {
-		System.out.println("/kakaopayApproval 결제성공 : 현재이동없음. 마이페이지로 보낼것");
+		System.out.println("/kakaopayApproval 결제성공 : 마이페이지로 보낼 것");
 		return "gongu/PaySuccess";
 	}
 	
 	@RequestMapping(value="/kakaopayFail")
 	public String kakaopayFail() {
-		System.out.println("/kakaopayFail 결제실패 : 재결제 메세지 & 새로고침");
+		System.out.println("/kakaopayFail 결제실패 : 재결제요청 메세지 & 새로고침");
 		return "gongu/PayFail";
 	}
 	

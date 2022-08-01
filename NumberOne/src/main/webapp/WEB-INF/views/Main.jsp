@@ -566,7 +566,7 @@
 												<a href="selectResellView?ubcode=${SellList.ubcode }&ubsellbuy=${SellList.ubsellbuy }&modifyCheck=LIST"><img class="owl-carousel-img" alt="중고판매상세이동" src="${pageContext.request.contextPath }/resources/img/resell/${SellList.ubmainimg}"></a>
 		                                    </c:when>
 		                                    <c:otherwise>
-		                                    	<a href="selectResellView?ubcode=${SellList.ubcode }&ubsellbuy=${SellList.ubsellbuy }&modifyCheck=LIST"><img class="owl-carousel-img" alt="중고판매상세이동" src="${pageContext.request.contextPath }/resources/img/logo.jsp"></a>
+		                                    	<a href="selectResellView?ubcode=${SellList.ubcode }&ubsellbuy=${SellList.ubsellbuy }&modifyCheck=LIST"><img class="owl-carousel-img" alt="중고판매상세이동" src="${pageContext.request.contextPath }/resources/img/logo_bada.png"></a>
 	                                    	</c:otherwise>
 										</c:choose>
 			                        </div>
@@ -596,11 +596,11 @@
 			                	<div class="item" style="height:25rem; padding-bottom: 10px;">
 			                        <div style="height:80%">
 	                        			<c:choose>
-											<c:when test="${SellList.ubmainimg != null}">
+											<c:when test="${buyList.ubmainimg != null}">
 												<a href="selectResellView?ubcode=${buyList.ubcode }&ubsellbuy=${buyList.ubsellbuy }&modifyCheck=LIST"><img class="owl-carousel-img" alt="중고구매상세이동" src="${pageContext.request.contextPath }/resources/img/resell/${buyList.ubmainimg}"></a>
 		                                    </c:when>
 		                                    <c:otherwise>
-		                                    	<a href="selectResellView?ubcode=${buyList.ubcode }&ubsellbuy=${buyList.ubsellbuy }&modifyCheck=LIST"><img class="owl-carousel-img" alt="중고구매상세이동" src="${pageContext.request.contextPath }/resources/img/logo.jsp"></a>
+		                                    	<a href="selectResellView?ubcode=${buyList.ubcode }&ubsellbuy=${buyList.ubsellbuy }&modifyCheck=LIST"><img class="owl-carousel-img" alt="중고구매상세이동" src="${pageContext.request.contextPath }/resources/img/logo_bada.png"></a>
 	                                    	</c:otherwise>
 										</c:choose>
 			                        </div>

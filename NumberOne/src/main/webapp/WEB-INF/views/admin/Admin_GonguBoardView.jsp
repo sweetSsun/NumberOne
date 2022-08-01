@@ -171,14 +171,25 @@
 					
 					<!-- 본문 글 내용-->
 					<div class="mt-3 mb-1 boardContents" style="padding-bottom: 20px;">
-						<div>
+						<div style="padding-bottom: 20px;">
 							<c:if test="${gonguBoard.gbimg != null }">
 								<img alt="" src="${pageContext.request.contextPath }/resources/img/gonguUpLoad/${gonguBoard.gbimg}" style="max-width:100%; max-height:500px;">
 							</c:if>
 						</div>
 						<div>
-							<textarea class="textarea-GbView" readonly>${gonguBoard.gbcontents }</textarea>
-						
+							<textarea class="textarea-GbView" style="padding-bottom: 20px;" readonly>${gonguBoard.gbcontents }</textarea>
+							<hr>
+							<textarea class="textarea-GbView" readonly>
+# 참여 방법
+로그인 > 참여 버튼 > 양식 입력 > kakao결제
+
+* 주의사항
+- 양식에 제대로 입력하지 않으면 발송이 되지 않습니다. 꼭 주의하셔서 입력바랍니다.
+만약 잘못 입력했으면 문의를 남겨주세요
+
+- kakao결제시 천천히 진행해주세요ㅎㅎ 
+익숙한 노란 창으로 바뀐 후에 결제버튼을 눌러주시기 바랍니다.
+</textarea>
 							<!-- 참여 버튼 -->
 							<c:choose>
 								<c:when test="${gonguBoard.gbstate == 1 }">
