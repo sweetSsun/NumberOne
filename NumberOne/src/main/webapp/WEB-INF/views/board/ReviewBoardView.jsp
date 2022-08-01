@@ -22,7 +22,7 @@
     	outline: none;
 	}
 	.row .col-1{
-		width: auto;
+		/* width: auto; */
 	}
 	#inputReply{
 		border: none;
@@ -96,7 +96,7 @@
 	.rpProfile{
 		height:50px;
 		width:50px;
-		object-fit: cover;
+		object-fit: fill;
 	}
 	.rpProfile_None{
 		height:50px; 
@@ -133,7 +133,7 @@
    #upload_Img{
    	width: 450px;
    	height: 350px;
-   	object-fit: cover;
+   	object-fit: contain;
    }
    
    .rpnickname:hover{
@@ -180,6 +180,9 @@ section div.checkout__form{
 }
 #rerp_writeBtn:hover{
 	cursor: pointer;
+}
+.col-11{
+ 	padding-left: 0; 
 } 
 </style>
 </head>
@@ -758,7 +761,8 @@ section div.checkout__form{
 	function updateBoardDelete(){
 		/* 게시글 삭제(상태변경) */
 		//모달창에서 "네" 버튼 클릭 시 삭제
-		location.href="updateBoardDelete?bdcode="+bdcode+"&bdcategory="+bdcategory+"&bdmid="+bdmid;
+		var bdtype = "";
+		location.href="updateBoardDelete?bdtype="+bdtype+"&bdcode="+bdcode+"&bdcategory="+bdcategory+"&bdmid="+bdmid;
 	}
 	
 </script>
@@ -815,8 +819,8 @@ section div.checkout__form{
 				output += "<div class=\"row\">"
 				
 				for( var i=0; i < replyList.length; i++ ){
-					var rppadding = (parseInt(replyList[i].rpdepth)-1)*3;
-					output += "<div class=\"row\" style='border-bottom: solid #E0E0E0 1px; padding-left:"+rppadding+"%;'>";
+					var rppadding = (parseInt(replyList[i].rpdepth)-1)*2;
+					output += "<div class=\"row\" style='border-bottom: solid #E0E0E0 1px; padding-left:"+rppadding+"%; padding-right:0px;'>";
 					
 					if( replyList[i].rpstate == 2 ){//삭제된 댓글일 때
 						
@@ -831,7 +835,7 @@ section div.checkout__form{
 						console.log(rppadding);
 					
 						//output += "<div class=\"row\" style='left:"+rppadding+";'>"
-						output += "<div class=\"col-1\"  >" /* 프로필영역 */
+						output += "<div class=\"col-1\" style='text-align: center'>" /* 프로필영역 */
 						
 						if( replyList[i].rpprofile != 'nomprofile' ){//프로필 이미지가 있을 시 
 			                if(replyList[i].rpdepth != 1){
@@ -839,9 +843,9 @@ section div.checkout__form{
 			                     output += "<span class=\"fw-bold\" style=\"font-size:18px;\">⤷<span>";
 			                   }
 							if(  replyList[i].rpmstate == 9 ){//카카오 회원
-								output += "<img class=\"img-profile rounded-circle rpProfile mt-1\"  src='"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle rpProfile mt-1 \"  src='"+replyList[i].rpprofile + "'>"
 							}else{
-								output += "<img class=\"img-profile rounded-circle rpProfile mt-1\"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle rpProfile mt-1 \"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
 							}
 						
 						}else{//프로필 이미지가 없을 시 
@@ -849,7 +853,7 @@ section div.checkout__form{
 			                     //답글인 경우 화살표 추가
 			                     output += "<span class=\"fw-bold\" style=\"font-size:18px;\">⤷<span>";
 			                   }
-							output += "<img class=\"img-profile rounded-circle rpProfile_None mt-1\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
+							output += "<img class=\"img-profile rounded-circle rpProfile_None mt-1 \" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
 						}
 						output += "</div>"
 						
@@ -860,7 +864,7 @@ section div.checkout__form{
 						output += "<input type=\"hidden\" value='"+replyList[i].rpmid+"'>"
 						
 						/* 답글쓰기 버튼 */
-						if( loginId != null && replyList[i].rpdepth < 5){
+						if( replyList[i].rpdepth < 5){
 							output += "<span id=\"rerp_writeBtn\" onclick=\"rerp_writeBtn('"+ replyList[i].rpcode +"','" + replyList[i].rpnickname +"')\" class='fw-bold' style='color: gray;'>&nbsp;&nbsp;답글쓰기</span>"
 						}
 						
@@ -880,19 +884,19 @@ section div.checkout__form{
 						
 					}else{ // 로그인아이디 != 글작성자
 		
-						output += "<div class=\"col-1\" >" /* 프로필영역 */
+						output += "<div class=\"col-1\" style='text-align:right'>" /* 프로필영역 */
 						if( replyList[i].rpprofile != 'nomprofile' ){//프로필 이미지가 있을 시 
 							if(replyList[i].rpdepth != 1){
 			                     //답글인 경우 화살표 추가
 			                     output += "<span class=\"fw-bold\" style=\"font-size:18px;\">⤷<span>";
 			                   }
 							if(  replyList[i].rpmstate == 9){//카카오 회원
-								output += "<img class=\"img-profile rounded-circle rpProfile mt-1\"  src='"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle rpProfile mt-1 \"  src='"+replyList[i].rpprofile + "'>"
 							}else{
-								output += "<img class=\"img-profile rounded-circle rpProfile mt-1\"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
+								output += "<img class=\"img-profile rounded-circle rpProfile mt-1 \"  src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/"+replyList[i].rpprofile + "'>"
 							}
 						}else{//프로필 이미지가 없을 시 
-							output += "<img class=\"img-profile rounded-circle rpProfile_None mt-1\" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
+							output += "<img class=\"img-profile rounded-circle rpProfile_None mt-1 \" src='${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png'>"
 						}
 						output += "</div>"
 							
@@ -903,7 +907,7 @@ section div.checkout__form{
 						output += "<input type=\"hidden\" value='"+replyList[i].rpmid+"'>"
 						
 						/* 답글쓰기 버튼 */
-						if( loginId != null && replyList[i].rpdepth < 5 ){
+						if(  replyList[i].rpdepth < 5 ){
 							output += "<span id=\"rerp_writeBtn\" onclick=\"rerp_writeBtn('"+ replyList[i].rpcode +"','" + replyList[i].rpnickname +"')\" class='fw-bold' style='color: gray;'>&nbsp;&nbsp;답글쓰기</span>"
 						}
 						
@@ -917,10 +921,9 @@ section div.checkout__form{
 						output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
 						output += "</div>"
 					}
-
-				}
-						
 						output += "</div>"//한줄 끝
+						
+				}
 					}//for문 종료
 				output += "</div>"
 			}
