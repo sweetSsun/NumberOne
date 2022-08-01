@@ -517,9 +517,7 @@ public class ResellService {
 		
 		ArrayList<UsedBoardDto> memberSellList = rdao.selectResellView_memberList(ub_resellView.getUbmid(),	ubDto.getUbcode());
 		
-		memberSellList = timeFuction(memberSellList);
-		ub_resellView.setUbdatedef(timeFuction(ub_resellView.getUbdate()));
-		
+	
 		String[] ubDetailImg;
 
 		if (ub_resellView.getUbdetailimg() != null) {

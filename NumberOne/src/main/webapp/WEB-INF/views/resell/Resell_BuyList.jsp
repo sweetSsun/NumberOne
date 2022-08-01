@@ -303,9 +303,18 @@ section div.checkout__form{
 						<c:forEach items="${sell_buyList}" var="buyList">
 							<div class="float_">
 								<div id="sellbuyscreen">
+								<c:choose>
+								<c:when test="${buyList.ubmainimg != null}">
 									<a onclick="laodToView('${buyList.ubcode }')" href="javascript:void(0);"> <img alt="" src="${pageContext.request.contextPath }/resources/img/resell/${buyList.ubmainimg }">
 									</a>
-
+									</c:when>
+									
+									<c:otherwise>
+										<a onclick="laodToView('${buyList.ubcode }')" href="javascript:void(0);"> <img alt="" src="${pageContext.request.contextPath }/resources/img/logo.jpg">
+									</a>
+									
+									</c:otherwise>
+</c:choose>
 								</div>
 								<div class="bottom" style="font-weight: 600; position: relative;">
 									<span class="soldCheckMsg_ bold"></span> <a onclick="laodToView('${buyList.ubcode }')" href="javascript:void(0);">${buyList.ubtitle }</a>
@@ -466,11 +475,11 @@ section div.checkout__form{
 		console.log('검색타입확인 : ', searchedType_param);
 
 		if (selectRegion_param != null) {
-			/* 페이지에 지역파라메터가 있다면 실행 : 파라메터와 일치하는 option에 selected*/
 
 			for (let i = 0; i < regionInfo.options.length; i++) {
 				if (regionInfo.options[i].value === selectRegion_param) {
 					regionInfo.options[i].selected = 'true';
+			
 					break;
 				}
 			}

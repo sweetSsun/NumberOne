@@ -24,10 +24,17 @@ public class ChatController {
 	@RequestMapping(value="/loadToChat")
 	public ModelAndView loadToChat(String crcode) {
 		System.out.println("채팅 페이지 요청");
-		mav = new ModelAndView();
-		mav.setViewName("chat/Chat");
+		mav = chsvc.selectChatRoomMessage2(crcode);
 		return mav;
 	}
+	
+//	@RequestMapping(value="/loadToChat")
+//	public ModelAndView loadToChat(String crcode) {
+//		System.out.println("채팅 페이지 요청");
+//		mav = new ModelAndView();
+//		mav.setViewName("chat/Chat");
+//		return mav;
+//	}
 	
 	@RequestMapping(value = "/insertResellChat")
 	public @ResponseBody String insertResellChat(String[] gd_names, ChatMessageDto chatMessage, String gdtitle) {
