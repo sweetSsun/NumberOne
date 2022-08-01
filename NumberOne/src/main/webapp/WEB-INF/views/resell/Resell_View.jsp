@@ -440,7 +440,7 @@ font-weight: bold;
 							      <img style="object-fit: contain;" class="active Resell_img d-block w-100" src="${pageContext.request.contextPath }/resources/img/resell/${ub_resellView.ubmainimg}">
 							      </c:when>
 							      <c:otherwise>
-							      <img style="object-fit: contain;" class="active Resell_img d-block w-100" src="${pageContext.request.contextPath }/resources/img/logo.jpg">
+							      <img style="object-fit: contain;" class="active Resell_img d-block w-100" src="${pageContext.request.contextPath }/resources/img/logo_bada.png">
 							      </c:otherwise>
 							      </c:choose>
 							    <span class="imgState"></span>
@@ -454,7 +454,7 @@ font-weight: bold;
 							      <img style="object-fit: contain;" class="Resell_img d-block w-100" src="${pageContext.request.contextPath }/resources/img/resell/${ubdetailimg_list}">
 							    </c:when>
 							    <c:otherwise>
-							     <img style="object-fit: contain;" class="Resell_img d-block w-100" src="${pageContext.request.contextPath }/resources/img/logo.jpg">
+							     <img style="object-fit: contain;" class="Resell_img d-block w-100" src="${pageContext.request.contextPath }/resources/img/logo_bada.png">
 							    
 							    </c:otherwise>
 							    
