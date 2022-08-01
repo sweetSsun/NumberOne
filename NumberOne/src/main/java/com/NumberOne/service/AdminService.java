@@ -256,7 +256,6 @@ public class AdminService {
 		mav.addObject("noticeBoard", noticeBoard);
 		mav.addObject("paging", paging);
 
-		System.out.println(nbcode.substring(0,2));
 		mav.setViewName("admin/Admin_NoticeBoardView");
 		
 		return mav;
