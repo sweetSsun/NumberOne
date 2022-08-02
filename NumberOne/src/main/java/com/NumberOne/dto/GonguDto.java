@@ -63,13 +63,28 @@ public class GonguDto {
 	public void setGgbstate(String ggbstate) {
 		this.ggbstate = ggbstate;
 	}
-
+	public void setGgmid(String ggmid) {
+		this.ggmid = ggmid;
+	}
+	public void setGgphone(String ggphone) {
+		this.ggphone = ggphone;
+	}
+	public void setGgemail(String ggemail) {
+		this.ggemail = ggemail;
+	}
+	public void setGgaddr(String ggaddr) {
+		this.ggaddr = ggaddr;
+	}
+	public void setGgdate(String ggdate) {
+		this.ggdate = ggdate;
+	}
 	@Override
 	public String toString() {
 		return "GonguDto [ggbcode=" + ggbcode + ", ggmid=" + ggmid + ", ggphone=" + ggphone + ", ggemail=" + ggemail
-
-				+ ", ggaddr=" + ggaddr + ", gdate=" + ggdate + ", ggbtitle=" + ggbtitle + ", ggbstate=" + ggbstate + "]";
+				+ ", ggaddr=" + ggaddr + ", ggdate=" + ggdate + ", ggbtitle=" + ggbtitle + ", ggbstate=" + ggbstate
+				+ "]";
 	}
-
+	
+	
 	
 }
