@@ -1070,9 +1070,9 @@ $(".inputReply").each(function () {
 		addPriceComma();
 	}	
 	function addPriceComma(){			
-		console.log(Number(gb_price).toLocaleString('ko-KR'));
+		//console.log(Number(gb_price).toLocaleString('ko-KR'));
 		var gb_price_comma = Number(gb_price).toLocaleString('ko-KR');
-		console.log(gb_price_comma);
+		//console.log(gb_price_comma);
 		$(".gb_price").text(" ₩ " +gb_price_comma);
 	}
 	
@@ -1081,9 +1081,9 @@ $(".inputReply").each(function () {
 	var tel = "${memberInfo.mphone }";
 	var email = "${memberInfo.memail }";
 	var address = "${memberInfo.maddr }";
-	console.log("번호 : "+tel);
-	console.log("이메일 : "+email);
-	console.log("주소 : "+address);
+	//console.log("번호 : "+tel);
+	//console.log("이메일 : "+email);
+	//console.log("주소 : "+address);
 	
 	//공동구매 참여 양식 입력 모달창 출력
 	function showGonguModal(){
@@ -1149,9 +1149,6 @@ console.log("가격 : "+item_price);
 
 $("#btn-kakao-pay").click(function(){
 	console.log("카카오페이 클릭");
-	var tel = $("#form-payment input[name='pay-tel']").val();
-	var email = $("#form-payment input[name='pay-email']").val();
-	var address = $("#form-payment input[name='pay-address']").val();
 	console.log("tel : "+tel);
 	console.log("email : "+email);
 	console.log("address : "+address);

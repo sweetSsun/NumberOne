@@ -46,6 +46,11 @@
 				</div>
 				<div class="sideclose_room">
 					<span>
+						<a href="selectMyInfoGonguView" title="공동구매"><i class="fa-solid fa-box-open"></i></a>
+					</span>
+				</div>				
+				<div class="sideclose_room">
+					<span>
 						<a href="selectMyInfoResellView#scroll-sellbuy" title="팔구사구"><i class="fa-solid fa-carrot"></i></a>
 					</span>
 				</div>
@@ -57,11 +62,6 @@
 				<div class="sideclose_room">
 					<span>
 						<a href="selectMyInfoResellView#scroll-zzim" title="찜목록"><i class="fa-solid fa-heart"></i></a>
-					</span>
-				</div>
-				<div class="sideclose_room">
-					<span>
-						<a href="selectMyInfoGonguView" title="공동구매"><i class="fa-solid fa-box-open"></i></a>
 					</span>
 				</div>
 				<div class="sideclose_room">
@@ -99,6 +99,14 @@
 				</div>
 				
 				<div class="sidetitle_mypage">
+					<span style="font-weight: bold; font-size: 20px;"><a href="selectMyInfoGonguView">공동구매</a></span>
+				
+					<div class="side_mypage">
+						<a href="selectMyInfoGonguView"><i class="fa-solid fa-box-open"></i>&nbsp;&nbsp;공구</a>
+					</div>
+				</div>
+								
+				<div class="sidetitle_mypage">
 					<span style="font-weight: bold; font-size: 20px;"><a href="selectMyInfoResellView">중고거래</a></span>
 					
 					<div class="side_mypage">
@@ -111,15 +119,7 @@
 						<a href="selectMyInfoResellView#scroll-zzim"><i class="fa-solid fa-heart"></i>&nbsp;&nbsp;찜목록</a>
 					</div>
 				</div>
-				
-				<div class="sidetitle_mypage">
-					<span style="font-weight: bold; font-size: 20px;"><a href="selectMyInfoGonguView">공동구매</a></span>
-				
-					<div class="side_mypage">
-						<a href="selectMyInfoGonguView"><i class="fa-solid fa-box-open"></i>&nbsp;&nbsp;공구</a>
-					</div>
-				</div>
-				
+
 				<div class="sidetitle_mypage">
 					<span style="font-weight: bold; font-size: 20px;"><a href="selectMyInfoQuestionListView">문의</a></span>
 				

@@ -346,12 +346,12 @@
 				<div class="col-lg-3 col-sm-3" style="margin: auto;">
 					<div id="banner_second" class="owl-carousel" style="width: auto; height: 50vh;">
 					    <div class="item" style="height:100%">
-	                		<a href="selectGonguBoardList?gbstate=ing" title="공동구매">
+	                		<a href="selectGonguBoardView??codeIdx=GB00001" title="공동구매">
 	                			<img style="height:50vh;" alt="공동구매이동1" src="${pageContext.request.contextPath }/resources/img/banner/numberoneGagu.png">
 	               			</a>
 					    </div>
 					    <div class="item" style="height:100%">
-	                		<a href="selectGonguBoardList?gbstate=ing" title="공동구매">
+	                		<a href="selectGonguBoardView??codeIdx=GB00002" title="공동구매">
 	                			<img style="height:50vh;" alt="공동구매이동2" src="${pageContext.request.contextPath }/resources/img/banner/gongu003.jpg">
 	               			</a>
 					    </div>		
@@ -565,7 +565,7 @@
 												<a href="selectResellView?ubcode=${SellList.ubcode }&ubsellbuy=${SellList.ubsellbuy }&modifyCheck=LIST"><img class="owl-carousel-img" alt="중고판매상세이동" src="${pageContext.request.contextPath }/resources/img/resell/${SellList.ubmainimg}"></a>
 		                                    </c:when>
 		                                    <c:otherwise>
-		                                    	<a href="selectResellView?ubcode=${SellList.ubcode }&ubsellbuy=${SellList.ubsellbuy }&modifyCheck=LIST"><img class="owl-carousel-img" alt="중고판매상세이동" src="${pageContext.request.contextPath }/resources/img/logo_bada.png"></a>
+		                                    	<a href="selectResellView?ubcode=${SellList.ubcode }&ubsellbuy=${SellList.ubsellbuy }&modifyCheck=LIST"><img class="owl-carousel-img" alt="중고판매상세이동" src="${pageContext.request.contextPath }/resources/img/logo_gray.png"></a>
 	                                    	</c:otherwise>
 										</c:choose>
 			                        </div>
@@ -599,7 +599,7 @@
 												<a href="selectResellView?ubcode=${buyList.ubcode }&ubsellbuy=${buyList.ubsellbuy }&modifyCheck=LIST"><img class="owl-carousel-img" alt="중고구매상세이동" src="${pageContext.request.contextPath }/resources/img/resell/${buyList.ubmainimg}"></a>
 		                                    </c:when>
 		                                    <c:otherwise>
-		                                    	<a href="selectResellView?ubcode=${buyList.ubcode }&ubsellbuy=${buyList.ubsellbuy }&modifyCheck=LIST"><img class="owl-carousel-img" alt="중고구매상세이동" src="${pageContext.request.contextPath }/resources/img/logo_bada.png"></a>
+		                                    	<a href="selectResellView?ubcode=${buyList.ubcode }&ubsellbuy=${buyList.ubsellbuy }&modifyCheck=LIST"><img class="owl-carousel-img" alt="중고구매상세이동" src="${pageContext.request.contextPath }/resources/img/logo_gray.png"></a>
 	                                    	</c:otherwise>
 										</c:choose>
 			                        </div>
