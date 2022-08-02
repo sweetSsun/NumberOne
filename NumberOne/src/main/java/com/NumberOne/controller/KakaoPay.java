@@ -32,7 +32,7 @@ public class KakaoPay {
 	private HttpSession session;
 	
 	@RequestMapping(value="/kakaopayReady")// data 넘겨줘야함
-	public @ResponseBody String kakaopayReady(String gbcode, String loginId, String tel, String email, String address, String item_name, String item_price) throws IOException {
+	public @ResponseBody String kakaopayReady(String gbcode, String loginId, String tel, String email, String address, String item_name, int item_price) throws IOException {
 		System.out.println("kakaopayReady 호출");
 		System.out.println("address : "+address);
 		System.out.println("item_name : "+item_name);
@@ -62,7 +62,7 @@ public class KakaoPay {
 	    urlBuilder.append("&" + URLEncoder.encode("partner_user_id","UTF-8") + "=" + URLEncoder.encode(loginId, "UTF-8"));	//구매자
 	    urlBuilder.append("&" + URLEncoder.encode("item_name","UTF-8") + "=" + URLEncoder.encode(item_name, "UTF-8"));//판매이름
 	    urlBuilder.append("&" + URLEncoder.encode("quantity","UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); //개수
-	    urlBuilder.append("&" + URLEncoder.encode("total_amount","UTF-8") + "=" + URLEncoder.encode(item_price, "UTF-8")); //총액
+	    urlBuilder.append("&" + URLEncoder.encode("total_amount","UTF-8") + "=" + item_price); //총액
 	    urlBuilder.append("&" + URLEncoder.encode("vat_amount","UTF-8") + "=" + URLEncoder.encode("0", "UTF-8")); //부가세
 	    urlBuilder.append("&" + URLEncoder.encode("tax_free_amount","UTF-8") + "=" + URLEncoder.encode("0", "UTF-8")); //면세
 	    //urlBuilder.append("&" + URLEncoder.encode("approval_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopaySuccess", "UTF-8")); //준비성공시 승인
