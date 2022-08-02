@@ -558,8 +558,15 @@ public class BoardService {
 		if (loginId == null) {
 			loginId = "";
 		}
+		
 		System.out.println("로그인 아이디: " + loginId);
-		BoardDto roomView = bdao.selectRoomView(bdcode, loginId);
+		
+		BoardDto roomView;
+		if(loginId.equals("admin")) {
+			roomView = bdao.adminSelectRoomView(bdcode, loginId);
+		} else {
+			roomView = bdao.selectRoomView(bdcode, loginId);			
+		}
 		System.out.println("추천/신고/스크랩 기록 추가: " + roomView);
 		// System.out.println(roomView);
 

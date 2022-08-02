@@ -625,6 +625,7 @@ roomView_ajax(nowBdcode)
 		  nowModalNum = null;
 		  nowRpparent ="";
 		  $("#inputReply").val("");
+		  nowBdfix = 0;
 		
 		$.ajax({
 			type : "get",
@@ -636,6 +637,9 @@ roomView_ajax(nowBdcode)
 				//console.log(roomView);
 				//글작성자 아이디 필드에 저장
 				nowBdmid = roomView.bdmid;
+				//bdfix 필드에 저장
+				nowBdfix = roonView.bdfix;
+				
 				//글 이미지
 				var imgHtml = "";
 				
@@ -943,6 +947,7 @@ roomView_ajax(nowBdcode)
 	var nowRpmid;
 	var nowWb;
 	var nowRpparent ="";
+	var nowBdfix = 0;
 	
 	function replyEnter(e){
 		if(e.keyCode==13 && !e.shiftKey){
