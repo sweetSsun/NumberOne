@@ -186,10 +186,10 @@
 							</c:if>
 						</div>
 						<div>
-							<textarea class="textarea-GbView" style="padding-bottom: 20px;" readonly>${gonguBoard.gb_contents }</textarea>
+							<textarea class="textarea-GbView" style="padding-bottom: 20px;" readonly>${gonguBoard.gbcontents }</textarea>
 							<div class="row">
-								<textarea class="textarea-GbView-2" style="width:70%; margin-right:5%;" readonly>${gonguBoard.gb_item_name }</textarea>
-								<textarea class="textarea-GbView-2" style="width:20%" readonly>${gonguBoard.gb_total_amount }</textarea>
+								<textarea class="textarea-GbView-2" style="width:70%; margin-right:5%;" readonly>${gonguBoard.gbitemname }</textarea>
+								<textarea class="textarea-GbView-2" style="width:20%" readonly>${gonguBoard.gbitemprice }</textarea>
 							</div>
 							<hr>
 							<textarea class="textarea-GbView" readonly>
@@ -200,7 +200,7 @@
 - 양식에 제대로 입력하지 않으면 발송이 되지 않습니다. 꼭 주의하셔서 입력바랍니다.
 만약 잘못 입력했으면 문의를 남겨주세요
 
-- kakao결제시 천천히 진행해주세요ㅎㅎ 
+- kakao결제시 천천히 진행해주세요
 익숙한 노란 창으로 바뀐 후에 결제버튼을 눌러주시기 바랍니다.
 </textarea>
 							<!-- 참여 버튼 -->

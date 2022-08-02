@@ -808,11 +808,19 @@ public class MemberService {
 				System.out.println("회원가입 확인!!!!");
 				member.setMid("@_"+member.getMid());
 				member.setMpw("12121212");
+				
 				//이메일 분리
 				String email = member.getMemail();
-				String[] email_arr = email.split("@");
-				member.setMemailId(email_arr[0]);
-				member.setMemailDomain(email_arr[1]);
+				System.out.println("email : "+email);
+				if(email.equals("undefined")) {
+					// 이메일 처리
+					member.setMemail(member.getMemailId()+"@"+member.getMemailDomain());
+	
+				}else {
+						String[] email_arr = email.split("@");
+						member.setMemailId(email_arr[0]);
+						member.setMemailDomain(email_arr[1]);
+				}
 				
 				System.out.println("카카오확인 :"+member);
 				mav.addObject("memberInfo", member);	  

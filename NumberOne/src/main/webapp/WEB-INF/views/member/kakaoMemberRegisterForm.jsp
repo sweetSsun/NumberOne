@@ -156,11 +156,11 @@ background-color: #00BCD4;
             <div class="checkout__form">
                 <h4>필수정보입력</h4>
                 <form class="user" action="insertKakaoRegister" method="post" enctype="multipart/form-data" onsubmit="return joinFormCheck()">
-                    <div class="row" style=" margin-left: 30%;">
+                    <div class="row">
                         <div class="col-lg-12 col-md-12 col-sm-12">
                         <!-- 이름 -->
                             <div class="row">
-                                <div class="col-lg-6 col-md-12 col-sm-12">
+                                <div class="col-lg-5 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p>이름<span>*</span></p>
                                         <input type="text" id="inputMname" name="mname" placeholder="2~10자로 입력해주세요."  value="">
@@ -170,17 +170,17 @@ background-color: #00BCD4;
                             </div>
                         <!-- 전화번호 -->
                             <div class="row">
-                                <div class="col-lg-6 col-md-12 col-sm-12">
+                                <div class="col-lg-5 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p>전화번호<span>*</span></p>
-                                        <input type="text" id="inputMphone" name="mphone" placeholder="'-' 포함하여 번호 입력해주세요."  value="">
+                                        <input type="text" id="inputMphone" name="mphone" placeholder="'-' 포함하여 번호 입력해주세요." onKeyup="this.value=this.value.replace(/[^-0-9]/g,'');" value="">
  									<span id="phoneCheckMsg" class="msg"></span>                                    
                                     </div>
                                 </div>
                             </div>                            
                             <!-- 관심지역 -->
                             <div class="row">
-                                <div class="col-lg-3 col-md-12 col-sm-12">
+                                <div class="col-lg-5 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p>관심지역<span>*</span></p>
                                         <input type="text" class="selectOption" id="inputmregion" name="mregion" value="">
@@ -202,20 +202,69 @@ background-color: #00BCD4;
 										</select>
                                     </div>                                      
                                 </div>                                                                  
-                            </div>                            
-                            
-                                                    
-                        <!-- -->
+                            </div>
+                           <!-- 이메일 --> 
+                           <c:choose>
+                           <c:when test="${memberInfo.memailId != null}">
+                            <div class="row">
+                                <div class="col-lg-5 col-md-12 col-sm-12">
+                                    <div class="checkout__input">
+                                        <!-- <p>이메일<span>*</span></p> -->
+                                        <input type="hidden"  id="inputEmailId" name="memailId" placeholder="이메일 아이디" value="${memberInfo.memailId }" readonly="readonly">                                       
+                                    </div> 
+                                </div>                                
+                                <div class="col-lg-4 col-md-12 col-sm-12">
+                                    <div class="checkout__input">
+                                        <p style="margin-top: 45px;">
+                                        <input type="hidden" id="inputEmailDomain" name="memailDomain" placeholder="이메일 도메인" value="${memberInfo.memailDomain }"readonly="readonly"></p>                                        
+                                    </div>
+                                </div>
+                            </div>                           
+                           </c:when>
+                           <c:otherwise>
+                            <div class="row">
+                                <div class="col-lg-5 col-md-12 col-sm-12">
+                                    <div class="checkout__input">
+                                        <p>이메일<span>*</span></p>
+                                        <input type="text"  id="inputEmailId" name="memailId" placeholder="이메일 아이디" value="">
+ 									<span id="emailIdCheckMsg"></span>                                        
+                                    </div> 
+                                </div> 
+                                <div class="col-lg-1 col-md-12 col-sm-12">
+                                    <div class="checkout__input" style="margin-top:50px; margin-left:13px;">    
+                                       @
+                                    </div> 
+                                </div>                                
+                                <div class="col-lg-4 col-md-12 col-sm-12">
+                                    <div class="checkout__input">
+                                        <p style="margin-top: 45px;">
+                                        <input type="text" id="inputEmailDomain" name="memailDomain" placeholder="이메일 도메인" value=""></p>
+ 									<span id="emailDomainCheckMsg"></span>                                         
+                                    </div>
+                                </div>
+                                <div class="col-lg-2 col-md-12 col-sm-12">
+                                    <div class="checkout__input" style="margin-top: 45px;">
+                                        <select id="domainSelect"  class="selectOption">
+										<option value="">직접입력</option>
+										<option value="naver.com">naver.com</option>
+										<option value="gmail.com">gmail.com</option>
+										<option value="hanmail.net">hanmail.net</option>
+										</select>
+                                    </div>
+                                </div> 
+                            </div>                           
+                           </c:otherwise>
+                           </c:choose>
+                  
+                        <!-- hidden 부분 -->
 <input type="hidden"id="inputMid" name="mid" value="${memberInfo.mid }" readonly="readonly">
 <input type="hidden" id="inputMpw" name="mpw"  value="${memberInfo.mpw }" readonly="readonly">
 <input type="hidden" id="inputMnickname" name="mnickname"  value="${memberInfo.mnickname }"readonly="readonly">
-<input type="hidden"  id="inputEmailId" name="memailId" placeholder="이메일 아이디"  value="${memberInfo.memailId }" readonly="readonly">
-<input type="hidden" class="selectOption" id="inputEmailDomain" name="memailDomain" placeholder="이메일 도메인"  value="${memberInfo.memailDomain }" readonly="readonly">
 <input type="hidden" class="upload-name" value="${memberInfo.mprofile }" placeholder="첨부파일" id="inputFile" name="mprofile" >
 <textarea class="msgTextarea" id="inputMmessage" name="mmessage" style="display:none;"></textarea>
 
                         <br>
-                        <button type="submit" class="site-btn" style="width: 130px; margin-left: 10%; border-radius: 4px;">
+                        <button type="submit" class="site-btn" style="width: 130px; : margin-right:auto; margin-left:auto; border-radius: 4px;">
                         입력완료</button>
                         </div>
                     </div>
@@ -234,51 +283,111 @@ background-color: #00BCD4;
 	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="${pageContext.request.contextPath }/resources/MemberJs/daumPostCode.js"></script>
     
+<script type="text/javascript">
 
+var inputPwCheck = false;
+var inputNameCheck = false;
+var inputNicknameCheck = false;
+var inputEmailCheck = false;
 
+<!-- 파일 input 이름 생성 -->
+	$("#inputMfile").on('change',function(){
+	 	 var fileName = $("#inputMfile").val();
+	  	 $("#inputFile").val(fileName);
+	});
 
-    <!-- 비밀번호 길이 확인 -->
-    <script type="text/javascript">
-		$("#inputMpw").keyup(function(){
-			var inputPw = $("#inputMpw").val();
-			console.log("inputPw : " + inputPw);
-			if( inputPw.length == 0 ){
-				$("#pwCheckMsg").css("color","red").text("비밀번호를 입력해주세요.");
-				inputPwCheck = false;
-			} else if( inputPw.length < 6 || inputPw.length > 20 ){
-				$("#pwCheckMsg").text("비밀번호는 6~20자리 입니다.").css("color", "red");
-				inputPwCheck = false;
-				
-			} else {
-				$("#pwCheckMsg").css("color","green").text("사용가능한 비밀번호 입니다.");
-				inputPwCheck = true;
-				
-			}
-		});
-		</script>
+  /* 프로필 사진 없애기 */
+	function clear_test(){
+		console.log("clear_test() 호출");
+		$("#delFile").val('${memberInfo.mprofile }');
+		$("#inputFile").val('');
+	}
+</script>
+
+		<!-- 이메일 중복 확인 -->
+ 		<script type="text/javascript">
+  			
+  		/*
+		var emailId = $("#inputEmailId").val();
+ 		var memailDomain = $("#inputEmailDomain").val();
+ 		var inputEmail = "";
+ 		inputEmail = emailId+"@"+memailDomain;
+ 		console.log("inputEmail : "+ inputEmail);
+ 		*/
+ 		
+		//이메일 아이디 입력하면 중복 확인으로 연결하는 함수
+ 		$("#inputEmailId").on("focusout", function() {
+ 			console.log("이메일 아이디 입력");
+ 	 		
+ 			if( $("#inputEmailDomain").val().length != 0){
+ 				console.log("도메인도 입력")
+ 	 			var inputEmail = $("#inputEmailId").val()+"@"+$("#inputEmailDomain").val();
+ 	 			selectMemberEmail_ajax(inputEmail);
+ 			}
+         });
+ 		
+ 		
+		//이메일 도메인 직접 입력하면 중복 확인으로 연결하는 함수
+ 		$("#inputEmailDomain").on("propertychange change keyup paste input", function() {
+ 			//propertychate, input은 작동을 하지 않는 듯 하다...
+ 			console.log("이메일 도메인 입력");
+ 	 		
+ 			if( $("#inputEmailId").val().length != 0){
+ 				console.log("아이디도 입력")
+ 	 			var inputEmail = $("#inputEmailId").val()+"@"+$("#inputEmailDomain").val();
+ 	 			selectMemberEmail_ajax(inputEmail);
+ 			}
+         });
 		
-	
-    <!-- 이름 길이 확인 -->
-    <script type="text/javascript">
-		$("#inputMname").keyup(function(){
-			var inputName = $("#inputMname").val();
-			console.log("inputName : " + inputName);
-			if( inputName.length == 0 ){
-				$("#nameCheckMsg").css("color","red").text("이름을 입력해주세요.");
-				inputNameCheck = false;
-			} else if( inputName.length < 2 || inputName.length > 10 ){
-				$("#nameCheckMsg").text("이름은 2~10자리 입니다.").css("color", "red");
-				inputNameCheck = false;
-				
-			} else {
-				$("#nameCheckMsg").css("color","green").text("사용가능한 이름 입니다.");
-				inputNameCheck = true;
-				
-			}
-		});
-		</script>
+		//이메일 도메인 선택하면 중복 확인으로 연결하는 함수
+ 		$("#domainSelect").on("change", function() {
+ 			console.log("이메일 도메인 선택");
+ 	 		
+ 			if( $("#inputEmailId").val().length != 0){
+ 				console.log("아이디도 입력")
+ 	 			var inputEmail = $("#inputEmailId").val()+"@"+$("#domainSelect").val();
+ 	 			selectMemberEmail_ajax(inputEmail);
+ 			}
+         });
 		
-    <!-- 닉네임 길이 확인 -->
+ 		
+ 		function selectMemberEmail_ajax(inputEmail){
+ 			
+			console.log("이메일 중복 체크 함수 호출")
+			
+			if(inputEmail == '${memberInfo.memail}'){
+				console.log("기존 이메일");
+				return;
+			}
+			
+			$.ajax({
+				type : "get",
+				url : "selectMemberEmail_ajax",
+				data : {"inputEmail" : inputEmail },
+				success : function(result){
+					console.log(result);
+					
+					if(result=="OK") {
+					//$("#recheckEmail").text("사용가능한 닉네임 입니다.").css("color" , "green");  
+					console.log("이메일 사용 가능")
+					inputEmailCheck =true;
+					
+					}else {
+					//$("#recheckEmail").text("이미 사용중인 닉네임 입니다.").css("color" , "red");  		
+					console.log("이메일 사용 불가능")
+					inputEmailCheck =false;
+					alert("이미 사용중인 이메일 입니다")
+					$("#inputEmailId").val("");
+					$("#inputEmailDomain").val("");
+					$("#inputEmailId").focus();
+					}
+				}
+
+			});
+ 		}
+	</script> 
+
+    <!-- 닉네임 중복 확인 -->
     <script type="text/javascript">
 		$("#inputMnickname").keyup(function(){
 			var inputNickname = $("#inputMnickname").val();
@@ -311,8 +420,68 @@ background-color: #00BCD4;
 				
 			}
 		});
-		</script>					
+		</script>
+
+
+    <!-- 비밀번호 길이 확인 -->
+    <script type="text/javascript">
+		$("#inputMpw").keyup(function(){
+			var inputPw = $("#inputMpw").val();
+			console.log("inputPw : " + inputPw);
+			if( inputPw.length == 0 ){
+				$("#pwCheckMsg").css("color","red").text("비밀번호를 입력해주세요.");
+				inputPwCheck = false;
+			} else if( inputPw.length < 6 || inputPw.length > 20 ){
+				$("#pwCheckMsg").text("비밀번호는 6~20자리 입니다.").css("color", "red");
+				inputPwCheck = false;
+				
+			} else {
+				$("#pwCheckMsg").css("color","green").text("사용가능한 비밀번호 입니다.");
+				inputPwCheck = true;
+				
+			}
+		});
+		</script>
+		
+		
+    <!-- 비밀번호 재확인 -->
+<!--     <script type="text/javascript">
+		$("#checkMpw").keyup(function(){
+			var inputPw = $("#inputMpw").val();
+			console.log("inputPw : " + inputPw);
+			var checkPw = $("#checkMpw").val();
+			console.log("checkPw : " + checkPw);
 	
+			if( inputPw == checkPw ){
+				$("#pwReCheckMsg").css("color","green").text("비밀번호가 일치합니다.");
+				inputPwCheck = false;
+			} else {
+				$("#pwReCheckMsg").css("color","red").text("비밀번호가 일치하지 않습니다.");
+				inputPwCheck = true;
+				
+			}
+		});
+		</script> -->		
+	
+    <!-- 이름 길이 확인 -->
+    <script type="text/javascript">
+		$("#inputMname").keyup(function(){
+			var inputName = $("#inputMname").val();
+			console.log("inputName : " + inputName);
+			if( inputName.length == 0 ){
+				$("#nameCheckMsg").css("color","red").text("이름을 입력해주세요.");
+				inputNameCheck = false;
+			} else if( inputName.length < 2 || inputName.length > 10 ){
+				$("#nameCheckMsg").text("이름은 2~10자리 입니다.").css("color", "red");
+				inputNameCheck = false;
+				
+			} else {
+				$("#nameCheckMsg").css("color","green").text("사용가능한 이름 입니다.");
+				inputNameCheck = true;
+				
+			}
+		});
+		</script>
 		
 
 <!-- 입력칸 유무 확인 -->
@@ -326,19 +495,43 @@ background-color: #00BCD4;
     		$("#inputMname").focus();
     		return false;
     	}
+
+    	if($("#inputMname").val().length < 2 || $("#inputMname").val().length >10){
+    		alert("이름은 2~10자리 입니다.");
+    		$("#inputMname").focus();
+    		return false;
+    	}
     	
     	/*비밀번호 유무*/
     	if($("#inputMpw").val().length == 0){
     		alert("비밀번호를 입력해주세요.");
     		$("#inputMpw").focus();
     		return false;
+    	}    	
+    	
+    	if($("#inputMpw").val().length < 6 || $("#inputMpw").val().length >20){
+    		alert("비밀번호는 6~20자리 입니다.");
+    		$("#inputMpw").focus();
+    		return false;
     	}
     	
-
+    	
+    	/*비밀번호 확인*/
+/*     	if($("#checkMpw").val() != $("#inputMpw").val()){
+    		alert("비밀번호를 확인해주세요.");
+    		$("#checkMpw").focus();
+    		return false;
+    	} */
 
     	/*닉네임 유무*/
     	if($("#inputMnickname").val().length == 0){
     		alert("닉네임을 입력해주세요.");
+    		$("#inputMnickname").focus();
+    		return false;
+    	}   	
+    	
+    	if($("#inputMnickname").val().length < 2 || $("#inputMnickname").val().length >10){
+    		alert("닉네임은 2~10자리 입니다.");
     		$("#inputMnickname").focus();
     		return false;
     	}
@@ -347,6 +540,13 @@ background-color: #00BCD4;
     	if($("#inputMphone").val().length == 0){
     		alert("전화번호를 입력해주세요.");
     		$("#inputMphone").focus();
+    		return false;
+    	} 
+    	
+    	/*관심지역 유무*/
+    	if($("#inputmregion").val().length == 0){
+    		alert("관심지역을 선택해주세요.");
+    		$("#inputmregion").focus();
     		return false;
     	} 
     	
@@ -362,14 +562,13 @@ background-color: #00BCD4;
     		return false;
     	}
     	
-    	/*관심지역 유무*/
-    	if($("#inputmregion").val().length == 0){
-    		alert("관심지역을 선택해주세요.");
-    		$("#inputmregion").focus();
-    		return false;
-    	}  
     	
-   
+   		/* 새로운 파일 있는지 체크 */
+   		if($("#inputMfile").val().length != 0){
+			console.log("기존 파일 없애기");
+			$("#delFile").val('${memberInfo.mprofile }');
+			
+   		};
 
     }
     
@@ -397,16 +596,10 @@ background-color: #00BCD4;
 		});	
 	
 	</script>	
+
+		
 	
-	
-	<!-- 파일 input 이름 생성 -->
-	<script type="text/javascript">
-	$("#inputMfile").on('change',function(){
-		  var fileName = $("#inputMfile").val();
-		  $(".upload-name").val(fileName);
-		});
-	</script> 
-	
+
 	<!-- ra 메세지 -->
 	<script type="text/javascript">
 		var checkMsg = '${msg}';
