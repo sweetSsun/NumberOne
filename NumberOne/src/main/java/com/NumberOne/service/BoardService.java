@@ -692,8 +692,9 @@ public class BoardService {
 	public String selectBoardReplyList_ajax(String bdcode) {
 		System.out.println("BoardService.selectBoardReplyList_ajax() 호출");
 
-		ArrayList<ReplyDto> replyList = bdao.selectBoardReplyList2(bdcode);
-		// System.out.println(replyList);
+		String loginId = (String) session.getAttribute("loginId");
+		ArrayList<ReplyDto> replyList= bdao.selectBoardReplyList2(bdcode, loginId);
+		System.out.println(replyList.size());
 		
 		// 프로필 사진 없는 경우 rpprofile에 nomprofile 저장
 		for (int i = 0; i < replyList.size(); i++) {
@@ -716,13 +717,13 @@ public class BoardService {
 			replyList.get(i).setRpcontents(rpcontents);
 		}
 		
-		System.out.println("댓글목록 조회 ");
+		//System.out.println("댓글목록 조회 ");
 		//System.out.println(replyList);
 
 		// 댓글목록 JSON 타입으로 변환
 		Gson gson = new Gson();
 		String replyList_json = gson.toJson(replyList);
-		System.out.println(replyList_json);
+		//System.out.println(replyList_json);
 
 		return replyList_json;
 	}
