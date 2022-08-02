@@ -191,7 +191,7 @@
                 <div class="modal-body" id="updateBdfixModalBody"> </div>
                 <div class="modal-footer">
                 	<input type="hidden" id="bdcode">
-                    <button class="btn btn-primary" onclick="updateBdfix()">네</button>
+                    <button class="btn btn-numberone" onclick="updateBdfix()">네</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
             </div>

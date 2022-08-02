@@ -87,7 +87,7 @@ background-color: #00BCD4;
 		<!-- 본문 -->
 			<div class="container">
 				<br>
-				<div class="checkout__form" style="margin-top: 30px;"><h4>마이페이지 1:1문의</h4></div>
+				<div class="checkout__form" style="margin-top: 20px;">마이페이지 1:1문의</div>
 				<br>
 				<!-- 작성글 목록 -->
 				<div class="row">
@@ -100,7 +100,8 @@ background-color: #00BCD4;
                        onclick = "location.href = 'loadToMyInfoQuestionForm'" >                        
                         작성하기</button>
 					</div>					
-				</div> <br>
+				</div>
+				<br>
 
 				<div class="row" >
 				<table >
@@ -149,8 +150,8 @@ background-color: #00BCD4;
 							</tr>
 										<tr style="border-bottom: solid #E0E0E0 1px; height: 100px; background-color: #EAEAEA;" 
 										class="d_none"  id="${contact.ctcode }_replycontents">
-										<td colspan="2" style=" padding-left: 50px; color: #00BCD4; font-weight: bold;" >${contact.ctans }</td>
-										<td colspan="1" style=" padding-left: 30px; color: #00BCD4; font-weight: bold;" >${contact.ctansdate }</td>						
+										<td colspan="2" style=" padding-left: 50px;"  >${contact.ctans }</td>
+										<td colspan="1" style=" padding-left: 30px;" >${contact.ctansdate }</td>						
 										</tr>
 									</c:when>														
 							</c:choose>																												
