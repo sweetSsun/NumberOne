@@ -792,20 +792,20 @@ h4:hover{
 //관리자 스크립트
 function adminRvBan(){
 	console.log("관리자 자랑글 정지")
+	console.log(nowBdfix);
 	var rvBanConfirm = confirm("해당 글을 정지하시겠습니까?");
 	
-	if(rvBanConfirm == 'false'){
+	if(rvBanConfirm == false){
 		$("#menuModal").css("display", "none");
-		return false;
+		return;
 	}
 	
 	// 고정배너 정지하려고 하면 중지
-	/*
 	// adminRvBan을 실행할 때 bdfix를 보내줘서, bdfix에 따라 정지 불가능하도록
  	if (nowBdfix == 1){
 		alert("고정상태인 글은 정지할 수 없습니다.");
 		return;
-	} */
+	} 
 	
 	$.ajax({
 			type : "get",
