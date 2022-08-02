@@ -143,16 +143,7 @@ public class GonguBoardService {
 		mav = new ModelAndView();
 
 		GonguBoardDto gonguBoard = gbdao.selectGonguBoardView(gbcode);
-
-		// gbcontents 나눠주기
-		String[] gbcontents = gonguBoard.getGbcontents().split("@@");
-		String gb_contents = gbcontents[0];
-		String gb_item_name = gbcontents[1];
-		String gb_price = gbcontents[2];
-		gonguBoard.setGb_contents(gb_contents);
-		gonguBoard.setGb_item_name(gb_item_name);
-		gonguBoard.setGb_total_amount(gb_price);
-		System.out.println(gonguBoard);
+//		System.out.println(gonguBoard);
 
 		mav.addObject("gonguBoard", gonguBoard);
 		mav.addObject("paging", paging);
@@ -187,7 +178,7 @@ public class GonguBoardService {
 		return mav;
 	}
 
-	// 작성 공지 DB에 입력
+	// 작성 공구 DB에 입력
 	public ModelAndView admin_insertGonguWrite(GonguBoardDto gonguboard, RedirectAttributes ra) throws IllegalStateException, IOException {
 		System.out.println("GonguBoardService.admin_insertGonguWrite() 호출");
 		gonguboard.setGbmid( (String) session.getAttribute("loginId")); // 세션id set
@@ -230,15 +221,7 @@ public class GonguBoardService {
 			gbcode = "GB"+gbcodeNum;
 		} 
 		System.out.println("gbcode: "+gbcode);
-		gonguboard.setGbcode(gbcode); // 생성한 gbcode set		
-		
-		// 카카오페이결제시 불러올 부분 (테이블 완성으로 column 수정이 어려워서 기존 contents 컬럼에 합침)
-		System.out.println("gb_contents : "+gonguboard.getGb_contents() );
-		System.out.println("gb_item_name : "+gonguboard.getGb_item_name());
-		System.out.println("gb_total_amount : "+gonguboard.getGb_total_amount());
-		
-		String gbcontents = gonguboard.getGb_contents()+"@@"+gonguboard.getGb_item_name()+"@@"+gonguboard.getGb_total_amount();
-		gonguboard.setGbcontents(gbcontents);
+		gonguboard.setGbcode(gbcode); // 생성한 gbcode set
 		
 		
 		// INSERT
@@ -273,18 +256,7 @@ public class GonguBoardService {
 		}
 		
 		GonguBoardDto gonguBoard = gbdao.selectGonguBoardView(gbcode);
-		
-		// gbcontents 나눠주기
-		String[] gbcontents = gonguBoard.getGbcontents().split("@@");
-		String gb_contents = gbcontents[0];
-		String gb_item_name = gbcontents[1];
-		String gb_price = gbcontents[2];
-		gonguBoard.setGb_contents(gb_contents);
-		gonguBoard.setGb_item_name(gb_item_name);
-		gonguBoard.setGb_total_amount(gb_price);
-		System.out.println(gonguBoard);
-		
-		System.out.println(gonguBoard);
+//		System.out.println(gonguBoard);
         
 		mav.addObject("gonguBoard", gonguBoard);
 		mav.addObject("paging", paging);
@@ -325,14 +297,6 @@ public class GonguBoardService {
 				modiGonguboard.setGbimg(gbimg); // 생성한 파일명 set
 			}
 		}
-		
-		// 카카오페이결제시 불러올 부분 (테이블 완성으로 column 수정이 어려워서 기존 contents 컬럼에 합침)
-		System.out.println("gb_contents : "+modiGonguboard.getGb_contents() );
-		System.out.println("gb_item_name : "+modiGonguboard.getGb_item_name());
-		System.out.println("gb_total_amount : "+modiGonguboard.getGb_total_amount());
-		
-		String gbcontents = modiGonguboard.getGb_contents()+"@@"+modiGonguboard.getGb_item_name()+"@@"+modiGonguboard.getGb_total_amount();
-		modiGonguboard.setGbcontents(gbcontents);
 		
 		// UPDATE
 		//System.out.println(modiNotice);
@@ -403,18 +367,7 @@ public class GonguBoardService {
 		//공구글 조회수 업데이트
 		gbdao.updateGonguBdHits(gbcode);
 		GonguBoardDto gonguBoard = gbdao.selectGonguBoardView(gbcode);
-		
-		
-		// gbcontents 나눠주기
-		String[] gbcontents = gonguBoard.getGbcontents().split("@@");
-		String gb_contents = gbcontents[0];
-		String gb_item_name = gbcontents[1];
-		String gb_price = gbcontents[2];
-		gonguBoard.setGb_contents(gb_contents);
-		gonguBoard.setGb_item_name(gb_item_name);
-		gonguBoard.setGb_total_amount(gb_price);
-		System.out.println(gonguBoard);
-				
+//		System.out.println(gonguBoard);			
 		
 		mav.addObject("gonguBoard", gonguBoard);
 		mav.addObject("paging", paging);
