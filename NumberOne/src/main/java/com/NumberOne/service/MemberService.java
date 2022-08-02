@@ -26,7 +26,7 @@ import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.ChatMessageDto;
 import com.NumberOne.dto.ChatRoomDto;
 import com.NumberOne.dto.ContactDto;
-import com.NumberOne.dto.GonguDto;
+import com.NumberOne.dto.GonguBoardDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.ReplyDto;
 import com.NumberOne.dto.ScrapDto;
@@ -1097,27 +1097,31 @@ public class MemberService {
 				ModelAndView mav = new ModelAndView();
 				System.out.println("MemberService.selectMyInfoGonguView 호출");
 				
+				String loginId = (String) session.getAttribute("loginId");
+				
 				//로그인 여부 확인
 				if(session.getAttribute("loginId")==null) {
 					ra.addFlashAttribute("msg", "로그인 후 이용가능합니다.");
 					mav.setViewName("redirect:/loadToLogin");
 					return mav;
 				}
-				
-			    
-				String loginId = (String) session.getAttribute("loginId");
-				/*
-				String loginId;
-				if((String) session.getAttribute("loginId")!=null) {			
-					loginId = (String) session.getAttribute("loginId");
-				} else {
-					loginId = (String) session.getAttribute("kakaoId");			
-				}
-				System.out.println("로그인 된 아이디 : " + loginId);
-				*/
 
 				//참여한 공구 목록 
-				ArrayList<GonguDto> gonguList = mdao.selectMyInfoGonguView(loginId);
+				ArrayList<GonguBoardDto> gonguList = mdao.selectMyInfoGonguView(loginId);
+				
+				// 금액 천단위 ','
+				for (int i = 0; i < gonguList.size(); i++) {
+
+					int price = gonguList.get(i).getGbitemprice();
+
+					NumberFormat numberFormat = NumberFormat.getInstance();
+					
+					String price2 = numberFormat.format(price);
+					System.out.println("price2 : "+price2);
+					
+					gonguList.get(i).setGbitemprice2(price2);
+				}
+
 				System.out.println(gonguList);
 
 				mav.addObject("gonguList", gonguList);

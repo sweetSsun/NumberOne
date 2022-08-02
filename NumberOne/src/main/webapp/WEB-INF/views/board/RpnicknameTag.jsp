@@ -150,7 +150,7 @@ section div.checkout__form{
 					
 	<section>
 		<!-- 페이지명 -->
-		<div class="checkout__form" style="margin-top: 30px;">[${rpnickname }]작성글 조회</div> 
+		<div class="checkout__form" style="margin-top: 30px;"><span style="color:coral;">${nickname }</span>님의 작성글 조회</div> 
 	
 
 				<!--roomlist div 시작  
@@ -329,18 +329,22 @@ section div.checkout__form{
 	
 	const roomSize = '${roomSize}';
 	const resellSize = '${resellSize}';
+	const boardSize = '${boardSize}'
 	
 	if(roomSize == '0'){
+		//자취방 자랑글 없으면
 		$("#roomList").addClass("d_none");
 		$("#noRoomList").removeClass("d_none");
 	}
 	
 	if(resellSize == '0'){
+		//중고거래글 없으면
 		$("#resellList").addClass("d_none");
 		$("#noResellList").removeClass("d_none");
 	}
 	
-	if(resellSize == '0'){
+	if(boardSize == '0'){
+		//일반게시글 없으면
 		$("#noBoardList").removeClass("d_none");
 	}
 
