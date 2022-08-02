@@ -440,7 +440,7 @@ font-weight: bold;
 							      <img style="object-fit: contain;" class="active Resell_img d-block w-100" src="${pageContext.request.contextPath }/resources/img/resell/${ub_resellView.ubmainimg}">
 							      </c:when>
 							      <c:otherwise>
-							      <img style="object-fit: contain;" class="active Resell_img d-block w-100" src="${pageContext.request.contextPath }/resources/img/logo_bada.png">
+							      <img style="object-fit: contain;" class="active Resell_img d-block w-100" src="${pageContext.request.contextPath }/resources/img/logo_.png">
 							      </c:otherwise>
 							      </c:choose>
 							    <span class="imgState"></span>
@@ -454,7 +454,7 @@ font-weight: bold;
 							      <img style="object-fit: contain;" class="Resell_img d-block w-100" src="${pageContext.request.contextPath }/resources/img/resell/${ubdetailimg_list}">
 							    </c:when>
 							    <c:otherwise>
-							     <img style="object-fit: contain;" class="Resell_img d-block w-100" src="${pageContext.request.contextPath }/resources/img/logo_bada.png">
+							     <img style="object-fit: contain;" class="Resell_img d-block w-100" src="${pageContext.request.contextPath }/resources/img/logo_.png">
 							    
 							    </c:otherwise>
 							    
@@ -613,7 +613,7 @@ font-weight: bold;
 				
 				<div class="row mb-2">
 					<div class="col text-center">
-								<span class="fw-bold boardCategory"> < 구매자의 다른 상품 > </span>
+								<span class="fw-bold boardCategory"> < 판매자의 다른 상품 > </span>
 								<span id="memberList_Btn">++더보기</span>
 				
 					</div>
@@ -1147,14 +1147,15 @@ function chatInsert_Ajax() {
 // 로컬스토리지 초기화
 const storage = window.localStorage;
 
-//글목록버튼
-const backList = document.querySelector("#backList");	
-backList.addEventListener("click", backListHandler);
-// 기본값 (스토리지에 아이템 없을 때 사용)
+//기본값 (스토리지에 아이템 없을 때 사용)
 let searchType = '';
 let keyword = '';
 let selRegion = '${ub_resellView.ubrgcode}';
 let page = '1';
+
+//글목록버튼
+
+
 
 //스토리지 아이템 확인
 if(storage.getItem('searchType') !=null){
@@ -1177,7 +1178,8 @@ if(storage.getItem('page') !=null ){
 	console.log('로컬스토리지 선택페이지 : ', page);
 }
 
-	
+const backList = document.querySelector("#backList");	
+backList.addEventListener("click", backListHandler);
 	
 	function backListHandler() {
 

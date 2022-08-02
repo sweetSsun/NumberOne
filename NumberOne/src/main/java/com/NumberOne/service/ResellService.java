@@ -547,7 +547,7 @@ public class ResellService {
 		}
 
 		else {
-			mav.setViewName("resell/Resell_ModifyForm");
+			mav.setViewName("resell/Resell_ModifyForm(file)");
 		}
 
 		return mav;

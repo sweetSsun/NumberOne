@@ -253,13 +253,13 @@ section div.checkout__form{
 							<div class="float_">
 								<div id="sellbuyscreen">
 																<c:choose>
-								<c:when test="${buyList.ubmainimg != null}">
-									<a onclick="laodToView('${buyList.ubcode }')" href="javascript:void(0);"> <img alt="" src="${pageContext.request.contextPath }/resources/img/resell/${buyList.ubmainimg }">
+								<c:when test="${transactionList.ubmainimg != null}">
+									<a onclick="laodToView('${transactionList.ubcode }')" href="javascript:void(0);"> <img alt="" src="${pageContext.request.contextPath }/resources/img/resell/${transactionList.ubmainimg }">
 									</a>
 									</c:when>
 									
 									<c:otherwise>
-										<a onclick="laodToView('${buyList.ubcode }')" href="javascript:void(0);"> <img alt="" src="${pageContext.request.contextPath }/resources/img/logo.jpg">
+										<a onclick="laodToView('${transactionList.ubcode }')" href="javascript:void(0);"> <img alt="" src="${pageContext.request.contextPath }/resources/img/logo_.jpg">
 									</a>
 									
 									</c:otherwise>
