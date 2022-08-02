@@ -527,10 +527,32 @@ section div.checkout__form{
 <script type="text/javascript">
 	function rereplyform(rpcode, rpnickname){
 		console.log(rpcode+"에 답글 달기폼 요청");
+		
+		//로그인 확인
+		if(! loginCh()){
+			return;
+		}
+		
 		nowRpparent = rpcode; //reparent 필드에 저장
 		$("#inputReply").val("@"+rpnickname+" ");
 		$("#inputReply").focus();
 		
+	}
+	
+	//로그인 체크 함수
+	function loginCh(){
+		if('${sessionScope.loginId}'==''){
+			var confirmResult = confirm("로그인 후 이용가능합니다"); 
+			console.log(confirmResult);
+			if(confirmResult==true){
+				location.href = '${pageContext.request.contextPath }/loadToLogin?afterUrl=selectRoomList?bdcode='+nowBdcode;
+				return false;
+			} else {
+				return false;
+			}
+		}
+		
+		return true;
 	}
 </script>
 
@@ -640,6 +662,7 @@ roomView_ajax(nowBdcode)
 				//bdfix 필드에 저장
 				nowBdfix = roomView.bdfix;
 				console.log("nowBdfix : " + nowBdfix);
+
 				
 				//글 이미지
 				var imgHtml = "";
@@ -876,8 +899,10 @@ roomView_ajax(nowBdcode)
 					
 						//답글 달기 버튼 (7/31 추가)
 						if(replys[i].rpdepth ==null || replys[i].rpdepth < 4){
-							//level 4까지만 가능
-							replyOutput += "<span class='pointer' style='font-size:13px; font-weight:blod; color:grey; margin:0px;' onclick='rereplyform(\""+replys[i].rpcode+"\", \""+replys[i].rpnickname+"\")'>답글 달기</span>";
+							if('${loginId}'.length >0){
+								//로그인 회원에게만 답글달기 버튼 보임
+								replyOutput += "<span class='pointer' style='font-size:13px; font-weight:blod; color:grey; margin:0px;' onclick='rereplyform(\""+replys[i].rpcode+"\", \""+replys[i].rpnickname+"\")'>답글 달기</span>";
+							}		
 						}
 						
 						//댓글 작성자와 관리자에게만 보이는 ...
@@ -1078,15 +1103,9 @@ roomView_ajax(nowBdcode)
 			console.log("자랑글 신고 요청");								
 		}
 			
-		if('${sessionScope.loginId}'==''){
-			var confirmResult = confirm("script-로그인 후 이용가능합니다"); 
-			console.log(confirmResult);
-			if(confirmResult==true){
-				location.href = '${pageContext.request.contextPath }/loadToLogin?afterUrl=selectRoomListbdcode='+nowBdcode;
-				return;
-			} else {
-				return;
-			}
+		//로그인 확인
+		if(! loginCh()){
+			return;
 		}
 		
 		var currentState="";
