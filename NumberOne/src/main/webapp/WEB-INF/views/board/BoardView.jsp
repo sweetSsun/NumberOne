@@ -168,6 +168,7 @@
    pre{
    		font-family: 'pretendard';
    		width: fit-content;
+   		white-space: break-spaces;
    }
 	section div.checkout__form{
 		/* 페이지 제목 */
@@ -851,8 +852,7 @@
 							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly> <span style='color:#00bcd4;'>" + rerp_rpnickname + " </span>" + rerp_rpcontents_trim + "</pre>"
 						}else{
 							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
-								
-						}	
+						}
 						output += "</div>"
 						
 					}else{ // 로그인아이디 != 글작성자
@@ -892,6 +892,7 @@
 						output += "<br>"
 							
 						/* 댓글내용 */
+						/* 댓글내용 */
 						if( replyList[i].rpparent != null ){
 							let rerp_rpcontents = replyList[i].rpcontents;
 							let rerp_rpnickname = replyList[i].rpcontents.split(" ")[0];
@@ -902,7 +903,6 @@
 							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly> <span style='color:#00bcd4;'>" + rerp_rpnickname + " </span>" + rerp_rpcontents_trim + "</pre>"
 						}else{
 							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
-								
 						}						
 						output += "</div>"
 					}
