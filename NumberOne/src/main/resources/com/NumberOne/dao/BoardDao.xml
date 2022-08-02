@@ -627,13 +627,6 @@
       WHERE B.BDFIX = 1 AND M.MID=B.BDMID
       ORDER BY BDCODE DESC
    </select>
-	
-	
-	<insert id="insertBoardRe_Reply_ajax">
-		<!-- 대댓글 등록 -->
-		INSERT INTO REPLY (RPCODE, RPBDCODE, RPCONTENTS, RPMID, RPDATE, RPPARENT, RPDEPTH, RPGROUPNUM )
-		VALUES ( #{rpcode}, #{bdcode}, #{rpcontents}, #{loginId}, SYSDATE, #{rpcode_parent}, #{rp_depth}, #{rpcode_parent} )
-	</insert>
 		
 	<select id="selectRoomList_page" resultType="int">
 		<!-- 자랑: 특정글의 rn 조회 -->
