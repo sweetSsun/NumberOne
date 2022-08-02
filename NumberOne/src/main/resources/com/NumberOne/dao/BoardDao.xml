@@ -437,7 +437,10 @@
 		FROM REPLYSELECT RP, MEMBERS MB 
 		WHERE RP.RPMID = MB.MID
 		AND RPBDCODE = #{bdcode}
-		AND RPSTATE != 0
+		
+		<if test="loginId == null || loginId != 'admin'">
+			AND RPSTATE != 0
+		</if>
  	</select>
  	
  	<select id="selectReplyCount_ajax" resultType="int">
