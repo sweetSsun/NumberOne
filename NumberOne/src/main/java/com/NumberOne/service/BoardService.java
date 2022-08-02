@@ -1436,6 +1436,9 @@ public class BoardService {
 		ModelAndView mav = new ModelAndView();
 		System.out.println("paging : " + paging);
 		
+		//닉네임 저장
+		mav.addObject("nickname", paging.getKeyword());
+		
 		//일반글 조회
 		ArrayList<BoardDto> boardList = bdao.selectBoardList_Paging(paging);
 		mav.addObject("boardList", boardList);
