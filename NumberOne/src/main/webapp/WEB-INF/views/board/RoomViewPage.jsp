@@ -850,7 +850,7 @@ roomView_ajax(nowBdcode)
 		
 		$.ajax({
 			type : "get",
-			url : "selectBoardReplyList_ajax",
+			url : "selectBoardReplyList_ajax2",
 			data : { "bdcode" : nowBdcode },
 			dataType : "json",
 			async : false,
