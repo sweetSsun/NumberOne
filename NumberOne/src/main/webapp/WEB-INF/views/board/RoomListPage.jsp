@@ -759,6 +759,7 @@ h4:hover{
 		console.log(mnickname+"로 검색 요청");
 		$("#searchText").val(mnickname);	
 		$("#searchTypeSel").val('bdnickname').prop("selected",true);
+		$("#actionForm").attr("action", "selectByRpnickname");
 		$("#actionForm").submit();
 		
 	}
@@ -769,20 +770,20 @@ h4:hover{
 //관리자 스크립트
 function adminRvBan(){
 	console.log("관리자 자랑글 정지")
+	console.log(nowBdfix);
 	var rvBanConfirm = confirm("해당 글을 정지하시겠습니까?");
 	
-	if(rvBanConfirm == 'false'){
+	if(rvBanConfirm == false){
 		$("#menuModal").css("display", "none");
-		return false;
+		return;
 	}
 	
 	// 고정배너 정지하려고 하면 중지
-	/*
 	// adminRvBan을 실행할 때 bdfix를 보내줘서, bdfix에 따라 정지 불가능하도록
- 	if (bdfix == 1){
+ 	if (nowBdfix == 1){
 		alert("고정상태인 글은 정지할 수 없습니다.");
 		return;
-	} */
+	} 
 	
 	$.ajax({
 			type : "get",
@@ -876,6 +877,7 @@ function modalChange(type){
 	var span = document.getElementsByClassName("close")[0];
 	var nowModalNum;
 	var nowRpparent ="";
+	var nowBdfix = 0;
 	
 	function roomView_ajax(bdcode){
 		console.log(bdcode+"번글 roomView() 호출");
@@ -916,7 +918,8 @@ function modalChange(type){
 
 		//글작성자 아이디 필드에 저장
 		nowBdmid = roomView.bdmid;
-
+		//bdfix 필드에 저장
+		nowBdfix = roomView.bdfix;
 		
 		//글 이미지
 		var imgHtml = "";
@@ -925,12 +928,12 @@ function modalChange(type){
 			console.log('noimg');
 			imgHtml += "<img alt='NumberOneLogo' style='width:800px; height:600px' src='${pageContext.request.contextPath }/resources/img/logo_grey.jpg'>";
 		} else {
-			console.log(roomView.bddetailimg);
+			//console.log(roomView.bddetailimg);
 			var imgs = roomView.bddetailimg.split("___");
 			imgs.unshift(roomView.bdimg);
 			imgs.pop();
 			var numOfImgs = parseInt(imgs.length);
-			console.log("이미지 개수: "+numOfImgs);
+			//console.log("이미지 개수: "+numOfImgs);
 			
 			imgHtml += "<div id='myCarousel' class='carousel slide' data-ride='carousel' style='width:100%; height:100%;'>";		
 
@@ -971,14 +974,14 @@ function modalChange(type){
 		//작성자 프로필	
 		var mprofileOutput = "<img class='product-img' style='width:30px; height:30px; border-radius:50%;'";
 		if(roomView.bdmprofile != 'nomprofile'){
-			console.log("작성자 프로필 있음");
+			//console.log("작성자 프로필 있음");
 			if(roomView.bdmid.substring(0,1) == "@"){
 				//카카오 로그인
-				console.log("작성자 카카오 회원 사진 출력")
+				//console.log("작성자 카카오 회원 사진 출력")
 				mprofileOutput += "src='"+roomView.bdmprofile+"'>";							
 			} else {
 				//일반 로그인
-				console.log("작성자 일반 회원 사진 출력")
+				//console.log("작성자 일반 회원 사진 출력")
 				mprofileOutput += "src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+roomView.bdmprofile+"'>";
 			}
 		} else {
@@ -1011,24 +1014,24 @@ function modalChange(type){
 		var roomInfoOutput = ""
 		//추천
 		if(roomView.rchistory != "n"){
-			console.log("추천 기록 있음")
+			//console.log("추천 기록 있음")
 			roomInfoOutput += "<a onclick='log(\"rchistory\")' style='cursor:pointer;'><span id='"+roomView.bdcode+"_rchistory'><i class='fa-solid fa-heart'></i></span></a> ";
 		} else {					
-			console.log("추천 기록 없음")
+			//console.log("추천 기록 없음")
 			roomInfoOutput += "<a onclick='log(\"rchistory\")' style='cursor:pointer;'><span id='"+roomView.bdcode+"_rchistory'><i class='fa-regular fa-heart'></i></span></a> ";
 		}
 		//스크랩
 		if(roomView.schistory != "n"){
-			console.log("스크랩 기록 있음")
+			//console.log("스크랩 기록 있음")
 			roomInfoOutput += "<a onclick='log(\"schistory\")' style='cursor:pointer;'><span id='"+roomView.bdcode+"_schistory'><i class='fa-solid fa-star' style=''></i></span></a> ";
 		} else {					
-			console.log("스크랩 기록 없음")
+			//console.log("스크랩 기록 없음")
 			roomInfoOutput += "<a onclick='log(\"schistory\")' style='cursor:pointer;'><span id='"+roomView.bdcode+"_schistory'><i class='fa-regular fa-star'></i></span></a> ";
 		}
 		//신고
 		roomInfoOutput += "<span id='"+roomView.bdcode+"_wbhistory'>";
 		if(roomView.wbhistory != "n"){
-			console.log("신고 기록 있음")
+			//console.log("신고 기록 있음")
 			roomInfoOutput += "<i class='fa-solid fa-land-mine-on' style='position:absolute; right:0;'></i>";
 			nowWb = "y";
 		}	
@@ -1090,7 +1093,7 @@ function modalChange(type){
 			dataType : "json",
 			async : false,
 			success: function(replys){
-				//console.log(replys)
+				console.log(replys)
 				var replyOutput ="";
 				for(var i=0; i<replys.length; i++){			
 					//console.log(replys[i]);
@@ -1116,7 +1119,7 @@ function modalChange(type){
 						replyOutput += "<div style='min-width:30px; width:8%'>";
 						replyOutput += "<img class='product-img' style='width:20px; height:20px; border-radius:50%; margin-top:10px;'";
 						if(replys[i].rpprofile != 'nomprofile'){
-							console.log("프로필 있음")
+							//console.log("프로필 있음")
 							if(replys[i].rpmid.substring(0, 1) == "@"){
 								//카카오 로그인
 								replyOutput += "src='"+replys[i].rpprofile+"'>";							
@@ -1176,10 +1179,10 @@ function modalChange(type){
 						
 						//댓글 작성자와 관리자에게만 보이는 ...
 						if(replys[i].rpmid == '${sessionScope.loginId}'){
-							console.log("댓글 작성자");
+							//console.log("댓글 작성자");
 							replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \""+replys[i].rpmid+"\")' style='font-size:15px;'>&#8943;</span>"; 
 						} else if ('${sessionScope.loginId}'=='admin'){
-							console.log("관리자");
+							//console.log("관리자");
 							replyOutput += "&nbsp;&nbsp;<span id='"+replys[i].rpcode+"_replyMenu' class='rpWriter d_none' onclick='menuModal(\""+replys[i].rpcode+"\", \""+replys[i].rpmid+"\")' style='font-size:15px;'>&#8943;</span>"; 	
 						}
 						replyOutput += "</div>";
@@ -1465,6 +1468,7 @@ function modalChange(type){
 	  nowWb = "";
 	  nowModalNum = null;
 	  nowRpparent ="";
+	  nowBdfix = 0;
 	  $("#inputReply").val("");
 	}
 	

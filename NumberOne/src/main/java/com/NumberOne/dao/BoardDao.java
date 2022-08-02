@@ -29,6 +29,9 @@ public interface BoardDao {
 	
 	//자랑글 목록 조회 페이징
 	ArrayList<BoardDto> selectRoomList_paging(Paging paging);
+	
+	//자랑글 목록 조회 페이징
+	ArrayList<BoardDto> adminSelectRoomList_paging(Paging paging);
 
 	//공지게시판 글목록 조회 
 	ArrayList<NoticeDto> selectNoticeList();
@@ -134,6 +137,9 @@ public interface BoardDao {
 
 	//자취방 상세보기 글 정보 select
 	BoardDto selectRoomView(@Param ("bdcode") String bdcode, @Param ("loginId") String loginId);
+	
+	//관리자용 자랑글 상세 뷰
+	BoardDto adminSelectRoomView(@Param ("bdcode") String bdcode, @Param ("loginId") String loginId);
 
 	//자취방 글의 현재 추천,스크랩,신고 상태 조회
 	String selectCurrentHisroty(@Param ("bdcode")String bdcode, @Param ("history") String history, @Param ("loginId")String loginId);
@@ -213,6 +219,7 @@ public interface BoardDao {
 
 	//자랑글 rn 조회
 	int selectRoomList_page(String bdcode);
+
 
 	//공구게시판-진행완료 글 조회
 	//ArrayList<NoticeDto> selectGonguEndBoardList(Paging paging);

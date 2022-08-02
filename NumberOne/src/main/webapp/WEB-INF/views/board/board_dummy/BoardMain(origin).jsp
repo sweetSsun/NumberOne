@@ -35,21 +35,17 @@ section{
    }
    .td_Div{
    	 /* 말줄임 적용 */
-   	 /*
-   	 */
-   	  width : 30vw;
+   	  width : 500px;
       white-space: nowrap; 
       overflow: hidden;
       text-overflow: ellipsis;
    }
    #BestRoomList{
-   /*
-      width: max-content;
-   */
       min-height: 200px;
       display: flex;
       border: solid #00bcd4 2px;
       border-radius: 5px;
+      width: max-content;
    }
    .img-container{
      overflow: hidden;
@@ -70,31 +66,16 @@ section{
     object-fit: cover;
    }
    .board_category{
-     /*
      height: 100px;
      width: 100px;
-     line-height: 100px;
-     */
      font-weight: bold;
+     line-height: 100px;
      text-align: center;
      background-color:#00bcd4;
      border-radius: 5px;
      height: auto;
      font-size: 24px;
-     max-height: 100px;
-     display: table;
-     table-layout: fixed;
-     flex-shrink: inherit;
-     margin-bottom: 3px;
    }
-   .board_category a{
-    display: table-cell;
-    vertical-align: middle;
-   }
-   .board_list{
-   padding-right: calc(var(--bs-gutter-x) * .2);
-    padding-left: calc(var(--bs-gutter-x) * .2);
-    }
 	.region_sel{
 	 margin: auto;
 	 margin-right: 15px;
@@ -208,18 +189,18 @@ section div.checkout__form{
 				<!-- 게시판 목록 -->
 				<!-- 공지게시판 -->
 				<div class="row">
-					<div class="col-10 mt-2 mb-2 ">
+					<div class="col-11 mt-2 mb-2 ">
 						<h3>커뮤니티</h3>
 					</div>
-					<div class="col-2" style="text-align: right;">
+					<div class="col-1">
 						<span style="font-size:17px;"> <a href="selectBoardList"><i class="fa-solid fa-square-plus"></i>&nbsp;더보기</a></span>
 					</div>
 				</div>	
 				<div class="row mb-3">
-					<div class="col-lg-1 board_category" style="max-height:100px;">
+					<div class="col-1 board_category">
 						<a href="selectNoticeBoardList?NbCheck=NB"><span class="text-white">공지</span></a>
 					</div>
-					<div class="col-lg-11 bg-white board_list">
+					<div class="col-11 bg-white">
 						<table class="boardList">
 							<c:forEach items="${noticeList }" end="2" var="notice">
 								<tr>
@@ -235,10 +216,10 @@ section div.checkout__form{
 				</div>
 				<!-- 자유게시판 -->
 				<div class="row mb-3" >
-					<div class="col-lg-1 board_category">
+					<div class="col-1 board_category">
 						<a href="selectCategoryBoardList?searchVal=자유"><span class="text-white">자유</span></a>
 					</div>
-					<div class="col-lg-5 bg-white board_list">
+					<div class="col-5 bg-white ">
 						<table class="boardList">
 							<c:forEach items="${boardList_Free }" end="2" var="board">
 									<tr>
@@ -253,7 +234,7 @@ section div.checkout__form{
 							</c:forEach>
 						</table>
 					</div>
-					<div class="col-lg-6 bg-white board_list">
+					<div class="col-6 bg-white">
 						<table class="boardList">
 							<c:forEach items="${boardList_Free }" begin="3" end="5" var="board">
 									<tr>
@@ -270,10 +251,10 @@ section div.checkout__form{
 				</div>
 				<!-- 질문게시판 -->
 				<div class="row mb-3" >
-					<div class="col-lg-1 board_category">
+					<div class="col-1 board_category">
 						<a href="selectCategoryBoardList?searchVal=질문"><span class="text-white">질문</span></a>
 					</div>
-					<div class="col-lg-5 bg-white board_list">
+					<div class="col-5 bg-white">
 						<table class="boardList">
 							<c:forEach items="${boardList_Question }" end="2" var="board">
 									<tr>
@@ -287,7 +268,7 @@ section div.checkout__form{
 							</c:forEach>
 						</table>
 					</div>
-					<div class="col-lg-6 bg-white board_list">
+					<div class="col-6 bg-white">
 						<table class="boardList">
 							<c:forEach items="${boardList_Question }" begin="3" end="5" var="board">
 									<tr>
@@ -304,10 +285,10 @@ section div.checkout__form{
 				</div>
 				<!-- 정보게시판 -->
 				<div class="row mb-3" >
-					<div class="col-lg-1 board_category">
+					<div class="col-1 board_category">
 						<a href="selectCategoryBoardList?searchVal=정보"><span class="text-white">정보</span></a>
 					</div>
-					<div class="col-lg-5 bg-white board_list">
+					<div class="col-5 bg-white">
 						<table class="boardList">
 							<c:forEach items="${boardList_Information }" end="2" var="board">
 									<tr>
@@ -321,7 +302,7 @@ section div.checkout__form{
 							</c:forEach>
 						</table>
 					</div>
-					<div class="col-lg-6 bg-white board_list">
+					<div class="col-6 bg-white">
 						<table class="boardList">
 							<c:forEach items="${boardList_Information }" begin="3" end="5" var="board">
 									<tr>
@@ -338,10 +319,10 @@ section div.checkout__form{
 				</div>
 				<!-- 후기게시판 -->
 				<div class="row mb-3">
-					<div class="col-lg-1 board_category">
+					<div class="col-1 board_category">
 						<a href="selectCategoryBoardList?searchVal=후기"><span class="text-white">후기</span></a>
 					</div>
-					<div class="col-lg-5 bg-white board_list">
+					<div class="col-5 bg-white">
 						<table class="boardList">
 							<c:forEach items="${boardList_Review }" end="2" var="board">
 								<c:if test="${board.bdcategory.equals('후기') }">
@@ -357,7 +338,7 @@ section div.checkout__form{
 							</c:forEach>
 						</table>
 					</div>
-					<div class="col-lg-6 bg-white board_list">
+					<div class="col-6 bg-white">
 						<table class="boardList">
 							<c:forEach items="${boardList_Review }" begin="3" end="5" var="board">
 								<c:if test="${board.bdcategory.equals('후기') }">
@@ -380,10 +361,10 @@ section div.checkout__form{
 				
 				<!-- 지역게시판-->
 				<div class="row mt-3 mb-2">
-					<div class="col-10">
+					<div class="col-11">
 						<h3>지역</h3>
 					</div>
-					<div class="col-2" style="text-align:right;">
+					<div class="col-1">
 						<span style="font-size:17px;"> <a href="selectRegionBoardList"><i class="fa-solid fa-square-plus"></i>&nbsp;더보기</a></span>
 					</div>
 				</div>	

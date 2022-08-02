@@ -346,6 +346,24 @@
 		where rn between ${startRow} AND ${endRow}
 	 </select>
  	 
+ 	 <select id="adminSelectRoomList_paging" resultType="com.NumberOne.dto.BoardDto">
+ 	 	<!-- 자랑글 목록 페이징 -->
+ 	 	select * from 
+ 	 	(select rownum rn, r.* 
+		from (select * from roomlist
+		
+		<choose>
+			<when test='searchType == "bdtc"'>
+				where bdtitle||bdcontents like '%'||#{keyword}||'%'
+			</when>
+			<when test='searchType != "notSearch"'>
+				where ${searchType} like '%'||#{keyword}||'%'
+			</when>
+		</choose>
+		
+		order by ${searchVal} desc nulls last) r)
+		where rn between ${startRow} AND ${endRow}
+	 </select> 	 
  	 
  	 <!-- !!자꾸 중복되는 메소드 -->
  	 <select id="selectNoticeBoardView" resultType="com.NumberOne.dto.NoticeDto">	
@@ -378,6 +396,16 @@
         where rv.bdcode=#{bdcode}
  	 </select>
 
+ 	 <select id="adminSelectRoomView" resultType="com.NumberOne.dto.BoardDto">
+ 	 	<!-- 관리자용 자랑글 상세 -->
+ 	 	select rv.*, sh.scmid as schistory, rch.rcmid as rchistory, wbh.wbmid as wbhistory
+		from adminroomview rv
+		left outer join (select * from scrap where scmid=#{loginId}) sh on rv.bdcode = sh.scbdcode
+		left outer join (select * from recommend where rcmid=#{loginId}) rch on rv.bdcode = rch.rcbdcode
+		left outer join (select * from warningboards where wbmid=#{loginId}) wbh on rv.bdcode = wbh.wbedbdcode
+        where rv.bdcode=#{bdcode}
+ 	 </select>
+ 	 
  	 <select id="selectReplyMaxNumber" resultType="String">
  	 	<!-- 댓글 최대번호 조회 -->
  	 	SELECT MAX(RPCODE) 

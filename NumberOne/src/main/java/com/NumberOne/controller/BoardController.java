@@ -605,5 +605,15 @@ public class BoardController {
 		 
 	 }
 	 
+	 //대댓글 닉네임 태그
+	@RequestMapping ( value = "/selectByRpnickname")
+	public ModelAndView selectByRpnickname(Paging paging) {
+		System.out.println(paging.getKeyword() + "의 모든 글 검색 요청");
+			
+		ModelAndView mav = bsvc.selectByRpnickname(paging);
+			
+		return mav;
+	}
+	 
 	 
 }
