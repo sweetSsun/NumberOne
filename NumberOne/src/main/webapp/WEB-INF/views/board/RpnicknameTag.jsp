@@ -329,6 +329,7 @@ section div.checkout__form{
 	
 	const roomSize = '${roomSize}';
 	const resellSize = '${resellSize}';
+	const boardSize = '${boardSize}'
 	
 	if(roomSize == '0'){
 		//자취방 자랑글 없으면

@@ -1108,7 +1108,7 @@ function modalChange(type){
 	function replyPrint(scroll){
 		$.ajax({
 			type : "get",
-			url : "selectBoardReplyList_ajax",
+			url : "selectBoardReplyList_ajax2",
 			data : { "bdcode" : nowBdcode },
 			dataType : "json",
 			async : false,
@@ -1157,8 +1157,13 @@ function modalChange(type){
 						//rpcontents 길이
 						var contentswidth = 90 - parseInt(rppadding);
 						//console.log(contentswidth)
-						replyOutput += "<div id='replyContents_"+replys[i].rpcode+"' style='width:"+contentswidth+"%; font-size:15px; padding-top:0px; word-break:break-word;'>"; 
-					
+						if(replys[i].rpstate == 0){
+							//정지댓글은 가로선
+							replyOutput += "<div id='replyContents_"+replys[i].rpcode+"' style='width:"+contentswidth+"%; font-size:15px; padding-top:0px; word-break:break-word; text-decoration-line: line-through;'>"; 
+						} else{
+							replyOutput += "<div id='replyContents_"+replys[i].rpcode+"' style='width:"+contentswidth+"%; font-size:15px; padding-top:0px; word-break:break-word;'>"; 							
+						}
+						
 						//닉네임(진하게)
 						replyOutput += "<span onclick='writeMemberBoard(\""+replys[i].rpnickname+"\")' class='pointer' style='font-weight:600; margin:0px;'>"+replys[i].rpnickname+"&nbsp;&nbsp;</span>";
 					

@@ -150,7 +150,8 @@
    
    pre{
    	font-family: 'pretendard';
-   	width: fit-content;   	
+   	width: fit-content; 
+   	white-space: break-spaces; 	
    }
    
 	/*  */
@@ -892,8 +893,7 @@ section div.checkout__form{
 							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly> <span style='color:#00bcd4;'>" + rerp_rpnickname + " </span>" + rerp_rpcontents_trim + "</pre>"
 						}else{
 							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
-								
-						}	
+						}
 						output += "</div>"
 						
 					}else{ // 로그인아이디 != 글작성자
@@ -943,7 +943,6 @@ section div.checkout__form{
 							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly> <span style='color:#00bcd4;'>" + rerp_rpnickname + " </span>" + rerp_rpcontents_trim + "</pre>"
 						}else{
 							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
-								
 						}						
 						output += "</div>"
 					}

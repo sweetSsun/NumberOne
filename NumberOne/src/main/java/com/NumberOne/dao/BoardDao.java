@@ -211,10 +211,13 @@ public interface BoardDao {
 	int selectreplyMaxDepth(String rerpcode);
 	
 	//댓글 목록 조회2 (+ 대댓글)
-	ArrayList<ReplyDto> selectBoardReplyList2(String bdcode);
+	ArrayList<ReplyDto> selectBoardReplyList2(@Param("bdcode") String bdcode,@Param("loginId")  String loginId);
 
 	//자랑글 rn 조회
 	int selectRoomList_page(String bdcode);
+
+	//관리자용 댓글 조회
+	ArrayList<ReplyDto> adminSelectBoardReplyList2(String bdcode);
 
 
 	//공구게시판-진행완료 글 조회

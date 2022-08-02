@@ -688,12 +688,52 @@ public class BoardService {
 	      return insertResult;
 	   }
 
-	// 게시글 댓글목록 조회(ajax)
-	public String selectBoardReplyList_ajax(String bdcode) {
-		System.out.println("BoardService.selectBoardReplyList_ajax() 호출");
+		// 게시글 댓글목록 조회(ajax)
+		public String selectBoardReplyList_ajax(String bdcode) {
+			System.out.println("BoardService.selectBoardReplyList_ajax() 호출");
 
-		ArrayList<ReplyDto> replyList = bdao.selectBoardReplyList2(bdcode);
-		// System.out.println(replyList);
+			ArrayList<ReplyDto> replyList= bdao.selectBoardReplyList2(bdcode, "");
+			
+			// 프로필 사진 없는 경우 rpprofile에 nomprofile 저장
+			for (int i = 0; i < replyList.size(); i++) {
+				if (replyList.get(i).getRpprofile() == null) {
+					replyList.get(i).setRpprofile("nomprofile");
+				}
+			}
+
+			// 줄바꿈
+			for (int i = 0; i < replyList.size(); i++) {
+				String rpcontents = replyList.get(i).getRpcontents().replace("<br>", "\r\n");
+				rpcontents = replyList.get(i).getRpcontents().replace("&nbsp;", " ");
+
+				// 자취방 자랑글 보기에서 댓글의 첫번째 글자가 공백인 경우 이상하게 출력되는 것을 발견하여 공백을 없애는 과정을 추가함
+				String firstletter = rpcontents.substring(0, 1);
+
+				if (firstletter.equals(" ")) {
+					rpcontents = rpcontents.substring(1);
+				}
+				replyList.get(i).setRpcontents(rpcontents);
+			}
+			
+			//System.out.println("댓글목록 조회 ");
+			//System.out.println(replyList);
+
+			// 댓글목록 JSON 타입으로 변환
+			Gson gson = new Gson();
+			String replyList_json = gson.toJson(replyList);
+			//System.out.println(replyList_json);
+
+			return replyList_json;
+		}   
+	   
+	   
+	// 게시글 댓글목록 조회(ajax)
+	public String selectBoardReplyList_ajax2(String bdcode) {
+		System.out.println("BoardService.selectBoardReplyList_ajax2() 호출");
+
+		String loginId = (String) session.getAttribute("loginId");
+		ArrayList<ReplyDto> replyList= bdao.selectBoardReplyList2(bdcode, loginId);
+		System.out.println(replyList.size());
 		
 		// 프로필 사진 없는 경우 rpprofile에 nomprofile 저장
 		for (int i = 0; i < replyList.size(); i++) {
@@ -703,6 +743,7 @@ public class BoardService {
 		}
 
 		// 줄바꿈
+		/*
 		for (int i = 0; i < replyList.size(); i++) {
 			String rpcontents = replyList.get(i).getRpcontents().replace("<br>", "\r\n");
 			rpcontents = replyList.get(i).getRpcontents().replace("&nbsp;", " ");
@@ -714,15 +755,15 @@ public class BoardService {
 				rpcontents = rpcontents.substring(1);
 			}
 			replyList.get(i).setRpcontents(rpcontents);
-		}
+		}*/
 		
-		System.out.println("댓글목록 조회 ");
+		//System.out.println("댓글목록 조회 ");
 		//System.out.println(replyList);
 
 		// 댓글목록 JSON 타입으로 변환
 		Gson gson = new Gson();
 		String replyList_json = gson.toJson(replyList);
-		System.out.println(replyList_json);
+		//System.out.println(replyList_json);
 
 		return replyList_json;
 	}

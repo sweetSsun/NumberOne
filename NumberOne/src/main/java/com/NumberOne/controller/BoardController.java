@@ -231,6 +231,17 @@ public class BoardController {
 		 return replyList_ajax;
 	 }
 	 
+	 //댓글목록 조회2(ajax)
+	 @RequestMapping ( value = "/selectBoardReplyList_ajax2")
+	 @ResponseBody
+	 public String selectBoardReplyList_ajax2(String bdcode) {
+		 System.out.println("댓글목록 요청_ajax2");
+		 
+		 String replyList_ajax = bsvc.selectBoardReplyList_ajax2(bdcode);
+		 
+		 return replyList_ajax;
+	 }
+	 
 	 //댓글개수 조회(ajax)
 	 @RequestMapping ( value= "/selectReplyCount_ajax")
 	 @ResponseBody
@@ -586,7 +597,6 @@ public class BoardController {
 	 }
 	 
 
-	 
 	 //대댓글 닉네임 태그
 	@RequestMapping ( value = "/selectByRpnickname")
 	public ModelAndView selectByRpnickname(Paging paging) {
