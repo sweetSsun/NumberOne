@@ -44,7 +44,7 @@
 		min-width: 800px;
 		top: 0px;
 		z-index:10;
-		border-bottom: solid 5px #F2F2FF;
+		border-bottom: solid 5px #eaf8ff;
 
 	}
 	
@@ -122,7 +122,7 @@ footer{
 		overflow-y: hidden;
 		height:100%; width: 130px;
 		left: -130px; top: auto;
-		background:#F2F2FF; 
+		background:#eaf8ff; 
 	}
 	
 	
