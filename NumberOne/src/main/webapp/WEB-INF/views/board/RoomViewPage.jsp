@@ -752,9 +752,11 @@ roomView_ajax(nowBdcode)
 				mnicknameOutput = "<div id='mnickname' style='font-size:18px; font-weight:bold; margin-left:8px; padding-bottom:2px; color: black;'>";
 				mnicknameOutput += "<span onclick='writeMemberBoard(\""+roomView.bdnickname+"\")' class='pointer'>"+roomView.bdnickname+"</span>";
 	
-				//메뉴 출력 할 수 있는 ...
+				//메뉴 출력 할 수 있는 ...(로그인 회원만)
 				//로그인 아이디에 따라 메뉴는 다르게 출력됨 
-				mnicknameOutput += "<span  style='position:absolute; right:20px; cursor:pointer;' onclick='menuModal(\""+nowBdcode+"\", \""+nowBdmid+"\")' style='font-size:15px; color:black; padding-rignt:10px;'>&#8943;</span>";
+				if('${sessionScope.loginId}'.length != 0){
+					mnicknameOutput += "<span  style='position:absolute; right:20px; cursor:pointer;' onclick='menuModal(\""+nowBdcode+"\", \""+nowBdmid+"\")' style='font-size:15px; color:black; padding-rignt:10px;'>&#8943;</span>";				
+				}
 				mnicknameOutput += "</div>";
 				$("#roomMnickname").html(mnicknameOutput);
 
