@@ -235,6 +235,7 @@
       console.log("닫으려는 팝업창 : " + popArr);
       //console.log("popArr.length : " + popArr.length);
       if (popArr != null){
+
 	      const length = popArr.length;
          
          for (var i = 0; i < length; i++){
@@ -247,7 +248,7 @@
       location.href="${pageContext.request.contextPath}/selectMemberLogout"; // 로그아웃
    });
    
-</script>   
+</script>  
    
    
 <!-- 채팅 관련 스크립트 -->
