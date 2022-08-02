@@ -1436,14 +1436,22 @@ public class BoardService {
 		ModelAndView mav = new ModelAndView();
 		System.out.println("paging : " + paging);
 		
+		//닉네임 저장
+		mav.addObject("nickname", paging.getKeyword());
+		
 		//일반글 조회
 		ArrayList<BoardDto> boardList = bdao.selectBoardList_Paging(paging);
 		mav.addObject("boardList", boardList);
+		mav.addObject("boardSize", boardList.size());
 		//System.out.println("boardList : " + boardList);
+
+		//자랑글, 중고글은 3개씩만 조회
+		paging.setEndRow(3);
 		
 		//자랑글 조회
 		ArrayList<BoardDto> roomList =bdao.selectRoomList_paging(paging);
 		mav.addObject("roomList", roomList);
+		mav.addObject("roomSize", roomList.size());
 		//System.out.println("roomList : " + roomList);
 		
 		//중고글 조회
@@ -1452,6 +1460,7 @@ public class BoardService {
 		paging.setSearchVal("all");
 		ArrayList<UsedBoardDto> resellList = rdao.selectResellPageList(paging, "write");
 		mav.addObject("resellList", resellList);
+		mav.addObject("resellSize", resellList.size());
 		//System.out.println("resellList : " + resellList);
 		
 		//setView

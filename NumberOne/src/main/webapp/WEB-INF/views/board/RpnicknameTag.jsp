@@ -24,103 +24,14 @@
 	padding: 0;
 }
 
-#pageList button {
-	display: none;
-}
-
-label {
-	cursor: pointer;
-}
-
 section {
 	max-width: 70%;
 	margin: auto;
 	margin-top: 0%;
 }
 
-.d_none {
-	display: none;
-}
-
-.scroll::-webkit-scrollbar {
-	width: 10px; /* 스크롤바의 너비 */
-	cursor: default;
-}
-
-.scroll::-webkit-scrollbar-thumb {
-	height: 5%; /* 스크롤바의 길이 */
-	background: #999999; /* 스크롤바의 색상 */
-	border-radius: 10px;
-}
-
-.scroll::-webkit-scrollbar-track {
-	background: #EAEAEA; /*스크롤바 뒷 배경 색상*/
-}
-
-.bdcategory {
-	color: #00bcd4;
-}
-
-.bdCategoryList {
-	color: #00bcd4;
-	border: none;
-	font-size: 18px;
-}
-
-.bdcategorySel {
-	font-weight: bold;
-	text-align: center;
-	color: #00bcd4;
-}
-
-input {
-	border-radius: 3px;
-	border: solid #E0E0E0 2px;
-	height: 28px;
-	font-size: 20px;
-}
-
-.searchType {
-	text-align: center;
-	border-radius: 5px;
-	font-size: 18px;
-	border: solid 1px #00bcd4;
-}
-
-#inputSearchText {
-	font-size: 18px;
-}
-
-.pagination {
-	width: 20rem ! important;
-	display: inline-block ! important;
-	margin-left: auto ! important;
-	margin-right: auto ! important;
-	margin-top: 1rem ! important;
-	font-size: 18px ! important;
-}
-
-.pagination a {
-	color: black ! important;
-	padding: 6px 12px ! important;
-	text-decoration: none ! important;
-	border-radius: 5px ! important;
-}
-
-.pagination span {
-	color: black ! important;
-	padding: 6px 12px ! important;
-	text-decoration: none ! important;
-	border-radius: 5px ! important;
-}
-
-.pagination a.active {
-	background-color: #00bcd4 ! important;
-	border-radius: 5px ! important;
-	color: white ! important;
-}
-
 .bigger {
+	margin : 0.5rem;
 	font-size: 2rem;
 }
 
@@ -185,7 +96,6 @@ div.col.mb-2 h3 {
 
 .bottom {
 	font-size: 2rem;
-	padding: 0px;
 	margin: 0px 0px;
 	width: 100%;
 	height: 2.4rem;
@@ -193,7 +103,7 @@ div.col.mb-2 h3 {
 	color: initial;
 }
 
-#sellList, #buyList {
+.list {
 	height: 43rem;
 	/* border : 1px solid  #00bcd4; */
 }
@@ -207,6 +117,14 @@ section div.checkout__form{
     margin-bottom: 25px;
     font-size : 24px;
 }
+
+.nolist {
+	/* room, resell 리스트가 없는 경우 길이 줄이기 */
+	height: 10rem;
+}
+
+.d_none{ display:none;}
+
 </style>
 </head>
 <body>
@@ -232,65 +150,59 @@ section div.checkout__form{
 					
 	<section>
 		<!-- 페이지명 -->
-		<div class="checkout__form" style="margin-top: 30px;">작성글 조회</div> 
+		<div class="checkout__form" style="margin-top: 30px;"><span style="color:coral;">${nickname }</span>님의 작성글 조회</div> 
 	
 
-				<!--roomlist div 시작  -->
+				<!--roomlist div 시작  
 				<div class="row sellbuyhead">
 					<div class="col mb-2" style="padding-top: 0.2rem;">
 						<h3 style="font-size: 2.3rem; font-weight: 700;">자취방 자랑게시판</h3>
 					</div>
-					<div align="right" class="col" style="padding-top: 0.45rem;">
-						<span style="font-size: 1.6rem;"> <a href="#" style="color: gold !important; font-weight: bold;"><i class="fa-solid fa-square-plus"></i>&nbsp;&nbsp;더보기</a></span>
+				</div>
+				-->
+				
+				<div class="row sellbuyhead" style="clear: both; margin-top: 50px;">
+					<div class="col mb-2" style="padding-top: 0.2rem;">
+						<h3 style="font-size: 2.3rem; font-weight: 700;">자취방 자랑게시판</h3>
 					</div>
 				</div>
 				
-				<div id="roomList">
+				<div id="roomList" class="list">
 					<c:forEach items="${roomList}" var="room">
 						<div class="float_">
 							<div id="sellbuyscreen">
 								
 							<c:choose>
 								<c:when test="${room.bdimg != null}">
-									<a href="#"> <img alt="" src="${pageContext.request.contextPath }/resources/img/room/${room.bdimg }">
+									<a href="${pageContext.request.contextPath }/selectRoomList?bdcode=${room.bdcode}">
+										<img alt="" src="${pageContext.request.contextPath }/resources/img/room/${room.bdimg }">
 									</a>
 									</c:when>
 									
 									<c:otherwise>
-										<a href="#">  <img alt="" src="${pageContext.request.contextPath }/resources/img/logo_bada.png">
-									</a>
-									
+										<a href="#">  
+											<img alt="" src="${pageContext.request.contextPath }/resources/img/logo_bada.png">
+										</a>
 									</c:otherwise>
 							</c:choose>
 							</div>
 						<div class="bottom" style="font-weight:600; position:relative;">
 							<span class="soldCheckMsg_ bold"></span>
-							<a href="#">${room.bdtitle }</a>
+							<a href="#">${room.bdtitle }</a>				
 						</div>
-						<div style="height:2rem; font-size:1.6rem; padding:0; color:grey;">${room.bddate }&nbsp;
-							<span style="color:red; font-size:1.8rem;" onclick="clickZzim('${room.bdcode }')" id="zzimCheck_${room.bdcode }">
-								<c:choose>
-									<c:when test="${room.bdscrap != null }">
-										<i id="zzimState_${room.bdcode }" class='fa-heart fa-solid'></i> 
-									</c:when>
-									<c:otherwise>
-										<i id="zzimState_${room.bdcode }" class='fa-heart fa-regular'></i> 
-									</c:otherwise>
-								</c:choose>	
-							</span>
-							<span style="color:initial; font-size:1.8rem;" id="zzimCount_${room.bdcode }">
-								${room.bdscrap } 
-							</span>
+						<div style="height:2rem; font-size:1.6rem; padding:0; color:grey;">
+							${room.bddate }
 						</div>
 						<div class="bottom" style="font-size:1.7rem; font-weight:600; position:relative;">
 							<span onclick="writeMemberSellbuy('${room.bdnickname }')" style="height:1.8rem; font-size:1.6rem; padding:0; color:initial; cursor:pointer;">${room.bdnickname }</span>
 						</div>
 					</div>
 				</c:forEach>
-
-
+				
 					<div style="height: 20px; float: left; width: 33.3333333%;"></div>
 				</div>
+				
+				<div id="noRoomList" class="d_none bigger">작성글이 존재하지 않습니다.</div>
 				<!--roomlist div 끝  -->
 
 				
@@ -300,12 +212,9 @@ section div.checkout__form{
 					<div class="col mb-2" style="padding-top: 0.2rem;">
 						<h3 style="font-size: 2.3rem; font-weight: 700;">중고거래</h3>
 					</div>
-					<div align="right" class="col" style="padding-top: 0.45rem;">
-						<span style="font-size: 17px;"> <a href="selectResellPageList?sellBuy=B&ajaxCheck=LIST" style="color: gold !important; font-weight: bold;"><i class="fa-solid fa-square-plus"></i>&nbsp;&nbsp;더보기</a></span>
-					</div>
 				</div>
 
-				<div id="buyList">
+				<div id="resellList" class="list">
 
 					<c:forEach items="${resellList}" var="resell">
 						<div class="float_">
@@ -326,27 +235,18 @@ section div.checkout__form{
 							<div class="bottom" style="font-weight: 600; position: relative;">
 								<span class="soldCheckMsg_ bold"></span> <a href="selectResellView?ubcode=${resell.ubcode }&ubsellbuy=${resell.ubsellbuy }&modifyCheck=LIST">${resell.ubtitle }</a>
 							</div>
-							<div style="height: 2rem; font-size: 1.6rem; padding: 0; color: grey;">${resell.ubdatedef }&nbsp;
-								<span style="color: red; font-size: 1.8rem;" onclick="clickZzim('${resell.ubcode }')" id="zzimCheck_${resell.ubcode }"> <c:choose>
-										<c:when test="${sellList.zzimcheck != null }">
-											<i id="zzimState_${resell.ubcode }" class='fa-solid fa-heart'></i>
-										</c:when>
-										<c:otherwise>
-											<i id="zzimState_${resell.ubcode }" class='fa-regular fa-heart'></i>
-										</c:otherwise>
-									</c:choose>
-								</span> <span style="color: initial; font-size: 1.8rem;" id="zzimCount_${resell.ubcode }"> ${resell.ubzzim } </span>
+							<div style="height: 2rem; font-size: 1.6rem; padding: 0; color: grey;">${resell.ubdate }&nbsp;
 							</div>
 							<div class="bottom" style="font-size: 1.7rem; font-weight: 600; position: relative;">
 								<span onclick="writeMemberSellbuy('${resell.ubnickname }')" style="height: 1.8rem; font-size: 1.6rem; padding: 0; color: initial; cursor: pointer;">${resell.ubnickname }</span>
 							</div>
-							<input type="hidden" class="ubstate_" value="${resell.ubstate }">
 						</div>
 
 					</c:forEach>
 					
 					<div style="height: 20px; float: left; width: 33.3333333%;"></div>
 				</div>
+				<div id="noResellList" class="d_none bigger">작성글이 존재하지 않습니다.</div>
 				<!-- 중고거래 div 끝 -->
 
 
@@ -354,9 +254,6 @@ section div.checkout__form{
 				<div class="row sellbuyhead" style="clear: both; margin-top: 50px;">
 					<div class="col mb-2" style="padding-top: 0.2rem;">
 						<h3 style="font-size: 2.3rem; font-weight: 700;">일반게시판</h3>
-					</div>
-					<div align="right" class="col" style="padding-top: 0.45rem;">
-						<span style="font-size: 17px;"> <a href="selectResellPageList?sellBuy=B&ajaxCheck=LIST" style="color: gold !important; font-weight: bold;"><i class="fa-solid fa-square-plus"></i>&nbsp;&nbsp;더보기</a></span>
 					</div>
 				</div>
 
@@ -410,15 +307,12 @@ section div.checkout__form{
 						</tr>
 						</c:if>
 					</c:forEach>
+					<tr id="noBoardList" class="d_none"><td style = "padding-left:1rem;">작성글이 존재하지 않습니다.<td></tr>
 					</tbody>
 				</table>
 				</div>
 				<!-- 일반게시판 div 끝 -->
 				
-
-
-			
-
 
 		</section>
 
@@ -432,119 +326,28 @@ section div.checkout__form{
 </body>
 
 <script type="text/javascript">
-
-	var checkMsg = '${msg}';
-	if (checkMsg.length > 0) {
-		alert(checkMsg);
+	
+	const roomSize = '${roomSize}';
+	const resellSize = '${resellSize}';
+	const boardSize = '${boardSize}'
+	
+	if(roomSize == '0'){
+		//자취방 자랑글 없으면
+		$("#roomList").addClass("d_none");
+		$("#noRoomList").removeClass("d_none");
 	}
-</script>
-
-<script type="text/javascript">
-	function searchKeyword() {
-		var searchType = document.getElementById("searchType").value;
-		console.log(searchType);
-		var keyword = document.getElementById("keyword").value;
-		console.log(keyword);
-		if (searchType == 'sell') {
-			location.href = "selectResellPageList?sellBuy=S&searchType="
-					+ searchType + "&keyword=" + keyword;
-		} else {
-			location.href = "selectResellPageList?sellBuy=B&searchType="
-					+ searchType + "&keyword=" + keyword;
-			;
-		}
+	
+	if(resellSize == '0'){
+		//중고거래글 없으면
+		$("#resellList").addClass("d_none");
+		$("#noResellList").removeClass("d_none");
+	}
+	
+	if(boardSize == '0'){
+		//일반게시글 없으면
+		$("#noBoardList").removeClass("d_none");
 	}
 
-	/* 메인에서 찜 버튼 클릭 */
-	function clickZzim(ubcode) {
-
-		console.log(ubcode);
-		var loginId = '${loginId}';
-
-		//로그인 체크
-		if ('${loginId}'.length == 0) {
-			alert("script-로그인 후 이용가능합니다");
-		}
-
-		//찜 체크
-		var zzim_Check;
-		console.log($("#zzimState_" + ubcode).attr("class")[12]);
-		//현재 찜상태 s:찜O r:찜X
-		var zzimState = $("#zzimState_" + ubcode).attr("class")[12];
-		if (zzimState == 's') {
-			//현재 찜이 되어 있는 경우
-			console.log("zzim O")
-			zzim_Check = 'CHECK';
-		} else {
-			//현재 찜이 안되어 경우
-			console.log("zzim X")
-			zzim_Check = 'UNCHECK';
-		}
-
-		var zzimCount = $("#zzimCount_" + ubcode).text().trim();
-		console.log(zzimCount);
-
-		$.ajax({
-			type : "get",
-			url : "zzimClick_ajax",
-			async : false, //전역변수 값 저장을 위해 필요
-			data : {
-				"zzubcode" : ubcode,
-				"zzmid" : loginId,
-				"zzim_Check" : zzim_Check
-			},
-
-			success : function(zzimCheck) {
-				console.log("zzimCheck : " + zzimCheck);
-
-				if (zzimCheck == 'CHECK') { //찜 했을 때
-					//하트 채우기
-					$("#zzimState_" + ubcode).removeClass("fa-regular")
-							.addClass("fa-solid");
-
-					//증가
-					console.log("증가 요청");
-					if (zzimCount == 0) {
-						zzimCount = 1;
-					} else {
-						zzimCount = parseInt(zzimCount) + 1;
-					}
-
-				} else { //찜 취소했을 때
-					//하트 비우기
-					$("#zzimState_" + ubcode).removeClass("fa-solid").addClass(
-							"fa-regular");
-
-					//감소				
-					console.log("감소 요청");
-					zzimCount = parseInt(zzimCount) - 1;
-
-				}
-				$("#zzimCount_" + ubcode).text(zzimCount);
-			}
-		})
-	}
-</script>
-
-<script type="text/javascript">
-
-	/* 거래완료 글 체크표시  */
-	// 페이지로드 시 거래완료된 글 확인
-	window.onload = function() {
-		soldCheck();
-	}
-	const ubstate = document.querySelectorAll('.ubstate_');
-	const soldCheckMsg = document.querySelectorAll('.soldCheckMsg_');
-	function soldCheck() {
-		for (let i = 0; i < ubstate.length; i++) {
-			if (ubstate[i].value === '9') {
-
-				console.log("거래완료글확인")
-				soldCheckMsg[i].textContent = "(거래완료) "
-
-			}
-		}
-	}
 
 </script>
 

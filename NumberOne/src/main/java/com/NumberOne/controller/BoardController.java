@@ -585,6 +585,7 @@ public class BoardController {
 		 return updateResult;
 	 }
 	 
+
 	 //대댓글 닉네임 태그
 	@RequestMapping ( value = "/selectByRpnickname")
 	public ModelAndView selectByRpnickname(Paging paging) {
