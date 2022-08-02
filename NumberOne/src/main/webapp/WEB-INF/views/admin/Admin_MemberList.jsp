@@ -192,7 +192,7 @@
                 <div class="modal-body" id="updateMstateModalBody"> </div>
                 <div class="modal-footer">
                 	<input type="hidden" id="mid">
-                    <button class="btn btn-primary" onclick="updateMstate()">네</button>
+                    <button class="btn btn-numberone" onclick="updateMstate()">네</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
             </div>
@@ -269,7 +269,7 @@
                 
                 </div>
                 <div class="modal-footer">
-                    <button class="close btn btn-primary" type="button" data-dismiss="modal">확인</button>
+                    <button class="close btn btn-numberone" type="button" data-dismiss="modal">확인</button>
                 </div>
             </div>
         </div>

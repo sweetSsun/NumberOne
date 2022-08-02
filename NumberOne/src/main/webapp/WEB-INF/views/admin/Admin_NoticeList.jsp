@@ -193,7 +193,7 @@
                 <div class="modal-body" id="updateNbstateModalBody"> </div>
                 <div class="modal-footer">
                 	<input type="hidden" id="nbcode_state">
-                    <button class="btn btn-primary" onclick="updateNbstate()">네</button>
+                    <button class="btn btn-numberone" onclick="updateNbstate()">네</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
             </div>
@@ -214,7 +214,7 @@
                 <div class="modal-body" id="updateNbfixModalBody"> </div>
                 <div class="modal-footer">
                 	<input type="hidden" id="nbcode_fix">
-                    <button class="btn btn-primary" onclick="updateNbfix()">네</button>
+                    <button class="btn btn-numberone" onclick="updateNbfix()">네</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
             </div>
