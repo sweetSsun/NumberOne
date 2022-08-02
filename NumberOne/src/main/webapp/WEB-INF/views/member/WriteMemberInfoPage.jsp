@@ -53,6 +53,9 @@
 		width : 500px;
 		border-bottom: 1px solid #D2D2D2;
 		/* border: 0px; */
+		overflow:hidden;
+		white-space:nowrap;
+		text-overflow:ellipsis;
 	}
 	
 	.pText a{
@@ -206,6 +209,7 @@
 	 
 	 .msgTextarea {
 	 border: 1px solid black;
+	 /* width : 500px; */
 		height: 550px;
 		width: 640px;
 		padding:10px;
@@ -334,6 +338,39 @@
 	a{
 		text-decoration: none;
 	}
+	
+	.text_leng {
+	
+	text-overflow: hidden;
+	overflow:ellipsis;
+	white-space : nowrap;	
+	text-decoration: none !important;
+	color:black;
+	}
+	
+	.text_leng:hover {
+		color : #00BCD4;
+		font-weight: bold;
+		cursor: pointer;
+		text-decoration: none;!important
+	}
+
+	.write:hover {
+		color : #00BCD4;
+		font-weight: bold;
+		text-decoration: none;	!important
+	}
+	
+	.delete_leng {
+	
+	text-overflow: ellipsis;
+	overflow:hidden;
+	white-space : nowrap;	
+	text-decoration: none;!important
+	color:gray;
+	}	
+	
+	
 	
 </style>
 
@@ -555,7 +592,7 @@ function boardreplySwitch(type){
 		   output+="&nbsp;&nbsp;&nbsp; "
 		   output+="<button class=\"viewBtn\" id=\"reply\" onclick=\"boardreplySwitch('r')\">작성댓글</button></span></div>"
 		   
-		   output+="<div class = \"msgTextarea col-lg-12 col-md-6 col-sm-6\" style=\"border-top:0px! important ; padding-top: 20px; border: 1px solid #949494; background-color: #F2F2FF;\" >"
+		   output+="<div class = \"msgTextarea col-lg-12 col-md-6 col-sm-6 \" style=\"border-top:0px! important ; padding-top: 20px; border: 1px solid #949494; background-color: #F2F2FF; \" >"
 		output+="<div id=\"WmemberBoard\"></div>"
 	   
 	   
