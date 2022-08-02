@@ -85,12 +85,12 @@
 				</div>
 				<hr>
 				<div class="row">
-					<textarea id="contents" class="bdcontents textarea-GbView" rows="17" cols="40" name="gb_contents"
+					<textarea id="contents" class="bdcontents textarea-GbView" rows="17" cols="40" name="gbcontents"
 						maxlength="2000"  placeholder="내용을 입력하세요"></textarea>
 				</div>
 				<div class="row" style="padding:2vh;">
-					<input type="text" id="item_name" name="gb_item_name" placeholder="공동구매 제목 또는 상품 이름을 입력하세요" style="margin-bottom:2vh"><br>
-					<input type="text" id="item_price" name="gb_total_amount" placeholder="가격을 입력하세요">
+					<input type="text" id="item_name" name="gbitemname" placeholder="공동구매 제목 또는 상품 이름을 입력하세요" style="margin-bottom:2vh"><br>
+					<input type="text" id="item_price" name="gbitemprice" placeholder="가격을 입력하세요">
 				</div>
 				<div class="row mt-4">
 					<div id="imgScreen" style="width:200px; height:200px;" class="d_none"><img id='previewImg' style="width:100%; height:100%;"></img></div>
