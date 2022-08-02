@@ -508,7 +508,7 @@ function boardreplySwitch(type){
 		   			output+="</li></ul>"  
 			   }else {
 				   	output+="<ul><li>"  
-					output+="<a href=\"selectBoardView?bdcode="+boardList[i].bdcode+"\" target=\"_blank\">"
+					output+="<a href=\"selectBoardView?codeIdx="+boardList[i].bdcode+"\" target=\"_blank\">"
 					output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; color:black; \" >"+boardList[i].bdtitle+"</p>"
 					output+="</a>"
 					output+="</li></ul>"		   
@@ -564,7 +564,7 @@ function boardreplySwitch(type){
 	      
 		   }else {
 		      	output+="<ul><li>"
-		    	output+="<a href=\"selectBoardView?bdcode="+ReplyList[i].rpbdcode+"\" target=\"_blank\">"
+		    	output+="<a href=\"selectBoardView?codeIdx="+ReplyList[i].rpbdcode+"\" target=\"_blank\">"
 		      	output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; color:black; \" >"+ReplyList[i].rpcontents+"</p>"
 		      	output+="</a>"
 		      	output+="</li></ul>" 	    	  

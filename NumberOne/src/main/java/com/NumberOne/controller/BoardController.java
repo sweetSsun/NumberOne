@@ -585,25 +585,7 @@ public class BoardController {
 		 return updateResult;
 	 }
 	 
-	 ///////
-	 //대댓글 등록
-	 @RequestMapping ( value = "/insertBoardRe_Reply_ajax")
-	 @ResponseBody
-	 public int insertBoardRe_Reply_ajax(ReplyDto reply, String bdcode) {
-		 System.out.println("대댓글 등록 요청_ajax");
-		 
-		 String loginId = (String)session.getAttribute("loginId");
-		 
-		 if(loginId == null ) {
-			 
-			 return 2;
-		 }
-		 
-		 int updateResult = bsvc.insertBoardRe_Reply_ajax(reply, bdcode, loginId);
-		 
-		 return updateResult;
-		 
-	 }
+
 	 
 	 //대댓글 닉네임 태그
 	@RequestMapping ( value = "/selectByRpnickname")
