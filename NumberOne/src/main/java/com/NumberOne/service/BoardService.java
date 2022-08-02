@@ -715,8 +715,9 @@ public class BoardService {
 			}
 			replyList.get(i).setRpcontents(rpcontents);
 		}
+		
 		System.out.println("댓글목록 조회 ");
-		System.out.println(replyList);
+		//System.out.println(replyList);
 
 		// 댓글목록 JSON 타입으로 변환
 		Gson gson = new Gson();

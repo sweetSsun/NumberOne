@@ -841,7 +841,18 @@
 							output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton bg-secondary text-white fw-bold mt-2\" onclick=\"adminReplyStop('"+ replyList[i].rpcode +"')\" value=\"정지\">"
 						}
 						/* 댓글내용 */
-						output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
+						if( replyList[i].rpparent != null ){
+							let rerp_rpcontents = replyList[i].rpcontents;
+							let rerp_rpnickname = replyList[i].rpcontents.split(" ")[0];
+							console.log("대댓글 닉네임 : " + rerp_rpnickname);
+							let rerp_nickname_count = rerp_rpnickname.length;
+							let rerp_rpcontents_trim = rerp_rpcontents.substring(rerp_nickname_count);
+							console.log("대댓글 내용 : " + rerp_rpcontents_trim);
+							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly> <span style='color:#00bcd4;'>" + rerp_rpnickname + " </span>" + rerp_rpcontents_trim + "</pre>"
+						}else{
+							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
+								
+						}	
 						output += "</div>"
 						
 					}else{ // 로그인아이디 != 글작성자
@@ -879,8 +890,20 @@
 						}
 						
 						output += "<br>"
+							
 						/* 댓글내용 */
-						output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
+						if( replyList[i].rpparent != null ){
+							let rerp_rpcontents = replyList[i].rpcontents;
+							let rerp_rpnickname = replyList[i].rpcontents.split(" ")[0];
+							console.log("대댓글 닉네임 : " + rerp_rpnickname);
+							let rerp_nickname_count = rerp_rpnickname.length;
+							let rerp_rpcontents_trim = rerp_rpcontents.substring(rerp_nickname_count);
+							console.log("대댓글 내용 : " + rerp_rpcontents_trim);
+							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly> <span style='color:#00bcd4;'>" + rerp_rpnickname + " </span>" + rerp_rpcontents_trim + "</pre>"
+						}else{
+							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
+								
+						}						
 						output += "</div>"
 					}
 						output += "</div>"//한줄 끝

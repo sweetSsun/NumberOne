@@ -12,7 +12,9 @@ public class GonguBoardDto {
 	private String gbtitle;   	//제목
 	private String gbcontents;	//내용
 	private String gbdate;		//작성일
-	private String gbimg;		//사진	
+	private String gbimg;		//사진
+	private String gbitemname;	//카카오페이결제시 불러올 item_name 품목이름
+	private int gbitemprice;	//카카오페이결제시 불러올 total_amount 가격
 	private int gbstate;		//글상태	
 	private int gbhits;			//조회수
 	private int gbfix;			//고정공지
@@ -23,11 +25,8 @@ public class GonguBoardDto {
 
 	// 글 출력시 필요한 필드
 	private String gbnickname;      //작성자 닉네임
-	
-	private String gb_contents;		//DB입력 전 view 내용 :: 아래 부분과 합쳐서 보내기 위함
-	private String gb_item_name;	//카카오페이결제시 불러올 item_name 품목이름
-	private String gb_total_amount;	//카카오페이결제시 불러올 total_amount 가격
 
+	
 	
 	public String getGbcode() {
 		return gbcode;
@@ -75,6 +74,22 @@ public class GonguBoardDto {
 
 	public void setGbimg(String gbimg) {
 		this.gbimg = gbimg;
+	}
+
+	public String getGbitemname() {
+		return gbitemname;
+	}
+
+	public void setGbitemname(String gbitemname) {
+		this.gbitemname = gbitemname;
+	}
+
+	public int getGbitemprice() {
+		return gbitemprice;
+	}
+
+	public void setGbitemprice(int gbitemprice) {
+		this.gbitemprice = gbitemprice;
 	}
 
 	public int getGbstate() {
@@ -125,39 +140,14 @@ public class GonguBoardDto {
 		this.gbnickname = gbnickname;
 	}
 
-	public String getGb_contents() {
-		return gb_contents;
-	}
-
-	public void setGb_contents(String gb_contents) {
-		this.gb_contents = gb_contents;
-	}
-	
-	public String getGb_item_name() {
-		return gb_item_name;
-	}
-
-	public void setGb_item_name(String gb_item_name) {
-		this.gb_item_name = gb_item_name;
-	}
-
-	public String getGb_total_amount() {
-		return gb_total_amount;
-	}
-
-	public void setGb_total_amount(String gb_total_amount) {
-		this.gb_total_amount = gb_total_amount;
-	}
-	
 	
 	@Override
 	public String toString() {
 		return "GonguBoardDto [gbcode=" + gbcode + ", gbmid=" + gbmid + ", gbtitle=" + gbtitle + ", gbcontents="
-				+ gbcontents + ", gbdate=" + gbdate + ", gbimg=" + gbimg + ", gbstate=" + gbstate + ", gbhits=" + gbhits
-				+ ", gbfix=" + gbfix + ", gbimgfile=" + gbimgfile + ", originImg_gb=" + originImg_gb + ", gbnickname="
-				+ gbnickname + ", gb_contents=" + gb_contents + ", gb_item_name=" + gb_item_name + ", gb_total_amount=" + gb_total_amount + "]";
+				+ gbcontents + ", gbdate=" + gbdate + ", gbimg=" + gbimg + ", gbitemname=" + gbitemname
+				+ ", gbitemprice=" + gbitemprice + ", gbstate=" + gbstate + ", gbhits=" + gbhits + ", gbfix=" + gbfix
+				+ ", gbimgfile=" + gbimgfile + ", originImg_gb=" + originImg_gb + ", gbnickname=" + gbnickname + "]";
 	}
-
 	
 
 }

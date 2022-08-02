@@ -426,6 +426,7 @@
 		FROM REPLY RP, MEMBERS MB 
 		WHERE RP.RPMID = MB.MID
 		AND RPBDCODE = #{bdcode}
+		AND RPSTATE != 0 
  		ORDER BY RPCODE 
  	</select>
  	
@@ -436,6 +437,7 @@
 		FROM REPLYSELECT RP, MEMBERS MB 
 		WHERE RP.RPMID = MB.MID
 		AND RPBDCODE = #{bdcode}
+		AND RPSTATE != 0
  	</select>
  	
  	<select id="selectReplyCount_ajax" resultType="int">
@@ -443,6 +445,7 @@
  		SELECT COUNT(*)
 		FROM REPLY 
 		WHERE RPBDCODE = #{bdcode}
+		AND RPSTATE != 0
  	</select>
  	 
  	<update id="updateReplyState_ajax">
@@ -598,6 +601,7 @@
 		SELECT RPCODE, RPBDCODE, RPCONTENTS, RPMID, RPDATE, RPSTATE
 		FROM REPLY
 		WHERE RPCODE = #{rpcode}
+		AND RPSTATE != 0
 	</select>
 	
 	<update id="updateRpcontents_ajax">
@@ -624,15 +628,6 @@
       ORDER BY BDCODE DESC
    </select>
 	
-	
-	
-	<select id="selectreplyMaxDepth" resultType="int">
-		<!-- 모댓글의 최대 depth 구하기 -->
-		SELECT NVL(MAX(RPDEPTH),0)
-		FROM REPLY
-		WHERE RPGROUPNUMt = #{rerpcode}
-	
-	</select>
 	
 	<insert id="insertBoardRe_Reply_ajax">
 		<!-- 대댓글 등록 -->
