@@ -234,6 +234,7 @@ section div.checkout__form{
 		<!-- 페이지명 -->
 		<div class="checkout__form" style="margin-top: 30px;">작성글 조회</div> 
 	
+		<div id="regionList">
 
 				<!--roomlist div 시작  -->
 				<div class="row sellbuyhead">
@@ -241,23 +242,22 @@ section div.checkout__form{
 						<h3 style="font-size: 2.3rem; font-weight: 700;">자취방 자랑게시판</h3>
 					</div>
 					<div align="right" class="col" style="padding-top: 0.45rem;">
-						<span style="font-size: 1.6rem;"> <a href="#" style="color: gold !important; font-weight: bold;"><i class="fa-solid fa-square-plus"></i>&nbsp;&nbsp;더보기</a></span>
+						<span style="font-size: 1.6rem;"> <a href="selectResellPageList?sellBuy=S&ajaxCheck=LIST" style="color: gold !important; font-weight: bold;"><i class="fa-solid fa-square-plus"></i>&nbsp;&nbsp;더보기</a></span>
 					</div>
 				</div>
-				
 				<div id="roomList">
-					<c:forEach items="${roomList}" var="room">
+					<c:forEach items="${SellList}" var="sellList">
 						<div class="float_">
 							<div id="sellbuyscreen">
 								
 							<c:choose>
-								<c:when test="${room.bdimg != null}">
-									<a href="#"> <img alt="" src="${pageContext.request.contextPath }/resources/img/room/${room.bdimg }">
+								<c:when test="${sellList.ubmainimg != null}">
+									<a href="selectResellView?ubcode=${sellList.ubcode }&ubsellbuy=${sellList.ubsellbuy }&modifyCheck=LIST"> <img alt="" src="${pageContext.request.contextPath }/resources/img/resell/${sellList.ubmainimg }">
 									</a>
 									</c:when>
 									
 									<c:otherwise>
-										<a href="#">  <img alt="" src="${pageContext.request.contextPath }/resources/img/logo_bada.png">
+										<a href="selectResellView?ubcode=${sellList.ubcode }&ubsellbuy=${sellList.ubsellbuy }&modifyCheck=LIST">  <img alt="" src="${pageContext.request.contextPath }/resources/img/logo_bada.png">
 									</a>
 									
 									</c:otherwise>
@@ -265,90 +265,36 @@ section div.checkout__form{
 							</div>
 						<div class="bottom" style="font-weight:600; position:relative;">
 							<span class="soldCheckMsg_ bold"></span>
-							<a href="#">${room.bdtitle }</a>
+							<a href="selectResellView?ubcode=${sellList.ubcode }&ubsellbuy=${sellList.ubsellbuy }&modifyCheck=LIST">${sellList.ubtitle }</a>
 						</div>
-						<div style="height:2rem; font-size:1.6rem; padding:0; color:grey;">${room.bddate }&nbsp;
-							<span style="color:red; font-size:1.8rem;" onclick="clickZzim('${room.bdcode }')" id="zzimCheck_${room.bdcode }">
+						<div style="height:2rem; font-size:1.6rem; padding:0; color:grey;">${sellList.ubdatedef }&nbsp;
+							<span style="color:red; font-size:1.8rem;" onclick="clickZzim('${sellList.ubcode }')" id="zzimCheck_${sellList.ubcode }">
 								<c:choose>
-									<c:when test="${room.bdscrap != null }">
-										<i id="zzimState_${room.bdcode }" class='fa-heart fa-solid'></i> 
+									<c:when test="${sellList.zzimcheck != null }">
+										<i id="zzimState_${sellList.ubcode }" class='fa-heart fa-solid'></i> 
 									</c:when>
 									<c:otherwise>
-										<i id="zzimState_${room.bdcode }" class='fa-heart fa-regular'></i> 
+										<i id="zzimState_${sellList.ubcode }" class='fa-heart fa-regular'></i> 
 									</c:otherwise>
 								</c:choose>	
 							</span>
-							<span style="color:initial; font-size:1.8rem;" id="zzimCount_${room.bdcode }">
-								${room.bdscrap } 
+							<span style="color:initial; font-size:1.8rem;" id="zzimCount_${sellList.ubcode }">
+								${sellList.ubzzim } 
 							</span>
 						</div>
 						<div class="bottom" style="font-size:1.7rem; font-weight:600; position:relative;">
-							<span onclick="writeMemberSellbuy('${room.bdnickname }')" style="height:1.8rem; font-size:1.6rem; padding:0; color:initial; cursor:pointer;">${room.bdnickname }</span>
+							<span onclick="writeMemberSellbuy('${sellList.ubnickname }')" style="height:1.8rem; font-size:1.6rem; padding:0; color:initial; cursor:pointer;">${sellList.ubnickname }</span>
 						</div>
+						<!-- 판매 상태 -->
+						<input type="hidden" class="ubstate_" value="${sellList.ubstate }">
 					</div>
 				</c:forEach>
+
 
 
 					<div style="height: 20px; float: left; width: 33.3333333%;"></div>
 				</div>
 				<!--roomlist div 끝  -->
-
-				
-
-				<!--중고거래 div 시작  -->
-				<div class="row sellbuyhead" style="clear: both; margin-top: 50px;">
-					<div class="col mb-2" style="padding-top: 0.2rem;">
-						<h3 style="font-size: 2.3rem; font-weight: 700;">중고거래</h3>
-					</div>
-					<div align="right" class="col" style="padding-top: 0.45rem;">
-						<span style="font-size: 17px;"> <a href="selectResellPageList?sellBuy=B&ajaxCheck=LIST" style="color: gold !important; font-weight: bold;"><i class="fa-solid fa-square-plus"></i>&nbsp;&nbsp;더보기</a></span>
-					</div>
-				</div>
-
-				<div id="buyList">
-
-					<c:forEach items="${resellList}" var="resell">
-						<div class="float_">
-							<div id="sellbuyscreen">
-							<c:choose>
-								<c:when test="${resell.ubmainimg != null}">
-									<a href="selectResellView?ubcode=${resell.ubcode }&ubsellbuy=${resell.ubsellbuy }&modifyCheck=LIST"> <img alt="" src="${pageContext.request.contextPath }/resources/img/resell/${resell.ubmainimg }">
-									</a>
-									</c:when>
-									
-									<c:otherwise>
-										<a href="selectResellView?ubcode=${resell.ubcode }&ubsellbuy=${resell.ubsellbuy }&modifyCheck=LIST">  <img alt="" src="${pageContext.request.contextPath }/resources/img/logo_bada.png">
-									</a>
-									
-									</c:otherwise>
-							</c:choose>
-							</div>
-							<div class="bottom" style="font-weight: 600; position: relative;">
-								<span class="soldCheckMsg_ bold"></span> <a href="selectResellView?ubcode=${resell.ubcode }&ubsellbuy=${resell.ubsellbuy }&modifyCheck=LIST">${resell.ubtitle }</a>
-							</div>
-							<div style="height: 2rem; font-size: 1.6rem; padding: 0; color: grey;">${resell.ubdatedef }&nbsp;
-								<span style="color: red; font-size: 1.8rem;" onclick="clickZzim('${resell.ubcode }')" id="zzimCheck_${resell.ubcode }"> <c:choose>
-										<c:when test="${sellList.zzimcheck != null }">
-											<i id="zzimState_${resell.ubcode }" class='fa-solid fa-heart'></i>
-										</c:when>
-										<c:otherwise>
-											<i id="zzimState_${resell.ubcode }" class='fa-regular fa-heart'></i>
-										</c:otherwise>
-									</c:choose>
-								</span> <span style="color: initial; font-size: 1.8rem;" id="zzimCount_${resell.ubcode }"> ${resell.ubzzim } </span>
-							</div>
-							<div class="bottom" style="font-size: 1.7rem; font-weight: 600; position: relative;">
-								<span onclick="writeMemberSellbuy('${resell.ubnickname }')" style="height: 1.8rem; font-size: 1.6rem; padding: 0; color: initial; cursor: pointer;">${resell.ubnickname }</span>
-							</div>
-							<input type="hidden" class="ubstate_" value="${resell.ubstate }">
-						</div>
-
-					</c:forEach>
-					
-					<div style="height: 20px; float: left; width: 33.3333333%;"></div>
-				</div>
-				<!-- 중고거래 div 끝 -->
-
 
 				<!--일반게시판 div 시작  -->
 				<div class="row sellbuyhead" style="clear: both; margin-top: 50px;">
@@ -360,66 +306,58 @@ section div.checkout__form{
 					</div>
 				</div>
 
-				<div class="row">
-				<table class="boardList">
-					<thead >
-						<tr class="text-center" id="board_column">
-							<td style="font-size: 17px;">글번호</td>
-							<td style="font-size: 17px;">카테고리</td>
-							<td style="font-size: 17px;">제목</td>
-							<td style="font-size: 17px;">작성자</td>
-							<td style="font-size: 17px;">날짜</td>
-							<td style="font-size: 17px;">조회</td>
-							<td style="font-size: 17px;">추천</td>
-						</tr>
-					</thead>
-					
-					<tbody id="bdCategoryList">
-					<c:forEach items="${boardList }" var="board">
-						<c:if test="${board.bdcategory != '자랑' }">
-						<tr style="border-bottom: solid #E0E0E0 1px;">
-							<td class="text-center tableCell">${board.bdcode}</td>
-							<td class="bdcategory text-center tableCell">
-								<a href="selectCategoryBoardList?searchVal=${board.bdcategory }">
-									${board.bdcategory}
-								</a>
-							
-							</td>
-							<td class="tableCell">
-								<c:choose>
-									<c:when test="${board.bdcategory eq '후기'  }">
-										<a href="selectReviewBoardView${paging.makeQueryPage(board.bdcode, paging.page) }">${board.bdtitle} 
-									 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
+				<div id="buyList">
+
+					<c:forEach items="${BuyList}" var="buyList">
+						<div class="float_">
+							<div id="sellbuyscreen">
+							<c:choose>
+								<c:when test="${buyList.ubmainimg != null}">
+									<a href="selectResellView?ubcode=${buyList.ubcode }&ubsellbuy=${buyList.ubsellbuy }&modifyCheck=LIST"> <img alt="" src="${pageContext.request.contextPath }/resources/img/resell/${buyList.ubmainimg }">
+									</a>
 									</c:when>
 									
 									<c:otherwise>
-									 	<a href="selectBoardView${paging.makeQueryPage(board.bdcode, paging.page)}">${board.bdtitle}
-									 		<c:if test="${board.bdimg != null }">
-									 		<i class="fa-regular fa-image"></i>
-									 		</c:if>
-									 		<span class="fw-bold" style="font-size:15px; color:#00bcd4;">&nbsp;${board.bdrpcount }</span> </a>
+										<a href="selectResellView?ubcode=${buyList.ubcode }&ubsellbuy=${buyList.ubsellbuy }&modifyCheck=LIST">  <img alt="" src="${pageContext.request.contextPath }/resources/img/logo_bada.png">
+									</a>
+									
 									</c:otherwise>
-								</c:choose>
-							 </td>
-							<td class="text-center tableCell">
-								<span style="cursor: pointer" class="bdnickname" onclick="writeMemberBoard('${board.bdnickname}')">${board.bdnickname}</span>
-							</td>
-							<td class="text-center tableCell" id="bddate">${board.bddate}</td>
-							<td class="text-center tableCell">${board.bdhits }</td>
-							<td class="fw-bold text-center tableCell" style="color: #00bcd4;">${board.bdrccount}</td>
-						</tr>
-						</c:if>
+							</c:choose>
+							</div>
+							<div class="bottom" style="font-weight: 600; position: relative;">
+								<span class="soldCheckMsg_ bold"></span> <a href="selectResellView?ubcode=${buyList.ubcode }&ubsellbuy=${buyList.ubsellbuy }&modifyCheck=LIST">${buyList.ubtitle }</a>
+							</div>
+							<div style="height: 2rem; font-size: 1.6rem; padding: 0; color: grey;">${buyList.ubdatedef }&nbsp;
+								<span style="color: red; font-size: 1.8rem;" onclick="clickZzim('${buyList.ubcode }')" id="zzimCheck_${buyList.ubcode }"> <c:choose>
+										<c:when test="${sellList.zzimcheck != null }">
+											<i id="zzimState_${buyList.ubcode }" class='fa-solid fa-heart'></i>
+										</c:when>
+										<c:otherwise>
+											<i id="zzimState_${buyList.ubcode }" class='fa-regular fa-heart'></i>
+										</c:otherwise>
+									</c:choose>
+								</span> <span style="color: initial; font-size: 1.8rem;" id="zzimCount_${buyList.ubcode }"> ${buyList.ubzzim } </span>
+							</div>
+							<div class="bottom" style="font-size: 1.7rem; font-weight: 600; position: relative;">
+								<span onclick="writeMemberSellbuy('${buyList.ubnickname }')" style="height: 1.8rem; font-size: 1.6rem; padding: 0; color: initial; cursor: pointer;">${buyList.ubnickname }</span>
+							</div>
+							<input type="hidden" class="ubstate_" value="${buyList.ubstate }">
+						</div>
+
 					</c:forEach>
-					</tbody>
-				</table>
+
 				</div>
-				<!-- 일반게시판 div 끝 -->
-				
 
 
-			
 
 
+
+			</div>
+			<div style="clear: left;"></div>
+
+			<!-- 사구 div끝  -->
+
+			</div>
 		</section>
 
 

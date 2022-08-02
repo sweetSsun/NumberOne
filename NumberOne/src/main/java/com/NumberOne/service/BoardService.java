@@ -1477,14 +1477,17 @@ public class BoardService {
 	public ModelAndView selectByRpnickname(Paging paging) {
 		System.out.println("BoardnService.selectByRpnickname() 호출");
 		ModelAndView mav = new ModelAndView();
+		System.out.println("paging : " + paging);
 		
 		//일반글 조회
 		ArrayList<BoardDto> boardList = bdao.selectBoardList_Paging(paging);
 		mav.addObject("boardList", boardList);
+		//System.out.println("boardList : " + boardList);
 		
 		//자랑글 조회
 		ArrayList<BoardDto> roomList =bdao.selectRoomList_paging(paging);
 		mav.addObject("roomList", roomList);
+		//System.out.println("roomList : " + roomList);
 		
 		//중고글 조회
 		paging.setSellBuy("SB");	
@@ -1492,6 +1495,7 @@ public class BoardService {
 		paging.setSearchVal("all");
 		ArrayList<UsedBoardDto> resellList = rdao.selectResellPageList(paging, "write");
 		mav.addObject("resellList", resellList);
+		//System.out.println("resellList : " + resellList);
 		
 		//setView
 		mav.setViewName("board/RpnicknameTag");
