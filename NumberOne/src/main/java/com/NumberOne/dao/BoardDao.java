@@ -210,10 +210,6 @@ public interface BoardDao {
 	//모댓글의 최대 depth 구하기 
 	int selectreplyMaxDepth(String rerpcode);
 	
-	//----대댓글 등록----
-	int insertBoardRe_Reply_ajax(@Param("rpcode")String rpcode, @Param("bdcode")String bdcode, @Param("rpcontents")String rpcontents, 
-				@Param("rpcode_parent")String rpcode_parent, @Param("rp_depth")int rp_depth, @Param("loginId")String loginId);
-
 	//댓글 목록 조회2 (+ 대댓글)
 	ArrayList<ReplyDto> selectBoardReplyList2(String bdcode);
 
