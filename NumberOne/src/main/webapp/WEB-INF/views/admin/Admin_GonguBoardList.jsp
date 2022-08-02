@@ -193,7 +193,7 @@
                 <div class="modal-body" id="updateGbstateModalBody"> </div>
                 <div class="modal-footer">
                 	<input type="hidden" id="gbcode_state">
-                    <button class="btn btn-primary" onclick="updateGbstate()">네</button>
+                    <button class="btn btn-numberone" onclick="updateGbstate()">네</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
             </div>
@@ -214,7 +214,7 @@
                 <div class="modal-body" id="updategbfixModalBody"> </div>
                 <div class="modal-footer">
                 	<input type="hidden" id="gbcode_fix">
-                    <button class="btn btn-primary" onclick="updateGbfix()">네</button>
+                    <button class="btn btn-numberone" onclick="updateGbfix()">네</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
             </div>

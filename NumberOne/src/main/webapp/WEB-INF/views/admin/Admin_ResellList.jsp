@@ -182,7 +182,7 @@
                 <div class="modal-body" id="updateUbstateModalBody"> </div>
                 <div class="modal-footer">
                 	<input type="hidden" id="ubcode">
-                    <button class="btn btn-primary" onclick="updateUbstate()">네</button>
+                    <button class="btn btn-numberone" onclick="updateUbstate()">네</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
             </div>
