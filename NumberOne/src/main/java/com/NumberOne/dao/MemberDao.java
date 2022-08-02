@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Update;
 
 import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.ContactDto;
-import com.NumberOne.dto.GonguDto;
+import com.NumberOne.dto.GonguBoardDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.ReplyDto;
 import com.NumberOne.dto.ScrapDto;
@@ -156,8 +156,8 @@ public interface MemberDao {
 	int selectMemberEmail_ajax(String inputEmail);
 	
 	//마이페이지_공구
-	@Select("SELECT GGBCODE, NBTITLE AS GGBTITLE, GGDATE, NBSTATE AS GGBSTATE, GGMID FROM NOTICEBOARDS, GONGU WHERE GGBCODE = NBCODE AND GGMID = #{loginId}")
-	ArrayList<GonguDto> selectMyInfoGonguView(String loginId);	
+	@Select("SELECT GBCODE, GBTITLE, GBITEMPRICE, GGDATE ,GBSTATE FROM GONGUBOARDS,GONGU WHERE GBCODE = GGBCODE AND GGMID= #{loginId}")
+	ArrayList<GonguBoardDto> selectMyInfoGonguView(String loginId);	
 
 	//임시번호 확인 요청
 	@Select("SELECT MPW FROM MEMBERS WHERE MID = #{mid} AND MPW = #{mpw}")
