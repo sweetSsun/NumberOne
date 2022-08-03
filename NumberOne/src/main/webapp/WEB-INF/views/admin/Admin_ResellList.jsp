@@ -100,8 +100,18 @@
 	                   <!-- 중고거래 관리 목록 -->
 	                   <tr style="border-bottom: solid #E0E0E0 1px;">
 	                      <td class="text-center overflow">${usedBoard.ubcode}</td>
-	                      <td class="text-center"><img src="${pageContext.request.contextPath }/resources/img/resell/${usedBoard.ubmainimg }"
-	                      		class="img-fluid" style="width:60px; height:60px; object-fit:fill;"></td>
+	                      <td class="text-center">
+	                      	<c:choose>
+								<c:when test="${usedBoard.ubmainimg != null}">
+									<img class="img-fluid" style="width:60px; height:60px; object-fit:fill;" alt="중고메인사진" 
+										src="${pageContext.request.contextPath }/resources/img/resell/${usedBoard.ubmainimg}">
+                                </c:when>
+                                <c:otherwise>
+                                   	<img class="img-fluid" style="width:60px; height:60px; object-fit:fill;" alt="중고메인사진" 
+                                   	src="${pageContext.request.contextPath }/resources/img/logo_gray.png">
+                               	</c:otherwise>
+                            </c:choose>
+	                      </td>
 	                      <td class="overflow">
 	                      	<a href="admin_selectResellView${paging.makeQueryPage(usedBoard.ubcode, paging.page)}&ubsellbuy=${usedBoard.ubsellbuy}"> ${usedBoard.ubtitle}</a>
 	                      </td>
@@ -182,7 +192,7 @@
                 <div class="modal-body" id="updateUbstateModalBody"> </div>
                 <div class="modal-footer">
                 	<input type="hidden" id="ubcode">
-                    <button class="btn btn-primary" onclick="updateUbstate()">네</button>
+                    <button class="btn btn-numberone" onclick="updateUbstate()">네</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
             </div>
@@ -329,8 +339,12 @@
 					for (var i = 0; i < result.length; i++){
 						output += "<tr style='border-bottom: solid #E0E0E0 1px;'>";
 						output += "<td class='text-center overflow'>" + result[i].ubcode + "</td>";
-						output += "<td class='text-center'><img src='${pageContext.request.contextPath }/resources/img/resell/" + result[i].ubmainimg
-						+ "' class='img-fluid' style='width:60px; height:60px;  object-fit:fill;'></td>";
+						if (result[i].ubmainimg != null){
+							output += "<td class='text-center'><img alt='중고메인사진' src='${pageContext.request.contextPath }/resources/img/resell/" + result[i].ubmainimg
+									+ "' class='img-fluid' style='width:60px; height:60px; object-fit:fill;'></td>";
+						} else {
+							output += "<td class='text-center'><img alt='중고메인사진' src='${pageContext.request.contextPath }/resources/img/logo_gray.png' class='img-fluid' style='width:60px; height:60px; object-fit:fill;'></td>";
+						}
 						output += "<td class='overflow'><a href='admin_selectResellView?${paging.makeQueryPage(paging.page)}&codeIdx=" + result[i].ubcode
 								+ "&ubsellbuy=" + result[i].ubsellbuy + "'>" + result[i].ubtitle + "</a></td>";
 						output += "<td class='text-center overflow pointer' onclick='writeMemberSellbuy(\"" + result[i].ubnickname + "\")'>" + result[i].ubnickname + "</td>";

@@ -9,7 +9,7 @@ import org.apache.ibatis.annotations.Update;
 
 import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.ContactDto;
-import com.NumberOne.dto.GonguDto;
+import com.NumberOne.dto.GonguBoardDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.ReplyDto;
 import com.NumberOne.dto.ScrapDto;
@@ -136,7 +136,7 @@ public interface MemberDao {
 	//마이페이지 미니브라우저 중고거래
 	@Select("SELECT UB.UBMAINIMG, UB.UBCODE, UB.UBTITLE, GD.GDNAME AS UBGDNAME, GD.GDPRICE, M.MNICKNAME AS UBNICKNAME "
 			+ "FROM USEDBOARDS UB,GOODS GD, MEMBERS M "
-			+ "WHERE UB.UBSTATE=1 AND UB.UBCODE = GD.GDUBCODE AND UB.UBSELLBUY = 'S' AND UB.UBMID = M.MID AND M.MNICKNAME= #{nickname} ORDER BY UBCODE DESC")
+			+ "WHERE UB.UBSTATE=1 AND GD.GDSTATE=1 AND UB.UBCODE = GD.GDUBCODE AND UB.UBSELLBUY = 'S' AND UB.UBMID = M.MID AND M.MNICKNAME= #{nickname} ORDER BY UBCODE DESC")
 	ArrayList<UsedBoardDto> selectWriteMemberInfoSellBuy_ajax(String nickname);
 
 	//드롭다운 찜목록 조회
@@ -156,8 +156,8 @@ public interface MemberDao {
 	int selectMemberEmail_ajax(String inputEmail);
 	
 	//마이페이지_공구
-	@Select("SELECT GGBCODE, NBTITLE AS GGBTITLE, GGDATE, NBSTATE AS GGBSTATE, GGMID FROM NOTICEBOARDS, GONGU WHERE GGBCODE = NBCODE AND GGMID = #{loginId}")
-	ArrayList<GonguDto> selectMyInfoGonguView(String loginId);	
+	@Select("SELECT GBCODE, GBTITLE, GBITEMPRICE, GGDATE ,GBSTATE FROM GONGUBOARDS,GONGU WHERE GBCODE = GGBCODE AND GGMID= #{loginId}")
+	ArrayList<GonguBoardDto> selectMyInfoGonguView(String loginId);	
 
 	//임시번호 확인 요청
 	@Select("SELECT MPW FROM MEMBERS WHERE MID = #{mid} AND MPW = #{mpw}")

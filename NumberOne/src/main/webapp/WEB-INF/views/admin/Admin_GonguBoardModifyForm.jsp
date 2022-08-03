@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 공구게시판</title>
+<title>1인자 - 공구수정</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -86,12 +86,12 @@
 				</div>
 				<hr>
 				<div class="row">
-					<textarea id="contents" class="bdcontents textarea-gbView" rows="17" cols="40" name="gb_contents"  
-						maxlength="2000" placeholder="내용을 입력하세요">${gonguBoard.gb_contents }</textarea>
+					<textarea id="contents" class="bdcontents textarea-gbView" rows="17" cols="40" name="gbcontents"  
+						maxlength="2000" placeholder="내용을 입력하세요">${gonguBoard.gbcontents }</textarea>
 				</div>
 				<div class="row" style="padding:2vh;">
-					<input type="text" id="item_name" name="gb_item_name" placeholder="공동구매 제목 또는 상품 이름을 입력하세요" style="margin-bottom:2vh" value="${gonguBoard.gb_item_name }"><br>
-					<input type="text" id="item_price" name="gb_total_amount" placeholder="가격을 입력하세요" value="${gonguBoard.gb_total_amount }">
+					<input type="text" id="item_name" name="gbitemname" placeholder="공동구매 제목 또는 상품 이름을 입력하세요" style="margin-bottom:2vh" value="${gonguBoard.gbitemname }"><br>
+					<input type="text" id="item_price" name="gbitemprice" placeholder="가격을 입력하세요" value="${gonguBoard.gbitemprice }">
 				</div>
 				<div class="row mt-4">
 					<!-- 기존 이미지가 있으면 -->

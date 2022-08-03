@@ -53,6 +53,9 @@
 		width : 500px;
 		border-bottom: 1px solid #D2D2D2;
 		/* border: 0px; */
+		overflow:hidden;
+		white-space:nowrap;
+		text-overflow:ellipsis;
 	}
 	
 	.pText a{
@@ -206,6 +209,7 @@
 	 
 	 .msgTextarea {
 	 border: 1px solid black;
+	 /* width : 500px; */
 		height: 550px;
 		width: 640px;
 		padding:10px;
@@ -334,6 +338,39 @@
 	a{
 		text-decoration: none;
 	}
+	
+	.text_leng {
+	
+	text-overflow: hidden;
+	overflow:ellipsis;
+	white-space : nowrap;	
+	text-decoration: none !important;
+	color:black;
+	}
+	
+	.text_leng:hover {
+		color : #00BCD4;
+		font-weight: bold;
+		cursor: pointer;
+		text-decoration: none;!important
+	}
+
+	.write:hover {
+		color : #00BCD4;
+		font-weight: bold;
+		text-decoration: none;	!important
+	}
+	
+	.delete_leng {
+	
+	text-overflow: ellipsis;
+	overflow:hidden;
+	white-space : nowrap;	
+	text-decoration: none;!important
+	color:gray;
+	}	
+	
+	
 	
 </style>
 
@@ -506,9 +543,15 @@ function boardreplySwitch(type){
 		   			output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; color:black; \" >"+boardList[i].bdtitle+"</p>"
 		   			output+="</a>"
 		   			output+="</li></ul>"  
+			   }else if (boardList[i].bdcategory == "후기"){
+				   	output+="<ul><li>"  
+					output+="<a href=\"selectReviewBoardView?codeIdx="+boardList[i].bdcode+"\" target=\"_blank\">"
+					output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; color:black; \" >"+boardList[i].bdtitle+"</p>"
+					output+="</a>"
+					output+="</li></ul>"		   			   		   			
 			   }else {
 				   	output+="<ul><li>"  
-					output+="<a href=\"selectBoardView?bdcode="+boardList[i].bdcode+"\" target=\"_blank\">"
+					output+="<a href=\"selectBoardView?codeIdx="+boardList[i].bdcode+"\" target=\"_blank\">"
 					output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; color:black; \" >"+boardList[i].bdtitle+"</p>"
 					output+="</a>"
 					output+="</li></ul>"		   
@@ -549,7 +592,7 @@ function boardreplySwitch(type){
 		   output+="&nbsp;&nbsp;&nbsp; "
 		   output+="<button class=\"viewBtn\" id=\"reply\" onclick=\"boardreplySwitch('r')\">작성댓글</button></span></div>"
 		   
-		   output+="<div class = \"msgTextarea col-lg-12 col-md-6 col-sm-6\" style=\"border-top:0px! important ; padding-top: 20px; border: 1px solid #949494; background-color: #F2F2FF;\" >"
+		   output+="<div class = \"msgTextarea col-lg-12 col-md-6 col-sm-6 \" style=\"border-top:0px! important ; padding-top: 20px; border: 1px solid #949494; background-color: #F2F2FF; \" >"
 		output+="<div id=\"WmemberBoard\"></div>"
 	   
 	   
@@ -561,10 +604,15 @@ function boardreplySwitch(type){
 	      		output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; color:black; \" >"+ReplyList[i].rpcontents+"</p>"
 	      		output+="</a>"
 	      		output+="</li></ul>"
-	      
+		  }else if (ReplyList[i].rpbdcategory == "후기"){
+		      	output+="<ul><li>"
+		    	output+="<a href=\"selectReviewBoardView?codeIdx="+ReplyList[i].rpbdcode+"\" target=\"_blank\">"
+		      	output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; color:black; \" >"+ReplyList[i].rpcontents+"</p>"
+		      	output+="</a>"
+		      	output+="</li></ul>" 	    	  	
 		   }else {
 		      	output+="<ul><li>"
-		    	output+="<a href=\"selectBoardView?bdcode="+ReplyList[i].rpbdcode+"\" target=\"_blank\">"
+		    	output+="<a href=\"selectBoardView?codeIdx="+ReplyList[i].rpbdcode+"\" target=\"_blank\">"
 		      	output+="<p class=\"pText\" style=\"background-color: #F2F2FF; outline:none; width: 540px; color:black; \" >"+ReplyList[i].rpcontents+"</p>"
 		      	output+="</a>"
 		      	output+="</li></ul>" 	    	  

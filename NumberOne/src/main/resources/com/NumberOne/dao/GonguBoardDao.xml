@@ -92,13 +92,13 @@
 	
 	<!-- 공구 작성 -->
 	<insert id="admin_insertGonguWrite">
-		INSERT INTO GONGUBOARDS (GBCODE, GBMID, GBTITLE, GBCONTENTS, GBDATE, GBIMG)
-		VALUES (#{gbcode}, #{gbmid}, #{gbtitle}, #{gbcontents}, SYSDATE, #{gbimg})
+		INSERT INTO GONGUBOARDS (GBCODE, GBMID, GBTITLE, GBCONTENTS, GBDATE, GBIMG, GBITEMNAME, GBITEMPRICE)
+		VALUES (#{gbcode}, #{gbmid}, #{gbtitle}, #{gbcontents}, SYSDATE, #{gbimg}, #{gbitemname}, #{gbitemprice})
 	</insert>
 	
 	<!-- 공구 수정 -->
 	<update id="admin_updateGonguModify">
-		UPDATE GONGUBOARDS SET GBTITLE=#{gbtitle}, GBCONTENTS=#{gbcontents}, GBIMG=#{gbimg}
+		UPDATE GONGUBOARDS SET GBTITLE=#{gbtitle}, GBCONTENTS=#{gbcontents}, GBIMG=#{gbimg}, GBITEMNAME=#{gbitemname}, GBITEMPRICE=#{gbitemprice}
 		WHERE GBCODE=#{gbcode}
 	</update>
 	
@@ -116,7 +116,6 @@
 				<when test="searchType == 'gbTitleContents'">
 					(GBTITLE LIKE '%'||#{keyword}||'%' OR GBCONTENTS LIKE '%'||#{keyword}||'%')
 				</when>
-
 				<otherwise>
 					${searchType} LIKE '%'||#{keyword}||'%'
 				</otherwise>	
@@ -148,7 +147,7 @@
  	 <!-- 공구글 상세 -->
  	 <select id="selectGonguBoardView" resultType="com.NumberOne.dto.GonguBoardDto">	
  	SELECT GBCODE,GBMID,GBTITLE,GBCONTENTS,TO_CHAR(GBDATE,'YY-MM-DD HH24:MI') AS GBDATE,
-		GBIMG,GBSTATE,GBHITS,MB.MNICKNAME AS GBNICKNAME, GBFIX
+		GBIMG,GBITEMNAME,GBITEMPRICE,GBSTATE,GBHITS,MB.MNICKNAME AS GBNICKNAME, GBFIX
  	FROM GONGUBOARDS GB, MEMBERS MB
  	WHERE GBCODE = #{gbcode} AND GB.GBMID = MB.MID
  	</select>

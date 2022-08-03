@@ -13,7 +13,7 @@
 	
 	.accordion-button:not(.collapsed){
 		color: #00bcd4;
-		background-color: #F2F2FF;
+		background-color: #eaf8ff;
 	}
 	
 	.accordion-button:not(.collapsed)::after{

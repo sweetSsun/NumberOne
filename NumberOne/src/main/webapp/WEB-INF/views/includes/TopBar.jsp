@@ -14,6 +14,12 @@
 	    display: block;
 	    margin-top: 0;
 	} */
+@font-face {
+    font-family: 'EarlyFontDiary';
+    src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_220508@1.0/EarlyFontDiary.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
 	.overflow_twoline{
 	    overflow: hidden;
 		text-overflow: ellipsis;
@@ -23,7 +29,7 @@
     }
 	.logoimg{
 		margin-top: 2%;
-        padding-left: 45%;    
+        padding-left: 30%;    
 	}
 	
 	.menubar_left{
@@ -96,6 +102,14 @@
    }
    .dropdown a:hover {
       text-decoration: none;
+	}
+	
+.topbartitle{ 
+	display : none;
+	font-family : EarlyFontDiary;
+	font-weight : 500;
+}
+
 
 </style>
 
@@ -110,7 +124,9 @@
 				
 				            <!-- 로고이미지 -->
             <div class="col-lg-12 col-sm-12 logoimg">
-               <a href="${pageContext.request.contextPath }/"><img style="height:120px; min-width:140px;"src="${pageContext.request.contextPath }/resources/img/logo_bada_topbar.png"></a>
+            	<span class="topbartitle">1인 자취생을 위한&nbsp;&nbsp;</span>
+               <a href="${pageContext.request.contextPath }/"><img style="height:120px; min-width:140px;" src="${pageContext.request.contextPath }/resources/img/topbarlogo.PNG"></a>
+            	<span class="topbartitle">&nbsp;&nbsp;커뮤니티</span>
 					
 					<span style="float:right; margin-top: 5%;">				
 						<c:choose>
@@ -161,10 +177,10 @@
 							<a href="loadToBoardMainPage">커뮤니티</a>
 						</li>
 						<li style="margin-right: 30px;">
-							<a href="selectResellMainPage">중고거래</a>
-						</li>
-						<li>
 							<a href="selectGonguBoardList?gbstate=ing">공동구매</a>
+						</li>						
+						<li>
+							<a href="selectResellMainPage">중고거래</a>
 						</li>
 					</ul>
 				</div>

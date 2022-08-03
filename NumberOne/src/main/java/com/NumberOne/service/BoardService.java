@@ -17,11 +17,13 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.NumberOne.dao.AdminDao;
 import com.NumberOne.dao.BoardDao;
 import com.NumberOne.dao.MemberDao;
+import com.NumberOne.dao.ResellDao;
 import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.NoticeDto;
 import com.NumberOne.dto.Paging;
 import com.NumberOne.dto.ReplyDto;
+import com.NumberOne.dto.UsedBoardDto;
 import com.google.gson.Gson;
 
 @Service
@@ -35,6 +37,9 @@ public class BoardService {
 	
 	@Autowired
 	private MemberDao mdao;
+	
+	@Autowired
+	private ResellDao rdao;
 	
 	@Autowired
 	private HttpServletRequest request;
@@ -457,10 +462,7 @@ public class BoardService {
 			for (int i = 0; i < roomList.size(); i++) {
 				System.out.println(roomList.get(i).getBdcode()+" "+roomList.get(i).getBdhits()+" "+roomList.get(i).getBdreply()+" "+roomList.get(i).getBdrecommend()+" "+roomList.get(i).getBdscrap());
 			}*/
-			
-			if(paging.getSearchType().equals("bdtitle||bdcontents")) {
-				paging.setSearchType("bdtc");
-			}
+
 			
 			//mav에 object와 view 저장
 			mav.addObject("paging", paging);
@@ -556,8 +558,15 @@ public class BoardService {
 		if (loginId == null) {
 			loginId = "";
 		}
+		
 		System.out.println("로그인 아이디: " + loginId);
-		BoardDto roomView = bdao.selectRoomView(bdcode, loginId);
+		
+		BoardDto roomView;
+		if(loginId.equals("admin")) {
+			roomView = bdao.adminSelectRoomView(bdcode, loginId);
+		} else {
+			roomView = bdao.selectRoomView(bdcode, loginId);			
+		}
 		System.out.println("추천/신고/스크랩 기록 추가: " + roomView);
 		// System.out.println(roomView);
 
@@ -679,12 +688,52 @@ public class BoardService {
 	      return insertResult;
 	   }
 
-	// 게시글 댓글목록 조회(ajax)
-	public String selectBoardReplyList_ajax(String bdcode) {
-		System.out.println("BoardService.selectBoardReplyList_ajax() 호출");
+		// 게시글 댓글목록 조회(ajax)
+		public String selectBoardReplyList_ajax(String bdcode) {
+			System.out.println("BoardService.selectBoardReplyList_ajax() 호출");
 
-		ArrayList<ReplyDto> replyList = bdao.selectBoardReplyList2(bdcode);
-		// System.out.println(replyList);
+			ArrayList<ReplyDto> replyList= bdao.selectBoardReplyList2(bdcode, "");
+			
+			// 프로필 사진 없는 경우 rpprofile에 nomprofile 저장
+			for (int i = 0; i < replyList.size(); i++) {
+				if (replyList.get(i).getRpprofile() == null) {
+					replyList.get(i).setRpprofile("nomprofile");
+				}
+			}
+
+			// 줄바꿈
+			for (int i = 0; i < replyList.size(); i++) {
+				String rpcontents = replyList.get(i).getRpcontents().replace("<br>", "\r\n");
+				rpcontents = replyList.get(i).getRpcontents().replace("&nbsp;", " ");
+
+				// 자취방 자랑글 보기에서 댓글의 첫번째 글자가 공백인 경우 이상하게 출력되는 것을 발견하여 공백을 없애는 과정을 추가함
+				String firstletter = rpcontents.substring(0, 1);
+
+				if (firstletter.equals(" ")) {
+					rpcontents = rpcontents.substring(1);
+				}
+				replyList.get(i).setRpcontents(rpcontents);
+			}
+			
+			//System.out.println("댓글목록 조회 ");
+			//System.out.println(replyList);
+
+			// 댓글목록 JSON 타입으로 변환
+			Gson gson = new Gson();
+			String replyList_json = gson.toJson(replyList);
+			//System.out.println(replyList_json);
+
+			return replyList_json;
+		}   
+	   
+	   
+	// 게시글 댓글목록 조회(ajax)
+	public String selectBoardReplyList_ajax2(String bdcode) {
+		System.out.println("BoardService.selectBoardReplyList_ajax2() 호출");
+
+		String loginId = (String) session.getAttribute("loginId");
+		ArrayList<ReplyDto> replyList= bdao.selectBoardReplyList2(bdcode, loginId);
+		System.out.println(replyList.size());
 		
 		// 프로필 사진 없는 경우 rpprofile에 nomprofile 저장
 		for (int i = 0; i < replyList.size(); i++) {
@@ -694,6 +743,7 @@ public class BoardService {
 		}
 
 		// 줄바꿈
+		/*
 		for (int i = 0; i < replyList.size(); i++) {
 			String rpcontents = replyList.get(i).getRpcontents().replace("<br>", "\r\n");
 			rpcontents = replyList.get(i).getRpcontents().replace("&nbsp;", " ");
@@ -705,14 +755,15 @@ public class BoardService {
 				rpcontents = rpcontents.substring(1);
 			}
 			replyList.get(i).setRpcontents(rpcontents);
-		}
-		System.out.println("댓글목록 조회 ");
-		System.out.println(replyList);
+		}*/
+		
+		//System.out.println("댓글목록 조회 ");
+		//System.out.println(replyList);
 
 		// 댓글목록 JSON 타입으로 변환
 		Gson gson = new Gson();
 		String replyList_json = gson.toJson(replyList);
-		System.out.println(replyList_json);
+		//System.out.println(replyList_json);
 
 		return replyList_json;
 	}
@@ -1383,50 +1434,6 @@ public class BoardService {
 		return null;
 		
 	}
-	
-	
-	//대댓글 등록 
-	public int insertBoardRe_Reply_ajax(ReplyDto reply, String bdcode, String loginId) {
-		System.out.println("BoardnService.insertBoardRe_Reply_ajax() 호출");
-		
-		 String rpcode_parent = reply.getRpcode();
-		
-		//모댓글의 최대 RPDEPTH 구하기 
-		int rp_depth = bdao.selectreplyMaxDepth(rpcode_parent)+1;
-		System.out.println("댓글깊이 : " + rp_depth);
-			
-		
-	      String maxRpcode = bdao.selectReplyMaxNumber();
-	      //System.out.println("maxRpcode : " + maxRpcode);
-	      String rpcode = "RP";
-
-	      if (maxRpcode == null) {
-	         rpcode = rpcode + "00001";
-	      } else {
-	    	  
-	         String rpcode_stirng = maxRpcode.substring(4);
-	         int rpcode_num = Integer.parseInt(rpcode_stirng) + 1;
-
-	         if (rpcode_num < 10) {
-	            rpcode = rpcode + "0000" + rpcode_num;
-	         } else if (rpcode_num < 100) {
-	            rpcode = rpcode + "000" + rpcode_num;
-	         } else if (rpcode_num < 1000) {
-	            rpcode = rpcode + "00" + rpcode_num;
-	         } else if (rpcode_num < 10000) {
-	            rpcode = rpcode + "0" + rpcode_num;
-	         } else {
-	            rpcode = rpcode + rpcode_num;
-	         }
-	      }
-		
-	    reply.setRpdepth(rp_depth);
-	      
-		int insertResult = bdao.insertBoardRe_Reply_ajax(rpcode, bdcode, reply.getRpcontents(), rpcode_parent, reply.getRpdepth(), loginId);
-		
-		return insertResult;
-	}
-
 	//댓글 등록(+ 대댓글 기능) 
 	public int insertBoardReply_ajax(ReplyDto reply) {
 		System.out.println("BoardnService.insertBoardReply_ajax (+ 대댓글) 호출");
@@ -1461,6 +1468,46 @@ public class BoardService {
 		int insertResult = bdao.insertBoardReply_ajax(reply);
 		
 		return insertResult;
+	}
+
+	
+	//대댓글 닉네임 태그
+	public ModelAndView selectByRpnickname(Paging paging) {
+		System.out.println("BoardnService.selectByRpnickname() 호출");
+		ModelAndView mav = new ModelAndView();
+		System.out.println("paging : " + paging);
+		
+		//닉네임 저장
+		mav.addObject("nickname", paging.getKeyword());
+		
+		//일반글 조회
+		ArrayList<BoardDto> boardList = bdao.selectBoardList_Paging(paging);
+		mav.addObject("boardList", boardList);
+		mav.addObject("boardSize", boardList.size());
+		//System.out.println("boardList : " + boardList);
+
+		//자랑글, 중고글은 3개씩만 조회
+		paging.setEndRow(3);
+		
+		//자랑글 조회
+		ArrayList<BoardDto> roomList =bdao.selectRoomList_paging(paging);
+		mav.addObject("roomList", roomList);
+		mav.addObject("roomSize", roomList.size());
+		//System.out.println("roomList : " + roomList);
+		
+		//중고글 조회
+		paging.setSellBuy("SB");	
+		paging.setSearchType("ubmid");
+		paging.setSearchVal("all");
+		ArrayList<UsedBoardDto> resellList = rdao.selectResellPageList(paging, "write");
+		mav.addObject("resellList", resellList);
+		mav.addObject("resellSize", resellList.size());
+		//System.out.println("resellList : " + resellList);
+		
+		//setView
+		mav.setViewName("board/RpnicknameTag");
+		
+		return mav;
 	}
 
 

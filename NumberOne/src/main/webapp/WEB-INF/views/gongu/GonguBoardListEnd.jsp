@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 공구게시판</title>
+<title>1인자 - 공구게시판 완료</title>
 <!-- Jquery -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>  
 <!-- 부트스트랩 -->
@@ -105,8 +105,8 @@
 			<div class="checkout__form" style="margin-top: 30px;">공구게시판</div>		
 
 		<!-- 본문 -->
-			<form action="selectGonguBoardList?gbstate=ing" method="get" id="actionForm">
-			<!-- <input type="hidden" name="searchVal" value="all"> -->
+			<form action="selectGonguBoardList?gbstate=end" method="get" id="actionForm">
+			<input type="hidden" name="gbstate" value="end">
 			<div class="container">
 				<div class="row ">
 					<!-- 검색기능 -->

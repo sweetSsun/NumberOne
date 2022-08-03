@@ -150,7 +150,8 @@
    
    pre{
    	font-family: 'pretendard';
-   	width: fit-content;   	
+   	width: fit-content; 
+   	white-space: break-spaces; 	
    }
    
 	/*  */
@@ -298,6 +299,13 @@ section div.checkout__form{
 				<div class="row mb-2">
 					<div class="col-2">
 						<c:choose>
+							<c:when test="${paging.searchType eq 'ubmid' }">
+								<!-- tag에서 넘어왔을 때 글목록 페이지 -->
+								<a href="selectCategoryBoardList?searchVal=후기">
+								<input type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
+								</a>
+							</c:when>
+						
 							<c:when test="${paging.bdtype == null && paging.searchVal != '후기'}">
 							<!-- 전체게시판(일반)에서 들어왔을 때 -->
 								<a href="selectBoardList${paging.makeQueryPage(bdtype, board.bdcode, paging.page)}">
@@ -318,7 +326,7 @@ section div.checkout__form{
 								<input type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
 								</a>							
 							</c:when>
-							
+
 							<c:when test="${paging.searchVal eq 'SEL' || paging.searchVal eq 'ICN' || paging.searchVal eq 'GGD' || paging.searchVal eq 'CCD' 
 								|| paging.searchVal eq 'GWD' || paging.searchVal eq 'GSD' || paging.searchVal eq 'JLD' || paging.searchVal eq 'JJD'}">
 							<!-- 특정 지역게시판에서 들어왔을 때 -->
@@ -882,7 +890,17 @@ section div.checkout__form{
 							output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton bg-secondary text-white fw-bold mt-2\" onclick=\"adminReplyStop('"+ replyList[i].rpcode +"')\" value=\"정지\">"
 						}
 						/* 댓글내용 */
-						output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
+						if( replyList[i].rpparent != null ){
+							let rerp_rpcontents = replyList[i].rpcontents;
+							let rerp_rpnickname = replyList[i].rpcontents.split(" ")[0];
+							console.log("대댓글 닉네임 : " + rerp_rpnickname);
+							let rerp_nickname_count = rerp_rpnickname.length;
+							let rerp_rpcontents_trim = rerp_rpcontents.substring(rerp_nickname_count);
+							console.log("대댓글 내용 : " + rerp_rpcontents_trim);
+							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly> <span style='color:#00bcd4;'>" + rerp_rpnickname + " </span>" + rerp_rpcontents_trim + "</pre>"
+						}else{
+							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
+						}
 						output += "</div>"
 						
 					}else{ // 로그인아이디 != 글작성자
@@ -920,8 +938,19 @@ section div.checkout__form{
 						}
 						
 						output += "<br>"
+							
 						/* 댓글내용 */
-						output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
+						if( replyList[i].rpparent != null ){
+							let rerp_rpcontents = replyList[i].rpcontents;
+							let rerp_rpnickname = replyList[i].rpcontents.split(" ")[0];
+							console.log("대댓글 닉네임 : " + rerp_rpnickname);
+							let rerp_nickname_count = rerp_rpnickname.length;
+							let rerp_rpcontents_trim = rerp_rpcontents.substring(rerp_nickname_count);
+							console.log("대댓글 내용 : " + rerp_rpcontents_trim);
+							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly> <span style='color:#00bcd4;'>" + rerp_rpnickname + " </span>" + rerp_rpcontents_trim + "</pre>"
+						}else{
+							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
+						}						
 						output += "</div>"
 					}
 						output += "</div>"//한줄 끝

@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 공구게시판</title>
+<title>1인자 - 공구게시판 진행</title>
 <!-- Jquery -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>  
 <!-- 부트스트랩 -->
@@ -106,7 +106,7 @@
 
 		<!-- 본문 -->
 			<form action="selectGonguBoardList?gbstate=ing" method="get" id="actionForm">
-			<!-- <input type="hidden" name="searchVal" value="all"> -->
+			<input type="hidden" name="gbstate" value="ing">
 			<div class="container">
 				<div class="row ">
 					<!-- 검색기능 -->
@@ -151,7 +151,7 @@
 								<td class="text-center tableCell">${notice_fix.nbcode}</td>
 								<td class="text-center tableCell"></td>
 								<td class="tableCell">
-									<a href="selectGonguBoardView?codeIdx=${notice_fix.nbcode }">${notice_fix.nbtitle}</a>
+									<a href="selectNoticeBoardView${paging.makeQueryPage(notice_fix.nbcode, paging.page) }">${notice_fix.nbtitle}</a>
 								</td>
 								<td class="text-center tableCell">관리자</td>
 								<td class="text-center tableCell">${notice_fix.nbdate}</td>

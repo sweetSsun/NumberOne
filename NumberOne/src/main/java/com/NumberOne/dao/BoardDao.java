@@ -29,6 +29,9 @@ public interface BoardDao {
 	
 	//자랑글 목록 조회 페이징
 	ArrayList<BoardDto> selectRoomList_paging(Paging paging);
+	
+	//자랑글 목록 조회 페이징
+	ArrayList<BoardDto> adminSelectRoomList_paging(Paging paging);
 
 	//공지게시판 글목록 조회 
 	ArrayList<NoticeDto> selectNoticeList();
@@ -134,6 +137,9 @@ public interface BoardDao {
 
 	//자취방 상세보기 글 정보 select
 	BoardDto selectRoomView(@Param ("bdcode") String bdcode, @Param ("loginId") String loginId);
+	
+	//관리자용 자랑글 상세 뷰
+	BoardDto adminSelectRoomView(@Param ("bdcode") String bdcode, @Param ("loginId") String loginId);
 
 	//자취방 글의 현재 추천,스크랩,신고 상태 조회
 	String selectCurrentHisroty(@Param ("bdcode")String bdcode, @Param ("history") String history, @Param ("loginId")String loginId);
@@ -204,15 +210,15 @@ public interface BoardDao {
 	//모댓글의 최대 depth 구하기 
 	int selectreplyMaxDepth(String rerpcode);
 	
-	//----대댓글 등록----
-	int insertBoardRe_Reply_ajax(@Param("rpcode")String rpcode, @Param("bdcode")String bdcode, @Param("rpcontents")String rpcontents, 
-				@Param("rpcode_parent")String rpcode_parent, @Param("rp_depth")int rp_depth, @Param("loginId")String loginId);
-
 	//댓글 목록 조회2 (+ 대댓글)
-	ArrayList<ReplyDto> selectBoardReplyList2(String bdcode);
+	ArrayList<ReplyDto> selectBoardReplyList2(@Param("bdcode") String bdcode,@Param("loginId")  String loginId);
 
 	//자랑글 rn 조회
 	int selectRoomList_page(String bdcode);
+
+	//관리자용 댓글 조회
+	ArrayList<ReplyDto> adminSelectBoardReplyList2(String bdcode);
+
 
 	//공구게시판-진행완료 글 조회
 	//ArrayList<NoticeDto> selectGonguEndBoardList(Paging paging);
