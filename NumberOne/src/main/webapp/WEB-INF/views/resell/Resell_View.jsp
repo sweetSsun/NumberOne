@@ -613,8 +613,8 @@ font-weight: bold;
 				
 				<div class="row mb-2">
 					<div class="col text-center">
-								<span class="fw-bold boardCategory"> < 판매자의 다른 상품 > </span>
-								<span id="memberList_Btn">++더보기</span>
+								<span class="fw-bold boardCategory"> < ${ub_resellView.ubnickname} 님의 다른 상품 > </span>
+								<!-- <span id="memberList_Btn">++더보기</span> -->
 				
 					</div>
 				</div>
@@ -726,19 +726,22 @@ font-weight: bold;
 	const soldCheckMsg = document.getElementById("soldCheckMsg");	// 제목에 '판매완료'Text 출력하기용
 	//const blur_img = document.getElementById("blur_img");	
 	const imgState = document.getElementsByClassName('imgState');	// 이미지에 '판매완료' Text 띄우기용
-	const memberList_Btn = document.getElementById('memberList_Btn');	//회원의 중고거래 글 더보기
+	
+	
+	/* const memberList_Btn = document.getElementById('memberList_Btn');	//회원의 중고거래 글 더보기 */
 	
 	let zzim_Check = '${zzim_Check}';
 	let ubzzim = '${ub_resellView.ubzzim }';	//찜 갯수
 	
-	
-	memberList_Btn.addEventListener('click', load_memberList);
+
+	/* 회원의 다른상품목록 페이지이동 */
+/* 	memberList_Btn.addEventListener('click', load_memberList);
 	
 	function load_memberList(){
 		
 		location.href = 'selectResellTransactionList?searchType=ubmid&keyword='+ubnickname;		
 	}
-	
+	 */
 	
 </script>
 

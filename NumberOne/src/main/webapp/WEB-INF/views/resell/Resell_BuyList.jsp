@@ -686,7 +686,7 @@ section div.checkout__form{
 					+ result[i].ubdatedef
 					+ '&nbsp'
 					+ '<span style=\"color:red; font-size:1.8rem;\">'
-					+ '<i class=\"fa-regular fa-heart\"></i>'
+					+ '<i class=\"fa-regular fa-heart\" onclick=\"clickZzim()\"></i>'
 					+ '</span>'
 					+ '</div>'
 					+ '<div class=\"bottom\" style=\"font-size:1.7rem; font-weight:600; position:relative;\">'

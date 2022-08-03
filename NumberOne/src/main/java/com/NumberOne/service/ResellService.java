@@ -471,6 +471,8 @@ public class ResellService {
 
 		
 		sellbuyList = timeFuction(sellbuyList);
+		
+		sellbuyList = zzimCheck(sellbuyList);
 				
 		System.out.println(sellbuyList);
 		
@@ -547,7 +549,7 @@ public class ResellService {
 		}
 
 		else {
-			mav.setViewName("resell/Resell_ModifyForm(file)");
+			mav.setViewName("resell/Resell_ModifyForm");
 		}
 
 		return mav;
