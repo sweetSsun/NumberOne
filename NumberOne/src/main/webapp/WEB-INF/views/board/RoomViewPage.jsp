@@ -559,16 +559,6 @@ section div.checkout__form{
 		console.log(mnickname+"로 검색 요청");
 		
 		location.href = '${pageContext.request.contextPath }/selectByRpnickname?keyword='+mnickname+'&searchType=bdnickname&searchVal=bdcode';
-/* 		$.ajax({
-			type : "get",
-			url : "selectByRpnickname",
-			data : { "keyword" : mnickname, "searchType" : "bdnickname", }, // 관리자페이지에서 넘어왔음을 확인
-			async : false,
-			success : function(updateResult){
-
-				}
-			}
-		}); */
 		
 	}
 </script>
