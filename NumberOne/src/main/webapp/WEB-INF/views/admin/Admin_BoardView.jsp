@@ -570,13 +570,6 @@
 		});
 	}
 	
-	//닉네임 태그 클릭시 연결되는 함수
-	function replyAt(mnickname){
-		console.log(mnickname+"로 검색 요청");
-		
-		location.href = '${pageContext.request.contextPath }/selectByRpnickname?keyword='+mnickname+'&searchType=bdnickname&searchVal=bdcode';
-		
-	}
 	
 	function rpModifyModal(rpcode){
 		/* 댓글수정 모달창 띄우기 */
