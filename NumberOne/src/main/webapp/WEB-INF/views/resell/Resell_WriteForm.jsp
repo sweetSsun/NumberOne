@@ -524,7 +524,7 @@ function mainimgCh(){
 </script>
 
 
-<!-- 타이블메세지 변경 option선택 이벤트 -->
+<!-- 타이틀메세지 변경 option선택 이벤트 -->
 <script type="text/javascript">
 	resellTitle.addEventListener('change', selectSB);
 
@@ -704,13 +704,12 @@ if(storage.getItem('page') !=null ){
 	page = storage.getItem('page');	
 	console.log('로컬스토리지 선택페이지 : ', page);
 }
-
 	
 	function cancelBtn() {
 
 		console.log("취소버튼 클릭이벤트");
 		
-		location.ef = 'selectResellPageList?sellBuy='+ubsellbuy+'&searchType='+searchType+'&keyword='+keyword+'&searchVal='+selRegion+'&page='+page;
+		location.href = 'selectResellPageList?sellBuy='+sellbuy+'&searchType='+searchType+'&keyword='+keyword+'&searchVal='+selRegion+'&page='+page;
 	}
 
 </script>

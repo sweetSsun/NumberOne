@@ -471,6 +471,8 @@ public class ResellService {
 
 		
 		sellbuyList = timeFuction(sellbuyList);
+		
+		sellbuyList = zzimCheck(sellbuyList);
 				
 		System.out.println(sellbuyList);
 		
