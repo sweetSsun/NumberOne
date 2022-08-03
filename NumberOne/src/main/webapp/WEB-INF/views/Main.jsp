@@ -397,7 +397,7 @@
             <div class="featured__filter" style="margin-left: 5%; margin-right: 3%; margin-bottom: 5%; min-height: 170px;">
             	<!-- 전체보기 -->
                 <div class="row mix all active">
-            	<p><a href="selectBoardList"  style="float: right; margin-bottom: 20px; font-size: 15px;">더보기</a></p>
+            	<p><a href="selectBoardList"  style="float: right; margin-bottom: 20px; font-size: 15px;"><i class="fa-solid fa-square-plus"></i>&nbsp;더보기</a></p>
             	<c:forEach items="${boardList }" end="5" var="boardList">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #eaf8ff;border-right: solid 20px white">
                         <div class="row ahover">
@@ -434,7 +434,7 @@
                 
                 <!-- 공지보기 -->
                 <div class="row mix notice" style="display:none;">
-            	<p><a href="selectNoticeBoardList"  style="float: right; margin-bottom: 20px;">더보기</a></p>
+            	<p><a href="selectNoticeBoardList"  style="float: right; margin-bottom: 20px;"><i class="fa-solid fa-square-plus"></i>&nbsp;더보기</a></p>
             	<c:forEach items="${noticeList }" end="5" var="noticeList">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #eaf8ff;">
                         <div class="row ahover">
@@ -453,7 +453,7 @@
                 
                 <!-- 자유보기 -->
                 <div class="row mix free" style="display:none;">
-            	<p><a href="selectCategoryBoardList?searchVal=자유"  style="float: right; margin-bottom: 15px;">더보기</a></p>
+            	<p><a href="selectCategoryBoardList?searchVal=자유"  style="float: right; margin-bottom: 15px;"><i class="fa-solid fa-square-plus"></i>&nbsp;더보기</a></p>
             	<c:forEach items="${boardList_free }" end="5" var="boardList_free">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #eaf8ff;">
                         <div class="row ahover">
@@ -472,7 +472,7 @@
                 
                 <!-- 질문보기 -->
                 <div class="row mix question" style="display:none;">
-            	<p><a href="selectCategoryBoardList?searchVal=질문"  style="float: right; margin-bottom: 15px;">더보기</a></p>
+            	<p><a href="selectCategoryBoardList?searchVal=질문"  style="float: right; margin-bottom: 15px;"><i class="fa-solid fa-square-plus"></i>&nbsp;더보기</a></p>
             	<c:forEach items="${boardList_qa }" end="5" var="boardList_qa">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #eaf8ff;">
                         <div class="row ahover">
@@ -491,7 +491,7 @@
                 
                 <!-- 정보보기 -->
                 <div class="row mix information" style="display:none;">
-				<p><a href="selectCategoryBoardList?searchVal=정보"  style="float: right; margin-bottom: 15px;">더보기</a></p>
+				<p><a href="selectCategoryBoardList?searchVal=정보"  style="float: right; margin-bottom: 15px;"><i class="fa-solid fa-square-plus"></i>&nbsp;더보기</a></p>
             	<c:forEach items="${boardList_info }" end="5" var="boardList_info">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #eaf8ff;">
                         <div class="row ahover">
@@ -510,7 +510,7 @@
                 
                 <!-- 후기보기 -->
                 <div class="row mix review" style="display:none;">
-            	<p><a href="selectCategoryBoardList?searchVal=후기"  style="float: right; margin-bottom: 20px;">더보기</a></p>
+            	<p><a href="selectCategoryBoardList?searchVal=후기"  style="float: right; margin-bottom: 20px;"><i class="fa-solid fa-square-plus"></i>&nbsp;더보기</a></p>
             	<c:forEach items="${boardList_review }" end="5" var="boardList_review">
                     <div class="col-lg-6 col-md-12 col-sm-12 featured__item" style="margin-bottom: 5px; background-color: #eaf8ff;">
                         <div class="row ahover">
@@ -555,7 +555,7 @@
 	   		<!-- 팔구보기 -->
 		        <div id="resell" style="margin-left: 5%; margin-right: 5%; margin-bottom: 3%; min-height: 170px; width: 90%;">
 	           		<div>
-	           			<p style="text-align: right; margin-bottom: 20px;"><a href="selectResellPageList?sellBuy=S&ajaxCheck=LIST">팔구보기</a></p>
+	           			<p style="text-align: right; margin-bottom: 20px;"><a href="selectResellPageList?sellBuy=S&ajaxCheck=LIST"><i class="fa-solid fa-square-plus"></i>&nbsp;팔구보기</a></p>
 	            	
 		            	<div id="owl-banner_resell" class="owl-carousel">           		
 		           			<c:forEach items="${SellList }" end="5" var="SellList">
@@ -588,7 +588,7 @@
 	       <!-- 사구보기 -->        
 		        <div id="rebuy" class="display_none" style="margin-left: 5%; margin-right: 5%; margin-bottom: 3%; min-height: 170px; width: 90%;">
 	           		<div>
-	           			<p style="text-align: right; margin-bottom: 20px;"><a href="selectResellPageList?sellBuy=B&ajaxCheck=LIST">사구보기</a></p>
+	           			<p style="text-align: right; margin-bottom: 20px;"><a href="selectResellPageList?sellBuy=B&ajaxCheck=LIST"><i class="fa-solid fa-square-plus"></i>&nbsp;사구보기</a></p>
 	           		  	
 		            	<div id="owl-banner_rebuy" class="owl-carousel">
 		           		
