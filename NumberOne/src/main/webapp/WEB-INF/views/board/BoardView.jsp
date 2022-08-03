@@ -279,12 +279,19 @@
 				<div class="row mb-2">
 					<div class="col-2">
 						<c:choose>
+							<c:when test="${paging.searchType eq 'ubmid' }">
+							<!-- tag에서 넘어왔을 때 글목록 페이지 -->
+							<a href="selectCategoryBoardList?searchVal=${board.bdcategory }">
+							<input type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
+							</a>
+							</c:when>
+							
 							<c:when test="${paging.searchVal eq 'ALL' }">
 							<!-- 전체 글목록 페이지 -->
 							<a href="selectBoardList${paging.makeQueryPage(board.bdcode, paging.page)}">
 							<input type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
 							</a>
-							</c:when>
+							</c:when>	
 							
 							<c:otherwise>
 							<!-- 자유~후기 글목록 페이지 -->
@@ -496,7 +503,14 @@
 		$("#bddate").text(bddate);
 		//$("#bddate").text(bddate);
 	});
-	
+
+	//닉네임 태그 클릭시 연결되는 함수
+	function replyAt(mnickname){
+		console.log(mnickname+"로 검색 요청");
+		
+		location.href = '${pageContext.request.contextPath }/selectByRpnickname?keyword='+mnickname+'&searchType=bdnickname&searchVal=bdcode';
+		
+	}
 	
 	//시간 함수
 	function timeForToday(value) {
@@ -900,7 +914,9 @@
 							let rerp_nickname_count = rerp_rpnickname.length;
 							let rerp_rpcontents_trim = rerp_rpcontents.substring(rerp_nickname_count);
 							console.log("대댓글 내용 : " + rerp_rpcontents_trim);
-							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly> <span style='color:#00bcd4;'>" + rerp_rpnickname + " </span>" + rerp_rpcontents_trim + "</pre>"
+							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly> <span class='pointer' style=' color:rgb(0, 55, 107);' "
+							output += "onclick='replyAt(\""+rerp_rpnickname.split('@')[1]+"\")'>" + rerp_rpnickname + " </span>";
+							output += rerp_rpcontents_trim + "</pre>";
 						}else{
 							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
 						}						
