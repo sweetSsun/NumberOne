@@ -307,6 +307,8 @@ section div.checkout__form{
 						<c:forEach items="${sell_buyList}" var="sellList">
 							<div class="float_">
 								<div id="sellbuyscreen">
+								<input type="hidden" class="sellUbcode_List" value="${sellList.ubcode }">
+								
 																	<c:choose>
 								<c:when test="${sellList.ubmainimg != null}">
 									<a onclick="laodToView('${sellList.ubcode }')" href="javascript:void(0);"> <img alt="" src="${pageContext.request.contextPath }/resources/img/resell/${sellList.ubmainimg }">
@@ -314,7 +316,7 @@ section div.checkout__form{
 									</c:when>
 									
 									<c:otherwise>
-										<a onclick="laodToView('${sellList.ubcode }')" href="javascript:void(0);"> <img alt="" src="${pageContext.request.contextPath }/resources/img/logo_bada.png">
+										<a onclick="laodToView('${sellList.ubcode }')" href="javascript:void(0);"> <img alt="" src="${pageContext.request.contextPath }/resources/img/logo_.png">
 									</a>
 									
 									</c:otherwise>
@@ -325,17 +327,17 @@ section div.checkout__form{
 									<span class="soldCheckMsg_ bold"></span> <a onclick="laodToView('${sellList.ubcode }')" href="javascript:void(0);">${sellList.ubtitle }</a>
 								</div>
 
-								<div style="height: 2rem; font-size: 1.6rem; padding: 0; color: grey;">${sellList.ubdatedef }&nbsp;
+								<div style="height: 2.2rem; font-size: 1.6rem; padding: 0; color: grey;">${sellList.ubdatedef }&nbsp;
 
-									<span style="color: red; font-size: 1.8rem;" onclick="clickZzim('${sellList.ubcode }')" id="zzimCheck_${sellList.ubcode }"> <c:choose>
+									<span style="color: red; font-size: 1.8rem;" class="zzimClassBtn"> <c:choose>
 											<c:when test="${sellList.zzimcheck != null }">
-												<i id="zzimState_${sellList.ubcode }" class='fa-heart fa-solid'></i>
+												<i class='fa-heart fa-solid zzimState'></i>
 											</c:when>
 											<c:otherwise>
-												<i id="zzimState_${sellList.ubcode }" class='fa-heart fa-regular'></i>
+												<i class='fa-heart fa-regular zzimState'></i>
 											</c:otherwise>
 										</c:choose>
-									</span> <span style="color: initial; font-size: 1.8rem;" id="zzimCount_${sellList.ubcode }"> ${sellList.ubzzim } </span>
+									</span> <span style="color: initial; font-size: 1.8rem;" class="zzimCount"> ${sellList.ubzzim } </span>
 
 
 								</div>
@@ -343,7 +345,7 @@ section div.checkout__form{
 
 
 								<div class="bottom" style="font-size: 1.7rem; font-weight: 600; position: relative;">
-									<span onclick="writeMemberSellbuy('${sellList.ubnickname }')" style="height: 1.8rem; font-size: 1.6rem; padding: 0; color: initial; cursor: pointer;">${sellList.ubnickname }</span>
+									<span class="writeMemberClassBtn"  style="height: 1.8rem; font-size: 1.6rem; padding: 0; color: initial; cursor: pointer;">${sellList.ubnickname }</span>
 								</div>
 								<input type="hidden" class="ubstate_" value="${sellList.ubstate }">
 							</div>
@@ -376,10 +378,10 @@ section div.checkout__form{
 						<c:forEach begin="${paging.startPage }" end="${paging.endPage }" var="num" step="1">
 							<c:choose>
 								<c:when test="${paging.page == num }">
-									<li class=""><a class="active">${num }</a></li>
+									<li class=""><a class="active" id="pageNumber_id">${num }</a></li>
 								</c:when>
 								<c:otherwise>
-									<li class="paginate_button "><a onclick="paginationBtn('${num}')" href="javascript:void(0);">${num }</a></li>
+									<li class="paginate_button "><a onclick="paginationBtn('${num}')" href="javascript:void(0);" >${num }</a></li>
 								</c:otherwise>
 							</c:choose>
 						</c:forEach>
@@ -454,7 +456,7 @@ section div.checkout__form{
 		storage.removeItem('page');
 	}
 
-	storage.setItem('page', '1'); //페이지번호 기본값 1
+	
 </script>
 
 
@@ -518,11 +520,10 @@ section div.checkout__form{
 <!-- 페이지이동시 상세페이지에서 글목록으로 돌아올 때 필요한 값 저장. -->
 <script type="text/javascript">
 	/* 페이지 이동 시 현재 페이지 정보 저장을 위한 이벤트 핸들러 */
-
+const pageNumber_id = document.getElementById('pageNumber_id');
+	
 	/* 페이지 번호저장. */
 	function paginationBtn(pageNum) {
-		storage.setItem('page', pageNum); // 로컬스토리지 페이지번호 저장
-
 		location.href = "selectResellPageList?page=" + pageNum
 				+ "&sellBuy=S&searchVal=" + selectRegion_param;
 	}
@@ -530,22 +531,30 @@ section div.checkout__form{
 	/* 상세페이지 클릭시 선택되어있는 검색타입, 검색어, 지역 저장 */
 
 	function laodToView(ubcode) {
+		
+		console.log(pageNumber_id.innerText);
+		
 		storage.setItem('searchType',
 				document.getElementById("searchType").value); // 로컬스토리지 검색타입 저장
 		storage.setItem('keyword', document.getElementById("keyword").value); // 로컬스토리지 검색어 저장
 		storage.setItem('selRegion', regionInfo.value); // 로컬스토리지 선택지역 저장
-
+		storage.setItem('page', pageNumber_id.innerText); // 로컬스토리지 페이지번호 저장
+		
 		location.href = "selectResellView?ubcode=" + ubcode
 				+ "&ubsellbuy=S&modifyCheck=LIST";
 	}
 
 	/* 글쓰기 버튼 클릭시 선택되어있는 검색타입, 검색어, 지역 저장*/
 	function loadToWrite() {
+
+		console.log(pageNumber_id.innerText);
+		
 		storage.setItem('searchType',
 				document.getElementById("searchType").value);
 		storage.setItem('keyword', document.getElementById("keyword").value);
 		storage.setItem('selRegion', regionInfo.value);
-
+		storage.setItem('page', pageNumber_id.innerText); // 로컬스토리지 페이지번호 저장
+		
 		location.href = "loadToResellWriteForm?ubsellbuy=S&ubrgcode="
 				+ regionInfo.value;
 	}
@@ -596,7 +605,6 @@ section div.checkout__form{
 			type : "get",
 			url : "selectResellRegionList_ajax",
 			dataType : "json",
-			async : false,
 			data : paging,
 			success : function(result) {
 				output_page = '';
@@ -617,7 +625,6 @@ section div.checkout__form{
 					type : "get",
 					url : "selectResellRegionList_ajax",
 					dataType : "json",
-					async : false,
 					data : paging,
 					success : function(result) {
 						console.log("결과페이지 : " + result.page);
@@ -657,19 +664,36 @@ section div.checkout__form{
 <script type="text/javascript">
 	/* ajax에 사용되는 글 목록 출력 함수 */
 	function listOutput(result) {
-
+	console.log('함수호출');
 		for ( let i in result) {
 
 			output_page += '<div id=\"sellList\"><div class=\"float_\">'
 					+ '<div id=\"sellbuyscreen\">'
-					+ '<a href=\"selectResellView?ubcode='
+					+'<input type=\"hidden\" class=\"sellUbcode_List\" value=\"'+result[i].ubcode+'\">';
+					
+					if(result[i].ubmainimg != null){
+						
+			output_page += '<a href=\"selectResellView?ubcode='
+						+ result[i].ubcode
+						+ '&ubsellbuy='
+						
+						+ result[i].ubsellbuy
+						+ '&modifyCheck=LIST\">'
+						+ '<img alt=\"이미지\" src=\"${pageContext.request.contextPath }/resources/img/resell/'+result[i].ubmainimg+'\">'
+						+ '</a>';
+						
+					}
+					else{
+			output_page += '<a href=\"selectResellView?ubcode='
 					+ result[i].ubcode
 					+ '&ubsellbuy='
 					+ result[i].ubsellbuy
 					+ '&modifyCheck=LIST\">'
-					+ '<img alt=\"이미지\" src=\"${pageContext.request.contextPath }/resources/img/resell/'+result[i].ubmainimg+'\">'
-					+ '</a>'
-					+ '</div>'
+					+ '<img alt=\"이미지\" src=\"${pageContext.request.contextPath }/resources/img/logo_.png\">'
+					+ '</a>';
+					}
+					
+			output_page += '</div>'
 					+ '<div class=\"bottom\" style=\"font-weight:600; position:relative;\">'
 					+ '<span class=\"soldCheckMsg_ bold\"></span>'
 					+ '<a href=\"selectResellView?ubcode='
@@ -680,17 +704,23 @@ section div.checkout__form{
 					+ result[i].ubtitle
 					+ '</a>'
 					+ '</div>'
-					+ '<div style=\"height:2rem; font-size:1.6rem; padding:0; color:grey;\">'
+					+ '<div style=\"height:2.2rem; font-size:1.6rem; padding:0; color:grey;\">'
 					+ result[i].ubdatedef
 					+ '&nbsp'
-					+ '<span style=\"color:red; font-size:1.8rem;\">'
-					+ '<i class=\"fa-regular fa-heart\"></i>'
-					+ '</span>'
+					+ '<span style=\"color:red; font-size:1.8rem;\" class=\"zzimClassBtn\">';
+					
+					if(result[i].zzimcheck != null){	
+						
+				output_page += '<i class=\"fa-heart fa-solid\"></i>';
+					}
+					else{
+				output_page += '<i class=\"fa-heart fa-regular\"></i>';
+					}					
+				output_page += '</span>'
+					+'<span style=\"color: initial; font-size: 1.8rem;\" class=\"zzimCount\">'+result[i].ubzzim+'</span>'					
 					+ '</div>'
 					+ '<div class=\"bottom\" style=\"font-size:1.7rem; font-weight:600; position:relative;\">'
-					+ '<span onclick=\"writeMemberSellbuy('
-					+ result[i].ubnickname
-					+ ')\" style=\"height:1.8rem; font-size:1.6rem; padding:0; color:initial; cursor:pointer;\">'
+					+ '<span class=\"writeMemberClassBtn\" style=\"height:1.8rem; font-size:1.6rem; padding:0; color:initial; cursor:pointer;\">'
 					+ result[i].ubnickname
 					+ '</span>'
 					+ '</div>'
@@ -700,40 +730,56 @@ section div.checkout__form{
 	}
 </script>
 
+
+
+<!-- 찜버튼, 작성자프로필 클릭 이벤트 스크립트 -->
 <script type="text/javascript">
+	let zzim_Check;			//찜 현재상태 저장용 변수
+	let zzimCountVal;		//찜 숫자 저장용 변수
+	let zzimClassBtn = document.getElementsByClassName('zzimClassBtn');	// 찜 클릭 이벤트버튼	
+	let sellUbcode_List = document.getElementsByClassName('sellUbcode_List');	// 파라메터 input hidden --> ubcode  
+	let writeMemberClassBtn = document.getElementsByClassName('writeMemberClassBtn');	// 프로필클릭 이벤트버튼
+	let zzimState = document.getElementsByClassName('zzimState');		//찜이모티콘 태그
+	let zzimCount_class = document.getElementsByClassName('zzimCount');		// 찜 숫자 출력 태그
+	
 
-</script>
+	console.log('zzimClassBtn',zzimClassBtn);
+	
+		
+	// 찜 클릭 이벤트 지정
+	for(let i =0; i <zzimClassBtn.length; i++){
+		
+		zzimClassBtn[i].addEventListener('click', (event) => clickZzim(sellUbcode_List[i].value, event))
+		
+	}
+	
+	/* 프로필 클릭 이벤트 지정 */	
+	for(let i =0; i <writeMemberClassBtn.length; i++){
+		
+		writeMemberClassBtn[i].addEventListener('click', () =>
+		writeMemberSellbuy(writeMemberClassBtn[i].innerText))
+		
+	}
+	
+	/* 찜 버튼 클릭 핸들러*/
+	function clickZzim(ubcode, e) {
 
-<script type="text/javascript">
-	/* 메인에서 찜 버튼 클릭 */
-	function clickZzim(ubcode) {
-
-		console.log(ubcode);
-		var loginId = '${loginId}';
+		let loginId = '${loginId}';
 
 		//로그인 체크
 		if ('${loginId}'.length == 0) {
 			alert("script-로그인 후 이용가능합니다");
 		}
 
-		//찜 체크
-		var zzim_Check;
-		console.log($("#zzimState_" + ubcode).attr("class")[12]);
-		//현재 찜상태 s:찜O r:찜X
-		var zzimState = $("#zzimState_" + ubcode).attr("class")[12];
-		if (zzimState == 's') {
-			//현재 찜이 되어 있는 경우
-			console.log("zzim O")
-			zzim_Check = 'CHECK';
-		} else {
-			//현재 찜이 안되어 경우
-			console.log("zzim X")
-			zzim_Check = 'UNCHECK';
-		}
-
-		var zzimCount = $("#zzimCount_" + ubcode).text().trim();
-		console.log(zzimCount);
-
+		//찜상태 저장		
+			if(e.target.classList.contains('fa-solid')){
+				
+				zzim_Check = 'CHECK';
+			}
+			else{
+				zzim_Check = 'UNCHECK';
+			}
+		console.log('zzim_Check',zzim_Check);  
 		$.ajax({
 			type : "get",
 			url : "zzimClick_ajax",
@@ -744,123 +790,44 @@ section div.checkout__form{
 				"zzim_Check" : zzim_Check
 			},
 
-			success : function(zzimCheck) {
-				console.log("zzimCheck : " + zzimCheck);
+			success : function(result) {
+				console.log("result : " + result);
 
-				if (zzimCheck == 'CHECK') { //찜 했을 때
+				if (result === 'CHECK') { //찜 했을 때
 					//하트 채우기
-					$("#zzimState_" + ubcode).removeClass("fa-regular")
-							.addClass("fa-solid");
-
-					//증가
-					console.log("증가 요청");
-					if (zzimCount == 0) {
-						zzimCount = 1;
-					} else {
-						zzimCount = parseInt(zzimCount) + 1;
+					for(let i =0; i<sellUbcode_List.length; i++){
+						if(sellUbcode_List[i].value === ubcode){
+							zzimState[i].classList.replace('fa-regular','fa-solid');
+							zzimCountVal = Number(zzimCount_class[i].innerText) + 1;
+							zzimCount_class[i].innerHTML = zzimCountVal;
+							break;
+						}
 					}
-
+									//증가
+					console.log("증가 요청");			
+						
+				
 				} else { //찜 취소했을 때
 					//하트 비우기
-					$("#zzimState_" + ubcode).removeClass("fa-solid").addClass(
-							"fa-regular");
-
+					
+					for(let i =0; i<sellUbcode_List.length; i++){
+						if(sellUbcode_List[i].value === ubcode){
+						zzimState[i].classList.replace('fa-solid','fa-regular');		
+						zzimCountVal = Number(zzimCount_class[i].innerText) - 1;
+						zzimCount_class[i].innerHTML = zzimCountVal;
+						break;
+						}
+					}
 					//감소				
 					console.log("감소 요청");
-					zzimCount = parseInt(zzimCount) - 1;
-
+				
 				}
-				$("#zzimCount_" + ubcode).text(zzimCount);
-			}
-		})
-	}
-</script>
-
-
-<%-- 
-<!-- 검색 스크립트  -->
-<script type="text/javascript">
-/* 검색버튼 클릭시 이벤트함수 */
-
-function searchE(page){
-console.log('searchE 호출');	
- 
- /* 객체 데이터 저장 */
-paging.searchType = document.getElementById("searchType").value;
-paging.keyword = document.getElementById("keyword").value;
-paging.searchVal = regionInfo.options[regionInfo.selectedIndex].value;
-paging.page = page;
-paging.ajaxCheck = 'REGION';
-
-/* 객체 데이터확인 */
-	console.log('======================');
-	console.log('검색');
-	console.log('검색어 : ', paging.keyword);
-	console.log('검색타입 : ',paging.searchType);
-	console.log("선택된 지역 : ", paging.searchVal);
-	console.log("페이지번호 : ", paging.searchVal);
-	console.log("ajax체크메시지 : ", paging.ajaxCheck);
-	console.log('======================');
-	//검색버튼의 click 이벤트 발생시  선택된 검색타입과 작성된 검색어를 변수에 담는다.
-		
-		storage.setItem('searchType', paging.searchType);	// 로컬스토리지에 검색타입 저장
-		storage.setItem('keyword', paging.keyword);		// 로컬스토리이제 검색어 저장
-		storage.setItem('selRegion', paging.searchVal);		// 로컬스토리이제 선택지역 저장
-		storage.setItem('page', paging.page);		// 로컬스토리이제 페이지번호 저장
-		
-		
-		$.ajax({ // 검색타입과 검색어에 일치하는 목록을 불러오기 위한 ajax
-			type : "get",
-			url : "selectResellRegionList_ajax",
-			dataType : "json",
-			async : false,
-			data : paging,			
-			success : function(result) {
-				console.log("결과 : " + result);
-
-				output_page = '';
-				listOutput(result); //목록 출력용 함수
-				document.getElementById("regionList").innerHTML = output_page;
 			}
 		})
 		
-// ajax체크메세지 저장. (페이지번호출력을 위한 ajax인지, 지역목록출력을 위한 ajax 인지 구분하기위해)
-		paging.ajaxCheck = 'PAGE'	
-		$.ajax({
-					type : "get",
-					url : "selectResellRegionList_ajax",
-					dataType : "json",
-					async : false,
-					data : paging,
-					success : function(result) {
-						console.log("결과페이지 : " + result.page);
-						
-						let output_pageNum = "<ul class='pagination'>";
-						
-						if (result.prev) {
-							output_pageNum += '<li class=\"paginate_button\" <a href=\"javascript:void(0);\" onclick=\"searchE('+ (result.page - 1) + ')\">[이전]</a></button>';
-						} else {
-							output_pageNum += "<li class='paginate_button'><span>이전</span></li>";
-						}
-						for (var i = result.startPage; i <= result.endPage; i++) {
-
-							if (result.page == i) {
-								output_pageNum +=  '<li><a class=\"active\">'+ i + '</a></li>';
-							} else {
-								output_pageNum += '<li class=\"paginate_button\"><a href=\"javascript:void(0);\" onclick=\"searchE('+ i + ')\">' + i + '</a></li>';
-							}
-						}
-						if (result.next) {
-							output_pageNum += '<li class=\"paginate_button\"><a href=\"javascript:void(0);\" onclick=\"searchE('+ (result.page + 1) + ')\">다음</a></li>';
-								} 
-						else {									
-							output_pageNum += '<li class=\"paginate_button\"><span>다음</span></li>'
-						}
-						document.getElementById("pageList").innerHTML = output_pageNum;
-					}
-				})
+		
 	}
 </script>
---%>
+
 
 </html>
