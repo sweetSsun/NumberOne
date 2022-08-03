@@ -863,6 +863,10 @@
 							let rerp_nickname_count = rerp_rpnickname.length;
 							let rerp_rpcontents_trim = rerp_rpcontents.substring(rerp_nickname_count);
 							console.log("대댓글 내용 : " + rerp_rpcontents_trim);
+
+							//output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly> <span style='color:#00bcd4;'>" + rerp_rpnickname + " </span>" + rerp_rpcontents_trim + "</pre>"
+
+
 							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly> <span class='pointer' style=' color:rgb(0, 55, 107);' "
 							output += "onclick='replyAt(\""+rerp_rpnickname.split('@')[1]+"\")'>" + rerp_rpnickname + " </span>";
 							output += rerp_rpcontents_trim + "</pre>";
@@ -906,7 +910,7 @@
 						}
 						
 						output += "<br>"
-							
+
 						/* 댓글내용 */
 						if( replyList[i].rpparent != null ){
 							let rerp_rpcontents = replyList[i].rpcontents;
