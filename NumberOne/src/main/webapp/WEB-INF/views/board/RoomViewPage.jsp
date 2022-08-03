@@ -932,7 +932,7 @@ roomView_ajax(nowBdcode)
 						replyOutput += "<span style='font-size:10px; color:grey; margin:0px;'>"+replys[i].rpdate+"</span>&nbsp;&nbsp;";
 					
 						//답글 달기 버튼 (7/31 추가) - rpdepth 3까지만 가능
-						if(replys[i].rpdepth ==null || replys[i].rpdepth < 4){
+						if(replys[i].rpdepth ==null || replys[i].rpdepth < 5){
 							if('${loginId}'.length >0){
 								//로그인 회원에게만 답글 달기 버튼 보임
 								replyOutput += "<span class='pointer' style='font-size:13px; font-weight:blod; color:grey; margin:0px;' onclick='rereplyform(\""+replys[i].rpcode+"\", \""+replys[i].rpnickname+"\")'>답글 달기</span>";
