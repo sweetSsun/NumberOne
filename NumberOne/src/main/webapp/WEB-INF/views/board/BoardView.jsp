@@ -279,12 +279,19 @@
 				<div class="row mb-2">
 					<div class="col-2">
 						<c:choose>
+							<c:when test="${paging.searchType eq 'ubmid' }">
+							<!-- tag에서 넘어왔을 때 글목록 페이지 -->
+							<a href="selectCategoryBoardList?searchVal=${board.bdcategory }">
+							<input type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
+							</a>
+							</c:when>
+							
 							<c:when test="${paging.searchVal eq 'ALL' }">
 							<!-- 전체 글목록 페이지 -->
 							<a href="selectBoardList${paging.makeQueryPage(board.bdcode, paging.page)}">
 							<input type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
 							</a>
-							</c:when>
+							</c:when>	
 							
 							<c:otherwise>
 							<!-- 자유~후기 글목록 페이지 -->

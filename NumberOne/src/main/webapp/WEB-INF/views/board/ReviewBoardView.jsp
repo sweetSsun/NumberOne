@@ -299,6 +299,13 @@ section div.checkout__form{
 				<div class="row mb-2">
 					<div class="col-2">
 						<c:choose>
+							<c:when test="${paging.searchType eq 'ubmid' }">
+								<!-- tag에서 넘어왔을 때 글목록 페이지 -->
+								<a href="selectCategoryBoardList?searchVal=후기">
+								<input type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
+								</a>
+							</c:when>
+						
 							<c:when test="${paging.bdtype == null && paging.searchVal != '후기'}">
 							<!-- 전체게시판(일반)에서 들어왔을 때 -->
 								<a href="selectBoardList${paging.makeQueryPage(bdtype, board.bdcode, paging.page)}">
@@ -319,7 +326,7 @@ section div.checkout__form{
 								<input type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
 								</a>							
 							</c:when>
-							
+
 							<c:when test="${paging.searchVal eq 'SEL' || paging.searchVal eq 'ICN' || paging.searchVal eq 'GGD' || paging.searchVal eq 'CCD' 
 								|| paging.searchVal eq 'GWD' || paging.searchVal eq 'GSD' || paging.searchVal eq 'JLD' || paging.searchVal eq 'JJD'}">
 							<!-- 특정 지역게시판에서 들어왔을 때 -->
