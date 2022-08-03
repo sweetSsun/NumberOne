@@ -353,13 +353,13 @@
 												<input class="attendInput" type="text" id="pay-id" name="pay-id" readonly="readonly" value="${sessionScope.loginId}" style="cursor:default;">
 												</div>
 												<div class="attendDiv">
-												<input class="attendInput" type="text" id="pay-tel" name="pay-tel" placeholder="전화번호를 입력하세요">
+												<input class="attendInput" type="text" id="pay-tel" name="pay-tel" placeholder="전화번호를 입력하세요" value="${memberInfo.mphone }">
 												</div>
 												<div class="attendDiv">
-												<textarea class="attendInput" id="pay-email" name="pay-email" placeholder="이메일주소를 입력하세요"></textarea>
+												<textarea class="attendInput" id="pay-email" name="pay-email" placeholder="이메일주소를 입력하세요">${memberInfo.memail }</textarea>
 												</div>
 												<div class="attendDiv">
-												<textarea class="attendInput" id="pay-address" name="pay-address" style="height:100px" placeholder="배송지주소를 입력하세요"></textarea>
+												<textarea class="attendInput" id="pay-address" name="pay-address" style="height:100px" placeholder="배송지주소를 입력하세요">${memberInfo.maddr }</textarea>
 												<!-- <input class="attendInput" type="text" id="pay-address" name="pay-address" placeholder="배송지주소를 입력하세요"> -->
 												</div>
 											</div>
@@ -1075,15 +1075,7 @@ $(".inputReply").each(function () {
 		//console.log(gb_price_comma);
 		$(".gb_price").text(" ₩ " +gb_price_comma);
 	}
-	
-	
-	//공동구매 참여양식 값
-	var tel = "${memberInfo.mphone }";
-	var email = "${memberInfo.memail }";
-	var address = "${memberInfo.maddr }";
-	//console.log("번호 : "+tel);
-	//console.log("이메일 : "+email);
-	//console.log("주소 : "+address);
+
 	
 	//공동구매 참여 양식 입력 모달창 출력
 	function showGonguModal(){
@@ -1121,9 +1113,6 @@ $(".inputReply").each(function () {
 	  						
 	  					} else {
 	  						console.log("check==null");
-	  						$("#pay-tel").val(tel);
-	  						$("#pay-email").val(email);
-	  						$("#pay-address").val(address);
 	  						$("#gonguModal").modal("show");
 	  					}
   				  	}
@@ -1137,22 +1126,29 @@ $(".inputReply").each(function () {
 
 <!-- 카카오페이 클릭 -->
 <script type="text/javascript">
-var loginId = $("#form-payment input[name='pay-id']").val();
 var gbcode = $("#gonguGbcode").val();
-var item_name = "${gonguBoard.gbitemname }";
-var item_price = "${gonguBoard.gbitemprice }";
+var loginId = $("#form-payment input[name='pay-id']").val();
 
-console.log("loginId : "+loginId);
-console.log(gbcode);
-console.log("제목/품목 : "+item_name);
-console.log("가격 : "+item_price);
 
 $("#btn-kakao-pay").click(function(){
+//공동구매 참여양식 값
+var tel = $("#form-payment input[name='pay-tel']").val();
+var email = $("#form-payment textarea[name='pay-email']").val();
+var address = $("#form-payment textarea[name='pay-address']").val();
+
+var item_name = "${gonguBoard.gbitemname }";
+var item_price = "${gonguBoard.gbitemprice }";
+	console.log("loginId : "+loginId);
+	console.log("gbcode : "+gbcode);
+	console.log("제목/품목 : "+item_name);
+	console.log("가격 : "+item_price);
+	
 	console.log("카카오페이 클릭");
 	console.log("tel : "+tel);
 	console.log("email : "+email);
 	console.log("address : "+address);
 
+	
 	if(loginId == ""){
 		alert("아이디를 입력하세요");
 		$("#form-payment input[name='pay-name']").focus()
@@ -1165,12 +1161,12 @@ $("#btn-kakao-pay").click(function(){
 	}
 	if(email == ""){
 		alert("이메일을 입력하세요");
-		$("#form-payment input[name='pay-email']").focus()
+		$("#form-payment textarea[name='pay-email']").focus()
 		return;
 	}
 	if(address == ""){
 		alert("주소를 입력하세요");
-		$("#form-payment input[name='pay-address']").focus()
+		$("#form-payment textarea[name='pay-address']").focus()
 		return;
 	}
 	
