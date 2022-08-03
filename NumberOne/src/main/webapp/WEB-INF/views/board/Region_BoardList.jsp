@@ -362,13 +362,21 @@
 					output += "<tr style=\"border-bottom: solid #E0E0E0 1px;\">"
 					output += "<td class=\"text-center tableCell\">"+ regionList[i].bdcode + "</td>"
 					output += "<td class=\"bdcategory text-center tableCell\">" + regionList[i].bdrgname + "</td>"
-					output += "<td class=\"tableCell\">"
+					
+					/* output += "<td class=\"tableCell\">"
 					output += "<a href='selectBoardView?bdcode=" + regionList[i].bdcode + "'>" + regionList[i].bdtitle
 							+ "<span class=\"fw-bold\" style=\"font-size:15px; color:#00bcd4;\">&nbsp;" + regionList[i].bdrpcount + "</span> </a>"
 					output += "</td>"
 					output += "<td class=\"text-center tableCell\">"
 					output += "<a href=\"#\">" + regionList[i].bdnickname + "</a>"
+					output += "</td>" */
+					output += "<td class=\"tableCell\"><a href='selectBoardView${paging.makeQueryPage(paging.page)}&codeIdx=" +regionList[i].bdcode+ "'>" + regionList[i].bdtitle + "</a>"
+					output += "<span class=\"fw-bold tableCell \" style=\"font-size:15px; color:#00bcd4;\">&nbsp;&nbsp;" +regionList[i].bdrpcount + "</span></td>"
+					output += "<td class=\"text-center tableCell\">";
+					output += "<span style='cursor: pointer;' class='bdnickname' onclick='writeMemberBoard(\""+regionList[i].bdnickname+"\")'>" +regionList[i].bdnickname+ "</span>";
 					output += "</td>"
+						
+						
 					output += "<td class=\"text-center tableCell\">" + regionList[i].bddate + "</td>"
 					output += "<td class=\"text-center tableCell\">" + regionList[i].bdhits + "</td>"
 					output += "<td class=\"fw-bold text-center tableCell\" style=\"color: #00bdc4;\">" + regionList[i].bdrccount + "</td>"

@@ -116,7 +116,6 @@
 				<when test="searchType == 'gbTitleContents'">
 					(GBTITLE LIKE '%'||#{keyword}||'%' OR GBCONTENTS LIKE '%'||#{keyword}||'%')
 				</when>
-
 				<otherwise>
 					${searchType} LIKE '%'||#{keyword}||'%'
 				</otherwise>	

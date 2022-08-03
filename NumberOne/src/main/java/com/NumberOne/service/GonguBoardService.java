@@ -327,21 +327,22 @@ public class GonguBoardService {
 	   
 	   ModelAndView mav = new ModelAndView();
 	   
-	   //페이징 
+	   //검색 키워드가 없을 경우 keyword의 값을 공백처리
 	   if(paging.getKeyword() == null) {
 		   paging.setKeyword("");
 	   }
 	   
 	   //고정공지
 	   ArrayList<NoticeDto> noticeList_fix = bdao.selectNoticeList();
-   
-	   int totalCount = gbdao.selectGonguTotalCount(paging);
-	   paging.setTotalCount(totalCount);
-	   paging.calc(); // 페이지 처리 계산 실행 
-	   System.out.println(paging);
+	   
+	   //전체글 수 조회
+	   int totalGbCount = gbdao.selectGonguTotalCount(paging);
+	   paging.setTotalCount(totalGbCount);
+	   paging.calc(); // 페이지 처리 계산 실행
+//	   System.out.println(paging);
 	   
 	   ArrayList<GonguBoardDto> GonguList = gbdao.selectGonguBoardList(paging);
-	   System.out.println(GonguList);
+//	   System.out.println(GonguList);
 	   
 	   mav.addObject("noticeList_fix", noticeList_fix);
 	   mav.addObject("GonguList", GonguList);

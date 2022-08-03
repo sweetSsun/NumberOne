@@ -262,7 +262,7 @@ footer{
 	}
 	
 	.accordion-button {
-		background-color: #F2F2FF;
+		background-color: #eaf8ff;
 	}	
 	
 	.accordion-body {
