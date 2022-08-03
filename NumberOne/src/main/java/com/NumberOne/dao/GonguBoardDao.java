@@ -11,9 +11,9 @@ import com.NumberOne.dto.Paging;
 public interface GonguBoardDao {
 
 	
-	//관리자 - 공구글검색 목록 조회
-	int admin_selectGonguTotalCount(Paging paging);
 	//관리자 - 공구글 개수 조회
+	int admin_selectGonguTotalCount(Paging paging);
+	//관리자 - 공구글검색 목록 조회
 	ArrayList<GonguBoardDto> admin_selectGonguList(Paging paging);
 	
 	//관리자 - 공구글 state값 변경
