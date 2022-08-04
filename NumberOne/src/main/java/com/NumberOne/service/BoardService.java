@@ -877,7 +877,7 @@ public class BoardService {
 		}
 
 		// 삭제 후 전체 글목록 페이지로 이동
-		if(bdtype.equals("region") ) {
+		if(bdtype!=null && bdtype.equals("region") ) {
 			//지역글 상세페이지에서 삭제 시 
 			System.out.println("지역글 삭제 성공");
 			mav.addObject("searchVal",bdcategory);
