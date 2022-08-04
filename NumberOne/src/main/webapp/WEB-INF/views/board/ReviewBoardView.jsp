@@ -859,6 +859,7 @@ section div.checkout__form{
 						if( replyList[i].rpprofile != 'nomprofile' ){//프로필 이미지가 있을 시 
 			                if(replyList[i].rpdepth != 1){
 			                     //답글인 경우 화살표 추가
+			                     console.log("화살표");
 			                     output += "<span class=\"fw-bold\" style=\"font-size:18px;\">⤷<span>";
 			                   }
 							if(  replyList[i].rpmstate == 9 ){//카카오 회원
@@ -916,11 +917,12 @@ section div.checkout__form{
 					}else{ // 로그인아이디 != 글작성자
 		
 						output += "<div class=\"col-1\" style='text-align:right'>" /* 프로필영역 */
-						if( replyList[i].rpprofile != 'nomprofile' ){//프로필 이미지가 있을 시 
 							if(replyList[i].rpdepth != 1){
 			                     //답글인 경우 화살표 추가
+			                     console.log("화살표 추가")
 			                     output += "<span class=\"fw-bold\" style=\"font-size:18px;\">⤷<span>";
 			                   }
+						if( replyList[i].rpprofile != 'nomprofile' ){//프로필 이미지가 있을 시 
 							if(  replyList[i].rpmstate == 9){//카카오 회원
 								output += "<img class=\"img-profile rounded-circle rpProfile mt-1 \"  src='"+replyList[i].rpprofile + "'>"
 							}else{
