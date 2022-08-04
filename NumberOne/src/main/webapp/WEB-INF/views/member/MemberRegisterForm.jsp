@@ -256,7 +256,7 @@ background-color: #00BCD4;
                                 <div class="col-lg-5 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p>관심지역<span>*</span></p>
-                                        <input type="text"  id="inputmregion" name="mregion" placeholder="관심지역 선택">
+                                        <input type="text"  id="inputmregion" name="mregion" placeholder="관심지역 선택" readonly="readonly">
  									<span id="regionCheckMsg"></span>                                        
                                     </div> 
                                 </div>

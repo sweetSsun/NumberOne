@@ -282,7 +282,7 @@ background-color: #00BCD4;
                                 <div class="col-lg-5 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p>관심지역<span>*</span></p>
-                                        <input type="text" class="selectOption" id="inputmregion" name="mregion" value="${memberInfo.mregion }">
+                                        <input type="text" class="selectOption" id="inputmregion" name="mregion" value="${memberInfo.mregion }" readonly="readonly">
  									<span id="regionCheckMsg"></span>                                        
                                     </div> 
                                 </div>
