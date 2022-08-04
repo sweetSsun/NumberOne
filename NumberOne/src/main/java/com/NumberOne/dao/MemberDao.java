@@ -129,7 +129,7 @@ public interface MemberDao {
 	void updatePw(@Param("mid")String checkMid, @Param("memail")String checkMemail, @Param("mpw")String temporaryPw);
 
 	//마이페이지 미니브라우저 닉네임 별 작성 댓글 출력
-	@Select("SELECT RPBDCODE, RPCONTENTS, BDCATEGORY AS RPBDCATEGORY FROM REPLY RP, MEMBERS M, BOARDS B WHERE RPSTATE =1 AND MID = RPMID AND RPBDCODE = BDCODE AND MNICKNAME = #{nickname} ORDER BY RPBDCODE DESC")
+	@Select("SELECT RPBDCODE, RPCONTENTS, BDCATEGORY AS RPBDCATEGORY FROM REPLY RP, MEMBERS M, BOARDS B WHERE RPSTATE =1 AND MID = RPMID AND RPBDCODE = BDCODE AND MNICKNAME = #{nickname} ORDER BY RPCODE DESC")
 	ArrayList<ReplyDto> selectWriteMemberInfoReply_ajax(String nickname);
 
 
