@@ -796,7 +796,7 @@
 						console.log(rppadding);
 					
 						//output += "<div class=\"row\" style='left:"+rppadding+";'>"
-						output += "<div class=\"col-1\" style='text-align: center'>" /* 프로필영역 */
+						output += "<div class=\"col-1\" style='text-align: right'>" /* 프로필영역 */
 						
 						if( replyList[i].rpprofile != 'nomprofile' ){//프로필 이미지가 있을 시 
 			                if(replyList[i].rpdepth != 1){
