@@ -192,7 +192,7 @@
                 <div class="modal-body" id="updateMstateModalBody"> </div>
                 <div class="modal-footer">
                 	<input type="hidden" id="mid">
-                    <button class="btn btn-primary" onclick="updateMstate()">네</button>
+                    <button class="btn btn-numberone" onclick="updateMstate()">네</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
             </div>
@@ -269,7 +269,7 @@
                 
                 </div>
                 <div class="modal-footer">
-                    <button class="close btn btn-primary" type="button" data-dismiss="modal">확인</button>
+                    <button class="close btn btn-numberone" type="button" data-dismiss="modal">확인</button>
                 </div>
             </div>
         </div>
@@ -416,14 +416,14 @@
 					console.log(result);
 					$("#memberInfoModalLabel").text(mid + " 회원 상세정보");
 					$("#mI_mprofile").text("");
-					if (result.mprofile != null){
+					if (result.mprofile != null && result.mstate != 2){
 						if (result.mstate == 9){ // 카카오계정 가입회원 프로필
 							$("#mI_mprofile").html("<img class='img-account-profile rounded-circle' alt='프로필이미지' style='height: 200px; width: 200px; border: 1px solid #808080; object-fit: contain;' src='" + result.mprofile + "'>");
 						} else { // 일반 가입회원 프로필
 							$("#mI_mprofile").html("<img class='img-account-profile rounded-circle' alt='프로필이미지' style='height: 200px; width: 200px; border: 1px solid #808080; object-fit: cover;' src='${pageContext.request.contextPath }/resources/img/mprofileUpLoad/" + result.mprofile + "'>");
 						}
 					} else {
-						$("#mI_mprofile").html("<img class='img-account-profile rounded-circle' alt='프로필이미지' style='height: 200px; width: 200px; border: 1px solid #808080; object-fit: contain;' src='${pageContext.request.contextPath }/resources/img/logo.jpg'>");
+						$("#mI_mprofile").html("<img class='img-account-profile rounded-circle' alt='프로필이미지' style='height: 200px; width: 200px; border: 1px solid #808080; object-fit: contain;' src='${pageContext.request.contextPath }/resources/img/logo_gray.png'>");
 					}
 					$("#mI_mmessage").text(result.mmessage);
 					$("#mI_mid").text(result.mid);

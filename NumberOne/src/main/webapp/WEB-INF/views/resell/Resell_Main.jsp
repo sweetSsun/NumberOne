@@ -257,7 +257,7 @@ section div.checkout__form{
 									</c:when>
 									
 									<c:otherwise>
-										<a href="selectResellView?ubcode=${sellList.ubcode }&ubsellbuy=${sellList.ubsellbuy }&modifyCheck=LIST">  <img alt="" src="${pageContext.request.contextPath }/resources/img/logo_bada.png">
+										<a href="selectResellView?ubcode=${sellList.ubcode }&ubsellbuy=${sellList.ubsellbuy }&modifyCheck=LIST">  <img alt="" src="${pageContext.request.contextPath }/resources/img/logo_.png">
 									</a>
 									
 									</c:otherwise>
@@ -319,7 +319,7 @@ section div.checkout__form{
 									</c:when>
 									
 									<c:otherwise>
-										<a href="selectResellView?ubcode=${buyList.ubcode }&ubsellbuy=${buyList.ubsellbuy }&modifyCheck=LIST">  <img alt="" src="${pageContext.request.contextPath }/resources/img/logo_bada.png">
+										<a href="selectResellView?ubcode=${buyList.ubcode }&ubsellbuy=${buyList.ubsellbuy }&modifyCheck=LIST">  <img alt="" src="${pageContext.request.contextPath }/resources/img/logo_.png">
 									</a>
 									
 									</c:otherwise>

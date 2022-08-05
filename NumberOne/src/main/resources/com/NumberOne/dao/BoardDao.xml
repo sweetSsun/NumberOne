@@ -346,6 +346,24 @@
 		where rn between ${startRow} AND ${endRow}
 	 </select>
  	 
+ 	 <select id="adminSelectRoomList_paging" resultType="com.NumberOne.dto.BoardDto">
+ 	 	<!-- 자랑글 목록 페이징 -->
+ 	 	select * from 
+ 	 	(select rownum rn, r.* 
+		from (select * from roomlist
+		
+		<choose>
+			<when test='searchType == "bdtc"'>
+				where bdtitle||bdcontents like '%'||#{keyword}||'%'
+			</when>
+			<when test='searchType != "notSearch"'>
+				where ${searchType} like '%'||#{keyword}||'%'
+			</when>
+		</choose>
+		
+		order by ${searchVal} desc nulls last) r)
+		where rn between ${startRow} AND ${endRow}
+	 </select> 	 
  	 
  	 <!-- !!자꾸 중복되는 메소드 -->
  	 <select id="selectNoticeBoardView" resultType="com.NumberOne.dto.NoticeDto">	
@@ -378,6 +396,16 @@
         where rv.bdcode=#{bdcode}
  	 </select>
 
+ 	 <select id="adminSelectRoomView" resultType="com.NumberOne.dto.BoardDto">
+ 	 	<!-- 관리자용 자랑글 상세 -->
+ 	 	select rv.*, sh.scmid as schistory, rch.rcmid as rchistory, wbh.wbmid as wbhistory
+		from adminroomview rv
+		left outer join (select * from scrap where scmid=#{loginId}) sh on rv.bdcode = sh.scbdcode
+		left outer join (select * from recommend where rcmid=#{loginId}) rch on rv.bdcode = rch.rcbdcode
+		left outer join (select * from warningboards where wbmid=#{loginId}) wbh on rv.bdcode = wbh.wbedbdcode
+        where rv.bdcode=#{bdcode}
+ 	 </select>
+ 	 
  	 <select id="selectReplyMaxNumber" resultType="String">
  	 	<!-- 댓글 최대번호 조회 -->
  	 	SELECT MAX(RPCODE) 
@@ -398,6 +426,7 @@
 		FROM REPLY RP, MEMBERS MB 
 		WHERE RP.RPMID = MB.MID
 		AND RPBDCODE = #{bdcode}
+		AND RPSTATE != 0 
  		ORDER BY RPCODE 
  	</select>
  	
@@ -408,6 +437,10 @@
 		FROM REPLYSELECT RP, MEMBERS MB 
 		WHERE RP.RPMID = MB.MID
 		AND RPBDCODE = #{bdcode}
+		
+		<if test="loginId == null || loginId != 'admin'">
+			AND RPSTATE != 0
+		</if>
  	</select>
  	
  	<select id="selectReplyCount_ajax" resultType="int">
@@ -415,6 +448,7 @@
  		SELECT COUNT(*)
 		FROM REPLY 
 		WHERE RPBDCODE = #{bdcode}
+		AND RPSTATE != 0
  	</select>
  	 
  	<update id="updateReplyState_ajax">
@@ -570,6 +604,7 @@
 		SELECT RPCODE, RPBDCODE, RPCONTENTS, RPMID, RPDATE, RPSTATE
 		FROM REPLY
 		WHERE RPCODE = #{rpcode}
+		AND RPSTATE != 0
 	</select>
 	
 	<update id="updateRpcontents_ajax">
@@ -595,22 +630,6 @@
       WHERE B.BDFIX = 1 AND M.MID=B.BDMID
       ORDER BY BDCODE DESC
    </select>
-	
-	
-	
-	<select id="selectreplyMaxDepth" resultType="int">
-		<!-- 모댓글의 최대 depth 구하기 -->
-		SELECT NVL(MAX(RPDEPTH),0)
-		FROM REPLY
-		WHERE RPGROUPNUMt = #{rerpcode}
-	
-	</select>
-	
-	<insert id="insertBoardRe_Reply_ajax">
-		<!-- 대댓글 등록 -->
-		INSERT INTO REPLY (RPCODE, RPBDCODE, RPCONTENTS, RPMID, RPDATE, RPPARENT, RPDEPTH, RPGROUPNUM )
-		VALUES ( #{rpcode}, #{bdcode}, #{rpcontents}, #{loginId}, SYSDATE, #{rpcode_parent}, #{rp_depth}, #{rpcode_parent} )
-	</insert>
 		
 	<select id="selectRoomList_page" resultType="int">
 		<!-- 자랑: 특정글의 rn 조회 -->

@@ -140,17 +140,13 @@ public class GonguBoardService {
 //		System.out.println("gbcode:" +  gbcode);
 //		System.out.println("paging : " + paging);
 		
-		GonguBoardDto gonguBoard = gbdao.selectGonguBoardView(gbcode);
-		
-//		System.out.println(gonguBoard);
 		mav = new ModelAndView();
-		
-		System.out.println(gonguBoard);
+
+		GonguBoardDto gonguBoard = gbdao.selectGonguBoardView(gbcode);
+//		System.out.println(gonguBoard);
 
 		mav.addObject("gonguBoard", gonguBoard);
 		mav.addObject("paging", paging);
-
-		
 		mav.setViewName("admin/Admin_GonguBoardView");
 		
 		// 공구 참여회원목록 불러오기
@@ -182,7 +178,7 @@ public class GonguBoardService {
 		return mav;
 	}
 
-	// 작성 공지 DB에 입력
+	// 작성 공구 DB에 입력
 	public ModelAndView admin_insertGonguWrite(GonguBoardDto gonguboard, RedirectAttributes ra) throws IllegalStateException, IOException {
 		System.out.println("GonguBoardService.admin_insertGonguWrite() 호출");
 		gonguboard.setGbmid( (String) session.getAttribute("loginId")); // 세션id set
@@ -225,7 +221,8 @@ public class GonguBoardService {
 			gbcode = "GB"+gbcodeNum;
 		} 
 		System.out.println("gbcode: "+gbcode);
-		gonguboard.setGbcode(gbcode); // 생성한 gbcode set		
+		gonguboard.setGbcode(gbcode); // 생성한 gbcode set
+		
 		
 		// INSERT
 		System.out.println(gonguboard);
@@ -259,7 +256,7 @@ public class GonguBoardService {
 		}
 		
 		GonguBoardDto gonguBoard = gbdao.selectGonguBoardView(gbcode);
-		System.out.println(gonguBoard);
+//		System.out.println(gonguBoard);
         
 		mav.addObject("gonguBoard", gonguBoard);
 		mav.addObject("paging", paging);
@@ -330,21 +327,22 @@ public class GonguBoardService {
 	   
 	   ModelAndView mav = new ModelAndView();
 	   
-	   //페이징 
+	   //검색 키워드가 없을 경우 keyword의 값을 공백처리
 	   if(paging.getKeyword() == null) {
 		   paging.setKeyword("");
 	   }
 	   
 	   //고정공지
 	   ArrayList<NoticeDto> noticeList_fix = bdao.selectNoticeList();
-   
-	   int totalCount = gbdao.selectGonguTotalCount(paging);
-	   paging.setTotalCount(totalCount);
-	   paging.calc(); // 페이지 처리 계산 실행 
-	   System.out.println(paging);
+	   
+	   //전체글 수 조회
+	   int totalGbCount = gbdao.selectGonguTotalCount(paging);
+	   paging.setTotalCount(totalGbCount);
+	   paging.calc(); // 페이지 처리 계산 실행
+//	   System.out.println(paging);
 	   
 	   ArrayList<GonguBoardDto> GonguList = gbdao.selectGonguBoardList(paging);
-	   System.out.println(GonguList);
+//	   System.out.println(GonguList);
 	   
 	   mav.addObject("noticeList_fix", noticeList_fix);
 	   mav.addObject("GonguList", GonguList);
@@ -370,7 +368,7 @@ public class GonguBoardService {
 		//공구글 조회수 업데이트
 		gbdao.updateGonguBdHits(gbcode);
 		GonguBoardDto gonguBoard = gbdao.selectGonguBoardView(gbcode);
-		System.out.println(gonguBoard);
+//		System.out.println(gonguBoard);			
 		
 		mav.addObject("gonguBoard", gonguBoard);
 		mav.addObject("paging", paging);

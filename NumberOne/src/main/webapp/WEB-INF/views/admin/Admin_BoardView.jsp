@@ -528,9 +528,22 @@
 							}
 							
 							output += "<br>"
-							/* 댓글내용 */
-							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
-							output += "</div>"
+
+								/* 댓글내용 */
+								if( replyList[i].rpdepth != 1 ){
+									let rerp_rpcontents = replyList[i].rpcontents;
+									let rerp_rpnickname = replyList[i].rpcontents.split(" ")[0];
+									console.log("대댓글 닉네임 : " + rerp_rpnickname);
+									let rerp_nickname_count = rerp_rpnickname.length;
+									let rerp_rpcontents_trim = rerp_rpcontents.substring(rerp_nickname_count);
+									console.log("대댓글 내용 : " + rerp_rpcontents_trim);
+									output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>"; 
+									output += "<span style='color:rgb(0, 55, 107); cursor:pointer;' onclick='replyAt(\""+rerp_rpnickname.split('@')[1]+"\")'>" + rerp_rpnickname + " </span>";
+									output += rerp_rpcontents_trim + "</pre>";
+								}else{
+									output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
+								}						
+								output += "</div>"
 						}
 
 							output += "</div>"//한줄 끝
@@ -556,6 +569,7 @@
 			}
 		});
 	}
+	
 	
 	function rpModifyModal(rpcode){
 		/* 댓글수정 모달창 띄우기 */

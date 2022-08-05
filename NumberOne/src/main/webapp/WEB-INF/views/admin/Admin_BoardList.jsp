@@ -207,7 +207,7 @@
                 <div class="modal-footer">
                 	<input type="hidden" id="bdcode">
                 	<input type="hidden" id="bdfix">
-                    <button class="btn btn-primary" onclick="updateBdstate()">네</button>
+                    <button class="btn btn-numberone" onclick="updateBdstate()">네</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
             </div>
@@ -264,13 +264,13 @@
 		  			}
 		  			
 		  			// 고정배너 정지하려고 하면 중지
-		  			let bdfix = $("#bdfix").val();
+ 		  			let bdfix = $("#bdfix").val();
 		  			console.log("bdfix : " + bdfix);
 		  			if (bdfix == 1){
 		  				alert("고정상태인 글은 정지할 수 없습니다.");
 		  				$("#updateBdstateModal").modal("hide");
 		  				return;
-		  			}
+		  			} 
 		  			
 					let bdcode = $("#bdcode").val();
 					console.log(btnObj.text());

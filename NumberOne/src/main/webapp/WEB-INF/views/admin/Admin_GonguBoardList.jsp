@@ -91,12 +91,11 @@
                      <td style="width:10%;">작성일</td>
                      <td style="width:4rem;">조회</td>
                      <td style="width:3rem;">상태</td>
-                     <td style="width:3rem;">고정</td>
                   </tr>
                </thead>
                <tbody id="gbListTbody">
 	               <c:forEach items="${gonguList }" var="gongu">
-	                   <!-- 회원관리 목록 -->
+	                   <!-- 공구관리 목록 -->
 	                   <tr style="border-bottom: solid #E0E0E0 1px;">
 	                      <td class="overflow text-center">${gongu.gbcode}</td>
  	                      <td class="overflow"><a href="admin_selectGonguBoardView${paging.makeQueryPage(gongu.gbcode, paging.page)}" >${gongu.gbtitle}</a></td>
@@ -112,18 +111,6 @@
 	                      			<button class="btn btn-sm btn-secondary" type="button" onclick="showGbstateModal(this, '${gongu.gbcode }')">완료</button>
 	                      		</c:otherwise>
 	                      	</c:choose>
-	                      </td>
-	                      <td id="fixBtn_${gongu.gbcode }">
-	                      	<c:if test="${gongu.gbstate == 1 }">
-		                      	<c:choose>
-		                      		<c:when test="${gongu.gbfix == 1}">
-		                      			<button class="btn-numberone btn-sm" type="button" onclick="showGbfixModal(this,'${gongu.gbcode }')">고정</button>
-		                      		</c:when>
-		                      		<c:otherwise>
-		                      			<button class="btn btn-sm btn-secondary" type="button" onclick="showGbfixModal(this,'${gongu.gbcode }')">일반</button>
-		                      		</c:otherwise>
-		                      	</c:choose>
-	                      	</c:if>
 	                      </td>
 	                   </tr>
 	                </c:forEach>                 
@@ -193,7 +180,7 @@
                 <div class="modal-body" id="updateGbstateModalBody"> </div>
                 <div class="modal-footer">
                 	<input type="hidden" id="gbcode_state">
-                    <button class="btn btn-primary" onclick="updateGbstate()">네</button>
+                    <button class="btn btn-numberone" onclick="updateGbstate()">네</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
             </div>
@@ -214,7 +201,7 @@
                 <div class="modal-body" id="updategbfixModalBody"> </div>
                 <div class="modal-footer">
                 	<input type="hidden" id="gbcode_fix">
-                    <button class="btn btn-primary" onclick="updateGbfix()">네</button>
+                    <button class="btn btn-numberone" onclick="updateGbfix()">네</button>
                     <button class="close btn btn-secondary" type="button" data-dismiss="modal">아니오</button>
                 </div>
             </div>

@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>1인자 - 공구게시판</title>
+<title>1인자 - 공구작성</title>
 
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -88,6 +88,10 @@
 					<textarea id="contents" class="bdcontents textarea-GbView" rows="17" cols="40" name="gbcontents"
 						maxlength="2000"  placeholder="내용을 입력하세요"></textarea>
 				</div>
+				<div class="row" style="padding:2vh;">
+					<input type="text" id="item_name" name="gbitemname" placeholder="공동구매 제목 또는 상품 이름을 입력하세요" style="margin-bottom:2vh"><br>
+					<input type="text" id="item_price" name="gbitemprice" placeholder="가격을 입력하세요">
+				</div>
 				<div class="row mt-4">
 					<div id="imgScreen" style="width:200px; height:200px;" class="d_none"><img id='previewImg' style="width:100%; height:100%;"></img></div>
 					<input type="file" id="gbImg" name="gbimgfile" class="" accept="image/*" onchange="readImg(this)"> 
@@ -159,8 +163,14 @@
 	function inputCheck(){
 		var titleObj = $("#title");
 		var contentsObj = $("#contents");
+		var itemNameObj = $("#item_name");
+		var itemPriceObj = $("#item_price");
+		
 		console.log(titleObj.val());
 		console.log(contentsObj.val());
+		console.log(itemNameObj.val());
+		console.log(itemPriceObj.val());
+		
 		if (titleObj.val().length == 0){
 			alert("제목을 입력해주세요.");
 			titleObj.focus();
@@ -169,6 +179,16 @@
 		if (contentsObj.val().length == 0){
 			alert("내용을 입력해주세요.");
 			contentsObj.focus();
+			return false;
+		}
+		if (itemNameObj.val().length == 0){
+			alert("공동구매 제목 또는 상품 이름을 입력해주세요.");
+			itemNameObj.focus();
+			return false;
+		}
+		if (itemPriceObj.val().length == 0){
+			alert("가격을 입력해주세요.");
+			itemPriceObj.focus();
 			return false;
 		}
 	}

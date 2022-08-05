@@ -198,7 +198,7 @@ background-color: #00BCD4;
                                 <div class="col-lg-6 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p>닉네임<span>*</span></p>
-                                        <input type="text" placeholder="2~10자로 입력해주세요." id="inputMnickname" name="mnickname">
+                                        <input type="text" placeholder="2~10자로 입력해주세요. (특수문자 제외) " id="inputMnickname" name="mnickname" onkeyup="characterCheck(this)" onkeydown="characterCheck(this)">
  									<span id="nicknameCheckMsg" class="msg"></span>                                   
                                     </div>
                                 </div>
@@ -256,7 +256,7 @@ background-color: #00BCD4;
                                 <div class="col-lg-5 col-md-12 col-sm-12">
                                     <div class="checkout__input">
                                         <p>관심지역<span>*</span></p>
-                                        <input type="text"  id="inputmregion" name="mregion" placeholder="관심지역 선택">
+                                        <input type="text"  id="inputmregion" name="mregion" placeholder="관심지역 선택" readonly="readonly">
  									<span id="regionCheckMsg"></span>                                        
                                     </div> 
                                 </div>
@@ -370,7 +370,7 @@ background-color: #00BCD4;
 	//허용할 특수문자는 여기서 삭제하면 됨
 	//지금은 띄어쓰기도 특수문자 처리됨 참고하셈
 	if( regExp.test(obj.value) ){
-		alert("특수문자는 입력하실 수 없습니다.");
+		alert("특수문자 & 공백은 입력하실 수 없습니다.");
 		obj.value = obj.value.substring( 0 , obj.value.length - 1 ); // 입력한 특수문자 한자리 지움
 		}
 	}

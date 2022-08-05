@@ -168,6 +168,7 @@
    pre{
    		font-family: 'pretendard';
    		width: fit-content;
+   		white-space: break-spaces;
    }
 	section div.checkout__form{
 		/* 페이지 제목 */
@@ -278,12 +279,19 @@
 				<div class="row mb-2">
 					<div class="col-2">
 						<c:choose>
+							<c:when test="${paging.searchType eq 'ubmid' }">
+							<!-- tag에서 넘어왔을 때 글목록 페이지 -->
+							<a href="selectCategoryBoardList?searchVal=${board.bdcategory }">
+							<input type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
+							</a>
+							</c:when>
+							
 							<c:when test="${paging.searchVal eq 'ALL' }">
 							<!-- 전체 글목록 페이지 -->
 							<a href="selectBoardList${paging.makeQueryPage(board.bdcode, paging.page)}">
 							<input type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
 							</a>
-							</c:when>
+							</c:when>	
 							
 							<c:otherwise>
 							<!-- 자유~후기 글목록 페이지 -->
@@ -495,7 +503,14 @@
 		$("#bddate").text(bddate);
 		//$("#bddate").text(bddate);
 	});
-	
+
+	//닉네임 태그 클릭시 연결되는 함수
+	function replyAt(mnickname){
+		console.log(mnickname+"로 검색 요청");
+		
+		location.href = '${pageContext.request.contextPath }/selectByRpnickname?keyword='+mnickname+'&searchType=bdnickname&searchVal=bdcode';
+		
+	}
 	
 	//시간 함수
 	function timeForToday(value) {
@@ -797,7 +812,7 @@
 						console.log(rppadding);
 					
 						//output += "<div class=\"row\" style='left:"+rppadding+";'>"
-						output += "<div class=\"col-1\" style='text-align: center'>" /* 프로필영역 */
+						output += "<div class=\"col-1\" style='text-align: right'>" /* 프로필영역 */
 						
 						if( replyList[i].rpprofile != 'nomprofile' ){//프로필 이미지가 있을 시 
 			                if(replyList[i].rpdepth != 1){
@@ -841,7 +856,23 @@
 							output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton bg-secondary text-white fw-bold mt-2\" onclick=\"adminReplyStop('"+ replyList[i].rpcode +"')\" value=\"정지\">"
 						}
 						/* 댓글내용 */
-						output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
+						if( replyList[i].rpparent != null ){
+							let rerp_rpcontents = replyList[i].rpcontents;
+							let rerp_rpnickname = replyList[i].rpcontents.split(" ")[0];
+							console.log("대댓글 닉네임 : " + rerp_rpnickname);
+							let rerp_nickname_count = rerp_rpnickname.length;
+							let rerp_rpcontents_trim = rerp_rpcontents.substring(rerp_nickname_count);
+							console.log("대댓글 내용 : " + rerp_rpcontents_trim);
+
+							//output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly> <span style='color:#00bcd4;'>" + rerp_rpnickname + " </span>" + rerp_rpcontents_trim + "</pre>"
+
+
+							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly> <span class='pointer' style=' color:rgb(0, 55, 107);' "
+							output += "onclick='replyAt(\""+rerp_rpnickname.split('@')[1]+"\")'>" + rerp_rpnickname + " </span>";
+							output += rerp_rpcontents_trim + "</pre>";
+						}else{
+							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
+						}
 						output += "</div>"
 						
 					}else{ // 로그인아이디 != 글작성자
@@ -879,8 +910,21 @@
 						}
 						
 						output += "<br>"
+
 						/* 댓글내용 */
-						output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
+						if( replyList[i].rpparent != null ){
+							let rerp_rpcontents = replyList[i].rpcontents;
+							let rerp_rpnickname = replyList[i].rpcontents.split(" ")[0];
+							console.log("대댓글 닉네임 : " + rerp_rpnickname);
+							let rerp_nickname_count = rerp_rpnickname.length;
+							let rerp_rpcontents_trim = rerp_rpcontents.substring(rerp_nickname_count);
+							console.log("대댓글 내용 : " + rerp_rpcontents_trim);
+							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly> <span class='pointer' style=' color:rgb(0, 55, 107);' "
+							output += "onclick='replyAt(\""+rerp_rpnickname.split('@')[1]+"\")'>" + rerp_rpnickname + " </span>";
+							output += rerp_rpcontents_trim + "</pre>";
+						}else{
+							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
+						}						
 						output += "</div>"
 					}
 						output += "</div>"//한줄 끝

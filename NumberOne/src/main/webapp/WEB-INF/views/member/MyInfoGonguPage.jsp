@@ -124,6 +124,7 @@
 						<tr class="text-center" id="board_column">
 							<td>글번호</td>
 							<td>제목</td>
+							<td>금액</td>							
 							<td>결제일</td>						
 							<td>진행사항</td>
 						</tr>
@@ -131,19 +132,21 @@
 						
 						<c:choose>
 						
-						<c:when test="${gongu.ggbstate == 2}">
+						<c:when test="${gongu.gbstate == 2}">
 							<tr style="border-bottom: solid #E0E0E0 1px;  color:gray; text-align: center; ">
-								<td style="text-decoration : line-through;">${gongu.ggbcode }</td>
-								<td><span style="text-decoration : line-through;" class="delete_leng">${gongu.ggbtitle }</span></td>
-								<td style="text-decoration : line-through;">${gongu.ggdate }</td>
+								<td style="text-decoration : line-through;">${gongu.gbcode }</td>
+								<td><span style="text-decoration : line-through;" class="delete_leng">${gongu.gbtitle }</span></td>
+								<td style="text-decoration : line-through;">${gongu.gbitemprice2 }</td>
+								<td style="text-decoration : line-through;">${gongu.ggdate }</td>								
 								<td>진행완료</td>
 							</tr>						
 						</c:when>					
 						
 						<c:otherwise>
 							<tr style="border-bottom: solid #E0E0E0 1px; text-align: center; ">
-							<td>${gongu.ggbcode }</td>
-							<td><a href="selectNoticeBoardView?codeIdx=${gongu.ggbcode }" class="text_leng">${gongu.ggbtitle }</a></td>
+							<td>${gongu.gbcode }</td>
+							<td><a href="selectGonguBoardView?codeIdx=${gongu.gbcode }" class="text_leng">${gongu.gbtitle }</a></td>
+								<td>${gongu.gbitemprice2 }</td>							
 							<td>${gongu.ggdate }</td>
 							<td>진행중</td>
 							</tr>
@@ -158,7 +161,7 @@
 				<div style="min-height: 600px;"></div>
 
 				
-				
+				</div>
 				</div>				
 				</div>	
 							
@@ -170,11 +173,10 @@
 <!--jquery & bootstrap(5js)-->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
+
+
+
+
+
 </body>
-
-
-
-
-
-
 </html>

@@ -17,7 +17,7 @@
 
 
 
-<title>${gonguBoard.gbtitle} - 1인자:공구게시판</title>
+<title>${gonguBoard.gbtitle} - 1인자:관리자 공구게시판</title>
 
 <style type="text/css">
 	section{
@@ -30,6 +30,16 @@
 		resize: none;
 		width: -webkit-fill-available;
 		min-height: 20rem;
+	}
+	.textarea-GbView-2{
+		border: none; 
+		resize: none;
+		cursor: default;
+	}
+	.div-GbView{
+	    box-shadow: 0px 0px 5px 0px #00bcd4;
+	    border-radius: 15px;
+	    padding: 2%;
 	}
 	textarea:focus {
     	outline: none;
@@ -99,15 +109,16 @@
 		margin: 2%;
 	}
 	.attendInput {
-		height: 5vh;
+		height: 4vh;
 		border: 0;
 		border-radius: 15px;
 		outline: none;
 		padding-left: 10px;
 		background-color: rgb(233, 233, 233);
 		width: 100%;
-
+		font-size: smaller
 	}
+	
 	/* 참여 modal X버튼 */
 	.attendX{
 		border-radius: 100%;
@@ -120,6 +131,13 @@
     	background-color: transparent;
 	}
 	
+	/* 모달창 크기조절 */
+	#attendModal{
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		padding: 0;
+	}
 </style>
 
 </head>
@@ -178,16 +196,20 @@
 						</div>
 						<div>
 							<textarea class="textarea-GbView" style="padding-bottom: 20px;" readonly>${gonguBoard.gbcontents }</textarea>
+							<div class="row div-GbView" style="margin: 10%;">
+								<span class="textarea-GbView-2" style="width:60%;">${gonguBoard.gbitemname }</span>
+								<span class="textarea-GbView-2 gb_price" style="width:40%; text-align:right;">${gonguBoard.gbitemprice }</span>
+							</div>
 							<hr>
 							<textarea class="textarea-GbView" readonly>
 # 참여 방법
 로그인 > 참여 버튼 > 양식 입력 > kakao결제
 
 * 주의사항
-- 양식에 제대로 입력하지 않으면 발송이 되지 않습니다. 꼭 주의하셔서 입력바랍니다.
+- 양식에 제대로 입력하지 않으면 카카오톡 메세지가 발송되지 않습니다. 꼭 주의하셔서 입력바랍니다.
 만약 잘못 입력했으면 문의를 남겨주세요
 
-- kakao결제시 천천히 진행해주세요ㅎㅎ 
+- Kakao결제는 천천히 진행해주세요
 익숙한 노란 창으로 바뀐 후에 결제버튼을 눌러주시기 바랍니다.
 </textarea>
 							<!-- 참여 버튼 -->
@@ -226,7 +248,7 @@
 					                
 					                <div class="modal-body">
 						                <form id="form-payment" class="row" method="post">
-											<div class="col-sm-8">
+											<div style="width: 58%; margin-top:2%">
 												<c:forEach items="${gonguList }" var="gonguList">
 													<div class="attendDiv">
 														<input class="attendInput" type="text" id="pay-id" name="pay-id" readonly="readonly" value="${gonguList }" style="cursor:default;">
@@ -234,9 +256,11 @@
 												</c:forEach>
 											</div>
 											
-											<div class="col-sm-4">
-												<div style="height:70%; text-align: center;">
+											<div class="div-GbView" style="width: 40%">
+												<div style="height:70%; text-align: center; font-size: smaller;">
 													<span>${gonguBoard.gbtitle }</span>
+													<textarea class="textarea-GbView-2" style="width:100%; margin-top:20%;" readonly>${gonguBoard.gbitemname }</textarea><br>
+													<textarea class="textarea-GbView-2 gb_price" style="width:100%; text-align:right;" readonly></textarea>
 												</div>
 											</div>
 											<!-- gbcode 넘겨주기 -->
@@ -302,6 +326,19 @@ $(".textarea-GbView").each(function () {
 	this.style.height = (this.scrollHeight) + 'px';
 	});
 
+//상품가격 콤마 추가
+var gb_price = $(".gb_price").text(); //상품가격
+
+window.onload = function(){
+	console.log('페이지로드')
+	addPriceComma();
+}	
+function addPriceComma(){			
+	console.log(Number(gb_price).toLocaleString('ko-KR'));
+	var gb_price_comma = Number(gb_price).toLocaleString('ko-KR');
+	console.log(gb_price_comma);
+	$(".gb_price").text(" ₩ " +gb_price_comma);
+}
 </script>
 
 <script type="text/javascript">

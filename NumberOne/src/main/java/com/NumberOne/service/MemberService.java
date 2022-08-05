@@ -26,7 +26,7 @@ import com.NumberOne.dto.BoardDto;
 import com.NumberOne.dto.ChatMessageDto;
 import com.NumberOne.dto.ChatRoomDto;
 import com.NumberOne.dto.ContactDto;
-import com.NumberOne.dto.GonguDto;
+import com.NumberOne.dto.GonguBoardDto;
 import com.NumberOne.dto.MemberDto;
 import com.NumberOne.dto.ReplyDto;
 import com.NumberOne.dto.ScrapDto;
@@ -808,11 +808,19 @@ public class MemberService {
 				System.out.println("회원가입 확인!!!!");
 				member.setMid("@_"+member.getMid());
 				member.setMpw("12121212");
+				
 				//이메일 분리
 				String email = member.getMemail();
-				String[] email_arr = email.split("@");
-				member.setMemailId(email_arr[0]);
-				member.setMemailDomain(email_arr[1]);
+				System.out.println("email : "+email);
+				if(email.equals("undefined")) {
+					// 이메일 처리
+					member.setMemail(member.getMemailId()+"@"+member.getMemailDomain());
+	
+				}else {
+						String[] email_arr = email.split("@");
+						member.setMemailId(email_arr[0]);
+						member.setMemailDomain(email_arr[1]);
+				}
 				
 				System.out.println("카카오확인 :"+member);
 				mav.addObject("memberInfo", member);	  
@@ -898,7 +906,7 @@ public class MemberService {
 							content +="<div style=\"width:800px; padding-left: 300px;\">";
 					        content += "<button style='text-align:center; border:0px; border-radius: 4px; height:40px; width: 150px; margin:20px;";
 					        content += "margin-left: 10px; background-color: #00bcd4; color: white; font-weight: bold;font-family : pretendard;'>";
-					        content += "<a href=\"http://localhost:8080/controller/loadToTemporaryNum?mid="+ checkMid + "\"; style=\" color:white; text-decoration: none;\"  >비밀번호변경하기</a></button>";			        
+					        content += "<a href=\"http://121.65.47.77:7771/controller/loadToTemporaryNum?mid="+ checkMid + "\"; style=\" color:white; text-decoration: none;\"  >비밀번호변경하기</a></button>";			        
 					        content +="</div>";
 					        
 							content +="<div style=\"height: 10px; width: 800px;\"></div>";
@@ -1089,27 +1097,31 @@ public class MemberService {
 				ModelAndView mav = new ModelAndView();
 				System.out.println("MemberService.selectMyInfoGonguView 호출");
 				
+				String loginId = (String) session.getAttribute("loginId");
+				
 				//로그인 여부 확인
 				if(session.getAttribute("loginId")==null) {
 					ra.addFlashAttribute("msg", "로그인 후 이용가능합니다.");
 					mav.setViewName("redirect:/loadToLogin");
 					return mav;
 				}
-				
-			    
-				String loginId = (String) session.getAttribute("loginId");
-				/*
-				String loginId;
-				if((String) session.getAttribute("loginId")!=null) {			
-					loginId = (String) session.getAttribute("loginId");
-				} else {
-					loginId = (String) session.getAttribute("kakaoId");			
-				}
-				System.out.println("로그인 된 아이디 : " + loginId);
-				*/
 
 				//참여한 공구 목록 
-				ArrayList<GonguDto> gonguList = mdao.selectMyInfoGonguView(loginId);
+				ArrayList<GonguBoardDto> gonguList = mdao.selectMyInfoGonguView(loginId);
+				
+				// 금액 천단위 ','
+				for (int i = 0; i < gonguList.size(); i++) {
+
+					int price = gonguList.get(i).getGbitemprice();
+
+					NumberFormat numberFormat = NumberFormat.getInstance();
+					
+					String price2 = numberFormat.format(price);
+					System.out.println("price2 : "+price2);
+					
+					gonguList.get(i).setGbitemprice2(price2);
+				}
+
 				System.out.println(gonguList);
 
 				mav.addObject("gonguList", gonguList);

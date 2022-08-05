@@ -44,7 +44,16 @@
 			FROM 
 				(SELECT ROWNUM RN, PAGESELECT_VIEW.*
 						FROM PAGESELECT_VIEW
-						WHERE UBSELLBUY = #{paging.sellBuy}
+						WHERE UBSELLBUY 
+	<choose>
+		<when test="paging.sellBuy == 'SB'">
+						in ('S', 'B') 	
+		</when>			
+		<otherwise>
+						= #{paging.sellBuy}
+		</otherwise>		
+	</choose>					
+						
 	<if test="paging.searchVal !='all'">
 					 AND UBRGCODE = #{paging.searchVal}
 	</if>

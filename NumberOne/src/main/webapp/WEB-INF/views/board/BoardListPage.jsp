@@ -350,9 +350,13 @@ section div.checkout__form{
 					output += "<tr style=\"border-bottom: solid #E0E0E0 1px;\">";
 					output += "<td class=\"text-center tableCell\">" + bdCategoryList[i].bdcode + "</td>";
 					output += "<td class=\"bdcategory text-center tableCell \">" + bdCategoryList[i].bdcategory + "</td>";
-					output += "<td class=\"tableCell\"><a href='selectBoardView?bdcode=" + bdCategoryList[i].bdcode + "'>" + bdCategoryList[i].bdtitle + "</a>"
+					
+					output += "<td class=\"tableCell\"><a href='selectBoardView${paging.makeQueryPage(paging.page)}&codeIdx=" +bdCategoryList[i].bdcode+ "'>" + bdCategoryList[i].bdtitle + "</a>"
 					output += "<span class=\"fw-bold tableCell \" style=\"font-size:15px; color:#00bcd4;\">&nbsp;&nbsp;" +bdCategoryList[i].bdrpcount + "</span></td>"
-					output += "<td class=\"text-center tableCell\"><a href=\"#\">" + bdCategoryList[i].bdnickname + "</a></td>";
+					output += "<td class=\"text-center tableCell\">";
+					output += "<span style='cursor: pointer;' class='bdnickname' onclick='writeMemberBoard(\""+bdCategoryList[i].bdnickname+"\")'>" +bdCategoryList[i].bdnickname+ "</span>";
+					output += "</td>";
+					
 					output += "<td class=\"text-center tableCell\">" + bdCategoryList[i].bddate + "</td>";
 					output += "<td class=\"text-center tableCell\">" + bdCategoryList[i].bdhits + "</td>";
 					output += "<td class=\"text-center text-info fw-bold\">" + bdCategoryList[i].bdrccount + "</td>";

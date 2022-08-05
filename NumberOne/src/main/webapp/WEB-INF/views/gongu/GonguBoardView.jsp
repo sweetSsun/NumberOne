@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>${board.bdtitle } - 1인자:공구글 상세 페이지</title>
+<title>${board.bdtitle } - 1인자:공구 상세</title>
 <!-- Jquery -->
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>  
 <!-- 부트스트랩 -->
@@ -142,6 +142,17 @@
    	object-fit: contain;
    }
    
+   	.div-GbView{
+	    box-shadow: 0px 0px 5px 0px #00bcd4;
+	    border-radius: 15px;
+	    padding: 2%;
+	}
+   	.textarea-GbView-2{
+		border: none; 
+		resize: none;
+		cursor: default;		
+	}
+	
    /* 참여버튼 */
 	.attendBtn {
 	  display: block;
@@ -175,15 +186,18 @@
 		margin: 2%;
 	}
 	.attendInput {
-		height: 5vh;
+		resize: none;
+		height: -webkit-fill-available;
+		overflow: hidden;
 		border: 0;
 		border-radius: 15px;
 		outline: none;
 		padding-left: 10px;
 		background-color: rgb(233, 233, 233);
 		width: 100%;
-
+		font-size: smaller;
 	}
+	
 	/* 참여 modal X버튼 */
 	.attendX{
 		border-radius: 100%;
@@ -285,16 +299,20 @@
 					<div class="row mt-3 mb-1 boardContents" style="padding-bottom: 20px;">
 						<div class="col">
 							<textarea class="inputReply" rows="10%" cols="100%" readonly>${gonguBoard.gbcontents }</textarea>
+							<div class="row div-GbView" style="margin: 10%;">
+								<span id="item_name" class="textarea-GbView-2" style="width:60%;">${gonguBoard.gbitemname }</span>
+								<span id="item_price" class="textarea-GbView-2 gb_price" style="width:40%; text-align:right;">${gonguBoard.gbitemprice }</span>
+							</div>
 							<hr>
 							<textarea class="inputReply" rows="10%" cols="100%" readonly>
 # 참여 방법
 로그인 > 참여 버튼 > 양식 입력 > kakao결제
 
 * 주의사항
-- 양식에 제대로 입력하지 않으면 발송이 되지 않습니다. 꼭 주의하셔서 입력바랍니다.
+- 양식에 제대로 입력하지 않으면 카카오톡 메세지가 발송되지 않습니다. 꼭 주의하셔서 입력바랍니다.
 만약 잘못 입력했으면 문의를 남겨주세요
 
-- kakao결제시 천천히 진행해주세요ㅎㅎ 
+- Kakao결제는 천천히 진행해주세요
 익숙한 노란 창으로 바뀐 후에 결제버튼을 눌러주시기 바랍니다.
 </textarea>
 						</div>
@@ -330,31 +348,34 @@
 					                
 					                <div class="modal-body">
 						                <form id="form-payment" class="row" method="post">
-											<div class="col-sm-8">
+											<div style="width: 58%; margin-top:2%">
 												<div class="attendDiv">
 												<input class="attendInput" type="text" id="pay-id" name="pay-id" readonly="readonly" value="${sessionScope.loginId}" style="cursor:default;">
 												</div>
 												<div class="attendDiv">
-												<input class="attendInput" type="text" id="pay-tel" name="pay-tel" placeholder="전화번호를 입력하세요">
+												<input class="attendInput" type="text" id="pay-tel" name="pay-tel" placeholder="전화번호를 입력하세요" value="${memberInfo.mphone }">
 												</div>
 												<div class="attendDiv">
-												<input class="attendInput" type="text" id="pay-email" name="pay-email" placeholder="이메일주소를 입력하세요">
+												<textarea class="attendInput" id="pay-email" name="pay-email" placeholder="이메일주소를 입력하세요">${memberInfo.memail }</textarea>
 												</div>
 												<div class="attendDiv">
-												<input class="attendInput" type="text" id="pay-address" name="pay-address" placeholder="배송지주소를 입력하세요">
+												<textarea class="attendInput" id="pay-address" name="pay-address" style="height:100px" placeholder="배송지주소를 입력하세요">${memberInfo.maddr }</textarea>
+												<!-- <input class="attendInput" type="text" id="pay-address" name="pay-address" placeholder="배송지주소를 입력하세요"> -->
 												</div>
 											</div>
 											
-											<div class="col-sm-4">
-												<div style="height:70%; text-align: center;">
+											<div class="div-GbView" style="width: 40%">
+												<div style="height:70%; text-align: center; font-size: smaller;">
 													<span>${gonguBoard.gbtitle }</span>
+													<textarea class="textarea-GbView-2" style="width:100%; margin-top:20%;" readonly>${gonguBoard.gbitemname }</textarea><br>
+													<textarea class="textarea-GbView-2 gb_price" style="width:100%; text-align:right;" readonly></textarea>
 												</div>
-												<div>
-													<button id="btn-kakao-pay" type="button">
-													<img alt="카카오결제API" src="${pageContext.request.contextPath }/resources/img/payment_icon_yellow_medium.png">
-													<!-- small/ medium/ large -->
-													</button>
-												</div>
+											</div>
+											<div>
+												<button id="btn-kakao-pay" type="button" style="float: right; padding-top:3%">
+												<img alt="카카오결제API" src="${pageContext.request.contextPath }/resources/img/payment_icon_yellow_medium.png">
+												<!-- small/ medium/ large -->
+												</button>
 											</div>
 											<!-- gbcode 넘겨주기 -->
 											<input type="hidden" id="gonguGbcode" value="${gonguBoard.gbcode }">
@@ -1040,14 +1061,23 @@ $(".inputReply").each(function () {
 			$("#gonguModal").modal("hide");
 		});
 	}
-	var tel = "${memberInfo.mphone }";
-	var email = "${memberInfo.memail }";
-	var address = "${memberInfo.maddr }";
-	console.log("번호 "+tel);
-	console.log("이메일 "+email);
-	console.log("주소 "+address);
 	
-	// 공동구매 참여 양식 입력 모달창 출력
+	//상품가격 콤마 추가
+	var gb_price = $(".gb_price").text(); //상품가격
+	
+	window.onload = function(){
+		console.log('페이지로드')
+		addPriceComma();
+	}	
+	function addPriceComma(){			
+		//console.log(Number(gb_price).toLocaleString('ko-KR'));
+		var gb_price_comma = Number(gb_price).toLocaleString('ko-KR');
+		//console.log(gb_price_comma);
+		$(".gb_price").text(" ₩ " +gb_price_comma);
+	}
+
+	
+	//공동구매 참여 양식 입력 모달창 출력
 	function showGonguModal(){
 		console.log("showGonguModal() 실행");
 		console.log("selectLoginOut_ajax() 실행");
@@ -1083,9 +1113,6 @@ $(".inputReply").each(function () {
 	  						
 	  					} else {
 	  						console.log("check==null");
-	  						$("#pay-tel").val(tel);
-	  						$("#pay-email").val(email);
-	  						$("#pay-address").val(address);
 	  						$("#gonguModal").modal("show");
 	  					}
   				  	}
@@ -1099,20 +1126,29 @@ $(".inputReply").each(function () {
 
 <!-- 카카오페이 클릭 -->
 <script type="text/javascript">
+var gbcode = $("#gonguGbcode").val();
 var loginId = $("#form-payment input[name='pay-id']").val();
-var gbcode =$("#gonguGbcode").val();
-console.log("loginId : "+loginId);
-console.log(gbcode);
+
 
 $("#btn-kakao-pay").click(function(){
+//공동구매 참여양식 값
+var tel = $("#form-payment input[name='pay-tel']").val();
+var email = $("#form-payment textarea[name='pay-email']").val();
+var address = $("#form-payment textarea[name='pay-address']").val();
+
+var item_name = "${gonguBoard.gbitemname }";
+var item_price = "${gonguBoard.gbitemprice }";
+	console.log("loginId : "+loginId);
+	console.log("gbcode : "+gbcode);
+	console.log("제목/품목 : "+item_name);
+	console.log("가격 : "+item_price);
+	
 	console.log("카카오페이 클릭");
-	var tel = $("#form-payment input[name='pay-tel']").val();
-	var email = $("#form-payment input[name='pay-email']").val();
-	var address = $("#form-payment input[name='pay-address']").val();
 	console.log("tel : "+tel);
 	console.log("email : "+email);
 	console.log("address : "+address);
 
+	
 	if(loginId == ""){
 		alert("아이디를 입력하세요");
 		$("#form-payment input[name='pay-name']").focus()
@@ -1125,12 +1161,12 @@ $("#btn-kakao-pay").click(function(){
 	}
 	if(email == ""){
 		alert("이메일을 입력하세요");
-		$("#form-payment input[name='pay-email']").focus()
+		$("#form-payment textarea[name='pay-email']").focus()
 		return;
 	}
 	if(address == ""){
 		alert("주소를 입력하세요");
-		$("#form-payment input[name='pay-address']").focus()
+		$("#form-payment textarea[name='pay-address']").focus()
 		return;
 	}
 	
@@ -1158,6 +1194,8 @@ $("#btn-kakao-pay").click(function(){
 					data:{
 						gbcode:gbcode,
 						loginId:loginId,
+						item_name:item_name,
+						item_price:item_price,
 						tel: tel,
 						email: email,
 						address: address

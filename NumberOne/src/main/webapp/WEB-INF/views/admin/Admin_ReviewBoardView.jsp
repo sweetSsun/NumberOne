@@ -563,6 +563,8 @@
 								output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton bg-secondary text-white fw-bold mt-2\" onclick=\"adminReplyStop('"+ replyList[i].rpcode +"')\" value=\"정지\">"
 							}
 							/* 댓글내용 */
+							console.log(replyList[i].rpparent);
+							console.log(replyList[i].rpcontents);
 							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
 							output += "</div>"
 							
@@ -602,7 +604,22 @@
 							
 							output += "<br>"
 							/* 댓글내용 */
-							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
+							console.log(replyList[i].rpdepth);
+							console.log(replyList[i].rpcontents);
+							/* 댓글내용 */
+							if( replyList[i].rpdepth != 1 ){
+								let rerp_rpcontents = replyList[i].rpcontents;
+								let rerp_rpnickname = replyList[i].rpcontents.split(" ")[0];
+								console.log("대댓글 닉네임 : " + rerp_rpnickname);
+								let rerp_nickname_count = rerp_rpnickname.length;
+								let rerp_rpcontents_trim = rerp_rpcontents.substring(rerp_nickname_count);
+								console.log("대댓글 내용 : " + rerp_rpcontents_trim);
+								output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>"; 
+								output += "<span style='color:rgb(0, 55, 107); cursor:pointer;' onclick='replyAt(\""+rerp_rpnickname.split('@')[1]+"\")'>" + rerp_rpnickname + " </span>";
+								output += rerp_rpcontents_trim + "</pre>";
+							}else{
+								output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
+							}						
 							output += "</div>"
 						}
 
@@ -628,6 +645,14 @@
 				$("#ReplyCount").text(replyCount);
 			}
 		});
+	}
+	
+	//닉네임 태그 클릭시 연결되는 함수
+	function replyAt(mnickname){
+		console.log(mnickname+"로 검색 요청");
+		
+		location.href = '${pageContext.request.contextPath }/selectByRpnickname?keyword='+mnickname+'&searchType=bdnickname&searchVal=bdcode';
+		
 	}
 	
 	function rpModifyModal(rpcode){

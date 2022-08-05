@@ -150,7 +150,8 @@
    
    pre{
    	font-family: 'pretendard';
-   	width: fit-content;   	
+   	width: fit-content; 
+   	white-space: break-spaces; 	
    }
    
 	/*  */
@@ -298,6 +299,13 @@ section div.checkout__form{
 				<div class="row mb-2">
 					<div class="col-2">
 						<c:choose>
+							<c:when test="${paging.searchType eq 'ubmid' }">
+								<!-- tag에서 넘어왔을 때 글목록 페이지 -->
+								<a href="selectCategoryBoardList?searchVal=후기">
+								<input type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
+								</a>
+							</c:when>
+						
 							<c:when test="${paging.bdtype == null && paging.searchVal != '후기'}">
 							<!-- 전체게시판(일반)에서 들어왔을 때 -->
 								<a href="selectBoardList${paging.makeQueryPage(bdtype, board.bdcode, paging.page)}">
@@ -318,7 +326,7 @@ section div.checkout__form{
 								<input type="button" style="left:0; background-color: #00bcd4" class="middelBtn btn btn-sm fw-bold text-white" value="글목록">
 								</a>							
 							</c:when>
-							
+
 							<c:when test="${paging.searchVal eq 'SEL' || paging.searchVal eq 'ICN' || paging.searchVal eq 'GGD' || paging.searchVal eq 'CCD' 
 								|| paging.searchVal eq 'GWD' || paging.searchVal eq 'GSD' || paging.searchVal eq 'JLD' || paging.searchVal eq 'JJD'}">
 							<!-- 특정 지역게시판에서 들어왔을 때 -->
@@ -538,6 +546,14 @@ section div.checkout__form{
 		var bddate = timeForToday("${board.bddate }"); //게시글 작성 시간
 		$("#bddate").text(bddate);
 	});
+	
+	//닉네임 태그 클릭시 연결되는 함수
+	function replyAt(mnickname){
+		console.log(mnickname+"로 검색 요청");
+		
+		location.href = '${pageContext.request.contextPath }/selectByRpnickname?keyword='+mnickname+'&searchType=bdnickname&searchVal=bdcode';
+		
+	}
 	
 	//시간 함수
 	function timeForToday(value) {
@@ -838,11 +854,12 @@ section div.checkout__form{
 						console.log(rppadding);
 					
 						//output += "<div class=\"row\" style='left:"+rppadding+";'>"
-						output += "<div class=\"col-1\" style='text-align: center'>" /* 프로필영역 */
+						output += "<div class=\"col-1\" style='text-align: right'>" /* 프로필영역 */
 						
 						if( replyList[i].rpprofile != 'nomprofile' ){//프로필 이미지가 있을 시 
 			                if(replyList[i].rpdepth != 1){
 			                     //답글인 경우 화살표 추가
+			                     console.log("화살표");
 			                     output += "<span class=\"fw-bold\" style=\"font-size:18px;\">⤷<span>";
 			                   }
 							if(  replyList[i].rpmstate == 9 ){//카카오 회원
@@ -882,17 +899,30 @@ section div.checkout__form{
 							output += "<input type=\"button\" style=\"border:solid gray 1px\" class=\"btn-sm replyButton bg-secondary text-white fw-bold mt-2\" onclick=\"adminReplyStop('"+ replyList[i].rpcode +"')\" value=\"정지\">"
 						}
 						/* 댓글내용 */
-						output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
+						if( replyList[i].rpparent != null ){
+							let rerp_rpcontents = replyList[i].rpcontents;
+							let rerp_rpnickname = replyList[i].rpcontents.split(" ")[0];
+							console.log("대댓글 닉네임 : " + rerp_rpnickname);
+							let rerp_nickname_count = rerp_rpnickname.length;
+							let rerp_rpcontents_trim = rerp_rpcontents.substring(rerp_nickname_count);
+							console.log("대댓글 내용 : " + rerp_rpcontents_trim);
+							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly> <span class='pointer' style=' color:rgb(0, 55, 107);' "
+							output += "onclick='replyAt(\""+rerp_rpnickname.split('@')[1]+"\")'>" + rerp_rpnickname + " </span>";
+							output += rerp_rpcontents_trim + "</pre>";
+						}else{
+							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
+						}
 						output += "</div>"
 						
 					}else{ // 로그인아이디 != 글작성자
 		
 						output += "<div class=\"col-1\" style='text-align:right'>" /* 프로필영역 */
-						if( replyList[i].rpprofile != 'nomprofile' ){//프로필 이미지가 있을 시 
 							if(replyList[i].rpdepth != 1){
 			                     //답글인 경우 화살표 추가
+			                     console.log("화살표 추가")
 			                     output += "<span class=\"fw-bold\" style=\"font-size:18px;\">⤷<span>";
 			                   }
+						if( replyList[i].rpprofile != 'nomprofile' ){//프로필 이미지가 있을 시 
 							if(  replyList[i].rpmstate == 9){//카카오 회원
 								output += "<img class=\"img-profile rounded-circle rpProfile mt-1 \"  src='"+replyList[i].rpprofile + "'>"
 							}else{
@@ -920,8 +950,21 @@ section div.checkout__form{
 						}
 						
 						output += "<br>"
+							
 						/* 댓글내용 */
-						output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
+						if( replyList[i].rpparent != null ){
+							let rerp_rpcontents = replyList[i].rpcontents;
+							let rerp_rpnickname = replyList[i].rpcontents.split(" ")[0];
+							console.log("대댓글 닉네임 : " + rerp_rpnickname);
+							let rerp_nickname_count = rerp_rpnickname.length;
+							let rerp_rpcontents_trim = rerp_rpcontents.substring(rerp_nickname_count);
+							console.log("대댓글 내용 : " + rerp_rpcontents_trim);
+							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly> <span class='pointer' style=' color:rgb(0, 55, 107);' "
+							output += "onclick='replyAt(\""+rerp_rpnickname.split('@')[1]+"\")'>" + rerp_rpnickname + " </span>";
+							output += rerp_rpcontents_trim + "</pre>";
+						}else{
+							output += "<pre style=\"resize:none;\" cols=\"90%\" class=\"inputRpcontents\" readonly>" + replyList[i].rpcontents + "</pre>"
+						}						
 						output += "</div>"
 					}
 						output += "</div>"//한줄 끝

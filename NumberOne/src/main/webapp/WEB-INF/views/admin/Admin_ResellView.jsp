@@ -381,20 +381,9 @@ textarea:focus {
 					<div class="row" style="margin-top: 40px; height: 430px;">
 						<!-- 상품 사진 -->
 						<div class="col-7">
-							<%-- 						<div class="Resell_img_container carousel slide" id="carousel-example-generic">
-								<ol  class="carousel-indicators">
-									<li><img style="object-fit: cover;" class="active Resell_img" src="${pageContext.request.contextPath }/resources/img/resell/${ub_resellView.ubmainimg}" ></li>
-									
-								<c:forEach items="${ub_resellView.ubdetailimg_list}" var="ubdetailimg_list" begin="1">
-									<li><img style="object-fit: cover;" class="Resell_img" src="${pageContext.request.contextPath }/resources/img/resell/${ubdetailimg_list}"></li>
-								</c:forEach>
-								</ol> 
-						</div> --%>
 
 							<!-- 중고거래 상품 사진 : 이미지 슬라이드 (캐러셀) -->
-							<div id="carouselExampleControlsNoTouching" class="carousel slide"
-								data-bs-touch="false" data-bs-interval="false">
-
+<%-- 							<div id="carouselExampleControlsNoTouching" class="carousel slide" data-bs-touch="false" data-bs-interval="false">
 								<div class="carousel-indicators">
 									<button type="button" class="active"
 										data-bs-target="#carouselExampleDark" data-bs-slide-to="0" aria-current="true" aria-label="Slide 1"></button>
@@ -431,8 +420,61 @@ textarea:focus {
 									<span class="carousel-control-next-icon" aria-hidden="true"></span>
 									<span class="visually-hidden">Next</span>
 								</button>
-								
+							</div> --%>
+							
+							
+							<!-- 다크 캐러셀 -->
+							<div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+							  <div class="carousel-indicators">
+							    <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+							    <c:forEach items="${ub_resellView.ubdetailimg_list}" begin="1" varStatus="status">
+							     	<button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="${status.count }" aria-label="Slide 2"></button>
+							    </c:forEach>
+							  </div>
+							  
+							  <div id="blur_img">
+							  
+								  <div class="carousel-inner">
+								    <!-- 1번사진 -->
+								    <div class="carousel-item active subpic" data-bs-interval="10000">
+									      <c:choose>
+										      <c:when test="${ub_resellView.ubmainimg!= null}">
+										      	<img style="object-fit: contain;" class="active Resell_img d-block w-100" src="${pageContext.request.contextPath }/resources/img/resell/${ub_resellView.ubmainimg}">
+										      </c:when>
+										      <c:otherwise>
+										      	<img style="object-fit: contain;" class="active Resell_img d-block w-100" src="${pageContext.request.contextPath }/resources/img/logo_gray.png">
+										      </c:otherwise>
+									      </c:choose>
+								    	<span class="imgState"></span>
+								    </div>
+								    
+								    <c:forEach items="${ub_resellView.ubdetailimg_list}" var="ubdetailimg_list" begin="1">
+									    <div class="carousel-item subpic" data-bs-interval="2000">
+										    <c:choose>
+											    <c:when test="${ubdetailimg_list != null}">
+											      <img style="object-fit: contain;" class="Resell_img d-block w-100" src="${pageContext.request.contextPath }/resources/img/resell/${ubdetailimg_list}">
+											    </c:when>
+											    <c:otherwise>
+											     <img style="object-fit: contain;" class="Resell_img d-block w-100" src="${pageContext.request.contextPath }/resources/img/logo_gray.png">
+											    </c:otherwise>
+										    </c:choose>  
+										    <span class="imgState"></span>
+									    </div>
+								    </c:forEach>
+								  </div>
+							  
+								  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+								    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+								    <span class="visually-hidden">Previous</span>
+								  </button>
+								  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+								    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+								    <span class="visually-hidden">Next</span>
+								  </button>
+							  
+								</div>
 							</div>
+							
 						</div>
 
 						<!-- 거래자 정보  / 본문-->
