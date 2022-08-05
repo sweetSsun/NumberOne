@@ -663,15 +663,30 @@ section div.checkout__form{
 		for ( let i in result) {
 
 			output_page += '<div id=\"sellList\"><div class=\"float_\">'
-					+ '<div id=\"sellbuyscreen\">'
-					+ '<a href=\"selectResellView?ubcode='
-					+ result[i].ubcode
-					+ '&ubsellbuy='
-					+ result[i].ubsellbuy
-					+ '&modifyCheck=LIST\">'
-					+ '<img alt=\"이미지\" src=\"${pageContext.request.contextPath }/resources/img/resell/'+result[i].ubmainimg+'\">'
-					+ '</a>'
-					+ '</div>'
+					+ '<div id=\"sellbuyscreen\">';
+			if(result[i].ubmainimg != null){
+				
+				output_page += '<a href=\"selectResellView?ubcode='
+							+ result[i].ubcode
+							+ '&ubsellbuy='
+							
+							+ result[i].ubsellbuy
+							+ '&modifyCheck=LIST\">'
+							+ '<img alt=\"이미지\" src=\"${pageContext.request.contextPath }/resources/img/resell/'+result[i].ubmainimg+'\">'
+							+ '</a>';
+							
+			}
+			else{
+				output_page += '<a href=\"selectResellView?ubcode='
+						+ result[i].ubcode
+						+ '&ubsellbuy='
+						+ result[i].ubsellbuy
+						+ '&modifyCheck=LIST\">'
+						+ '<img alt=\"이미지\" src=\"${pageContext.request.contextPath }/resources/img/logo_.png\">'
+						+ '</a>';
+			}
+			
+			output_page += '</div>'
 					+ '<div class=\"bottom\" style=\"font-weight:600; position:relative;\">'
 					+ '<span class=\"soldCheckMsg_ bold\"></span>'
 					+ '<a href=\"selectResellView?ubcode='
