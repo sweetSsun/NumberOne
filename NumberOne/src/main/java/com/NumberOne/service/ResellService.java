@@ -266,8 +266,8 @@ public class ResellService {
 		} else {
 			
 			ra.addFlashAttribute("msg", "글 작성에 실패하였습니다.");
-			rdao.delete_gdInsertResult(gdDto);
-			rdao.delete_ubInsertResult(ubDto);
+//			rdao.delete_gdInsertResult(gdDto);
+//			rdao.delete_ubInsertResult(ubDto);
 			
 		}
 

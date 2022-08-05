@@ -372,8 +372,8 @@ font-weight: bold;
 
 							</c:choose>
 
-							<a href="#"> <span class="bdregion">(지역코드 확인)_${ub_resellView.ubrgcode }</span>
-							</a>
+							<%-- <a href="#"> <span class="bdregion">(지역코드 확인)_${ub_resellView.ubrgcode }</span>
+							</a> --%>
 						</div>
 					</div>
 					<div class="row idDateHits">
