@@ -628,25 +628,31 @@ if(resellTitle.options[resellTitle.selectedIndex].value == 'B'){
 		
 		let checkForm = true;
 		console.log("폼데이터 핸들러 호출");
+		
 		if (document.getElementById("titleCheck").value === '') {
 			document.getElementById("titleCheck").focus();
 			alert("제목을 입력하세요.");
-			checkForm = false;
-		} else if (document.getElementById("contentsCheck").value === '') {
+			//checkForm = false;
+			return false;
+		} 
+		
+		 if (document.getElementById("contentsCheck").value === '') {
 			document.getElementById("contentsCheck").focus();
 			alert("내용을 입력하세요");
-			checkForm = false;
-		} 		
+			//checkForm = false;
+			return false;
+		} 
 		
-				else if (document.getElementById("mainImg").value === '') {
+		 if (document.getElementById("mainImg").value === '') {
 			if(resellTitle.value === 'S'){				
-			alert("대표 사진은 필수 사항입니다!");
-			document.getElementById("mainImg").focus();
-			checkForm = false;
+				alert("대표 사진은 필수 사항입니다!");
+				document.getElementById("mainImg").focus();
+				//checkForm = false;
+				return false;
 			}
-		}			
-		else{
-			
+		}		
+		
+		//else {
 			for(let i = 0; i < gdtitle_class.length; i++){
 				if(!document.getElementsByClassName('checkFormClass')[i].classList.contains('d_none')){
 					console.log('d_none 클래스 없음');
@@ -665,7 +671,11 @@ if(resellTitle.options[resellTitle.selectedIndex].value == 'B'){
 					}
 				} 
 			}
-		}
+		//}
+		
+		
+		
+		
 		
 		return checkForm;
 	}
