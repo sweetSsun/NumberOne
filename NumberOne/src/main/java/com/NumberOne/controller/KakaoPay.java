@@ -69,13 +69,13 @@ public class KakaoPay {
 //	    //urlBuilder.append("&" + URLEncoder.encode("approval_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayApproval?gongu="+"aaaaa", "UTF-8")); //준비성공시 승인
 //	    //urlBuilder.append("&" + URLEncoder.encode("approval_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayApproval?gbcode="+gbcode+"&loginId="+loginId+"&address="+address+"&email="+email+"&tel="+tel, "UTF-8")); //준비성공시 승인
 //	    
-	    urlBuilder.append("&" + URLEncoder.encode("approval_url","UTF-8") + "=" + URLEncoder.encode("http://121.65.47.77:7771/controller/kakaopayApproval?address="+address+"&gonguJson="+URLEncoder.encode(gonguJson, "UTF-8"), "UTF-8")); //준비성공시 승인
-	    urlBuilder.append("&" + URLEncoder.encode("fail_url","UTF-8") + "=" + URLEncoder.encode("http://121.65.47.77:7771/controller/kakaopayFail", "UTF-8")); //실패시 돌아갈주소
-	    urlBuilder.append("&" + URLEncoder.encode("cancel_url","UTF-8") + "=" + URLEncoder.encode("http://121.65.47.77:7771/controller/kakaopayCansel", "UTF-8")); //취소시 돌아갈주소
+//	    urlBuilder.append("&" + URLEncoder.encode("approval_url","UTF-8") + "=" + URLEncoder.encode("http://121.65.47.77:7771/controller/kakaopayApproval?address="+address+"&gonguJson="+URLEncoder.encode(gonguJson, "UTF-8"), "UTF-8")); //준비성공시 승인
+//	    urlBuilder.append("&" + URLEncoder.encode("fail_url","UTF-8") + "=" + URLEncoder.encode("http://121.65.47.77:7771/controller/kakaopayFail", "UTF-8")); //실패시 돌아갈주소
+//	    urlBuilder.append("&" + URLEncoder.encode("cancel_url","UTF-8") + "=" + URLEncoder.encode("http://121.65.47.77:7771/controller/kakaopayCansel", "UTF-8")); //취소시 돌아갈주소
 	    
-//	    urlBuilder.append("&" + URLEncoder.encode("approval_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayApproval?address="+address+"&gonguJson="+URLEncoder.encode(gonguJson, "UTF-8"), "UTF-8")); //준비성공시 승인
-//	    urlBuilder.append("&" + URLEncoder.encode("fail_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayFail", "UTF-8")); //실패시 돌아갈주소
-//	    urlBuilder.append("&" + URLEncoder.encode("cancel_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayCansel", "UTF-8")); //취소시 돌아갈주소
+	    urlBuilder.append("&" + URLEncoder.encode("approval_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayApproval?address="+address+"&gonguJson="+URLEncoder.encode(gonguJson, "UTF-8"), "UTF-8")); //준비성공시 승인
+	    urlBuilder.append("&" + URLEncoder.encode("fail_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayFail", "UTF-8")); //실패시 돌아갈주소
+	    urlBuilder.append("&" + URLEncoder.encode("cancel_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayCansel", "UTF-8")); //취소시 돌아갈주소
 	    //URLEncoder.encode("http://localhost:8080/controller/kakaopayApproval", "UTF-8"));  URLEncoder.encode("/kakaopayApproval", "UTF-8")
 	    //ajax라서 주소설정없이 ok 그런데 다른 컴퓨터에서 작동하지 않을 수있음. 자꾸 응답을 못받아서 원래방식대로 go
 	    
@@ -204,13 +204,13 @@ public class KakaoPay {
 //		    urlBuilder.append("&" + URLEncoder.encode("fail_url","UTF-8") + "=" + URLEncoder.encode("/controller/kakaopayFail", "UTF-8")); //실패시 돌아갈주소
 //		    urlBuilder.append("&" + URLEncoder.encode("cancel_url","UTF-8") + "=" + URLEncoder.encode("/controller/kakaopayCansel", "UTF-8")); //취소시 돌아갈주소
 		    
-		    urlBuilder.append("&" + URLEncoder.encode("approval_url","UTF-8") + "=" + URLEncoder.encode("http://121.65.47.77:7771/controller/kakaopaySuccess", "UTF-8")); //성공시 돌아갈주소
-		    urlBuilder.append("&" + URLEncoder.encode("fail_url","UTF-8") + "=" + URLEncoder.encode("http://121.65.47.77:7771/controller/kakaopayFail", "UTF-8")); //실패시 돌아갈주소
-		    urlBuilder.append("&" + URLEncoder.encode("cancel_url","UTF-8") + "=" + URLEncoder.encode("http://121.65.47.77:7771/controller/kakaopayCansel", "UTF-8")); //취소시 돌아갈주소
-		    
-//		    urlBuilder.append("&" + URLEncoder.encode("approval_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopaySuccess", "UTF-8")); //성공시 돌아갈주소
-//		    urlBuilder.append("&" + URLEncoder.encode("fail_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayFail", "UTF-8")); //실패시 돌아갈주소
-//		    urlBuilder.append("&" + URLEncoder.encode("cancel_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayCansel", "UTF-8")); //취소시 돌아갈주소
+//		    urlBuilder.append("&" + URLEncoder.encode("approval_url","UTF-8") + "=" + URLEncoder.encode("http://121.65.47.77:7771/controller/kakaopaySuccess", "UTF-8")); //성공시 돌아갈주소
+//		    urlBuilder.append("&" + URLEncoder.encode("fail_url","UTF-8") + "=" + URLEncoder.encode("http://121.65.47.77:7771/controller/kakaopayFail", "UTF-8")); //실패시 돌아갈주소
+//		    urlBuilder.append("&" + URLEncoder.encode("cancel_url","UTF-8") + "=" + URLEncoder.encode("http://121.65.47.77:7771/controller/kakaopayCansel", "UTF-8")); //취소시 돌아갈주소
+//		    
+		    urlBuilder.append("&" + URLEncoder.encode("approval_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopaySuccess", "UTF-8")); //성공시 돌아갈주소
+		    urlBuilder.append("&" + URLEncoder.encode("fail_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayFail", "UTF-8")); //실패시 돌아갈주소
+		    urlBuilder.append("&" + URLEncoder.encode("cancel_url","UTF-8") + "=" + URLEncoder.encode("http://localhost:8080/controller/kakaopayCansel", "UTF-8")); //취소시 돌아갈주소
 		    	    
 		    URL url = new URL(urlBuilder.toString());
 		    System.out.println(urlBuilder.toString());

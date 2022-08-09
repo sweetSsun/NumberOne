@@ -251,8 +251,6 @@ public class AdminService {
 //		System.out.println(noticeBoard);
 		mav = new ModelAndView();
 		
-		System.out.println(noticeBoard);
-
 		mav.addObject("noticeBoard", noticeBoard);
 		mav.addObject("paging", paging);
 
@@ -343,8 +341,8 @@ public class AdminService {
 	// 공지 수정페이지 이동
 	public ModelAndView admin_selectNoticeModify(String nbcode, Paging paging, RedirectAttributes ra) {
 		System.out.println("AdminService.admin_selectNoticeModify() 호출");
-		System.out.println("nbcode : " + nbcode);
-		System.out.println("paging : " + paging);
+//		System.out.println("nbcode : " + nbcode);
+//		System.out.println("paging : " + paging);
 		
 		mav = new ModelAndView();
 		
@@ -445,7 +443,7 @@ public class AdminService {
 		return mav;
 	}
 	
-	// 선택한 상태값에 따른 커뮤니티 목록 ajax
+	// 선택한 상태값에 따른 중고거래 목록 ajax
 	public String admin_selectResellList_ajax(Paging paging) {
 		System.out.println("AdminService.admin_selectResellList_ajax() 호출");
 //		System.out.println("searchVal : " + paging.getSearchVal());
@@ -479,8 +477,8 @@ public class AdminService {
 	public ModelAndView admin_selectResellView(Paging paging, String codeIdx, String ubsellbuy) {
 		System.out.println("AdminService.admin_selectResellView() 호출");
 		mav = new ModelAndView();
-		System.out.println("ubcode : " + codeIdx);
-		System.out.println("ubsellbuy : " + ubsellbuy);
+//		System.out.println("ubcode : " + codeIdx);
+//		System.out.println("ubsellbuy : " + ubsellbuy);
 		
 		UsedBoardDto ubDto = new UsedBoardDto();
 		ubDto.setUbcode(codeIdx);
@@ -488,8 +486,8 @@ public class AdminService {
 		
 		// 중고거래글 조회
 		UsedBoardDto ub_resellView = rdao.selectResellView(ubDto);
-		System.out.println(ub_resellView);
-		System.out.println(ub_resellView.getUbmid());
+//		System.out.println(ub_resellView);
+//		System.out.println(ub_resellView.getUbmid());
 
 		// 해당 글의 상품 조회
 		ArrayList<GoodsDto> gd_resellView = rdao.selectResellView_goods(ubDto);
@@ -511,9 +509,9 @@ public class AdminService {
 
 		}
 	
-		System.out.println("글 정보 : " + ub_resellView); // 글 정보
-		System.out.println("상품목록 : " + gd_resellView); // 글의 상품목록
-		System.out.println("판매자의 다른상품 : " + memberSellList); // 작성자의 다른 판매글목록
+//		System.out.println("글 정보 : " + ub_resellView); // 글 정보
+//		System.out.println("상품목록 : " + gd_resellView); // 글의 상품목록
+//		System.out.println("판매자의 다른상품 : " + memberSellList); // 작성자의 다른 판매글목록
 
 		
 		mav.addObject("gd_resellView", gd_resellView);
@@ -547,7 +545,7 @@ public class AdminService {
 		
 //		System.out.println(paging);
 		ArrayList<BoardDto> boardList = adao.admin_selectBoardList(paging);
-		System.out.println("boardList : " + boardList);
+//		System.out.println("boardList : " + boardList);
 		mav.addObject("paging", paging);
 		mav.addObject("boardList", boardList);
 		mav.setViewName("admin/Admin_BoardList");

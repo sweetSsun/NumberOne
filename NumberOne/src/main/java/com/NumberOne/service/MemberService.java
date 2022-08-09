@@ -906,7 +906,8 @@ public class MemberService {
 							content +="<div style=\"width:800px; padding-left: 300px;\">";
 					        content += "<button style='text-align:center; border:0px; border-radius: 4px; height:40px; width: 150px; margin:20px;";
 					        content += "margin-left: 10px; background-color: #00bcd4; color: white; font-weight: bold;font-family : pretendard;'>";
-					        content += "<a href=\"http://121.65.47.77:7771/controller/loadToTemporaryNum?mid="+ checkMid + "\"; style=\" color:white; text-decoration: none;\"  >비밀번호변경하기</a></button>";			        
+//					        content += "<a href=\"http://121.65.47.77:7771/controller/loadToTemporaryNum?mid="+ checkMid + "\"; style=\" color:white; text-decoration: none;\"  >비밀번호변경하기</a></button>";			        
+					        content += "<a href=\"http://localhost:8080/controller/loadToTemporaryNum?mid="+ checkMid + "\"; style=\" color:white; text-decoration: none;\"  >비밀번호변경하기</a></button>";			        
 					        content +="</div>";
 					        
 							content +="<div style=\"height: 10px; width: 800px;\"></div>";

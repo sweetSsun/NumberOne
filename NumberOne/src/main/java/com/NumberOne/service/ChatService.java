@@ -37,7 +37,7 @@ public class ChatService {
 			chatRoom = selectChatRoom(chatMessage.getCmfrmid(), chatMessage.getCmtomid());
 		}
 		chatMessage.setCmcrcode(chatRoom.getCrcode());
-		System.out.println("chatRoom : " + chatRoom);
+//		System.out.println("chatRoom : " + chatRoom);
 		
 		
 		// cmcode 생성
@@ -81,31 +81,31 @@ public class ChatService {
 	}
 
 	// 특정 채팅방의 메세지 목록 조회
-	public String selectChatRoomMessage(String crcode){
-		System.out.println("ChatService.selectChatRoomMessage() 호출");
-		ArrayList<ChatMessageDto> msgList = chdao.selectChatRoomMessage(crcode);
-		
-		// 안읽은 메세지 숫자 0으로 변경
-		String mid = (String) session.getAttribute("loginId");
-		chdao.updateCmread(crcode, mid);
-		int sumUnReadCount = selectSumUnReadCount(mid);
-		session.setAttribute("sumUnReadCount", sumUnReadCount);
-		
-		// 메세지 보낸 사람의 닉네임 조회 후 set
-		for (int i = 0; i < msgList.size(); i++) {
-			String cmfrmnickname = chdao.selectMnickname(msgList.get(i).getCmfrmid());
-			msgList.get(i).setCmfrmnickname(cmfrmnickname);
-		}
-		Gson gson = new Gson();
-		String msgList_json = gson.toJson(msgList);
-		System.out.println("msgList_json : " + msgList_json);
-		
-		return msgList_json;
-	}
+//	public String selectChatRoomMessage(String crcode){
+//		System.out.println("ChatService.selectChatRoomMessage() 호출");
+//		ArrayList<ChatMessageDto> msgList = chdao.selectChatRoomMessage(crcode);
+//		
+//		// 안읽은 메세지 숫자 0으로 변경
+//		String mid = (String) session.getAttribute("loginId");
+//		chdao.updateCmread(crcode, mid);
+//		int sumUnReadCount = selectSumUnReadCount(mid);
+//		session.setAttribute("sumUnReadCount", sumUnReadCount);
+//		
+//		// 메세지 보낸 사람의 닉네임 조회 후 set
+//		for (int i = 0; i < msgList.size(); i++) {
+//			String cmfrmnickname = chdao.selectMnickname(msgList.get(i).getCmfrmid());
+//			msgList.get(i).setCmfrmnickname(cmfrmnickname);
+//		}
+//		Gson gson = new Gson();
+//		String msgList_json = gson.toJson(msgList);
+//		System.out.println("msgList_json : " + msgList_json);
+//		
+//		return msgList_json;
+//	}
 	
 	// 특정 채팅방의 메세지 목록 조회2
-	public ModelAndView selectChatRoomMessage2(String crcode){
-		System.out.println("ChatService.selectChatRoomMessage2() 호출");
+	public ModelAndView selectChatRoomMessage(String crcode){
+		System.out.println("ChatService.selectChatRoomMessage() 호출");
 		ModelAndView mav = new ModelAndView();
 		ArrayList<ChatMessageDto> msgList = chdao.selectChatRoomMessage(crcode);
 		

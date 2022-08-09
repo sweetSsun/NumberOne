@@ -105,7 +105,7 @@ public interface BoardDao {
 			+ "                        FROM recommend "
 			+ "                        GROUP BY RCBDCODE ) RCCOUNT "
 			+ "ON BD.BDCODE = RCCOUNT.RCBDCODE "
-			+ "WHERE BD.BDSTATE = 1 "
+			+ "WHERE BD.BDSTATE = 1 AND BD.BDCATEGORY != '자랑'"
 			+ "ORDER BY BDCODE DESC " )
 	  ArrayList<BoardDto> selectBoardList();
 	
