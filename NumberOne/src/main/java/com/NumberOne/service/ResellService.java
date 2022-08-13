@@ -36,6 +36,7 @@ public class ResellService {
 	@Autowired
 	ResellDao rdao;
 
+	//by현석 이미지 파일을 저장 할 주소를 savePath  라는 참조 변수에 저장
 	public static String savePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\resell";
 	
 	//로그인 확인 (파라미터: ra/리턴: mav)
@@ -61,13 +62,15 @@ public class ResellService {
 	}
 	
 	
+	// by현석 : 메인페이지목록 출력
 	public ModelAndView selectResellMainPage(Paging paging) throws Exception {
-		System.out.println("selectResellMainPage 서비스 호출");
+		System.out.println("메인페이지 목록 출력 메소드 호출(Service)");
 		ModelAndView mav = new ModelAndView();
-
+		
+		//by현석 : 목록페이지 Select 시 페이지 구분을 위한 변수
 		String pageCheck = "Main";
 		
-		  //회원의 관심지역 출력용 
+		  //by현석 : 회원의 관심지역 출력을 위한 코드 
 		  if((String) session.getAttribute("loginRegion") != null) {
 		 paging.setSearchVal(rdao.selectRegionCode((String)
 		 session.getAttribute("loginRegion"))); }
@@ -80,25 +83,25 @@ public class ResellService {
 		}
 
 		paging.setSellBuy("S");
-//		팔구리스트
+//		by현석 : 팔구리스트
 		ArrayList<UsedBoardDto> SellList = rdao.selectResellPageList(paging, pageCheck);
 
-		//timeFuction에 리스트 넘기면 시간 ubdatedef에는 변경된 시간, ubdate에는 분까지 잘린 시간이 저장되어 리턴
+		//by두리 : timeFuction에 리스트 넘기면 시간 ubdatedef에는 변경된 시간, ubdate에는 분까지 잘린 시간이 저장되어 리턴
 		SellList = timeFuction(SellList);
 		
-		//zzimCheck에 리스트 넘기면 로그인 id가 zzim 기록이 있는 경우 zzimcheck에 mid 저장
+		//by두리 : zzimCheck에 리스트 넘기면 로그인 id가 zzim 기록이 있는 경우 zzimcheck에 mid 저장
 		SellList = zzimCheck(SellList);
 		
 		//System.out.println("팔구DTO : " + paging);
 
-//		사구리스트
+//		by현석 : 사구리스트
 		paging.setSellBuy("B");
 		ArrayList<UsedBoardDto> BuyList = rdao.selectResellPageList(paging, pageCheck);
 		
-		//timeFuction에 리스트 넘기면 시간 ubdatedef에는 변경된 시간, ubdate에는 분 까지 잘린 시간이 저장되어 리턴
+		//by두리 : timeFuction에 리스트 넘기면 시간 ubdatedef에는 변경된 시간, ubdate에는 분 까지 잘린 시간이 저장되어 리턴
 		BuyList = timeFuction(BuyList);
 
-		//zzimCheck에 리스트 넘기면 로그인 id가 zzim 기록이 있는 경우 zzimcheck에 mid 저장
+		//by두리 : zzimCheck에 리스트 넘기면 로그인 id가 zzim 기록이 있는 경우 zzimcheck에 mid 저장
 		BuyList = zzimCheck(BuyList);
 		
 		//System.out.println("사구DTO : " + paging);
@@ -116,11 +119,11 @@ public class ResellService {
 	}
 
 
-
+	//  by현석 : 중고거래 글 작성 처리  
 	public ModelAndView insertResellWrite(GoodsDto gdDto, UsedBoardDto ubDto, RedirectAttributes ra)
 			throws IllegalStateException, IOException {
 		ModelAndView mav = new ModelAndView();
-		System.out.println("insertResellWrite 서비스호출");
+		System.out.println("중고거래 글 작성 처리 메소드 호출(Service)");
 
 		String ubmid = (String) session.getAttribute("loginId");
 
@@ -275,10 +278,10 @@ public class ResellService {
 
 	}
 
-//  사구 팔구 통합
+//  by현석 : 사구 팔구 목록 출력 메소드통합하였음 
 	public ModelAndView selectResellPageList(Paging paging) throws Exception {
 
-		System.out.println("selectResellPageList 서비스 호출");
+		System.out.println("사구,팔구 목록 출력 호출 메소드 (Service)");
 		ModelAndView mav = new ModelAndView();
 
 		String pageCheck = "NO";
