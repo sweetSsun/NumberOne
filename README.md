@@ -61,7 +61,7 @@ Removed sections:
 - [시작하기](#toolbox-시작하기)
   * [개발환경 구축](#bangbang-개발환경-구축)
   * [로컬에서 실행](#running-로컬에서-실행)
-- [함께한 사람들](#handshake-함께한-)
+- [함께한 사람들](#handshake-함께한-사람들)
   
 
 <!-- About the Project -->
