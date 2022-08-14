@@ -68,7 +68,7 @@ Removed sections:
 ## :star2: 프로젝트 소개
 
 <div align="center"> 
-  <img src="NumberOne/src/main/webapp/resources/img/main" alt="main_screenshot" />
+  <img src="NumberOne/src/main/webapp/resources/img/main.PNG" alt="main_screenshot" />
 </div>
 
 
