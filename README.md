@@ -140,7 +140,7 @@ Removed sections:
 <!-- Contact -->
 ## :handshake: 함께한 사람들
 
-<a href="https://github.com/sweetSsun">
+<a href="https://github.com/sweetSsun/NumberOne/graphs/contributors">
   <img src="https://contributors-img.web.app/image?repo=sweetSsun/NumberOne">
 </a>
 
