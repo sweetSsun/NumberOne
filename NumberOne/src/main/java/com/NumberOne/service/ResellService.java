@@ -36,7 +36,7 @@ public class ResellService {
 	@Autowired
 	ResellDao rdao;
 
-	public static String savePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\resell";
+	public static String savePath = "D:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\resell";
 	
 	//로그인 확인 (파라미터: ra/리턴: mav)
 	public ModelAndView loginChToFail(RedirectAttributes ra) {

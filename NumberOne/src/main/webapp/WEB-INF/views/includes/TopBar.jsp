@@ -270,8 +270,8 @@
 <!-- 채팅 관련 스크립트 -->
 <script type="text/javascript">
 /* 채팅관련 스크립트 */
-   var popChat;       // 채팅팝업 이름
-   var popArr = []; // 현재 떠있는 팝업창을 담을 배열
+   let popChat;       // 채팅팝업 이름
+   let popArr = []; // 현재 떠있는 팝업창을 담을 배열
    
    // 채팅 버튼 클릭시 채팅창 팝업되면서 기존 채팅방 메세지 목록 데이터 보내주는 함수
    function popupChat(crcode, crfrmnickname, crfrmprofile){
@@ -294,20 +294,6 @@
             // 팝업창 열기
             popChat = window.open(openUrl, crcode, popOption); 
             openPopup(crcode);
-           /*  $.ajax({
-               url: "selectChatRoomMessage",
-               data: {"crcode":crcode},
-               async:false,
-               dataType:"json",
-               success:function(data){
-                  popChat.window.addEventListener("load", function(){
-                     //popChat.enterRoom(data); // 채팅방 목록 불러오기
-                    // popChat.crfrMbInfo(crfrmnickname, crfrmprofile);
-                  });
-               }
-            }); */
-            
-
          }
       });
    }
@@ -370,7 +356,7 @@
 	// 드롭다운 채팅방목록 입력 함수
 	function outputChatRoomList(data){
 		console.log("채팅방 목록 드롭다운 실행");
-		var dropdownList = "<p class=\"dropdown-header\" style=\"font-size:11px;\">채팅방 목록</p>";
+		let dropdownList = "<p class=\"dropdown-header\" style=\"font-size:11px;\">채팅방 목록</p>";
 		for(var i = 0; i < data.length; i++){
 			if (i == 5){ // 최대 5개 목록까지만 출력
 				break;
@@ -413,12 +399,11 @@
 		$("#chatRoomList").html(dropdownList);
 	}
 
-/* 렉 때문에 잠시 지움*/
 	<!-- 안읽은 채팅메세지 확인 뱃지 -->
 	//console.log('${sessionScope.loginId }');
 	if(${sessionScope.loginId != null}){
 	   $(window).on('load', function(){
-		   var loadUnReadCount = 0;
+		   let loadUnReadCount = 0;
 		   $.ajax({
                url:"selectSumUnReadCount",
                data:{"loginId": "${sessionScope.loginId}"},
@@ -447,16 +432,12 @@
 		                  	  $("#chat-badge").text("");
 		                  }
 		                  // 읽지 않은 메세지 갯수가 0이 아니면서 페이지 로드 값에서 변경됐으면
-		                  else if (sumUnReadCount != 0 && loadUnReadCount != sumUnReadCount) {
+		                  else if (sumUnReadCount != 0 && loadUnReadCount < sumUnReadCount) {
 		                      // 채팅 icon 깜빡거리기
 		                  	  $("#chat-badge").text(sumUnReadCount);
 		                      $('.nav_chat-badge').addClass('iconBlink');
 		                  }
-		                  // 페이지 로드 값과 동일하면
-		                  else {
-		                      // 깜빡거림 없애기
-		                      $('.nav_chat-badge').removeClass('iconBlink');
-		                  }
+	                      loadUnReadCount = sumUnReadCount;
                   	}
             	});
 	          },2000);
@@ -469,7 +450,6 @@
 <script type="text/javascript">
 
    var wMemberPopup = "";
-  
    
    function writeMemberBoard(nickname){
       console.log("글작성자 팝업 요청!!!");
@@ -714,8 +694,7 @@
 						wMemberPopup.$("#warningBtn").val("신고완료");
 						
 					} else {
-						console.log(popChat.getElementById("mbWarning"));
-						popChat.getElementById("mbWarning").classList.add("text-danger");
+						popChat.$("#mbWarning").addClass("text-danger");
 					}	
 				}
 			}

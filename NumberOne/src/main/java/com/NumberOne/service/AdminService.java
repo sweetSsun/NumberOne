@@ -50,7 +50,7 @@ public class AdminService {
 	private HttpServletRequest request;
 	
 	// 파일 저장 경로
-	String nbImgSavePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\noticeUpLoad";
+	String nbImgSavePath = "D:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\noticeUpLoad";
 	
 	/* 관리자 로그인 확인 (파라미터: ra/리턴: mav) */
 	public ModelAndView loginAdminChToFail(RedirectAttributes ra) {

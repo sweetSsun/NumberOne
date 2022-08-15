@@ -48,10 +48,10 @@ public class BoardService {
 	private HttpSession session;
 
 	// 자랑게시판 이미지 등록 경로
-	private String roomSavePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\room";
+	private String roomSavePath = "D:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\room";
 
 	// 일반게시판 이미지 등록 경로
-	private String boardSavePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\board";
+	private String boardSavePath = "D:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\board";
 	
 	//로그인 확인 (파라미터: ra/리턴: mav)
 	public ModelAndView loginChToFail(RedirectAttributes ra) {

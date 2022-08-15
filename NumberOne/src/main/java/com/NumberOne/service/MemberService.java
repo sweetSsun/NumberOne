@@ -59,7 +59,7 @@ public class MemberService {
 	
 	
 	//프로필 이미지 저장 경로 설정
-	private String savePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\mprofileUpLoad";
+	private String savePath = "D:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\mprofileUpLoad";
 	
 	//회원가입
 	public ModelAndView insertRegisterWrite(RedirectAttributes ra, MemberDto member) throws IllegalStateException, IOException {

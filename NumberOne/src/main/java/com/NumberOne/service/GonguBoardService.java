@@ -43,7 +43,7 @@ public class GonguBoardService {
 	private HttpSession session;
 	
 	// 파일 저장 경로
-	String gbImgSavePath = "C:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\gonguUpLoad";
+	String gbImgSavePath = "D:\\NumberOne\\NumberOne\\src\\main\\webapp\\resources\\img\\gonguUpLoad";
 	
 	/* 관리자 로그인 확인 (파라미터: ra/리턴: mav) loginAdminChToFail :: AdminService*/
 	
