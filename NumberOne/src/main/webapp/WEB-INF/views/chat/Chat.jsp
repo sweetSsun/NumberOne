@@ -233,21 +233,9 @@
 		                <div class="" id="frMemberInfo">
 		                	<div class="row" style="flex-wrap: nowrap;">
 								<div class="col-9 frMember">
-									<a onclick="opener.writeMemberSellbuy('${crfrMember.mnickname}')" style="cursor:pointer;">
-										<c:choose>
-											<c:when test="${crfrMember.mprofile != null && crfrMember.mstate == 1 }">
-												<img class="img-profile rounded-circle" style="height: 45px; width:45px;" src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/${crfrMember.mprofile}">
-											</c:when>
-											
-											<c:when test="${crfrMember.mprofile != null && crfrMember.mstate == 9 }">
-												<img class="img-profile rounded-circle" style="height: 40px; width:40px;" src="${crfrMember.mprofile}">
-											</c:when>
-											
-											<c:otherwise>
-												<img class="img-profile rounded-circle" style="height: 45px; width:45px;" src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png">
-											</c:otherwise>
-										</c:choose>
-			                			<span>${crfrMember.mnickname}</span>
+									<a onclick="opener.writeMemberSellbuy('${param.crfrmnickname}')" style="cursor:pointer;">
+										<img id="crfrmbProfile" class="img-profile rounded-circle" style="height: 45px; width:45px;" >
+			                			<span id="crfrmbNickname"></span>
 			                		</a>
 								</div>
 								<div class="col-3">
@@ -339,11 +327,12 @@
 
 <!-- 채팅 관련 스크립트 -->
 <script type="text/javascript">
-	let crcode = "${param.crcode }";
+	const crcode = "${param.crcode }";
+	const crfrmnickname = "${param.crfrmnickname}"; // 대화상대 닉네임
+	const crfrmprofile = "${param.crfrmprofile}"; // 대화상대 프로필
 	console.log("해당 채팅방 코드 : " + crcode)
 	
-	var wmedNickname = "${crfrMember.mnickname}"; // 대화상대 닉네임
-	var msgList = new Array(); // DB에 저장된 메세지 저장할 배열
+	let msgList = new Array(); // DB에 저장된 메세지 저장할 배열
 	
 	// 채팅방 입장과 동시에 
 	$(document).ready(function (){
@@ -361,9 +350,11 @@
 		</c:forEach>
 		
 		enterRoom(msgList); // 메세지 출력
+		document.getElementById("crfrmbNickname").innerText = crfrmnickname; // 대화상대 닉네임
+		document.getElementById("crfrmbProfile").setAttribute("src", "${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+crfrmprofile); // 대화상대 프로필
 		
 		opener.popChat = this;
-		opener.checkMemberWarning(wmedNickname, crcode); // 대화상대 신고 했는지 확인
+		opener.checkMemberWarning(crfrmnickname, crcode); // 대화상대 신고 했는지 확인
 	});
 	
 	
@@ -373,30 +364,6 @@
            checkLR(msgList[i], false); // DB 입력시간으로 출력하기 위한 boolean값 전송
         } 
      }
-	
-	// 채팅방 접속시 채팅방의 상대방 정보 출력
-/* 	function crfrMbInfo(crfrmnickname, crfrmprofile){
-		console.log("crfrMbInfo 호출");
-		var crfrMb = "";
-		crfrMb += "<div class=\"row\" style=\"flex-wrap: nowrap;\">";
-		crfrMb += "<div class=\"col-9 frMember\">";
-		crfrMb += "<a onclick=\"opener.writeMemberSellbuy('" + crfrmnickname + "')\" style=\"cursor:pointer;\">";
-		if (crfrmprofile.length > 0){
-			crfrMb += "<img class=\"img-profile rounded-circle frMbImg\" src=\"${pageContext.request.contextPath }/resources/img/mprofileUpLoad/" + crfrmprofile + "\">";
-		} else {
-			crfrMb += "<img class=\"img-profile rounded-circle frMbImg\" src=\"${pageContext.request.contextPath }/resources/img/mprofileUpLoad/profile_simple.png\">";
-		}
-		crfrMb += "<span> " + crfrmnickname + "</span>";
-		crfrMb += "</a>";
-		crfrMb += "</div>";
-		crfrMb += "<div class=\"col-3\">";
-		crfrMb += "<i id=\"mbWarning\" onclick=\"mbWarningCheckModal()\" class='fa-solid fa-land-mine-on fa-2x icon warningBtn'></i>";
-		crfrMb += "</div>";
-		crfrMb += "</div>";
-			
-		wmedNickname = crfrmnickname;
-		$("#frMemberInfo").html(crfrMb);
-	} */
 	
 	// enter키 이벤트
 	$(document).on("keydown", $("#inputMsg"), function(e){
@@ -436,8 +403,8 @@
 	}
 	
 		
-	var chatUrl = "${pageContext.request.contextPath }/chatWskMessage";
-	var chatWebSocket = new SockJS(chatUrl);
+	const chatUrl = "${pageContext.request.contextPath }/chatWskMessage";
+	const chatWebSocket = new SockJS(chatUrl);
 	
 	// 연결시 실행 (채팅방 입장)
 	chatWebSocket.onopen = function() {
@@ -448,7 +415,7 @@
 				"cmfrmid" : "${sessionScope.loginId}",
 				"cmcontents" : "ENTER-CHAT"
 		}			
-		let jsonData = JSON.stringify(data);
+		const jsonData = JSON.stringify(data);
 		chatWebSocket.send(jsonData);
 	}
 	
@@ -456,19 +423,19 @@
 	// 메세지 전송
 	function sendMessage(cmcontents){
 		// 단순히 전송만 함. 전송한 사람에게도 메세지를 다시 뿌려줄 것이고, 거기에서 checkLR 할거임! (시스템 시간 띄우는 것 때문에)
-		var data = {
+		const data = {
 			"cmcrcode" : crcode,
 			"cmfrmid" : "${sessionScope.loginId}",
 			"cmcontents" : cmcontents
 		}
-		var jsonData = JSON.stringify(data);
+		const jsonData = JSON.stringify(data);
 		chatWebSocket.send(jsonData);
 	}
 		
 	
 	// 메세지 수신
 	chatWebSocket.onmessage = function(data) {
-   		var receiveMsg = JSON.parse(data.data);
+   		const receiveMsg = JSON.parse(data.data);
    		console.log("보낸 사람 닉네임 : " + receiveMsg.cmfrmnickname);
 	    
    		checkLR(receiveMsg, true); // 현재 서버시간으로 출력하기 위한 boolean값 전송
@@ -477,26 +444,27 @@
     
     // 추가된 메세지의 보낸 사람이 나인지 상대방인지 확인
     function checkLR(data, dateCheck){
-       var LR = (data.cmfrmid != "${sessionScope.loginId}") ? "left":"right";
+       const LR = (data.cmfrmid != "${sessionScope.loginId}") ? "left":"right";
        appendMessage(LR, data, dateCheck);
        //console.log("checkLR에서의 dateCheck : " + dateCheck);
     }
 	    
 	    
     // 메세지 append
-    var dateLine = []; // 날짜를 담을 배열
+    let dateLine = []; // 날짜를 담을 배열
     function appendMessage(LR, data, dateCheck){
     	//console.log(data);
-      	var message = ""; // 입력해줄 output
+      	let message = ""; // 입력해줄 output
+      	let dateInfo = "";
       	
     	/* DB 저장 메세지인지 실시간인지 날짜와 시간 체크 */
         if (dateCheck){
-        	var dateInfo = serverDate(); // 실시간이면 서버시간 받아오기
+        	dateInfo = serverDate(); // 실시간이면 서버시간 받아오기
        	} else {
-    	  	var dateInfo = data.cmdate; // 실시간이 아니면 DB 저장 날짜 받아오기
+    	  	dateInfo = data.cmdate; // 실시간이 아니면 DB 저장 날짜 받아오기
        	}
       	// 해당 메세지 날짜/시간 분리
-      	var date_split = dateInfo.split(" "); // dateInfo :: "월/일 시:분"
+      	const date_split = dateInfo.split(" "); // dateInfo :: "월/일 시:분"
 	
      	/* 배열에 해당 날짜가 없으면, 날짜 출력하고 배열에 담기 */
      	// 날짜 한 번만 출력하기 위함
@@ -508,7 +476,7 @@
       	}
     	  
 	    if (LR == "left"){ // 왼쪽일 때 (상대방이 전송했을 때)
-	        message += "<div style=\"text-align:left;\"><span>" + data.cmfrmnickname + "</span><div>";
+	        message += "<div style=\"text-align:left;\"><span>" + crfrmnickname + "</span><div>";
 	        message += "<div class=\"outerDate\"><span class=\"chatRe\">" + data.cmcontents + "</span>";
 	        message += "<span class=\"chatDate\">" + date_split[1] + "</span></div>";
 	    } else { // 오른쪽일 때 (자신이 전송했을 때)
@@ -523,7 +491,7 @@
     
     // 서버시간 return 함수
     function serverDate(){
-		var now = new Date();
+		const now = new Date();
 			
   		let month = now.getMonth()+1; 	// 월
 		if (month < 10) {
@@ -541,10 +509,10 @@
 		if(minute < 10) {
 			minute = "0" + minute;
 		}
-		var dateInfo = month + "/" + date + " " + hour + ":" + minute;
+		const serverDateInfo = month + "/" + date + " " + hour + ":" + minute;
 		
-		console.log(dateInfo);
-		return dateInfo;
+		console.log(serverDateInfo);
+		return serverDateInfo;
 	}
 	    
 	    
@@ -571,11 +539,10 @@
 	function checkMemberWarning(){
 		$("#mbWarning").addClass("text-danger");
 	}
-
 	
 	// 신고 모달창 close 하는 스크립트
-	var modal = $(".modal");
-	var close = $(".close");
+	const modal = $(".modal");
+	const close = $(".close");
 	for (var i = 0; i < close.length; i++){
 		close[i].addEventListener("click", function(){
 			$("#mbWarningCheckModal").modal("hide");
@@ -595,9 +562,9 @@
 	
 	// 모달창에서 "네" 클릭 시 대화상대 신고
 	function insertMemberWarning(){
-		console.log("신고할 회원 : " + wmedNickname);
+		console.log("신고할 회원 : " + crfrmnickname);
 		opener.popChat = this;
-		opener.insertMemberWarning(wmedNickname, crcode);
+		opener.insertMemberWarning(crfrmnickname, crcode);
 	}
 	
 	
@@ -625,14 +592,6 @@
 			alert("본인은 신고할 수 없습니다");
 		}
 	}
-	
-	// 대화상대 신고 실패 시 수행할 기능
-/* 	function failMemberWarning(){
-		console.log("신고 실패");
-		alert("회원 신고에 실패했습니다");
-
-	} */
-
 	
 </script>
 </html>
