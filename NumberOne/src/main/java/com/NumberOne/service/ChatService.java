@@ -79,31 +79,8 @@ public class ChatService {
 		
 		return crcode;
 	}
-
-	// 특정 채팅방의 메세지 목록 조회
-//	public String selectChatRoomMessage(String crcode){
-//		System.out.println("ChatService.selectChatRoomMessage() 호출");
-//		ArrayList<ChatMessageDto> msgList = chdao.selectChatRoomMessage(crcode);
-//		
-//		// 안읽은 메세지 숫자 0으로 변경
-//		String mid = (String) session.getAttribute("loginId");
-//		chdao.updateCmread(crcode, mid);
-//		int sumUnReadCount = selectSumUnReadCount(mid);
-//		session.setAttribute("sumUnReadCount", sumUnReadCount);
-//		
-//		// 메세지 보낸 사람의 닉네임 조회 후 set
-//		for (int i = 0; i < msgList.size(); i++) {
-//			String cmfrmnickname = chdao.selectMnickname(msgList.get(i).getCmfrmid());
-//			msgList.get(i).setCmfrmnickname(cmfrmnickname);
-//		}
-//		Gson gson = new Gson();
-//		String msgList_json = gson.toJson(msgList);
-//		System.out.println("msgList_json : " + msgList_json);
-//		
-//		return msgList_json;
-//	}
 	
-	// 특정 채팅방의 메세지 목록 조회2
+	// 특정 채팅방의 메세지 목록 조회
 	public ModelAndView selectChatRoomMessage(String crcode){
 		System.out.println("ChatService.selectChatRoomMessage() 호출");
 		ModelAndView mav = new ModelAndView();
@@ -114,34 +91,13 @@ public class ChatService {
 		chdao.updateCmread(crcode, mid);
 		int sumUnReadCount = selectSumUnReadCount(mid);
 		session.setAttribute("sumUnReadCount", sumUnReadCount);
-
-		// 메세지 보낸 사람의 닉네임 조회 후 set
-//		for (int i = 0; i < msgList.size(); i++) {
-//			String cmfrmnickname = chdao.selectMnickname(msgList.get(i).getCmfrmid());
-//			msgList.get(i).setCmfrmnickname(cmfrmnickname);
-//		}
-		
-		// 상대방 아이디 추출
-		String crfrmid = "";
-		ChatRoomDto crMember = chdao.selectCrMember(crcode);
-		if (!crMember.getCrfrmid().equals(session.getAttribute("loginId"))) {
-			crfrmid = crMember.getCrfrmid();
-		} else {
-			crfrmid = crMember.getCrtomid();
-		}
-		// 상대방 닉네임과 프로필 조회
-		MemberDto crfrMember = chdao.selectCrfrMember(crfrmid);
 		
 		System.out.println("msgList : " + msgList);
-		System.out.println("crfrMember : " + crfrMember);
-		// mav에 저장
 		mav.addObject("msgList", msgList);
-		mav.addObject("crfrMember", crfrMember);
 		mav.setViewName("chat/Chat");
 		return mav;
 	}
 	
-
 	// 채팅방 조회 (보낸 메세지의 crcode)
 	public ChatRoomDto selectChatRoom(String crcode) {
 		System.out.println("ChatService.selectChatRoom_1() 호출");

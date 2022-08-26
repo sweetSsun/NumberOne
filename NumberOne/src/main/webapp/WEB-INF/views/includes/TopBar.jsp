@@ -276,8 +276,11 @@
    // 채팅 버튼 클릭시 채팅창 팝업되면서 기존 채팅방 메세지 목록 데이터 보내주는 함수
    function popupChat(crcode, crfrmnickname, crfrmprofile){
       console.log("popupChat 호출");
+      console.log("crfrmnickname : " + crfrmnickname);
+      console.log("crfrmprofile : " + crfrmprofile);
+      
       let popOption = "width=450px, height=560px, top=300px, left=500px, scrollbars=no, resizable=no";
-      let openUrl = "loadToChat?crcode="+crcode;
+      let openUrl = "loadToChat?crcode="+crcode+"&crfrmnickname="+crfrmnickname+"&crfrmprofile="+crfrmprofile;
         $.ajax({
            type : 'get',
            url : 'selectLoginOut_ajax',
@@ -365,7 +368,7 @@
 			if (data[i].crfrmprofile != null){ // 상대방 이미지가 있으면
 				dropdownList += "<a class=\" dropdown-item d-flex align-items-center py-2\" href=\"#\" onclick=\"popupChat('" + data[i].crcode + "', '" + data[i].crfrmnickname + "', '" + data[i].crfrmprofile + "')\">";
 			} else { // 없으면
-				dropdownList += "<a class=\" dropdown-item d-flex align-items-center py-2\" href=\"#\" onclick=\"popupChat('" + data[i].crcode + "', '" + data[i].crfrmnickname + "', '')\">";
+				dropdownList += "<a class=\" dropdown-item d-flex align-items-center py-2\" href=\"#\" onclick=\"popupChat('" + data[i].crcode + "', '" + data[i].crfrmnickname + "', 'profile_simple.png')\">";
 			}
 			dropdownList += "<div class=\"row\" style=\"width: 100%; --bs-gutter-x: 0;\">";
 			dropdownList += "<div class=\"col-1 text-center\">";

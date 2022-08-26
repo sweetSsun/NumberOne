@@ -233,21 +233,9 @@
 		                <div class="" id="frMemberInfo">
 		                	<div class="row" style="flex-wrap: nowrap;">
 								<div class="col-9 frMember">
-									<a onclick="opener.writeMemberSellbuy('${crfrMember.mnickname}')" style="cursor:pointer;">
-										<c:choose>
-											<c:when test="${crfrMember.mprofile != null && crfrMember.mstate == 1 }">
-												<img class="img-profile rounded-circle" style="height: 45px; width:45px;" src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/${crfrMember.mprofile}">
-											</c:when>
-											
-											<c:when test="${crfrMember.mprofile != null && crfrMember.mstate == 9 }">
-												<img class="img-profile rounded-circle" style="height: 40px; width:40px;" src="${crfrMember.mprofile}">
-											</c:when>
-											
-											<c:otherwise>
-												<img class="img-profile rounded-circle" style="height: 45px; width:45px;" src="${pageContext.request.contextPath}/resources/img/mprofileUpLoad/profile_gray.png">
-											</c:otherwise>
-										</c:choose>
-			                			<span>${crfrMember.mnickname}</span>
+									<a onclick="opener.writeMemberSellbuy('${param.crfrmnickname}')" style="cursor:pointer;">
+										<img id="crfrmbProfile" class="img-profile rounded-circle" style="height: 45px; width:45px;" >
+			                			<span id="crfrmbNickname"></span>
 			                		</a>
 								</div>
 								<div class="col-3">
@@ -340,9 +328,10 @@
 <!-- 채팅 관련 스크립트 -->
 <script type="text/javascript">
 	const crcode = "${param.crcode }";
+	const crfrmnickname = "${param.crfrmnickname}"; // 대화상대 닉네임
+	const crfrmprofile = "${param.crfrmprofile}"; // 대화상대 프로필
 	console.log("해당 채팅방 코드 : " + crcode)
 	
-	const wmedNickname = "${crfrMember.mnickname}"; // 대화상대 닉네임
 	let msgList = new Array(); // DB에 저장된 메세지 저장할 배열
 	
 	// 채팅방 입장과 동시에 
@@ -361,9 +350,11 @@
 		</c:forEach>
 		
 		enterRoom(msgList); // 메세지 출력
+		document.getElementById("crfrmbNickname").innerText = crfrmnickname; // 대화상대 닉네임
+		document.getElementById("crfrmbProfile").setAttribute("src", "${pageContext.request.contextPath }/resources/img/mprofileUpLoad/"+crfrmprofile); // 대화상대 프로필
 		
 		opener.popChat = this;
-		opener.checkMemberWarning(wmedNickname, crcode); // 대화상대 신고 했는지 확인
+		opener.checkMemberWarning(crfrmnickname, crcode); // 대화상대 신고 했는지 확인
 	});
 	
 	
@@ -485,7 +476,7 @@
       	}
     	  
 	    if (LR == "left"){ // 왼쪽일 때 (상대방이 전송했을 때)
-	        message += "<div style=\"text-align:left;\"><span>" + wmedNickname + "</span><div>";
+	        message += "<div style=\"text-align:left;\"><span>" + crfrmnickname + "</span><div>";
 	        message += "<div class=\"outerDate\"><span class=\"chatRe\">" + data.cmcontents + "</span>";
 	        message += "<span class=\"chatDate\">" + date_split[1] + "</span></div>";
 	    } else { // 오른쪽일 때 (자신이 전송했을 때)
@@ -571,9 +562,9 @@
 	
 	// 모달창에서 "네" 클릭 시 대화상대 신고
 	function insertMemberWarning(){
-		console.log("신고할 회원 : " + wmedNickname);
+		console.log("신고할 회원 : " + crfrmnickname);
 		opener.popChat = this;
-		opener.insertMemberWarning(wmedNickname, crcode);
+		opener.insertMemberWarning(crfrmnickname, crcode);
 	}
 	
 	
