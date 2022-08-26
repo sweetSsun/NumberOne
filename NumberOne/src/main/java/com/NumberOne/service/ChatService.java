@@ -116,10 +116,10 @@ public class ChatService {
 		session.setAttribute("sumUnReadCount", sumUnReadCount);
 
 		// 메세지 보낸 사람의 닉네임 조회 후 set
-		for (int i = 0; i < msgList.size(); i++) {
-			String cmfrmnickname = chdao.selectMnickname(msgList.get(i).getCmfrmid());
-			msgList.get(i).setCmfrmnickname(cmfrmnickname);
-		}
+//		for (int i = 0; i < msgList.size(); i++) {
+//			String cmfrmnickname = chdao.selectMnickname(msgList.get(i).getCmfrmid());
+//			msgList.get(i).setCmfrmnickname(cmfrmnickname);
+//		}
 		
 		// 상대방 아이디 추출
 		String crfrmid = "";
